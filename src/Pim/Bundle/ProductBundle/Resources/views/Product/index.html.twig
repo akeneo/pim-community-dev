@@ -13,11 +13,6 @@
 
     <script type="text/javascript">
         $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_create') }}' });
-        $(function() {
-            var datagrid = Oro.Registry.getElement('datagrid', 'products');
-            $("#locale-switcher").append(datagrid.filters.locale.el);
-            $("#scope-switcher").append(datagrid.filters.scope.el);
-        });
     </script>
 {% endblock %}
 

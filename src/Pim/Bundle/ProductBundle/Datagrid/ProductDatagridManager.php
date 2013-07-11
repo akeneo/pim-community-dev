@@ -88,10 +88,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $field = $this->createScopeField();
+        $fieldsCollection->add($field);
+
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
+
         // create flexible columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
@@ -106,12 +110,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
-
-        $field = $this->createLocaleField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createScopeField();
-        $fieldsCollection->add($field);
 
         $field = $this->createCategoryField();
         $fieldsCollection->add($field);
@@ -209,31 +207,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create locale field description for datagrid
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createLocaleField()
-    {
-        $field = new FieldDescription();
-        $field->setName(self::LOCALE_FIELD_NAME);
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Data Locale'),
-                'field_name'  => 'data_locale',
-                'filter_type' => FilterInterface::TYPE_LOCALE,
-                'required'    => false,
-                'filterable'  => true,
-                'show_column' => false,
-                'show_filter' => true
-            )
-        );
-
-        return $field;
-    }
-
-    /**
      * Create scope field description for datagrid
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -245,7 +218,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Scope'),
+                'label'       => $this->translate('Channel'),
                 'field_name'  => 'scope',
                 'filter_type' => FilterInterface::TYPE_SCOPE,
                 'required'    => false,
@@ -325,26 +298,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
-
-        $this->flexibleManager->setLocale($this->getLocaleFilterValue());
         $this->flexibleManager->setScope($this->getScopeFilterValue());
-    }
-
-    /**
-     * Get data locale value from parameters
-     *
-     * @return string
-     */
-    protected function getLocaleFilterValue()
-    {
-        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
-            $dataLocale = $filtersArray[self::LOCALE_FIELD_NAME]['value'];
-        } else {
-            $dataLocale = $this->flexibleManager->getLocale();
-        }
-
-        return $dataLocale;
     }
 
     /**
