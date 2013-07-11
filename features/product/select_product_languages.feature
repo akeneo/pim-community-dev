@@ -10,10 +10,10 @@ Feature: Select product activated languages
 
   Scenario: Successfully display activated languages for a product
     Given I visit the "Localisation" tab
-    Then I should see that the product is available in english and german
+    Then I should see that the product is available in English (United States) and German
 
   Scenario: Successfully select available languages for a product
     Given I visit the "Localisation" tab
     When I add the french language
     And I save the product
-    Then I should see that the product is available in french, english and german
+    Then I should see that the product is available in French, English (United States) and German

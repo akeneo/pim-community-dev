@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Product simple form type
+ * Product creation form type
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class SimpleProductType extends FlexibleType
+class ProductCreateType extends FlexibleType
 {
     /**
      * {@inheritdoc}
@@ -29,16 +29,9 @@ class SimpleProductType extends FlexibleType
             ->add('family')
             ->add(
                 'locales',
-                'entity',
+                'pim_product_available_locales',
                 array(
-                    'label'         => 'Activated locales',
-                    'required'      => true,
-                    'multiple'      => true,
-                    'class'         => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                    'by_reference'  => false,
-                    'query_builder' => function (EntityRepository $repository) {
-                        return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-                    }
+                    'label' => 'Activated locales'
                 )
             );
     }
@@ -48,6 +41,6 @@ class SimpleProductType extends FlexibleType
      */
     public function getName()
     {
-        return 'pim_simple_product';
+        return 'pim_product_create';
     }
 }

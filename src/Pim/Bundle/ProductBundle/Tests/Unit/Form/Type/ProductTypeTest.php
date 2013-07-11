@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
 use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
 
 /**
  * Test related class
@@ -40,13 +41,13 @@ class ProductTypeTest extends AbstractFormTypeTest
         $type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductType',
             array('addDynamicAttributesFields'),
-            array($flexibleManager, 'text') // use text as value form alias
+            array($flexibleManager, 'text', new ProductFormView) // use text as value form alias
         );
 
         $type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductType',
             array('addLocaleField'),
-            array($flexibleManager, 'text') // use text as value form alias
+            array($flexibleManager, 'text', new ProductFormView) // use text as value form alias
         );
 
         $this->form = $this->factory->create($type, new Product());
