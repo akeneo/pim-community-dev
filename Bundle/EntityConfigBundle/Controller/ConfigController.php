@@ -88,16 +88,15 @@ class ConfigController extends Controller
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Template()
      */
-    public function viewAction($id)
+    public function viewAction(ConfigEntity $entity)
     {
-        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
         /** @var  EntityFieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
-        $datagridManager->setEntityId($id);
+        $datagridManager->setEntityId($entity->getId());
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(
-                'id' => $id
+                'id' => $entity->getId()
             )
         );
 

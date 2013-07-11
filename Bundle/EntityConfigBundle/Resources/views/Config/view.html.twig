@@ -7,9 +7,9 @@
     {% if resource_granted('oro_user_user_update') %}
         {{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_entityextend_entity_unique_key', { id: entity.id }), 'iClass' : 'th-large', 'title' : 'Unique Keys', 'label' : 'Unique Keys'}) }}
+    {{ UI.button({'path' : path('oro_entityextend_entity_unique_key', { id: entity.id }), 'iClass' : 'th-large', 'title' : 'Manage unique keys', 'label' : 'Manage unique keys'}) }}
 
-    {{ UI.button({'path' : path('oro_entityextend_field_create', { id: entity.id }), 'iClass' : 'th-large', 'title' : 'Create Field', 'label' : 'Create Field'}) }}
+    {{ UI.button({'path' : path('oro_entityextend_field_create', { id: entity.id }), 'iClass' : 'th-large', 'title' : 'Create field', 'label' : 'Create field'}) }}
 
 {% endblock navButtons %}
 
@@ -33,8 +33,9 @@
 {% block stats %}
     <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
     <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
-    <li>{{ ['<a href="', link, '">', entity_config.get('plural_label'), ' List'|trans, '</a>']|join|raw }}</li>
-    <li>{{ '# of records'|trans }}: 0</li>
+    <li>{{ ['<a href="', link, '">', 'Number of records', ': ', 0 , '</a>']|join|raw }}</li>
+    {#<li>{{ ['<a href="', link, '">', entity_config.get('plural_label'), ' List'|trans, '</a>']|join|raw }}</li>#}
+    {#<li>{{ '# of records'|trans }}: 0</li>#}
 {% endblock stats%}
 
 {% block content_data %}
@@ -46,14 +47,16 @@
     {% endfor %}
 
     {% set general_fields = [
-        UI.attibuteRow('Name', entity_name),
-        UI.attibuteRow('Module', module_name),
 
         UI.attibuteRow('Icon', entity_config.get('icon')),
         UI.attibuteRow('Label', entity_config.get('label')),
         UI.attibuteRow('Plural Label', entity_config.get('plural_label')),
         UI.attibuteRow('Type', entity_extend.get('owner')),
         UI.attibuteRow('Description', entity_config.get('description')),
+
+        UI.attibuteRow('Name', entity_name),
+        UI.attibuteRow('Module', module_name),
+
     ]%}
 
     {#{% for key,property in entity_config.getValues %}#}

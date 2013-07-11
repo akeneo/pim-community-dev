@@ -111,6 +111,34 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+
+
+        $fields = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+                if (isset($item['grid'])) {
+                    $fieldObjectProvider = new FieldDescription();
+                    $fieldObjectProvider->setName($code);
+                    $fieldObjectProvider->setOptions(array_merge($item['grid'], array(
+                        'expression' => 'cev' . $code . '.value',
+                        'field_name' => $code,
+                    )));
+
+                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
+                        $fields[$item['priority']] = $fieldObjectProvider;
+                    } else {
+                        $fields[] = $fieldObjectProvider;
+                    }
+
+//                    $fieldsCollection->add($fieldObjectProvider);
+                }
+            }
+        }
+        ksort($fields);
+        foreach ($fields as $field) {
+            $fieldsCollection->add($field);
+        }
+
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('name');
         $fieldObjectName->setOptions(
@@ -146,32 +174,6 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldObjectModule);
-
-        $fields = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                if (isset($item['grid'])) {
-                    $fieldObjectProvider = new FieldDescription();
-                    $fieldObjectProvider->setName($code);
-                    $fieldObjectProvider->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cev' . $code . '.value',
-                        'field_name' => $code,
-                    )));
-
-                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
-                        $fields[$item['priority']] = $fieldObjectProvider;
-                    } else {
-                        $fields[] = $fieldObjectProvider;
-                    }
-
-//                    $fieldsCollection->add($fieldObjectProvider);
-                }
-            }
-        }
-        ksort($fields);
-        foreach ($fields as $field) {
-            $fieldsCollection->add($field);
-        }
 
         $fieldObjectCreate = new FieldDescription();
         $fieldObjectCreate->setName('created');
