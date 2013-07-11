@@ -130,7 +130,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
             if (!empty($metadata->constraints)) {
                 foreach ($metadata->constraints as $constraint) {
-                    $constraintName = end(explode(chr(92), get_class($constraint)));
+                    $constraintName = $this->getConstraintName($constraint);
                     if ($constraintName == 'UniqueEntity') {
                         if (is_array($constraint->fields)) {
                             //It has not been implemented yet
@@ -160,7 +160,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                             /* @var $constraint \Symfony\Component\Validator\Validator */
                             $getterName = $getterMetadata->getName();
                             $jsHandlerCallback = $gettersLibraries->getKey($getterMetadata, '_');
-                            $constraintName = end(explode(chr(92), get_class($constraint)));
+                            $constraintName = $this->getConstraintName($constraint);
                             $constraintProperties = get_object_vars($constraint);
                             $exist = array_intersect($formValidationGroups, $constraintProperties['groups']);
                             if (!empty($exist)) {
@@ -341,7 +341,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
         FieldsConstraints $fieldsConstraints,
         Constraint $constraint
     ) {
-        $constraintName = end(explode(chr(92), get_class($constraint)));
+        $constraintName = $this->getConstraintName($constraint);
         $constraintProperties = get_object_vars($constraint);
 
         // Groups are no longer needed
@@ -408,5 +408,18 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
     protected function createFieldsConstraints()
     {
         return new FieldsConstraints();
+    }
+
+    /**
+     * Get constraint name by constraint.
+     *
+     * @param object $constraint
+     * @return string
+     */
+    protected function getConstraintName($constraint)
+    {
+        $className = get_class($constraint);
+        $classParts = explode(chr(92), $className);
+        return end($classParts);
     }
 }
