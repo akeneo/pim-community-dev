@@ -152,6 +152,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $scopeCode
      *
      * @return FlexibleValueInterface
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
@@ -251,6 +252,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @throws \Exception
      *
      * @return Ambigous <mixed, multitype:>
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __call($method, $arguments)
     {

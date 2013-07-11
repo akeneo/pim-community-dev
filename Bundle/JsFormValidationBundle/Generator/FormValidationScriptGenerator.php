@@ -17,7 +17,7 @@ use APY\JsFormValidationBundle\Generator\FieldsConstraints;
 use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 {
@@ -89,6 +89,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * @param string $scriptFile
      * @throws \RuntimeException
      * @SuppressWarnings(PHPMD.ConstantNamingConventions)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generateFile(FormView $formView, $scriptRealPath, $scriptFile)
     {
@@ -121,11 +124,13 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
             // Dispatch JsfvEvents::preProcess event
             $preProcessEvent = new PreProcessEvent($formView, $metadata);
+            // @codingStandardsIgnoreStart
             $dispatcher->dispatch(JsfvEvents::preProcess, $preProcessEvent);
+            // @codingStandardsIgnoreEnd
 
             if (!empty($metadata->constraints)) {
                 foreach ($metadata->constraints as $constraint) {
-                    $constraintName = end((explode(chr(92), get_class($constraint))));
+                    $constraintName = end(explode(chr(92), get_class($constraint)));
                     if ($constraintName == 'UniqueEntity') {
                         if (is_array($constraint->fields)) {
                             //It has not been implemented yet
@@ -155,7 +160,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                             /* @var $constraint \Symfony\Component\Validator\Validator */
                             $getterName = $getterMetadata->getName();
                             $jsHandlerCallback = $gettersLibraries->getKey($getterMetadata, '_');
-                            $constraintName = end((explode(chr(92), get_class($constraint))));
+                            $constraintName = end(explode(chr(92), get_class($constraint)));
                             $constraintProperties = get_object_vars($constraint);
                             $exist = array_intersect($formValidationGroups, $constraintProperties['groups']);
                             if (!empty($exist)) {
@@ -260,7 +265,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
         // Dispatch JsfvEvents::postProcess event
         $postProcessEvent = new PostProcessEvent($formView, $fieldsConstraints);
+        // @codingStandardsIgnoreStart
         $dispatcher->dispatch(JsfvEvents::postProcess, $postProcessEvent);
+        // @codingStandardsIgnoreEnd
 
         // Retrieve validation mode from configuration
         $check_modes = array('submit' => false, 'blur' => false, 'change' => false);
@@ -334,7 +341,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
         FieldsConstraints $fieldsConstraints,
         Constraint $constraint
     ) {
-        $constraintName = end((explode(chr(92), get_class($constraint))));
+        $constraintName = end(explode(chr(92), get_class($constraint)));
         $constraintProperties = get_object_vars($constraint);
 
         // Groups are no longer needed

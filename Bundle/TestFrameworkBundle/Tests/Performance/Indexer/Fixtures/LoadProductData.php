@@ -176,7 +176,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Load products
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * TODO: this method should be refactored (BAP-975)
      *
      * @return array
