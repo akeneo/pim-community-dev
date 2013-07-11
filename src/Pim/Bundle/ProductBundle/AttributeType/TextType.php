@@ -23,17 +23,17 @@ class TextType extends OroTextType
                 'name' => 'defaultValue'
             ),
             array(
-                'name' => 'maxCharacters',
+                'name'      => 'maxCharacters',
                 'fieldType' => 'integer'
             ),
             array(
-                'name' => 'validationRule',
+                'name'      => 'validationRule',
                 'fieldType' => 'choice',
-                'options' => array(
+                'options'   => array(
                     'choices' => array(
-                        null => 'None',
-                        'email' => 'E-mail',
-                        'url' => 'URL',
+                        null     => 'None',
+                        'email'  => 'E-mail',
+                        'url'    => 'URL',
                         'regexp' => 'Regular expression'
                     )
                 )
@@ -42,30 +42,34 @@ class TextType extends OroTextType
                 'name' => 'validationRegexp'
             ),
             array(
-                'name' => 'searchable',
+                'name'      => 'searchable',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'translatable',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
-            ),
-            array(
-                'name' => 'scopable',
-                'fieldType' => 'pim_product_scopable',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'name'      => 'translatable',
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(
-                'name' => 'unique',
+                'name'      => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name'      => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
+            ),
+            array(
+                'name'      => 'unique',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             )
