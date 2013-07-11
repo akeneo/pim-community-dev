@@ -130,16 +130,16 @@ class ProductEdit extends Page
 
     public function selectAvailableAttribute($attribute)
     {
-        $elt = $this
+        $label = $this
             ->getElement('Available attributes')
-            ->find('css', sprintf('li:contains("%s") input[type="checkbox"]', $attribute))
+            ->find('css', sprintf('li:contains("%s") label', $attribute))
         ;
 
-        if (!$elt) {
+        if (!$label) {
             throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
         }
 
-        $elt->check();
+        $label->click();
     }
 
     public function addSelectedAvailableAttributes()

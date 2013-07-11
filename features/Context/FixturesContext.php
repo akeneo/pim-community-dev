@@ -340,6 +340,18 @@ class FixturesContext extends RawMinkContext
                 $family->addAttribute($attribute);
             }
 
+            if ($data['type'] === 'metric') {
+                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                    $attribute->setMetricFamily($data['metric family']);
+                    $attribute->setDefaultMetricUnit($data['default metric unit']);
+                } else {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        $data['label']
+                    ));
+                }
+            }
+
             if (!empty($data['product'])) {
                 $product = $this->getProduct($data['product']);
                 $value   = $this->createValue($attribute);
