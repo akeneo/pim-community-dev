@@ -199,11 +199,16 @@ Oro.Navigation = Backbone.Router.extend({
             entryPoint = entryPoint.substr(0, entryPoint.indexOf('.php') + 4);
         }
         if(debugBarToken) {
-            $('.sf-toolbarreset').remove();
+            var url = entryPoint + '/_wdt/' + debugBarToken;
             $.get(
-                this.baseUrl + entryPoint + '/_wdt/' + debugBarToken,
+                this.baseUrl + url,
                 _.bind(function(data) {
-                    this.selectorCached['container'].append(data);
+                    var dtContainer = $('<div class="sf-toolbar" id="sfwdt' + debugBarToken + '" style="display: block;" data-sfurl="' + url + '"/>');
+                    dtContainer.html(data);
+                    var scrollable = $('.scrollable-container:last');
+                    var container = scrollable.length ? scrollable : this.selectorCached['container'];
+                    $('.sf-toolbar').remove();
+                    container.append(dtContainer);
                 }, this)
             );
         }
