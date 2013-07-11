@@ -117,13 +117,22 @@ class ConfigController extends Controller
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
 
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+
+        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+
         return array(
-            'entity'     => $entity,
-            'config'     => $entityConfigProvider->getConfig($entity->getClassName()),
-            'datagrid'   => $datagrid->createView(),
-            'link'       => $link,
-            'entityName' => $entityName,
-            'moduleName' => $moduleName,
+            'entity'        => $entity,
+
+            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
+            'entity_extend' => $extendConfig,
+
+            'datagrid'      => $datagrid->createView(),
+            'link'          => $link,
+            'entity_name'   => $entityName,
+            'module_name'   => $moduleName,
+            'unique_key'    => unserialize($extendConfig->get('unique_key')),
         );
     }
 

@@ -7,6 +7,7 @@ oro_entity_config:
                         priority:           20
             items:
                 icon:
+                    priority:               10
                     grid:
                         type:               string
                         label:              'Icon'
@@ -21,6 +22,7 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 label:
+                    priority:               20
                     grid:
                         type:               string
                         label:              'Label'
@@ -34,7 +36,23 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+                plural_label:
+                    priority:               30
+#                    grid:
+#                        type:               string
+#                        label:              'Plural Label'
+#                        filter_type:        oro_grid_orm_string
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        true
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
                 description:
+                    priority:               50
                     grid:
                         type:               text
                         label:              'Description'
