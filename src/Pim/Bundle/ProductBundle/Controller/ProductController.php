@@ -20,6 +20,7 @@ use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Product Controller
@@ -135,12 +136,13 @@ class ProductController extends Controller
         $request  = $this->getRequest();
         $channels = $this->getChannelRepository()->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
-        $datagrid = $this->get('pim_product.datagrid.manager.product_history')->getDatagrid();
         $form     = $this->createForm(
             'pim_product',
             $product,
             array('currentLocale' => $this->getDataLocale())
         );
+
+        $datagrid = $this->getDataAuditDatagrid($product);
 
         if ($request->getMethod() === 'POST') {
             $form->bind($request);
@@ -536,5 +538,28 @@ class ProductController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * Get the log entries datagrid for the given product
+     *
+     * @param Product $product
+     *
+     * return Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    private function getDataAuditDatagrid(Product $product)
+    {
+        $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
+        $queryFactory->setQueryBuilder($this->getDataAuditRepository()->getLogEntriesQueryBuilder($product));
+
+        return $this->get('pim_product.datagrid.manager.product_history')->getDatagrid();
+    }
+
+    private function getDataAuditRepository()
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository('OroDataAuditBundle:Audit')
+        ;
     }
 }
