@@ -6,4 +6,4 @@ placeholders:
 
 items:
    search:
-        action: /search/search-bar
+        action: OroSearchBundle:Search:searchBar

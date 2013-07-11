@@ -3,9 +3,9 @@ namespace Oro\Bundle\UIBundle\Twig\Node;
 
 use \Twig_Compiler;
 use \Twig_Node_Expression_Constant;
-
+use \Twig_Node_Expression_Function;
+use \Twig_Node_Print;
 use \Twig_Node_Include;
-use Symfony\Bundle\TwigBundle\Node\RenderNode;
 
 class PlaceholderNode extends \Twig_Node
 {
@@ -49,23 +49,31 @@ class PlaceholderNode extends \Twig_Node
             foreach ($this->placeholder['items'] as $item) {
                 //$compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
                 if (array_key_exists('template', $item)) {
-                    $expr = new Twig_Node_Expression_Constant($item['template'], $this->lineno);
-                    $block = new Twig_Node_Include($expr, $this->variables, true, $this->lineno, $this->tag);
+                    $expression = new Twig_Node_Expression_Constant($item['template'], $this->lineno);
+                    $block = new Twig_Node_Include($expression, $this->variables, true, $this->lineno, $this->tag);
                     $block->compile($compiler);
                 } elseif (array_key_exists('action', $item)) {
-                    /**
-                     * TODO: In Symfony 2.2 render syntax was changed
-                     * @link https://magecore.atlassian.net/browse/BAP-1127
-                     * For rendering controllers as Bundle:Controller:action seems required another way of Expression initialization
-                     */
-                    $expr = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
+                    $expression = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
                     $attr = new Twig_Node_Expression_Constant(array(), $this->lineno);
                     if ($this->variables === null) {
                         $attributes = $attr;
                     } else {
                         $attributes = $this->variables;
                     }
-                    $block = new RenderNode($expr, $attributes, $this->lineno, $this->tag);
+
+                    // {{ render(controller('Bundle:Directory:controllerAction', { action: attributes })) }}
+                    $controllerFunctionExpression = new Twig_Node_Expression_Function(
+                        'controller',
+                        new \Twig_Node(array($expression, $attributes)),
+                        $this->lineno
+                    );
+                    $renderFunctionExpression = new Twig_Node_Expression_Function(
+                        'render',
+                        new \Twig_Node(array('uri' => $controllerFunctionExpression)),
+                        $this->lineno
+                    );
+
+                    $block = new Twig_Node_Print($renderFunctionExpression, $this->lineno, $this->tag);
                     $block->compile($compiler);
                 }
                 //$compiler->raw('echo \'</div>\';');
