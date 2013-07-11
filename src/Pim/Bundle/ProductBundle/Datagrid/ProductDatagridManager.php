@@ -195,7 +195,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'field_name'  => 'categories',
                 'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
-                'sortable'    => false, //TODO To enable when PIM-603 is fixed
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array(
@@ -300,6 +300,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $this->flexibleManager = $flexibleManager;
         $this->flexibleManager->setScope($this->getScopeFilterValue());
+        $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
     }
 
     /**

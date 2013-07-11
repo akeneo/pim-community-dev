@@ -50,10 +50,6 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // TODO : useless cause done by Context Listener ?
-        $this->getProductManager()->setLocale($this->getDataLocale());
-        $this->getProductManager()->setScope($this->getDataScope());
-
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.datagrid.manager.product');
         $datagrid = $gridManager->getDatagrid();
