@@ -3,12 +3,13 @@
 namespace Oro\Bundle\EntityConfigBundle;
 
 use Doctrine\ORM\EntityManager;
-
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Security\Core\SecurityContext;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
@@ -16,6 +17,7 @@ use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
@@ -39,6 +41,11 @@ class ConfigManager
      * @var ServiceProxy
      */
     protected $proxyEm;
+
+    /**
+     * @var ServiceProxy
+     */
+    protected $proxySecurityContext;
 
     /**
      * @var EventDispatcher
@@ -66,15 +73,17 @@ class ConfigManager
     protected $providers = array();
 
     /**
-     * @param MetadataFactory $metadataFactory
-     * @param EventDispatcher $eventDispatcher
-     * @param ServiceProxy    $proxyEm
+     * @param MetadataFactory                        $metadataFactory
+     * @param EventDispatcher                        $eventDispatcher
+     * @param ServiceProxy                           $proxyEm
+     * @param DependencyInjection\Proxy\ServiceProxy $proxySecurityContext
      */
-    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
+    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $proxySecurityContext)
     {
-        $this->metadataFactory = $metadataFactory;
-        $this->proxyEm         = $proxyEm;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->metadataFactory      = $metadataFactory;
+        $this->proxyEm              = $proxyEm;
+        $this->proxySecurityContext = $proxySecurityContext;
+        $this->eventDispatcher      = $eventDispatcher;
     }
 
     /**
@@ -229,6 +238,16 @@ class ConfigManager
     }
 
     /**
+     * @param $className
+     */
+    public function clearCache($className)
+    {
+        foreach ($this->getProviders() as $provider) {
+            $this->configCache->removeConfigFromCache($className, $provider->getScope());
+        }
+    }
+
+    /**
      * @param ConfigInterface $config
      */
     public function persist(ConfigInterface $config)
@@ -261,7 +280,8 @@ class ConfigManager
      */
     public function flush()
     {
-        $entities = array();
+        $entities  = array();
+        $diffStart = array();
 
         foreach ($this->persistConfigs as $config) {
             $className = $config->getClassName();
@@ -269,7 +289,8 @@ class ConfigManager
             if (isset($entities[$className])) {
                 $configEntity = $entities[$className];
             } else {
-                $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
+                $configEntity          = $entities[$className] = $this->findOrCreateConfigEntity($className);
+                $diffStart[$className] = clone $configEntity;
             }
 
             if ($config instanceof FieldConfigInterface) {
@@ -288,9 +309,39 @@ class ConfigManager
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
+
+            $this->saveDiff($diffStart[$entity->getClassName()], $entity);
         }
 
         $this->em()->flush();
+    }
+
+    protected function saveDiff(ConfigEntity $oldEntity, ConfigEntity $entity)
+    {
+        $diff = array();
+        foreach ($this->getProviders() as $provider) {
+            $oldConfig = new EntityConfig($entity->getClassName(), $provider->getScope());
+            $oldConfig->setValues($oldEntity->toArray($provider->getScope()));
+
+            $config = $provider->getConfig($entity->getClassName());
+
+            $diff[$provider->getScope()] = array_diff_assoc($config->getValues(), $oldConfig->getValues());
+        }
+
+        $configLog = new ConfigLog();
+        $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
+        $configLog->setDiff($diff);
+        $configLog->setEntity($entity);
+
+        $this->em()->persist($configLog);
+    }
+
+    /**
+     * @return SecurityContext
+     */
+    protected function getSecurityContext()
+    {
+        return $this->proxySecurityContext->getService();
     }
 
     /**
