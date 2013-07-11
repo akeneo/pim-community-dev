@@ -19,7 +19,7 @@ class MetricType extends OroMetricType
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options   = parent::prepareValueFormOptions($value);
+        $options = parent::prepareValueFormOptions($value);
         $options['default_unit'] = array($options['default_unit']);
 
         return $options;
