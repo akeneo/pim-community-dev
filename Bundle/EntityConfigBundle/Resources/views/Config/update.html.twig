@@ -14,9 +14,7 @@
         'entity':      'entity',
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': entity.className|default('N/A'),
-        'hasAvatar':   false,
-        'imagePath':   '',
+        'entityTitle': entity_config.get('label')|default('N/A'),
     }%}
 
     {{ parent() }}

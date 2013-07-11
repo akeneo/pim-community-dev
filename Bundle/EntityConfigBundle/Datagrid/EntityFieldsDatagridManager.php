@@ -35,7 +35,7 @@ class EntityFieldsDatagridManager extends FieldsDatagrid
         $fieldType->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'DataType',
+                'label'       => 'Data Type',
                 'field_name'  => 'type',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,

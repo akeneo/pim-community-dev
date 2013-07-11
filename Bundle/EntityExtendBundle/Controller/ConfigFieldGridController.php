@@ -73,9 +73,13 @@ class ConfigFieldGridController extends Controller
             }
         }
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
         return array(
             'form'      => $form->createView(),
-            'entity_id' => $entity->getId()
+            'entity_id' => $entity->getId(),
+            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
         );
     }
 

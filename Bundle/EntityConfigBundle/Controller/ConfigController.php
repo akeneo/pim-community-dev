@@ -73,9 +73,13 @@ class ConfigController extends Controller
             }
         }
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'entity'        => $entity,
+            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
+            'form'          => $form->createView(),
         );
     }
 
@@ -215,9 +219,14 @@ class ConfigController extends Controller
             }
         }
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
         return array(
-            'field' => $field,
-            'form'  => $form->createView(),
+            'entity_config' => $entityConfigProvider->getConfig($field->getEntity()->getClassName()),
+            'field_config'  => $entityConfigProvider->getFieldConfig($field->getEntity()->getClassName(), $field->getCode()),
+            'field'         => $field,
+            'form'          => $form->createView(),
         );
     }
 }

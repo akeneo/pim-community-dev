@@ -283,7 +283,9 @@ class ConfigManager
                 $configEntity->fromArray($config->getScope(), $config->getValues());
             }
 
-            $this->configCache->removeConfigFromCache($className, $config->getScope());
+            if ($this->configCache) {
+                $this->configCache->removeConfigFromCache($className, $config->getScope());
+            }
         }
 
         foreach ($entities as $entity) {

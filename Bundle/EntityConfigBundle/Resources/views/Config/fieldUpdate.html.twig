@@ -12,15 +12,23 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% set breadcrumbs = {
-        'entity':      'entity',
-        'indexPath':   path('oro_entityconfig_view', {id: field.entity.id}),
-        'indexLabel': 'Field',
-        'entityTitle': field.entity.id,
-    }
-    %}
+    {% set breadcrumbs = {} %}
     {{ parent() }}
 {% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    <div class="pull-left">
+        <div class="sub-title"><a href="{{ path('oro_entityconfig_index') }}">{{ 'Entities'|trans }}</a></div>
+        <span class="separator">/</span>
+        <div class="sub-title"><a href="{{ path('oro_entityconfig_view', {id: field.entity.id}) }}">{{ entity_config.get('label') }}</a></div>
+        <span class="separator">/</span>
+        {% if field.id %}
+        <h1 class="user-name">{{ field_config.get('label')|default(field.code|capitalize) }}</h1>
+        {% else %}
+        <h1 class="user-name">New Field</h1>
+        {% endif %}
+    </div>
+{% endblock breadcrumbs %}
 
 {% block stats %}
     {{ parent() }}

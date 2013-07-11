@@ -16,8 +16,8 @@ services:
             - @oro_entity_config.metadata.annotation_metadata_factory
             - @event_dispatcher
             - @oro_entity_config.proxy.entity_manager
-        calls:
-            - [setCache, [@oro_entity_config.cache.file_cache]]
+#        calls:
+#            - [setCache, [@oro_entity_config.cache.file_cache]]
 
     oro_entity_config.cache.file_cache:
         class:                                                  %oro_entity_config.cache.file_cache.class%
