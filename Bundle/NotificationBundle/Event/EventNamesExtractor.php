@@ -46,6 +46,7 @@ class EventNamesExtractor extends PhpExtractor
      */
     public function extract($directory, MessageCatalogue $catalog)
     {
+        die('sdf');
         // load any existing translation files
         $finder = new Finder();
         $files = $finder->files()->name('*.php')->in($directory);
