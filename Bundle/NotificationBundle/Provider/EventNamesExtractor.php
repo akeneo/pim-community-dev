@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\FrameworkBundle\Translation;
+namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\MessageCatalogue;
