@@ -515,7 +515,7 @@ class ProductController extends Controller
      *
      * @return boolean
      */
-    private function checkValuesRemovability(array $values)
+    protected function checkValuesRemovability(array $values)
     {
         if (0 === count($values)) {
             return false;
@@ -535,9 +535,9 @@ class ProductController extends Controller
      *
      * @param Product $product
      *
-     * return Oro\Bundle\GridBundle\Datagrid\Datagrid
+     * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
      */
-    private function getDataAuditDatagrid(Product $product)
+    protected function getDataAuditDatagrid(Product $product)
     {
         $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
         $queryFactory->setQueryBuilder($this->getDataAuditRepository()->getLogEntriesQueryBuilder($product));
@@ -548,7 +548,12 @@ class ProductController extends Controller
         return $datagridManager->getDatagrid();
     }
 
-    private function getDataAuditRepository()
+    /**
+     * Get the data audit doctrine repository
+     *
+     * @return AuditRepository
+     */
+    protected function getDataAuditRepository()
     {
         return $this
             ->getDoctrine()
