@@ -297,6 +297,13 @@ class ConfigManager
                     $oldConfig = new EntityConfig($className, $provider->getScope());
                     $oldConfig->setValues($configEntity->toArray($provider->getScope()));
                     $diffEntityStart[$className][$provider->getScope()] = $oldConfig;
+
+                    foreach ($configEntity->getFields() as $field) {
+                        $oldField = new FieldConfig($className, $field->getCode(), $field->getType(), $provider->getScope());
+                        $oldField->setValues($field->toArray($provider->getScope()));
+
+                        $oldConfig->addField($oldField);
+                    }
                 }
             }
 
@@ -325,22 +332,53 @@ class ConfigManager
         $this->em()->flush();
     }
 
-    protected function saveDiff($oldConfigs, $newEntity)
+    /**
+     * @param EntityConfig[] $oldConfigs
+     * @param ConfigEntity   $newEntity
+     */
+    protected function saveDiff($oldConfigs, ConfigEntity $newEntity)
     {
-        $diff = array();
+        $entityDiff = array();
+        $fieldDiff  = array();
+
         foreach ($this->getProviders() as $provider) {
             $config    = $provider->getConfig($newEntity->getClassName());
             $oldConfig = $oldConfigs[$provider->getScope()];
 
-            $diff[$provider->getScope()] = array_diff($config->getValues(), $oldConfig->getValues());
+            $resultDiff = array_diff($config->getValues(), $oldConfig->getValues());
+            if (count($resultDiff)) {
+                $entityDiff[$provider->getScope()] = $resultDiff;
+            }
+
+            foreach ($oldConfig->getFields() as $oldFieldConfig) {
+                $fieldConfig = $provider->getFieldConfig($newEntity->getClassName(), $oldFieldConfig->getCode());
+
+                $resultDiff = array_diff($fieldConfig->getValues(), $oldFieldConfig->getValues());
+                if (count($resultDiff)) {
+                    $fieldDiff[$fieldConfig->getCode()][$provider->getScope()] = $resultDiff;
+                }
+            }
         }
 
-        $configLog = new ConfigLog();
-        $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
-        $configLog->setDiff($diff);
-        $configLog->setEntity($newEntity);
+        foreach ($fieldDiff as $code => $diff) {
+            if (count($diff)) {
+                $configLog = new ConfigLog();
+                $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
+                $configLog->setDiff($diff);
+                $configLog->setField($newEntity->getField($code));
 
-        $this->em()->persist($configLog);
+                $this->em()->persist($configLog);
+            }
+        }
+
+        if (count($entityDiff)) {
+            $configLog = new ConfigLog();
+            $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
+            $configLog->setDiff($entityDiff);
+            $configLog->setEntity($newEntity);
+
+            $this->em()->persist($configLog);
+        }
     }
 
     /**

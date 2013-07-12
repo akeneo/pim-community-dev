@@ -39,6 +39,15 @@ class ConfigLog
     protected $entity;
 
     /**
+     * @var ConfigField
+     * @ORM\ManyToOne(targetEntity="ConfigField", inversedBy="diffs")
+     * @ORM\JoinColumns({
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
+     * })
+     */
+    protected $field;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="logged_at", type="datetime")
      */
@@ -75,6 +84,25 @@ class ConfigLog
     public function getDiff()
     {
         return unserialize($this->diff);
+    }
+
+    /**
+     * @param \Oro\Bundle\EntityConfigBundle\Entity\ConfigField $field
+     * @return $this
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return \Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+     */
+    public function getField()
+    {
+        return $this->field;
     }
 
     /**
