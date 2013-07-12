@@ -3,17 +3,22 @@
 namespace Oro\Bundle\DataAuditBundle\Entity\Repository;
 
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
+use Gedmo\Tool\Wrapper\EntityWrapper;
 
 class AuditRepository extends LogEntryRepository
 {
     public function getLogEntriesQueryBuilder($entity)
     {
-        return $this->createQueryBuilder('a')
+        $wrapped     = new EntityWrapper($entity, $this->_em);
+        $objectClass = $wrapped->getMetadata()->name;
+        $objectId    = $wrapped->getIdentifier();
+
+        $qb = $this->createQueryBuilder('a')
             ->where('a.objectId = :objectId AND a.objectClass = :objectClass')
             ->orderBy('a.loggedAt', 'DESC')
-            ->setParameter('objectId', $entity->getId())
-            ->setParameter('objectClass', get_class($entity))
-        ;
+            ->setParameters(compact('objectId', 'objectClass'));
+
+        return $qb;
     }
 }
 
