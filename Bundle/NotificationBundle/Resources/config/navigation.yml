@@ -1,0 +1,13 @@
+oro_menu_config:
+    items:
+        oro_notification_emailnotification_list:
+            label: 'Transaction Emails'
+            route: 'oro_notification_emailnotification_index'
+            extras:
+                routes: ['oro_notification_email_notification_*']
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_notification_emailnotification_list: ~

@@ -1,0 +1,4 @@
+oro_notification:
+    resource:     "@OroNotificationBundle/Controller"
+    type:         annotation
+    prefix:       /notification
