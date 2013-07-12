@@ -102,7 +102,7 @@ class ConfigController extends Controller
         $datagrid = $datagridManager->getDatagrid();
 
         /**
-         * calculate Entity module and name
+         * define Entity module and name
          */
         $entityName = $moduleName = '';
         $className  = explode('\\', $entity->getClassName());
@@ -127,17 +127,15 @@ class ConfigController extends Controller
 
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
-
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
         return array(
             'entity'        => $entity,
-
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
             'unique_key'    => unserialize($extendConfig->get('unique_key')),
-
             'datagrid'      => $datagrid->createView(),
+
             'link'          => $link,
             'entity_name'   => $entityName,
             'module_name'   => $moduleName,

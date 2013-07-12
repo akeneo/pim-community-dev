@@ -56,7 +56,6 @@ class ConfigDatagridManager extends DatagridManager
         $properties = array(
             new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
-//            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
 
         foreach ($this->configManager->getProviders() as $provider) {
@@ -128,11 +127,10 @@ class ConfigDatagridManager extends DatagridManager
                     } else {
                         $fields[] = $fieldObjectProvider;
                     }
-
-//                    $fieldsCollection->add($fieldObjectProvider);
                 }
             }
         }
+
         ksort($fields);
         foreach ($fields as $field) {
             $fieldsCollection->add($field);
@@ -245,23 +243,7 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-//        $fieldsAction = array(
-//            'name'         => 'fields',
-//            'type'         => ActionInterface::TYPE_REDIRECT,
-//            'acl_resource' => 'root',
-//            'options'      => array(
-//                'label' => 'Fields',
-//                'icon'  => 'th-list',
-//                'link'  => 'fields_link',
-//            )
-//        );
-
-        $actions = array(
-            $clickAction,
-            $viewAction,
-            $updateAction,
-//            $fieldsAction
-        );
+        $actions = array($clickAction, $viewAction, $updateAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {

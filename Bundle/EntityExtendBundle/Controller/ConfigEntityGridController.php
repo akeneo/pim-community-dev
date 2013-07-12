@@ -9,7 +9,6 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
@@ -46,7 +45,7 @@ class ConfigEntityGridController extends Controller
 
                 $error = false;
                 $names = array();
-                foreach($data['keys'] as $key){
+                foreach ($data['keys'] as $key) {
                     if (in_array($key['name'], $names)) {
                         $error = true;
                         $form->addError(new FormError(sprintf('Name for key should be unique, key "%s" is not unique.', $key['name'])));
@@ -66,9 +65,13 @@ class ConfigEntityGridController extends Controller
             }
         }
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
         return array(
-            'form'      => $form->createView(),
-            'entity_id' => $entity->getId()
+            'form'          => $form->createView(),
+            'entity_id'     => $entity->getId(),
+            'entity_config' => $entityConfigProvider->getConfig($entityConfig->getClassName())
         );
     }
 }

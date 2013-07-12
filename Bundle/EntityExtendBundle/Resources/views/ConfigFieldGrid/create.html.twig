@@ -11,47 +11,32 @@
     {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
-{#{% block pageHeader %}#}
-    {#{% set breadcrumbs = {#}
-    {#'entity':      'entity',#}
-    {#'indexPath':   path('oro_entityconfig_fields', {'id':entity_id}),#}
-    {#'indexLabel': 'Fields',#}
-    {#'entityTitle': 'Create Field',#}
-    {#}#}
-    {#%}#}
-    {#{{ parent() }}#}
-{#{% endblock pageHeader %}#}
-
 {% block pageHeader %}
-    {% set breadcrumbs = {} %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'New Field',
+        'additional': [
+            {
+                'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
+                'indexLabel' : entity_config.get('label')
+            },
+        ]
+    } %}
+
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block breadcrumbs %}
-    <div class="pull-left">
-        <div class="sub-title"><a href="{{ path('oro_entityconfig_index') }}">{{ 'Entities'|trans }}</a></div>
-        <span class="separator">/</span>
-        <div class="sub-title"><a href="{{ path('oro_entityconfig_view', {id: entity_id}) }}">{{ entity_config.get('label') }}</a></div>
-        <span class="separator">/</span>
-        <h1 class="user-name">New Field</h1>
-    </div>
-{% endblock breadcrumbs %}
-
-
-{% block stats %}
-    {{ parent() }}
-{% endblock stats %}
 
 {% block content_data %}
     {% set id = 'configfield-create' %}
-
     {% set dataBlocks = form_data_blocks(form) %}
-
     {% set data = {
-    'formErrors': form_errors(form)? form_errors(form) : null,
-    'dataBlocks': dataBlocks,
-    'hiddenData': form_rest(form)
-    }%}
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    } %}
 
     {{ parent() }}
 {% endblock content_data %}
