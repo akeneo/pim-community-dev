@@ -9,9 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 /**
  * Aims to inject available attributes into a flexible entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 class AddAttributesListener implements EventSubscriber
 {

@@ -31,11 +31,7 @@ class TextAreaTypeTest extends AttributeTypeTest
                 'foo',
                 'text',
                 'bar',
-                array(
-                    'constraints' => array('constraints'),
-                    'label'       => null,
-                    'required'    => null,
-                )
+                $this->defaultCreateNamedOptions
             );
 
         $this->target->buildValueFormType($factory, $value);

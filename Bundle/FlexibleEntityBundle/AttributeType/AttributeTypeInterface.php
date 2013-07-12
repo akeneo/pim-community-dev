@@ -8,9 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 /**
  * The attribute type interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 interface AttributeTypeInterface
 {

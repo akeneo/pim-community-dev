@@ -44,7 +44,7 @@ navigation.pinbar.ItemView = Backbone.View.extend({
     unpin: function()
     {
         Oro.Events.trigger("pinbar_item_remove_before", this.model);
-        this.model.destroy({wait: false});
+        this.model.destroy({wait: true});
         return false;
     },
 

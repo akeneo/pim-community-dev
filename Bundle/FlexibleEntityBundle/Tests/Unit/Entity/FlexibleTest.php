@@ -9,9 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 /**
  * Test related demo class, aims to cover abstract one
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleTest extends \PHPUnit_Framework_TestCase
@@ -53,7 +50,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->flexible->setLocale($code);
         $this->assertEquals($this->flexible->getLocale(), $code);
     }

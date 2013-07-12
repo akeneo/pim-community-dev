@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
@@ -28,6 +29,7 @@ class CountryRegionsController extends FOSRestController
      *  description="Get regions by country id",
      *  resource=true
      * )
+     * @AclAncestor("oro_address")
      * @return Response
      */
     public function getAction(Country $country = null)

@@ -8,6 +8,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\FlexibleSoapController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
 class AddressController extends FlexibleSoapController
 {
@@ -16,6 +17,7 @@ class AddressController extends FlexibleSoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Address[]")
+     * @AclAncestor("oro_address_list")
      */
     public function cgetAction($page = 1, $limit = 10)
     {
@@ -26,6 +28,7 @@ class AddressController extends FlexibleSoapController
      * @Soap\Method("getAddress")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Address")
+     * @AclAncestor("oro_address_show")
      */
     public function getAction($id)
     {
@@ -36,6 +39,7 @@ class AddressController extends FlexibleSoapController
      * @Soap\Method("createAddress")
      * @Soap\Param("address", phpType = "Oro\Bundle\AddressBundle\Entity\AddressSoap")
      * @Soap\Result(phpType = "boolean")
+     * @AclAncestor("oro_address_create")
      */
     public function createAction($address)
     {
@@ -47,6 +51,7 @@ class AddressController extends FlexibleSoapController
      * @Soap\Param("id", phpType = "int")
      * @Soap\Param("address", phpType = "Oro\Bundle\AddressBundle\Entity\AddressSoap")
      * @Soap\Result(phpType = "boolean")
+     * @AclAncestor("oro_address_edit")
      */
     public function updateAction($id, $address)
     {
@@ -57,6 +62,7 @@ class AddressController extends FlexibleSoapController
      * @Soap\Method("deleteAddress")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "boolean")
+     * @AclAncestor("oro_address_remove")
      */
     public function deleteAction($id)
     {

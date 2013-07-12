@@ -346,7 +346,7 @@ class Datagrid implements DatagridInterface
     {
         if (!$this->form) {
             $this->form = $this->formBuilder->getForm();
-            $this->form->bind($this->parameters->get(ParametersInterface::FILTER_PARAMETERS));
+            $this->form->submit($this->parameters->get(ParametersInterface::FILTER_PARAMETERS));
         }
 
         return $this->form;

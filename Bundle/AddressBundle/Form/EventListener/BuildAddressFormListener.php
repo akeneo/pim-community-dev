@@ -78,6 +78,10 @@ class BuildAddressFormListener implements EventSubscriberInterface
             $config['country'] = $country;
             $config['query_builder'] = $this->getRegionClosure($country);
 
+            if (array_key_exists('auto_initialize', $config)) {
+                $config['auto_initialize'] = false;
+            }
+
             $form->add(
                 $this->factory->createNamed(
                     'state',
@@ -110,6 +114,10 @@ class BuildAddressFormListener implements EventSubscriberInterface
 
             $config['country'] = $country;
             $config['query_builder'] = $this->getRegionClosure($country);
+
+            if (array_key_exists('auto_initialize', $config)) {
+                $config['auto_initialize'] = false;
+            }
 
             $form->add(
                 $this->factory->createNamed(

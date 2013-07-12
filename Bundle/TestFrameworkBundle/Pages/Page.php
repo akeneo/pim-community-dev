@@ -18,7 +18,9 @@ class Page
     public function __construct($testCase, $redirect = true)
     {
         $this->test = $testCase;
+        // @codingStandardsIgnoreStart
         $this->currentWindow()->size(array('width' => intval(viewportWIDTH), 'height' => intval(viewportHEIGHT)));
+        // @codingStandardsIgnoreУтв
         if (!is_null($this->redirectUrl) && $redirect) {
             $this->test->url($this->redirectUrl);
             $this->waitPageToLoad();
@@ -147,6 +149,7 @@ class Page
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementPresent($xpath, $message = '')
     {
@@ -154,11 +157,13 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementNotPresent($xpath, $message = '')
     {
@@ -166,6 +171,7 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**

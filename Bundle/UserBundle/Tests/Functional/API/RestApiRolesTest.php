@@ -32,7 +32,7 @@ class RestApiRolesTest extends WebTestCase
                 "label" => $roleName
             )
         );
-        $this->client->request('POST', $this->client->generate('oro_api_post_role') , $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 201);
 

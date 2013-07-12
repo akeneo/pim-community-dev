@@ -51,7 +51,7 @@ class DateRangeType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $children = $form->getChildren();
+        $children = $form->all();
         $view->vars['value']['start'] = $children['start']->getViewData();
         $view->vars['value']['end'] = $children['end']->getViewData();
     }

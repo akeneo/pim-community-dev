@@ -44,7 +44,7 @@ class UserApiSubscriber implements EventSubscriberInterface
         }
 
         if (!$data->getId()) {
-            $form->add($this->factory->createNamed('plainPassword', 'password', null));
+            $form->add('plainPassword', 'password');
         }
     }
 }

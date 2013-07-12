@@ -2,10 +2,6 @@
  * Allow to select on which tree to work and manage creation and deletion of trees
  * File: jstree.tree_selector.js
  *
- * @author    Benoit Jacquemont <benoit@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT  MIT
- *
 /* Group: jstree tree_selector plugin */
 (function ($) {
     var tree_select_id = "tree_select";

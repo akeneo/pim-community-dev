@@ -1,4 +1,6 @@
 js:
-  - '@OroSearchBundle/Resources/public/js/searchBar.js'
+  'search_bar':
+      - '@OroSearchBundle/Resources/public/js/searchBar.js'
 css:
-  - 'bundles/orosearch/css/search.css'
+  'search':
+      - 'bundles/orosearch/css/search.css'

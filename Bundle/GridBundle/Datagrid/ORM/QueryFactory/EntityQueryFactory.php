@@ -40,7 +40,7 @@ class EntityQueryFactory extends AbstractQueryFactory
      */
     public function createQuery()
     {
-        $entityManager = $this->registry->getEntityManagerForClass($this->className);
+        $entityManager = $this->registry->getManagerForClass($this->className);
         $this->queryBuilder = $entityManager->getRepository($this->className)->createQueryBuilder($this->alias);
 
         return parent::createQuery();

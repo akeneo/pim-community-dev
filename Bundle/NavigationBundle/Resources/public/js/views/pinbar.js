@@ -96,13 +96,19 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                 goBack = true;
             }
             if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
-                item.save(null, {success: _.bind(function () {
-                    if (!goBack) {
-                        Oro.hashNavigationInstance.setLocation(url, {useCache: true});
-                    } else {
-                        this.goToLatestOpenedPage();
+                item.save(
+                    null,
+                    {
+                        wait: true,
+                        success: _.bind(function () {
+                            if (!goBack) {
+                                Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+                            } else {
+                                this.goToLatestOpenedPage();
+                            }
+                        }, this)
                     }
-                }, this)});
+                );
             }
         }
     },
@@ -189,7 +195,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     {
         var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
-            _.each(pinnedItem, function(item) {item.destroy({wait: false});});
+            _.each(pinnedItem, function(item) {item.destroy({wait: true});});
         } else {
             this.goToLatestOpenedPage();
         }
