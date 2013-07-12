@@ -32,9 +32,9 @@ navigation.pinbar.ItemView = Backbone.View.extend({
         Oro.Events.bind(
             "hash_navigation_request:complete",
             function() {
-                if (!this.isRemoved && this.checkCurrentUrl()) {
-                    this.maximize();
-                }
+                /*if (!this.isRemoved && this.checkCurrentUrl()) {
+                 this.maximize();
+                 }*/
                 this.setActiveItem();
             },
             this
@@ -43,7 +43,8 @@ navigation.pinbar.ItemView = Backbone.View.extend({
 
     unpin: function()
     {
-        this.model.destroy({wait: true});
+        Oro.Events.trigger("pinbar_item_remove_before", this.model);
+        this.model.destroy({wait: false});
         return false;
     },
 
@@ -59,12 +60,15 @@ navigation.pinbar.ItemView = Backbone.View.extend({
 
     checkCurrentUrl: function() {
         var url = '';
+        var modelUrl = this.model.get('url');
         if (Oro.hashNavigationEnabled()) {
-            url = Oro.Navigation.prototype.getHashUrl();
+            url = Oro.hashNavigationInstance.getHashUrl();
+            url = Oro.hashNavigationInstance.removeGridParams(url);
+            modelUrl = Oro.hashNavigationInstance.removeGridParams(modelUrl);
         } else {
             url = window.location.pathname;
         }
-        return this.cleanupUrl(this.model.get('url')) == this.cleanupUrl(url);
+        return this.cleanupUrl(modelUrl) == this.cleanupUrl(url);
     },
 
     cleanupUrl: function(url) {

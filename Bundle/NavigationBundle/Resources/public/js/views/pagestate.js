@@ -8,6 +8,9 @@ if (typeof Oro.PageStateTimer !== undefined && Oro.PageStateTimer) {
 }
 Oro.PageStateTimer = false;
 Oro.PageState.View = Backbone.View.extend({
+
+    needServerRestore: true,
+
     initialize: function () {
         this.init();
         this.listenTo(this.model, 'change:pagestate', this.handleStateChange);
@@ -16,7 +19,7 @@ Oro.PageState.View = Backbone.View.extend({
          * Init page state after hash navigation request is completed
          */
         Oro.Events.bind(
-            "hash_navigation_content:refresh",
+            "hash_navigation_request:refresh",
             function() {
                 this.init();
             },
@@ -54,7 +57,7 @@ Oro.PageState.View = Backbone.View.extend({
                     pagestate : data.pagestate
                 });
 
-                if (parseInt(data.id) > 0  && self.model.get('restore')) {
+                if (parseInt(data.id) > 0  && self.model.get('restore') && self.needServerRestore) {
                     self.restore();
                 }
 
@@ -129,7 +132,7 @@ Oro.PageState.View = Backbone.View.extend({
         var self = this;
         var url = window.location;
         if (Oro.hashNavigationEnabled()) {
-            url = new Url( Oro.Navigation.prototype.getHashUrl());
+            url = new Url(Oro.hashNavigationInstance.getHashUrl());
             url.search = url.query.toString();
             url.pathname = url.path;
         }

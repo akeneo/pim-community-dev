@@ -3,9 +3,7 @@ $(document).ready(function () {
 
     /* hide progress bar on page ready*/
     if (window.location.hash === '' || !Oro.hashNavigationEnabled()) {
-        if ($('#page-title').size()) {
-            document.title = $('#page-title').text();
-        }
+        document.title = $('#page-title').text();
         hideProgressBar();
     }
 
@@ -103,9 +101,9 @@ $(document).ready(function () {
         });
     })
 
-/* ============================================================
- *Oro Dropdown close prevent
- * ============================================================ */
+    /* ============================================================
+     *Oro Dropdown close prevent
+     * ============================================================ */
     var dropdownToggles = $('.oro-dropdown-toggle');
     dropdownToggles.click(function(e) {
         $(this).parent().toggleClass('open')
@@ -123,7 +121,7 @@ $(document).ready(function () {
         $('.open:not(._currently_clicked)').removeClass('open')
         clickingTarget.removeClass('_currently_clicked');
     });
- });
+});
 
 function hideProgressBar() {
     if ($('#progressbar').is(':visible')) {

@@ -1,3 +1,4 @@
+{% spaceless %}
 {# Indexer result item Oro\Bundle\SearchBundle\Query\Result\Item #}
 {% set indexer_item = record.getValue('indexer_item') %}
 
@@ -9,3 +10,4 @@
 {% else %}
     {{ entity }}
 {% endif %}
+{% endspaceless %}
