@@ -20,7 +20,9 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->resource = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainUpdaterInterface');
 
-        $this->user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->securityContext = $this->getMockForAbstractClass(
             'Symfony\Component\Security\Core\SecurityContextInterface'
@@ -42,7 +44,9 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreUpdate()
     {
-        $meta = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $meta = $this->getMockBuilder('\Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $uow = $this->getMockBuilder('\Doctrine\ORM\UnitOfWork')
             ->disableOriginalConstructor()
@@ -52,7 +56,7 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('recomputeSingleEntityChangeSet')
             ->with($this->equalTo($meta), $this->equalTo($this->resource));
 
-        $manager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+        $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
         $manager->expects($this->once())
@@ -60,7 +64,8 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($uow));
         $manager->expects($this->once())
             ->method('getClassMetadata')
-            ->with(get_class($this->resource));
+            ->with(get_class($this->resource))
+            ->will($this->returnValue($meta));
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())
@@ -90,15 +95,16 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->preUpdate($args);
     }
 
-    public function PrePersist()
+    public function testPrePersist()
     {
         $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
 
+        $resource = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
         $args->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue($this->resource));
+            ->will($this->returnValue($resource));
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())

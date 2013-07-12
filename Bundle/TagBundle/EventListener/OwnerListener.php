@@ -29,13 +29,13 @@ class OwnerListener implements ContainerAwareInterface
     {
         $entity = $args->getEntity();
         $user = $this->getUser();
-        
+
         if (!$entity instanceof ContainUpdaterInterface || !$user) {
             return $this;
         }
 
         $entity->setUpdatedBy($user);
-
+git 
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
         $meta = $em->getClassMetadata(get_class($entity));
@@ -53,10 +53,11 @@ class OwnerListener implements ContainerAwareInterface
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof ContainAuthorInterface || !$this->getUser()) {
+        $user = $this->getUser();
+        if (!$entity instanceof ContainAuthorInterface || !$user) {
             return $this;
         }
-        $entity->setCreatedBy($this->getUser());
+        $entity->setCreatedBy($user);
 
         return $this;
     }
