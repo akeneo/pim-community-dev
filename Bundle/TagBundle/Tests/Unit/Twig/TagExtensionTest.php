@@ -52,6 +52,10 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
         $this->user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $this->user->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('uniqueId'));
+
         $this->aclManager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
 
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
@@ -89,7 +93,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $tag1->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $tag1->expects($this->exactly(2))
+        $tag1->expects($this->exactly(1))
             ->method('getTagging')
             ->will($this->returnValue(new ArrayCollection(array($tagging))));
 
@@ -99,7 +103,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $tag2->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(2));
-        $tag2->expects($this->exactly(2))
+        $tag2->expects($this->exactly(1))
             ->method('getTagging')
             ->will($this->returnValue(new ArrayCollection(array($tagging))));
 
@@ -110,7 +114,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($userMock));
         $tagging->expects($this->any())
             ->method('getEntityName')
-            ->will($this->returnValue(get_class($tag1)));
+            ->will($this->returnValue(get_class($entity)));
         $tagging->expects($this->any())
             ->method('getRecordId')
             ->will($this->returnValue(1));
@@ -140,8 +144,8 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getTags')
             ->will($this->returnValue($tags));
 
-        $entity->expects($this->once())
-            ->method('getId')
+        $entity->expects($this->exactly(2))
+            ->method('getTaggableId')
             ->will($this->returnValue(1));
 
         $this->aclManager->expects($this->at(0))
