@@ -21,4 +21,3 @@ class AuditRepository extends LogEntryRepository
         return $qb;
     }
 }
-
