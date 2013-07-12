@@ -4,7 +4,7 @@ Feature: Display available field options
   I need to see only relevant validation fields given the attribute type
 
   @javascript
-  Scenario Outline: Successfully display allowed file extensions for attribute type file
+  Scenario Outline: Successfully display available fields for attribute types
     Given I am logged in as "admin"
     And I am on the attribute creation page
     When I select the attribute type "<type>"
@@ -12,6 +12,7 @@ Feature: Display available field options
 
     Examples:
       | type          | fields                                                                                                                       |
+      | Identifier    | Max characters, Validation rule, Searchable                                                                                  |
       | Yes/No        | Default value                                                                                                                |
       | Date          | Default value, Date type, Min date, Max date, Searchable                                                                     |
       | File          | Allowed file source, Max file size, Allowed file extensions                                                                  |
