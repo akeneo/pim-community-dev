@@ -1,9 +1,9 @@
 parameters:
-    oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Event\EventNamesExtractor
+    oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor
 
 services:
     oro_notification.event_names.extractor:
-        class: %oro_notification.translation.extractor.class%
+        class: %oro_notification.event_names.extractor.class%
         arguments:
         tags:
             - { name: translation.extractor, alias: notification_event_names_extractor }
