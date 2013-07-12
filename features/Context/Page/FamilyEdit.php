@@ -131,16 +131,7 @@ class FamilyEdit extends Page
 
     public function selectAttributeAsLabel($attribute)
     {
-        $label = $this
-            ->getElement('Available attributes')
-            ->find('css', sprintf('li:contains("%s") label', $attribute))
-        ;
-
-        if (!$label) {
-            throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
-        }
-
-        $label->click();
+        $this->getElement('Attribute as label choices')->selectOption($attribute);
 
         return $this;
     }
@@ -150,5 +141,4 @@ class FamilyEdit extends Page
         $this->visitTab('Attributes');
         $this->getElement('Available attributes menu')->click();
     }
-
 }
