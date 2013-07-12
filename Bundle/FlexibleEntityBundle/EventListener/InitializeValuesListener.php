@@ -12,9 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
  * - required : an empty (or default value) for each required attribute
  * - all : an empty (or default value) for each attribute
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class InitializeValuesListener implements EventSubscriberInterface

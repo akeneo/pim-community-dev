@@ -5,9 +5,6 @@ namespace Oro\Bundle\GridBundle\Datagrid\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\Query\QueryException;
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery as BaseProxyQuery;
 
@@ -72,77 +69,12 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         $qb->resetDQLPart('orderBy');
 
         $query = $qb->getQuery();
+        $this->applyQueryHints($query);
 
-        // parse and prepare SQL parameters
-        $parser = new Parser($query);
-        $parserResult = $parser->parse();
-        $parameterMappings = $parserResult->getParameterMappings();
+        $countCalculator = new CountCalculator();
+        $totalCount = $countCalculator->getCount($query);
 
-        list($sqlParameters, $parameterTypes) = $this->processParameterMappings($query, $parameterMappings);
-
-        // prepare and execute SQL query
-        $statement = $qb->getEntityManager()->getConnection()->executeQuery(
-            'SELECT COUNT(*) FROM (' . $query->getSQL() .') AS e',
-            $sqlParameters,
-            $parameterTypes
-        );
-
-        $result = $statement->fetchColumn();
-
-        return $result ? (int)$result : 0;
-    }
-
-    /**
-     * @param Query $query
-     * @param array $paramMappings
-     * @return array
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    protected function processParameterMappings(Query $query, $paramMappings)
-    {
-        $sqlParams = array();
-        $types     = array();
-
-        /** @var Parameter $parameter */
-        foreach ($query->getParameters() as $parameter) {
-            $key = $parameter->getName();
-
-            if (!isset($paramMappings[$key])) {
-                throw QueryException::unknownParameter($key);
-            }
-
-            $value = $query->processParameterValue($parameter->getValue());
-            $type  = ($parameter->getValue() === $value)
-                ? $parameter->getType()
-                : Query\ParameterTypeInferer::inferType($value);
-
-            foreach ($paramMappings[$key] as $position) {
-                $types[$position] = $type;
-            }
-
-            $sqlPositions = $paramMappings[$key];
-
-            $value = array($value);
-            $countValue = count($value);
-
-            for ($i = 0, $l = count($sqlPositions); $i < $l; $i++) {
-                $sqlParams[$sqlPositions[$i]] = $value[($i % $countValue)];
-            }
-        }
-
-        if (count($sqlParams) != count($types)) {
-            throw QueryException::parameterTypeMissmatch();
-        }
-
-        if ($sqlParams) {
-            ksort($sqlParams);
-            $sqlParams = array_values($sqlParams);
-
-            ksort($types);
-            $types = array_values($types);
-        }
-
-        return array($sqlParams, $types);
+        return $totalCount;
     }
 
     /**
