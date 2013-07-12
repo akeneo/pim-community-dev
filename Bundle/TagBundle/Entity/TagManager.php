@@ -166,6 +166,10 @@ class TagManager
         $oldTags = $this->getTagging($resource);
         $newTags = $resource->getTags();
 
+        if (!isset($newTags['all'], $newTags['owner'])) {
+            return;
+        }
+
         $newTagsArray = array_unique(array_merge($newTags['all'], $newTags['owner']));
         $tagsToAdd = new ArrayCollection($newTagsArray);
 

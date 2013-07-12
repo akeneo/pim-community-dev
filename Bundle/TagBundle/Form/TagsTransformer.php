@@ -49,7 +49,11 @@ class TagsTransformer extends EntityToIdTransformer
             'owner' => array()
         );
 
-        foreach (array('all', 'owner') as $type) {
+        if (!isset($values['all'], $values['owner'])) {
+            return $values;
+        }
+
+        foreach (array_keys($entities) as $type) {
             if (!is_array($values[$type])) {
                 $values[$type] = explode(',', $values[$type]);
             }
