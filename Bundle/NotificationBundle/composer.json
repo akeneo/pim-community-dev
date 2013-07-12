@@ -1,0 +1,21 @@
+{
+    "name": "oro/notification-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Notification Bundle",
+    "keywords": ["BAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\NotificationBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/NotificationBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
