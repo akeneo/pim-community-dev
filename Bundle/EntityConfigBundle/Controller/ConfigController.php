@@ -90,7 +90,6 @@ class ConfigController extends Controller
      */
     public function viewAction(ConfigEntity $entity)
     {
-
         /** @var  EntityFieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
         $datagridManager->setEntityId($entity->getId());
@@ -102,6 +101,9 @@ class ConfigController extends Controller
 
         $datagrid = $datagridManager->getDatagrid();
 
+        /**
+         * calculate Entity module and name
+         */
         $entityName = $moduleName = '';
         $className  = explode('\\', $entity->getClassName());
         foreach ($className as $i => $name) {
@@ -112,6 +114,9 @@ class ConfigController extends Controller
             }
         }
 
+        /**
+         * generate link for Entity grid
+         */
         $link = $this->get('router')->match('/' . strtolower($entityName));
         if (is_array($link)) {
             $link = $this->generateUrl($link['_route']);
@@ -130,12 +135,12 @@ class ConfigController extends Controller
 
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
+            'unique_key'    => unserialize($extendConfig->get('unique_key')),
 
             'datagrid'      => $datagrid->createView(),
             'link'          => $link,
             'entity_name'   => $entityName,
             'module_name'   => $moduleName,
-            'unique_key'    => unserialize($extendConfig->get('unique_key')),
         );
     }
 
@@ -149,7 +154,7 @@ class ConfigController extends Controller
         $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
         /** @var  FieldsDatagridManager $datagridManager */
-        $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
+        $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
 
         $datagrid = $datagridManager->getDatagrid();
@@ -172,20 +177,6 @@ class ConfigController extends Controller
                 'entity_id'    => $id,
                 'entity_name'  => $entity->getClassName(),
             )
-        );
-    }
-
-    /**
-     * View Field
-     * @Route("/field/view/{id}", name="oro_entityconfig_field_view")
-     * @Template()
-     */
-    public function fieldViewAction($id)
-    {
-        $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
-
-        return array(
-            'field' => $field,
         );
     }
 
