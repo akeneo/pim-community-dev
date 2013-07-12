@@ -8,9 +8,6 @@ use Oro\Bundle\DataFlowBundle\Exception\ConfigurationException;
 /**
  * Entity configuration
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="oro_dataflow_raw_configuration")
  * @ORM\Entity()

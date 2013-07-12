@@ -17,9 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Test related demo class, aims to cover abstract one
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleValueTest extends \PHPUnit_Framework_TestCase

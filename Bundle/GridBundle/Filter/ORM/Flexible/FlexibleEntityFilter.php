@@ -6,10 +6,6 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * Create flexible filter for entity values linked to attribute
- *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 class FlexibleEntityFilter extends AbstractFlexibleFilter
 {
