@@ -138,8 +138,9 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         return array(
-            'label'    => $value->getAttribute()->getLabel(),
-            'required' => $value->getAttribute()->getRequired(),
+            'label'           => $value->getAttribute()->getLabel(),
+            'required'        => $value->getAttribute()->getRequired(),
+            'auto_initialize' => false
         );
     }
 

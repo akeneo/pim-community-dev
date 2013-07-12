@@ -22,6 +22,11 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
     protected $builder;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $manipulator;
+
+    /**
      * @var \Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory
      */
     protected $factory;
@@ -34,7 +39,13 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
 
-        $this->builder = new NavigationHistoryBuilder($this->securityContext, $this->em, $this->factory);
+        $this->builder = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\NavigationHistoryBuilder')
+            ->setConstructorArgs(array($this->securityContext, $this->em, $this->factory))
+            ->setMethods(array('getMenuManipulator'))
+            ->getMock();
+
+        $this->manipulator = $this->getMock('Knp\Menu\Util\MenuManipulator');
+        $this->builder->expects($this->any())->method('getMenuManipulator')->will($this->returnValue($this->manipulator));
     }
 
     public function testBuild()
@@ -82,7 +93,7 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
             ->with(get_class($item))
             ->will($this->returnValue($repository));
 
-        $menu = $this->getMockBuilder('Knp\Menu\ItemInterface')->getMock();
+        $menu = $this->getMockBuilder('Knp\Menu\MenuItem')->disableOriginalConstructor()->getMock();
 
         $childMock = $this->getMock('Knp\Menu\ItemInterface');
         $childMock2 = clone $childMock;
@@ -117,9 +128,9 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
                         ->with($this->equalTo('oro_navigation.maxItems'))
                         ->will($this->returnValue($n));
 
-        $menu->expects($this->once())
+        $this->manipulator->expects($this->once())
             ->method('slice')
-            ->with(0, $n);
+            ->with($menu, 0, $n);
 
         $this->builder->setOptions($configMock);
         $this->builder->build($menu, array(), $type);

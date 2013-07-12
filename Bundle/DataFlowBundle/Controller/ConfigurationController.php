@@ -35,7 +35,7 @@ class ConfigurationController extends Controller
         $form = $this->createForm($type, $configuration);
 
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+            $form->submit($this->getRequest());
             if ($form->isValid()) {
                 $manager = $this->getDoctrine()->getEntityManager();
                 $manager->persist($entity);

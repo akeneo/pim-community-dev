@@ -251,7 +251,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
             'configs.route_name or configs.ajax.url must be set' => array(
                 array(),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Symfony\Component\Form\Exception\InvalidConfigurationException',
                 'expectedExceptionMessage' => 'Either option "configs.route_name" or "configs.ajax.url" must be set.'
             ),
             'converter must be set' => array(
@@ -261,7 +261,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     )
                 ),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Symfony\Component\Form\Exception\InvalidConfigurationException',
                 'expectedExceptionMessage' => 'The option "converter" must be set.'
             ),
             'converter invalid' => array(
@@ -272,12 +272,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     )
                 ),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
-                'expectedExceptionMessage' =>
-                    sprintf(
-                        'The option "converter" must be an instance of "%s".',
-                        'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
-                    )
+                'expectedException' => 'Symfony\Component\Form\Exception\UnexpectedTypeException',
+                'expectedExceptionMessage' => 'Expected argument of type "Oro\Bundle\FormBundle\Autocomplete\ConverterInterface", "string" given'
             ),
             'entity_class must be set' => array(
                 array(
@@ -287,7 +283,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     )
                 ),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Symfony\Component\Form\Exception\InvalidConfigurationException',
                 'expectedExceptionMessage' => 'The option "entity_class" must be set.'
             ),
             'entity_class must be set2' => array(
@@ -300,7 +296,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     'transformer' => 'invalid'
                 ),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Symfony\Component\Form\Exception\TransformationFailedException',
                 'expectedExceptionMessage' =>
                     sprintf(
                         'The option "transformer" must be an instance of "%s".',

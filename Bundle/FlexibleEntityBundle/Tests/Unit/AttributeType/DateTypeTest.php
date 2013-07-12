@@ -31,12 +31,12 @@ class DateTypeTest extends AttributeTypeTest
                 'foo',
                 'date',
                 'bar',
-                array(
-                    'constraints' => array('constraints'),
-                    'label'       => null,
-                    'required'    => null,
-                    'widget'      => 'single_text',
-                    'input'       => 'datetime',
+                array_merge(
+                    $this->defaultCreateNamedOptions,
+                    array(
+                        'widget' => 'single_text',
+                        'input'  => 'datetime',
+                    )
                 )
             );
 
