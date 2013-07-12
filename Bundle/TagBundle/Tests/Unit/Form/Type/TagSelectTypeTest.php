@@ -12,11 +12,6 @@ class TagSelectTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected $type;
 
-    protected function setUp()
-    {
-
-    }
-
     public function testSetDefaultOptions()
     {
         $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -44,6 +39,10 @@ class TagSelectTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $meta->expects($this->once())
+            ->method('getSingleIdentifierFieldName')
+            ->will($this->returnValue('id'));
+
         $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -58,17 +57,11 @@ class TagSelectTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->type = new TagSelectType($manager, $tagManager);
 
-
-        $modelTransformer = $builder = $this->getMockBuilder('Oro\Bundle\TagBundle\Form\TagsTransformer')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
         $builder->expects($this->once())
             ->method('addModelTransformer')
-            ->with($this->equalTo($modelTransformer))
             ->will($this->returnSelf());
 
         $this->type->buildForm($builder, array());

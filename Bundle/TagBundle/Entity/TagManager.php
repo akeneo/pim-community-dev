@@ -99,19 +99,6 @@ class TagManager
     }
 
     /**
-     * Loads or creates a tag from tag name
-     *
-     * @param  array $name Tag name
-     * @return Tag
-     */
-    public function loadOrCreateTag($name)
-    {
-        $tags = $this->loadOrCreateTags(array($name));
-
-        return $tags[0];
-    }
-
-    /**
      * Loads or creates multiples tags from a list of tag names
      *
      * @param  array $names Array of tag names
@@ -273,30 +260,10 @@ class TagManager
 
         foreach ($taggingList as $tagging) {
             $this->em->remove($tagging);
+            $this->em->flush($tagging);
         }
-
-        $this->em->flush();
 
         return $this;
-    }
-
-    /**
-     * Returns an array of tag names for the given Taggable resource.
-     *
-     * @param  Taggable $resource Taggable resource
-     * @return array
-     */
-    public function getTagNames(Taggable $resource)
-    {
-        $names = array();
-
-        if (sizeof($resource->getTags()) > 0) {
-            foreach ($resource->getTags() as $tag) {
-                $names[] = $tag->getName();
-            }
-        }
-
-        return $names;
     }
 
     /**

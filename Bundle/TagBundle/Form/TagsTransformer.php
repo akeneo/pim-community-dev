@@ -22,21 +22,7 @@ class TagsTransformer extends EntityToIdTransformer
      */
     public function transform($value)
     {
-        if (null === $value || array() === $value) {
-            return array();
-        }
-
-        if (!(is_array($value) || $value instanceof \ArrayAccess)) {
-            throw new UnexpectedTypeException($value, 'array');
-        }
-
-        $result = array();
-        foreach ($value as $entity) {
-            $id = $this->propertyPath->getValue($entity);
-            $result[] = $id;
-        }
-
-        return $result;
+        return $value;
     }
 
     /**
