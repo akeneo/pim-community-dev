@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Bundle\FrameworkBundle\Translation\PhpExtractor;
 
@@ -29,29 +30,40 @@ class EventNamesExtractor extends PhpExtractor
      */
     protected $sequences = array(
         array(
-            '$view',
-            '[',
-            '\'translator\'',
-            ']',
             '->',
-            'trans',
+            'dispatch',
             '(',
+            'oro.event.',
             self::MESSAGE_TOKEN,
-            ')',
+            ',',
         ),
     );
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $directories = false;
+        foreach ($kernel->getBundles() as $bundle) {
+            /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
+            $directories[] = $bundle->getPath();
+        }
+
+        $this->directories = $directories;
+    }
 
     /**
      * {@inheritDoc}
      */
     public function extract($directory, MessageCatalogue $catalog)
     {
-        die('sdf');
         // load any existing translation files
         $finder = new Finder();
-        $files = $finder->files()->name('*.php')->in($directory);
-        foreach ($files as $file) {
-            $this->parseTokens(token_get_all(file_get_contents($file)), $catalog);
+
+        foreach ($this->directories as $directory) {
+            $files = $finder->files()->name('*.php')->in($directory);
+            foreach ($files as $file) {
+                $this->parseTokens(token_get_all(file_get_contents($file)), $catalog);
+                die('sdf');
+            }
         }
     }
 
