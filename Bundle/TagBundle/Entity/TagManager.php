@@ -170,8 +170,7 @@ class TagManager
             return;
         }
 
-        $newTagsArray = array_unique(array_merge($newTags['all'], $newTags['owner']));
-        $tagsToAdd = new ArrayCollection($newTagsArray);
+        $tagsToAdd = new ArrayCollection($newTags['owner']);
 
         if ($oldTags !== null and is_array($oldTags) and !empty($oldTags)) {
             $tagsToRemove = array();
