@@ -70,9 +70,11 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
 
         $query = $qb->getQuery();
         $this->applyQueryHints($query);
-        $ids = $query->execute();
 
-        return count($ids);
+        $countCalculator = new CountCalculator();
+        $totalCount = $countCalculator->getCount($query);
+
+        return $totalCount;
     }
 
     /**
