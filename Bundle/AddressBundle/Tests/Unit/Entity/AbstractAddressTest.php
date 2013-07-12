@@ -106,7 +106,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $result->expects($this->once())
+        $result->expects($this->any())
             ->method('__toString')
             ->will($this->returnValue($name));
 
@@ -120,7 +120,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
     protected function createMockRegion($name)
     {
         $result = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
-        $result->expects($this->once())
+        $result->expects($this->any())
             ->method('__toString')
             ->will($this->returnValue($name));
 
@@ -145,7 +145,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->never())
-            ->method('addViolationAtPath');
+            ->method('addViolationAt');
 
         $obj = $this->createAbstractAddress();
         $obj->isStateValid($context);
@@ -164,7 +164,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->never())
-            ->method('addViolationAtPath');
+            ->method('addViolationAt');
 
         $obj = $this->createAbstractAddress();
         $obj->setCountry($country);
@@ -190,7 +190,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->method('getPropertyPath')
             ->will($this->returnValue('test'));
         $context->expects($this->once())
-            ->method('addViolationAtPath')
+            ->method('addViolationAt')
             ->with(
                 'test.state',
                 'State is required for country %country%',

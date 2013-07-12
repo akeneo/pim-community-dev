@@ -14,11 +14,13 @@ js:
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.mousewheel.min.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.numeric.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.uniform.min.js'
+        - '@OroUIBundle/Resources/public/lib/jquery/select2.min.js'
     'bootstrap':
         - '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-popover.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap.switch.js'
+        - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-scrollspy.js'
 
     'common':
         - '@OroUIBundle/Resources/public/js/layout.js'

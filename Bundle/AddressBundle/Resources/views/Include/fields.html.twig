@@ -1,5 +1,3 @@
-{% extends 'OroUIBundle:Form:fields.html.twig' %}
-
 {% block oro_region_widget %}
     {# // check if block was not included yet #}
     {% set _block = block('oro_region_updater_js') %}
@@ -67,12 +65,12 @@
 {%  endblock oro_address_widget %}
 
 {% macro address_collection_prototype(widget) %}
-    {% if widget.get('prototype') %}
-        {% set form = widget.get('prototype') %}
-        {% set name = widget.get('prototype').get('name') %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
     {% else %}
         {% set form = widget %}
-        {% set name = widget.get('full_name') %}
+        {% set name = widget.vars.full_name %}
     {% endif %}
     <div data-content="{{ name }}">
         <div class="row-oro oro-multiselect-holder">
@@ -124,4 +122,4 @@
             });
         </script>
     {% endspaceless %}
-{%  endblock oro_address_collection_widget %}
+{% endblock oro_address_collection_widget %}

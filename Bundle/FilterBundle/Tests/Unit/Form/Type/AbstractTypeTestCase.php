@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\Tests\FormIntegrationTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -33,6 +33,11 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      * @var string
      */
     private $oldTimezone;
+
+    /**
+     * @var FormExtensionInterface[]
+     */
+    protected $formExtensions = array();
 
     protected function setUp()
     {
@@ -122,7 +127,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
     ) {
         $form = $this->factory->create($this->getTestFormType(), null, $customOptions);
 
-        $form->bind($bindData);
+        $form->submit($bindData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
@@ -146,4 +151,12 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      * @return FormTypeInterface
      */
     abstract protected function getTestFormType();
+
+    /**
+     * @return array|FormExtensionInterface[]
+     */
+    protected function getExtensions()
+    {
+        return $this->formExtensions;
+    }
 }

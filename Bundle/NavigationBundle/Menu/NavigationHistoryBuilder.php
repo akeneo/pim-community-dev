@@ -4,6 +4,7 @@ namespace Oro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
+use Knp\Menu\Util\MenuManipulator;
 
 class NavigationHistoryBuilder extends NavigationItemBuilder
 {
@@ -16,6 +17,22 @@ class NavigationHistoryBuilder extends NavigationItemBuilder
      * @var \Oro\Bundle\ConfigBundle\Config\UserConfigManager
      */
     private $configOptions = null;
+
+    /**
+     * @var MenuManipulator
+     */
+    private $manipulator;
+
+    /**
+     * @return MenuManipulator
+     */
+    protected function getMenuManipulator()
+    {
+        if (!$this->manipulator) {
+            $this->manipulator = new MenuManipulator();
+        }
+        return $this->manipulator;
+    }
 
     /**
      * Inject config
@@ -54,7 +71,7 @@ class NavigationHistoryBuilder extends NavigationItemBuilder
             }
         }
 
-        $menu->slice(0, $maxItems);
+        $this->getMenuManipulator()->slice($menu, 0, $maxItems);
     }
 
     /**

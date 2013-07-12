@@ -147,7 +147,7 @@ class OroUIExtension extends Extension
     protected function changeOrders(array $placeholders)
     {
         foreach ($placeholders as $placeholderName => $placeholderData) {
-            if (isset($placeholders[$placeholderName]['items']) ) {
+            if (isset($placeholders[$placeholderName]['items'])) {
                 usort($placeholders[$placeholderName]['items'], array($this, "comparePlaceholderBlocks"));
             }
         }

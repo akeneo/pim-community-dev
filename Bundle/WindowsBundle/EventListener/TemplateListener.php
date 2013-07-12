@@ -2,14 +2,30 @@
 
 namespace Oro\Bundle\WindowsBundle\EventListener;
 
-use Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener as FrameworkTemplateListener;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
-class TemplateListener extends FrameworkTemplateListener
+class TemplateListener
 {
     const TEMPLATE_PARTS_SEPARATOR = ':';
     const DEFAULT_CONTAINER = 'widget';
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * Constructor.
+     *
+     * @param ContainerInterface $container The service container instance
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * {@inheritdoc}
@@ -19,6 +35,9 @@ class TemplateListener extends FrameworkTemplateListener
         $request = $event->getRequest();
         if ($container = $request->query->get('_widgetContainer', $request->request->get('_widgetContainer'))) {
             $template = $request->attributes->get('_template');
+            if ($template instanceof TemplateReferenceInterface) {
+                $template = $template->getLogicalName();
+            }
             if (strpos($template, self::TEMPLATE_PARTS_SEPARATOR) !== false) {
                 $templateParts = explode(self::TEMPLATE_PARTS_SEPARATOR, $template);
                 if ($templateParts) {
@@ -35,8 +54,6 @@ class TemplateListener extends FrameworkTemplateListener
                 }
             }
         }
-
-        return parent::onKernelView($event);
     }
 
     /**

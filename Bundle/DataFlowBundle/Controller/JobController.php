@@ -58,7 +58,7 @@ class JobController extends Controller
         $form = $this->createForm(new JobType(), $entity, array('serviceIds' => $serviceIds));
 
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+            $form->submit($this->getRequest());
             if ($form->isValid()) {
 
                 if (is_null($entity->getRawConfiguration())) {

@@ -25,7 +25,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMockBuilder('Knp\Menu\FactoryInterface')
+        $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
             ->getMock();
         $this->eventDispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
             ->getMock();
