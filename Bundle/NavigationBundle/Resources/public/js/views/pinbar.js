@@ -37,6 +37,17 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.listenTo(this.options.collection, 'stateChange', this.handleItemStateChange);
         this.listenTo(this.options.collection, 'urlChange', this.renderItem);
 
+        /**
+         * Changing pinbar state after grid is loaded
+         */
+        Oro.Events.bind(
+            "grid_load:complete",
+            function () {
+                this.updatePinbarState();
+            },
+            this
+        );
+
         this.$minimizeButton.click(_.bind(this.minimizePage, this));
         this.$closeButton.click(_.bind(this.closePage, this));
 
@@ -87,7 +98,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
             if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
                 item.save(null, {success: _.bind(function () {
                     if (!goBack) {
-                        Oro.Navigation.prototype.setLocation(url);
+                        Oro.hashNavigationInstance.setLocation(url, {useCache: true});
                     } else {
                         this.goToLatestOpenedPage();
                     }
@@ -124,15 +135,15 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      */
     goToLatestOpenedPage: function()
     {
-        if (window.history.length) {
-            window.history.back();
+        /*if (window.history.length) {
+            Oro.hashNavigationInstance.back();
         } else {
             if (Oro.hashNavigationEnabled()) {
-                Oro.Navigation.prototype.setLocation(this.getLatestUrl());
+                Oro.hashNavigationInstance.setLocation(this.getLatestUrl());
             } else {
                 window.location.href = this.getLatestUrl();
             }
-        }
+        }*/
     },
 
     /**
@@ -141,7 +152,9 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      * @param e
      */
     minimizePage: function(e) {
-        var pinnedItem = this.getItemForCurrentPage();
+        Oro.Events.trigger('pinbar_item_minimized');
+        this.updatePinbarState();
+        var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
             _.each(pinnedItem, function(item) {
                 this.removeFromHistory(item);
@@ -157,11 +170,24 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     },
 
     /**
+     *  Update current page item state to use new url
+     */
+    updatePinbarState: function() {
+        if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance.useCache) {
+            var item = this.getItemForCurrentPage(true);
+            if (item.length) {
+                item[0].set('url', Oro.hashNavigationInstance.getHashUrl(true, true));
+                item[0].save();
+            }
+        }
+    },
+
+    /**
      * Handle click on page close button
      */
     closePage: function()
     {
-        var pinnedItem = this.getItemForCurrentPage();
+        var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
             _.each(pinnedItem, function(item) {item.destroy({wait: false});});
         } else {
@@ -184,7 +210,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      */
     markCurrentPageMaximized: function()
     {
-        var currentPageItems = this.getItemForCurrentPage();
+        var currentPageItems = this.getItemForCurrentPage(true);
         if (currentPageItems.length) {
             _.each(currentPageItems, function(item) {
                 item.set('maximized', new Date().toISOString());

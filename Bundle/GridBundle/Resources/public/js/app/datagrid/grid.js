@@ -371,7 +371,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
              * Backbone event. Fired when data for grid has been successfully rendered.
              * @event grid_load:complete
              */
-            Oro.Events.trigger("grid_load:complete");
+            Oro.Events.trigger("grid_load:complete", this.collection);
         }
     },
 

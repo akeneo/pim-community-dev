@@ -33,7 +33,8 @@
     {% import _self as pinbar %}
     <script type="text/javascript">
         $(function () {
-            new navigation.pinbar.MainView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'history', 'defaultUrl'], options) -}});
+            var pinbarView = new navigation.pinbar.MainView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'history', 'defaultUrl'], options) -}});
+            Oro.Registry.setElement('pinbar_view', pinbarView);
             {% if pinbarItems is defined %}
             navigation.pinbar.Items.reset({{ pinbarItems|json_encode|raw }});
             {% endif %}

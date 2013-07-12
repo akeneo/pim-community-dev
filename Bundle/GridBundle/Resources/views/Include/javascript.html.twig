@@ -121,19 +121,20 @@
             datagridFiltersSelector,
             datagridBodySelector
         ) {
+            var datagridCollection = {};
             // Initialize grid collection
-            var datagridCollection = new Oro.PageableCollection(
+            datagridCollection.collection = new Oro.PageableCollection(
                 datagridOptions.results,
                 _.extend({parse: true}, datagridOptions.collection)
             );
-
+            Oro.Events.trigger("datagrid_collection_set_after", datagridCollection);
             // Basic grid layout
             var template = _.template($(datagridTemplateSelector).html());
             $(containerSelector).append(template);
 
             // Grid
             var datagridParameters = _.extend({
-                collection: datagridCollection,
+                collection: datagridCollection.collection,
                 loadingMask: Oro.LoadingMask.extend({
                     loadingHint: {{ 'oro_grid.label_loading_mask'|trans({}, 'OroGridBundle')|json_encode|raw }}
                 })
@@ -151,16 +152,20 @@
             // Filters
             var filterListParameters = _.extend({
                 addButtonHint: {{ 'oro_grid.label_add_filter'|trans({}, 'OroGridBundle')|json_encode|raw }},
-                collection: datagridCollection
+                collection: datagridCollection.collection
             }, datagridOptions.grid);
             var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);
             $(datagridFiltersSelector).html(filtersList.render().$el);
+            /**
+             * @event datagrid_filters:initialized
+             */
+            Oro.Events.trigger("datagrid_filters:rendered", datagridCollection.collection);
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
                 // Register router and start history
                 var router = new Oro.Datagrid.Router({
-                    collection: datagridCollection
+                    collection: datagridCollection.collection
                 });
             {% endif %}
         };
