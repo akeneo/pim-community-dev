@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+
 use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 
 /**
@@ -14,28 +16,17 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 class FamilyRepository extends EntityRepository
 {
     /**
-     * @param $localeCode the locale to use for name translation
-     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function buildAllOrderedByLabel($localeCode)
+    protected function buildAllOrderedByLabel()
     {
-        $localeCode = 'default';
+        $locale = TranslatableInterface::FALLBACK_LOCALE;
         $build = $this->build()
-            ->addSelect('translation')
-            ->leftJoin('family.translations', 'translation')
-        /*
-         * TODO
-            ->addSelect('translation')
-            ->leftJoin('family.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', $localeCode)
-            ->orderBy('translation.label')
-            ->addSelect('defaultTranslation')
-            ->leftJoin('family.translations', 'defaultTranslation', 'with', 'defaultTranslation.locale = :defaultLocale')
-            ->setParameter('defaultLocale', 'default')
-            ->addOrderBy('defaultTranslation.label')*/
-        ->addOrderBy('family.code')
-        ;
+            ->addSelect('translations')
+            ->leftJoin('family.translations', 'translations')
+            ->leftJoin('family.translations', 'translationOrder', 'with', 'translationOrder.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->addOrderBy('translationOrder.label');
 
         return $build;
     }

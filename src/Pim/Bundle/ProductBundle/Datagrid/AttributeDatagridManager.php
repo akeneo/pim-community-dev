@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -257,8 +259,8 @@ class AttributeDatagridManager extends DatagridManager
             ->select('attribute')
             ->from('PimProductBundle:ProductAttribute', 'attribute')
             ->addSelect('translation')
-            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale= :locale')
-            ->setParameter('locale', $this->productManager->getLocale());
+            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->setParameter('locale', TranslatableInterface::FALLBACK_LOCALE);
         $this->queryFactory->setQueryBuilder($queryBuilder);
         $query = $this->queryFactory->createQuery();
 

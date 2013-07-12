@@ -166,8 +166,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:Family')
-            ->findAllOrderedByLabel($this->flexibleManager->getLocale());
+        $families = $em->getRepository('PimProductBundle:Family')->findAllOrderedByLabel();
         $choices = array();
         foreach ($families as $family) {
             $choices[$family->getId()] = $family->getLabel();
