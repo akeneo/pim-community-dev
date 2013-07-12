@@ -29,7 +29,8 @@ class OwnerListener implements ContainerAwareInterface
     {
         $entity = $args->getEntity();
         $user = $this->getUser();
-        if (!$entity instanceof ContainUpdaterInterface || !$this->getUser()) {
+        
+        if (!$entity instanceof ContainUpdaterInterface || !$user) {
             return $this;
         }
 
