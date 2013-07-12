@@ -12,9 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * A concrete Segment class allowing to organize
  * a simple Item class into trees
  *
- * @author    Benoit Jacquemont <benoit@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository")
  * @ORM\Table(name="oro_segmentationtree_tests_itemsegment")

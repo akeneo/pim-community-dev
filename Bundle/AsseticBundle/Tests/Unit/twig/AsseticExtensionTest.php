@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\NavigationBundle\Twig\AssetsConfigExtension;
+use Oro\Bundle\AsseticBundle\Twig\AsseticExtension;
 
-class AcmeAssetsConfigExtensionTest extends \PHPUnit_Framework_TestCase
+class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
 {
     private $assetsFactory;
     private $assets;
@@ -11,7 +11,7 @@ class AcmeAssetsConfigExtensionTest extends \PHPUnit_Framework_TestCase
     private $enabledBundles;
 
     /**
-     * @var \Oro\Bundle\NavigationBundle\Twig\AssetsConfigExtension
+     * @var \Oro\Bundle\NavigationBundle\Twig\AsseticExtension
      */
     private $extension;
 
@@ -38,7 +38,7 @@ class AcmeAssetsConfigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->enabledBundles = array('testBundle');
 
-        $this->extension = new AssetsConfigExtension($this->assetsFactory, $this->assets, $this->templateNameParser, $this->enabledBundles);
+        $this->extension = new AsseticExtension($this->assetsFactory, $this->assets, $this->templateNameParser, $this->enabledBundles);
     }
 
     public function testGetTokenParsers()
