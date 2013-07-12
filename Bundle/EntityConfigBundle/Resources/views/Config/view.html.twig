@@ -42,7 +42,7 @@
     {% set id = 'entityconfig-view' %}
 
     {% set unique_keys = [] %}
-    {% for key in unique_key.keys %}
+    {% for key in unique_key.keys|default %}
         {% set unique_keys = unique_keys|merge([UI.attibuteRow(key.name, key.key|join(', '))])%}
     {% endfor %}
 
