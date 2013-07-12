@@ -35,7 +35,6 @@ class OwnerListener implements ContainerAwareInterface
         }
 
         $entity->setUpdatedBy($user);
-git 
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
         $meta = $em->getClassMetadata(get_class($entity));

@@ -15,6 +15,8 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
      * @var \Oro\Bundle\TagBundle\Entity\Taggable
      */
     private $resource;
+    private $securityContext;
+    private $user;
 
     public function setUp()
     {
@@ -34,7 +36,7 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue($this->user));
         $this->securityContext
-            ->expects($this->exactly(4))
+            ->expects($this->exactly(3))
             ->method('getToken')
             ->will($this->returnValue($token));
     }
@@ -74,7 +76,7 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->securityContext));
 
         $this->resource->expects($this->once())
-            ->method('setCreatedBy')
+            ->method('setUpdatedBy')
             ->with($this->user);
 
         $this->listener = new OwnerListener();
@@ -97,7 +99,7 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePersist()
     {
-        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -112,7 +114,7 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('security.context'))
             ->will($this->returnValue($this->securityContext));
 
-        $this->resource->expects($this->once())
+        $resource->expects($this->once())
             ->method('setCreatedBy')
             ->with($this->user);
 
