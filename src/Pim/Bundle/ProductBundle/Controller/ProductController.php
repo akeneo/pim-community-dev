@@ -540,7 +540,23 @@ class ProductController extends Controller
     protected function getDataAuditDatagrid(Product $product)
     {
         $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
-        $queryFactory->setQueryBuilder($this->getDataAuditRepository()->getLogEntriesQueryBuilder($product));
+        //
+        // TODO Change query builder to $this->getDataAuditRepository()->getLogEntriesQueryBuilder($product)
+        //      when BAP will be up-to-date. This is currently not achievable quickly because of the introduction
+        //      of the OroAsseticBundle that breaks the PIM UI.
+        $qb = $this
+            ->getDataAuditRepository()
+            ->createQueryBuilder('a')
+            ->where('a.objectId = :objectId AND a.objectClass = :objectClass')
+            ->orderBy('a.loggedAt', 'DESC')
+            ->setParameters(
+                array(
+                    'objectId'    => $product->getId(),
+                    'objectClass' => 'Pim\\Bundle\\ProductBundle\\Entity\\Product'
+                )
+            );
+
+        $queryFactory->setQueryBuilder($qb);
 
         $datagridManager = $this->get('pim_product.datagrid.manager.product_history');
         $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
