@@ -4,7 +4,6 @@ namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -28,7 +27,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
 
         $result = array();
         foreach ($value as $entity) {
-            $id = $this->propertyPath->getValue($entity);
+            $id = $this->propertyAccessor->getValue($entity, $this->propertyPath);
             $result[] = $id;
         }
 

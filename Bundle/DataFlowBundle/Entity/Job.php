@@ -6,9 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Entity job is an instance of a configured job for a configured connector
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="oro_dataflow_job")
  * @ORM\Entity()

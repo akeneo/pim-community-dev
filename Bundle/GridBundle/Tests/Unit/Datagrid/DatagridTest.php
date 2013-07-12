@@ -50,7 +50,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $formOptions = array('disabled' => true);
         $filter = $this->createFilter($filterName, array($formType, $formOptions));
 
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $datagrid = $this->createDatagrid(array('formBuilder' => $formBuilder));
 
         $this->assertAttributeEmpty('filters', $datagrid);
@@ -314,15 +314,15 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testGetForm()
     {
-        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $filterParameters = array('filter' => 'value');
         $parameters = $this->createParameters(array(ParametersInterface::FILTER_PARAMETERS => $filterParameters));
 
         $datagrid = $this->createDatagrid(array('formBuilder' => $formBuilder, 'parameters' => $parameters));
 
         $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($form));
-        $form->expects($this->once())->method('bind')->with($filterParameters);
+        $form->expects($this->once())->method('submit')->with($filterParameters);
 
         $this->assertEquals($form, $datagrid->getForm());
         $this->assertEquals($form, $datagrid->getForm()); // check form created once
@@ -366,8 +366,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $query = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface');
         $pager = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\PagerInterface');
 
-        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($form));
 
         $eventDispatcher = $this->getMockForAbstractClass(
@@ -427,7 +427,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             $filter = $this->createFilter($name);
             $datagrid->addFilter($filter);
 
-            $filterForm = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
+            $filterForm = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
             $filterFormChildrenValueMap[] = array($name, $filterForm);
             $filterForm->expects($this->once())->method('isValid')->will($this->returnValue($data['expectIsValid']));
 
@@ -505,7 +505,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             'query'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface'),
             'columns'         => $this->getMock('Oro\Bundle\GridBundle\Field\FieldDescriptionCollection'),
             'pager'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\PagerInterface'),
-            'formBuilder'     => $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface'),
+            'formBuilder'     => $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface'),
             'routeGenerator'  => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface'),
             'parameters'      => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface'),
             'eventDispatcher' => $this->getMockForAbstractClass(

@@ -12,9 +12,9 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * TODO: This class should be refactored  (BAP-978)
-*/
+ */
 class LoggableManager
 {
     /**
@@ -236,8 +236,11 @@ class LoggableManager
     }
 
     /**
-     * @param $action
-     * @param $entity
+     * @param string $action
+     * @param mixed $entity
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function createLogEntity($action, $entity)
     {

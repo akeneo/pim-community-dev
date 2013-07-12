@@ -9,9 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 /**
  * Abstract entity value, independent of storage
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 abstract class AbstractFlexibleValue implements FlexibleValueInterface, TranslatableInterface, ScopableInterface
