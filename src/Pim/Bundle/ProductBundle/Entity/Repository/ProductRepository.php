@@ -30,18 +30,5 @@ class ProductRepository extends FlexibleEntityRepository
             ->leftJoin('Value.prices', 'ValuePrices')
             ->leftJoin('Value.media', 'ValueMedia')
             ->leftJoin('Value.metric', 'ValueMetric');
-
-            /*
-             TODO : reduce number of queries on product edit but has to big impact
-            ->addSelect('AttributeTranslation')
-            ->addSelect('AttributeGroup')
-            ->addSelect('AttributeGroupTranslation')
-            ->addSelect('Family')
-            ->addSelect('FamilyTranslation')
-            ->leftJoin('Attribute.translations', 'AttributeTranslation')
-            ->leftJoin('Attribute.group', 'AttributeGroup')
-            ->leftJoin('AttributeGroup.translations', 'AttributeGroupTranslation')
-            ->leftJoin($this->entityAlias.'.family', 'Family')
-            ->leftJoin('Family.translations', 'FamilyTranslation')*/
     }
 }
