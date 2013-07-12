@@ -132,7 +132,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         $backendType = $attribute->getBackendType();
-        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION and $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
+        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
+            && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
         }
 

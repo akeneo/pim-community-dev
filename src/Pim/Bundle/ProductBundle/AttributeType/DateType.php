@@ -22,63 +22,67 @@ class DateType extends OroDateType
 
         $properties = array(
             array(
-                'name' => 'defaultValue',
+                'name'      => 'defaultValue',
                 'fieldType' => $fieldType,
-                'options' => array(
+                'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
-                'name' => 'dateType',
+                'name'      => 'dateType',
                 'fieldType' => 'choice',
-                'options' => array(
+                'options'   => array(
                     'required' => true,
-                    'choices' => array(
-                        'date' => 'Date',
-                        'time' => 'Time',
+                    'choices'  => array(
+                        'date'     => 'Date',
+                        'time'     => 'Time',
                         'datetime' => 'Datetime'
                     )
                 )
             ),
             array(
-                'name' => 'dateMin',
+                'name'      => 'dateMin',
                 'fieldType' => $fieldType,
-                'options' => array(
+                'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
-                'name' => 'dateMax',
+                'name'      => 'dateMax',
                 'fieldType' => $fieldType,
-                'options' => array(
+                'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
-                'name' => 'searchable',
+                'name'      => 'searchable',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'translatable',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
-            ),
-            array(
-                'name' => 'scopable',
-                'fieldType' => 'pim_product_scopable',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'name'      => 'translatable',
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(
-                'name' => 'unique',
+                'name'      => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name'      => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
+            ),
+            array(
+                'name'      => 'unique',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             )

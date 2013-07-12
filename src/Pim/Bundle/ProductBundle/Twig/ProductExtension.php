@@ -22,6 +22,7 @@ class ProductExtension extends \Twig_Extension
 
     /**
      * @param SecurityContextInterface $securityContext
+     * @param LocaleManager            $localeManager
      */
     public function __construct(SecurityContextInterface $securityContext, LocaleManager $localeManager)
     {
@@ -41,6 +42,9 @@ class ProductExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return array(
@@ -65,7 +69,7 @@ class ProductExtension extends \Twig_Extension
     /**
      * Get displayed locale from locale code
      *
-     * @param string $locale
+     * @param string $code
      *
      * @return string
      */
@@ -99,12 +103,14 @@ class ProductExtension extends \Twig_Extension
 
     /**
      * @param string $code
+     *
      * @return string
      */
     public function flag($code)
     {
         return sprintf(
-            '<img src="/bundles/pimui/images/blank.gif" class="flag flag-%s" alt="%s" /> <code class="flag-language">%s</code>',
+            '<img src="%s" class="flag flag-%s" alt="%s" /><code class="flag-language">%s</code>',
+            '/bundles/pimui/images/blank.gif',
             $this->getCountry($code),
             $this->localeLabel($code),
             $this->getLanguage($code)
@@ -113,6 +119,7 @@ class ProductExtension extends \Twig_Extension
 
     /**
      * @param string $code
+     *
      * @return string
      */
     private function getCountry($code)
@@ -126,7 +133,8 @@ class ProductExtension extends \Twig_Extension
     }
 
     /**
-     * @param strin $code
+     * @param string $code
+     *
      * @return string
      */
     private function getLanguage($code)
