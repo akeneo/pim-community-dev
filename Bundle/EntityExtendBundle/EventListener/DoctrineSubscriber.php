@@ -83,7 +83,7 @@ class DoctrineSubscriber implements EventSubscriber
         }
     }
 
-    /**f
+    /**
      * @param LoadClassMetadataEventArgs $event
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)

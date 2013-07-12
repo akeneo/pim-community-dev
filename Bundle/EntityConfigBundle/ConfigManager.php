@@ -147,8 +147,9 @@ class ConfigManager
             return $config;
         } else {
             $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);
+
             /** @var ConfigEntity $entity */
-            $entity = $entityConfigRepo->findOneBy(array('className' => $className));
+            $entity = $this->isSchemaSynced() ? $entityConfigRepo->findOneBy(array('className' => $className)) : null;
             if ($entity) {
                 $config = new EntityConfig($className, $scope);
                 $config->setValues($entity->toArray($scope));
@@ -403,5 +404,16 @@ class ConfigManager
         }
 
         return $entity;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isSchemaSynced()
+    {
+        $tables = $this->em()->getConnection()->getSchemaManager()->listTableNames();
+        $table  = $this->em()->getClassMetadata(ConfigEntity::ENTITY_NAME)->getTableName();
+
+        return in_array($table, $tables);
     }
 }
