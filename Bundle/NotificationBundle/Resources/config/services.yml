@@ -1,4 +1,5 @@
 parameters:
+    oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
     oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor
 
 services:

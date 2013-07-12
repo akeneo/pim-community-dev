@@ -12,7 +12,7 @@ class EmailNotificationDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-
+        return array();
     }
 
     /**
@@ -28,6 +28,6 @@ class EmailNotificationDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-
+        return array();
     }
 }

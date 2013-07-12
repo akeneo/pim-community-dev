@@ -11,3 +11,9 @@ oro_menu_config:
                 system_tab:
                     children:
                         oro_notification_emailnotification_list: ~
+
+oro_titles:
+    oro_notification_emailnotification_index: "Transactional Emails"
+    oro_notification_emailnotification_view:
+    oro_notification_emailnotification_update:
+    oro_notification_emailnotification_create:

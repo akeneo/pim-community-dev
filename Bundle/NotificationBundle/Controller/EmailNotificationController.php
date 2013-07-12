@@ -6,11 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager;
 
 /**
  * @Route("/email")
+ * @Acl(
+ *      id="oro_notification_emailnotification",
+ *      name="Transactional emails",
+ *      description="Notification rules manipulation",
+ *      parent="root"
+ * )
  */
 class EmailNotificationController extends Controller
 {
@@ -19,6 +26,12 @@ class EmailNotificationController extends Controller
      *      "/{_format}",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
+     * )
+     * @Acl(
+     *      id="oro_user_user_view",
+     *      name="View List of notification rules",
+     *      description="View notification rules list",
+     *      parent="oro_notification_emailnotification"
      * )
      * @Template()
      */
@@ -37,6 +50,12 @@ class EmailNotificationController extends Controller
 
     /**
      * @Route("/view/{id}", requirements={"id"="\d+"})
+     * @Acl(
+     *      id="oro_notification_emailnotification_view",
+     *      name="View notification rule",
+     *      description="View notification rule",
+     *      parent="oro_notification_emailnotification"
+     * )
      * @Template()
      */
     public function viewAction()
@@ -46,6 +65,12 @@ class EmailNotificationController extends Controller
 
     /**
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
+     * @Acl(
+     *      id="oro_notification_emailnotification_update",
+     *      name="Edit notification rule",
+     *      description="Edit notification rule",
+     *      parent="oro_notification_emailnotification"
+     * )
      * @Template()
      */
     public function updateAction()
@@ -55,6 +80,12 @@ class EmailNotificationController extends Controller
 
     /**
      * @Route("/create")
+     * @Acl(
+     *      id="oro_notification_emailnotification_create",
+     *      name="Create notification rule",
+     *      description="Create notification rule",
+     *      parent="oro_notification_emailnotification"
+     * )
      * @Template("OroNotificationBundle:EmailNotification:update.html.twig")
      */
     public function createAction()

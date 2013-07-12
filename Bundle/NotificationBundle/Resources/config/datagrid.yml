@@ -3,11 +3,10 @@ parameters:
 
 services:
     oro_navigation.emailnotification.datagrid_manager:
-        class: %orocrm_account.account.datagrid_manager.class%
+        class: %oro_navigation.emailnotification.datagrid_manager.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: emailnotification
-              entity_name: %oro_navigation.emailnotification.datagrid_manager.class%
-              entity_hint: emailnotification
-              flexible: false
+              entity_name: %oro_navigation.emailnotification.entity.class%
+              entity_hint: transactional email
               route_name: oro_notification_emailnotification_index
