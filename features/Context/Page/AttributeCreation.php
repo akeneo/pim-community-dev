@@ -15,6 +15,7 @@ class AttributeCreation extends Page
 
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
+        'Attribute options list'  => array('css' => '#sortable_options'),
     );
 
     public function selectAttributeType($type)
@@ -23,5 +24,15 @@ class AttributeCreation extends Page
             ->getElement('Attribute type selector')
             ->selectOption($type)
         ;
+    }
+
+    public function findField($name)
+    {
+        $field = parent::findField($name);
+        if (!$field) {
+            $field = $this->getElement('Attribute options list')->find('css', sprintf('th:contains("%s")', $name));
+        }
+
+        return $field;
     }
 }

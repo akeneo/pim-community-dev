@@ -82,50 +82,50 @@ class PriceCollectionType extends AbstractAttributeType
     {
         $properties = array(
             array(
-                'name' => 'numberMin',
+                'name'      => 'numberMin',
                 'fieldType' => 'number'
             ),
             array(
-                'name' => 'numberMax',
+                'name'      => 'numberMax',
                 'fieldType' => 'number'
             ),
             array(
-                'name' => 'decimalsAllowed',
+                'name'      => 'decimalsAllowed',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'negativeAllowed',
+                'name'      => 'negativeAllowed',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'searchable',
+                'name'      => 'searchable',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'translatable',
+                'name'      => 'translatable',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => true,
-                    'read_only' => true
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(
-                'name' => 'availableLocales',
+                'name'      => 'availableLocales',
                 'fieldType' => 'pim_product_available_locales'
             ),
             array(
-                'name' => 'scopable',
+                'name'      => 'scopable',
                 'fieldType' => 'pim_product_scopable',
-                'options' => array(
-                    'disabled' => true,
+                'options'   => array(
+                    'disabled'  => true,
                     'read_only' => true
                 )
             ),
             array(
-                'name' => 'unique',
+                'name'      => 'unique',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => true,
+                'options'   => array(
+                    'disabled'  => true,
                     'read_only' => true
                 )
             )

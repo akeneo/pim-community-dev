@@ -757,6 +757,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^there should be (\d+) update$/
+     */
+    public function thereShouldBeUpdate($count)
+    {
+        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
+            throw $this->createExpectationException(sprintf(
+                'Expected %d updates, saw %d.', $count, $countUpdates
+            ));
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;

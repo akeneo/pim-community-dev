@@ -25,6 +25,7 @@ class ProductEdit extends Page
         'Groups'                          => array('css' => '.tab-groups'),
         'Locales selector'                => array('css' => '#pim_product_locales'),
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
+        'Updates grid'                    => array('css' => '#history table.grid'),
     );
 
     public function findLocaleLink($locale, $content = null)
@@ -188,5 +189,10 @@ class ProductEdit extends Page
         $this->getElement('Enable switcher')->check();
 
         return $this;
+    }
+
+    public function countUpdates()
+    {
+        return count($this->getElement('Updates grid')->findAll('css', 'tbody tr'));
     }
 }
