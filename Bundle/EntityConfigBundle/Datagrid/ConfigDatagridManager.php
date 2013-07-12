@@ -106,11 +106,10 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
-     * {@inheritDoc}
+     * @param FieldDescriptionCollection $fieldsCollection
      */
-    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
+    protected function getDynamicFields(FieldDescriptionCollection $fieldsCollection)
     {
-
         $fields = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
@@ -118,9 +117,9 @@ class ConfigDatagridManager extends DatagridManager
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
                     $fieldObjectProvider->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cev' . $code . '.value',
-                        'field_name' => $code,
-                    )));
+                                'expression' => 'cev' . $code . '.value',
+                                'field_name' => $code,
+                            )));
 
                     if (isset($item['priority']) && !isset($fields[$item['priority']])) {
                         $fields[$item['priority']] = $fieldObjectProvider;
@@ -135,6 +134,31 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($fields as $field) {
             $fieldsCollection->add($field);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
+    {
+        $this->getDynamicFields($fieldsCollection);
+
+        $fieldObjectId = new FieldDescription();
+        $fieldObjectId->setName('id');
+        $fieldObjectId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'label'       => 'Id',
+                'field_name'  => 'id',
+                'filter_type' => FilterInterface::TYPE_NUMBER,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => false,
+                'show_filter' => false,
+                'show_column' => false,
+            )
+        );
+        $fieldsCollection->add($fieldObjectId);
 
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('name');

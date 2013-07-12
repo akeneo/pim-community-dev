@@ -139,6 +139,8 @@ class ConfigController extends Controller
             'link'          => $link,
             'entity_name'   => $entityName,
             'module_name'   => $moduleName,
+
+            'button_config' => $datagridManager->getLayoutActions($entity),
         );
     }
 
