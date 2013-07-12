@@ -2,11 +2,13 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use FOS\Rest\Util\Codes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -98,7 +100,7 @@ class ConfigFieldGridController extends Controller
         $fieldConfig = $extendManager->getConfigProvider()
             ->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
         if (!$fieldConfig->is('is_extend')) {
-            throw new RuntimeException('Cannot delete not extend field');
+            return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
         $this->getDoctrine()->getManager()->remove($field);
@@ -108,6 +110,6 @@ class ConfigFieldGridController extends Controller
         $configManager = $this->get('oro_entity_config.config_manager');
         $configManager->clearCache($fieldConfig->getClassName());
 
-        return new RedirectResponse($this->getRequest()->headers->get('referer'));
+        return new Response('', Codes::HTTP_NO_CONTENT);
     }
 }

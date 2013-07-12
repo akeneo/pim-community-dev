@@ -16,6 +16,12 @@
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
         'entityTitle': 'Unique Keys',
+        'additional': [
+            {
+                'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
+                'indexLabel' : entity_config.get('label')|default('N/A'),
+            },
+        ]
     }
     %}
     {{ parent() }}
