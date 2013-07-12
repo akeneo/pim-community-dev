@@ -9,15 +9,30 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 
 abstract class UserRelationDatagridManager extends DatagridManager
 {
+    /**
+     * @var string
+     */
+    protected $hasEntityExpression;
+
     /**
      * Create a column that represents relation of user with another entity
      *
      * @return FieldDescription
      */
     abstract protected function createUserRelationColumn();
+
+    /**
+     * Create a column that represents relation of user with another entity
+     *
+     * @return Role|Group
+     */
+    abstract protected function getRelatedEntity();
 
     /**
      * {@inheritDoc}
@@ -39,7 +54,6 @@ abstract class UserRelationDatagridManager extends DatagridManager
                 'filterable'  => false,
                 'show_column' => false,
                 'show_filter' => false,
-                'show_column' => false,
             )
         );
         $fieldsCollection->add($fieldId);
@@ -107,6 +121,33 @@ abstract class UserRelationDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldEmail);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHasEntityExpression()
+    {
+        if (null === $this->hasEntityExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias = $queryFactory->getAlias();
+
+            if ($this->getRelatedEntity()->getId()) {
+                $this->hasEntityExpression =
+                    "CASE WHEN " .
+                    "(:entity MEMBER OF $entityAlias.groups OR $entityAlias.id IN (:data_in)) AND " .
+                    "$entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            } else {
+                $this->hasEntityExpression =
+                    "CASE WHEN " .
+                    "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) " .
+                    "THEN true ELSE false END";
+            }
+        }
+
+        return $this->hasEntityExpression;
     }
 
     /**

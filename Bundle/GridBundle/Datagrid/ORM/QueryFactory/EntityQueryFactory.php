@@ -2,9 +2,11 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory;
 
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityRepository;
+
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 class EntityQueryFactory extends AbstractQueryFactory
 {
@@ -41,7 +43,9 @@ class EntityQueryFactory extends AbstractQueryFactory
     public function createQuery()
     {
         $entityManager = $this->registry->getManagerForClass($this->className);
-        $this->queryBuilder = $entityManager->getRepository($this->className)->createQueryBuilder($this->alias);
+        /** @var EntityRepository $repository */
+        $repository = $entityManager->getRepository($this->className);
+        $this->queryBuilder = $repository->createQueryBuilder($this->alias);
 
         return parent::createQuery();
     }
@@ -52,5 +56,13 @@ class EntityQueryFactory extends AbstractQueryFactory
     public function getClassName()
     {
         return $this->className;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 }
