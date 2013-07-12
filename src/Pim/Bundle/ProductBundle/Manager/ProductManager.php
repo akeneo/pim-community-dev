@@ -3,11 +3,8 @@
 namespace Pim\Bundle\ProductBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-
 use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
@@ -195,8 +192,6 @@ class ProductManager extends FlexibleManager
                 $attributes[] = $attribute;
             }
         }
-
-// TODO : nesting dep        $attributes = array_unique($attributes, SORT_REGULAR);
 
         foreach ($attributes as $attribute) {
             $existingValues = array();

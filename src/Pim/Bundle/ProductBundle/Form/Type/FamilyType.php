@@ -1,9 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Type for product family form
@@ -21,10 +23,6 @@ class FamilyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $data = $builder->getData() ?: null;
-
-        // TODO : attributes as label doesn't work anymore !!!!
-
         $builder
             ->add('code')
             ->add(
@@ -41,11 +39,15 @@ class FamilyType extends AbstractType
                 'attributeAsLabel',
                 'entity',
                 array(
-                    'required'    => false,
-                    'empty_value' => 'Id',
-                    'label'       => 'Attribute used as label',
-                    'choices'     => $data ? $data->getAttributeAsLabelChoices() : array(),
-                    'class'       => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+                    'required'      => false,
+                    'empty_value'   => 'Id',
+                    'label'         => 'Attribute used as label',
+                    'class'         => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+                    'query_builder' => function (EntityRepository $repository) {
+                        return $repository->createQueryBuilder('a')
+                            ->where("a.attributeType in('pim_product_text', 'pim_product_identifier')")
+                            ->orderBy('a.code');
+                    },
                 )
             );
     }

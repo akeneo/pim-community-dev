@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-
 use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 
 /**
