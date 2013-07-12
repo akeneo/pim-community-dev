@@ -112,7 +112,6 @@ class ConfigDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
 
-
         $fields = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {

@@ -168,6 +168,6 @@ class WindowsStateController extends FOSRestController
      */
     protected function getManager()
     {
-        return $this->getDoctrine()->getEntityManagerForClass('OroWindowsBundle:WindowsState');
+        return $this->getDoctrine()->getManagerForClass('OroWindowsBundle:WindowsState');
     }
 }

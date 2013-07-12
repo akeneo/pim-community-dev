@@ -11,9 +11,6 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 /**
  * Service class to manage segments node and tree
  *
- * @author    Benoit Jacquemont <benoit@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class SegmentManager
@@ -305,8 +302,7 @@ class SegmentManager
         $i = 0;
         $parentFound = false;
 
-        while ( ($i < count($childPath))
-                && (!$parentFound) ) {
+        while ($i < count($childPath) && (!$parentFound)) {
             $parentFound = ($childPath[$i]->getId() === $parentNode->getId());
             $i++;
         }

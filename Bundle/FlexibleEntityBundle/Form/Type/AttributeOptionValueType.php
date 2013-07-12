@@ -10,9 +10,6 @@ use Symfony\Component\Form\AbstractType;
 /**
  * Type for option value attribute form (independent of persistence)
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class AttributeOptionValueType extends AbstractType

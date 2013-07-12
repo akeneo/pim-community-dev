@@ -77,7 +77,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
 
         $form = $this->factory->create($this->getTestFormType(), null, $options);
 
-        $form->bind($bindData);
+        $form->submit($bindData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
@@ -223,7 +223,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManagerForClass', array('TestClass'), null),
                     )
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Class "TestClass" is not a managed Doctrine entity. Did you forget to map it?'
             ),
@@ -234,7 +234,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManager', array('custom_entity_manager'), null),
                     )
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Class "TestClass" is not a managed Doctrine entity. Did you forget to map it?'
             ),
@@ -243,7 +243,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                 'expectedCalls' => array(
                     'managerRegistry' => array()
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Option "em" should be a string or entity manager object, stdClass given'
             ),
@@ -254,7 +254,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManagerForClass', array('TestClass'), array('self', 'getMockEntityManager')),
                     ),
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Option "queryBuilder" should be a callable, string given'
             ),
@@ -272,7 +272,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
             },
             'values_delimiter' => ','
         );
-        $builder = $this->getMockBuilder('Symfony\Component\Form\Tests\FormBuilderInterface')
+        $builder = $this->getMockBuilder('Symfony\Component\Form\Test\FormBuilderInterface')
             ->setMethods(array('addViewTransformer', 'addEventSubscriber'))
             ->getMockForAbstractClass();
 

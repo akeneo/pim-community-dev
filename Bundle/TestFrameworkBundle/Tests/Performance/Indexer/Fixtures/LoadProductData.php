@@ -21,10 +21,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
 *
 * Execute with "php app/console doctrine:fixtures:load"
 *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
-*
 */
 class LoadProductData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -176,7 +172,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Load products
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * TODO: this method should be refactored (BAP-975)
      *
      * @return array

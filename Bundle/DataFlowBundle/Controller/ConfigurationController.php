@@ -11,9 +11,6 @@ use Oro\Bundle\DataFlowBundle\Entity\RawConfiguration;
 /**
  * Configuration controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @Route("/configuration")
  *
@@ -38,7 +35,7 @@ class ConfigurationController extends Controller
         $form = $this->createForm($type, $configuration);
 
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+            $form->submit($this->getRequest());
             if ($form->isValid()) {
                 $manager = $this->getDoctrine()->getEntityManager();
                 $manager->persist($entity);

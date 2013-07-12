@@ -399,7 +399,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     {
         if ($this->getCountry() && $this->getCountry()->hasRegions() && !$this->state) {
             $propertyPath = $context->getPropertyPath() . '.state';
-            $context->addViolationAtPath(
+            $context->addViolationAt(
                 $propertyPath,
                 'State is required for country %country%',
                 array('%country%' => $this->getCountry()->getName())
