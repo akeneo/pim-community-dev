@@ -62,14 +62,14 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        /* TODO : to fix
         $field = new FieldDescription();
         $field->setName('label');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Name'),
-                'field_name'  => 'label',
+                'label'       => $this->translate('Label'),
+                'entity_alias' => 'translation',
+                'field_name'   => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -78,7 +78,6 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
-        */
 
         $field = $this->createAttributeTypeField();
         $fieldsCollection->add($field);
@@ -128,7 +127,8 @@ class AttributeDatagridManager extends DatagridManager
     {
         // get groups
         $em = $this->productManager->getStorageManager();
-        $groups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+        $groups = $em->getRepository('PimProductBundle:AttributeGroup')
+            ->findAllOrderedByName($this->productManager->getLocale());
         $choices = array();
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getName();
@@ -146,9 +146,7 @@ class AttributeDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $choices
-                ),
+                'field_options' => array('choices' => $choices),
             )
         );
 
@@ -247,5 +245,23 @@ class AttributeDatagridManager extends DatagridManager
         asort($fieldOptions);
 
         return $fieldOptions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createQuery()
+    {
+        $queryBuilder = $this->productManager->getStorageManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('attribute')
+            ->from('PimProductBundle:ProductAttribute', 'attribute')
+            ->addSelect('translation')
+            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale= :locale')
+            ->setParameter('locale', $this->productManager->getLocale());
+        $this->queryFactory->setQueryBuilder($queryBuilder);
+        $query = $this->queryFactory->createQuery();
+
+        return $query;
     }
 }

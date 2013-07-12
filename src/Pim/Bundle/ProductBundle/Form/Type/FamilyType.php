@@ -23,10 +23,12 @@ class FamilyType extends AbstractType
     {
         $data = $builder->getData() ?: null;
 
+        // TODO : attributes as label doesn't work anymore !!!!
+
         $builder
             ->add('code')
             ->add(
-                'name',
+                'label',
                 'pim_translatable_field',
                 array(
                     'field'             => 'label',
@@ -65,6 +67,6 @@ class FamilyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_family';
+        return 'pim_family';
     }
 }

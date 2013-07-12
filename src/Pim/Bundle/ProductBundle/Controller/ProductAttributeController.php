@@ -26,21 +26,6 @@ use YsTools\BackUrlBundle\Annotation\BackUrl;
  */
 class ProductAttributeController extends Controller
 {
-
-    /**
-     * Get product manager
-     * @return FlexibleManager
-     */
-    protected function getProductManager()
-    {
-        $pm = $this->container->get('pim_product.manager.product');
-        // force data locale if provided
-        $dataLocale = $this->getRequest()->get('dataLocale');
-        $pm->setLocale($dataLocale);
-
-        return $pm;
-    }
-
     /**
      * List product attributes
      * @param Request $request
@@ -54,26 +39,10 @@ class ProductAttributeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $queryBuilder QueryBuilder */
-        $productClass = $this->getProductManager()->getFlexibleName();
-        $queryBuilder = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('attribute')
-            ->addSelect('translation')
-            ->from('PimProductBundle:ProductAttribute', 'attribute')
-            ->leftJoin('attribute.translations', 'translation')
-            ->where("attribute.entityType = '{$productClass}'");
-
-        /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.datagrid.manager.productattribute.default_query_factory');
-        $queryFactory->setQueryBuilder($queryBuilder);
-
         /** @var $gridManager AttributeDatagridManager */
-        $gridManager = $this->get('pim_product.datagrid.manager.productattribute');
-        $datagrid = $gridManager->getDatagrid();
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $attributeGroups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+        $gridManager  = $this->get('pim_product.datagrid.manager.productattribute');
+        $datagrid     = $gridManager->getDatagrid();
+        $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -81,7 +50,7 @@ class ProductAttributeController extends Controller
             $view = 'PimProductBundle:ProductAttribute:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView(), 'groups' => $attributeGroups));
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**

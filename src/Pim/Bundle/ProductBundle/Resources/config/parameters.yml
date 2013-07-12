@@ -17,6 +17,8 @@ parameters:
 
     pim_product.entity.attribute_group.class:          Pim\Bundle\ProductBundle\Entity\AttributeGroup
     pim_product.handler.attribute_group.class:         Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
+    pim_product.handler.family.class:                  Pim\Bundle\ProductBundle\Form\Handler\FamilyHandler
+    pim_product.type.family.class:                     Pim\Bundle\ProductBundle\Form\Type\FamilyType
     pim_product.type.attribute_group.class:            Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
     pim_product.entity.export_profile.class:           Pim\Bundle\ProductBundle\Entity\ExportProfile
@@ -24,7 +26,7 @@ parameters:
     pim_product.type.export_profile.class:             Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
 
     pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
-    pim_product.entity.category_translation.class:     Pim\Bundle\ProductBundle\Entity\CategoryMyTranslation
+    pim_product.entity.category_translation.class:     Pim\Bundle\ProductBundle\Entity\CategoryTranslation
     pim_product.manager.category.class:                Pim\Bundle\ProductBundle\Manager\CategoryManager
     pim_product.form.type.category.class:              Pim\Bundle\ProductBundle\Form\Type\CategoryType
 

@@ -97,10 +97,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
-
             $method = 'get'.Inflector::camelize($this->getOption('field'));
             $content = $binded['translation']->$method();
-
             $form->add(
                 $this->formFactory->createNamed(
                     $binded['fieldName'],
@@ -207,9 +205,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $availableTranslations = array();
 
         foreach ($data as $translation) {
-//            if (strtolower($translation->getField()) === strtolower($this->getOption('field'))) {
-                $availableTranslations[strtolower($translation->getLocale())] = $translation;
-//            }
+            $availableTranslations[strtolower($translation->getLocale())] = $translation;
         }
 
         foreach ($this->getFieldNames() as $locale => $fieldName) {

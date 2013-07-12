@@ -15,6 +15,20 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 class ProductAttributeRepository extends AttributeRepository
 {
     /**
+     * @param $localeCode the locale to use for name translation
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findByWithTranslations()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('translation')
+            ->leftJoin('a.translations', 'translation');
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
      * Get the query builder to find all product attributes except the ones
      * defined in arguments
      *

@@ -14,11 +14,30 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 class FamilyRepository extends EntityRepository
 {
     /**
+     * @param $localeCode the locale to use for name translation
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function buildAllOrderedByName()
+    protected function buildAllOrderedByLabel($localeCode)
     {
-        return $this->build()->orderBy('family.code');
+        $localeCode = 'default';
+        $build = $this->build()
+            ->addSelect('translation')
+            ->leftJoin('family.translations', 'translation')
+        /*
+         * TODO
+            ->addSelect('translation')
+            ->leftJoin('family.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->setParameter('locale', $localeCode)
+            ->orderBy('translation.label')
+            ->addSelect('defaultTranslation')
+            ->leftJoin('family.translations', 'defaultTranslation', 'with', 'defaultTranslation.locale = :defaultLocale')
+            ->setParameter('defaultLocale', 'default')
+            ->addOrderBy('defaultTranslation.label')*/
+        ->addOrderBy('family.code')
+        ;
+
+        return $build;
     }
 
     /**

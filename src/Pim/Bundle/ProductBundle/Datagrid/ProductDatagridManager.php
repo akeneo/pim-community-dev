@@ -139,6 +139,25 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * @return AbstractAttribute[]
+     */
+    protected function getFlexibleAttributes()
+    {
+        if (null === $this->attributes) {
+            /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
+            $attributeRepository = $this->flexibleManager->getAttributeRepository();
+            $attributes = $attributeRepository->findByWithTranslations();
+            $this->attributes = array();
+            /** @var $attribute AbstractAttribute */
+            foreach ($attributes as $attribute) {
+                $this->attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $this->attributes;
+    }
+
+    /**
      * Create a family field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -147,10 +166,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:Family')->findAll();
+        $families = $em->getRepository('PimProductBundle:Family')
+            ->findAllOrderedByLabel($this->flexibleManager->getLocale());
         $choices = array();
         foreach ($families as $family) {
-            $choices[$family->getId()] = ($family->getLabel() != '') ? $family->getLabel() : $family->getCode();
+            $choices[$family->getId()] = $family->getLabel();
         }
 
         $field = new FieldDescription();

@@ -43,6 +43,6 @@ class FamilyTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_family', $this->form->getName());
+        $this->assertEquals('pim_family', $this->form->getName());
     }
 }

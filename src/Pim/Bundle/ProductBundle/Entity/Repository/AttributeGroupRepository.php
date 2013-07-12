@@ -12,6 +12,25 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
  */
 class AttributeGroupRepository extends EntityRepository
 {
+    /**
+     * @param $localeCode the locale to use for name translation
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function buildAllOrderedByName($localeCode)
+    {
+        $build = $this->build()
+        /*
+         * TODO
+            ->addSelect('translation')
+            ->leftJoin('attribute_group.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->setParameter('locale', $localeCode)
+            ->orderBy('translation.name');*/
+            ->addOrderBy('attribute_group.code')
+        ;
+
+        return $build;
+    }
 
     /**
      * @return \Doctrine\ORM\QueryBuilder
