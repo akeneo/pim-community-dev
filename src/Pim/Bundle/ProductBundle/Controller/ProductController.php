@@ -20,6 +20,7 @@ use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Product Controller
@@ -120,6 +121,13 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
+        $datagrid = $this->getDataAuditDatagrid($product);
+
+        // Refreshing the history datagrid
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         $channels = $this->getChannelRepository()->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
 
@@ -165,42 +173,8 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
+            'datagrid'       => $datagrid->createView(),
         );
-    }
-
-    /**
-     * Generate an array composed of an array of categories ids
-     * from category_id_* params and an array of tree ids from
-     * apply_to_tree_* params
-     *
-     * @param array $requestParameters
-     *
-     * @return array of categories data structured of two arrays
-     *      categories, trees
-     */
-    protected function getCategoriesData(array $requestParameters)
-    {
-        $categories = array();
-        $trees = array();
-
-        foreach ($requestParameters as $key => $value) {
-            if ($value === "1") {
-                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-
-                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
-                    if ($catId > 0) {
-                        $categories[] = $catId;
-                    }
-                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
-                    if ($treeId > 0) {
-                        $trees[] = $treeId;
-                    }
-                }
-            }
-        }
-
-        return array('categories' => $categories, "trees" => $trees);
     }
 
     /**
@@ -336,6 +310,41 @@ class ProductController extends Controller
     }
 
     /**
+     * Generate an array composed of an array of categories ids
+     * from category_id_* params and an array of tree ids from
+     * apply_to_tree_* params
+     *
+     * @param array $requestParameters
+     *
+     * @return array of categories data structured of two arrays
+     *      categories, trees
+     */
+    protected function getCategoriesData(array $requestParameters)
+    {
+        $categories = array();
+        $trees = array();
+
+        foreach ($requestParameters as $key => $value) {
+            if ($value === "1") {
+                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
+
+                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
+                    if ($catId > 0) {
+                        $categories[] = $catId;
+                    }
+                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
+                    if ($treeId > 0) {
+                        $trees[] = $treeId;
+                    }
+                }
+            }
+        }
+
+        return array('categories' => $categories, "trees" => $trees);
+    }
+
+    /**
      * Get product manager
      *
      * @return ProductManager
@@ -357,7 +366,6 @@ class ProductController extends Controller
     {
         return $this->container->get('pim_product.manager.category');
     }
-
 
     /**
      * Get locale manager
@@ -520,5 +528,31 @@ class ProductController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * Get the log entries datagrid for the given product
+     *
+     * @param Product $product
+     *
+     * return Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    private function getDataAuditDatagrid(Product $product)
+    {
+        $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
+        $queryFactory->setQueryBuilder($this->getDataAuditRepository()->getLogEntriesQueryBuilder($product));
+
+        $datagridManager = $this->get('pim_product.datagrid.manager.product_history');
+        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
+
+        return $datagridManager->getDatagrid();
+    }
+
+    private function getDataAuditRepository()
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository('OroDataAuditBundle:Audit')
+        ;
     }
 }
