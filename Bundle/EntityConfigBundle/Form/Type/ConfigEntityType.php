@@ -38,7 +38,7 @@ class ConfigEntityType extends AbstractType
                     $provider->getScope(),
                     new ConfigType($provider->getConfigContainer()->getEntityItems()),
                     array(
-                        'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
+                        'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
                     )
                 );
                 $data[$provider->getScope()] = $provider->getConfig($className)->getValues();
