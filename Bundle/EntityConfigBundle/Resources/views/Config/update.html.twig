@@ -5,7 +5,7 @@
 {% set formAction = path('oro_entityconfig_update', {id: entity.id}) %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {id: entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
     {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
