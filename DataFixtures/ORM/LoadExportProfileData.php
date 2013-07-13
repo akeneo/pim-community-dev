@@ -140,11 +140,9 @@ class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInt
     protected function createTranslation($entity, $locale, $name)
     {
         $translation = new ExportProfileTranslation();
-        $translation->setContent($name);
-        $translation->setField('name');
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ExportProfile');
+        $translation->setName($name);
 
         return $translation;
     }

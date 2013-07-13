@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
-use Pim\Bundle\ProductBundle\Entity\Category;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * Load data for category tree
@@ -163,11 +163,9 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     protected function createTranslation($entity, $locale, $title)
     {
         $translation = new CategoryTranslation();
-        $translation->setContent($title);
-        $translation->setField('title');
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Category');
+        $translation->setTitle($title);
 
         return $translation;
     }
