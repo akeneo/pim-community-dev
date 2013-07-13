@@ -282,7 +282,7 @@ class CategoryTreeControllerTest extends ControllerTest
     public function testRemove()
     {
         // get tree entity
-        $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
+        $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_EDITED_CODE));
         $uri = '/enrich/category-tree/'. $tree->getId() .'/remove';
 
         // assert without authentication
