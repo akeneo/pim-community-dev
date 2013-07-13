@@ -190,15 +190,18 @@ class CategoryRepository extends SegmentRepository
         $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('category.title')
-            ->from($config['useObjectClass'], 'category', 'category.id')
-            ->orderBy('category.title');
-
-        $categories = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         $choices = array();
-        foreach ($categories as $categoryId => $categoryData) {
-            $choices[$categoryId] = $categoryData['title'];
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('category, translations')
+            ->from($config['useObjectClass'], 'category', 'category.id')
+            ->leftJoin('category.translations', 'translations');
+
+        $categories = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_OBJECT);
+        $choices = array();
+
+        foreach ($categories as $category) {
+            $choices[$category->getId()] = $category->getTitle();
         }
 
         return $choices;

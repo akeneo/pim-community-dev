@@ -45,7 +45,6 @@ class LoadFamilyData extends AbstractInstallerFixture
     {
         $family = new Family();
         $family->setCode($code);
-        $family->setLabel($data['labels']['default']);
 
         foreach ($data['labels'] as $locale => $translation) {
             $this->createTranslation($family, $locale, $translation);
@@ -74,11 +73,9 @@ class LoadFamilyData extends AbstractInstallerFixture
     public function createTranslation($family, $locale, $content)
     {
         $translation = new FamilyTranslation();
-        $translation->setContent($content);
-        $translation->setField('label');
         $translation->setForeignKey($family);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Family');
+        $translation->setLabel($content);
 
         $family->addTranslation($translation);
     }

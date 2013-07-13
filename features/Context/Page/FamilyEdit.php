@@ -19,7 +19,7 @@ class FamilyEdit extends Page
         'Available attributes add button' => array('css' => 'a:contains("Add")'),
         'Attributes'                      => array('css' => '#attributes table'),
         'Tabs'                            => array('css' => '#form-navbar'),
-        'Attribute as label choices'      => array('css' => '#pim_product_family_attributeAsLabel'),
+        'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -87,7 +87,7 @@ class FamilyEdit extends Page
 
     public function getFieldLocator($name, $locale)
     {
-        return sprintf('pim_product_family_%s_%s', strtolower($name), $locale);
+        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
     }
 
     public function getRemoveLinkFor($attribute)

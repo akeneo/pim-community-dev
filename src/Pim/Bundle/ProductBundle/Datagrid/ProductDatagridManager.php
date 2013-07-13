@@ -14,6 +14,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 
@@ -88,10 +90,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $field = $this->createScopeField();
+        $fieldsCollection->add($field);
+
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
+
         // create flexible columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
@@ -106,12 +112,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
-
-        $field = $this->createLocaleField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createScopeField();
-        $fieldsCollection->add($field);
 
         $field = $this->createCategoryField();
         $fieldsCollection->add($field);
@@ -141,19 +141,33 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * @return AbstractAttribute[]
+     */
+    protected function getFlexibleAttributes()
+    {
+        if (null === $this->attributes) {
+            /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
+            $attributeRepository = $this->flexibleManager->getAttributeRepository();
+            $attributes = $attributeRepository->findAllWithTranslations();
+            $this->attributes = array();
+            /** @var $attribute AbstractAttribute */
+            foreach ($attributes as $attribute) {
+                $this->attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $this->attributes;
+    }
+
+    /**
      * Create a family field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
      */
     protected function createFamilyField()
     {
-        // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:Family')->findAll();
-        $choices = array();
-        foreach ($families as $family) {
-            $choices[$family->getId()] = $family->getLabel();
-        }
+        $choices = $em->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
         $field = new FieldDescription();
         $field->setName('family');
@@ -197,37 +211,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'field_name'  => 'categories',
                 'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
-                'sortable'    => false, //TODO To enable when PIM-603 is fixed
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array(
                     'choices' => $choices,
                 ),
-            )
-        );
-
-        return $field;
-    }
-
-    /**
-     * Create locale field description for datagrid
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createLocaleField()
-    {
-        $field = new FieldDescription();
-        $field->setName(self::LOCALE_FIELD_NAME);
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Data Locale'),
-                'field_name'  => 'data_locale',
-                'filter_type' => FilterInterface::TYPE_LOCALE,
-                'required'    => false,
-                'filterable'  => true,
-                'show_column' => false,
-                'show_filter' => true
             )
         );
 
@@ -246,7 +235,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Scope'),
+                'label'       => $this->translate('Channel'),
                 'field_name'  => 'scope',
                 'filter_type' => FilterInterface::TYPE_SCOPE,
                 'required'    => false,
@@ -326,26 +315,21 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
-
-        $this->flexibleManager->setLocale($this->getLocaleFilterValue());
         $this->flexibleManager->setScope($this->getScopeFilterValue());
+        $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
     }
 
     /**
-     * Get data locale value from parameters
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    protected function getLocaleFilterValue()
+    protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
-            $dataLocale = $filtersArray[self::LOCALE_FIELD_NAME]['value'];
-        } else {
-            $dataLocale = $this->flexibleManager->getLocale();
-        }
-
-        return $dataLocale;
+        /**
+         * @var FlexibleQueryBuilder
+         */
+        $query
+            ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')
+            ->setParameter('filterlocale', $this->flexibleManager->getLocale());
     }
 
     /**

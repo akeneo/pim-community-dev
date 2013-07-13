@@ -2,19 +2,19 @@
 
 {% block content %}
 
-    {% set currentGroup = group is defined ? group : null %}
+    {% set currentGroup = group is defined ? group.id : null %}
 
     <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
                 <ul id="entities-sortable">
-                    {% for group in groups %}
-                        <li class="{{ group == currentGroup ? 'active' : '' }}" data-id="{{ group.id }}">
+                    {% for groupId, groupName in groups %}
+                        <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
                             <span class="handle">
                                 <i class="fa-icon-reorder"></i>
-                                <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
+                                <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                             </span>
-                            <a href="{{ path('pim_product_attributegroup_edit', {'id': group.id}) }}">{{ group.name }}</a>
+                            <a href="{{ path('pim_product_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                         </li>
                     {% endfor %}
                 </ul>
