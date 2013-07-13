@@ -541,7 +541,7 @@ class ProductController extends Controller
      *
      * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
      */
-    protected function getDataAuditDatagrid(Product $product)
+    protected function getDataAuditDatagrid(ProductInterface $product)
     {
         $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
         //
@@ -556,7 +556,7 @@ class ProductController extends Controller
             ->setParameters(
                 array(
                     'objectId'    => $product->getId(),
-                    'objectClass' => 'Pim\\Bundle\\ProductBundle\\Entity\\Product'
+                    'objectClass' => get_class($product)
                 )
             );
 
