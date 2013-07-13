@@ -153,3 +153,34 @@
         }
     };
 {% endblock %}
+
+{% block genemu_jqueryselect2_entity_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            {{ block('choice_widget_expanded') }}
+        {% else %}
+            {{ block('genemu_jqueryselect2_entity_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block genemu_jqueryselect2_entity_widget_collapsed %}
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+                <option {% if value is empty %} selected="selected"{% endif %} value="">
+                    {{ empty_value|trans({}, translation_domain) }}
+                </option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+    {% endspaceless %}
+{% endblock %}

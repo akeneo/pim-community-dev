@@ -68,7 +68,7 @@ class ConnectorController extends Controller
 
         // process form
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+            $form->submit($this->getRequest());
             if ($form->isValid()) {
 
                 if (is_null($entity->getRawConfiguration())) {

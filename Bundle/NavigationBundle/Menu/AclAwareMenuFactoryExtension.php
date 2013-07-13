@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\NavigationBundle\Menu;
 
+use Doctrine\Common\Cache\CacheProvider;
+use Knp\Menu\Factory;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-
-use \Doctrine\Common\Cache\CacheProvider;
-use Knp\Menu\MenuFactory;
 use Oro\Bundle\UserBundle\Acl\Manager;
 
-class AclAwareMenuFactory extends MenuFactory
+class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
 {
     /**#@+
      * ACL Aware MenuFactory constants
@@ -63,12 +63,23 @@ class AclAwareMenuFactory extends MenuFactory
     }
 
     /**
+     * Configures the item with the passed options
+     *
+     * @param ItemInterface $item
+     * @param array         $options
+     */
+    public function buildItem(ItemInterface $item, array $options)
+    {
+
+    }
+
+    /**
      * Check Permissions and set options for renderer.
      *
      * @param  array $options
      * @return array
      */
-    protected function buildOptions(array $options = array())
+    public function buildOptions(array $options = array())
     {
         $this->processAcl($options);
 
@@ -79,7 +90,7 @@ class AclAwareMenuFactory extends MenuFactory
             $this->processRoute($options);
         }
 
-        return parent::buildOptions($options);
+        return $options;
     }
 
     /**

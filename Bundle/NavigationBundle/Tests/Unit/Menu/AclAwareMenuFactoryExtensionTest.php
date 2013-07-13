@@ -2,13 +2,14 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
-use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory;
+use Knp\Menu\MenuFactory;
+use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension;
 use Symfony\Component\Routing\RouterInterface;
 use Oro\Bundle\UserBundle\Acl\Manager;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Doctrine\Common\Cache\CacheProvider;
 
-class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
+class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var RouterInterface
@@ -21,9 +22,14 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
     protected $aclManager;
 
     /**
-     * @var AclAwareMenuFactory
+     * @var MenuFactory
      */
     protected $factory;
+
+    /**
+     * @var AclAwareMenuFactoryExtension
+     */
+    protected $factoryExtension;
 
     /**
      * @var CacheProvider
@@ -37,7 +43,9 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
         $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->factory = new AclAwareMenuFactory($this->router, $this->aclManager);
+        $this->factoryExtension = new AclAwareMenuFactoryExtension($this->router, $this->aclManager);
+        $this->factory = new MenuFactory();
+        $this->factory->addExtension($this->factoryExtension);
     }
 
     /**
@@ -111,7 +119,7 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
 
         $item = $this->factory->createItem('test', $options);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
-        $this->assertEquals(AclAwareMenuFactory::DEFAULT_ACL_POLICY, $item->getExtra('isAllowed'));
+        $this->assertEquals(AclAwareMenuFactoryExtension::DEFAULT_ACL_POLICY, $item->getExtra('isAllowed'));
     }
 
     public function testBuildOptionsWithUnknownUri()
@@ -127,7 +135,7 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
 
         $item = $this->factory->createItem('test', $options);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
-        $this->assertEquals(AclAwareMenuFactory::DEFAULT_ACL_POLICY, $item->getExtra('isAllowed'));
+        $this->assertEquals(AclAwareMenuFactoryExtension::DEFAULT_ACL_POLICY, $item->getExtra('isAllowed'));
     }
 
     /**
@@ -266,8 +274,8 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
         }
 
-        $this->assertAttributeCount(1, 'aclCache', $this->factory);
-        $this->assertAttributeEquals(array($options['aclResourceId'] => true), 'aclCache', $this->factory);
+        $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals(array($options['aclResourceId'] => true), 'aclCache', $this->factoryExtension);
     }
 
     public function testAclCacheByKey()
@@ -282,8 +290,8 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
         }
 
-        $this->assertAttributeCount(1, 'aclCache', $this->factory);
-        $this->assertAttributeEquals(array('controller::action' => true), 'aclCache', $this->factory);
+        $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals(array('controller::action' => true), 'aclCache', $this->factoryExtension);
     }
 
     /**
@@ -313,7 +321,7 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
                 ->with($cacheKey, 'controller::action');
         }
 
-        $this->factory->setCache($cache);
+        $this->factoryExtension->setCache($cache);
 
         $options = array('uri' => '#');
 
@@ -385,7 +393,7 @@ class AclAwareMenuFactoryTest extends \PHPUnit_Framework_TestCase
                 );
         }
 
-        $this->factory->setCache($cache);
+        $this->factoryExtension->setCache($cache);
 
         $options = array('route' => 'route_name', 'routeParameters' => $params);
 
