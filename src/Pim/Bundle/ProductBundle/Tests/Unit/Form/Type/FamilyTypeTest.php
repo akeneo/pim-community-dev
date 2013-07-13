@@ -34,7 +34,6 @@ class FamilyTypeTest extends AbstractFormTypeTest
     {
         // Assert fields
         $this->assertField('code', 'text');
-        $this->assertField('attributeAsLabel', 'entity');
 
         // Assert option class
         $this->assertEquals(
