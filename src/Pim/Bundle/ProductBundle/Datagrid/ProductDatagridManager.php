@@ -14,6 +14,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 
@@ -315,6 +317,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $this->flexibleManager = $flexibleManager;
         $this->flexibleManager->setScope($this->getScopeFilterValue());
         $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
+        /**
+         * @var FlexibleQueryBuilder
+         */
+        $query
+            ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')
+            ->setParameter('filterlocale', $this->flexibleManager->getLocale());
     }
 
     /**
