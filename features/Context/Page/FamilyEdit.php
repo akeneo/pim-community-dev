@@ -87,7 +87,7 @@ class FamilyEdit extends Page
 
     public function getFieldLocator($name, $locale)
     {
-        return sprintf('pim_product_family_%s_%s', strtolower($name), $locale);
+        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
     }
 
     public function getRemoveLinkFor($attribute)
