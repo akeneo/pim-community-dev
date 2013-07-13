@@ -74,8 +74,7 @@ class FamilyController extends Controller
     public function editAction($id)
     {
         $family   = $this->findFamilyOr404($id);
-        $locale   = $this->getProductManager()->getLocale();
-        $families = $this->getFamilyRepository()->findAllOrderedByLabel($locale);
+        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
 
         if ($this->get('pim_product.form.handler.family')->process($family)) {
             $this->addFlash('success', 'Product family successfully updated.');

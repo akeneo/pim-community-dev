@@ -13,7 +13,7 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 class AttributeGroupRepository extends EntityRepository
 {
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function buildAllWithTranslations()
     {
@@ -21,30 +21,26 @@ class AttributeGroupRepository extends EntityRepository
     }
 
     /**
-     * @param $localeCode the locale to use for name translation
-     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function buildAllOrderedByName($localeCode)
+    protected function buildAllOrderedBySortOrder()
     {
-        $build = $this->build()
-        /*
-         * TODO
-            ->addSelect('translation')
-            ->leftJoin('attribute_group.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', $localeCode)
-            ->orderBy('translation.name');*/
-            ->addOrderBy('attribute_group.code')
-        ;
-
-        return $build;
+        return $this->build()->orderBy('attribute_group.sortOrder');
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * Find all ordered by name with fallback to default mecanism
+     *
+     * @return array
      */
-    public function buildAllOrderedBySortOrder()
+    public function getIdToNameOrderedBySortOrder()
     {
-        return $this->build()->orderBy('attribute_group.sortOrder');
+        $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
+        $orderedGroups = array();
+        foreach ($groups as $group) {
+            $orderedGroups[$group->getId()]= $group->getName();
+        }
+
+        return $orderedGroups;
     }
 }

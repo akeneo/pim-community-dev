@@ -17,17 +17,32 @@ class FamilyRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function buildAllOrderedByLabel()
+    public function buildAllWithTranslations()
     {
-        $locale = TranslatableInterface::FALLBACK_LOCALE;
-        $build = $this->build()
-            ->addSelect('translations')
-            ->leftJoin('family.translations', 'translations')
-            ->leftJoin('family.translations', 'translationOrder', 'with', 'translationOrder.locale = :locale')
-            ->setParameter('locale', $locale)
-            ->addOrderBy('translationOrder.label');
+        return $this->build()->addSelect('translation')->leftJoin('family.translations', 'translation');
+    }
 
-        return $build;
+    /**
+     * Find all families ordered by label with fallback to default mecanism
+     *
+     * @return array
+     */
+    public function getIdToLabelOrderedByLabel()
+    {
+        $families = $this->buildAllWithTranslations()->getQuery()->execute();
+        $orderedFamilies = array();
+        foreach ($families as $family) {
+            $orderedFamilies[$family->getId()]= $family->getLabel();
+        }
+        uasort($orderedFamilies, function ($first, $second) {
+            if ($first === $second) {
+                return 0;
+            }
+
+            return strcasecmp($first, $second);
+        });
+
+        return $orderedFamilies;
     }
 
     /**
