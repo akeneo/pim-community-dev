@@ -7,6 +7,9 @@ pim_product:
     type:     annotation
     prefix:   /enrich/
 
+pim_product_api:
+    resource: "@PimProductBundle/Resources/config/routing.yml"
+
 pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
