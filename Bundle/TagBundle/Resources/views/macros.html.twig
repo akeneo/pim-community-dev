@@ -39,16 +39,16 @@
     </div>
 
     {{ form_row(form.tags)  }}
-    <input type="hidden" id="{{ form.tags.get('id') }}_owner" name="{{ form.get('name') }}[{{ form.tags.get('name') }}][owner]"  value="">
-    <input type="hidden" id="{{ form.tags.get('id') }}_all"   name="{{ form.get('name') }}[{{ form.tags.get('name') }}][all]"  value="">
+    <input type="hidden" id="{{ form.tags.vars.id }}_owner" name="{{ form.tags.vars.full_name }}[owner]"  value="">
+    <input type="hidden" id="{{ form.tags.vars.id }}_all"   name="{{ form.tags.vars.full_name }}[all]"  value="">
 
     <script type="text/javascript">
         $(document).ready(function () {
             var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
-            var tagView = new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.get('id') }}', tags: tags});
+            new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.vars.id }}', tags: tags});
 
             {% if not resource_granted('oro_tag_assign_unassign') %}
-                $('#{{ form.tags.get('id') }}').select2("readonly", true);
+                $('#{{ form.tags.vars.id }}').select2("readonly", true);
             {% endif %}
         });
     </script>
