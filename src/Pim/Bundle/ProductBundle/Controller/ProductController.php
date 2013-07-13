@@ -577,7 +577,6 @@ class ProductController extends Controller
     {
         return $this
             ->getDoctrine()
-            ->getRepository('OroDataAuditBundle:Audit')
-        ;
+            ->getRepository('OroDataAuditBundle:Audit');
     }
 }

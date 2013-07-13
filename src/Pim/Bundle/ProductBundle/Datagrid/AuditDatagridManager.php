@@ -121,6 +121,9 @@ DQL;
         $fieldsCollection->add($fieldLogged);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function createQuery()
     {
         $query = parent::createQuery();
@@ -133,4 +136,3 @@ DQL;
         return $query;
     }
 }
-
