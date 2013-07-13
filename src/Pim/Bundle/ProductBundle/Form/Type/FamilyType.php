@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 
 /**
  * Type for product family form
@@ -34,22 +35,9 @@ class FamilyType extends AbstractType
                     'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Family',
                     'property_path'     => 'translations'
                 )
-            )
-            ->add(
-                'attributeAsLabel',
-                'entity',
-                array(
-                    'required'      => false,
-                    'empty_value'   => 'Id',
-                    'label'         => 'Attribute used as label',
-                    'class'         => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-                    'query_builder' => function (EntityRepository $repository) {
-                        return $repository->createQueryBuilder('a')
-                            ->where("a.attributeType in('pim_product_text', 'pim_product_identifier')")
-                            ->orderBy('a.code');
-                    },
-                )
             );
+        $builder->addEventSubscriber(new AddAttributeAsLabelSubscriber($builder->getFormFactory()));
+
     }
 
     /**
