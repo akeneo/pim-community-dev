@@ -146,7 +146,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if (null === $this->attributes) {
             /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
             $attributeRepository = $this->flexibleManager->getAttributeRepository();
-            $attributes = $attributeRepository->findByWithTranslations();
+            $attributes = $attributeRepository->findAllWithTranslations();
             $this->attributes = array();
             /** @var $attribute AbstractAttribute */
             foreach ($attributes as $attribute) {

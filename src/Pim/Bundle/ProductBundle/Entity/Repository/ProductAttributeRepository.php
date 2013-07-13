@@ -15,11 +15,9 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 class ProductAttributeRepository extends AttributeRepository
 {
     /**
-     * @param $localeCode the locale to use for name translation
-     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findByWithTranslations()
+    public function findAllWithTranslations()
     {
         $qb = $this->createQueryBuilder('a')
             ->addSelect('translation')
@@ -63,8 +61,7 @@ class ProductAttributeRepository extends AttributeRepository
     public function findAllGrouped()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->where($qb->expr()->isNotNull('a.group'));
-// TODO order ?           ->orderBy('a.label');
+        $qb->where($qb->expr()->isNotNull('a.group'))->orderBy('a.code');
 
         return $qb->getQuery()->getResult();
     }

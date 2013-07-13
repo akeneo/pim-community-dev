@@ -127,20 +127,19 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function createGroupField()
     {
-        // get groups
         $em = $this->productManager->getStorageManager();
-        $groups = $em->getRepository('PimProductBundle:AttributeGroup')
-            ->findAllOrderedByName($this->productManager->getLocale());
+        $groups = $em->getRepository('PimProductBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getName();
         }
+        asort($choices);
 
         $field = new FieldDescription();
         $field->setName('group');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translate('Group'),
                 'field_name'  => 'group',
                 'filter_type' => FilterInterface::TYPE_CHOICE,

@@ -13,6 +13,14 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 class AttributeGroupRepository extends EntityRepository
 {
     /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function buildAllWithTranslations()
+    {
+        return $this->build()->addSelect('translation')->leftJoin('attribute_group.translations', 'translation');
+    }
+
+    /**
      * @param $localeCode the locale to use for name translation
      *
      * @return \Doctrine\ORM\QueryBuilder
