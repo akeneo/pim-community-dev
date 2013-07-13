@@ -43,7 +43,7 @@ class FamilyController extends Controller
     public function createAction()
     {
         $family   = new Family;
-        $families = $this->getFamilyRepository()->findAllOrderedByLabel();
+        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
 
         if ($this->get('pim_product.form.handler.family')->process($family)) {
             $this->addFlash('success', 'Product family successfully created');

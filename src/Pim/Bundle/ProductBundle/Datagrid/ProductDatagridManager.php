@@ -164,13 +164,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createFamilyField()
     {
-        // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:Family')->findAllOrderedByLabel();
-        $choices = array();
-        foreach ($families as $family) {
-            $choices[$family->getId()] = $family->getLabel();
-        }
+        $choices = $em->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
         $field = new FieldDescription();
         $field->setName('family');
