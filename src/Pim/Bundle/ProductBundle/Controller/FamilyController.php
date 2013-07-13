@@ -43,26 +43,16 @@ class FamilyController extends Controller
     public function createAction()
     {
         $family   = new Family;
-        $form     = $this->createForm(new FamilyType(), $family);
-        $families = $this->getFamilyRepository()->findAllOrderedByName();
-        $request  = $this->getRequest();
+        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
 
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
+        if ($this->get('pim_product.form.handler.family')->process($family)) {
+            $this->addFlash('success', 'Product family successfully created');
 
-            if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($family);
-                $em->flush();
-
-                $this->addFlash('success', 'Product family successfully created');
-
-                return $this->redirectToFamilyAttributesTab($family->getId());
-            }
+            return $this->redirectToFamilyAttributesTab($family->getId());
         }
 
         return array(
-            'form'     => $form->createView(),
+            'form'     => $this->get('pim_product.form.family')->createView(),
             'families' => $families,
         );
     }
@@ -84,27 +74,16 @@ class FamilyController extends Controller
     public function editAction($id)
     {
         $family   = $this->findFamilyOr404($id);
-        $families = $this->getFamilyRepository()->findAllOrderedByName();
-        $request  = $this->getRequest();
-        $form     = $this->createForm(new FamilyType(), $family);
+        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
 
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
+        if ($this->get('pim_product.form.handler.family')->process($family)) {
+            $this->addFlash('success', 'Product family successfully updated.');
 
-            if ($form->isValid()) {
-                $this->getEntityManager()->persist($family);
-                $this->getEntityManager()->flush();
-
-                $this->addFlash('success', 'Product family successfully updated.');
-
-                return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
-            }
-
-            $this->getEntityManager()->refresh($family);
+            return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
         }
 
         return array(
-            'form'           => $form->createView(),
+            'form'           => $this->get('pim_product.form.family')->createView(),
             'families'       => $families,
             'family'         => $family,
             'attributesForm' => $this->getAvailableProductAttributesForm(

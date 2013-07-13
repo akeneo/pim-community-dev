@@ -39,6 +39,11 @@ services:
         tags:
             - { name: form.type, alias: pim_attribute_group }
 
+    pim_product.form.type.family:
+        class: %pim_product.type.family.class%
+        tags:
+            - { name: form.type, alias: pim_family }
+
     pim_product.form.type.export_profile:
         class: %pim_product.type.export_profile.class%
         tags:

@@ -61,6 +61,7 @@ class CategorySubscriber implements EventSubscriberInterface
 
         $isDynamic = $data->isDynamic() ? 1 : 0;
         $form = $event->getForm();
+        // TODO New in version 2.2: The ability to pass a string into FormInterface::add was added in Symfony 2.2.
         $form->add(
             $this->factory->createNamed('dynamic', 'hidden', $isDynamic, array('required' => false))
         );

@@ -32,6 +32,9 @@ class ProductType extends FlexibleType
         $this->productFormView = $productFormView;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['groups'] = $this->productFormView->getView();

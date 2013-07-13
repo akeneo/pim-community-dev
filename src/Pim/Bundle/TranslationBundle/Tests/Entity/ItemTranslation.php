@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Item Translation
@@ -13,4 +13,32 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
  */
 class ItemTranslation extends AbstractTranslation
 {
+    /**
+     * @var string $name
+     */
+    protected $name;
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return AbstractTranslation
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -1,9 +1,12 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 
 /**
  * Type for product family form
@@ -21,12 +24,10 @@ class FamilyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $data = $builder->getData() ?: null;
-
         $builder
             ->add('code')
             ->add(
-                'name',
+                'label',
                 'pim_translatable_field',
                 array(
                     'field'             => 'label',
@@ -34,18 +35,9 @@ class FamilyType extends AbstractType
                     'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Family',
                     'property_path'     => 'translations'
                 )
-            )
-            ->add(
-                'attributeAsLabel',
-                'entity',
-                array(
-                    'required'    => false,
-                    'empty_value' => 'Id',
-                    'label'       => 'Attribute used as label',
-                    'choices'     => $data ? $data->getAttributeAsLabelChoices() : array(),
-                    'class'       => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-                )
             );
+        $builder->addEventSubscriber(new AddAttributeAsLabelSubscriber($builder->getFormFactory()));
+
     }
 
     /**
@@ -65,6 +57,6 @@ class FamilyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_family';
+        return 'pim_family';
     }
 }

@@ -6,9 +6,9 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Custom properties for a product attribute
@@ -23,19 +23,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
  */
-class ProductAttribute extends AbstractEntityAttribute implements Translatable
+class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface
 {
-    /**
-     * @var string $label
-     *
-     * @ORM\Column(name="label", type="string", length=255)
-     * @Gedmo\Translatable
-     */
-    protected $label;
-
     /**
      * Overrided to change target entity name
      *
@@ -227,20 +218,18 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $allowedFileExtensions;
 
     /**
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
      * @var string $locale
-     *
-     * @Gedmo\Locale
      */
-    protected $locale;
+    protected $locale = self::FALLBACK_LOCALE;
 
     /**
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="ProductAttributeTranslation",
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"}
      * )
@@ -354,7 +343,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __toString()
     {
-        return $this->label;
+        return ($this->getLabel() != '') ? (string) $this->getLabel() : $this->getCode();
     }
 
     /**
@@ -968,60 +957,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return ProductAttribute
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function addTranslation(ProductAttributeTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function removeTranslation(ProductAttributeTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
-
-        return $this;
-    }
-
-    /**
      * Get sortOrder
      *
      * @return number
@@ -1063,6 +998,101 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
             }
             $this->$method($value);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslation($locale = null)
+    {
+        $locale = ($locale) ? $locale : $this->locale;
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation      = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTranslation(AbstractTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTranslation(AbstractTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation';
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation()->getLabel();
+
+        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return string
+     */
+    public function setLabel($label)
+    {
+        $translation = $this->getTranslation()->setLabel($label);
 
         return $this;
     }

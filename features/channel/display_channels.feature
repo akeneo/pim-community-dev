@@ -8,13 +8,13 @@ Feature: Display channels
     Given the following categories:
       | code           | title          |
       | ipad_catalog   | iPad Catalog   |
-      | mobile_catelog | Mobile Catalog |
-      | master_catelog | Master Catalog |
+      | mobile_catalog | Mobile Catalog |
+      | master_catalog | Master Catalog |
     And the following channels:
       | code              | name      | category       |
-      | ipad_channel      | iPad      | iPad Catalog   |
-      | mobile_channel    | Mobile    | Mobile Catalog |
-      | ecommerce_channel | eCommerce | Master Catalog |
+      | ipad_channel      | iPad      | ipad_catalog   |
+      | mobile_channel    | Mobile    | mobile_catalog |
+      | ecommerce_channel | eCommerce | master_catalog |
     And I am logged in as "admin"
 
   Scenario: Succesfully display channels

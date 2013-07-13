@@ -20,13 +20,6 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_entity }
 
-    pim_grid.orm.filter.type.locale:
-        class:     Pim\Bundle\GridBundle\Filter\ORM\LocaleFilter
-        arguments:
-            - "@translator"
-        tags:
-            - { name: oro_grid.filter.type, alias: pim_grid_orm_locale }
-
     pim_grid.orm.filter.type.scope:
         class:     Pim\Bundle\GridBundle\Filter\ORM\ScopeFilter
         arguments:

@@ -12,12 +12,35 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
  */
 class AttributeGroupRepository extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function buildAllWithTranslations()
+    {
+        return $this->build()->addSelect('translation')->leftJoin('attribute_group.translations', 'translation');
+    }
 
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildAllOrderedBySortOrder()
+    protected function buildAllOrderedBySortOrder()
     {
         return $this->build()->orderBy('attribute_group.sortOrder');
+    }
+
+    /**
+     * Find all ordered by name with fallback to default mecanism
+     *
+     * @return array
+     */
+    public function getIdToNameOrderedBySortOrder()
+    {
+        $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
+        $orderedGroups = array();
+        foreach ($groups as $group) {
+            $orderedGroups[$group->getId()]= $group->getName();
+        }
+
+        return $orderedGroups;
     }
 }

@@ -51,9 +51,6 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->getProductManager()->setLocale($this->getDataLocale());
-        $this->getProductManager()->setScope($this->getDataScope());
-
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.datagrid.manager.product');
         $datagrid = $gridManager->getDatagrid();
@@ -64,7 +61,14 @@ class ProductController extends Controller
             $view = 'PimProductBundle:Product:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        $params = array(
+            'datagrid'   => $datagrid->createView(),
+            'locales'    => $this->getLocaleManager()->getActiveLocales(),
+            'dataLocale' => $this->getDataLocale(),
+            'dataScope' => $this->getDataScope(),
+        );
+
+        return $this->render($view, $params);
     }
 
     /**
@@ -537,7 +541,7 @@ class ProductController extends Controller
      *
      * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
      */
-    protected function getDataAuditDatagrid(Product $product)
+    protected function getDataAuditDatagrid(ProductInterface $product)
     {
         $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
         //
@@ -552,7 +556,7 @@ class ProductController extends Controller
             ->setParameters(
                 array(
                     'objectId'    => $product->getId(),
-                    'objectClass' => 'Pim\\Bundle\\ProductBundle\\Entity\\Product'
+                    'objectClass' => get_class($product)
                 )
             );
 

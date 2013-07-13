@@ -147,13 +147,12 @@ class CategoryTreeControllerTest extends ControllerTest
         )->first();
 
         // assert fields count
-        $this->assertCount(2, $crawler->filter('div > input'));
+        $this->assertCount(1, $crawler->filter('div > input'));
         $form = $crawler->form();
 
         $values = array(
             'pim_category[code]'           => self::NODE_CODE,
-            'pim_category[title][default]' => self::NODE_TITLE,
-            'pim_category[dynamic]'        => self::NODE_IS_DYNAMIC
+            'pim_category[title][default]' => self::NODE_TITLE
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
@@ -163,7 +162,6 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $category);
         $this->assertEquals(self::NODE_CODE, $category->getCode());
         $this->assertEquals(self::NODE_TITLE, $category->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->isDynamic());
     }
 
     /**
@@ -260,13 +258,12 @@ class CategoryTreeControllerTest extends ControllerTest
         )->first();
 
         // assert fields count
-        $this->assertCount(2, $crawler->filter('div > input'));
+        $this->assertCount(1, $crawler->filter('div > input'));
         $form = $crawler->form();
 
         $values = array(
             'pim_category[code]'           => self::NODE_EDITED_CODE,
-            'pim_category[title][default]' => self::NODE_TITLE,
-            'pim_category[dynamic]'        => self::NODE_IS_DYNAMIC
+            'pim_category[title][default]' => self::NODE_TITLE
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
@@ -276,7 +273,6 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $node);
         $this->assertEquals(self::NODE_EDITED_CODE, $node->getCode());
         $this->assertEquals(self::NODE_TITLE, $node->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $node->isDynamic());
     }
 
     /**
@@ -286,7 +282,7 @@ class CategoryTreeControllerTest extends ControllerTest
     public function testRemove()
     {
         // get tree entity
-        $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
+        $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_EDITED_CODE));
         $uri = '/enrich/category-tree/'. $tree->getId() .'/remove';
 
         // assert without authentication

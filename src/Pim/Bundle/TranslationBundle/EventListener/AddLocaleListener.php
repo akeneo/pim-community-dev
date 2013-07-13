@@ -1,0 +1,58 @@
+<?php
+
+namespace Pim\Bundle\TranslationBundle\EventListener;
+
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+
+/**
+ * Aims to inject user context locale into translatable entities
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+class AddLocaleListener implements EventSubscriber
+{
+    /**
+     * Locale to inject
+     *
+     * @var string
+     */
+    protected $locale = TranslatableInterface::FALLBACK_LOCALE;
+
+    /**
+     * Specifies the list of events to listen
+     *
+     * @return array
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            'postLoad'
+        );
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Post load
+     * @param LifecycleEventArgs $args
+     */
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if ($entity instanceof TranslatableInterface) {
+            $entity->setLocale($this->locale);
+        }
+    }
+}

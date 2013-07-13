@@ -3,16 +3,14 @@
 namespace Pim\Bundle\ProductBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
-
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Gedmo\Translatable\TranslatableListener;
-use Symfony\Component\HttpKernel\HttpKernel;
+use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 
 /**
  * User context listener
@@ -25,14 +23,13 @@ use Symfony\Component\HttpKernel\HttpKernel;
  */
 class UserContextListener implements EventSubscriberInterface
 {
-
     /**
      * @var SecurityContextInterface $securityContext
      */
     protected $securityContext;
 
     /**
-     * @var TranslatableListener $listener
+     * @var AddLocaleListener $listener
      */
     protected $listener;
 
@@ -45,12 +42,12 @@ class UserContextListener implements EventSubscriberInterface
      * Constructor
      *
      * @param SecurityContextInterface $securityContext
-     * @param TranslatableListener     $listener
+     * @param AddLocaleListener        $listener
      * @param ProductManager           $productManager
      */
     public function __construct(
         SecurityContextInterface $securityContext,
-        TranslatableListener $listener,
+        AddLocaleListener $listener,
         ProductManager $productManager
     ) {
         $this->securityContext = $securityContext;
@@ -79,16 +76,18 @@ class UserContextListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        $this->configureTranslatableListener();
+        $this->configureTranslatableListener($request);
         $this->configureProductManager($request);
     }
 
     /**
      * Configure gedmo translatable locale
+     *
+     * @param Request $request
      */
-    protected function configureTranslatableListener()
+    protected function configureTranslatableListener(Request $request)
     {
-        $this->listener->setTranslatableLocale($this->getCatalogLocale());
+        $this->listener->setLocale($this->getDataLocale($request));
     }
 
     /**

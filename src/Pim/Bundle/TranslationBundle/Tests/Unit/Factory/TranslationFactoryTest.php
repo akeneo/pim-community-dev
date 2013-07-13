@@ -28,8 +28,6 @@ class TranslationFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation', $translation);
         $this->assertEquals('fr_FR', $translation->getLocale());
-        $this->assertEquals('Pim\Bundle\TranslationBundle\Tests\Entity\Item', $translation->getObjectClass());
-        $this->assertEquals('bar', $translation->getField());
     }
 
     /**
