@@ -678,10 +678,10 @@ class FixturesContext extends RawMinkContext
         return $role;
     }
 
-    private function getCategory($title)
+    private function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array(
-            'title' => $title,
+            'code' => $code,
         ));
     }
 
