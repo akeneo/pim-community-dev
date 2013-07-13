@@ -25,8 +25,6 @@
     {% endset %}
 
     {% set subtitle %}
-    
-    
         <div id="locale-switcher" class="btn-group sub-title">
             <span class="product-name dropdown-toggle" data-toggle="dropdown">
                 {{ dataLocale|flag }}
@@ -47,10 +45,6 @@
                 {% endfor %}
             </ul>
         </div>
-
-    
-        <div id="locale-switcher" class="sub-title"></div>
-        <div id="scope-switcher" class="sub-title"></div>
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle) }}
