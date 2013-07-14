@@ -92,6 +92,8 @@ Oro.Navigation = Backbone.Router.extend({
 
     tempCache: '',
 
+    formState: '',
+
     /**
      * Routing default action
      *
@@ -164,7 +166,6 @@ Oro.Navigation = Backbone.Router.extend({
             if (cacheData = this.getCachedData()) {
                 this.tempCache = cacheData;
                 this.handleResponse(cacheData, {fromCache: true});
-                this.restoreFormState(cacheData);
                 this.validatePageCache(cacheData);
                 this.afterRequest();
             } else {
@@ -185,11 +186,9 @@ Oro.Navigation = Backbone.Router.extend({
                     }, this),
 
                     success: _.bind(function (data, textStatus, jqXHR) {
-                        data = this.getCorrectedData(data);
                         if (!cacheData) {
                             this.handleResponse(data);
                             this.updateDebugToolbar(jqXHR);
-                            this.savePageToCache(data);
                             this.afterRequest();
                         }
                         if (useCache) {
@@ -201,19 +200,33 @@ Oro.Navigation = Backbone.Router.extend({
         }
     },
 
+    /**
+     * Restore form state from cache
+     *
+     * @param cacheData
+     */
     restoreFormState: function(cacheData) {
-        if (cacheData.states) {
-            var formState = cacheData.states.getObjectCache('form');
-            if (formState['form_data'].length) {
-                Oro.pagestate.model.setData(formState['form_data']);
-                Oro.pagestate.restore();
-                Oro.pagestate.needServerRestore = false;
-            }
+        var formState = {};
+        if (this.formState) {
+            formState = this.formState;
+        } else if (cacheData.states) {
+            formState = cacheData.states.getObjectCache('form');
+        }
+        if (formState['form_data'] && formState['form_data'].length) {
+            Oro.pagestate.updateState(formState['form_data']);
+            Oro.pagestate.restore();
+            Oro.pagestate.needServerRestore = false;
         }
     },
 
+    /**
+     * Validate page cache comparing cached content md5 with the one from server
+     *
+     * @param cacheData
+     */
     validateMd5Request: function(cacheData) {
         var pageUrl = this.baseUrl + this.url;
+        var url = this.url;
         $.ajax({
             url: pageUrl,
             data:{'hash-navigation-md5' : true, 'x-oro-hash-navigation' : true},
@@ -221,25 +234,34 @@ Oro.Navigation = Backbone.Router.extend({
             }, this),
 
             success: _.bind(function (data, textStatus, jqXHR) {
-                data = this.getCorrectedData(data);
-                this.checkContentMd5(data, cacheData);
+                if (this.getCorrectedData(data).content_md5 !== cacheData.content_md5) {
+                    this.showOutdatedMessage(url);
+                }
             }, this)
         });
     },
 
+    /**
+     * Validate page cache to check if its up to date. Comparing grid state(if any) and content md5
+     *
+     * @param cacheData
+     */
     validatePageCache: function(cacheData) {
-        var isValid = true;
         if (cacheData.states) {
+            var formState = cacheData.states.getObjectCache('form')
             var girdState = cacheData.states.getObjectCache('grid');
-            if (girdState['collection']) {
+            //grid states on form pages are not validated
+            if (girdState['collection'] && !formState['form_data']) {
                 var collection = girdState['collection'].clone();
+                var cachedCollection = girdState['collection'];
+                var url = this.url;
                 var options = {ignoreSaveStateInUrl: true};
                 /**
                  * Comparing cached collection with fetched from server
                  */
                 options.success = _.bind(function () {
-                    if (!_.isEqual(girdState['collection'].toJSON(),collection.toJSON())) {
-                        this.showOutdatedMessage();
+                    if (!_.isEqual(cachedCollection.toJSON(),collection.toJSON())) {
+                        this.showOutdatedMessage(url);
                     }
                 }, this);
                 collection.fetch(options);
@@ -248,13 +270,16 @@ Oro.Navigation = Backbone.Router.extend({
         this.validateMd5Request(cacheData);
     },
 
-    showOutdatedMessage: function() {
-        Oro.NotificationMessage('warning', "Content of the page is outdated, please <span class='page-refresh'>click here</span> to refresh the page");
-    },
-
-    checkContentMd5: function(data, cacheData) {
-        if (data.content_md5 !== cacheData.content_md5) {
-            this.showOutdatedMessage();
+    /**
+     * Show "refresh page" message
+     *
+     * @param url
+     */
+    showOutdatedMessage: function(url) {
+        if (this.useCache && this.url == url) {
+            var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
+            message = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
+            Oro.NotificationMessage('warning', message);
         }
     },
 
@@ -270,11 +295,16 @@ Oro.Navigation = Backbone.Router.extend({
             entryPoint = entryPoint.substr(0, entryPoint.indexOf('.php') + 4);
         }
         if(debugBarToken) {
-            $('.sf-toolbarreset').remove();
+            var url = entryPoint + '/_wdt/' + debugBarToken;
             $.get(
-                this.baseUrl + entryPoint + '/_wdt/' + debugBarToken,
+                this.baseUrl + url,
                 _.bind(function(data) {
-                    this.selectorCached['container'].append(data);
+                    var dtContainer = $('<div class="sf-toolbar" id="sfwdt' + debugBarToken + '" style="display: block;" data-sfurl="' + url + '"/>');
+                    dtContainer.html(data);
+                    var scrollable = $('.scrollable-container:last');
+                    var container = scrollable.length ? scrollable : this.selectorCached['container'];
+                    $('.sf-toolbar').remove();
+                    container.append(dtContainer);
                 }, this)
             );
         }
@@ -284,7 +314,6 @@ Oro.Navigation = Backbone.Router.extend({
      * Save page content to temp cache
      *
      * @param data
-     * @param url
      */
     savePageToCache: function(data) {
         this.tempCache = {};
@@ -330,7 +359,9 @@ Oro.Navigation = Backbone.Router.extend({
      * @param url
      */
     updateCachedContent: function(objectName, state) {
-        this.tempCache.states.saveObjectCache(objectName, state);
+        if (this.tempCache.states) {
+            this.tempCache.states.saveObjectCache(objectName, state);
+        }
     },
 
     /**
@@ -421,6 +452,8 @@ Oro.Navigation = Backbone.Router.extend({
                     } else {
                         girdState['collection'] = datagridCollection.collection;
                     }
+                } else { //updating temp cache with collection
+                    this.updateCachedContent('grid', {'collection': datagridCollection.collection});
                 }
             },
             this
@@ -458,12 +491,21 @@ Oro.Navigation = Backbone.Router.extend({
             "pinbar_item_minimized",
             function () {
                 this.useCache = true;
-                var data = this.tempCache;
-                if (data.states) {
-                    var formState = data.states.getObjectCache('form');
-                    formState['form_data'] = Oro.pagestate.model.get('pagestate').data;
-                }
                 this.addCurrentPageToCache();
+            },
+            this
+        );
+
+        /**
+         * Add "pinned" page to cache
+         */
+        Oro.Events.bind(
+            "pagestate_collected",
+            function (pagestateModel) {
+                this.updateCachedContent('form', {'form_data': pagestateModel.get('pagestate').data});
+                if (this.useCache) {
+                    this.addCurrentPageToCache();
+                }
             },
             this
         );
@@ -527,7 +569,11 @@ Oro.Navigation = Backbone.Router.extend({
         );
 
         $(document).on('click', '.page-refresh', _.bind(function() {
-            this.tempCache = this.getCachedData();
+            var data = this.getCachedData();
+            //saving form state for future restore after content refresh
+            if (data.states) {
+                this.formState = data.states.getObjectCache('form');
+            }
             this.clearPageCache(this.url);
             this.loadPage();
         }, this)
@@ -546,6 +592,8 @@ Oro.Navigation = Backbone.Router.extend({
     beforeRequest: function() {
         this.gridRoute = ''; //clearing grid router
         this.loadingMask.show();
+        this.tempCache = '';
+        //reset pagestate restore flag
         Oro.pagestate.needServerRestore = true;
         /**
          * Backbone event. Fired before navigation ajax request is started
@@ -589,18 +637,31 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Make data more bulletproof.
      *
-     * @param {String} data
+     * @param {String} rawData
      * @returns {Object}
+     * @param prevPos
      */
-    getCorrectedData: function(data) {
-        data = $.trim(data);
-        var jsonStartPos = data.indexOf('{');
-        var additionalData = '';
-        if (jsonStartPos > 0) {
-            additionalData = data.substr(0, jsonStartPos);
-            data = data.substr(jsonStartPos);
+    getCorrectedData: function(rawData, prevPos) {
+        if (_.isUndefined(prevPos)) {
+            prevPos = -1;
         }
-        var dataObj = (data.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': data} : $.parseJSON(data);
+        rawData = $.trim(rawData);
+        var jsonStartPos = rawData.indexOf('{', prevPos + 1);
+        var additionalData = '';
+        var dataObj = null;
+        if (jsonStartPos > 0) {
+            additionalData = rawData.substr(0, jsonStartPos);
+            var data = rawData.substr(jsonStartPos);
+            try {
+                dataObj = $.parseJSON(data);
+            } catch (err) {
+                return this.getCorrectedData(rawData, jsonStartPos);
+            }
+        } else if (jsonStartPos === 0) {
+            dataObj = $.parseJSON(rawData);
+        } else {
+            throw "Unexpected content format";
+        }
 
         if (additionalData) {
             additionalData = '<div class="alert alert-info fade in top-messages"><a class="close" data-dismiss="alert" href="#">&times;</a>'
@@ -617,78 +678,93 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Handling ajax response data. Updating content area with new content, processing title and js
      *
-     * @param {String} data
+     * @param {String} rawData
      * @param options
      */
-    handleResponse: function(data, options) {
+    handleResponse: function (rawData, options) {
         if (_.isUndefined(options)) {
             options = {};
         }
         try {
-            if (data.redirect !== undefined && data.redirect) {
-                var redirectUrl = data.location;
-                var urlParts = redirectUrl.split('url=');
-                if (urlParts[1]) {
-                    redirectUrl = urlParts[1];
-                }
-                if(data.fullRedirect) {
-                    var delimiter = '?';
-                    if (redirectUrl.indexOf(delimiter) !== -1) {
-                        delimiter = '&';
-                    }
-                    window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
+            var data = rawData;
+            if (!options.fromCache) {
+                data = (rawData.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': rawData} : this.getCorrectedData(rawData);
+            }
+            if (_.isObject(data)) {
+                if (data.redirect !== undefined && data.redirect) {
+                    this.processRedirect(data);
                 } else {
-                    this.clearPageCache(redirectUrl);
-                    this.setLocation(redirectUrl);
+                    if (!options.fromCache && !options.skipCache) {
+                        this.savePageToCache(data);
+                    }
+                    this.clearContainer();
+                    var content = data.content;
+                    this.selectorCached.container.html(content);
+                    this.selectorCached.menu.html(data.mainMenu);
+                    /**
+                     * Collecting javascript from head and append them to content
+                     */
+                    if (data.scripts.length) {
+                        this.selectorCached.container.append(data.scripts);
+                    }
+                    /**
+                     * Setting page title
+                     */
+                    document.title = data.title;
+                    /**
+                     * Setting serialized titles for pinbar and favourites buttons
+                     */
+                    var titleSerialized = data.titleSerialized;
+                    if (titleSerialized) {
+                        titleSerialized = $.parseJSON(titleSerialized);
+                        $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
+                    }
+                    this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                    this.processClicks(this.selectorCached.container.find(this.selectors.links));
+                    this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
+                    this.processForms(this.selectorCached.container.find(this.selectors.forms));
+                    this.processPinButton(data.showPinButton);
+                    this.restoreFormState(this.tempCache);
+                    if (!options.fromCache) {
+                        this.updateMenuTabs(data);
+                        this.addMessages(data.flashMessages);
+                        Oro.Events.trigger("hash_navigation_request:refresh", this);
+                    }
+                    this.hideActiveDropdowns();
                 }
-            } else {
-                this.clearContainer();
-                var content = data.content;
-                /*if (options.fromCache) {
-                 //don't load additional scripts for cached page to prevent dublicated scripts loading
-                 content = content.replace(/<script.*?><\/script>/ig, '');
-                 }*/
-                this.selectorCached.container.html(content);
-                this.selectorCached.menu.html(data.mainMenu);
-                /**
-                 * Collecting javascript from head and append them to content
-                 */
-                if (data.scripts.length) {
-                    this.selectorCached.container.append(data.scripts);
-                }
-                /**
-                 * Setting page title
-                 */
-                document.title = data.title;
-                /**
-                 * Setting serialized titles for pinbar and favourites buttons
-                 */
-                var titleSerialized = data.titleSerialized;
-                if (titleSerialized) {
-                    titleSerialized = $.parseJSON(titleSerialized);
-                    $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
-                }
-                this.processClicks(this.selectorCached.menu.find(this.selectors.links));
-                this.processClicks(this.selectorCached.container.find(this.selectors.links));
-                this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
-                this.processForms(this.selectorCached.container.find(this.selectors.forms));
-                this.processPinButton(data.showPinButton);
-                this.restoreFormState(this.tempCache);
-                if (!options.fromCache) {
-                    this.updateMenuTabs(data);
-                    this.addMessages(data.flashMessages);
-                    Oro.Events.trigger("hash_navigation_request:refresh", this);
-                }
-                this.hideActiveDropdowns();
             }
         }
         catch (err) {
             if (!_.isUndefined(console)) {
                 console.error(err);
             }
-            this.showError('', "Sorry, page was not loaded correctly");
+            if (Oro.debug) {
+                document.body.innerHTML = rawData;
+            } else {
+                this.showError('', Translator.get("Sorry, page was not loaded correctly"));
+            }
         }
         this.triggerCompleteEvent();
+    },
+
+    processRedirect: function (data) {
+        var redirectUrl = data.location;
+        var urlParts = redirectUrl.split('url=');
+        if (urlParts[1]) {
+            redirectUrl = urlParts[1];
+        }
+        if(data.fullRedirect) {
+            var delimiter = '?';
+            if (redirectUrl.indexOf(delimiter) !== -1) {
+                delimiter = '&';
+            }
+            window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
+        } else {
+            //clearing cache for current and redirect urls, e.g. form and grid page
+            this.clearPageCache(this.url);
+            this.clearPageCache(redirectUrl);
+            this.setLocation(redirectUrl);
+        }
     },
 
     /**
@@ -862,8 +938,7 @@ Oro.Navigation = Backbone.Router.extend({
                                 this.afterRequest();
                             }, this),
                             success: _.bind(function (data) {
-                                data = this.getCorrectedData(data);
-                                this.handleResponse(data);
+                                this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response
                                 this.afterRequest();
                             }, this)
                         });
