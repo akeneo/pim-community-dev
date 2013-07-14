@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Form\View;
 
 use Symfony\Component\Form\FormView;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
@@ -27,10 +27,10 @@ class ProductFormView
     }
 
     /**
-     * @param ProductValue $value
-     * @param FormView     $view
+     * @param ProductValueInterface $value
+     * @param FormView              $view
      */
-    public function addChildren(ProductValue $value, FormView $view)
+    public function addChildren(ProductValueInterface $value, FormView $view)
     {
         $attribute = $value->getAttribute();
         $group = $attribute->getVirtualGroup();
@@ -93,10 +93,10 @@ class ProductFormView
     }
 
     /**
-     * @param ProductValue $value
-     * @param FormView     $view
+     * @param ProductValueInterface $value
+     * @param FormView              $view
      */
-    private function addValue(ProductValue $value, FormView $view)
+    private function addValue(ProductValueInterface $value, FormView $view)
     {
         $attribute = $value->getAttribute();
         $group     = $attribute->getVirtualGroup();

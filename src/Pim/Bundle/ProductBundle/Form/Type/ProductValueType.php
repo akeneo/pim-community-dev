@@ -10,7 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 
 /**
  * Product value form type
@@ -41,7 +41,7 @@ class ProductValueType extends FlexibleValueType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if ($form->getData() instanceof ProductValue) {
+        if ($form->getData() instanceof ProductValueInterface) {
             $this->productFormView->addChildren($form->getData(), $view);
         }
     }
