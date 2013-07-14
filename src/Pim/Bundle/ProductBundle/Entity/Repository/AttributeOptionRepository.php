@@ -23,6 +23,9 @@ class AttributeOptionRepository extends OroAttributeOptionRepository
      */
     public function findAllForAttribute(ProductAttribute $attribute)
     {
-        return $this->createQueryBuilder('o')->where('o.attribute = '.(int) $attribute->getId());
+        return $this->createQueryBuilder('o')
+            ->addSelect('OptionValue')
+            ->leftJoin('o.optionValues', 'OptionValue')
+            ->where('o.attribute = '.(int) $attribute->getId());
     }
 }
