@@ -58,10 +58,10 @@ class ConfigSubscriber implements EventSubscriberInterface
             $this->extendManager->getConfigProvider()->createEntityConfig(
                 $event->getClassName(),
                 $values = array(
-                    'is_extend'    => 'true',
+                    'is_extend'    => true,
                     'extend_class' => $extendClass,
                     'proxy_class'  => $proxyClass,
-                    'owner'        => 'System'
+                    'type'        => 'System'
                 )
             );
         }

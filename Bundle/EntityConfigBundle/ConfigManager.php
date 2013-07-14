@@ -187,6 +187,12 @@ class ConfigManager
             && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
                 'className' => $doctrineMetadata->getName()))
         ) {
+            foreach ($this->getProviders() as $provider) {
+                $provider->createEntityConfig(
+                    $doctrineMetadata->getName(),
+                    $provider->getConfigContainer()->getEntityDefaultValues()
+                );
+            }
 
             $this->eventDispatcher->dispatch(
                 Events::NEW_ENTITY_CONFIG,
@@ -196,11 +202,6 @@ class ConfigManager
             foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
                 $type = $doctrineMetadata->getTypeOfField($fieldName);
 
-                $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD_CONFIG,
-                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                );
-
                 foreach ($this->getProviders() as $provider) {
                     $provider->createFieldConfig(
                         $doctrineMetadata->getName(),
@@ -209,16 +210,16 @@ class ConfigManager
                         $provider->getConfigContainer()->getFieldDefaultValues()
                     );
                 }
+
+                $this->eventDispatcher->dispatch(
+                    Events::NEW_FIELD_CONFIG,
+                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
+                );
             }
 
             foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
                 $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
 
-                $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD_CONFIG,
-                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                );
-
                 foreach ($this->getProviders() as $provider) {
                     $provider->createFieldConfig(
                         $doctrineMetadata->getName(),
@@ -227,12 +228,10 @@ class ConfigManager
                         $provider->getConfigContainer()->getFieldDefaultValues()
                     );
                 }
-            }
 
-            foreach ($this->getProviders() as $provider) {
-                $provider->createEntityConfig(
-                    $doctrineMetadata->getName(),
-                    $provider->getConfigContainer()->getEntityDefaultValues()
+                $this->eventDispatcher->dispatch(
+                    Events::NEW_FIELD_CONFIG,
+                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
             }
         }
@@ -343,28 +342,35 @@ class ConfigManager
         $fieldDiff  = array();
 
         foreach ($this->getProviders() as $provider) {
-            $config    = $provider->getConfig($newEntity->getClassName());
-            $oldConfig = $oldConfigs[$provider->getScope()];
+            $configValues = $newEntity->toArray($provider->getScope());
+            $oldConfig    = $oldConfigs[$provider->getScope()];
 
-            $resultDiff = array_diff($config->getValues(), $oldConfig->getValues());
+            $resultDiff = array_diff($configValues, $oldConfig->getValues());
             if (count($resultDiff)) {
                 $entityDiff[$provider->getScope()] = $resultDiff;
             }
 
-            foreach ($oldConfig->getFields() as $oldFieldConfig) {
-                $fieldConfig = $provider->getFieldConfig($newEntity->getClassName(), $oldFieldConfig->getCode());
+            foreach ($oldConfig->getFields() as $code => $oldFieldConfig) {
+                $fieldConfigValues = $newEntity->getField($code)->toArray($provider->getScope());
 
-                $resultDiff = array_diff($fieldConfig->getValues(), $oldFieldConfig->getValues());
+                $resultDiff = array_diff($fieldConfigValues, $oldFieldConfig->getValues());
                 if (count($resultDiff)) {
-                    $fieldDiff[$fieldConfig->getCode()][$provider->getScope()] = $resultDiff;
+                    $fieldDiff[$code][$provider->getScope()] = $resultDiff;
                 }
             }
+        }
+
+        $user = null;
+        if ($this->getSecurityContext() && $this->getSecurityContext()->getToken()) {
+            $user = $this->em()->getRepository('OroUserBundle:User')->findOneBy(array(
+                'username' => $this->getSecurityContext()->getToken()->getUsername()
+            ));
         }
 
         foreach ($fieldDiff as $code => $diff) {
             if (count($diff)) {
                 $configLog = new ConfigLog();
-                $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
+                $configLog->setUser($user);
                 $configLog->setDiff($diff);
                 $configLog->setField($newEntity->getField($code));
 
@@ -374,7 +380,8 @@ class ConfigManager
 
         if (count($entityDiff)) {
             $configLog = new ConfigLog();
-            $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
+
+            $configLog->setUser($user);
             $configLog->setDiff($entityDiff);
             $configLog->setEntity($newEntity);
 

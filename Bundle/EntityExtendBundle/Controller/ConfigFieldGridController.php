@@ -62,6 +62,10 @@ class ConfigFieldGridController extends Controller
                 } else {
                     $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
 
+                    /** @var ConfigManager $configManager */
+                    $configManager = $this->get('oro_entity_config.config_manager');
+                    $configManager->clearCache($entity->getClassName());
+
                     $this->get('session')->getFlashBag()->add('success', sprintf(
                         'field "%s" has been added to entity "%', $data['code'], $entity->getClassName()
                     ));
@@ -103,6 +107,11 @@ class ConfigFieldGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
+        $entityConfig = $extendManager->getConfigProvider()->getConfig($field->getEntity()->getClassName());
+
+        var_dump($entityConfig->get('unique_keys'));
+        die;
+        //$entityConfig->get()
         $this->getDoctrine()->getManager()->remove($field);
         $this->getDoctrine()->getManager()->flush($field);
 

@@ -55,7 +55,7 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param  callable                            $filter
+     * @param  callable $filter
      * @return array|ArrayCollection|ConfigValue[]
      */
     public function getValues(\Closure $filter = null)
@@ -70,29 +70,11 @@ abstract class AbstractConfig
      */
     public function getValue($code, $scope)
     {
-        $values = $this->getValues(function (ConfigValue $value) use ($code, $scope) {
+        $values = $this->values->filter(function (ConfigValue $value) use ($code, $scope) {
             return ($value->getScope() == $scope && $value->getCode() == $code);
         });
 
-        return reset($values);
-    }
-
-    /**
-     * @param $scope
-     * @return array
-     */
-    public function toArray($scope)
-    {
-        $values = $this->getValues(function (ConfigValue $value) use ($scope) {
-            return $value->getScope() == $scope;
-        });
-
-        $result = array();
-        foreach ($values as $value) {
-            $result[$value->getCode()] = $value->getValue();
-        }
-
-        return $result;
+        return $values->first();
     }
 
     /**
@@ -140,6 +122,10 @@ abstract class AbstractConfig
     public function fromArray($scope, array $values)
     {
         foreach ($values as $code => $value) {
+            if (is_bool($value)) {
+                $value = (int)$value;
+            }
+
             if ($configValue = $this->getValue($code, $scope)) {
                 $configValue->setValue($value);
             } else {
@@ -153,7 +139,26 @@ abstract class AbstractConfig
 
                 $this->addValue($configValue);
             }
+
         }
+    }
+
+    /**
+     * @param $scope
+     * @return array
+     */
+    public function toArray($scope)
+    {
+        $values = $this->getValues(function (ConfigValue $value) use ($scope) {
+            return $value->getScope() == $scope;
+        });
+
+        $result = array();
+        foreach ($values as $value) {
+            $result[$value->getCode()] = $value->getValue();
+        }
+
+        return $result;
     }
 
     /**

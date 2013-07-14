@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Table(name="oro_config_log")
@@ -24,10 +25,11 @@ class ConfigLog
     protected $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=8)
+     * @var User $user
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $username;
+    protected $user;
 
     /**
      * @var ConfigEntity
@@ -125,22 +127,22 @@ class ConfigLog
     }
 
     /**
-     * @param string $username
+     * @param User $user
      * @return $this
      */
-    public function setUsername($username)
+    public function setUser($user)
     {
-        $this->username = $username;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return User
      */
-    public function getUsername()
+    public function getUser()
     {
-        return $this->username;
+        return $this->user;
     }
 
     /**

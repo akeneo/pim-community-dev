@@ -155,6 +155,9 @@ class EntityConfigContainer
         return $result;
     }
 
+    /**
+     * @return bool
+     */
     public function hasFieldForm()
     {
         return (boolean) array_filter($this->getFieldItems(), function ($item) {

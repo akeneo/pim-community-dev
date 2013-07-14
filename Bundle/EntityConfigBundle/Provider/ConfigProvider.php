@@ -20,7 +20,7 @@ class ConfigProvider implements ConfigProviderInterface
     protected $configManager;
 
     /**
-     * @var array|EntityConfig[]
+     * @var EntityConfig[]
      */
     protected $entityConfigCache = array();
 

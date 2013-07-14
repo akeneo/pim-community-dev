@@ -126,13 +126,13 @@ class ConfigValue
     /**
      * Set data
      *
-     * @param string $data
+     * @param string $value
      *
      * @return ConfigValue
      */
-    public function setValue($data)
+    public function setValue($value)
     {
-        $this->value = $data;
+        $this->value = $value;
 
         return $this;
     }
