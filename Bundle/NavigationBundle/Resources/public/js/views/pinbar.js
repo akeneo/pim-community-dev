@@ -103,8 +103,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                         success: _.bind(function () {
                             if (!goBack) {
                                 Oro.hashNavigationInstance.setLocation(url, {useCache: true});
-                            } else {
-                                this.goToLatestOpenedPage();
                             }
                         }, this)
                     }
@@ -130,26 +128,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      */
     onPageClose: function(item) {
         this.removeFromHistory(item);
-        if (item.get('url') == this.getCurrentPageItemData().url) {
-            this.goToLatestOpenedPage();
-        }
         this.reorder();
-    },
-
-    /**
-     * Go to latest maximized page
-     */
-    goToLatestOpenedPage: function()
-    {
-        /*if (window.history.length) {
-            Oro.hashNavigationInstance.back();
-        } else {
-            if (Oro.hashNavigationEnabled()) {
-                Oro.hashNavigationInstance.setLocation(this.getLatestUrl());
-            } else {
-                window.location.href = this.getLatestUrl();
-            }
-        }*/
     },
 
     /**
@@ -180,10 +159,15 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      */
     updatePinbarState: function() {
         if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance.useCache) {
-            var item = this.getItemForCurrentPage(true);
-            if (item.length) {
-                item[0].set('url', Oro.hashNavigationInstance.getHashUrl(true, true));
-                item[0].save();
+            var pinnedItem = this.getItemForCurrentPage(true);
+            if (pinnedItem.length) {
+                 var hashUrl = Oro.hashNavigationInstance.getHashUrl(true, true);
+                 _.each(pinnedItem, function(item) {
+                     if (item.get('url') !== hashUrl) {
+                         item.set('url', hashUrl);
+                         item.save();
+                     }
+                 }, this);
             }
         }
     },
@@ -196,8 +180,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
             _.each(pinnedItem, function(item) {item.destroy({wait: true});});
-        } else {
-            this.goToLatestOpenedPage();
         }
     },
 

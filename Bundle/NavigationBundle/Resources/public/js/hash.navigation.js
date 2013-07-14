@@ -590,8 +590,8 @@ Oro.Navigation = Backbone.Router.extend({
      *  Triggered before hash navigation ajax request
      */
     beforeRequest: function() {
-        this.gridRoute = ''; //clearing grid router
         this.loadingMask.show();
+        this.gridRoute = ''; //clearing grid router
         this.tempCache = '';
         //reset pagestate restore flag
         Oro.pagestate.needServerRestore = true;
@@ -607,6 +607,7 @@ Oro.Navigation = Backbone.Router.extend({
      */
     afterRequest: function() {
         this.loadingMask.hide();
+        this.formState = '';
     },
 
     /**
