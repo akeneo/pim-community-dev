@@ -38,7 +38,7 @@ class ProductController extends FOSRestController
      *     name="limit",
      *     requirements="\d+",
      *     nullable=true,
-     *     description="Number of items per page. defaults to 10."
+     *     description="Number of products per page. defaults to 10."
      * )
      * @ApiDoc(
      *     description="Get all products",
@@ -48,7 +48,7 @@ class ProductController extends FOSRestController
      *      {"name"="page", "dataType"="integer"},
      *      {"name"="limit", "dataType"="integer"}
      *  }
-     * @return array
+     * @return Response
      */
     public function cgetAction()
     {
@@ -64,7 +64,7 @@ class ProductController extends FOSRestController
      * @param string $id
      *
      * @ApiDoc(
-     *      description="Get address item",
+     *      description="Get a single product",
      *      resource=true
      * )
      * @return Response
