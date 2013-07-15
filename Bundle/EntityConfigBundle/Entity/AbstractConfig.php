@@ -126,6 +126,10 @@ abstract class AbstractConfig
                 $value = (int)$value;
             }
 
+            if (!is_string($value)) {
+                $value = (string)$value;
+            }
+
             if ($configValue = $this->getValue($code, $scope)) {
                 $configValue->setValue($value);
             } else {
@@ -139,7 +143,6 @@ abstract class AbstractConfig
 
                 $this->addValue($configValue);
             }
-
         }
     }
 
