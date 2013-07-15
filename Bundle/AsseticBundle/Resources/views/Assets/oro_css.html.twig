@@ -1,7 +1,11 @@
 {# Css assetics #}
 
 {% oro_css filter='cssrewrite, lessphp, yui_css' output='css/oro.css' %}
-<link rel="stylesheet" media="all" href="{{ asset_url }}" />
+{% set isLess = ('less' in asset_url|split('.')) %}
+{% if isLess %}
+<script type="text/javascript">localStorage.clear();</script>
+{% endif %}
+<link {% if isLess %}rel="stylesheet/less"{% else %}rel="stylesheet"{% endif %} media="all" href="{{ asset_url }}" />
 {% endoro_css %}
 
 
