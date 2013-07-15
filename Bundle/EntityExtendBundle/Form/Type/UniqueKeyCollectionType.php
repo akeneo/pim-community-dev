@@ -4,8 +4,11 @@ namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyType;
 
 class UniqueKeyCollectionType extends AbstractType
 {
@@ -27,7 +30,9 @@ class UniqueKeyCollectionType extends AbstractType
         $builder->add(
             'keys',
             'collection',
+            //'unique_collection',
             array(
+                'required'       => true,
                 'type'           => new UniqueKeyType($this->fields),
                 'allow_add'      => true,
                 'allow_delete'   => true,
@@ -46,3 +51,9 @@ class UniqueKeyCollectionType extends AbstractType
         return 'oro_entity_extend_unique_key_collection_type';
     }
 }
+
+
+
+
+
+

@@ -6,6 +6,7 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueCollectionType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -33,6 +34,7 @@ class ConfigEntityGridController extends Controller
         $data = $entityConfig->has('unique_key') ? unserialize($entityConfig->get('unique_key')) : array() ;
 
         $request = $this->getRequest();
+
         $form    = $this->createForm(new UniqueKeyCollectionType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
             return $fieldConfig->getType() != 'ref-many';
         })), $data);
@@ -48,7 +50,20 @@ class ConfigEntityGridController extends Controller
                 foreach ($data['keys'] as $key) {
                     if (in_array($key['name'], $names)) {
                         $error = true;
-                        $form->addError(new FormError(sprintf('Name for key should be unique, key "%s" is not unique.', $key['name'])));
+                        $this->get('session')->getFlashBag()->add(
+                            'error',
+                            sprintf('Name for key should be unique, key "%s" is not unique.', $key['name'])
+                        );
+                        break;
+                    }
+
+                    if (empty($key['name'])) {
+                        $error = true;
+                        $this->get('session')->getFlashBag()->add(
+                            'error',
+                            'Name of key can\'t be empty.'
+                        );
+
                         break;
                     }
 

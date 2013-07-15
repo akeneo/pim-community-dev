@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityBundle\Audit;
 
-class AuditManager 
+class AuditManager
 {
-
 }

@@ -116,10 +116,15 @@ class ConfigDatagridManager extends DatagridManager
                 if (isset($item['grid'])) {
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
-                    $fieldObjectProvider->setOptions(array_merge($item['grid'], array(
+                    $fieldObjectProvider->setOptions(
+                        array_merge(
+                            $item['grid'],
+                            array(
                                 'expression' => 'cev' . $code . '.value',
                                 'field_name' => $code,
-                            )));
+                            )
+                        )
+                    );
 
                     if (isset($item['priority']) && !isset($fields[$item['priority']])) {
                         $fields[$item['priority']] = $fieldObjectProvider;
