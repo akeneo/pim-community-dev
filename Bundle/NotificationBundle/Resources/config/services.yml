@@ -12,7 +12,6 @@ services:
     oro_notification.event_names.extractor:
         class: %oro_notification.event_names.extractor.class%
         arguments:
-            - @kernel
             - @doctrine.orm.entity_manager
             - %oro_notification.event_entity.class%
 

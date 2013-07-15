@@ -4,7 +4,6 @@ namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Extracts event names from a php files.
@@ -48,17 +47,8 @@ class EventNamesExtractor
      */
     protected $entityClass;
 
-    public function __construct(KernelInterface $kernel, ObjectManager $em, $entityClass)
+    public function __construct(ObjectManager $em, $entityClass)
     {
-        $directories = false;
-        foreach ($kernel->getBundles() as $bundle) {
-            if (substr($bundle->getName(), 0, 3) == 'Oro') {
-                /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
-                $directories[] = $bundle->getPath();
-            }
-        }
-
-        $this->directories = $directories;
         $this->em = $em;
         $this->entityClass = $entityClass;
     }
@@ -66,27 +56,23 @@ class EventNamesExtractor
     /**
      * Extract event names and return them in array
      *
-     * @param string|null $directory
+     * @param string $directory
      * @return array
      */
-    public function extract($directory = null)
+    public function extract($directory)
     {
-        if (!is_null($directory) && file_exists($directory)) {
-            $this->directories = array($directory.'../../');
-        }
-
         $finder = new Finder();
-        foreach ($this->directories as $i => $directory) {
-            //echo '[' . sprintf('%0.2f', 100*($i+1) / count($this->directories)) . '] ' . $directory . "\n";
-            $files = $finder->files()->name('*.php')->in($directory);
-            foreach ($files as $file) {
-                $this->parseTokens(token_get_all(file_get_contents($file)));
-            }
+        $files = $finder->files()->name('*.php')->in($directory);
+        foreach ($files as $file) {
+            $this->parseTokens(token_get_all(file_get_contents($file)));
         }
 
         return $this->eventNames;
     }
 
+    /**
+     * Save extracted messages to db
+     */
     public function dumpToDb()
     {
         if ($this->em && $this->entityClass) {
