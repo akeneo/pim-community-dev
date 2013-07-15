@@ -13,9 +13,9 @@ Feature: Display the product history
       | Camera  | Manufacturer |
       | Camera  | File upload  |
     And I am logged in as "admin"
-    And the following updates:
-      | action | loggedAt  | sku  | updatedBy |
-      | update | yesterday | Bike | admin     |
+    And the following product "Bike" updates:
+      | action | loggedAt  | updatedBy | change                 |
+      | update | yesterday | admin     | SKU: bike => motorbike |
     And I am on the "Camera" product page
     And I change the Brand to "Syno"
     And I save the product

@@ -9,9 +9,13 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Attribute extends Page
+class AttributeEdit extends Page
 {
     protected $path = '/enrich/product-attribute/edit/{id}';
+
+    protected $elements = array(
+        'Tabs' => array('css' => '#form-navbar'),
+    );
 
     public function setPosition($position)
     {
@@ -23,5 +27,10 @@ class Attribute extends Page
     public function save()
     {
         $this->pressButton('Save');
+    }
+
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
     }
 }

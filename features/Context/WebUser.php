@@ -167,7 +167,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $attribute = $this->getAttribute($label);
 
-        $this->openPage('Attribute', array(
+        $this->openPage('Attribute Edit', array(
             'id' => $attribute->getId(),
         ));
     }
@@ -236,12 +236,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I save the attribute$/
+     */
+    public function iSaveTheAttribute()
+    {
+        $this->getPage('Attribute creation')->save();
+    }
+
+    /**
      * @Given /^I change the attribute position to (\d+)$/
      */
     public function iChangeTheAttributePositionTo($position)
     {
         $this
-            ->getPage('Attribute')
+            ->getPage('Attribute Edit')
             ->setPosition($position)
             ->save()
         ;
