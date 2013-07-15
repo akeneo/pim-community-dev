@@ -3,14 +3,18 @@ parameters:
     oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor
     oro_notification.event_translation.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventTranslationExtractor
 
-    oro_notification.email_notification.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_notification.email_notification.manager.api.class: Oro\Bundle\NotificationBundle\Entity\Manager\ApiEntityManager
     oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
+
+    oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
 
 services:
     oro_notification.event_names.extractor:
         class: %oro_notification.event_names.extractor.class%
         arguments:
             - @kernel
+            - @doctrine.orm.entity_manager
+            - %oro_notification.event_entity.class%
 
     oro_notification.event_translation.extractor:
         class: %oro_notification.event_translation.extractor.class%

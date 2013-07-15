@@ -39,6 +39,8 @@ class EventTranslationExtractor extends PhpExtractor
         foreach ($messages as $message) {
             $catalog->set($message, $this->prefix . $message);
         }
+
+        $this->extractor->dumpToDb();
     }
 
     /**

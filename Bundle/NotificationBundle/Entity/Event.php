@@ -33,9 +33,15 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
+
+    public function __construct($name, $description = null)
+    {
+        $this->name = $name;
+        $this->description = $description;
+    }
 
     /**
      * Get id
