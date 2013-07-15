@@ -43,13 +43,13 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
      *
      * @param  InputInterface  $input
      * @param  OutputInterface $output
-     * @return int|null|void
+     * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln($this->getDescription());
 
-        /** @var Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor $extractor */
+        /** @var \Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor $extractor */
         $extractor = $this->getContainer()->get('oro_notification.event_names.extractor');
 
         $dirs = $this->getBundleDirs($input->getArgument('bundle'), $input->getOption('oro-only'));
@@ -57,7 +57,7 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
 
         $i = 1;
         foreach ($dirs as $directory) {
-            $output->writeln('[' . sprintf('%d%%', 100*($i++) / $dirsCount) . '] ' . $directory);
+            $output->writeln(sprintf('[%d%%]', 100 * ($i++) / $dirsCount) . $directory);
             $extractor->extract($directory);
         }
         $extractor->dumpToDb();

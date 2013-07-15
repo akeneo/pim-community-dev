@@ -61,7 +61,6 @@ class EventNamesExtractor
      */
     public function extract($directory)
     {
-        $this->eventNames = array();
         $finder = new Finder();
         $files = $finder->files()->name('*.php')->in($directory);
         foreach ($files as $file) {
@@ -81,9 +80,13 @@ class EventNamesExtractor
             if (!empty($existingNames)) {
                 if ($existingNames instanceof $this->entityClass) {
                     $existingNames = array($existingNames->getName());
-                }
-                else {
-                    $existingNames = array_map(function($item){ return $item->getName(); }, $existingNames);
+                } else {
+                    $existingNames = array_map(
+                        function ($item) {
+                            return $item->getName();
+                        },
+                        $existingNames
+                    );
                 }
 
                 $existingNames = array_flip($existingNames);
@@ -120,7 +123,7 @@ class EventNamesExtractor
     /**
      * Extracts trans message from php tokens.
      *
-     * @param array            $tokens
+     * @param array $tokens
      */
     protected function parseTokens($tokens)
     {

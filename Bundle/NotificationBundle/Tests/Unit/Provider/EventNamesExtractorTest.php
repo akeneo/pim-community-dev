@@ -35,7 +35,7 @@ class EventNamesExtractorTest extends TestCase
             ->method('flush');
 
         $extractor = new EventNamesExtractor($em, $entityClass);
-        $messages = $extractor->extract(__DIR__.'/../Fixtures/');
+        $messages = $extractor->extract(__DIR__ . '/../Fixtures/');
         $extractor->dumpToDb();
 
         $this->assertCount(1, $messages, '->extract() should find 1 translation');

@@ -170,9 +170,9 @@ class EmailNotificationDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        /** @var $query QueryBuilder */
-        $entityAlias = current($query->getRootAliases());
+        $entityAlias = $query->getRootAlias();
 
+        /** @var $query QueryBuilder */
         $query->addSelect('event.name as eventName', true);
         $query->leftJoin($entityAlias . '.event', 'event');
     }

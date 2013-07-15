@@ -1,16 +1,15 @@
 <?php
 
+namespace Oro\Bundle\NotificationBundle\Tests\Unit\Fixtures\Entity;
+
 class FakeEntity
 {
     /**
-     * @var
+     * @var mixed
      */
     protected $something;
 
-    /**
-     * @param null $params
-     */
-    public function doSomethingUsefull($params = null)
+    public function doSomethingUsefull()
     {
         $someObj = new \stdClass();
         $this->getSomething()->dispatch('oro.event.good_happens', $someObj);
