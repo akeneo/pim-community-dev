@@ -61,7 +61,7 @@ class ConfigSubscriber implements EventSubscriberInterface
                     'is_extend'    => true,
                     'extend_class' => $extendClass,
                     'proxy_class'  => $proxyClass,
-                    'type'        => 'System'
+                    'owner'        => 'System'
                 )
             );
         }

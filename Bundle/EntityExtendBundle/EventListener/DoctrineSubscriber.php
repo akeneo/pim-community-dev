@@ -44,9 +44,9 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $event)
     {
-        if ($event->getEntity() instanceof ExtendProxyInterface) {
+        /*if ($event->getEntity() instanceof ExtendProxyInterface) {
             $event->getEntityManager()->remove($event->getEntity()->__proxy__getExtend());
-        }
+        }*/
     }
 
     /**
@@ -64,11 +64,11 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $event)
     {
-        if ($event->getEntity() instanceof ExtendProxyInterface
+        /*if ($event->getEntity() instanceof ExtendProxyInterface
             || $this->exm->isExtend($event->getEntity())
         ) {
             $this->exm->persist($event->getEntity());
-        }
+        }*/
     }
 
     /**
@@ -76,11 +76,11 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $event)
     {
-        if ($event->getEntity() instanceof ExtendProxyInterface
+        /*if ($event->getEntity() instanceof ExtendProxyInterface
             || $this->exm->isExtend($event->getEntity())
         ) {
             $this->exm->loadExtend($event->getEntity());
-        }
+        }*/
     }
 
     /**
@@ -88,11 +88,11 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        if ($this->exm->isExtend($event->getClassMetadata()->name)) {
-            $proxyRef = new \ReflectionClass($this->exm->getProxyClass($event->getClassMetadata()->name));
-
-            $event->getClassMetadata()->name      = $proxyRef->getName();
-            $event->getClassMetadata()->namespace = $proxyRef->getNamespaceName();
-        }
+//        if ($this->exm->isExtend($event->getClassMetadata()->name)) {
+//            $proxyRef = new \ReflectionClass($this->exm->getProxyClass($event->getClassMetadata()->name));
+//
+//            $event->getClassMetadata()->name      = $proxyRef->getName();
+//            $event->getClassMetadata()->namespace = $proxyRef->getNamespaceName();
+//        }
     }
 }

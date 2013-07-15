@@ -70,7 +70,6 @@ oro_entity_config:
             items:
                 label:
                     priority:               10
-                    default_value:          false
                     grid:
                         type:               string
                         label:              'Label'
@@ -100,6 +99,48 @@ oro_entity_config:
                             block:          entity
                             required:       false
 
+    audit:
+        entity:
+            items:
+                auditable:
+                    default_value:          false
+                    priority:               60
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          auditable
+                            label:          'Auditable'
+
+        field:
+            items:
+                auditable:
+                    priority:               60
+                    default_value:          false
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          auditable
+                            label:          'Auditable'
 
     datagrid:
 #        entity:
