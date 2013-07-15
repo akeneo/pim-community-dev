@@ -75,6 +75,13 @@ class FamilyController extends Controller
     {
         $family   = $this->findFamilyOr404($id);
         $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
+        $datagrid = $this->getDataAuditDatagrid(
+            $family, 'pim_product_family_edit', array('id' => $family->getId())
+        );
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
 
         if ($this->get('pim_product.form.handler.family')->process($family)) {
             $this->addFlash('success', 'Product family successfully updated.');
@@ -88,7 +95,8 @@ class FamilyController extends Controller
             'family'         => $family,
             'attributesForm' => $this->getAvailableProductAttributesForm(
                 $family->getAttributes()->toArray()
-            )->createView()
+            )->createView(),
+            'datagrid'       => $datagrid->createView(),
         );
     }
 
