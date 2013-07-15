@@ -35,6 +35,18 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     }
 
     /**
+     * Set the route name
+     *
+     * @param string $routeName
+     *
+     * @return null
+     */
+    public function setRouteName($routeName)
+    {
+        $this->routeName = $routeName;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function generateUrl(ParametersInterface $parameters = null, array $extendParameters = array())
