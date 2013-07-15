@@ -125,7 +125,9 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
-        $datagrid = $this->getDataAuditDatagrid($product);
+        $datagrid = $this->getDataAuditDatagrid(
+            $product, 'pim_product_product_edit', array('id' => $product->getId())
+        );
 
         // Refreshing the history datagrid
         if ($request->isXmlHttpRequest()) {
@@ -534,49 +536,4 @@ class ProductController extends Controller
         return true;
     }
 
-    /**
-     * Get the log entries datagrid for the given product
-     *
-     * @param Product $product
-     *
-     * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
-     */
-    protected function getDataAuditDatagrid(ProductInterface $product)
-    {
-        $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
-        //
-        // TODO Change query builder to $this->getDataAuditRepository()->getLogEntriesQueryBuilder($product)
-        //      when BAP will be up-to-date. This is currently not achievable quickly because of the introduction
-        //      of the OroAsseticBundle that breaks the PIM UI.
-        $qb = $this
-            ->getDataAuditRepository()
-            ->createQueryBuilder('a')
-            ->where('a.objectId = :objectId AND a.objectClass = :objectClass')
-            ->orderBy('a.loggedAt', 'DESC')
-            ->setParameters(
-                array(
-                    'objectId'    => $product->getId(),
-                    'objectClass' => get_class($product)
-                )
-            );
-
-        $queryFactory->setQueryBuilder($qb);
-
-        $datagridManager = $this->get('pim_product.datagrid.manager.product_history');
-        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
-
-        return $datagridManager->getDatagrid();
-    }
-
-    /**
-     * Get the data audit doctrine repository
-     *
-     * @return AuditRepository
-     */
-    protected function getDataAuditRepository()
-    {
-        return $this
-            ->getDoctrine()
-            ->getRepository('OroDataAuditBundle:Audit');
-    }
 }
