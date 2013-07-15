@@ -65,9 +65,6 @@ class Generator
         }
         //$validatorYml = Yaml::parse($validator);
 
-//        var_dump($validatorYml);
-//        die;
-
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
@@ -244,12 +241,10 @@ class Generator
             ->setParentClassName($entityName)
             ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface'))
             ->setProperty(PhpProperty::create('__proxy__extend')->setVisibility('protected'))
-
             ->setMethod($this->generateClassMethod(
                 '__proxy__setExtend',
                 '$this->__proxy__extend = $extend;return $this;',
                 array('extend')
-
             ));
 
         $toArray   = '';
@@ -277,8 +272,7 @@ class Generator
             ->setMethod($this->generateClassMethod(
                 '__proxy__toArray',
                 'return array('.$toArray."\n".');'
-            ))
-        ;
+            ));
 
         $strategy = new DefaultGeneratorStrategy();
 
