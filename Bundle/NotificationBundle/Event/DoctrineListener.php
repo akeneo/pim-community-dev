@@ -23,7 +23,7 @@ class DoctrineListener implements ContainerAwareInterface
     public function postUpdate(LifecycleEventArgs $args)
     {
         $event = new DoctrineEvent(array('entity' => $args->getEntity()));
-        $this->getEventDispatcher()->dispatch('oro.events.entity.post_update', $event);
+        $this->getEventDispatcher()->dispatch('oro.event.entity.post_update', $event);
 
         return $this;
     }
@@ -37,7 +37,7 @@ class DoctrineListener implements ContainerAwareInterface
     public function postPersist(LifecycleEventArgs $args)
     {
         $event = new DoctrineEvent(array('entity' => $args->getEntity()));
-        $this->getEventDispatcher()->dispatch('oro.events.entity.post_persist', $event);
+        $this->getEventDispatcher()->dispatch('oro.event.entity.post_persist', $event);
 
         return $this;
     }
@@ -51,7 +51,7 @@ class DoctrineListener implements ContainerAwareInterface
     public function postRemove(LifecycleEventArgs $args)
     {
         $event = new DoctrineEvent(array('entity' => $args->getEntity()));
-        $this->getEventDispatcher()->dispatch('oro.events.entity.post_remove', $event);
+        $this->getEventDispatcher()->dispatch('oro.event.entity.post_remove', $event);
     }
 
     /**

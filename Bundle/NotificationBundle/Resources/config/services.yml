@@ -4,7 +4,7 @@ parameters:
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
     # Listener classes
-    oro_notification.doctrine_listener.class: Oro\Bundle\NotificationBundle\Entity\DoctrineListener
+    oro_notification.doctrine_listener.class: Oro\Bundle\NotificationBundle\Provider\DoctrineListener
 
     # Event extractor classes
     oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor
