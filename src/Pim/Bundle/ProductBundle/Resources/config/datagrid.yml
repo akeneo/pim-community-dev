@@ -24,6 +24,8 @@ services:
               entity_hint: products
               flexible: true
               route_name: pim_product_product_index
+        calls:
+            - [ setCategoryManager, [@pim_product.manager.category] ]
 
     pim_product.datagrid.manager.product_history:
         class: Pim\Bundle\ProductBundle\Datagrid\AuditDatagridManager

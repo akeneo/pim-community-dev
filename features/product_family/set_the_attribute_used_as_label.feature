@@ -38,7 +38,7 @@ Feature: Set the attribute used as label
     Then the title of the product should be "Products/en Levis"
 
   Scenario: Succesfully display the id as the title of the product
-    Given the following product:
+    Given the following products:
       | sku      |
       | bag-jean |
     And I am logged in as "admin"

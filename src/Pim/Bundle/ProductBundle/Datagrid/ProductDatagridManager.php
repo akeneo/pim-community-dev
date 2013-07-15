@@ -18,6 +18,7 @@ use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Property\CurrencyProperty;
+use Pim\Bundle\ProductBundle\Manager\CategoryManager;
 
 /**
  * Grid manager
@@ -40,6 +41,28 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
+     * @staticvar string
+     */
+    const UNCLASSIFIED_CATEGORY = 0;
+
+    /**
+     * @var Pim\Bundle\ProductBundle\Manager\CategoryManager
+     */
+    protected $categoryManager;
+
+    /**
+     * Filter by tree id, 0 means not tree selected
+     * @var integer
+     */
+    protected $filterTreeId = self::UNCLASSIFIED_CATEGORY;
+
+    /**
+     * Filter by category id, 0 means unclassified
+     * @var integer
+     */
+    protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
+
+    /**
      * Define constructor to add new price type
      */
     public function __construct()
@@ -48,6 +71,35 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
             'filter' => FilterInterface::TYPE_CURRENCY
         );
+    }
+
+    /**
+     * Configure the category manager
+     * @param CategoryManager $manager
+     */
+    public function setCategoryManager(CategoryManager $manager)
+    {
+        $this->categoryManager = $manager;
+    }
+
+    /**
+     * Define the tree to use to filter the product collection
+     *
+     * @param integer $treeId
+     */
+    public function setFilterTreeId($treeId)
+    {
+        $this->filterTreeId = $treeId;
+    }
+
+    /**
+     * Define the category to use to filter the product collection
+     *
+     * @param integer $categoryId
+     */
+    public function setFilterCategoryId($categoryId)
+    {
+        $this->filterCategoryId = $categoryId;
     }
 
     /**
@@ -112,10 +164,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
-
+/*
         $field = $this->createCategoryField();
         $fieldsCollection->add($field);
-
+*/
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
     }
@@ -330,6 +382,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $query
             ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')
             ->setParameter('filterlocale', $this->flexibleManager->getLocale());
+
+        if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
+            $categoryRepository = $this->categoryManager->getEntityRepository();
+
+            if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
+                $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
+                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $expression = $query->expr()->in($query->getRootAlias().'.id', $productIds);
+                $query->where($expression);
+
+            } else {
+                $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
+                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $expression = $query->expr()->notIn($query->getRootAlias().'.id', $productIds);
+                $query->where($expression);
+            }
+        }
     }
 
     /**
