@@ -59,8 +59,8 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
         foreach ($dirs as $directory) {
             $output->writeln('[' . sprintf('%d%%', 100*($i++) / $dirsCount) . '] ' . $directory);
             $extractor->extract($directory);
-            $extractor->dumpToDb();
         }
+        $extractor->dumpToDb();
 
         $output->writeln('Completed');
     }

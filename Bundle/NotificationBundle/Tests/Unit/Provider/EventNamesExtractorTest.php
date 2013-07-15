@@ -7,26 +7,25 @@ use Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor;
 
 class EventNamesExtractorTest extends TestCase
 {
-    public function testExtraction()
+    /**
+     * Test extraction works OK
+     */
+    public function testExtract()
     {
-        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
-        $bundle->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('OroAbcBundle'));
+        $entityClass = 'Oro\Bundle\NotificationBundle\Entity\Event';
 
-        $bundles = array(
-            $bundle
-        );
+        $em = $this->getMock('\Doctrine\Common\Persistence\ObjectManager');
+        $em->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf($entityClass));
 
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
-        $kernel->expects($this->once())
-            ->method('getBundles')
-            ->will($this->returnValue($bundles));
+        $em->expects($this->once())
+            ->method('flush');
 
-        $extractor = new EventNamesExtractor($kernel);
-        $messages = $extractor->extract(__DIR__.'/../Fixtures/Resources/views/');
+        $extractor = new EventNamesExtractor($em, $entityClass);
+        $messages = $extractor->extract(__DIR__.'/../Fixtures/');
+        $extractor->dumpToDb();
 
-        // Assert
         $this->assertCount(1, $messages, '->extract() should find 1 translation');
         $this->assertTrue(isset($messages['oro.event.good_happens']), '->extract() should find at leat "oro.event.good_happens" message');
     }

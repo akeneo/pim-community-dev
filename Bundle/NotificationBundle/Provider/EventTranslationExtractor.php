@@ -34,7 +34,7 @@ class EventTranslationExtractor extends PhpExtractor
      */
     public function extract($directory, MessageCatalogue $catalog)
     {
-        $messages = $this->extractor->extract($directory);
+        $messages = $this->extractor->extract($directory.'/../../');
 
         foreach ($messages as $message) {
             $catalog->set($message, $this->prefix . $message);

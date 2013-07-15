@@ -61,6 +61,7 @@ class EventNamesExtractor
      */
     public function extract($directory)
     {
+        $this->eventNames = array();
         $finder = new Finder();
         $files = $finder->files()->name('*.php')->in($directory);
         foreach ($files as $file) {
@@ -76,7 +77,15 @@ class EventNamesExtractor
     public function dumpToDb()
     {
         if ($this->em && $this->entityClass) {
+            $existingNames = $this->em->getRepository($this->entityClass)->findAll();
+            $existingNames = array_map(function($item){ return $item->getName(); }, $existingNames);
+            $existingNames = array_flip($existingNames);
+
             foreach ($this->eventNames as $eventName) {
+                if (isset($existingNames[$eventName])) {
+                    continue;
+                }
+
                 $event = new $this->entityClass($eventName);
                 $this->em->persist($event);
             }
