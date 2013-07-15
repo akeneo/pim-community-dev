@@ -1,0 +1,11 @@
+oro_tag_bundle:
+    resource:     "@OroTagBundle/Controller"
+    type:         annotation
+    prefix:       /tag
+
+oro_tag_api:
+    resource:     "@OroTagBundle/Controller/Api/Rest/TagController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
