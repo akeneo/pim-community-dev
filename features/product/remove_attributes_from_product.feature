@@ -10,7 +10,7 @@ Feature: Remove an attribute from a product
     And the following product attribute:
       | label | Group   | family  |
       | Model | General | vehicle |
-    And the following product:
+    And the following products:
       | sku    | family  |
       | kangoo | vehicle |
     And I am logged in as "admin"
@@ -22,7 +22,7 @@ Feature: Remove an attribute from a product
     Given the following family:
       | code    |
       | vehicle |
-    And the following product:
+    And the following products:
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:
@@ -40,7 +40,7 @@ Feature: Remove an attribute from a product
     Given the following family:
       | code    |
       | vehicle |
-    And the following product:
+    And the following products:
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:

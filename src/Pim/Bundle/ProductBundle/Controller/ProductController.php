@@ -53,6 +53,8 @@ class ProductController extends Controller
     {
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.datagrid.manager.product');
+        $gridManager->setFilterTreeId($this->getRequest()->get('treeId', 0));
+        $gridManager->setFilterCategoryId($this->getRequest()->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {

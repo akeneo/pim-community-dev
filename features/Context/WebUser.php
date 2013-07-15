@@ -395,6 +395,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
+        $this->wait(2000);
     }
 
     /**
@@ -769,6 +770,59 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Given /^I filter per category "([^"]*)"$/
+     */
+    public function iFilterPerCategory($code)
+    {
+        $category = $this->getCategory($code);
+        $this
+            ->getPage('ProductIndex')
+            ->clickCategoryFilterLink($category);
+        $this->wait(2000);
+    }
+
+    /**
+     * @Given /^I filter per unclassified category$/
+     */
+    public function iFilterPerUnclassifiedCategory()
+    {
+        $this
+            ->getPage('ProductIndex')
+            ->clickUnclassifiedCategoryFilterLink();
+        $this->wait(2000);
+    }
+
+    /**
+     * @Then /^I should see products (.*)$/
+     */
+    public function iShouldSeeProducts($products)
+    {
+        $products = $this->listToArray($products);
+        foreach ($products as $product) {
+            if (!$this->getPage('Product index')->findProductRow($product)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see product %s, not found', $product)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should not see products (.*)$/
+     */
+    public function iShouldNotSeeProducts($products)
+    {
+        $products = $this->listToArray($products);
+        foreach ($products as $product) {
+            if ($this->getPage('Product index')->findProductRow($product)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to not see product %s, but I see it', $product)
+                );
+            }
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -797,6 +851,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
+    }
+
+    private function getCategory($code)
+    {
+        return $this->getFixturesContext()->getCategory($code);
     }
 
     private function getGroup($name)
