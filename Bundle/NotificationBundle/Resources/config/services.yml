@@ -7,6 +7,7 @@ parameters:
     oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
 
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
+    oro_notification.doctrine_listener.class: Oro\Bundle\NotificationBundle\Entity\DoctrineListener
 
 services:
     oro_notification.event_names.extractor:
@@ -39,3 +40,12 @@ services:
         factory_method: createNamed
         factory_service: form.factory
         arguments: ["emailnotification", "emailnotification", null]
+
+    oro_notification.docrine.event.listener:
+        class: %oro_notification.doctrine_listener.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
