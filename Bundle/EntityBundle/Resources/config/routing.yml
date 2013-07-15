@@ -1,3 +1,5 @@
-oro_entity_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: OroEntityBundle:Default:index }
+oro_entity_bundle:
+    resource:     "@OroEntityBundle/Controller"
+    type:         annotation
+    prefix:       /
+
