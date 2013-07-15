@@ -1,0 +1,4 @@
+oro:
+    tag:
+        controller.tag.saved.message: "Tag successfully saved"
+        form.choose_tag: "Choose or create tag"
