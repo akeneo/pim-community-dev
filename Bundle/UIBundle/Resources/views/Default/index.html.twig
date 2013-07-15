@@ -64,7 +64,59 @@
                         <div class="container">
                             {% placeholder header_logo %}
                             <div class="navbar-responsive-collapse">
-                                {% placeholder navbar %}
+                                {% block navbar %}
+                                <div class="nav pull-left top-search shortcuts">
+                                    <div class="divider-vertical extra-divider"></div>
+                                    {% placeholder navbar %}
+                                </div>
+                                {% endblock navbar %}
+                                {% block main_nav %}
+                                <ul class="nav nav-multilevel">
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">Accounts</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown">
+                                                <a href="#">Create Accounts</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">3rd level nav</a></li>
+                                                    <li><a href="#">3rd level nav</a></li>
+                                                    <li class="dropdown">
+                                                        <a href="#">3rd level nav</a>
+                                                        <ul>
+                                                            <li><a href="#">4th level nav</a></li>
+                                                            <li><a href="#">4th level nav</a></li>
+                                                            <li class="dropdown">
+                                                                <a href="#">4th level nav</a>
+                                                                <ul>
+                                                                    <li><a href="#">5th level nav</a></li>
+                                                                    <li><a href="#">5th level nav</a></li>
+                                                                    <li>
+                                                                        <a href="#">5th level nav</a>
+                                                                    </li>
+                                                                    <li><a href="#">5th level nav</a></li>
+                                                                    <li><a href="#">5th level nav</a></li>
+                                                                    <li><a href="#">5th level nav</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a href="#">4th level nav</a></li>
+                                                            <li><a href="#">4th level nav</a></li>
+                                                            <li><a href="#">4th level nav</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">3rd level nav</a></li>
+                                                    <li><a href="#">3rd level nav</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">View Accounts</a></li>
+                                            <li><a href="#">View Reports</a></li>
+                                            <li><a href="#">Tools</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Contacts</a></li>
+                                    <li><a href="#">Opportunities</a></li>
+                                    <li><a href="#">Reports</a></li>
+                                </ul>
+                                {% endblock main_nav %}
                                 <ul class="nav pull-right">
                                     {% placeholder user_menu %}
                                     {# Disabled notification icon till it will be implemented
