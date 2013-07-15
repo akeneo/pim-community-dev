@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
+use Oro\Bundle\TagBundle\Form\Type\TagSelectType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -106,6 +107,10 @@ class UserType extends FlexibleType
                     'prototype_name' => 'tag__name__',
                     'label'          => ' '
                 )
+            )
+            ->add(
+                'tags',
+                'oro_tag_select'
             );
     }
 
