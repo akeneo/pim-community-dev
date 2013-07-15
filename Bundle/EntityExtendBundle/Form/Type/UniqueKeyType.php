@@ -31,7 +31,6 @@ class UniqueKeyType extends AbstractType
             array(
                 'required'    => true,
             )
-
         );
 
         $builder->add(
