@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product attribute controller
@@ -117,7 +118,7 @@ class ProductAttributeController extends Controller
      * @param Request $request
      *
      * @Route("/preprocess")
-     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
+     * @Template("PimProductBundle:ProductAttribute:_form_parameters.html.twig")
      *
      * @return array
      */
@@ -125,21 +126,41 @@ class ProductAttributeController extends Controller
     {
         $data = $request->request->all();
         if (!isset($data['pim_product_attribute_form'])) {
-            return $this->redirect($this->generateUrl('pim_product_productattribute_create'));
+            return $this->redirect(
+                $this->generateUrl('pim_product_productattribute_create')
+            );
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->get('pim_product.form.handler.attribute')->preProcess($data['pim_product_attribute_form']);
+        $this
+            ->get('pim_product.form.handler.attribute')
+            ->preProcess($data['pim_product_attribute_form']);
 
-        $localeManager = $this->get('pim_config.manager.locale');
-        $locales = $localeManager->getActiveLocales();
+        $localeManager   = $this->get('pim_config.manager.locale');
+        $locales         = $localeManager->getActiveLocales();
         $disabledLocales = $localeManager->getDisabledLocales();
+        $form            = $this->get('pim_product.form.attribute')->createView();
 
-        return array(
-            'form' => $this->get('pim_product.form.attribute')->createView(),
-            'locales' => $locales,
-            'disabledLocales' => $disabledLocales
+        $data = array(
+            'parameters' => $this->renderView(
+                'PimProductBundle:ProductAttribute:_form_parameters.html.twig',
+                array(
+                    'form'            => $form,
+                    'locales'         => $locales,
+                    'disabledLocales' => $disabledLocales
+                )
+            ),
+            'values' => $this->renderView(
+                'PimProductBundle:ProductAttribute:_form_values.html.twig',
+                array(
+                    'form'            => $form,
+                    'locales'         => $locales,
+                    'disabledLocales' => $disabledLocales
+                )
+            )
         );
+
+        return new JsonResponse($data);
     }
 
     /**
