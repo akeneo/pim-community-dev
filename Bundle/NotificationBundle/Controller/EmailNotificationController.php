@@ -49,21 +49,6 @@ class EmailNotificationController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_notification_emailnotification_view",
-     *      name="View notification rule",
-     *      description="View notification rule",
-     *      parent="oro_notification_emailnotification"
-     * )
-     * @Template()
-     */
-    public function viewAction()
-    {
-        return array();
-    }
-
-    /**
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_notification_emailnotification_update",
