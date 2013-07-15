@@ -103,6 +103,10 @@ class ProductAttributeController extends Controller
             $attribute, 'pim_product_productattribute_edit', array('id' => $attribute->getId())
         );
 
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         return array(
             'form'            => $this->get('pim_product.form.attribute')->createView(),
             'locales'         => $localeManager->getActiveLocales(),
