@@ -1,0 +1,10 @@
+oro:
+    notification:
+        datagrid:
+            action:
+                update: "Update"
+                delete: "Delete"
+            template: "Template"
+            event_name: "Event name"
+            recipients: "Recipients"
+            entity_name: "Entity name"

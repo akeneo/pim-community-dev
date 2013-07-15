@@ -1,12 +1,22 @@
 parameters:
+    # Entity classes
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+
+    # Event extractor classes
     oro_notification.event_names.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor
     oro_notification.event_translation.extractor.class: Oro\Bundle\NotificationBundle\Provider\EventTranslationExtractor
 
+    # Email notification form services
+    oro_notification.form.type.email_notification.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationType
+    oro_notification.form.handler.email_notification.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
+
+    # Email notification API
     oro_notification.email_notification.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
+    oro_notification.form.handler.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
 
 services:
+    # Event extractor services
     oro_notification.event_names.extractor:
         class: %oro_notification.event_names.extractor.class%
         arguments:
@@ -18,6 +28,26 @@ services:
             - @oro_notification.event_names.extractor
         tags:
             - { name: translation.extractor, alias: notification_event_names_extractor }
+
+    # Email notification form services
+    oro_notification.form.email_notification:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["emailnotification", "emailnotification", null]
+
+    oro_notification.form.type.email_notification:
+        class: %oro_notification.form.type.email_notification.class%
+        tags:
+            - { name: form.type, alias: emailnotification }
+
+    oro_notification.form.handler.email_notification:
+        class: %oro_notification.form.handler.email_notification.class%
+        scope: request
+        arguments:
+            - @oro_notification.form.email_notification
+            - @request
+            - @doctrine.orm.entity_manager
 
     # Email notification API
     oro_notification.email_notification.manager.api:
@@ -36,3 +66,11 @@ services:
         factory_method: createNamed
         factory_service: form.factory
         arguments: ["emailnotification", "emailnotification", null]
+
+    oro_notification.form.handler.email_notification.api:
+        class: %oro_notification.form.handler.email_notification.api.class%
+        scope: request
+        arguments:
+            - @oro_notification.form.email_notification.api
+            - @request
+            - @doctrine.orm.entity_manager
