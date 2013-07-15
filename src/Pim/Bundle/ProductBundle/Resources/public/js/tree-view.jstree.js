@@ -70,17 +70,5 @@ $(tree_id).jstree({
         var datagrid = Oro.Registry.getElement('datagrid', 'products');
         datagrid.collection.url = datagrid.collection.url + '&treeId=' + treeId + '&categoryId=' + nodeId;
         $('.grid-toolbar .actions-panel .action.btn').first().click();
-        
-        /*
-        if (nodeId != 0) {
-            datagrid.filters.categories.value.type = filterInType;
-            datagrid.filters.categories.value.value = nodeId;
-        } else {
-            var selected_tree = data.inst.get_tree_select().find(':selected');
-            datagrid.filters.categories.value.type = filterUnclassifiedType;
-            datagrid.filters.categories.value.value = $(selected_tree).attr('value');
-        }
-        datagrid.filters.categories.trigger('update');
-        */
     })
     ;

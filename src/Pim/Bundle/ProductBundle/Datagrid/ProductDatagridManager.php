@@ -164,10 +164,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
-/*
-        $field = $this->createCategoryField();
-        $fieldsCollection->add($field);
-*/
+
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
     }
@@ -236,38 +233,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'field_options' => array(
                     'choices'  => $choices,
                     'multiple' => true
-                ),
-            )
-        );
-
-        return $field;
-    }
-
-    /**
-     * Create a category field
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createCategoryField()
-    {
-        $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('PimProductBundle:Category')->getAllIdToTitle();
-
-        $field = new FieldDescription();
-        $field->setName('categories');
-        $field->setProperty(new FixedProperty('categories', 'categoryTitlesAsString'));
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Categories'),
-                'field_name'  => 'categories',
-                'filter_type' => FilterInterface::TYPE_CATEGORY,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $choices,
                 ),
             )
         );
