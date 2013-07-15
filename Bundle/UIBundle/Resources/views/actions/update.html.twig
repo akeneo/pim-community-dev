@@ -14,7 +14,7 @@
                             {% endblock navButtons %}
                         </div>
                         {% if (entityClass is defined and form.vars.value.id) %}
-                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value } %}
+                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value, 'audit_path': audit_path|default('oro_dataaudit_history') } %}
                         {% endif %}
                     </div>
                     <div class="span9">
