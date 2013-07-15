@@ -4,7 +4,9 @@ namespace Oro\Bundle\SearchBundle\Tests\Unit\Engine;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 use Oro\Bundle\SearchBundle\Query\Query;
+use Oro\Bundle\SearchBundle\Query\Result\Item;
 
 class IndexerTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,8 +16,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected $indexService;
     protected $om;
+    protected $mapper;
     protected $repository;
     protected $connector;
+    protected $dispatcher;
 
     public function setUp()
     {
@@ -29,6 +33,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         $this->repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
 
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->om->expects($this->any())
             ->method('getRepository')
             ->with($this->equalTo('OroTestBundle:test'))
@@ -38,6 +46,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\SearchBundle\Engine\AbstractEngine',
             array(
                  $this->om,
+                 $this->dispatcher,
                  false
             )
         );
@@ -45,10 +54,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->mapper = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\ObjectMapper')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->connector->expects($this->any())
-            ->method('doSearch')
-            ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
 
         $this->connector->expects($this->any())
             ->method('searchQuery')
@@ -130,10 +135,15 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         $select = $this->indexService->select();
 
+        $resultItem = new Item($this->om);
         $this->connector->expects($this->once())
             ->method('doSearch')
             ->with($select)
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array('results' => array($resultItem), 'records_count' => 1)));
+
+        $this->dispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($resultItem));
 
         $this->indexService->query($select);
     }
@@ -143,6 +153,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSimpleSearch()
     {
+        $this->connector->expects($this->any())
+            ->method('doSearch')
+            ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
+
         $this->mapper->expects($this->any())
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
@@ -168,6 +182,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAdvancedSearch()
     {
+        $this->connector->expects($this->any())
+            ->method('doSearch')
+            ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
+
         $this->mapper->expects($this->once())
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
