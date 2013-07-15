@@ -18,7 +18,7 @@ class EventTranslationExtractorTest extends TestCase
         $testMessage = 'test message';
         $eventNamesExtractor->expects($this->once())
             ->method('extract')
-            ->with($dir)
+            ->with($dir.'/../../')
             ->will($this->returnValue(array(
                 $testMessage => $testMessage,
             )));

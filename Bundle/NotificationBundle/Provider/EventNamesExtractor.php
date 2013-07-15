@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Extracts event names from a php files.
@@ -37,41 +37,69 @@ class EventNamesExtractor
         ),
     );
 
-    public function __construct(KernelInterface $kernel)
-    {
-        $directories = false;
-        foreach ($kernel->getBundles() as $bundle) {
-            if (substr($bundle->getName(), 0, 3) == 'Oro') {
-                /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
-                $directories[] = $bundle->getPath();
-            }
-        }
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $em;
 
-        $this->directories = $directories;
+    /**
+     * @var string
+     */
+    protected $entityClass;
+
+    public function __construct(ObjectManager $em, $entityClass)
+    {
+        $this->em = $em;
+        $this->entityClass = $entityClass;
     }
 
     /**
      * Extract event names and return them in array
      *
-     * @param string|null $directory
+     * @param string $directory
      * @return array
      */
-    public function extract($directory = null)
+    public function extract($directory)
     {
-        if (!is_null($directory) && file_exists($directory)) {
-            $this->directories = array($directory.'../../');
-        }
-
+        $this->eventNames = array();
         $finder = new Finder();
-        foreach ($this->directories as $i => $directory) {
-            //echo '[' . sprintf('%0.2f', 100*($i+1) / count($this->directories)) . '] ' . $directory . "\n";
-            $files = $finder->files()->name('*.php')->in($directory);
-            foreach ($files as $file) {
-                $this->parseTokens(token_get_all(file_get_contents($file)));
-            }
+        $files = $finder->files()->name('*.php')->in($directory);
+        foreach ($files as $file) {
+            $this->parseTokens(token_get_all(file_get_contents($file)));
         }
 
         return $this->eventNames;
+    }
+
+    /**
+     * Save extracted messages to db
+     */
+    public function dumpToDb()
+    {
+        if ($this->em && $this->entityClass) {
+            $existingNames = $this->em->getRepository($this->entityClass)->findAll();
+            if (!empty($existingNames)) {
+                if ($existingNames instanceof $this->entityClass) {
+                    $existingNames = array($existingNames->getName());
+                }
+                else {
+                    $existingNames = array_map(function($item){ return $item->getName(); }, $existingNames);
+                }
+
+                $existingNames = array_flip($existingNames);
+            }
+
+            foreach ($this->eventNames as $eventName) {
+                if (isset($existingNames[$eventName])) {
+                    continue;
+                }
+
+                $event = new $this->entityClass($eventName);
+                $this->em->persist($event);
+            }
+
+            $this->em->flush();
+        }
     }
 
     /**

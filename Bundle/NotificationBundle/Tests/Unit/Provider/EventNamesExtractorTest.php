@@ -2,31 +2,42 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Unit\Provider;
 
+use Oro\Bundle\NotificationBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor;
 
 class EventNamesExtractorTest extends TestCase
 {
-    public function testExtraction()
+    /**
+     * Test extraction works OK
+     */
+    public function testExtract()
     {
-        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
-        $bundle->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('OroAbcBundle'));
+        $entityClass = 'Oro\Bundle\NotificationBundle\Entity\Event';
 
-        $bundles = array(
-            $bundle
-        );
+        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository
+            ->expects($this->any())
+            ->method('findAll')
+            ->will($this->returnValue(new Event('test.test')));
 
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
-        $kernel->expects($this->once())
-            ->method('getBundles')
-            ->will($this->returnValue($bundles));
+        $em = $this->getMock('\Doctrine\Common\Persistence\ObjectManager');
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with($this->equalTo($entityClass))
+            ->will($this->returnValue($repository));
 
-        $extractor = new EventNamesExtractor($kernel);
-        $messages = $extractor->extract(__DIR__.'/../Fixtures/Resources/views/');
+        $em->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf($entityClass));
 
-        // Assert
+        $em->expects($this->once())
+            ->method('flush');
+
+        $extractor = new EventNamesExtractor($em, $entityClass);
+        $messages = $extractor->extract(__DIR__.'/../Fixtures/');
+        $extractor->dumpToDb();
+
         $this->assertCount(1, $messages, '->extract() should find 1 translation');
         $this->assertTrue(isset($messages['oro.event.good_happens']), '->extract() should find at leat "oro.event.good_happens" message');
     }

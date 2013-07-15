@@ -26,16 +26,22 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
+
+    public function __construct($name, $description = null)
+    {
+        $this->name = $name;
+        $this->description = $description;
+    }
 
     /**
      * Get id

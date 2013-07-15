@@ -1,5 +1,6 @@
 parameters:
     # Entity classes
+    oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
     # Event extractor classes
@@ -15,12 +16,14 @@ parameters:
     oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
     oro_notification.form.handler.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
 
+
 services:
     # Event extractor services
     oro_notification.event_names.extractor:
         class: %oro_notification.event_names.extractor.class%
         arguments:
-            - @kernel
+            - @doctrine.orm.entity_manager
+            - %oro_notification.event_entity.class%
 
     oro_notification.event_translation.extractor:
         class: %oro_notification.event_translation.extractor.class%
