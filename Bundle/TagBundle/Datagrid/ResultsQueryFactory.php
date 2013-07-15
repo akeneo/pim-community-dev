@@ -29,7 +29,7 @@ class ResultsQueryFactory extends EntityQueryFactory
      */
     public function createQuery()
     {
-        $em = $this->registry->getEntityManagerForClass($this->className);
+        $em = $this->registry->getManagerForClass($this->className);
         $this->queryBuilder = $em->getRepository($this->className)->createQueryBuilder($this->alias);
 
         if (!$this->queryBuilder) {

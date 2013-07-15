@@ -55,7 +55,7 @@ class ResultsQueryFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateQuery()
     {
         $this->registry->expects($this->once())
-            ->method('getEntityManagerForClass')
+            ->method('getManagerForClass')
             ->with('testClassName')
             ->will($this->returnValue($this->em));
 
@@ -81,7 +81,7 @@ class ResultsQueryFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateQueryException()
     {
         $this->registry->expects($this->once())
-            ->method('getEntityManagerForClass')
+            ->method('getManagerForClass')
             ->with('testClassName')
             ->will($this->returnValue($this->em));
 
