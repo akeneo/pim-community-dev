@@ -646,7 +646,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following informations:$/
+     * @Given /^I fill in the following informations?:$/
      */
     public function iFillInTheFollowingInformations(TableNode $table)
     {

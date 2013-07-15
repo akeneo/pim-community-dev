@@ -16,6 +16,7 @@ class AttributeCreation extends Page
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
         'Attribute options list'  => array('css' => '#sortable_options'),
+        'Tabs'                    => array('css' => '#form-navbar'),
     );
 
     public function selectAttributeType($type)
@@ -39,5 +40,10 @@ class AttributeCreation extends Page
     public function save()
     {
         $this->pressButton('Save');
+    }
+
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
     }
 }
