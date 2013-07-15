@@ -4,24 +4,23 @@ namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Translation\MessageCatalogue;
-use Symfony\Bundle\FrameworkBundle\Translation\PhpExtractor;
 
 /**
  * Extracts event names from a php files.
  *
  */
-class EventNamesExtractor extends PhpExtractor
+class EventNamesExtractor
 {
     const MESSAGE_TOKEN = 300;
     const IGNORE_TOKEN = 400;
+    const EVENTS_PREFIX = 'oro.event.';
 
     /**
-     * Prefix for new found message.
+     * Found/extracted event names
      *
-     * @var string
+     * @var array
      */
-    private $prefix = '';
+    protected $eventNames = array();
 
     /**
      * The sequence that captures translation messages.
@@ -33,7 +32,6 @@ class EventNamesExtractor extends PhpExtractor
             '->',
             'dispatch',
             '(',
-            'oro.event.',
             self::MESSAGE_TOKEN,
             ',',
         ),
@@ -43,36 +41,37 @@ class EventNamesExtractor extends PhpExtractor
     {
         $directories = false;
         foreach ($kernel->getBundles() as $bundle) {
-            /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
-            $directories[] = $bundle->getPath();
+            if (substr($bundle->getName(), 0, 3) == 'Oro') {
+                /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
+                $directories[] = $bundle->getPath();
+            }
         }
 
         $this->directories = $directories;
     }
 
     /**
-     * {@inheritDoc}
+     * Extract event names and return them in array
+     *
+     * @param string|null $directory
+     * @return array
      */
-    public function extract($directory, MessageCatalogue $catalog)
+    public function extract($directory = null)
     {
-        // load any existing translation files
-        $finder = new Finder();
+        if (!is_null($directory) && file_exists($directory)) {
+            $this->directories = array($directory.'../../');
+        }
 
-        foreach ($this->directories as $directory) {
+        $finder = new Finder();
+        foreach ($this->directories as $i => $directory) {
+            //echo '[' . sprintf('%0.2f', 100*($i+1) / count($this->directories)) . '] ' . $directory . "\n";
             $files = $finder->files()->name('*.php')->in($directory);
             foreach ($files as $file) {
-                $this->parseTokens(token_get_all(file_get_contents($file)), $catalog);
-                die('sdf');
+                $this->parseTokens(token_get_all(file_get_contents($file)));
             }
         }
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setPrefix($prefix)
-    {
-        $this->prefix = $prefix;
+        return $this->eventNames;
     }
 
     /**
@@ -94,9 +93,8 @@ class EventNamesExtractor extends PhpExtractor
      * Extracts trans message from php tokens.
      *
      * @param array            $tokens
-     * @param MessageCatalogue $catalog
      */
-    protected function parseTokens($tokens, MessageCatalogue $catalog)
+    protected function parseTokens($tokens)
     {
         foreach ($tokens as $key => $token) {
             foreach ($this->sequences as $sequence) {
@@ -115,9 +113,8 @@ class EventNamesExtractor extends PhpExtractor
                 }
 
                 $message = trim($message, '\'');
-
-                if ($message) {
-                    $catalog->set($message, $this->prefix.$message);
+                if ($message && substr($message, 0, strlen(self::EVENTS_PREFIX)) == self::EVENTS_PREFIX) {
+                    $this->eventNames[$message] = $message;
                     break;
                 }
             }
