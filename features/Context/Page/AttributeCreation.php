@@ -35,4 +35,9 @@ class AttributeCreation extends Page
 
         return $field;
     }
+
+    public function save()
+    {
+        $this->pressButton('Save');
+    }
 }
