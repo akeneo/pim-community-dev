@@ -4,7 +4,7 @@ namespace Oro\Bundle\NotificationBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class DoctrineEvent extends Event
+class NotificationEvent extends Event
 {
     /**
      * Event arguments
@@ -16,5 +16,10 @@ class DoctrineEvent extends Event
     public function __construct()
     {
         $this->args = func_get_args();
+    }
+
+    public function getEntity()
+    {
+        return isset($this->args['entity']) ? $this->args['entity'] : false;
     }
 }

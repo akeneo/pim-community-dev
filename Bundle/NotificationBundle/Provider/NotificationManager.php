@@ -7,7 +7,7 @@ use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 class NotificationManager
 {
     /**
-     * @var Event handlers
+     * @var EventHandlerInterface[] handlers
      */
     protected $handlers;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Event;
+namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -22,7 +22,7 @@ class DoctrineListener implements ContainerAwareInterface
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $event = new DoctrineEvent(array('entity' => $args->getEntity()));
+        $event = new NotificationEvent(array('entity' => $args->getEntity()));
         $this->getEventDispatcher()->dispatch('oro.event.entity.post_update', $event);
 
         return $this;
@@ -36,7 +36,7 @@ class DoctrineListener implements ContainerAwareInterface
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $event = new DoctrineEvent(array('entity' => $args->getEntity()));
+        $event = new NotificationEvent(array('entity' => $args->getEntity()));
         $this->getEventDispatcher()->dispatch('oro.event.entity.post_persist', $event);
 
         return $this;
@@ -50,8 +50,10 @@ class DoctrineListener implements ContainerAwareInterface
      */
     public function postRemove(LifecycleEventArgs $args)
     {
-        $event = new DoctrineEvent(array('entity' => $args->getEntity()));
+        $event = new NotificationEvent(array('entity' => $args->getEntity()));
         $this->getEventDispatcher()->dispatch('oro.event.entity.post_remove', $event);
+
+        return $this;
     }
 
     /**
