@@ -78,8 +78,16 @@ class EventNamesExtractor
     {
         if ($this->em && $this->entityClass) {
             $existingNames = $this->em->getRepository($this->entityClass)->findAll();
-            $existingNames = array_map(function($item){ return $item->getName(); }, $existingNames);
-            $existingNames = array_flip($existingNames);
+            if (!empty($existingNames)) {
+                if ($existingNames instanceof $this->entityClass) {
+                    $existingNames = array($existingNames->getName());
+                }
+                else {
+                    $existingNames = array_map(function($item){ return $item->getName(); }, $existingNames);
+                }
+
+                $existingNames = array_flip($existingNames);
+            }
 
             foreach ($this->eventNames as $eventName) {
                 if (isset($existingNames[$eventName])) {
