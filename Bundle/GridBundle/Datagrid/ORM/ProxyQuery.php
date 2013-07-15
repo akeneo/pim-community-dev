@@ -245,6 +245,18 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         $selectExpressions = array_merge($selectExpressions, $this->selectWhitelist);
         $qb->select($selectExpressions);
 
+        // adding of sort by parameters to select
+        // TODO move this logic to addOrderBy method after removing of flexible entity
+        /** @var $orderExpression Query\Expr\OrderBy */
+        foreach ($qb->getDQLPart('orderBy') as $orderExpression) {
+            foreach ($orderExpression->getParts() as $orderString) {
+                $orderField = trim(str_ireplace(array(' asc', ' desc'), '', $orderString));
+                if (!$this->hasSelectItem($qb, $orderField)) {
+                    $qb->addSelect($orderField);
+                }
+            }
+        }
+
         // Since DQL has been changed, some parameters potentially are not used anymore.
         $this->fixUnusedParameters($qb);
 
