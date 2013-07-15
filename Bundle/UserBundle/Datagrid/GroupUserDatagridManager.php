@@ -8,6 +8,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 class GroupUserDatagridManager extends UserRelationDatagridManager
 {
@@ -15,6 +16,11 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
      * @var Group
      */
     protected $group;
+
+    /**
+     * @var string
+     */
+    protected $hasGroupExpression;
 
     /**
      * @param Group $group
@@ -49,7 +55,7 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
                 'label'           => 'Has group',
                 'field_name'      => 'hasCurrentGroup',
-                'expression'      => $this->getHasEntityExpression(),
+                'expression'      => $this->getHasGroupExpression(),
                 'nullable'        => false,
                 'editable'        => true,
                 'sortable'        => true,
@@ -68,17 +74,36 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query->addSelect($this->getHasEntityExpression() . ' AS hasCurrentGroup', true);
+        $query->addSelect($this->getHasGroupExpression() . ' AS hasCurrentGroup', true);
 
         return $query;
     }
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
-    protected function getRelatedEntity()
+    protected function getHasGroupExpression()
     {
-        return $this->getGroup();
+        if (null === $this->hasGroupExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias = $queryFactory->getAlias();
+
+            if ($this->getGroup()->getId()) {
+                $this->hasGroupExpression =
+                    "CASE WHEN " .
+                    "(:group MEMBER OF $entityAlias.groups OR $entityAlias.id IN (:data_in)) AND " .
+                    "$entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            } else {
+                $this->hasGroupExpression =
+                    "CASE WHEN " .
+                    "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) " .
+                    "THEN true ELSE false END";
+            }
+        }
+
+        return $this->hasGroupExpression;
     }
 
     /**
@@ -89,7 +114,7 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
         $parameters = parent::getQueryParameters();
 
         if ($this->getGroup()->getId()) {
-            $parameters['entity'] = $this->getGroup();
+            $parameters['group'] = $this->getGroup();
         }
 
         return $parameters;

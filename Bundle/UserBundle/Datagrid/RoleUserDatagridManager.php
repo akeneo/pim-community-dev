@@ -8,6 +8,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 class RoleUserDatagridManager extends UserRelationDatagridManager
 {
@@ -15,6 +16,11 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
      * @var Role
      */
     protected $role;
+
+    /**
+     * @var string
+     */
+    protected $hasRoleExpression;
 
     /**
      * @param Role $role
@@ -49,7 +55,7 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
                 'label'           => 'Has role',
                 'field_name'      => 'hasCurrentRole',
-                'expression'      => $this->getHasEntityExpression(),
+                'expression'      => $this->getHasRoleExpression(),
                 'nullable'        => false,
                 'editable'        => true,
                 'sortable'        => true,
@@ -68,17 +74,36 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query->addSelect($this->getHasEntityExpression() . ' AS hasCurrentRole', true);
+        $query->addSelect($this->getHasRoleExpression() . ' AS hasCurrentRole', true);
 
         return $query;
     }
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
-    protected function getRelatedEntity()
+    protected function getHasRoleExpression()
     {
-        return $this->getRole();
+        if (null === $this->hasRoleExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias = $queryFactory->getAlias();
+
+            if ($this->getRole()->getId()) {
+                $this->hasRoleExpression =
+                    "CASE WHEN " .
+                    "(:role MEMBER OF $entityAlias.roles OR $entityAlias.id IN (:data_in)) AND " .
+                    "$entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            } else {
+                $this->hasRoleExpression =
+                    "CASE WHEN " .
+                    "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) " .
+                    "THEN true ELSE false END";
+            }
+        }
+
+        return $this->hasRoleExpression;
     }
 
     /**
@@ -89,7 +114,7 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
         $parameters = parent::getQueryParameters();
 
         if ($this->getRole()->getId()) {
-            $parameters['entity'] = $this->getRole();
+            $parameters['role'] = $this->getRole();
         }
 
         return $parameters;
