@@ -30,11 +30,7 @@ class EmailNotification
 
     /**
      * @var Event
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\NotificationBundle\Entity\Event",cascade={"persist"})
-     * @ORM\JoinTable(name="oro_notification_event_emailnotification",
-     *      joinColumns={@ORM\JoinColumn(name="notification_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\NotificationBundle\Entity\Event",cascade={"persist"})
      */
     protected $event;
 
@@ -48,9 +44,10 @@ class EmailNotification
     /**
      * @var string
      *
-     * @ORM\Column(name="recipient", type="string", length=255)
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList", cascade={"persist"}, mappedBy="emailNotification")
+     * @ORM\JoinColumn(name="recipient_list_id", referencedColumnName="id")
      */
-    protected $recipient;
+    protected $recipientList;
 
     /**
      * Get id
@@ -134,12 +131,12 @@ class EmailNotification
     /**
      * Set recipient
      *
-     * @param string $recipient
+     * @param RecipientList $recipientList
      * @return EmailNotification
      */
-    public function setRecipient($recipient)
+    public function setRecipientList(RecipientList $recipientList)
     {
-        $this->recipient = $recipient;
+        $this->recipientList = $recipientList;
     
         return $this;
     }
@@ -149,8 +146,8 @@ class EmailNotification
      *
      * @return string 
      */
-    public function getRecipient()
+    public function getRecipientList()
     {
-        return $this->recipient;
+        return $this->recipientList;
     }
 }

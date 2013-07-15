@@ -30,7 +30,7 @@ class EmailNotificationController extends Controller
      * @Acl(
      *      id="oro_user_user_view",
      *      name="View List of notification rules",
-     *      description="View notification rules list",
+     *      description="View list of notification rules",
      *      parent="oro_notification_emailnotification"
      * )
      * @Template()
@@ -58,9 +58,20 @@ class EmailNotificationController extends Controller
      * )
      * @Template()
      */
-    public function updateAction()
+    public function updateAction(EmailNotification $entity)
     {
-        return array();
+        if ($this->get('oro_notification.form.handler.email_notification')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.notification.controller.emailnotification.saved.message')
+            );
+
+            return $this->redirect($this->generateUrl('oro_notification_emailnotification_index'));
+        }
+
+        return array(
+            'form' => $this->get('oro_notification.form.email_notification')->createView(),
+        );
     }
 
     /**

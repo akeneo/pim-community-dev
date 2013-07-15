@@ -6,7 +6,8 @@
     {% if resource_granted('oro_notification_emailnotification_create') %}
         {% set buttons = [
                 UI.addButton(
-                {'path' : path('oro_notification_emailnotification_create'), 'title' : 'Create notification rule', 'label' : 'Create notification rule'})
+                    {'path' : path('oro_notification_emailnotification_create'), 'title' : 'Create notification rule', 'label' : 'Create notification rule'}
+                )
             ]
         %}
     {% endif %}

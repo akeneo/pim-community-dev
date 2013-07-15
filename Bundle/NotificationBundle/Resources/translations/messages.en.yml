@@ -1,0 +1,5 @@
+oro:
+    notification:
+        controller:
+            emailnotification:
+                saved.message: "Email notification rule has been saved"

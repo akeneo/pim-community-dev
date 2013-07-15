@@ -3,10 +3,11 @@
 namespace Oro\Bundle\NotificationBundle\Controller\Api\Rest;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
