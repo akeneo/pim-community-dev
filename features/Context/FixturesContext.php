@@ -177,21 +177,22 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following product:$/
+     * @Given /^the following products:$/
      */
-    public function theFollowingProduct(TableNode $table)
+    public function theFollowingProducts(TableNode $table)
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
-                'languages' => 'english',
-                'family'    => null,
+                'languages'  => 'english',
+                'family'     => null,
             ), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
             if ($data['family']) {
                 $product->setFamily($this->getFamily($data['family']));
             }
+
             $pm->save($product);
         }
     }
@@ -335,6 +336,8 @@ class FixturesContext extends RawMinkContext
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $attribute->setRequired($data['required'] === 'yes');
+            $attribute->setUseableAsGridColumn(true);
+            $attribute->isUseableAsGridFilter(true);
 
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
@@ -444,6 +447,13 @@ class FixturesContext extends RawMinkContext
             $category = new Category();
             $category->setCode($data['code']);
             $category->setTitle($data['title']);
+
+            if (isset($data['products'])) {
+                $skus = explode(',', $data['products']);
+                foreach ($skus as $sku) {
+                    $category->addProduct($this->getProduct($sku));
+                }
+            }
 
             $em->persist($category);
         }
@@ -689,7 +699,7 @@ class FixturesContext extends RawMinkContext
         return $role;
     }
 
-    private function getCategory($code)
+    public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array(
             'code' => $code,
