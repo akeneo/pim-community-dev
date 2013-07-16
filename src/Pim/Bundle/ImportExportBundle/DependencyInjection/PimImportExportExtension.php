@@ -6,6 +6,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\FileLocator;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -14,10 +16,72 @@ use Symfony\Component\Config\FileLocator;
  */
 class PimImportExportExtension extends Extension
 {
+    private $factory;
+
+    public function __construct()
+    {
+        $this->factory = new ReferenceFactory;
+    }
+
     public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $configs[0];
+        $config = array_merge(array(
+            'exports' => array(),
+        ), $config);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('serializer.yml');
+        $loader->load('import_export.yml');
+
+        $this->createExporterServices($config, $container);
+    }
+
+    private function createExporterServices(array $config, ContainerBuilder $container)
+    {
+        $registry = $container->getDefinition('pim_import_export.exporter_registry');
+        foreach ($config['exports'] as $alias => $exportConfig) {
+
+            $def = new Definition(
+                'Pim\\Bundle\\ImportExportBundle\\Exporter',
+                array(
+                    $this->factory->createReference('pim_serializer'),
+                    $this->factory->createReference(
+                        $this->createService(sprintf('%s_reader', $alias), $exportConfig['reader'], $container)
+                    ),
+                    $this->factory->createReference(
+                        $this->createService(sprintf('%s_writer', $alias), $exportConfig['writer'], $container)
+                    ),
+                )
+            );
+            $def->setPublic(false);
+
+            $registry->addMethodCall('registerExporter', array($alias, $def));
+        }
+    }
+
+    private function createService($suffix, array $config, ContainerBuilder $container)
+    {
+        $def = new Definition;
+        $def->setClass($config['type']);
+        $def->setArguments($this->resolveServices($config['options']));
+
+        $id  = sprintf('pim_import_export.%s', $suffix);
+
+        $container->setDefinition($id, $def);
+
+        return $id;
+    }
+
+    private function resolveServices(array $options)
+    {
+        foreach ($options as $index => $option) {
+            if (0 === strpos($option, '@')) {
+                $options[$index] = $this->factory->createReference(substr($option, 1));
+            }
+        }
+
+        return $options;
     }
 }
 
