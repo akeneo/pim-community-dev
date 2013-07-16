@@ -30,7 +30,6 @@ class UniqueKeyCollectionType extends AbstractType
         $builder->add(
             'keys',
             'collection',
-            //'unique_collection',
             array(
                 'required'       => true,
                 'type'           => new UniqueKeyType($this->fields),
