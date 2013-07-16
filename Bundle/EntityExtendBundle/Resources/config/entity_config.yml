@@ -29,6 +29,10 @@ oro_entity_config:
 
                 extend_class:               ~
 
+                unique_key:
+                    serializable:           true
+
+
                 proxy_class:                ~
 
         field:

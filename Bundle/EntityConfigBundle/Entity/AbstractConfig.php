@@ -118,22 +118,26 @@ abstract class AbstractConfig
     /**
      * @param       $scope
      * @param array $values
+     * @param array $serializableValues
      */
-    public function fromArray($scope, array $values)
+    public function fromArray($scope, array $values, array $serializableValues = array())
     {
         foreach ($values as $code => $value) {
-            if (is_bool($value)) {
+            $serializable = isset($serializableValues[$code]) && (bool)$serializableValues[$code];
+
+            if (!$serializable && is_bool($value)) {
                 $value = (int)$value;
             }
 
-            if (!is_string($value)) {
+            if (!$serializable && !is_string($value)) {
                 $value = (string)$value;
             }
 
             if ($configValue = $this->getValue($code, $scope)) {
                 $configValue->setValue($value);
             } else {
-                $configValue = new ConfigValue($code, $scope, $value);
+
+                $configValue  = new ConfigValue($code, $scope, $value, $serializable);
 
                 if ($this instanceof ConfigEntity) {
                     $configValue->setEntity($this);
