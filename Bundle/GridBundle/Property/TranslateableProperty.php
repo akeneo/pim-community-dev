@@ -49,7 +49,7 @@ class TranslateableProperty extends AbstractProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        $dataField = $this->alias ? $this->alias : $this->getName();
+        $dataField = $this->alias ? : $this->getName();
         $value = $record->getValue($dataField);
 
         return $this->translator->trans($value, array(), $this->domain, $this->locale);
