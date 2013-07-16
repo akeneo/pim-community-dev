@@ -27,10 +27,10 @@ services:
         calls:
             - [ setCategoryManager, [@pim_product.manager.category] ]
 
-    pim_product.datagrid.manager.product_history:
+    pim_product.datagrid.manager.history:
         class: Pim\Bundle\ProductBundle\Datagrid\AuditDatagridManager
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: attributes
               entity_hint: attributes
-              route_name: pim_product_product_edit
+              route_name: current

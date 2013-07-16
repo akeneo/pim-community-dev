@@ -7,10 +7,12 @@ $(function() {
 
     function updateForm() {
         $.post(
-           'preprocess',
+            '{{ path('pim_product_productattribute_preprocess') }}',
             $('#'+formName).serialize(),
             function(data) {
-                $('#'+formName).replaceWith(data);
+                for (var prop in data) {
+                    $('#'+prop).html(data[prop]);
+                };
                 $('#'+formName+' div.alert').remove();
                 initializeForm();
             }
