@@ -91,17 +91,32 @@ class SegmentRepository extends NestedTreeRepository
     {
         $vectorMap = array();
         $tree = array();
-        $childrenIndex =  $this->repoUtils->getChildrenIndex();
+        $childrenIndex = $this->repoUtils->getChildrenIndex();
 
         foreach ($nodes as $node) {
-            $item['item'] = $node;
-            $item[$childrenIndex] = array();
-
             if (!isset($vectorMap[$node->getId()])) {
-                $vectorMap[$node->getId()] = $item;
+                // Node does not exist, and none of his children has
+                // already been in the loop, create it
+                $vectorMap[$node->getId()] = array(
+                    'item' => $node,
+                    $childrenIndex => array()
+                );
+            } else {
+                // Node already existing in the map because a child has been
+                // added to his children array. We still need to add the node
+                // itself, as only its children property has been created.
+                $vectorMap[$node->getId()]['item'] = $node;
             }
 
             if ($node->getParent() != null) {
+                if (!isset($vectorMap[$node->getParent()->getId()])) {
+                    // The parent does not exist in the map, create its
+                    // children property
+                    $vectorMap[$node->getParent()->getId()] = array(
+                        $childrenIndex => array()
+                    );
+                }
+
                 $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
             } else {
                 $tree[$node->getId()] =& $vectorMap[$node->getId()];
@@ -110,6 +125,7 @@ class SegmentRepository extends NestedTreeRepository
 
         return $tree;
     }
+
 
     /**
      * Search Segment entities from an array of criterias.
