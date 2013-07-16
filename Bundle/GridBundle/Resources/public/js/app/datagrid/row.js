@@ -61,7 +61,7 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
         var text = "";
         if (_.isFunction(window.getSelection)) {
             text = window.getSelection().toString();
-        } else if (typeof document.selection != undefined && document.selection.type == "Text") {
+        } else if (!_.isUndefined(document.selection) && document.selection.type == "Text") {
             text = document.selection.createRange().text;
         }
         return !_.isEmpty(text);
