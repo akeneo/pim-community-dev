@@ -94,6 +94,10 @@ Oro.Navigation = Backbone.Router.extend({
 
     formState: '',
 
+    cacheTimer: null,
+
+    confirmModal: null,
+
     /**
      * Routing default action
      *
@@ -219,6 +223,20 @@ Oro.Navigation = Backbone.Router.extend({
         }
     },
 
+    initCacheTimer: function() {
+        this.cacheTimer = setInterval(_.bind(function() {
+            var cacheData = this.getCachedData();
+            if (cacheData) {
+                this.validateMd5Request(cacheData);
+                this.validateGridStates(cacheData);
+            }
+        }, this), 5000);
+    },
+
+    clearCacheTimer: function() {
+        clearInterval(this.cacheTimer);
+    },
+
     /**
      * Validate page cache comparing cached content md5 with the one from server
      *
@@ -242,13 +260,13 @@ Oro.Navigation = Backbone.Router.extend({
     },
 
     /**
-     * Validate page cache to check if its up to date. Comparing grid state(if any) and content md5
+     * Validate grid state based on grid collection
      *
      * @param cacheData
      */
-    validatePageCache: function(cacheData) {
+    validateGridStates: function(cacheData) {
         if (cacheData.states) {
-            var formState = cacheData.states.getObjectCache('form')
+            var formState = cacheData.states.getObjectCache('form');
             var girdState = cacheData.states.getObjectCache('grid');
             //grid states on form pages are not validated
             if (girdState['collection'] && !formState['form_data']) {
@@ -267,6 +285,15 @@ Oro.Navigation = Backbone.Router.extend({
                 collection.fetch(options);
             }
         }
+    },
+
+    /**
+     * Validate page cache to check if its up to date. Comparing grid state(if any) and content md5
+     *
+     * @param cacheData
+     */
+    validatePageCache: function(cacheData) {
+        this.validateGridStates(cacheData);
         this.validateMd5Request(cacheData);
     },
 
@@ -276,6 +303,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @param url
      */
     showOutdatedMessage: function(url) {
+        this.clearCacheTimer();
         if (this.useCache && this.url == url) {
             var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
             message = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
@@ -568,14 +596,36 @@ Oro.Navigation = Backbone.Router.extend({
             this
         );
 
+        var options = {
+            title: Translator.get('Refresh Confirmation'),
+            content: Translator.get('Your local changes will be lost. Are you sure you want to refresh the page?')
+        }
+        this.confirmModal = new Oro.BootstrapModal(_.extend({
+            title: 'Confirmation',
+            okText: 'Ok, got it.',
+            className: 'modal modal-primary',
+            okButtonClass: 'btn-primary btn-large'
+        }, options));
+        this.confirmModal.on('ok', _.bind(function() {
+            this.refreshPage();
+        }, this));
+
         $(document).on('click', '.page-refresh', _.bind(function() {
             var data = this.getCachedData();
-            //saving form state for future restore after content refresh
+            var formState;
             if (data.states) {
-                this.formState = data.states.getObjectCache('form');
+                formState = data.states.getObjectCache('form');
+                /**
+                 *  saving form state for future restore after content refresh, uncomment after new page states logic is
+                 *  implemented
+                 */
+                //this.formState = formState;
             }
-            this.clearPageCache(this.url);
-            this.loadPage();
+            if (formState && formState['form_data'].length) {
+                this.confirmModal.open();
+            } else {
+                this.refreshPage();
+            }
         }, this)
         );
 
@@ -593,6 +643,7 @@ Oro.Navigation = Backbone.Router.extend({
         this.loadingMask.show();
         this.gridRoute = ''; //clearing grid router
         this.tempCache = '';
+        clearInterval(this.cacheTimer);
         //reset pagestate restore flag
         Oro.pagestate.needServerRestore = true;
         /**
@@ -608,6 +659,7 @@ Oro.Navigation = Backbone.Router.extend({
     afterRequest: function() {
         this.loadingMask.hide();
         this.formState = '';
+        this.initCacheTimer();
     },
 
     /**
@@ -618,6 +670,11 @@ Oro.Navigation = Backbone.Router.extend({
     renderLoadingMask: function() {
         this.selectorCached.loadingMask.append(this.loadingMask.render().$el);
         this.loadingMask.hide();
+    },
+
+    refreshPage: function() {
+        this.clearPageCache(this.url);
+        this.loadPage();
     },
 
     /**
