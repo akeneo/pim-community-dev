@@ -98,6 +98,8 @@ Oro.Navigation = Backbone.Router.extend({
 
     confirmModal: null,
 
+    notificationMessage: null,
+
     /**
      * Routing default action
      *
@@ -105,6 +107,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @param {String} encodedStateData
      */
     defaultAction: function(page, encodedStateData) {
+        this.beforeDefaultAction();
         this.encodedStateData = encodedStateData;
         this.url = page;
         if (!this.url) {
@@ -114,6 +117,13 @@ Oro.Navigation = Backbone.Router.extend({
             this.loadPage();
         }
         this.skipAjaxCall = false;
+    },
+
+    beforeDefaultAction: function() {
+        //reset pagestate restore flag in case we left the page
+        if (this.url !== this.getHashUrl(false, true)) {
+            Oro.pagestate.needServerRestore = true;
+        }
     },
 
     /**
@@ -307,7 +317,7 @@ Oro.Navigation = Backbone.Router.extend({
         if (this.useCache && this.url == url) {
             var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
             message = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
-            Oro.NotificationMessage('warning', message);
+            this.notificationMessage = Oro.NotificationMessage('warning', message);
         }
     },
 
@@ -644,8 +654,9 @@ Oro.Navigation = Backbone.Router.extend({
         this.gridRoute = ''; //clearing grid router
         this.tempCache = '';
         clearInterval(this.cacheTimer);
-        //reset pagestate restore flag
-        Oro.pagestate.needServerRestore = true;
+        if (this.notificationMessage) {
+            this.notificationMessage.close();
+        }
         /**
          * Backbone event. Fired before navigation ajax request is started
          * @event hash_navigation_request:start
