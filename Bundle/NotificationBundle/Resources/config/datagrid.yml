@@ -4,6 +4,7 @@ parameters:
 services:
     oro_navigation.emailnotification.datagrid_manager:
         class: %oro_navigation.emailnotification.datagrid_manager.class%
+        arguments: [%oro_config.entities%]
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: emailnotification

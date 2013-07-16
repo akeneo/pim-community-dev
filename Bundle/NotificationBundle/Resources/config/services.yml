@@ -43,6 +43,7 @@ services:
 
     oro_notification.form.type.email_notification:
         class: %oro_notification.form.type.email_notification.class%
+        arguments: [%oro_config.entities%]
         tags:
             - { name: form.type, alias: emailnotification }
 
@@ -64,13 +65,13 @@ services:
     oro_notification.form.type.email_notification.api:
         class: %oro_notification.form.type.email_notification.api.class%
         tags:
-            - { name: form.type, alias: emailnotification }
+            - { name: form.type, alias: emailnotification_api }
 
     oro_notification.form.email_notification.api:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
-        arguments: ["emailnotification", "emailnotification", null]
+        arguments: ["emailnotification_api", "emailnotification_api", null]
 
     oro_notification.form.handler.email_notification.api:
         class: %oro_notification.form.handler.email_notification.api.class%

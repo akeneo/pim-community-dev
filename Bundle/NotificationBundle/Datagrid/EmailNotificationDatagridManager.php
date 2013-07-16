@@ -7,9 +7,6 @@ use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
-use Oro\Bundle\GridBundle\Property\CallbackProperty;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
@@ -21,6 +18,21 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 
 class EmailNotificationDatagridManager extends DatagridManager
 {
+    /**
+     * @var array
+     */
+    protected $entityNameChoise = array();
+
+    public function __construct($entitiesConfig = array())
+    {
+        $this->entityNameChoise = array_map(
+            function ($value) {
+                return isset($value['name'])? $value['name'] : '';
+            },
+            $entitiesConfig
+        );
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -54,14 +66,16 @@ class EmailNotificationDatagridManager extends DatagridManager
         $fieldEntityName->setName('entityName');
         $fieldEntityName->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('oro.notification.datagrid.entity_name'),
-                'field_name'  => 'entityName',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'                => FieldDescriptionInterface::TYPE_TEXT,
+                'label'               => $this->translate('oro.notification.datagrid.entity_name'),
+                'field_name'          => 'entityName',
+                'filter_type'         => FilterInterface::TYPE_CHOICE,
+                'choices'             => $this->entityNameChoise,
+                'translation_domain'  => 'config',
+                'required'            => false,
+                'sortable'            => false,
+                'filterable'          => true,
+                'show_filter'         => true,
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
@@ -70,6 +84,34 @@ class EmailNotificationDatagridManager extends DatagridManager
         );
         $fieldEntityName->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldEntityName);
+
+        $fieldEvent = new FieldDescription();
+        $fieldEvent->setName('event');
+        $fieldEvent->setOptions(
+            array(
+                'type'                => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'               => $this->translate('oro.notification.datagrid.event_name'),
+                'field_name'          => 'eventName',
+                'expression'          => 'event',
+                'filter_type'         => FilterInterface::TYPE_ENTITY,
+                'required'            => false,
+                'sortable'            => false,
+                'filterable'          => true,
+                'show_filter'         => true,
+                // entity filter options
+                'multiple'            => true,
+                'class'               => 'OroNotificationBundle:Event',
+                'property'            => 'name',
+                'filter_by_where'     => true,
+                'query_builder'       => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('e');
+                },
+            )
+        );
+
+        $property = new TranslateableProperty('event', $this->translator, 'eventName');
+        $fieldEvent->setProperty($property);
+        $fieldsCollection->add($fieldEvent);
 
         $fieldTemplate = new FieldDescription();
         $fieldTemplate->setName('template');
@@ -101,34 +143,6 @@ class EmailNotificationDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldRecipientList);
-
-        $fieldEvent = new FieldDescription();
-        $fieldEvent->setName('eventName');
-        $fieldEvent->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('oro.notification.datagrid.event_name'),
-                'field_name'  => 'eventName',
-                'expression'  => 'eventName',
-                'filter_type' => FilterInterface::TYPE_ENTITY,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
-                // entity filter options
-                'multiple'          => true,
-                'class'             => 'OroNotificationBundle:Event',
-                'property'          => 'name',
-                'filter_by_where'   => true,
-                'query_builder'     => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('e');
-                },
-            )
-        );
-
-        $property = new TranslateableProperty('eventName', $this->translator);
-        $fieldEvent->setProperty($property);
-        $fieldsCollection->add($fieldEvent);
     }
 
     /**

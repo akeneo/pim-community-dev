@@ -31,4 +31,12 @@ class EmailNotificationApiType extends EmailNotificationType
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'emailnotification_api';
+    }
 }
