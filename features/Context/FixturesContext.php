@@ -177,15 +177,15 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following products:$/
+     * @Given /^the following products?:$/
      */
-    public function theFollowingProducts(TableNode $table)
+    public function theFollowingProduct(TableNode $table)
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
-                'languages'  => 'english',
-                'family'     => null,
+                'languages' => 'english',
+                'family'    => null,
             ), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
@@ -481,24 +481,29 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following updates:$/
+     * @Given /^the following (\w+) "([^"]*)" updates:$/
      */
-    public function theFollowingUpdates(TableNode $table)
+    public function theFollowingUpdates($entityName, $id, TableNode $table)
     {
-        $em = $this->getEntityManager();
+        $entity = $this->{'get'.ucfirst($entityName)}($id);
+        $em     = $this->getEntityManager();
+
         foreach ($table->getHash() as $data) {
             $audit = new Audit;
             $audit->setAction($data['action']);
             $audit->setLoggedAt(new \DateTime($data['loggedAt']));
-            $product = $this->getProduct($data['sku']);
-            $audit->setObjectId($product->getId());
-            $audit->setObjectClass(get_class($product));
-            $audit->setObjectName($product->getLabel());
+            $audit->setObjectId($entity->getId());
+            $audit->setObjectClass(get_class($entity));
+            $audit->setObjectName((string) $entity);
             $audit->setVersion(1);
-            $audit->setData(array('name' => array(
-                'old' => 'foo',
-                'new' => 'bar',
-            )));
+            list($field, $change) = explode(': ', $data['change']);
+            list($old, $new) = explode(' => ', $change);
+            $audit->setData(array(
+                $field => array(
+                    'old' => $old,
+                    'new' => $new,
+                )
+            ));
             $user = $this->getUser($data['updatedBy']);
             $audit->setUsername($user->getUsername());
             $audit->setUser($user);
@@ -507,6 +512,7 @@ class FixturesContext extends RawMinkContext
 
         $em->flush();
     }
+
 
     private function getUser($username)
     {

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Custom properties for a product attribute
@@ -24,6 +25,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
+ * @Oro\Loggable
  */
 class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface
 {
@@ -39,11 +41,13 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"sortOrder" = "ASC"})
+     * @Oro\Versioned
      */
     protected $options;
 
     /**
      * @ORM\Column(name="sort_order", type="integer")
+     * @Oro\Versioned
      */
     protected $sortOrder = 0;
 
@@ -51,6 +55,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $description
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $description;
 
@@ -58,6 +63,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $variant
      *
      * @ORM\Column(name="variant", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $variant;
 
@@ -65,6 +71,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $smart
      *
      * @ORM\Column(name="is_smart", type="boolean")
+     * @Oro\Versioned
      */
     protected $smart;
 
@@ -73,6 +80,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      *
      * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attributes")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned
      */
     protected $group;
 
@@ -80,6 +88,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $useableAsGridColumn
      *
      * @ORM\Column(name="useable_as_grid_column", type="boolean", options={"default" = false})
+     * @Oro\Versioned
      */
     protected $useableAsGridColumn;
 
@@ -87,6 +96,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $useableAsGridFilter
      *
      * @ORM\Column(name="useable_as_grid_filter", type="boolean", options={"default" = false})
+     * @Oro\Versioned
      */
     protected $useableAsGridFilter;
 
@@ -95,6 +105,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
      * @ORM\JoinTable(name="pim_product_attribute_locale")
+     * @Oro\Versioned
      */
     protected $availableLocales;
 
@@ -102,6 +113,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var integer $maxCharacters
      *
      * @ORM\Column(name="max_characters", type="smallint", nullable=true)
+     * @Oro\Versioned
      */
     protected $maxCharacters;
 
@@ -109,6 +121,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $validationRule
      *
      * @ORM\Column(name="validation_rule", type="string", length=10, nullable=true)
+     * @Oro\Versioned
      */
     protected $validationRule;
 
@@ -116,6 +129,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $validationRegexp
      *
      * @ORM\Column(name="validation_regexp", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $validationRegexp;
 
@@ -123,6 +137,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $wysiwygEnabled
      *
      * @ORM\Column(name="wysiwyg_enabled", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $wysiwygEnabled;
 
@@ -130,6 +145,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var decimal $numberMin
      *
      * @ORM\Column(name="number_min", type="decimal", precision=14, scale=4, nullable=true)
+     * @Oro\Versioned
      */
     protected $numberMin;
 
@@ -137,6 +153,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var decimal $numberMax
      *
      * @ORM\Column(name="number_max", type="decimal", precision=14, scale=4, nullable=true)
+     * @Oro\Versioned
      */
     protected $numberMax;
 
@@ -144,6 +161,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $decimalsAllowed
      *
      * @ORM\Column(name="decimals_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $decimalsAllowed;
 
@@ -151,6 +169,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $negativeAllowed
      *
      * @ORM\Column(name="negative_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $negativeAllowed;
 
@@ -158,6 +177,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var boolean $valueCreationAllowed
      *
      * @ORM\Column(name="value_creation_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $valueCreationAllowed;
 
@@ -165,6 +185,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $dateType
      *
      * @ORM\Column(name="date_type", type="string", length=20, nullable=true)
+     * @Oro\Versioned
      */
     protected $dateType;
 
@@ -172,6 +193,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var decimal $dateMin
      *
      * @ORM\Column(name="date_min", type="datetime", nullable=true)
+     * @Oro\Versioned
      */
     protected $dateMin;
 
@@ -179,6 +201,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var decimal $dateMax
      *
      * @ORM\Column(name="date_max", type="datetime", nullable=true)
+     * @Oro\Versioned
      */
     protected $dateMax;
 
@@ -186,6 +209,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $metricFamily
      *
      * @ORM\Column(name="metric_family", type="string", length=30, nullable=true)
+     * @Oro\Versioned
      */
     protected $metricFamily;
 
@@ -193,6 +217,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $defaultMetricUnit
      *
      * @ORM\Column(name="default_metric_unit", type="string", length=30, nullable=true)
+     * @Oro\Versioned
      */
     protected $defaultMetricUnit;
 
@@ -200,6 +225,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var string $allowedFileSources
      *
      * @ORM\Column(name="allowed_file_sources", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $allowedFileSources;
 
@@ -207,6 +233,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var integer $maxFileSize
      *
      * @ORM\Column(name="max_file_size", type="integer", nullable=true)
+     * @Oro\Versioned
      */
     protected $maxFileSize;
 
@@ -214,6 +241,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var array $allowedFileExtensions
      *
      * @ORM\Column(name="allowed_file_extensions", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $allowedFileExtensions;
 
@@ -235,6 +263,42 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * )
      */
     protected $translations;
+
+    /**
+     * @ORM\Column(name="is_required", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $required;
+
+    /**
+     * @ORM\Column(name="is_unique", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $unique;
+
+    /**
+     * @ORM\Column(name="default_value", type="text", length=65532, nullable=true)
+     * @Oro\Versioned
+     */
+    protected $defaultValue;
+
+    /**
+     * @ORM\Column(name="is_searchable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $searchable;
+
+    /**
+     * @ORM\Column(name="is_translatable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $translatable;
+
+    /**
+     * @ORM\Column(name="is_scopable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $scopable;
 
     /**
      * Constructor
