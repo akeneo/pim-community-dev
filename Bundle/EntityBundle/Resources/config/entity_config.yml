@@ -118,7 +118,7 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          auditable
+                            block:          entity
                             label:          'Auditable'
 
         field:
