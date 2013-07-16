@@ -76,7 +76,7 @@ class EntityConfigContainer
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
             if (isset($item['serializable'])) {
-                $result[$code] = (bool)$item['serializable'];
+                $result[$code] = (bool) $item['serializable'];
             }
         }
 
@@ -88,7 +88,7 @@ class EntityConfigContainer
      */
     public function hasEntityForm()
     {
-        return (boolean)array_filter($this->getEntityItems(), function ($item) {
+        return (boolean) array_filter($this->getEntityItems(), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }
@@ -136,7 +136,7 @@ class EntityConfigContainer
     }
 
     /**
-     * @param  bool $checkEntityGrid
+     * @param  bool  $checkEntityGrid
      * @return array
      */
     public function getFieldItems($checkEntityGrid = false)
@@ -145,7 +145,7 @@ class EntityConfigContainer
         if (isset($this->config['field']) && isset($this->config['field']['items'])) {
             if ($checkEntityGrid) {
                 $fieldItems = array_filter($this->config['field']['items'], function ($item) {
-                    return isset($item['entity_grid']) ? (bool)$item['entity_grid'] : true;
+                    return isset($item['entity_grid']) ? (bool) $item['entity_grid'] : true;
                 });
             } else {
                 $fieldItems = $this->config['field']['items'];
@@ -170,7 +170,6 @@ class EntityConfigContainer
         return $result;
     }
 
-
     /**
      * @return array
      */
@@ -179,7 +178,7 @@ class EntityConfigContainer
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
             if (isset($item['serializable'])) {
-                $result[$code] = (bool)$item['serializable'];
+                $result[$code] = (bool) $item['serializable'];
             }
         }
 
@@ -191,7 +190,7 @@ class EntityConfigContainer
      */
     public function hasFieldForm()
     {
-        return (boolean)array_filter($this->getFieldItems(), function ($item) {
+        return (boolean) array_filter($this->getFieldItems(), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }

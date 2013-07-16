@@ -66,9 +66,9 @@ class ConfigManager
     protected $providers = array();
 
     /**
-     * @param MetadataFactory                        $metadataFactory
-     * @param EventDispatcher                        $eventDispatcher
-     * @param ServiceProxy                           $proxyEm
+     * @param MetadataFactory $metadataFactory
+     * @param EventDispatcher $eventDispatcher
+     * @param ServiceProxy    $proxyEm
      */
     public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
     {

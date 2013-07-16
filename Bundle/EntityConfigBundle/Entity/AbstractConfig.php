@@ -55,7 +55,7 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param  callable $filter
+     * @param  callable                            $filter
      * @return array|ArrayCollection|ConfigValue[]
      */
     public function getValues(\Closure $filter = null)
@@ -123,14 +123,14 @@ abstract class AbstractConfig
     public function fromArray($scope, array $values, array $serializableValues = array())
     {
         foreach ($values as $code => $value) {
-            $serializable = isset($serializableValues[$code]) && (bool)$serializableValues[$code];
+            $serializable = isset($serializableValues[$code]) && (bool) $serializableValues[$code];
 
             if (!$serializable && is_bool($value)) {
-                $value = (int)$value;
+                $value = (int) $value;
             }
 
             if (!$serializable && !is_string($value)) {
-                $value = (string)$value;
+                $value = (string) $value;
             }
 
             if ($configValue = $this->getValue($code, $scope)) {

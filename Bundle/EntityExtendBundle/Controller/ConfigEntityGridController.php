@@ -6,7 +6,6 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueCollectionType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -63,7 +62,6 @@ class ConfigEntityGridController extends Controller
                             'error',
                             'Name of key can\'t be empty.'
                         );
-
                         break;
                     }
 

@@ -115,7 +115,6 @@ class EntityFieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldId);
 
-
         $fieldCode = new FieldDescription();
         $fieldCode->setName('code');
         $fieldCode->setOptions(
