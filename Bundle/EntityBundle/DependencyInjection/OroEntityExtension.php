@@ -51,14 +51,14 @@ class OroEntityExtension extends Extension
                 throw new RuntimeException(sprintf('Could not create cache directory "%s".', $cacheDir));
             }
         }
-        $container->setParameter('oro_entity_extend.cache_dir', $cacheDir);
+        $container->setParameter('oro_entity.cache_dir', $cacheDir);
 
-        $annotationCacheDir = $cacheDir . '/annotation';
-        if (!is_dir($annotationCacheDir)) {
-            if (false === @mkdir($annotationCacheDir, 0777, true)) {
-                throw new RuntimeException(sprintf('Could not create annotation cache directory "%s".', $annotationCacheDir));
+        $auditCacheDir = $cacheDir . '/audit';
+        if (!is_dir($auditCacheDir)) {
+            if (false === @mkdir($auditCacheDir, 0777, true)) {
+                throw new RuntimeException(sprintf('Could not create "audit" cache directory "%s".', $auditCacheDir));
             }
         }
-        $container->setParameter('oro_entity_extend.cache_dir.annotation', $annotationCacheDir);
+        $container->setParameter('oro_entity.cache_dir.audit', $auditCacheDir);
     }
 }
