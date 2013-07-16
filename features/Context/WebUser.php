@@ -220,27 +220,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I save the product$/
+     * @Given /^I save the (.*)$/
      */
-    public function iSaveTheProduct()
+    public function iSave()
     {
-        $this->getPage('Product edit')->save();
-    }
-
-    /**
-     * @Given /^I save the family$/
-     */
-    public function iSaveTheFamily()
-    {
-        $this->getPage('Family edit')->save();
-    }
-
-    /**
-     * @Given /^I save the attribute$/
-     */
-    public function iSaveTheAttribute()
-    {
-        $this->getPage('Attribute creation')->save();
+        $this->getCurrentPage()->save();
     }
 
     /**
@@ -608,6 +592,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I am on the "([^"]*)" category page$/
+     */
+    public function iAmOnTheCategoryPage($code)
+    {
+        $this->openPage('Category edit', array(
+            'id' => $this->getCategory($code)->getId(),
+        ));
+    }
+
+    /**
      * @Then /^I should see the (.*) fields?$/
      */
     public function iShouldSeeTheFields($fields)
@@ -820,6 +814,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getFamily($code)
     {
         return $this->getFixturesContext()->getFamily($code);
+    }
+
+    private function getCategory($code)
+    {
+        return $this->getFixturesContext()->getCategory($code);
     }
 
     private function getFixturesContext()

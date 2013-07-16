@@ -501,14 +501,6 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
-
-    private function getUser($username)
-    {
-        return $this->getEntityOrException('OroUserBundle:User', array(
-            'username' => $username,
-        ));
-    }
-
     public function getProduct($sku)
     {
         $pm   = $this->getProductManager();
@@ -604,6 +596,20 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    public function getCategory($code)
+    {
+        return $this->getEntityOrException('PimProductBundle:Category', array(
+            'code' => $code,
+        ));
+    }
+
+    private function getUser($username)
+    {
+        return $this->getEntityOrException('OroUserBundle:User', array(
+            'username' => $username,
+        ));
+    }
+
     private function createProduct($data)
     {
         $product = $this->getProductManager()->createFlexible();
@@ -682,13 +688,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $role;
-    }
-
-    private function getCategory($code)
-    {
-        return $this->getEntityOrException('PimProductBundle:Category', array(
-            'code' => $code,
-        ));
     }
 
     private function getEntityOrException($namespace, array $criteria)
