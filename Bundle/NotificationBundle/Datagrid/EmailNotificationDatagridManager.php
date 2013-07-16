@@ -7,6 +7,10 @@ use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
+use Oro\Bundle\GridBundle\Property\CallbackProperty;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
@@ -99,28 +103,31 @@ class EmailNotificationDatagridManager extends DatagridManager
         $fieldsCollection->add($fieldRecipientList);
 
         $fieldEvent = new FieldDescription();
-        $fieldEvent->setName('event');
+        $fieldEvent->setName('eventName');
         $fieldEvent->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translate('oro.notification.datagrid.event_name'),
                 'field_name'  => 'eventName',
-                'expression'  => 'event',
+                'expression'  => 'eventName',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
-                'sortable'    => true,
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
                 // entity filter options
-                'multiple'        => true,
-                'class'           => 'OroNotificationBundle:Event',
-                'property'        => 'name',
+                'multiple'          => true,
+                'class'             => 'OroNotificationBundle:Event',
+                'property'          => 'name',
                 'filter_by_where'   => true,
-                'query_builder'   => function (EntityRepository $er) {
+                'query_builder'     => function (EntityRepository $er) {
                     return $er->createQueryBuilder('e');
                 },
             )
         );
+
+        $property = new TranslateableProperty('eventName', $this->translator);
+        $fieldEvent->setProperty($property);
         $fieldsCollection->add($fieldEvent);
     }
 

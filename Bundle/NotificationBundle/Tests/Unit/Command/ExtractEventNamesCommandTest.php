@@ -7,7 +7,7 @@ use Oro\Bundle\NotificationBundle\Command\ExtractEventNamesCommand;
 class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var TitleIndexUpdateCommand
+     * @var ExtractEventNamesCommand
      */
     private $command;
 
@@ -92,7 +92,7 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
         $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
         $bundle->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue( is_null($bundleName) ? 'TratataAbcBundle' : $bundleName ));
+            ->will($this->returnValue(is_null($bundleName) ? 'TratataAbcBundle' : $bundleName));
 
         if (!$oroOnly) {
             $bundle->expects($this->once())

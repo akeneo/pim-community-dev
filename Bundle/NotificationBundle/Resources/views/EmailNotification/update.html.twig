@@ -11,7 +11,7 @@
 %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_api_delete_emailnotication') %}
+    {% if form.vars.value.id and resource_granted('oro_notification_emailnotification_remove') %}
         {{
             UI.deleteButton({
                 'dataUrl': path('oro_api_delete_emailnotication', {'id': form.vars.value.id}),
@@ -53,7 +53,7 @@
             'class': 'active',
             'subblocks': [{
                 'title': '',
-                'data': []
+                'data': [form_widget(form)]
             }]
         }]
     %}
