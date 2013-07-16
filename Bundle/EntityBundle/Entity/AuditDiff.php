@@ -27,6 +27,18 @@ class AuditDiff
     protected $action;
 
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    protected $className;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $objectId;
+
+    /**
      * @var AuditCommit
      * @ORM\ManyToOne(targetEntity="AuditCommit", inversedBy="diffs")
      * @ORM\JoinColumns({
@@ -104,5 +116,37 @@ class AuditDiff
     public function getDiff()
     {
         return $this->diff;
+    }
+
+    /**
+     * @param string $className
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @param int $objectId
+     */
+    public function setObjectId($objectId)
+    {
+        $this->objectId = $objectId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getObjectId()
+    {
+        return $this->objectId;
     }
 }

@@ -1,0 +1,12 @@
+{% set value = value|unserialize %}
+<ul>
+{% for fieldKey, fieldValue in value %}
+    <li>
+        {% if fieldKey == 'remove' %}
+            <s>{{ fieldValue.value }}</s>
+        {% else %}
+            {{ fieldValue.value }}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
