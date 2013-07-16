@@ -26,8 +26,9 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function newEntityConfig(EntityConfigEvent $event)
     {
-        $entityProvider = $event->getConfigManager()->getProvider('entity');
+        $entityProvider   = $event->getConfigManager()->getProvider('entity');
         $datagridProvider = $event->getConfigManager()->getProvider('datagrid');
+        $datagridProvider = $event->getConfigManager()->getProvider('audit');
 
     }
 
