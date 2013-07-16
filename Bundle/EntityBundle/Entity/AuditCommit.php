@@ -8,7 +8,7 @@ use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Table(name="oro__entity_audit_diff")
+ * @ORM\Table(name="oro_entity_audit_commit")
  * @ORM\Entity
  */
 class AuditCommit
