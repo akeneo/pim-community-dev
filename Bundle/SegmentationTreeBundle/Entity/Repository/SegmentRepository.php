@@ -75,58 +75,41 @@ class SegmentRepository extends NestedTreeRepository
             }
         }
         return $children;
-
     }
 
     /**
      * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with
-     * keeping the node as object
+     * keeping the node as object and able to manage nodes in different branches
+     * (the original implementation works with only depth and associate all
+     * nodes of depth D+1 to the last node of depth D.)
      *
-     * @param array $nodes
+     * @param array $nodes Must be sorted by increasing depth
      *
      * @return array
      */
     public function buildTreeNode(array $nodes)
     {
-        $meta = $this->getClassMetadata();
-        $nestedTree = array();
-        $l = 0;
+        $vectorMap = array();
+        $tree = array();
+        $childrenIndex =  $this->repoUtils->getChildrenIndex();
 
-        if (count($nodes) > 0) {
-            // Node Stack. Used to help building the hierarchy
-            $stack = array();
-            foreach ($nodes as $child) {
-                $item = array();
-                $item['item'] = $child;
-                $item[$this->repoUtils->getChildrenIndex()] = array();
-                // Number of stack items
-                $l = count($stack);
-                // Check if we're dealing with different levels
-                while ($l > 0 && $stack[$l - 1]['item']->getLevel() >= $child->getLevel()) {
-                    array_pop($stack);
-                    $l--;
-                }
-                // Stack is empty (we are inspecting the root)
-                if ($l == 0) {
-                    // Assigning the root child
-                    $i = count($nestedTree);
-                    $nestedTree[$i] = $item;
-                    $stack[] = &$nestedTree[$i];
-                } else {
-                    // Add child to parent
-                    $i = count($stack[$l - 1][$this->repoUtils->getChildrenIndex()]);
-                    $stack[$l - 1][$this->repoUtils->getChildrenIndex()][$i] = $item;
-                    $stack[] = &$stack[$l - 1][$this->repoUtils->getChildrenIndex()][$i];
-                }
+        foreach ($nodes as $node) {
+            $item['item'] = $node;
+            $item[$childrenIndex] = array();
+
+            if (!isset($vectorMap[$node->getId()])) {
+                $vectorMap[$node->getId()] = $item;
+            }
+
+            if ($node->getParent() != null) {
+                $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
+            } else {
+                $tree[$node->getId()] =& $vectorMap[$node->getId()];
             }
         }
 
-        return $nestedTree;
+        return $tree;
     }
-
-
-
-
 
     /**
      * Search Segment entities from an array of criterias.
