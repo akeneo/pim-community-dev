@@ -3,6 +3,8 @@
 namespace Context;
 
 use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
+use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * Provides custom web API methods
@@ -32,13 +34,46 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @Given /^I request information for product "([^"]*)"$/
+     */
+    public function iRequestInformationForProduct($sku)
+    {
+        $product = $this->getFixturesContext()->getProduct($sku);
+        $this->setPlaceHolder('{id}', $product->getId());
+
+        return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{id}.json\""));
+    }
+
+    /**
+     * @Given /^(?:the )?response should be valid json$/
+     */
+    public function theResponseShouldBeValidJson()
+    {
+        json_decode($this->getBrowser()->getLastResponse()->getContent());
+        assertEquals(json_last_error(), JSON_ERROR_NONE);
+    }
+
+    /**
+     * @Given /^(?:the )?response should contain the following data:$/
+     */
+    public function theResponseShouldContainTheFollowingData(TableNode $table)
+    {
+        $response = json_decode($this->getBrowser()->getLastResponse()->getContent(), true);
+
+        foreach ($table->getHash() as $data) {
+            assertArrayHasKey($data['key'], $response);
+            assertEquals($response[$data['key']], $data['value']);
+        }
+    }
+
+    /**
      * Adds WSSE authentication header to next request.
      *
      * @param string $username
      * @param string $apiKey
      * @param string $nonce
      */
-    public function generateWsseHeader($userName, $apiKey, $nonce = self::NONCE)
+    private function generateWsseHeader($userName, $apiKey, $nonce = self::NONCE)
     {
         $created = date('c');
         $digest  = base64_encode(sha1(base64_decode($nonce) . $created . $apiKey, true));

@@ -179,6 +179,23 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
+     * Get the identifier of the product
+     *
+     * @return string the identifier of the product
+     */
+    public function getIdentifier()
+    {
+        $values = array_filter(
+            $this->getValues()->toArray(),
+            function ($value) {
+                return $value->getAttribute()->getAttributeType() === 'pim_product_identifier';
+            }
+        );
+
+        return reset($values)->getData();
+    }
+
+    /**
      * Get the attributes of the product
      *
      * @return array the attributes of the current product

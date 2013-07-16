@@ -52,18 +52,17 @@ class ProductController extends FOSRestController
     public function cgetAction()
     {
         $scope = $this->getRequest()->get('scope');
-        $locale = $this->getRequest()->get('locale');
 
         $page = (int) $this->getRequest()->get('page', 1);
         $limit = (int) $this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
 
-        return $this->handleGetListRequest($scope, $locale, $page, $limit);
+        return $this->handleGetListRequest($scope, $page, $limit);
     }
 
     /**
      * Get a single product
      *
-     * @param string $id
+     * @param string $identifier
      *
      * @ApiDoc(
      *      description="Get a single product",
@@ -71,40 +70,56 @@ class ProductController extends FOSRestController
      * )
      * @return Response
      */
-    public function getAction($id)
+    public function getAction($identifier)
     {
         $scope = $this->getRequest()->get('scope');
-        $locale = $this->getRequest()->get('locale');
 
-        return $this->handleGetRequest($scope, $locale, $id);
+        return $this->handleGetRequest($scope, $identifier);
     }
 
     /**
      * Return a list of products
      *
      * @param string  $scope
-     * @param string  $locale
      * @param integer $page
      * @param integer $limit
      *
      * @return Response
      */
-    protected function handleGetListRequest($scope, $locale, $page, $limit)
+    protected function handleGetListRequest($scope, $page, $limit)
     {
-        return new Response();
+        $manager = $this->get('pim_product.manager.product');
+        $manager->setScope($scope);
+
+        $offset = --$page * $limit;
+        $products = $manager->findMany($limit, $offset);
+
+        // TODO: serialize the product
+
+        return new Response($products);
     }
 
     /**
      * Return a single product
      *
-     * @param string  $scope
-     * @param string  $locale
-     * @param integer $id
+     * @param string $scope
+     * @param string $identifier
      *
      * @return Response
      */
-    protected function handleGetRequest($scope, $locale, $id)
+    protected function handleGetRequest($scope, $identifier)
     {
-        return new Response();
+        $manager = $this->get('pim_product.manager.product');
+        $manager->setScope($scope);
+
+        $product = $manager->find($identifier);
+
+        if (!$product) {
+            return new Response('', 404);
+        }
+
+        // TODO: serialize the product
+
+        return new Response($product);
     }
 }

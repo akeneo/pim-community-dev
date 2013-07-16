@@ -1,6 +1,4 @@
 pim_product_api:
     resource: "@PimProductBundle/Controller/Api/ProductController.php"
     type:         rest
-    prefix:       api/rest/{locale}/{scope}/{version}/
-    defaults:
-        version:  latest
+    prefix:       api/rest/{scope}/
