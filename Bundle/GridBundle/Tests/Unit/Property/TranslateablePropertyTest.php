@@ -8,6 +8,8 @@ use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 
 class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
 {
+    const FIELD_NAME = 'testFieldName';
+    const FIELD_ALIAS = 'testFieldName';
     /**
      * @var TranslateableProperty
      */
@@ -21,16 +23,16 @@ class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
-        $this->property = new TranslateableProperty('testFieldName', $this->translator);
+        $this->property = new TranslateableProperty(self::FIELD_NAME, $this->translator, null, 'domain', 'locale');
     }
 
     public function testGetValueByName()
     {
-        $record = $this->createRecord(array('testFieldName' => 'testData'));
+        $record = $this->createRecord(array(self::FIELD_NAME => 'testData'));
 
         $this->translator->expects($this->once())
             ->method('trans')
-            ->with('testData')
+            ->with('testData', array(), 'domain', 'locale')
             ->will($this->returnValue('translatedValue'));
 
         $this->assertEquals('translatedValue', $this->property->getValue($record));
@@ -38,23 +40,29 @@ class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetValueByAlias()
     {
-        $property = new TranslateableProperty('testFieldName', $this->translator, 'aliasFieldName');
-        $record = $this->createRecord(array('testFieldName' => 'testData', 'aliasFieldName' => 'aliasData'));
+        $property = new TranslateableProperty(self::FIELD_NAME, $this->translator, self::FIELD_ALIAS);
+        $record = $this->createRecord(array(self::FIELD_NAME => 'testData', self::FIELD_ALIAS => 'aliasData'));
 
         $this->translator->expects($this->once())
             ->method('trans')
-            ->with('aliasData')
+            ->with('aliasData', array(), null, null)
             ->will($this->returnValue('aliasTranslatedValue'));
 
         $this->assertEquals('aliasTranslatedValue', $property->getValue($record));
     }
 
     /**
-     * @param mixed $data
+     * @param array $data
      * @return ResultRecordInterface
      */
-    private function createRecord($data)
+    private function createRecord(array $data)
     {
         return new ResultRecord($data);
+    }
+
+    public function tearDown()
+    {
+        unset($this->translator);
+        unset($this->property);
     }
 }
