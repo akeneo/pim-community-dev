@@ -26,8 +26,9 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->items as $code => $config) {
-            if (isset($config['form']) && isset($config['form']['type']) && isset($config['form']['options'])) {
-                $builder->add($code, $config['form']['type'], $config['form']['options']);
+            if (isset($config['form']) && isset($config['form']['type'])) {
+                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
+                $builder->add($code, $config['form']['type'], $options);
             }
         }
     }

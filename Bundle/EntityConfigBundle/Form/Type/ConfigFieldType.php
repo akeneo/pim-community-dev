@@ -32,14 +32,15 @@ class ConfigFieldType extends AbstractType
     {
         $className = $options['class_name'];
         $fieldName = $options['field_name'];
-        $data      = array();
+
+        $data = array();
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasFieldForm()) {
                 $builder->add(
                     $provider->getScope(),
                     new ConfigType($provider->getConfigContainer()->getFieldItems()),
                     array(
-                        'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
+                        'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
                     )
                 );
                 $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();

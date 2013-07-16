@@ -31,14 +31,15 @@ class ConfigEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $className = $options['class_name'];
-        $data      = array();
+
+        $data = array();
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasEntityForm()) {
                 $builder->add(
                     $provider->getScope(),
                     new ConfigType($provider->getConfigContainer()->getEntityItems()),
                     array(
-                        'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
+                        'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
                     )
                 );
                 $data[$provider->getScope()] = $provider->getConfig($className)->getValues();
