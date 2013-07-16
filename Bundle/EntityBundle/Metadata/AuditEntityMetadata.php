@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\EntityBundle\Metadata;
 
-use Metadata\ClassMetadata;
+use Metadata\MergeableClassMetadata;
 
-class AuditEntityMetadata extends ClassMetadata
+class AuditEntityMetadata extends MergeableClassMetadata
 {
     public $auditable = false;
 

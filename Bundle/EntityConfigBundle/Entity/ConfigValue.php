@@ -14,7 +14,6 @@ class ConfigValue
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -23,7 +22,6 @@ class ConfigValue
 
     /**
      * @var ConfigEntity
-     *
      * @ORM\ManyToOne(targetEntity="ConfigEntity", inversedBy="values")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
@@ -33,7 +31,6 @@ class ConfigValue
 
     /**
      * @var ConfigField
-     *
      * @ORM\ManyToOne(targetEntity="ConfigField", inversedBy="values")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
@@ -43,35 +40,39 @@ class ConfigValue
 
     /**
      * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
     protected $code;
 
     /**
      * @var string
-     *
      * @ORM\Column(type="string", length=255)
      */
     protected $scope;
 
     /**
      * @var string
-     *
      * @ORM\Column(type="text", nullable=true)
      */
     protected $value;
 
-    public function __construct($code = null, $scope = null, $value = null)
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    protected $serializable;
+
+    public function __construct($code = null, $scope = null, $value = null, $serializable = false)
     {
-        $this->code  = $code;
-        $this->scope = $scope;
-        $this->value = $value;
+        $this->code         = $code;
+        $this->scope        = $scope;
+        $this->serializable = $serializable;
+
+        $this->setValue($value);
     }
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -81,9 +82,7 @@ class ConfigValue
 
     /**
      * Set code
-     *
      * @param string $code
-     *
      * @return ConfigValue
      */
     public function setCode($code)
@@ -95,7 +94,6 @@ class ConfigValue
 
     /**
      * Get code
-     *
      * @return string
      */
     public function getCode()
@@ -105,7 +103,6 @@ class ConfigValue
 
     /**
      * @param string $scope
-     *
      * @return ConfigValue
      */
     public function setScope($scope)
@@ -125,31 +122,27 @@ class ConfigValue
 
     /**
      * Set data
-     *
      * @param string $value
-     *
      * @return ConfigValue
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = $this->serializable ? serialize($value) : $value;
 
         return $this;
     }
 
     /**
      * Get data
-     *
      * @return string
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->serializable ? unserialize($this->value) : $this->value;
     }
 
     /**
      * @param ConfigEntity $entity
-     *
      * @return $this
      */
     public function setEntity($entity)
@@ -169,7 +162,6 @@ class ConfigValue
 
     /**
      * @param ConfigField $field
-     *
      * @return $this
      */
     public function setField($field)
@@ -190,9 +182,10 @@ class ConfigValue
     public function toArray()
     {
         return array(
-            'code'  => $this->code,
-            'scope' => $this->scope,
-            'value' => $this->value
+            'code'         => $this->code,
+            'scope'        => $this->scope,
+            'value'        => $this->serializable ? unserialize($this->value) : $this->value,
+            'serializable' => $this->serializable
         );
     }
 }

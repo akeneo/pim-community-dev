@@ -31,11 +31,11 @@ class ConfigEntityGridController extends Controller
         $configProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $entityConfig   = $configProvider->getConfig($entity->getClassName());
 
-        $data = $entityConfig->has('unique_key') ? unserialize($entityConfig->get('unique_key')) : array() ;
+        $data = $entityConfig->has('unique_key') ? $entityConfig->get('unique_key') : array();
 
         $request = $this->getRequest();
 
-        $form    = $this->createForm(new UniqueKeyCollectionType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
+        $form = $this->createForm(new UniqueKeyCollectionType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
             return $fieldConfig->getType() != 'ref-many';
         })), $data);
 
@@ -71,11 +71,11 @@ class ConfigEntityGridController extends Controller
                 }
 
                 if (!$error) {
-                    $entityConfig->set('unique_key', serialize($form->getData()));
+                    $entityConfig->set('unique_key', $data);
                     $configProvider->persist($entityConfig);
                     $configProvider->flush();
 
-                    return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id'=> $entity->getId())));
+                    return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $entity->getId())));
                 }
             }
         }

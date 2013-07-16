@@ -9,7 +9,6 @@ use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Security\Core\SecurityContext;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
@@ -17,7 +16,6 @@ use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
@@ -41,11 +39,6 @@ class ConfigManager
      * @var ServiceProxy
      */
     protected $proxyEm;
-
-    /**
-     * @var ServiceProxy
-     */
-    protected $proxySecurityContext;
 
     /**
      * @var EventDispatcher
@@ -76,14 +69,12 @@ class ConfigManager
      * @param MetadataFactory                        $metadataFactory
      * @param EventDispatcher                        $eventDispatcher
      * @param ServiceProxy                           $proxyEm
-     * @param DependencyInjection\Proxy\ServiceProxy $proxySecurityContext
      */
-    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $proxySecurityContext)
+    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
     {
-        $this->metadataFactory      = $metadataFactory;
-        $this->proxyEm              = $proxyEm;
-        $this->proxySecurityContext = $proxySecurityContext;
-        $this->eventDispatcher      = $eventDispatcher;
+        $this->metadataFactory = $metadataFactory;
+        $this->proxyEm         = $proxyEm;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -282,8 +273,7 @@ class ConfigManager
      */
     public function flush()
     {
-        $entities        = array();
-        $diffEntityStart = array();
+        $entities = array();
 
         foreach ($this->persistConfigs as $config) {
             $className = $config->getClassName();
@@ -292,19 +282,6 @@ class ConfigManager
                 $configEntity = $entities[$className];
             } else {
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
-
-                foreach ($this->getProviders() as $provider) {
-                    $oldConfig = new EntityConfig($className, $provider->getScope());
-                    $oldConfig->setValues($configEntity->toArray($provider->getScope()));
-                    $diffEntityStart[$className][$provider->getScope()] = $oldConfig;
-
-                    foreach ($configEntity->getFields() as $field) {
-                        $oldField = new FieldConfig($className, $field->getCode(), $field->getType(), $provider->getScope());
-                        $oldField->setValues($field->toArray($provider->getScope()));
-
-                        $oldConfig->addField($oldField);
-                    }
-                }
             }
 
             if ($config instanceof FieldConfigInterface) {
@@ -313,9 +290,11 @@ class ConfigManager
                     $configEntity->addField($configField);
                 }
 
-                $configField->fromArray($config->getScope(), $config->getValues());
+                $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getFieldSerializableValues();
+                $configField->fromArray($config->getScope(), $config->getValues(), $serializableValues);
             } else {
-                $configEntity->fromArray($config->getScope(), $config->getValues());
+                $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getEntitySerializableValues();
+                $configEntity->fromArray($config->getScope(), $config->getValues(), $serializableValues);
             }
 
             if ($this->configCache) {
@@ -325,76 +304,9 @@ class ConfigManager
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
-
-            $this->saveDiff($diffEntityStart[$entity->getClassName()], $entity);
         }
 
         $this->em()->flush();
-    }
-
-    /**
-     * @param EntityConfig[] $oldConfigs
-     * @param ConfigEntity   $newEntity
-     */
-    protected function saveDiff($oldConfigs, ConfigEntity $newEntity)
-    {
-        $entityDiff = array();
-        $fieldDiff  = array();
-
-        foreach ($this->getProviders() as $provider) {
-            $configValues = $newEntity->toArray($provider->getScope());
-            $oldConfig    = $oldConfigs[$provider->getScope()];
-
-            $resultDiff = array_diff($configValues, $oldConfig->getValues());
-            if (count($resultDiff)) {
-                $entityDiff[$provider->getScope()] = $resultDiff;
-            }
-
-            foreach ($oldConfig->getFields() as $code => $oldFieldConfig) {
-                $fieldConfigValues = $newEntity->getField($code)->toArray($provider->getScope());
-
-                $resultDiff = array_diff($fieldConfigValues, $oldFieldConfig->getValues());
-                if (count($resultDiff)) {
-                    $fieldDiff[$code][$provider->getScope()] = $resultDiff;
-                }
-            }
-        }
-
-        $user = null;
-        if ($this->getSecurityContext() && $this->getSecurityContext()->getToken()) {
-            $user = $this->em()->getRepository('OroUserBundle:User')->findOneBy(array(
-                'username' => $this->getSecurityContext()->getToken()->getUsername()
-            ));
-        }
-
-        foreach ($fieldDiff as $code => $diff) {
-            if (count($diff)) {
-                $configLog = new ConfigLog();
-                $configLog->setUser($user);
-                $configLog->setDiff($diff);
-                $configLog->setField($newEntity->getField($code));
-
-                $this->em()->persist($configLog);
-            }
-        }
-
-        if (count($entityDiff)) {
-            $configLog = new ConfigLog();
-
-            $configLog->setUser($user);
-            $configLog->setDiff($entityDiff);
-            $configLog->setEntity($newEntity);
-
-            $this->em()->persist($configLog);
-        }
-    }
-
-    /**
-     * @return SecurityContext
-     */
-    protected function getSecurityContext()
-    {
-        return $this->proxySecurityContext->getService();
     }
 
     /**

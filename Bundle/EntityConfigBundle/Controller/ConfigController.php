@@ -133,7 +133,7 @@ class ConfigController extends Controller
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
-            'unique_key'    => unserialize($extendConfig->get('unique_key')),
+            'unique_key'    => $extendConfig->get('unique_key'),
             'datagrid'      => $datagrid->createView(),
 
             'link'          => $link,

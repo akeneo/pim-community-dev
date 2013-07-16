@@ -8,14 +8,6 @@ oro_entity_config:
             items:
                 icon:
                     priority:               10
-#                    grid:
-#                        type:               string
-#                        label:              'Icon'
-#                        filter_type:        oro_grid_orm_string
-#                        required:           false
-#                        sortable:           false
-#                        filterable:         false
-#                        show_filter:        false
                     form:
                         type:               text
                         options:
@@ -38,14 +30,6 @@ oro_entity_config:
                             required:       true
                 plural_label:
                     priority:               30
-#                    grid:
-#                        type:               string
-#                        label:              'Plural Label'
-#                        filter_type:        oro_grid_orm_string
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         true
-#                        show_filter:        true
                     form:
                         type:               text
                         options:
@@ -103,7 +87,6 @@ oro_entity_config:
         entity:
             items:
                 auditable:
-                    default_value:          false
                     priority:               60
                     grid:
                         type:               boolean
@@ -125,7 +108,10 @@ oro_entity_config:
             items:
                 auditable:
                     priority:               60
-                    default_value:          false
+                    serializable:           true
+                    parent_value:                                           #enabled or not by parent value
+                        name:               auditable                       #name of parent field, by default similar with child field name
+                        value:              true                            #comparison conditions
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -135,42 +121,11 @@ oro_entity_config:
                         filterable:         true
                         show_filter:        false
                     form:
-                        type:               choice
+                        type:               entity_audit_field_config_type
                         options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
                             block:          auditable
-                            label:          'Auditable'
 
     datagrid:
-#        entity:
-#            form:
-#                block_config:
-#                    datagrid:
-#                        title:              'Datagrid Entity Config'
-#                        priority:           30
-#                        subblocks:
-#                            base:           ~
-#            items:
-#                delete_action:
-#                    default_value:          true
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Delete Action"
-#
-#                create_action:
-#                    default_value:          true
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Create Action"
         field:
             form:
                 block_config:
@@ -179,25 +134,6 @@ oro_entity_config:
                         subblocks:
                             base:           ~
             items:
-#                enabled:
-#                    default_value:          true
-#                    entity_grid:            false
-#                    grid:
-#                        type:               boolean
-#                        label:              'Show in Datagrid'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         true
-#                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Show in Datagrid"
-
                 is_searchable:
                     default_value:          false
                     entity_grid:            false
@@ -216,22 +152,3 @@ oro_entity_config:
                             empty_value:    false
                             block:          datagrid
                             label:          "Datagrid search"
-
-#                is_filtrableble:
-#                    default_value:          false
-#                    entity_grid:            false
-#                    grid:
-#                        type:               boolean
-#                        label:              'Datagrid filter'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         true
-#                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Datagrid filter"
