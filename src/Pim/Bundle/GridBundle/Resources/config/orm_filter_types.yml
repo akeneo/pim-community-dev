@@ -1,3 +1,6 @@
+parameters:
+    oro_grid.route.default_generator.class: Pim\Bundle\GridBundle\Route\SetterRouteGenerator
+
 services:
     pim_grid.orm.filter.type.category:
         class:     Pim\Bundle\GridBundle\Filter\ORM\CategoryFilter
