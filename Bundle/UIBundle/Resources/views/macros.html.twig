@@ -165,7 +165,8 @@
 #}
 {% macro buttonType(parameters) %}
     <div class="btn-group">
-        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}">
+        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.additional_data is defined) %} additional-button{% endif %}"
+                {% if (parameters.additional_data is defined) %}data-additional="{{ parameters.additional_data }}"{% endif %}>
             {{ parameters.label|trans }}
         </button>
     </div>

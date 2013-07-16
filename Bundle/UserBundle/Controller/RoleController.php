@@ -60,7 +60,15 @@ class RoleController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
 
-            return $this->redirect($this->generateUrl('oro_user_role_index'));
+            if ($this->getRequest()->get('additional_data') == 'save_and_stay') {
+                $routeName =  'oro_user_role_update';
+                $params = array('id' => $entity->getId());
+            } else {
+                $routeName =  'oro_user_role_index';
+                $params = null;
+            }
+
+            return $this->redirect($this->generateUrl($routeName,$params));
         }
 
         return array(
