@@ -16,6 +16,20 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 class AttributeTranslation extends AbstractTranslation
 {
     /**
-     * All required columns are mapped through inherited superclass
+     * @var int $foreignKey
+     *
+     * @ORM\Column(name="foreign_key", type="integer")
+     */
+    protected $foreignKey;
+
+    /**
+     * @var string $content
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $content;
+
+    /**
+     * Other required columns are mapped through inherited superclass
      */
 }
