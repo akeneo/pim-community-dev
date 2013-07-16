@@ -4,6 +4,7 @@ parameters:
     pim_serializer.encoder.json.class:               Symfony\Component\Serializer\Encoder\JsonEncoder
     pim_serializer.normalizer.get_set_method.class:  Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
     pim_serializer.normalizer.flat_product.class:    Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
+    pim_serializer.encoder.csv.class:                Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
 
 services:
     pim_serializer:
@@ -18,6 +19,12 @@ services:
     pim_serializer.encoder.json:
         public: false
         class: %pim_serializer.encoder.json.class%
+        tags:
+            - { name: pim_serializer.encoder }
+
+    pim_serializer.encoder.json:
+        public: false
+        class: %pim_serializer.encoder.csv.class%
         tags:
             - { name: pim_serializer.encoder }
 
