@@ -16,7 +16,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * @var string
      */
-    private $routeName;
+    protected $routeName;
 
     /**
      * @var array
@@ -32,18 +32,6 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->router = $router;
         $this->routeName = $routeName;
         $this->routeParameters = array();
-    }
-
-    /**
-     * Set the route name
-     *
-     * @param string $routeName
-     *
-     * @return null
-     */
-    public function setRouteName($routeName)
-    {
-        $this->routeName = $routeName;
     }
 
     /**
