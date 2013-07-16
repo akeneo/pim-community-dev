@@ -16,6 +16,7 @@ class NotificationEvent extends Event
     public function __construct()
     {
         $this->args = func_get_args();
+        $this->args['entity'] = isset($this->args[1]) ? $this->args[1] : false;
     }
 
     public function getEntity()

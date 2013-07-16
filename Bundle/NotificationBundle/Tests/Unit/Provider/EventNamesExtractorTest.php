@@ -41,4 +41,28 @@ class EventNamesExtractorTest extends TestCase
         $this->assertCount(1, $messages, '->extract() should find 1 translation');
         $this->assertTrue(isset($messages['oro.event.good_happens']), '->extract() should find at leat "oro.event.good_happens" message');
     }
+
+    public function testDumpToDb()
+    {
+        $entityClass = 'Oro\Bundle\NotificationBundle\Entity\Event';
+        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository
+            ->expects($this->any())
+            ->method('findAll')
+            ->will($this->returnValue(array(new Event('test.test'))));
+
+        $em = $this->getMock('\Doctrine\Common\Persistence\ObjectManager');
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with($this->equalTo($entityClass))
+            ->will($this->returnValue($repository));
+
+
+        $em->expects($this->once())
+            ->method('flush');
+
+        $extractor = new EventNamesExtractor($em, $entityClass);
+        $extractor->setEventNames(array('test.test' => 'test.test'));
+        $extractor->dumpToDb();
+    }
 }

@@ -12,7 +12,6 @@ use Symfony\Component\Finder\Finder;
 class EventNamesExtractor
 {
     const MESSAGE_TOKEN = 300;
-    const IGNORE_TOKEN = 400;
     const EVENTS_PREFIX = 'oro.event.';
 
     /**
@@ -134,8 +133,6 @@ class EventNamesExtractor
                         continue;
                     } elseif (self::MESSAGE_TOKEN == $item) {
                         $message = $this->normalizeToken($tokens[$key + $id]);
-                    } elseif (self::IGNORE_TOKEN == $item) {
-                        continue;
                     } else {
                         break;
                     }
@@ -148,5 +145,13 @@ class EventNamesExtractor
                 }
             }
         }
+    }
+
+    /**
+     * @param array $eventNames
+     */
+    public function setEventNames($eventNames)
+    {
+        $this->eventNames = $eventNames;
     }
 }
