@@ -73,7 +73,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
+        $product = $this->getFlexibleRepository()->find($id);
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
