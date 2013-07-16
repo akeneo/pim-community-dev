@@ -26,77 +26,111 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testConfiguration()
     {
-        $this->command->configure();
-
         $this->assertNotEmpty($this->command->getDescription());
         $this->assertNotEmpty($this->command->getName());
 
-        $this->assertTrue($this->command->hasArgument('bundle'));
-        $this->assertTrue($this->command->hasOption('oro-only'));
+        $this->assertTrue($this->command->getDefinition()->hasArgument('bundle'));
+        $this->assertTrue($this->command->getDefinition()->hasOption('oro-only'));
     }
 
-    /**
-     * @dataProvider provideMethod
-     * @param string $data
-     */
-    public function testExecute($data)
+    public function testExecute()
     {
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $input->expects($this->once())
+            ->method('getArgument')
+            ->with($this->equalTo('bundle'))
+            ->will($this->returnValue(null));
+        $input->expects($this->once())
+            ->method('getOption')
+            ->with($this->equalTo('oro-only'))
+            ->will($this->returnValue(false));
+
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
-        $route = $this->getMock('Symfony\Component\Routing\Route', array(), array('/user/show/{id}'));
+        $extractor = $this->getMockBuilder('Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $extractor->expects($this->once())
+            ->method('extract')
+            ->with($this->equalTo('Oro\Bundles\OroAbcBundle'));
+        $extractor->expects($this->once())
+            ->method('dumpToDb');
 
-        $route->expects($this->once())
-            ->method('getRequirements')
-            ->will($this->returnValue(array('_method' => $data)));
+        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
+        $bundle->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('OroAbcBundle'));
+        $bundle->expects($this->once())
+            ->method('getPath')
+            ->will($this->returnValue('Oro\Bundles\OroAbcBundle'));
 
-        $route->expects($this->once())
-            ->method('getDefault')
-            ->with('_controller')
-            ->will($this->returnValue(''));
-
-        $routerCollection = $this->getMock('Symfony\Component\Routing\RouteCollection');
-
-        $routerCollection->expects($this->once())
-            ->method('all')
-            ->will($this->returnValue(array($route)));
-
-        $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
-
-        $router->expects($this->once())
-            ->method('getRouteCollection')
-            ->will($this->returnValue($routerCollection));
-
-        $titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
-        $titleService->expects($this->once())
-            ->method('update');
+        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $kernel->expects($this->once())
+            ->method('getBundles')
+            ->will($this->returnValue(array($bundle)));
 
         $this->container->expects($this->at(0))
             ->method('get')
-            ->with($this->equalTo('router'))
-            ->will($this->returnValue($router));
+            ->with($this->equalTo('oro_notification.event_names.extractor'))
+            ->will($this->returnValue($extractor));
 
         $this->container->expects($this->at(1))
             ->method('get')
-            ->with($this->equalTo('oro_navigation.title_service'))
-            ->will($this->returnValue($titleService));
+            ->with($this->equalTo('kernel'))
+            ->will($this->returnValue($kernel));
 
         $this->command->execute($input, $output);
     }
 
     /**
-     * Data provider
-     *
-     * @return array
+     * @dataProvider bundleDirsProvider
+     * @param null $bundleName
+     * @param bool $oroOnly
      */
-    public function provideMethod()
+    public function testGetBundleDirs($bundleName, $oroOnly)
+    {
+        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
+        $bundle->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue( is_null($bundleName) ? 'TratataAbcBundle' : $bundleName ));
+
+        if (!$oroOnly) {
+            $bundle->expects($this->once())
+                ->method('getPath')
+                ->will($this->returnValue('Oro\Bundles\OroAbcBundle'));
+        }
+
+        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $kernel->expects($this->once())
+            ->method('getBundles')
+            ->will($this->returnValue(array($bundle)));
+
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('kernel'))
+            ->will($this->returnValue($kernel));
+
+        $dirs = $this->command->getBundleDirs($bundleName, $oroOnly);
+
+        if ($oroOnly) {
+            $this->assertEmpty($dirs);
+        }
+
+        if (is_null($bundleName) && !$oroOnly) {
+            $this->assertEquals($dirs, array('TratataAbcBundle' => 'Oro\Bundles\OroAbcBundle'));
+        }
+    }
+
+    /**
+     * data provider
+     */
+    public function bundleDirsProvider()
     {
         return array(
-            array('GET'),
-            array('ANY'),
-            array(
-                array('POST', 'GET')
-            ),
+            array(null, false), // all bundles
+            array(null, true),  // oro only
+            array('OroAbcBundle', false), // oro bundle
+            array('AbcAbcBundle', true), // not oro bundle with oro only
         );
     }
 }

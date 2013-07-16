@@ -3,11 +3,10 @@
 namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DoctrineListener implements ContainerAwareInterface
+class DoctrineListener
 {
     /**
      * @var ContainerInterface
@@ -56,16 +55,13 @@ class DoctrineListener implements ContainerAwareInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     public function getEventDispatcher()
     {
-        return $this->container->get('event_dispatcher');
+        return $this->eventDispatcher;
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

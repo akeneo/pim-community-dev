@@ -84,7 +84,7 @@ services:
     oro_notification.docrine.event.listener:
         class: %oro_notification.doctrine_listener.class%
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setEventDispatcher, [ @event_dispatcher ] ]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
