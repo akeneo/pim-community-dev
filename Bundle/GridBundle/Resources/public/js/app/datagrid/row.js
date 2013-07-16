@@ -38,14 +38,16 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
             return;
         }
 
-        if (this.clickData.counter == 0 && !this._hasSelectedText()) {
-            this.clickData.counter++;
-            setTimeout(_.bind(function() {
+        this.clickData.counter++;
+        if (this.clickData.counter == 1 && !this._hasSelectedText()) {
+            _.delay(_.bind(function() {
                 if (!this._hasSelectedText() && this.clickData.counter == 1) {
                     this.trigger('clicked', this, e);
                 }
                 this.clickData.counter = 0;
             }, this), this.clickData.timeout);
+        } else {
+            this.clickData.counter = 0;
         }
     },
 
@@ -57,9 +59,9 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
      */
     _hasSelectedText: function() {
         var text = "";
-        if (typeof window.getSelection != "undefined") {
+        if (_.isFunction(window.getSelection)) {
             text = window.getSelection().toString();
-        } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+        } else if (typeof document.selection != undefined && document.selection.type == "Text") {
             text = document.selection.createRange().text;
         }
         return !_.isEmpty(text);
