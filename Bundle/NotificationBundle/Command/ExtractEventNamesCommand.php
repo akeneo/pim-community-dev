@@ -86,6 +86,18 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
             $directories[$bundle->getName()] = $bundle->getPath();
         }
 
-        return !is_null($bundleName) && isset($directories[$bundleName]) ? array($directories[$bundleName]) : $directories;
+        switch (true) {
+            // bundle exists
+            case !is_null($bundleName) && isset($directories[$bundleName]):
+                return array($directories[$bundleName]);
+
+            // bundle not exists
+            case !is_null($bundleName) && !isset($directories[$bundleName]):
+                return array();
+
+            // no bundle name provided
+            default:
+                return $directories;
+        }
     }
 }

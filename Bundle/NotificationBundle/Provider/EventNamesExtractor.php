@@ -62,7 +62,7 @@ class EventNamesExtractor
     public function extract($directory)
     {
         $finder = new Finder();
-        $files = $finder->files()->name('*.php')->in($directory);
+        $files = $finder->files()->name('*.php')->exclude('Tests')->in($directory);
         foreach ($files as $file) {
             $this->parseTokens(token_get_all(file_get_contents($file)));
         }
@@ -75,34 +75,32 @@ class EventNamesExtractor
      */
     public function dumpToDb()
     {
-        if ($this->em && $this->entityClass) {
-            $existingNames = $this->em->getRepository($this->entityClass)->findAll();
-            if (!empty($existingNames)) {
-                if ($existingNames instanceof $this->entityClass) {
-                    $existingNames = array($existingNames->getName());
-                } else {
-                    $existingNames = array_map(
-                        function ($item) {
-                            return $item->getName();
-                        },
-                        $existingNames
-                    );
-                }
-
-                $existingNames = array_flip($existingNames);
+        $existingNames = $this->em->getRepository($this->entityClass)->findAll();
+        if (!empty($existingNames)) {
+            if ($existingNames instanceof $this->entityClass) {
+                $existingNames = array($existingNames->getName());
+            } else {
+                $existingNames = array_map(
+                    function ($item) {
+                        return $item->getName();
+                    },
+                    $existingNames
+                );
             }
 
-            foreach ($this->eventNames as $eventName) {
-                if (isset($existingNames[$eventName])) {
-                    continue;
-                }
-
-                $event = new $this->entityClass($eventName);
-                $this->em->persist($event);
-            }
-
-            $this->em->flush();
+            $existingNames = array_flip($existingNames);
         }
+
+        foreach ($this->eventNames as $eventName) {
+            if (isset($existingNames[$eventName])) {
+                continue;
+            }
+
+            $event = new $this->entityClass($eventName);
+            $this->em->persist($event);
+        }
+
+        $this->em->flush();
     }
 
     /**
