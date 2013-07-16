@@ -175,15 +175,15 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following products:$/
+     * @Given /^the following products?:$/
      */
-    public function theFollowingProducts(TableNode $table)
+    public function theFollowingProduct(TableNode $table)
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
-                'languages'  => 'english',
-                'family'     => null,
+                'languages' => 'english',
+                'family'    => null,
             ), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
