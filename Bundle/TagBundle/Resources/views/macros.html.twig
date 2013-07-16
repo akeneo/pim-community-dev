@@ -1,0 +1,73 @@
+{% macro renderView(entity) %}
+    {# // check if block was not included yet #}
+    {% set _block = block('oro_tag_view_js') %}
+    {% if (_block is empty) %}
+        {% include 'OroTagBundle::javascript.html.twig' %}
+        {{ block('oro_tag_view_js')|raw }}
+    {% endif %}
+
+    <div id="tags">
+        <div class="tag-view span6">
+            {% import _self as _ %}
+            {{ _.tagSortActions() }}
+
+            <div class="well well-small" id="tags-holder"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tags = {{ oro_tag_get_list(entity)|json_encode|raw }};
+            var tagView = new Oro.Tags.TagView();
+            tagView.getCollection().reset(tags);
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Render input for tags
+#}
+{% macro tagInputField(label, form, defaultClass) %}
+
+    <div>
+        <div class="controls">
+            <div>
+                {% import _self as _ %}
+               {{ _.tagSortActions() }}
+            </div>
+        </div>
+    </div>
+
+    {{ form_row(form.tags)  }}
+    <input type="hidden" id="{{ form.tags.vars.id }}_owner" name="{{ form.tags.vars.full_name }}[owner]"  value="">
+    <input type="hidden" id="{{ form.tags.vars.id }}_all"   name="{{ form.tags.vars.full_name }}[all]"  value="">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
+            new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.vars.id }}', tags: tags});
+
+            {% if not resource_granted('oro_tag_assign_unassign') %}
+                $('#{{ form.tags.vars.id }}').select2("readonly", true);
+            {% endif %}
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Render sort actions list
+#}
+{% macro tagSortActions() %}
+    <ul class="inline" id="tag-sort-actions">
+        <li>
+            <a href="javascript:void(0);" class="no-hash active">
+                {% trans %}All tags{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-type="owner" class="no-hash">
+                {% trans %}My tags{% endtrans %}
+            </a>
+        </li>
+    </ul>
+{% endmacro %}

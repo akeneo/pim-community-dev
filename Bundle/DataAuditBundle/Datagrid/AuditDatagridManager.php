@@ -152,15 +152,16 @@ class AuditDatagridManager extends DatagridManager
         $fieldAuthor->setName('author');
         $fieldAuthor->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Author',
-                'field_name'  => 'author',
-                'expression'  => $this->authorExpression,
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => 'Author',
+                'field_name'      => 'author',
+                'expression'      => $this->authorExpression,
+                'filter_type'     => FilterInterface::TYPE_STRING,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'filter_by_where' => true
             )
         );
         $fieldAuthor->setFieldName('author');
