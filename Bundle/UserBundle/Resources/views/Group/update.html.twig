@@ -34,7 +34,8 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_user_group_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save and Close'}) }}
+    {{ UI.buttonType({'type': 'button', 'class': 'btn-success', 'label': 'Save', 'additional_data': 'save_and_stay'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}

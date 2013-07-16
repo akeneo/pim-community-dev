@@ -58,7 +58,15 @@ class GroupController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
             if (!$this->getRequest()->get('_widgetContainer')) {
-                return $this->redirect($this->generateUrl('oro_user_group_index'));
+                if ($this->getRequest()->get('additional_data') == 'save_and_stay') {
+                    $routeName =  'oro_user_group_update';
+                    $params = array('id' => $entity->getId());
+                } else {
+                    $routeName =  'oro_user_group_index';
+                    $params = null;
+                }
+
+                return $this->redirect($this->generateUrl($routeName,$params));
             }
         }
 
