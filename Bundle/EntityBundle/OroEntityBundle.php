@@ -12,6 +12,6 @@ class OroEntityBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new ExtendCompilerPass());
+        //$container->addCompilerPass(new ExtendCompilerPass());
     }
 }
