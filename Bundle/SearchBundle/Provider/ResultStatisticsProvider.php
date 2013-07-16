@@ -21,6 +21,16 @@ class ResultStatisticsProvider
     }
 
     /**
+     *
+     * @param $query
+     * @return \Oro\Bundle\SearchBundle\Query\Result
+     */
+    public function getResults($query)
+    {
+        return $this->indexer->simpleSearch($query);
+    }
+
+    /**
      * Returns grouped search results
      *
      * @param string $string
@@ -28,7 +38,7 @@ class ResultStatisticsProvider
      */
     public function getGroupedResults($string)
     {
-        $search = $this->indexer->simpleSearch($string);
+        $search = $this->getResults($string);
 
         // empty key array contains all data
         $result = array(

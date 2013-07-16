@@ -14,6 +14,13 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 class RegionTranslation extends AbstractTranslation
 {
     /**
+     * @var string $foreignKey
+     *
+     * @ORM\Column(name="foreign_key", type="string", length=16)
+     */
+    protected $foreignKey;
+
+    /**
      * @var string $content
      *
      * @ORM\Column(type="string", length=255)

@@ -1,0 +1,4 @@
+Oro\Bundle\TagBundle\Entity\Tag:
+    icon_class:                         icon-tag
+    name:                               entity.tag.name
+    description:                        entity.tag.description
