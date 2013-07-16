@@ -221,7 +221,11 @@ class CategoryTreeController extends Controller
             $category->setParent($parent);
         }
 
-        return $this->editAction($category);
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
