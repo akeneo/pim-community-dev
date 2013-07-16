@@ -3,9 +3,10 @@
 namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 
 class DoctrineListener
 {
@@ -13,6 +14,11 @@ class DoctrineListener
      * @var ContainerInterface
      */
     protected $container;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
 
     /**
      * Post update event process
@@ -56,13 +62,26 @@ class DoctrineListener
         return $this;
     }
 
+    /**
+     * Getter for event dispatcher object
+     *
+     * @return EventDispatcherInterface
+     */
     public function getEventDispatcher()
     {
         return $this->eventDispatcher;
     }
 
+    /**
+     * Setter for event dispatcher object
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 }
