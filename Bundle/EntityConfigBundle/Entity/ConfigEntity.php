@@ -16,7 +16,7 @@ class ConfigEntity extends AbstractConfig
 
     /**
      * @var integer
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -33,12 +33,6 @@ class ConfigEntity extends AbstractConfig
      * @ORM\OneToMany(targetEntity="ConfigField", mappedBy="entity", cascade={"all"})
      */
     protected $fields;
-
-    /**
-     * @var ConfigLog[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="ConfigLog", mappedBy="entity", cascade={"all"})
-     */
-    protected $diffs;
 
     /**
      * @var string
@@ -123,25 +117,6 @@ class ConfigEntity extends AbstractConfig
         });
 
         return reset($values);
-    }
-
-    /**
-     * @param ConfigLog[] $diffs
-     * @return $this
-     */
-    public function setDiffs($diffs)
-    {
-        $this->diffs = $diffs;
-
-        return $this;
-    }
-
-    /**
-     * @return ConfigLog[]
-     */
-    public function getDiffs()
-    {
-        return $this->diffs;
     }
 
     public function __clone()

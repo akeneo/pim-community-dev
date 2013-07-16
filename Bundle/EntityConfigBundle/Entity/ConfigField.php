@@ -35,12 +35,6 @@ class ConfigField extends AbstractConfig
     protected $entity;
 
     /**
-     * @var ConfigLog[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="ConfigLog", mappedBy="field", cascade={"all"})
-     */
-    protected $diffs;
-
-    /**
      * @var ConfigValue[]|PersistentCollection
      * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="field", cascade={"all"})
      */
@@ -63,25 +57,6 @@ class ConfigField extends AbstractConfig
         $this->code   = $code;
         $this->type   = $type;
         $this->values = new ArrayCollection;
-    }
-
-    /**
-     * @param ConfigLog[] $diffs
-     * @return $this
-     */
-    public function setDiffs($diffs)
-    {
-        $this->diffs = $diffs;
-
-        return $this;
-    }
-
-    /**
-     * @return ConfigLog[]
-     */
-    public function getDiffs()
-    {
-        return $this->diffs;
     }
 
     /**
