@@ -7,7 +7,7 @@ use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 class NotificationManager
 {
     /**
-     * @var Event handlers
+     * @var EventHandlerInterface[] handlers
      */
     protected $handlers;
 
@@ -16,12 +16,22 @@ class NotificationManager
         $this->handlers = array();
     }
 
+    /**
+     * Add handler to list
+     *
+     * @param EventHandlerInterface $handler
+     */
     public function addHandler(EventHandlerInterface $handler)
     {
         $this->handlers[] = $handler;
 
     }
 
+    /**
+     * Return list of handlers
+     *
+     * @return EventHandlerInterface[]
+     */
     public function getHandlers()
     {
         return $this->handlers;

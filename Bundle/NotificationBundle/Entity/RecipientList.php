@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -55,6 +56,12 @@ class RecipientList
      * @ORM\Column(name="owner", type="boolean", nullable=true)
      */
     protected $owner;
+
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * @return int
