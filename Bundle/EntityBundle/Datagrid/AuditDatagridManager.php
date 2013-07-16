@@ -164,28 +164,4 @@ class AuditDatagridManager extends DatagridManager
 
         return $query;
     }
-
-    /**
-     * Get distinct object classes
-     *
-     * @return array
-     */
-    /*
-    protected function getObjectClassOptions()
-    {
-        $options = array();
-
-        $query = $this->createQuery()->getQueryBuilder()
-            ->add('select', 'a.objectClass')
-            ->add('from', 'Oro\Bundle\EntityConfigBundle\Entity\ConfigLog a')
-            ->distinct('a.objectClass');
-
-        $result = $query->getQuery()->getArrayResult();
-
-        foreach ((array) $result as $value) {
-            $options[$value['objectClass']] = current(array_reverse(explode('\\', $value['objectClass'])));
-        }
-
-        return $options;
-    }*/
 }
