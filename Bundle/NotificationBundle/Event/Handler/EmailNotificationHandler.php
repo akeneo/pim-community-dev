@@ -31,8 +31,6 @@ class EmailNotificationHandler implements EventHandlerInterface
                 'event.name'  => $event->getName(),
             )
         );
-
-        die();
     }
 
     public function getEntityManager(NotificationEvent $event)

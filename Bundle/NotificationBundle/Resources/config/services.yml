@@ -3,7 +3,7 @@ parameters:
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
-    oro_notification.manager.class: Oro\Bundle\NotificationBundle\Event\EmailNotificationHandler
+    oro_notification.email_handler.class: Oro\Bundle\NotificationBundle\Event\EmailNotificationHandler
 
     # Listener classes
     oro_notification.doctrine_listener.class: Oro\Bundle\NotificationBundle\Provider\DoctrineListener
@@ -98,5 +98,5 @@ services:
         class: %oro_notification.manager.class%EmailNotificationHandler
 
     oro_notification.email_handler:
-        class: %%
+        class: %oro_notification.email_handler.class%
 
