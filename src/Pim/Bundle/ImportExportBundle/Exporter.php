@@ -21,9 +21,10 @@ class Exporter
 
     public function export($format)
     {
-        $entries = $this->reader->read();
-        $result  = $this->serializer->serialize($entries, $format);
-        die(var_dump($result));
-        $this->writer->write($result);
+        $this->writer->write(
+            $this->serializer->serialize(
+                $this->reader->read(), $format
+            )
+        );
     }
 }
