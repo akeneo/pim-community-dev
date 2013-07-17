@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation\Loggable as Oro;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Definition of Workflow

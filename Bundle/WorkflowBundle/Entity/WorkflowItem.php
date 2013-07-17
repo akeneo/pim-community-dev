@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation\Loggable as Oro;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Workflow item

@@ -4,12 +4,11 @@ namespace Oro\Bundle\WorkflowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation\Loggable as Oro;
-
 /**
  * Workflow item relation with custom entity
  *
  * @ORM\Table(name="oro_workflow_item_entity")
+ * @ORM\Entity
  */
 class WorkflowItemEntity
 {
@@ -25,7 +24,7 @@ class WorkflowItemEntity
     /**
      * @var WorkflowItem
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="entities")
+     * @ORM\ManyToOne(targetEntity="WorkflowItem", inversedBy="entities")
      */
     protected $workflowItem;
 
