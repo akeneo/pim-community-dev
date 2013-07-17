@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 
 class EmailNotificationHandler implements EventHandlerInterface
@@ -16,25 +17,15 @@ class EmailNotificationHandler implements EventHandlerInterface
      * Handle event
      *
      * @param NotificationEvent $event
+     * @param EmailNotification[] $matchedNotifications
      * @return mixed
      */
-    public function handle(NotificationEvent $event)
+    public function handle(NotificationEvent $event, $matchedNotifications)
     {
-        $className = 'Oro\Bundle\NotificationBundle\Entity\EmailNotification';
-        $entity = $event->getEntity();
-
-        // select rules by entity name and event name
-        $em = $this->getEntityManager($event);
-        $rules = $em->getRepository($className)->findBy(
-            array(
-                'entity_name' => get_class($entity),
-                'event.name'  => $event->getName(),
-            )
-        );
+        foreach ($matchedNotifications as $notification) {
+            // compile email and add it to queue
+        }
     }
 
-    public function getEntityManager(NotificationEvent $event)
-    {
-        return $event->getEntityManager() ?: $this->em;
-    }
+
 }

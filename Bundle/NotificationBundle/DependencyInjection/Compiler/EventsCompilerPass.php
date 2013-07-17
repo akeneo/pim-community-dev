@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventsCompilerPass implements CompilerPassInterface
 {
-    const SERVICE_KEY = 'oro_notification.manager';
+    const SERVICE_KEY    = 'oro_notification.manager';
     const DISPATCHER_KEY = 'event_dispatcher';
 
     /**
