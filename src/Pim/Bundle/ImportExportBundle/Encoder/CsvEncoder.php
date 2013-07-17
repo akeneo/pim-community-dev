@@ -62,18 +62,13 @@ class CsvEncoder implements EncoderInterface
         fputcsv($output, array_keys($data), $this->delimiter, $this->enclosure);
     }
 
-    private function readCsv($handle)
+    private function readCsv($csvResource)
     {
-        $csv = '';
-
-        rewind($handle);
-        while (($buffer = fgets($handle, 4096)) !== false) {
-            $csv .= $buffer;
-        }
-        if (!feof($handle)) {
+        rewind($csvResource);
+        if (null === $csv = stream_get_contents($csvResource)) {
             throw new \Exception('Error while getting the csv.');
         }
-        fclose($handle);
+        fclose($csvResource);
 
         return $csv;
     }
