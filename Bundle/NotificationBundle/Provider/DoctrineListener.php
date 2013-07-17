@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -61,9 +62,7 @@ class DoctrineListener
 
     public function getNotificationEvent(LifecycleEventArgs $args)
     {
-        $event = new NotificationEvent();
-        $event->setEntity($args->getEntity());
-        $event->setEntityManager($args->getEntityManager());
+        $event = new NotificationEvent($args->getEntity());
 
         return $event;
     }

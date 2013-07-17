@@ -19,7 +19,7 @@ class NotificationEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->entity = new \stdClass();
-        $this->event = new NotificationEvent('test.name.from.construct', $this->entity);
+        $this->event = new NotificationEvent($this->entity);
     }
 
     public function testGetEntity()

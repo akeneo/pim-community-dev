@@ -2,31 +2,18 @@
 
 namespace Oro\Bundle\NotificationBundle\Event;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\Event;
 
 class NotificationEvent extends Event
 {
     /**
-     * Event arguments
-     *
-     * @var
-     */
-    protected $args;
-
-    /**
      * @var mixed
      */
     protected $entity;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $entityManager;
-
-    public function __construct()
+    public function __construct($entity)
     {
-        $this->args = func_get_args();
+        $this->entity = $entity;
     }
 
     /**
@@ -47,21 +34,5 @@ class NotificationEvent extends Event
     public function getEntity()
     {
         return $this->entity;
-    }
-
-    /**
-     * @param ObjectManager $entityManager
-     */
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
     }
 }

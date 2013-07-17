@@ -11,9 +11,15 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected $manager;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $em;
+
     public function setUp()
     {
-        $this->manager = new NotificationManager();
+        $this->em = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->manager = new NotificationManager($this->em);
 
         $this->assertEmpty($this->manager->getHandlers());
     }

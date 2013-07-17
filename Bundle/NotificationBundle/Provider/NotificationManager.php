@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 
@@ -12,9 +14,15 @@ class NotificationManager
      */
     protected $handlers;
 
-    public function __construct()
+    /**
+     * @var ObjectManager
+     */
+    protected $em;
+
+    public function __construct(ObjectManager $em)
     {
         $this->handlers = array();
+        $this->em = $em;
     }
 
     /**
@@ -39,8 +47,7 @@ class NotificationManager
         $entity = $event->getEntity();
 
         // select rules by entity name and event name
-        $em = $this->getEntityManager($event);
-        $notificationRules = $em->getRepository($className)
+        $notificationRules = $this->em->getRepository($className)
             ->getRulesByCriteria(get_class($entity), $event->getName());
 
         if (!empty($rules)) {
@@ -65,10 +72,5 @@ class NotificationManager
     public function getHandlers()
     {
         return $this->handlers;
-    }
-
-    public function getEntityManager(NotificationEvent $event)
-    {
-        return $event->getEntityManager() ?: $this->em;
     }
 }
