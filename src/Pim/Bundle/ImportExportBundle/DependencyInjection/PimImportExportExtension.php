@@ -68,7 +68,7 @@ class PimImportExportExtension extends Extension
     {
         $def = new Definition;
         $def->setClass($config['type']);
-        $def->setArguments($this->resolveServices($config['options']));
+        $def->setArguments($this->resolveReferences($config['options']));
 
         $id  = sprintf('pim_import_export.%s', $suffix);
 
@@ -77,11 +77,13 @@ class PimImportExportExtension extends Extension
         return $id;
     }
 
-    private function resolveServices(array $options)
+    private function resolveReferences(array $options)
     {
         foreach ($options as $index => $option) {
-            if (0 === strpos($option, '@')) {
-                $options[$index] = $this->factory->createReference(substr($option, 1));
+            if (is_string($option)) {
+                if (0 === strpos($option, '@')) {
+                    $options[$index] = $this->factory->createReference(substr($option, 1));
+                }
             }
         }
 
