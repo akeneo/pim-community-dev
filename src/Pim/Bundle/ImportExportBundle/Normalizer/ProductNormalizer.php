@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Routing\Router;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 
@@ -34,7 +35,7 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @param Router $router
      */
-    public function __construct($router)
+    public function __construct(Router $router)
     {
         $this->router = $router;
     }
@@ -120,11 +121,16 @@ class ProductNormalizer implements NormalizerInterface
                 return $value->getAttribute();
             }
         );
-        $attributes = array_unique($attributes->toArray());
+        $uniqueAttributes = array();
+        foreach ($attributes as $attribute) {
+            if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
+                $uniqueAttributes[$attribute->getCode()] = $attribute;
+            }
+        }
 
         $data = array();
 
-        foreach ($attributes as $attribute) {
+        foreach ($uniqueAttributes as $attribute) {
             $code = $attribute->getCode();
 
             $attributeValues = $values->filter(
@@ -166,7 +172,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface;
+        return $data instanceof ProductInterface && in_array($format, array('json'));
     }
 
     /**
