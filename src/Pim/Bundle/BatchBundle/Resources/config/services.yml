@@ -1,5 +1,5 @@
 parameters:                                                                     
-    pim_batch.simple_job.class: Pim\Bundle\Batch\Job\SimpleJob
+    pim_batch.simple_job.class: Pim\Bundle\BatchBundle\Job\SimpleJob
 
 services:
     pim_batch.my_super_job:
