@@ -92,9 +92,21 @@ class ProductController extends FOSRestController
         $manager->setScope($scope);
 
         $offset = --$page * $limit;
-        $products = $manager->findMany($limit, $offset);
 
-        // TODO: serialize the product
+        $products = $manager->getFlexibleRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
+
+        $channels = $this->get('pim_config.manager.channel')->getChannels(array('code' => $scope));
+        $channel = reset($channels);
+
+        if (!$channel) {
+            throw new \LogicException('Channel not found');
+        }
+
+        $normalizer = $this->get('pim_serializer.normalizer.product');
+        $normalizer->setChannel($channel);
+
+        $serializer = $this->get('pim_serializer');
+        $products = $serializer->serialize($products, 'json');
 
         return new Response($products);
     }
@@ -112,13 +124,24 @@ class ProductController extends FOSRestController
         $manager = $this->get('pim_product.manager.product');
         $manager->setScope($scope);
 
-        $product = $manager->find($identifier);
+        $product = $manager->findByIdentifier($identifier);
 
         if (!$product) {
             return new Response('', 404);
         }
 
-        // TODO: serialize the product
+        $channels = $this->get('pim_config.manager.channel')->getChannels(array('code' => $scope));
+        $channel = reset($channels);
+
+        if (!$channel) {
+            throw new \LogicException('Channel not found');
+        }
+
+        $normalizer = $this->get('pim_serializer.normalizer.product');
+        $normalizer->setChannel($channel);
+
+        $serializer = $this->get('pim_serializer');
+        $product = $serializer->serialize($product, 'json');
 
         return new Response($product);
     }

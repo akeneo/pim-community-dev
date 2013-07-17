@@ -64,24 +64,38 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Find a product by id or identifier
+     * Find a product by id
      * Also ensure that it contains all required values
      *
-     * @param int|string $id
+     * @param int $id
      *
      * @return Product|null
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->find($id);
+        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
-        if (!$product) {
-            $code = $this->getIdentifierAttribute()->getCode();
-            $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $id));
-            if (!empty($products)) {
-                $product = reset($products);
-            }
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
         }
+
+        return $product;
+    }
+
+    /**
+     * Find a product by identifier
+     * Also ensure that it contains all required values
+     *
+     * @param string $identifier
+     *
+     * @return Product|null
+     */
+    public function findByIdentifier($identifier)
+    {
+        $code = $this->getIdentifierAttribute()->getCode();
+
+        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $product = reset($products);
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
