@@ -1,12 +1,14 @@
 $(document).ready(function () {
     initLayout();
 
-    /* hide progress bar on page ready*/
-    if (window.location.hash === '' || !Oro.hashNavigationEnabled()) {
-        if ($('#page-title').size()) {
-            document.title = $('#page-title').text();
-        }
-        hideProgressBar();
+    /* hide progress bar on page ready in case we don't need hash navigation request*/
+    if ((typeof Oro.hashNavigationEnabled == "undefined") ||
+        !Oro.hashNavigationEnabled() ||
+        !Oro.Navigation.prototype.checkHashForUrl()) {
+            if ($('#page-title').size()) {
+                document.title = $('#page-title').text();
+            }
+            hideProgressBar();
     }
 
     /* side bar functionality */
