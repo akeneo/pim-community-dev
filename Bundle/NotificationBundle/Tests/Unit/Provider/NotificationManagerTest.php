@@ -19,7 +19,8 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->em = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->manager = new NotificationManager($this->em);
+        $className = 'Oro\Bundle\NotificationBundle\Entity\EmailNotification';
+        $this->manager = new NotificationManager($this->em, $className);
 
         $this->assertEmpty($this->manager->getHandlers());
     }

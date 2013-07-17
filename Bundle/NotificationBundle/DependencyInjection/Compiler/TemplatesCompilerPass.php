@@ -14,13 +14,13 @@ class TemplatesCompilerPass implements CompilerPassInterface
     const DIR_NAME      = 'emails';
 
     /**
-     * @var KernelInterface
+     * @var BundleInterface[]
      */
-    private $kernel;
+    private $bundles;
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct($bundles)
     {
-        $this->kernel = $kernel;
+        $this->bundles = $bundles;
     }
 
     /**
@@ -28,11 +28,9 @@ class TemplatesCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $bundles = $this->kernel->getBundles();
-
         $templates = array();
         /** @var Bundle $bundle */
-        foreach ($bundles as $bundle) {
+        foreach ($this->bundles as $bundle) {
             $path = $bundle->getPath();
 
             $dirPath = $path . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . self::DIR_NAME;

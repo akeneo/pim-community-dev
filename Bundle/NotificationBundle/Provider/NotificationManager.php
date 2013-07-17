@@ -19,10 +19,16 @@ class NotificationManager
      */
     protected $em;
 
-    public function __construct(ObjectManager $em)
+    /**
+     * @var string
+     */
+    protected $className;
+
+    public function __construct(ObjectManager $em, $className)
     {
         $this->handlers = array();
         $this->em = $em;
+        $this->className = $className;
     }
 
     /**
@@ -43,11 +49,10 @@ class NotificationManager
      */
     public function process(NotificationEvent $event)
     {
-        $className = 'Oro\Bundle\NotificationBundle\Entity\EmailNotification';
         $entity = $event->getEntity();
 
         // select rules by entity name and event name
-        $notificationRules = $this->em->getRepository($className)
+        $notificationRules = $this->em->getRepository($this->className)
             ->getRulesByCriteria(get_class($entity), $event->getName());
 
         if (!empty($rules)) {

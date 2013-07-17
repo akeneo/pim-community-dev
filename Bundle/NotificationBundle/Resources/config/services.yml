@@ -96,9 +96,14 @@ services:
     # notification services
     oro_notification.manager:
         class: %oro_notification.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_navigation.emailnotification.entity.class%
 
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%
+        arguments:
+            - @twig
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
