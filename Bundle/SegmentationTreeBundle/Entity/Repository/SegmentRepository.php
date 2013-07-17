@@ -96,7 +96,7 @@ class SegmentRepository extends NestedTreeRepository
         foreach ($nodes as $node) {
             if (!isset($vectorMap[$node->getId()])) {
                 // Node does not exist, and none of his children has
-                // already been in the loop, create it
+                // already been in the loop, so we create it.
                 $vectorMap[$node->getId()] = array(
                     'item' => $node,
                     $childrenIndex => array()
@@ -120,6 +120,36 @@ class SegmentRepository extends NestedTreeRepository
                 $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
             } else {
                 $tree[$node->getId()] =& $vectorMap[$node->getId()];
+            }
+        }
+
+        if (empty($tree)) {
+            // No node found with getParent() == null, meaning the absolute tree
+            // root was not part of the set. We try to find the lowest level nodes
+            // or a node without item part, meaning that it's a referenced parent but without
+            // the node present itself in the set
+            $i = 0;
+            $foundItemLess = false;
+            $nodeIds= array_keys($vectorMap);
+            $nodesByLevel = array();
+
+            while ($i < count($nodeIds) && !$foundItemLess) {
+                $nodeId = $nodeIds[$i];
+                $nodeEntry = $vectorMap[$nodeId];
+
+                if (isset($nodeEntry['item'])) {
+//                    $nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
+                } else {
+                    $tree =& $vectorMap[$nodeId][$childrenIndex];
+                }
+                $i++;
+            }
+            // $tree still empty there, means we need to pick the lowest level nodes as tree roots
+            if (empty($tree)) {
+                $lowestLevel = min(array_keys($nodesByLevel));
+                foreach ($nodesByLevel[$lowestLevel] as $nodeId) {
+                    $tree[$nodeId] =& $vectorMap[$nodeId];
+                }
             }
         }
 
