@@ -56,8 +56,21 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->configValue->getScope());
         $this->assertEmpty($this->configValue->getCode());
         $this->assertEmpty($this->configValue->getValue());
-        $this->assertEmpty($this->configValue->getEntity());
         $this->assertEmpty($this->configValue->getField());
+
+        $this->assertFalse($this->configValue->getSerializable());
+        $this->configValue->setSerializable(true);
+        $this->assertEquals(
+            true,
+            $this->configValue->getSerializable()
+        );
+
+        $this->assertEmpty($this->configValue->getEntity());
+        $this->configValue->setEntity($this->configEntity);
+        $this->assertEquals(
+            $this->configEntity,
+            $this->configValue->getEntity()
+        );
     }
 
     public function test()
@@ -107,9 +120,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'code'  => 'is_extend',
-                'scope' => 'extend',
-                'value' => true
+                'code'         => 'is_extend',
+                'scope'        => 'extend',
+                'value'        => true,
+                'serializable' => false
             ),
             $this->configValue->toArray()
         );
@@ -120,21 +134,50 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             $this->configValue,
             $this->configEntity->getValue('is_extend', 'extend')
         );
+    }
 
-        /** test AbstractConfig fromArray() */
-        $config = array(
+
+    public function testToFromArray()
+    {
+        $this->configValue
+            ->setCode('doctrine')
+            ->setScope('datagrid')
+            ->setValue('a:7:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";s:6:"length";N;s:6:"unique";b:0;s:8:"nullable";b:0;s:9:"precision";N;s:5:"scale";N;}')
+            //->setField($this->configField)
+        ;
+
+        $values = array(
             'is_searchable' => true,
             'is_sortable'   => false,
-            'is_extend'     => $this->configValue
+            'doctrine'      => $this->configValue
+        );
+        $serializable = array(
+            'doctrine' => true
         );
 
-        $this->configField->fromArray('datagrid', $config);
-        $this->assertEquals($config, $this->configField->toArray('datagrid'));
+//        $this->assertEquals(
+//            $this->configEntity,
+//            $this->configEntity->getValues()
+//        );
 
-        $this->configEntity->fromArray('datagrid', $config);
-        $this->assertEquals($config, $this->configEntity->toArray('datagrid'));
+        $this->configField->addValue(new ConfigValue('is_searchable', 'datagrid', false));
+        $this->configField->fromArray('datagrid', $values, $serializable);
+        $this->assertEquals(
+            array(
+                'is_searchable' => 1,
+                'is_sortable'   => 0,
+                'doctrine'      => $this->configValue
+            ),
+            $this->configField->toArray('datagrid')
+        );
 
-        $this->configEntity->fromArray('extend', $config);
-        $this->assertEquals($config, $this->configEntity->toArray('extend'));
+        //print_r($this->configField->toArray('datagrid'));
+
+//        $this->configEntity->fromArray('datagrid', $config);
+//        $this->assertEquals($config, $this->configEntity->toArray('datagrid'));
+
+//        $this->configEntity->fromArray('extend', $config);
+//        $this->assertEquals($config, $this->configEntity->toArray('extend'));
+
     }
 }

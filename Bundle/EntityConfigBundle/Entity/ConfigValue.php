@@ -188,4 +188,23 @@ class ConfigValue
             'serializable' => $this->serializable
         );
     }
+
+    /**
+     * @param boolean $serializable
+     * @return $this
+     */
+    public function setSerializable($serializable)
+    {
+        $this->serializable = $serializable;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSerializable()
+    {
+        return $this->serializable;
+    }
 }
