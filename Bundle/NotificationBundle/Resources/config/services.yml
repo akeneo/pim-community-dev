@@ -96,6 +96,8 @@ services:
     # notification services
     oro_notification.manager:
         class: %oro_notification.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
 
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%
