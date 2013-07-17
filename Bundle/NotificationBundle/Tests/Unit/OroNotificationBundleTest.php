@@ -8,8 +8,9 @@ class OroNavigationBundleTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
 
-        $bundle = new OroNotificationBundle();
+        $bundle = new OroNotificationBundle($kernel);
         $bundle->build($container);
     }
 }

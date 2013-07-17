@@ -2,14 +2,27 @@
 
 namespace Oro\Bundle\NotificationBundle;
 
-use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\EventsCompilerPass;
-use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationHandlerPass;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
+use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\EventsCompilerPass;
+use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\TemplatesCompilerPass;
+use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationHandlerPass;
 
 class OroNotificationBundle extends Bundle
 {
+    /**
+     * @var \Symfony\Component\HttpKernel\KernelInterface
+     */
+    private $kernel;
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * Builds the bundle.
      *
@@ -25,6 +38,7 @@ class OroNotificationBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new EventsCompilerPass(), PassConfig::TYPE_AFTER_REMOVING)
-            ->addCompilerPass(new NotificationHandlerPass());
+            ->addCompilerPass(new NotificationHandlerPass())
+            ->addCompilerPass(new TemplatesCompilerPass($this->kernel));
     }
 }

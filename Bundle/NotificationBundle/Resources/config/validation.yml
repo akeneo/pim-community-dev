@@ -1,0 +1,10 @@
+Oro\Bundle\NotificationBundle\Entity\EmailNotification:
+    properties:
+        event:
+            - NotBlank: ~
+        template:
+            - NotBlank: ~
+        entityName:
+            - NotBlank: ~
+#        template:
+#            - NotBlank: ~

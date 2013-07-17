@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
-use Symfony\Component\EventDispatcher\Event;
-
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 
@@ -32,9 +30,10 @@ class NotificationManager
     /**
      * Process events with handlers
      *
-     * @return Event
+     * @param NotificationEvent $event
+     * @return NotificationEvent
      */
-    public function process(Event $event)
+    public function process(NotificationEvent $event)
     {
         $className = 'Oro\Bundle\NotificationBundle\Entity\EmailNotification';
         $entity = $event->getEntity();
@@ -54,7 +53,6 @@ class NotificationManager
                 }
             }
         }
-
 
         return $event;
     }

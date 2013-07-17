@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
+
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Extracts event names from a php files.
@@ -159,6 +160,9 @@ class EventNamesExtractor
     }
 
     /**
+     * Setter for names array
+     * Using in test
+     *
      * @param array $eventNames
      */
     public function setEventNames($eventNames)

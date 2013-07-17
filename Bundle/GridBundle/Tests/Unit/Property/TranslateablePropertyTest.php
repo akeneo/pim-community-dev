@@ -8,8 +8,10 @@ use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 
 class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
 {
-    const FIELD_NAME = 'testFieldName';
-    const FIELD_ALIAS = 'testFieldName';
+    const FIELD_NAME   = 'testFieldName';
+    const FIELD_ALIAS  = 'testFieldName';
+    const DOMAIN       = 'testDomain';
+    const LOCALE       = 'testLocale';
     /**
      * @var TranslateableProperty
      */
@@ -23,7 +25,19 @@ class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
-        $this->property = new TranslateableProperty(self::FIELD_NAME, $this->translator, null, 'domain', 'locale');
+        $this->property = new TranslateableProperty(
+            self::FIELD_NAME,
+            $this->translator,
+            null,
+            self::DOMAIN,
+            self::LOCALE
+        );
+    }
+
+    public function tearDown()
+    {
+        unset($this->translator);
+        unset($this->property);
     }
 
     public function testGetValueByName()
@@ -32,7 +46,7 @@ class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
 
         $this->translator->expects($this->once())
             ->method('trans')
-            ->with('testData', array(), 'domain', 'locale')
+            ->with('testData', array(), self::DOMAIN, self::LOCALE)
             ->will($this->returnValue('translatedValue'));
 
         $this->assertEquals('translatedValue', $this->property->getValue($record));
@@ -58,11 +72,5 @@ class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
     private function createRecord(array $data)
     {
         return new ResultRecord($data);
-    }
-
-    public function tearDown()
-    {
-        unset($this->translator);
-        unset($this->property);
     }
 }

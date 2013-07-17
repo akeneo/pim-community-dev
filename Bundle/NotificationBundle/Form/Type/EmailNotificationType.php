@@ -13,15 +13,26 @@ class EmailNotificationType extends AbstractType
     /**
      * @var array
      */
-    protected $entityNameChoise = array();
+    protected $entityNameChoices = array();
 
-    public function __construct($entitiesConfig = array())
+    /**
+     * @var array
+     */
+    protected $templateNameChoices = array();
+
+    public function __construct($entitiesConfig = array(), $templatesList = array())
     {
         $this->entityNameChoise = array_map(
             function ($value) {
                 return isset($value['name'])? $value['name'] : '';
             },
             $entitiesConfig
+        );
+        $this->templateNameChoices = array_map(
+            function ($value) {
+                return isset($value['name'])? $value['name'] : '';
+            },
+            $templatesList
         );
     }
 
@@ -34,14 +45,14 @@ class EmailNotificationType extends AbstractType
             'event',
             'entity',
             array(
-                'class' => 'OroNotificationBundle:Event',
-                'property' => 'name',
+                'class'         => 'OroNotificationBundle:Event',
+                'property'      => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
                 },
-                'empty_value' => '',
-                'empty_data'  => null
+                'empty_value'   => '',
+                'empty_data'    => null
             )
         );
 
@@ -49,21 +60,21 @@ class EmailNotificationType extends AbstractType
             'entityName',
             'choice',
             array(
-                'choices'  => $this->entityNameChoise,
-                'multiple' => false,
+                'choices'            => $this->entityNameChoise,
+                'multiple'           => false,
                 'translation_domain' => 'config',
-                'empty_value' => '',
-                'empty_data'  => null
+                'empty_value'        => '',
+                'empty_data'         => null
             )
         );
         $builder->add(
             'template',
             'choice',
             array(
-                'choices' => array(
-                    '@testTemplate',
-                ),
-                'multiple' => false,
+                'choices'          => $this->templateNameChoices,
+                'empty_value'      => '',
+                'empty_data'       => null,
+                'multiple'         => false,
             )
         );
     }
