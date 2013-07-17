@@ -25,10 +25,8 @@ class PimImportExportExtension extends Extension
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        $config = $configs[0];
-        $config = array_merge(array(
-            'exports' => array(),
-        ), $config);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('serializer.yml');
@@ -44,7 +42,7 @@ class PimImportExportExtension extends Extension
     private function createExporterServices(array $config, ContainerBuilder $container)
     {
         $registry = $container->getDefinition('pim_import_export.exporter_registry');
-        foreach ($config['exports'] as $alias => $exportConfig) {
+        foreach ($config['exporters'] as $alias => $exportConfig) {
 
             $def = new Definition(
                 'Pim\\Bundle\\ImportExportBundle\\Exporter',
