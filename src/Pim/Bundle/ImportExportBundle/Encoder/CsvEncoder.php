@@ -33,9 +33,7 @@ class CsvEncoder implements EncoderInterface
         }
 
         $result = '';
-        $output = fopen('php://output', 'w');
-
-        ob_start();
+        $output = fopen('php://temp', 'r+');
 
         if (isset($data[0]) && is_array($data[0])) {
             if ($this->withHeader) {
@@ -51,9 +49,7 @@ class CsvEncoder implements EncoderInterface
             fputcsv($output, $data, $this->delimiter, $this->enclosure);
         }
 
-        fclose($output);
-
-        return ob_get_clean();
+        return $this->readCsv($output);
     }
 
     public function supportsEncoding($format)
@@ -64,6 +60,22 @@ class CsvEncoder implements EncoderInterface
     private function encodeHeader($data, $output)
     {
         fputcsv($output, array_keys($data), $this->delimiter, $this->enclosure);
+    }
+
+    private function readCsv($handle)
+    {
+        $csv = '';
+
+        rewind($handle);
+        while (($buffer = fgets($handle, 4096)) !== false) {
+            $csv .= $buffer;
+        }
+        if (!feof($handle)) {
+            throw new \Exception('Error while getting the csv.');
+        }
+        fclose($handle);
+
+        return $csv;
     }
 }
 
