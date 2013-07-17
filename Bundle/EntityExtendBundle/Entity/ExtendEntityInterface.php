@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
+/**
+ * @SuppressWarnings
+ */
 interface ExtendEntityInterface
 {
     public function __toArray();

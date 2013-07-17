@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
+/**
+ * @SuppressWarnings
+ */
 interface ExtendProxyInterface
 {
     public function __proxy__setExtend($extend);
