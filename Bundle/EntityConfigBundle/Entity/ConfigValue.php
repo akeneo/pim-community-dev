@@ -82,7 +82,7 @@ class ConfigValue
 
     /**
      * Set code
-     * @param  string      $code
+     * @param string $code
      * @return ConfigValue
      */
     public function setCode($code)
@@ -102,7 +102,7 @@ class ConfigValue
     }
 
     /**
-     * @param  string      $scope
+     * @param string $scope
      * @return ConfigValue
      */
     public function setScope($scope)
@@ -122,7 +122,7 @@ class ConfigValue
 
     /**
      * Set data
-     * @param  string      $value
+     * @param string $value
      * @return ConfigValue
      */
     public function setValue($value)
