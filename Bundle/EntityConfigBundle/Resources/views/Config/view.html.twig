@@ -26,7 +26,7 @@
 {% block head_script %}
     {{ parent() }}
 
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': ''} %}
+    {% placeholder prepare_grid with {'datagrid': entity_fields, 'selector': '#' ~ gridId, 'parameters': ''} %}
 {% endblock %}
 
 {% block pageHeader %}
@@ -43,7 +43,7 @@
 {% block stats %}
     <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
     <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
-    <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', 0 , '</a>']|join|raw }}</li>
+    <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>
 {% endblock stats%}
 
 {% block content_data %}
