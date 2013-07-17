@@ -35,15 +35,11 @@ class EventNamesExtractorTest extends TestCase
             ->method('flush');
 
         $extractor = new EventNamesExtractor($em, $entityClass);
-        $messages = $extractor->extract(__DIR__ . '/../Fixtures/');
-        foreach ($messages as $key => $message) {
-            $messages[$key] = str_replace('_unittest', '', $message);
-        }
-        $extractor->setEventNames($messages);
+        $messages = $extractor->extract(__DIR__ . '/../Fixtures/', false);
         $extractor->dumpToDb();
 
         $this->assertCount(1, $messages, '->extract() should find 1 translation');
-        $this->assertTrue(isset($messages['oro.event.good_happens']), '->extract() should find at leat "oro.event.good_happens" message');
+        $this->assertTrue(isset($messages['oro.event.good_happens_unittest']), '->extract() should find at leat "oro.event.good_happens" message');
     }
 
     public function testDumpToDb()

@@ -56,14 +56,24 @@ class EventNamesExtractor
      * Extract event names and return them in array
      *
      * @param string $directory
+     * @param bool|string $filter
      * @return array
      */
-    public function extract($directory)
+    public function extract($directory, $filter = '_unittest')
     {
         $finder = new Finder();
         $files = $finder->files()->name('*.php')->exclude('Tests')->in($directory);
         foreach ($files as $file) {
             $this->parseTokens(token_get_all(file_get_contents($file)));
+        }
+
+        if ($filter) {
+            $this->eventNames = array_filter(
+                $this->eventNames,
+                function ($value) use ($filter) {
+                    return false === strpos($value, $filter);
+                }
+            );
         }
 
         return $this->eventNames;
@@ -140,8 +150,7 @@ class EventNamesExtractor
 
                 $message = trim($message, '\'');
                 if ($message
-                    && substr($message, 0, strlen(self::EVENTS_PREFIX)) == self::EVENTS_PREFIX
-                    && strpos($message, 'unittest') === false) {
+                    && substr($message, 0, strlen(self::EVENTS_PREFIX)) == self::EVENTS_PREFIX) {
                     $this->eventNames[$message] = $message;
                     break;
                 }
