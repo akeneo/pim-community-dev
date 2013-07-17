@@ -238,7 +238,7 @@ Oro.Navigation = Backbone.Router.extend({
             var cacheData = this.getCachedData();
             if (cacheData) {
                 this.validateMd5Request(cacheData);
-                this.validateGridStates(cacheData);
+                //this.validateGridStates(cacheData);
             }
         }, this), 5000);
     },
@@ -606,16 +606,14 @@ Oro.Navigation = Backbone.Router.extend({
             this
         );
 
-        var options = {
+        this.confirmModal = new Oro.BootstrapModal({
             title: Translator.get('Refresh Confirmation'),
-            content: Translator.get('Your local changes will be lost. Are you sure you want to refresh the page?')
-        }
-        this.confirmModal = new Oro.BootstrapModal(_.extend({
-            title: 'Confirmation',
+            content: Translator.get('Your local changes will be lost. Are you sure you want to refresh the page?'),
             okText: 'Ok, got it.',
             className: 'modal modal-primary',
-            okButtonClass: 'btn-primary btn-large'
-        }, options));
+            okButtonClass: 'btn-primary btn-large',
+            cancelText: Translator.get('Cancel')
+        });
         this.confirmModal.on('ok', _.bind(function() {
             this.refreshPage();
         }, this));
@@ -1090,6 +1088,13 @@ Oro.Navigation = Backbone.Router.extend({
         } else {
             window.location.href = url;
         }
+    },
+
+    /**
+     * @return {Boolean}
+     */
+    checkHashForUrl: function() {
+        return window.location.hash.indexOf('#url=') !== -1;
     },
 
     /**
