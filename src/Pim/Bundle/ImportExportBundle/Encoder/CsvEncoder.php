@@ -4,20 +4,66 @@ namespace Pim\Bundle\ImportExportBundle\Encoder;
 
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
+/**
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CsvEncoder implements EncoderInterface
 {
-    public function encode($data, $format, array $context = array())
+    const FORMAT = 'csv';
+
+    protected $delimiter;
+    protected $enclosure;
+    protected $withHeader = false;
+
+    public function __construct($delimiter = ';', $enclosure = '"', $withHeader = false)
     {
-        $rows = join(';', array_keys($data[0]))."\n";
-        foreach ($data as $entry) {
-            $rows .= join(';', array_values($entry))."\n";
+        $this->delimiter  = $delimiter ?: ';';
+        $this->enclosure  = $enclosure ?: '"';
+        $this->withHeader = $withHeader;
+    }
+
+    public function encode($data, $format)
+    {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expecting data of type array, got "%s".', gettype($data)
+            ));
         }
 
-        return $rows;
+        $result = '';
+        $output = fopen('php://output', 'w');
+
+        ob_start();
+
+        if (isset($data[0]) && is_array($data[0])) {
+            if ($this->withHeader) {
+                $this->encodeHeader($data[0], $output);
+            }
+            foreach ($data as $entry) {
+                fputcsv($output, $entry, $this->delimiter, $this->enclosure);
+            }
+        } else {
+            if ($this->withHeader) {
+                $this->encodeHeader($data, $output);
+            }
+            fputcsv($output, $data, $this->delimiter, $this->enclosure);
+        }
+
+        fclose($output);
+
+        return ob_get_clean();
     }
 
     public function supportsEncoding($format)
     {
-        return 'csv' === $format;
+        return self::FORMAT === $format;
+    }
+
+    private function encodeHeader($data, $output)
+    {
+        fputcsv($output, array_keys($data), $this->delimiter, $this->enclosure);
     }
 }
+

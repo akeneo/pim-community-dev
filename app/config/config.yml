@@ -191,6 +191,11 @@ knp_gaufrette:
             alias:   pim_filesystem
 
 pim_import_export:
+    encoders:
+        csv:
+            delimiter: ';'
+            enclosure: '"'
+            with_header: true
     exports:
         product:
             reader:

@@ -22,9 +22,13 @@ services:
         tags:
             - { name: pim_serializer.encoder }
 
-    pim_serializer.encoder.json:
+    pim_serializer.encoder.csv:
         public: false
         class: %pim_serializer.encoder.csv.class%
+        arguments:
+            - %pim_serializer.encoder.csv.delimiter%
+            - %pim_serializer.encoder.csv.enclosure%
+            - %pim_serializer.encoder.csv.with_header%
         tags:
             - { name: pim_serializer.encoder }
 
