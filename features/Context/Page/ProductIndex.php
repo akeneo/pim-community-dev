@@ -16,7 +16,8 @@ class ProductIndex extends Page
     protected $elements = array(
         'Activated locales' => array('css' => '#select2-drop'),
         'Categories tree'   => array('css' => '#tree'),
-        'Products'          => array('css' => 'table.grid'),
+        'Products'          => array('css' => 'table.grid tbody'),
+        'Dialog'            => array('css' => 'div.modal'),
     );
 
     public function clickNewProductLink()
@@ -27,6 +28,38 @@ class ProductIndex extends Page
     public function findProductRow($sku)
     {
         return $this->getElement('Products')->find('css', sprintf('tr:contains("%s")', $sku));
+    }
+
+    public function clickOnAction($sku, $action)
+    {
+        $row = $this->findProductRow($sku);
+
+        $row->find('css', 'td.action-cell a.dropdown-toggle')->click();
+
+        $element = $row->find('css', sprintf('a>i:contains("%s")', $action));
+
+        if (!$element) {
+            throw new \Exception(sprintf('Could not find action "%s".', $action));
+        }
+
+        $element->click();
+    }
+
+    public function confirmRemoval()
+    {
+        $element = $this->getElement('Dialog');
+
+        if (!$element) {
+            throw new \Exception('Could not find dialog window');
+        }
+
+        $button = $element->find('css', 'a.btn.ok');
+
+        if (!$button) {
+            throw new \Exception('Could not find confirmation button');
+        }
+
+        $button->click();
     }
 
     public function selectActivatedLocale($locale)
