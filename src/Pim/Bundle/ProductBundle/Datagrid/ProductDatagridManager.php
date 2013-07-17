@@ -186,6 +186,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $result['sortable'] = false;
         }
 
+        if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
+            $result['type'] = FieldDescriptionInterface::TYPE_INTEGER;
+        }
+
         return $result;
     }
 
