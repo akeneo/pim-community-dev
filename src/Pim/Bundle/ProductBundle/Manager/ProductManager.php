@@ -105,22 +105,6 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Find many products
-     *
-     * @param int $limit
-     * @param int $offset
-     *
-     * @return ArrayCollection
-     */
-    public function findMany($limit = 10, $offset = 0)
-    {
-        $products = $this->getFlexibleRepository()
-            ->findByWithAttributes(array(), null, array('id' => 'ASC'), $limit, $offset);
-
-        return $products;
-    }
-
-    /**
      * Save a product in two phases :
      *   1) Persist and flush the entity as usual and associate it to the provided categories
      *      associated with the provided tree
