@@ -3,7 +3,7 @@
 namespace Oro\Bundle\AddressBundle\Entity\Manager;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Oro\Bundle\AddressBundle\Entity\AddressBase;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
@@ -52,7 +52,7 @@ class AddressManager implements StorageInterface
     /**
      * Returns an empty address instance
      *
-     * @return \Oro\Bundle\AddressBundle\Entity\AddressBase
+     * @return \Oro\Bundle\AddressBundle\Entity\AbstractAddress
      */
     public function createAddress()
     {
@@ -64,11 +64,11 @@ class AddressManager implements StorageInterface
     /**
      * Updates an address
      *
-     * @param  AddressBase       $address
+     * @param  AbstractAddress       $address
      * @param  bool              $flush   Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateAddress(AddressBase $address, $flush = true)
+    public function updateAddress(AbstractAddress $address, $flush = true)
     {
         $this->getStorageManager()->persist($address);
         if ($flush) {
@@ -79,9 +79,9 @@ class AddressManager implements StorageInterface
     /**
      * Deletes an address
      *
-     * @param AddressBase $address
+     * @param AbstractAddress $address
      */
-    public function deleteAddress(AddressBase $address)
+    public function deleteAddress(AbstractAddress $address)
     {
         $this->getStorageManager()->remove($address);
         $this->getStorageManager()->flush();
@@ -91,7 +91,7 @@ class AddressManager implements StorageInterface
      * Finds one address by the given criteria
      *
      * @param  array       $criteria
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function findAddressBy(array $criteria)
     {
@@ -101,9 +101,9 @@ class AddressManager implements StorageInterface
     /**
      * Reloads an address
      *
-     * @param AddressBase $address
+     * @param AbstractAddress $address
      */
-    public function reloadAddress(AddressBase $address)
+    public function reloadAddress(AbstractAddress $address)
     {
         $this->getStorageManager()->refresh($address);
     }

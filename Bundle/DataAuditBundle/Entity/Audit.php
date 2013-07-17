@@ -12,7 +12,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="Gedmo\Loggable\Entity\Repository\LogEntryRepository")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\DataAuditBundle\Entity\Repository\AuditRepository")
  * @ORM\Table(name="oro_audit")
  */
 class Audit extends AbstractLogEntry

@@ -11,9 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
  *
  * It works exactly as classic QueryBuilder
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleQueryBuilder extends QueryBuilder
@@ -155,7 +152,8 @@ class FlexibleQueryBuilder extends QueryBuilder
      * @return string
      * @throws FlexibleQueryException
      *
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * TODO: This method should be refactored (BAP-974).
      */
     public function prepareCriteriaCondition($field, $operator, $value)

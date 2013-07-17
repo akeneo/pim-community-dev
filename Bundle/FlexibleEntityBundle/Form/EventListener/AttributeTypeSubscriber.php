@@ -4,7 +4,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Form\EventListener;
 use Symfony\Component\Form\Form;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,9 +12,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Aims to customized attribute form type
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class AttributeTypeSubscriber implements EventSubscriberInterface
@@ -48,9 +45,9 @@ class AttributeTypeSubscriber implements EventSubscriberInterface
 
     /**
      * Method called before set data
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
 
@@ -109,6 +106,7 @@ class AttributeTypeSubscriber implements EventSubscriberInterface
         // replace by disabled and read-only
         $options['disabled']  = true;
         $options['read_only'] = true;
+        $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
     }

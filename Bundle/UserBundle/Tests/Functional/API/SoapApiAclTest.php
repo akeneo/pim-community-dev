@@ -16,19 +16,24 @@ class SoapApiAclTest extends WebTestCase
     const TEST_EDIT_ROLE = 'ROLE_USER';
 
     /** @var Client */
-    protected $client = null;
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
 
-        $this->client->soap(
-            "http://localhost/api/soap",
-            array(
-                'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_2
-            )
-        );
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
+
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
@@ -132,17 +137,12 @@ class SoapApiAclTest extends WebTestCase
         $roleId = ToolsAPI::classToArray($roleId);
 
         $this->client->soapClient->addAclToRole($roleId['id'], 'oro_address');
+        $this->client->soapClient->addAclToRole($roleId['id'], 'root');
 
         $result =  $this->client->soapClient->getRoleAcl($roleId['id']);
         $result = ToolsAPI::classToArray($result);
         $actualAcl = $result['item'];
         sort($actualAcl);
-
-        foreach ($expectedAcl as $key => $val) {
-            if ($val == 'root') { // root resource will be deleted after any resource delete
-                unset($expectedAcl[ $key ]);
-            }
-        }
         sort($expectedAcl);
 
         $this->assertEquals($expectedAcl, $actualAcl);

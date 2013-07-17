@@ -33,7 +33,7 @@ class AddressHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->form = $this->getMock('Symfony\Component\Form\Tests\FormInterface');
+        $this->form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
         $this->request = $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Address')
@@ -53,7 +53,7 @@ class AddressHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('POST'));
 
         $this->form->expects($this->once())
-            ->method('bind');
+            ->method('submit');
         $this->form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue('true'));
@@ -77,7 +77,7 @@ class AddressHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('GET'));
 
         $this->form->expects($this->never())
-            ->method('bind');
+            ->method('submit');
         $this->form->expects($this->never())
             ->method('isValid')
             ->will($this->returnValue(true));
@@ -100,7 +100,7 @@ class AddressHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('POST'));
 
         $this->form->expects($this->once())
-            ->method('bind');
+            ->method('submit');
         $this->form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));

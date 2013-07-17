@@ -6,9 +6,6 @@ use Doctrine\Common\Util\ClassUtils;
 /**
  * A registry which knows all flexible entity managers
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleManagerRegistry
@@ -77,10 +74,15 @@ class FlexibleManagerRegistry
      * @param string $entityFQCN the entity FQCN
      *
      * @return FlexibleManager
+     *
+     * @throws \InvalidArgumentException If cannot get flexible manager
      */
     public function getManager($entityFQCN)
     {
         $realClassName = ClassUtils::getRealClass($entityFQCN);
+        if (!isset($this->entityToManager[$realClassName])) {
+            throw new \InvalidArgumentException(sprintf('Cannot get flexible manager for class "%s".', $entityFQCN));
+        }
         return $this->entityToManager[$realClassName];
     }
 }

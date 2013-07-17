@@ -2,11 +2,16 @@
 
 namespace Oro\Bundle\AddressBundle\Form\EventListener;
 
-use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\AddressBundle\Entity\TypedAddress;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use Doctrine\Common\Collections\Collection;
+
+use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 
 class AddressCollectionTypeSubscriber implements EventSubscriberInterface
 {
@@ -14,6 +19,16 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
      * @var string
      */
     protected $property;
+
+    /**
+     * @var PropertyPath
+     */
+    protected $propertyPath;
+
+    /**
+     * @var PropertyAccessor
+     */
+    protected $propertyAccessor;
 
     /**
      * @var string
@@ -27,6 +42,8 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     public function __construct($property, $entityClass)
     {
         $this->property = $property;
+        $this->propertyPath = new PropertyPath($this->property);
+        $this->propertyAccessor = PropertyAccess::getPropertyAccessor();
         $this->entityClass = $entityClass;
     }
 
@@ -51,13 +68,20 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        $method = $this->getMethodName();
-        if ($data && method_exists($data, $method)) {
-            /** @var Collection $addresses */
-            $addresses = $data->$method();
-            if ($addresses->isEmpty()) {
-                $addresses->add(new $this->entityClass());
-            }
+        if (!$data) {
+            return;
+        }
+
+        /** @var Collection $addresses */
+        $addresses = $this->propertyAccessor->getValue($data, $this->propertyPath);
+
+        if ($addresses->isEmpty()) {
+
+            $this->propertyAccessor->setValue(
+                $data,
+                $this->propertyPath,
+                array(new $this->entityClass())
+            );
         }
     }
 
@@ -70,17 +94,19 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        $method = $this->getMethodName();
-        if ($data && method_exists($data, $method)) {
-            /** @var Collection $addresses */
-            $addresses = $data->$method();
-            /** @var TypedAddress $item */
-            foreach ($addresses as $item) {
-                if ($item->isEmpty()) {
-                    $addresses->removeElement($item);
-                }
-            }
+        if (!$data) {
+            return;
         }
+
+        /** @var Collection $addresses */
+        $addresses = $this->propertyAccessor->getValue($data, $this->propertyPath);
+        $notEmptyAddresses = $addresses->filter(
+            function (AbstractTypedAddress $address) {
+                return !$address->isEmpty();
+            }
+        );
+
+        $this->propertyAccessor->setValue($data, $this->propertyPath, $notEmptyAddresses);
     }
 
     /**
@@ -91,6 +117,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     public function preBind(FormEvent $event)
     {
         $data = $event->getData();
+
         if (!$data) {
             return;
         }
@@ -136,15 +163,5 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
             }
         }
         return true;
-    }
-
-    /**
-     * Get getter method name.
-     *
-     * @return string
-     */
-    protected function getMethodName()
-    {
-        return 'get' . ucfirst($this->property);
     }
 }

@@ -11,6 +11,9 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ */
 class UserTest extends \PHPUnit_Framework_TestCase
 {
     public function testUsername()

@@ -8,24 +8,8 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-                {% if env is defined  and env == 'devjs' %}
-                    <script type="text/javascript">localStorage.clear();</script>
-                    <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
-                    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
-                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
-                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
-                {% else %}
-                    {% stylesheets
-                    'bundles/oroui/css/all.css'
-                    'bundles/oroui/css/less/main.less'
-
-                    debug=false
-                    filter='cssrewrite, lessphp, yui_css'
-                    output='css/oro.all.css'
-                    %}
-                    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-                    {% endstylesheets %}
-                {% endif %}
+                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
+                <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
                 {% placeholder head_style %}
             {% endblock %}
 

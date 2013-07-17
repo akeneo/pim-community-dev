@@ -184,11 +184,11 @@ $customer->setLastname('Dupont');
 $attCompany = $cm->getEntityRepository()->findAttributeByCode('company');
 $value = $cm->createFlexibleValue();
 $value->setAttribute($attCompany);
-$value->setData('Akeneo');
+$value->setData('Oro');
 $customer->addValue($value);
 
 // add a value (shortcut !)
-$customer->setCompany('Akeneo');
+$customer->setCompany('Oro');
 
 // persist and flush
 $cm->getStorageManager()->persist($customer);

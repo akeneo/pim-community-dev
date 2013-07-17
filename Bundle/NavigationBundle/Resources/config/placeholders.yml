@@ -6,16 +6,10 @@ placeholders:
                 order: 100
             pinbar_js:
                 order: 200
-            assets_js:
-                order: 300
     scripts_after:
         label: Scripts After
         items:
             navigationItem:
-                order: 100
-    head_style:
-        items:
-            assets_css:
                 order: 100
     hash_nav:
         label: Hash Navigation
@@ -48,18 +42,12 @@ placeholders:
                 order: 100
 
 items:
-   assets_js:
-        template: OroNavigationBundle:Assets:oro_js.html.twig
-   assets_css:
-        template: OroNavigationBundle:Assets:oro_css.html.twig
    hashNavigation:
         template: OroNavigationBundle:HashNav:script.js.twig
    dot_menu_js:
         template: OroNavigationBundle:Js:dot.menu.js.twig
    pinbar_js:
         template: OroNavigationBundle:Js:pinbar.js.twig
-   navigationItem:
-        template: OroNavigationBundle:Js:navigationItem.html.twig
    shortcuts:
         template: OroNavigationBundle:Shortcut:shortcuts.html.twig
    menu_user:

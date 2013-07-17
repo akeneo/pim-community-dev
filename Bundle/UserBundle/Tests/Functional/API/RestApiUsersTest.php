@@ -13,11 +13,15 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class RestUsersApiTest extends WebTestCase
 {
     /** @var Client  */
-    protected $client = null;
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
@@ -33,7 +37,8 @@ class RestUsersApiTest extends WebTestCase
                 "plainPassword" => '1231231q',
                 "firstName" => "firstName",
                 "lastName" => "lastName",
-                "rolesCollection" => array("1")
+                "rolesCollection" => array("1"),
+                "attributes" => array("company" => "Some test company")
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);

@@ -8,8 +8,10 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class WebTestCase extends BaseWebTestCase
 {
     const DB_ISOLATION = '/@db_isolation(.*)(\r|\n)/U';
+    const DB_REINDEX = '/@db_reindex(.*)(\r|\n)/U';
 
     static protected $db_isolation = false;
+    static protected $db_reindex = false;
 
     /**
      * Creates a Client.
@@ -26,13 +28,15 @@ class WebTestCase extends BaseWebTestCase
 
         if (self::$db_isolation && Client::getTransactionLevel() < 1) {
             //workaround MyISAM search tables are not on transaction
-            $kernel = $client->getKernel();
-            $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
-            $application->setAutoExit(false);
-            $options = array('command' => 'oro:search:reindex');
-            $options['--env'] = "test";
-            $options['--quiet'] = null;
-            $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+            if (self::$db_reindex) {
+                $kernel = $client->getKernel();
+                $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+                $application->setAutoExit(false);
+                $options = array('command' => 'oro:search:reindex');
+                $options['--env'] = "test";
+                $options['--quiet'] = null;
+                $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+            }
 
             $client->startTransaction();
         }
@@ -55,6 +59,12 @@ class WebTestCase extends BaseWebTestCase
             self::$db_isolation = true;
         } else {
             self::$db_isolation = false;
+        }
+
+        if (preg_match(self::DB_REINDEX, $doc, $matches) > 0) {
+            self::$db_reindex = true;
+        } else {
+            self::$db_reindex = false;
         }
     }
 

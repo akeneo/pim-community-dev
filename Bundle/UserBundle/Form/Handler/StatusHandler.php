@@ -60,7 +60,7 @@ class StatusHandler
         $this->form->setData($status);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($user, $status, $updateCurrentStatus);

@@ -8,6 +8,11 @@ use Symfony\Component\Form\FormEvents;
 class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var string
+     */
+    protected $typedAddressClass;
+
+    /**
      * @var AddressCollectionTypeSubscriber
      */
     protected $subscriber;
@@ -17,7 +22,8 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->subscriber = new AddressCollectionTypeSubscriber('test', '\Oro\Bundle\AddressBundle\Entity\TypedAddress');
+        $this->typedAddressClass = $this->getMockClass('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
+        $this->subscriber = new AddressCollectionTypeSubscriber('test', $this->typedAddressClass);
     }
 
     public function testGetSubscribedEvents()
@@ -51,48 +57,50 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
         $addresses->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(true));
-        $addresses->expects($this->once())
-            ->method('add')
-            ->with($this->isInstanceOf('Oro\Bundle\AddressBundle\Entity\TypedAddress'));
-        $this->subscriber->preSet($this->getEvent($addresses));
+
+        $this->subscriber->preSet(
+            $this->getEvent(
+                $addresses,
+                array($this->getMock('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress'))
+            )
+        );
     }
 
     public function testPostBind()
     {
-        $addressEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $addressEmpty = $this->getMock('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
         $addressEmpty->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(true));
-        $addressNotEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $addressNotEmpty = $this->getMock('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
         $addressNotEmpty->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(false));
 
-        $iterator = new \ArrayIterator(array($addressEmpty, $addressNotEmpty));
-        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\Collection')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $addresses->expects($this->once())
-            ->method('getIterator')
-            ->will($this->returnValue($iterator));
-        $addresses->expects($this->once())
-            ->method('removeElement')
-            ->with($addressEmpty);
-        $this->subscriber->postBind($this->getEvent($addresses));
+        $addresses = new \Doctrine\Common\Collections\ArrayCollection(array($addressEmpty, $addressNotEmpty));
+        $this->subscriber->postBind(
+            $this->getEvent(
+                $addresses,
+                new \Doctrine\Common\Collections\ArrayCollection(array(1 => $addressNotEmpty))
+            )
+        );
     }
 
-    protected function getEvent($collection)
+    protected function getEvent($expectedGetDataValue, $expectedSetDataValue = null)
     {
         $data = $this->getMockBuilder('\stdClass')
-            ->setMethods(array('getTest'))
+            ->setMethods(array('getTest', 'setTest'))
             ->getMock();
+
         $data->expects($this->once())
             ->method('getTest')
-            ->will($this->returnValue($collection));
+            ->will($this->returnValue($expectedGetDataValue));
+
+        if (null !== $expectedSetDataValue) {
+            $data->expects($this->once())
+                ->method('setTest')
+                ->with($expectedSetDataValue);
+        }
 
         $event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
             ->disableOriginalConstructor()
@@ -100,6 +108,7 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
         $event->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($data));
+
         return $event;
     }
 

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
 use Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType;
 
@@ -15,7 +16,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
     /**
      * @var string
      */
-    protected $defaultLocale = 'en_US';
+    protected $defaultLocale = 'en';
 
     /**
      * @var string
@@ -24,9 +25,10 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
+        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType()));
+
         parent::setUp();
         $this->type = new DateTimeRangeType();
-        $this->factory->addType(new DateRangeType());
     }
 
     /**

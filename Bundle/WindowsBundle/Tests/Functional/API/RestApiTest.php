@@ -22,12 +22,11 @@ class RestApiTest extends WebTestCase
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateBasicHeader());
-    }
-
-    protected function tearDown()
-    {
-        unset($this->client);
+        if (!$this->client) {
+            $this->client = static::createClient(array(), ToolsAPI::generateBasicHeader());
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**

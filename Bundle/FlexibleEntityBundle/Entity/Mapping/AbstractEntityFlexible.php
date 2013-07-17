@@ -11,9 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 /**
  * Base Doctrine ORM entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 abstract class AbstractEntityFlexible extends AbstractFlexible
@@ -152,6 +149,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $scopeCode
      *
      * @return FlexibleValueInterface
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
@@ -251,6 +249,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @throws \Exception
      *
      * @return Ambigous <mixed, multitype:>
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __call($method, $arguments)
     {
@@ -264,7 +263,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (preg_match('/set(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'setData';
-        } else if (preg_match('/add(.*)/', $method, $matches)) {
+        } elseif (preg_match('/add(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'addData';
         }

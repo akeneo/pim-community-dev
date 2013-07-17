@@ -1,6 +1,6 @@
 {#
     Available variables:
-    * entity       - user entity Oro\Bundle\UserBundle\Entity\User
+    * entity       - user entity Oro\Bundle\UserBundle\Entity\User or null
     * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
 #}
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
@@ -10,9 +10,10 @@
 {% set entity_output = oro_config_entity('Oro\\Bundle\\UserBundle\\Entity\\User') %}
 {% set showImage = true %}
 
+{% set recordUrl = indexer_item.recordUrl %}
+{% set imagePath = entity ? entity.imagePath : null %}
+
 {% if entity %}
-    {% set imagePath = entity.imagePath %}
-    {% set recordUrl = indexer_item.recordUrl %}
     {% block additional_info %}
         <div class="status-enabled pull-left">
             {% if entity.enabled %}
