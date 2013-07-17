@@ -15,7 +15,7 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getMockForAbstractClass('\Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType', array($translator));
 
         $formMock = $this->getFormMock();
-        $formViewMock = $this->getFormViewMock();
+        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
         $instance->finishView($formViewMock, $formMock, array());
     }
 
@@ -28,7 +28,7 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getMockForAbstractClass('\Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType', array($translator));
 
         $formMock = $this->getFormMock();
-        $formViewMock = $this->getFormViewMock();
+        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
 
         $choicesFormViewMock = $this->getFormViewMock();
         $choicesFormViewMock->vars['choices'] = array();
@@ -48,15 +48,6 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
 
         $formMock = $this->getFormMock();
         $formViewMock = $this->getFormViewMock();
-        $parentFormViewMock = $this->getFormViewMock();
-        $parentFormViewMock->vars['translation_domain'] = '';
-
-        $choiceOneFormViewMock = new ChoiceView('testData', 'testValue', 'testLabel');
-
-        $choicesFormViewMock = $this->getFormViewMock();
-        $choicesFormViewMock->vars['choices'] = array($choiceOneFormViewMock);
-        $formViewMock->children['value'] = $choicesFormViewMock;
-        $formViewMock->parent = $parentFormViewMock;
 
         $instance->finishView($formViewMock, $formMock, array('translation_domain' => ''));
     }
@@ -72,15 +63,7 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
 
         $formMock = $this->getFormMock();
         $formViewMock = $this->getFormViewMock();
-        $parentFormViewMock = $this->getFormViewMock();
-        $parentFormViewMock->vars['translation_domain'] = 'parentDomain';
-
-        $choiceOneFormViewMock = new ChoiceView('testData', 'testValue', 'testLabel');
-
-        $choicesFormViewMock = $this->getFormViewMock();
-        $choicesFormViewMock->vars['choices'] = array($choiceOneFormViewMock);
-        $formViewMock->children['value'] = $choicesFormViewMock;
-        $formViewMock->parent = $parentFormViewMock;
+        $formViewMock->parent->vars['translation_domain'] = 'parentDomain';
 
         $instance->finishView($formViewMock, $formMock, array('translation_domain' => ''));
     }
@@ -96,15 +79,6 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
 
         $formMock = $this->getFormMock();
         $formViewMock = $this->getFormViewMock();
-        $parentFormViewMock = $this->getFormViewMock();
-        $parentFormViewMock->vars['translation_domain'] = '';
-
-        $choiceOneFormViewMock = new ChoiceView('testData', 'testValue', 'testLabel');
-
-        $choicesFormViewMock = $this->getFormViewMock();
-        $choicesFormViewMock->vars['choices'] = array($choiceOneFormViewMock);
-        $formViewMock->children['value'] = $choicesFormViewMock;
-        $formViewMock->parent = $parentFormViewMock;
 
         $instance->finishView($formViewMock, $formMock, array('translation_domain' => 'optionsDomain'));
     }
@@ -126,6 +100,18 @@ class AbstractChoiseTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getFormViewMock()
     {
-        return $this->getMock('Symfony\Component\Form\FormView');
+        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
+
+        $parentFormViewMock = $this->getMock('Symfony\Component\Form\FormView');
+        $parentFormViewMock->vars['translation_domain'] = '';
+
+        $choiceOneFormViewMock = new ChoiceView('testData', 'testValue', 'testLabel');
+
+        $choicesFormViewMock = $this->getMock('Symfony\Component\Form\FormView');
+        $choicesFormViewMock->vars['choices'] = array($choiceOneFormViewMock);
+        $formViewMock->children['value'] = $choicesFormViewMock;
+        $formViewMock->parent = $parentFormViewMock;
+
+        return $formViewMock;
     }
 }
