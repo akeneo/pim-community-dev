@@ -85,7 +85,6 @@ a:focus{
 // style
 header{
   border-bottom: 1px solid #20252b;
-  height: 40px;
   display: block;
   width: 100%;
   clear: both;
@@ -3868,7 +3867,7 @@ disabled look for disabled choices in the results dropdown
       border-bottom: 1px solid #ccc;
     }
   }
-  .top-search .dropdown-search > a{
+  .top-search .dropdown-search > span{
     background: url("../../img/general-sprite.png") no-repeat 0 -343px;
     float: left;
     font-size: 0;
@@ -3879,9 +3878,10 @@ disabled look for disabled choices in the results dropdown
     text-indent: -9999px;
     text-shadow: none;
     width: 28px;
+    cursor: pointer;
   }
-  .top-search .dropdown-search.open > a,
-  .top-search .dropdown-search:hover > a{
+  .top-search .dropdown-search.open > span,
+  .top-search .dropdown-search:hover > span{
     background-position: 0 -371px;
   }
   .shortcuts .dropdown{

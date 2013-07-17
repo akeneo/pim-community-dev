@@ -8,6 +8,9 @@ oro_menu_config:
             route: 'oro_user_index'
             extras:
                 routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+        user_create:
+            label: 'Create User'
+            route: 'oro_user_create'
         user_roles:
             label: 'Roles'
             route: 'oro_user_role_index'
@@ -36,7 +39,9 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        user_list: ~
+                        user_list:
+                          children:
+                            user_create: ~
                         user_roles: ~
                         user_groups: ~
 
