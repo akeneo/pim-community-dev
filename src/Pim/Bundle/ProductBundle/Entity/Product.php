@@ -191,8 +191,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
                 return $value->getAttribute()->getAttributeType() === 'pim_product_identifier';
             }
         );
+        $value = reset($values);
 
-        return reset($values)->getData();
+        return $value ? $value->getData() : null;
     }
 
     /**

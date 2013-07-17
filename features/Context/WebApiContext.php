@@ -39,9 +39,9 @@ class WebApiContext extends BehatWebApiContext
     public function iRequestInformationForProduct($sku)
     {
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->setPlaceHolder('{id}', $product->getId());
+        $this->setPlaceHolder('{identifier}', $product->getIdentifier());
 
-        return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{id}.json\""));
+        return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{identifier}.json\""));
     }
 
     /**

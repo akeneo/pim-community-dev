@@ -60,7 +60,7 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $em = $this->getEntityManager();
-        $attr = $this->createAttribute('SKU', false);
+        $attr = $this->createAttribute('SKU', false, 'identifier');
         $em->persist($attr);
         $em->flush();
     }
