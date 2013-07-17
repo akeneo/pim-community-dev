@@ -875,11 +875,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $this->getFixturesContext()->getFamily($code);
     }
 
-    private function getCategory($code)
-    {
-        return $this->getFixturesContext()->getCategory($code);
-    }
-
     private function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
