@@ -32,4 +32,3 @@ class AuditEntityMetadata extends MergeableClassMetadata
         parent::unserialize($parentStr);
     }
 }
-

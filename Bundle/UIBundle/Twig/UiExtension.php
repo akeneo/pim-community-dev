@@ -40,5 +40,4 @@ class UiExtension extends \Twig_Extension
             new \Twig_SimpleFilter('unserialize', 'unserialize')
         );
     }
-
 }

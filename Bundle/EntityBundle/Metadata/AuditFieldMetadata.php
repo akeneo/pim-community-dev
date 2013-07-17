@@ -32,4 +32,3 @@ class AuditFieldMetadata extends PropertyMetadata
         parent::unserialize($parentStr);
     }
 }
-

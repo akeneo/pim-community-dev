@@ -50,9 +50,3 @@ class UniqueKeyCollectionType extends AbstractType
         return 'oro_entity_extend_unique_key_collection_type';
     }
 }
-
-
-
-
-
-

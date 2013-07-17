@@ -88,11 +88,11 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-//        if ($this->exm->isExtend($event->getClassMetadata()->name)) {
-//            $proxyRef = new \ReflectionClass($this->exm->getProxyClass($event->getClassMetadata()->name));
-//
-//            $event->getClassMetadata()->name      = $proxyRef->getName();
-//            $event->getClassMetadata()->namespace = $proxyRef->getNamespaceName();
-//        }
+        /*if ($this->exm->isExtend($event->getClassMetadata()->name)) {
+            $proxyRef = new \ReflectionClass($this->exm->getProxyClass($event->getClassMetadata()->name));
+
+            $event->getClassMetadata()->name      = $proxyRef->getName();
+            $event->getClassMetadata()->namespace = $proxyRef->getNamespaceName();
+        }*/
     }
 }
