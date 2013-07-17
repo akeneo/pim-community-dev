@@ -18,10 +18,9 @@ class EntityConfigPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $tags = $container->findTaggedServiceIds(self::TAG_NAME);
-
         $configManagerDefinition = $container->getDefinition('oro_entity_config.config_manager');
-        //print_r ($configManagerDefinition);die;
+
+        $tags = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($tags as $id => $tag) {
             /** @var Definition $provider */
             $provider = $container->getDefinition($id);

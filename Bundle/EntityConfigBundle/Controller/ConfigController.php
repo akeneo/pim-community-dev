@@ -133,13 +133,13 @@ class ConfigController extends Controller
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
-            'unique_key'    => $extendConfig->get('unique_key'),
-            'datagrid'      => $datagrid->createView(),
+            'entity_count'  => count($this->getDoctrine()->getRepository($entity->getClassName())->findAll()),
+            'entity_fields' => $datagrid->createView(),
 
+            'unique_key'    => $extendConfig->get('unique_key'),
             'link'          => $link,
             'entity_name'   => $entityName,
             'module_name'   => $moduleName,
-
             'button_config' => $datagridManager->getLayoutActions($entity),
         );
     }

@@ -1,21 +1,26 @@
+Config(yml) Example
+====================
+
+Configuration YAML should be placed in [BundleName]\Resources\config\entity_config.yml
+
 oro_entity_config:
-    entity:
-        entity:
-            form:
-                block_config:
-                    entity:
-                        priority:           20
-            items:
-                icon:
-                    priority:               10
-                    form:
-                        type:               text
-                        options:
-                            block:          entity
-                            required:       true
-                label:
-                    priority:               20
-                    grid:
+    entity:                                                         # scope name
+        entity:                                                     # config block for Entity instance
+
+            form:                                                   # config block for Entity form ( FormBundle )
+                block_config:                                       #
+                    entity:                                         # block name
+                        priority:           20                      # ability to sort block(s)
+                        title:              'Entity Config'         # form block title
+                        subblocks:                                  # subblock(s) configuration
+                            base:           ~
+
+            items:                                                  # config block for Entity properties
+
+                label:                                              # property code
+                    priority:               20                      # default sort order (will be used in grid and form if not specified)
+
+                    grid:                                           # config for GridBundle (same as in DatagridManager)
                         type:               string
                         label:              'Label'
                         filter_type:        oro_grid_orm_string
@@ -23,65 +28,20 @@ oro_entity_config:
                         sortable:           true
                         filterable:         true
                         show_filter:        true
-                    form:
-                        type:               text
+                    form:                                           # Entity update form
+                        type:               text                    # field type
                         options:
-                            block:          entity
-                            required:       true
-                plural_label:
-                    priority:               30
-                    form:
-                        type:               text
-                        options:
-                            block:          entity
-                            required:       true
-                description:
-                    priority:               50
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        true
-                    form:
-                        type:               textarea
-                        options:
-                            block:          entity
-                            required:       false
-        field:
-            items:
-                label:
-                    priority:               10
-                    grid:
-                        type:               string
-                        label:              'Label'
-                        filter_type:        oro_grid_orm_string
-                        required:           true
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
-                    form:
-                        type:               text
-                        options:
-                            block:          entity
-                            required:       true
-                description:
-                    priority:               30
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
-                    form:
-                        type:               textarea
-                        options:
-                            block:          entity
-                            required:       false
+                            block:          entity                  # field will be rendered in this block ( specified in entity.form.block_config)
+                            required:       true                    # is field required or not
+
+        field:                                                      # config block for Entity's Field
+            items:                                                  # block of entity
+
+                label:                      ~                       # same as entity.items.label
+
+
+
+Below just an example of scope configurations:
 
     audit:
         entity:
@@ -103,7 +63,6 @@ oro_entity_config:
                             empty_value:    false
                             block:          entity
                             label:          'Auditable'
-
         field:
             items:
                 auditable:
@@ -118,7 +77,7 @@ oro_entity_config:
                         filter_type:        oro_grid_orm_boolean
                         required:           true
                         sortable:           true
-                        filterable:         false
+                        filterable:         true
                         show_filter:        false
                     form:
                         type:               choice
@@ -127,11 +86,6 @@ oro_entity_config:
                             empty_value:    false
                             block:          entity
                             label:          'Auditable'
-
-#                        type:               entity_audit_field_config_type
-#                        options:
-#                            block:          auditable
-
     datagrid:
         field:
             form:

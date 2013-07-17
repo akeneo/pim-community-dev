@@ -118,10 +118,4 @@ class ConfigEntity extends AbstractConfig
 
         return reset($values);
     }
-
-    public function __clone()
-    {
-        $this->fields = $this->fields ? clone $this->fields : $this->fields;
-        $this->values = $this->values ? $this->values->getSnapshot() : $this->values;
-    }
 }

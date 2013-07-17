@@ -123,9 +123,4 @@ class ConfigField extends AbstractConfig
     {
         return $this->entity;
     }
-
-    public function __clone()
-    {
-        $this->values = $this->values ? clone $this->values : $this->values;
-    }
 }
