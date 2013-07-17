@@ -28,7 +28,7 @@ class EmailNotificationApiTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('emailnotification', $this->type->getName());
+        $this->assertEquals('emailnotification_api', $this->type->getName());
     }
 
     public function testBuildForm()

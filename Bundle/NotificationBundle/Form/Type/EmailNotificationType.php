@@ -11,6 +11,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class EmailNotificationType extends AbstractType
 {
     /**
+     * @var array
+     */
+    protected $entityNameChoise = array();
+
+    public function __construct($entitiesConfig = array())
+    {
+        $this->entityNameChoise = array_map(
+            function ($value) {
+                return isset($value['name'])? $value['name'] : '';
+            },
+            $entitiesConfig
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -29,14 +44,16 @@ class EmailNotificationType extends AbstractType
                 'empty_data'  => null
             )
         );
+
         $builder->add(
             'entityName',
             'choice',
             array(
-                'choices' => array(
-                    'test',
-                ),
+                'choices'  => $this->entityNameChoise,
                 'multiple' => false,
+                'translation_domain' => 'config',
+                'empty_value' => '',
+                'empty_data'  => null
             )
         );
         $builder->add(
