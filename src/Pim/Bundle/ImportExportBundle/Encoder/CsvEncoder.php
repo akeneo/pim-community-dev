@@ -65,7 +65,7 @@ class CsvEncoder implements EncoderInterface
     private function readCsv($csvResource)
     {
         rewind($csvResource);
-        if (null === $csv = stream_get_contents($csvResource)) {
+        if (false === $csv = stream_get_contents($csvResource)) {
             throw new \Exception('Error while getting the csv.');
         }
         fclose($csvResource);
