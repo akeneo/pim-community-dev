@@ -248,7 +248,11 @@ class CategoryTreeController extends Controller
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
         $datagrid = $this->getDataAuditDatagrid(
-            $category, 'pim_product_categorytree_edit', array('id' => $category->getId())
+            $category,
+            'pim_product_categorytree_edit',
+            array(
+                'id' => $category->getId()
+            )
         );
 
         if ($this->getRequest()->isXmlHttpRequest()) {
