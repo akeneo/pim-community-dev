@@ -10,4 +10,11 @@ interface EventHandlerInterface
      * @return bool
      */
     public function shouldHandle();
+
+    /**
+     * Handle event
+     *
+     * @return mixed
+     */
+    public function handle();
 }

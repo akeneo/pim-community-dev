@@ -12,7 +12,7 @@ class FakeEntity
     public function doSomethingUsefull()
     {
         $someObj = new \stdClass();
-        $this->getSomething()->dispatch('oro.event.good_happens', $someObj);
+        $this->getSomething()->dispatch('oro.event.good_happens_unittest', $someObj);
     }
 
     public function getSomething()

@@ -139,7 +139,9 @@ class EventNamesExtractor
                 }
 
                 $message = trim($message, '\'');
-                if ($message && substr($message, 0, strlen(self::EVENTS_PREFIX)) == self::EVENTS_PREFIX) {
+                if ($message
+                    && substr($message, 0, strlen(self::EVENTS_PREFIX)) == self::EVENTS_PREFIX
+                    && strpos($message, 'unittest') === false) {
                     $this->eventNames[$message] = $message;
                     break;
                 }

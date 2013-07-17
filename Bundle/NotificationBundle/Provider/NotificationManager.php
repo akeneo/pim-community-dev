@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
+use JMS\Serializer\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 class NotificationManager
 {
@@ -24,7 +26,20 @@ class NotificationManager
     public function addHandler(EventHandlerInterface $handler)
     {
         $this->handlers[] = $handler;
+    }
 
+    /**
+     * Process events with handlers
+     */
+    public function process(Event $event)
+    {
+        /** @var EventHandlerInterface $handler */
+        foreach ($this->handlers as $handler) {
+            $handler->handle($event);
+            if ($event->isPropagationStopped()) {
+                break;
+            }
+        }
     }
 
     /**

@@ -36,6 +36,10 @@ class EventNamesExtractorTest extends TestCase
 
         $extractor = new EventNamesExtractor($em, $entityClass);
         $messages = $extractor->extract(__DIR__ . '/../Fixtures/');
+        foreach ($messages as $key => $message) {
+            $messages[$key] = str_replace('_unittest', '', $message);
+        }
+        $extractor->setEventNames($messages);
         $extractor->dumpToDb();
 
         $this->assertCount(1, $messages, '->extract() should find 1 translation');
