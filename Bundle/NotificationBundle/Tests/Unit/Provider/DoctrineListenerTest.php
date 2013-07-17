@@ -42,6 +42,12 @@ class DoctrineListenerTest extends TestCase
             ->method('getEntity')
             ->will($this->returnValue('something'));
 
+        $om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+
+        $args->expects($this->once())
+            ->method('getEntityManager')
+            ->will($this->returnValue($om));
+
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
             ->with($this->equalTo($eventName), $this->isInstanceOf('Symfony\Component\EventDispatcher\Event'));

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Symfony\Component\EventDispatcher\Event;
@@ -31,6 +32,7 @@ class NotificationManager
     /**
      * Process events with handlers
      *
+     * @param \Symfony\Component\EventDispatcher\Event $event
      * @return Event
      */
     public function process(Event $event)
@@ -68,6 +70,12 @@ class NotificationManager
         return $this->handlers;
     }
 
+    /**
+     * Get entity manager
+     *
+     * @param NotificationEvent $event
+     * @return ObjectManager
+     */
     public function getEntityManager(NotificationEvent $event)
     {
         return $event->getEntityManager() ?: $this->em;

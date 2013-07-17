@@ -52,7 +52,7 @@ class NotificationEvent extends Event
     /**
      * @param ObjectManager $entityManager
      */
-    public function setEntityManager($entityManager)
+    public function setEntityManager(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
