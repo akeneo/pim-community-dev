@@ -11,19 +11,21 @@ class Exporter
     protected $serializer;
     protected $reader;
     protected $writer;
+    protected $format;
 
-    public function __construct(Serializer $serializer, ReaderInterface $reader, WriterInterface $writer)
+    public function __construct(Serializer $serializer, ReaderInterface $reader, WriterInterface $writer, $format)
     {
         $this->serializer = $serializer;
         $this->reader     = $reader;
         $this->writer     = $writer;
+        $this->format     = $format;
     }
 
-    public function export($format)
+    public function export()
     {
         $this->writer->write(
             $this->serializer->serialize(
-                $this->reader->read(), $format
+                $this->reader->read(), $this->format
             )
         );
     }

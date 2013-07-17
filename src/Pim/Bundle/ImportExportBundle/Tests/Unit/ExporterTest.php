@@ -20,7 +20,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $reader     = $this->getMocked('Pim\Bundle\ImportExportBundle\Reader\DoctrineReader');
         $writer     = $this->getMocked('Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter');
-        $exporter   = new Exporter($serializer, $reader, $writer);
+        $exporter   = new Exporter($serializer, $reader, $writer, 'xml');
 
         $reader->expects($this->once())
             ->method('read')
@@ -39,7 +39,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 XML
             );
 
-        $exporter->export('xml');
+        $exporter->export();
     }
 
     public function getMocked($class)

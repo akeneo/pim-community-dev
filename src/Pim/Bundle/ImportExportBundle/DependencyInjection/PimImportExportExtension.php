@@ -56,6 +56,7 @@ class PimImportExportExtension extends Extension
                     $this->factory->createReference(
                         $this->createService(sprintf('%s_writer', $alias), $exportConfig['writer'], $container)
                     ),
+                    $exportConfig['format']
                 )
             );
             $def->setPublic(false);

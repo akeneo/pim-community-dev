@@ -198,6 +198,7 @@ pim_import_export:
             with_header: true
     exports:
         product:
+            format: csv
             reader:
                 type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
                 options:
