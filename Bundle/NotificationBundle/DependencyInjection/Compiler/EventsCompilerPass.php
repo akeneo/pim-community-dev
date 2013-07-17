@@ -4,7 +4,6 @@ namespace Oro\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventsCompilerPass implements CompilerPassInterface
 {
@@ -27,7 +26,10 @@ class EventsCompilerPass implements CompilerPassInterface
             ->getEventNames();
 
         foreach ($eventNames as $eventName) {
-            $dispatcher->addMethodCall('addListenerService', array($eventName['name'], array(self::SERVICE_KEY, 'process')));
+            $dispatcher->addMethodCall(
+                'addListenerService',
+                array($eventName['name'], array(self::SERVICE_KEY, 'process'))
+            );
         }
     }
 }

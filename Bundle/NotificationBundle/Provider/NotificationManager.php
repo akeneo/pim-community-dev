@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
-use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
-use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Symfony\Component\EventDispatcher\Event;
+
+use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
+use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 
 class NotificationManager
 {
