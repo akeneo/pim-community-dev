@@ -17,7 +17,12 @@ class RestInvalidUsersTest extends WebTestCase
     const USER_PASSWORD = 'no_key';
 
     /** @var Client */
-    protected $client = null;
+    protected $client;
+
+    public function tearDown()
+    {
+        unset($this->client);
+    }
 
     public function testInvalidKey()
     {
