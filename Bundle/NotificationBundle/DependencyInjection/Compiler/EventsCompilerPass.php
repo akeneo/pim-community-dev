@@ -23,12 +23,9 @@ class EventsCompilerPass implements CompilerPassInterface
 
         $dispatcher = $container->getDefinition(self::DISPATCHER_KEY);
 
-        $em = $container->get('doctrine.orm.entity_manager');
-        $eventNames = $em->getRepository('Oro\Bundle\NotificationBundle\Entity\Event')
-            ->createQueryBuilder('e')
-            ->select('e.name')
-            ->getQuery()
-            ->getResult();
+        $eventNames = $container->get('doctrine.orm.entity_manager')
+            ->getRepository('Oro\Bundle\NotificationBundle\Entity\Event')
+            ->getEventNames();
 
         foreach ($eventNames as $eventName) {
             $dispatcher->addMethodCall('addListenerService', array($eventName['name'], array(self::SERVICE_KEY, 'process')));

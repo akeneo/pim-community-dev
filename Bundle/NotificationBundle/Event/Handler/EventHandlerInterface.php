@@ -2,19 +2,15 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
+use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
+
 interface EventHandlerInterface
 {
     /**
-     * Check if handler can handle event
-     *
-     * @return bool
-     */
-    public function shouldHandle();
-
-    /**
      * Handle event
      *
+     * @param NotificationEvent $event
      * @return mixed
      */
-    public function handle();
+    public function handle(NotificationEvent $event);
 }

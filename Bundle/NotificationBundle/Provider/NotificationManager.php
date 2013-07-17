@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
-use JMS\Serializer\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -30,6 +29,8 @@ class NotificationManager
 
     /**
      * Process events with handlers
+     *
+     * @return Event
      */
     public function process(Event $event)
     {
@@ -40,6 +41,8 @@ class NotificationManager
                 break;
             }
         }
+
+        return $event;
     }
 
     /**

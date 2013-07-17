@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="oro_notification_event",
  *      indexes={@ORM\Index(name="notification_event_idx", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\NotificationBundle\Entity\Repository\EventRepository")
  */
 class Event
 {
