@@ -14,16 +14,8 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $readers = array(
-            'Pim\\Bundle\\ImportExportBundle\\Reader\\DoctrineReader',
-        );
-        $writers = array(
-            'Pim\\Bundle\\ImportExportBundle\\Writer\\FilePutContentsWriter',
-        );
-
         $treeBuilder = new TreeBuilder();
-
-        $rootNode = $treeBuilder->root('pim_import_export');
+        $rootNode    = $treeBuilder->root('pim_import_export');
 
         $rootNode
             ->children()
@@ -59,7 +51,7 @@ class Configuration implements ConfigurationInterface
     private function addConfigurationNode($name)
     {
         $builder = new TreeBuilder();
-        $node = $builder->root($name);
+        $node    = $builder->root($name);
         $node
             ->children()
                 ->scalarNode('type')->isRequired()->end()
