@@ -15,7 +15,10 @@ class StepTest extends \PHPUnit_Framework_TestCase
         $getter = 'get' . ucfirst($property);
         $setter = 'set' . ucfirst($property);
         $obj = new Step();
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\Step', call_user_func_array(array($obj, $setter), array($value)));
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Step',
+            call_user_func_array(array($obj, $setter), array($value))
+        );
         $this->assertEquals($value, call_user_func_array(array($obj, $getter), array()));
     }
 
@@ -54,7 +57,11 @@ class StepTest extends \PHPUnit_Framework_TestCase
 
         // Check allowing more than one transition
         $obj->allowTransition('test2');
-        $this->assertEquals(array('test', 'test2'), $obj->getAllowedTransitions(), 'Second transition was not allowed');
+        $this->assertEquals(
+            array('test', 'test2'),
+            $obj->getAllowedTransitions(),
+            'Second transition was not allowed'
+        );
 
         // Check disallow
         $obj->disallowTransition('test2');

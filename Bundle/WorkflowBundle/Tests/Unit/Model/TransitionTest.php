@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
 use Oro\Bundle\WorkflowBundle\Model\Transition;
@@ -15,7 +16,10 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $getter = 'get' . ucfirst($property);
         $setter = 'set' . ucfirst($property);
         $obj = new Transition();
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\Transition', call_user_func_array(array($obj, $setter), array($value)));
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Transition',
+            call_user_func_array(array($obj, $setter), array($value))
+        );
         $this->assertEquals($value, call_user_func_array(array($obj, $getter), array()));
     }
 

@@ -118,7 +118,6 @@ class Step
     public function setAttributes(array $attributes)
     {
         $data = array();
-        /** @var StepAttribute $attribute */
         foreach ($attributes as $attribute) {
             $data[$attribute->getName()] = $attribute;
         }
