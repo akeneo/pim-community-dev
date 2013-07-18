@@ -5,6 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity;
 
 class WorkflowItemTest extends \PHPUnit_Framework_TestCase
@@ -45,10 +46,23 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testData()
     {
-        $this->assertNull($this->workflowItem->getData());
-        $value = 'data';
-        $this->workflowItem->setData($value);
-        $this->assertEquals($value, $this->workflowItem->getData());
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData', $this->workflowItem->getData());
+
+        $data = new WorkflowItemData();
+        $data['foo'] = 'Bar';
+
+        $this->workflowItem->setData($data);
+        $this->assertEquals($data, $this->workflowItem->getData());
+    }
+
+    public function testSerializedData()
+    {
+        $this->assertNull($this->workflowItem->getSerializedData());
+
+        $data = 'serialized_data';
+
+        $this->workflowItem->setSerializedData($data);
+        $this->assertEquals($data, $this->workflowItem->getSerializedData());
     }
 
     public function testClosed()

@@ -67,11 +67,16 @@ class WorkflowItem
     protected $entities;
 
     /**
-     * Plain data of WorkflowItem
+     * Serialized data of WorkflowItem
      *
      * @var string
      *
-     * @ORM\Column(type="blob")
+     * @ORM\Column(name="data", type="blob")
+     */
+    protected $serializedData;
+
+    /**
+     * @var WorkflowItemData
      */
     protected $data;
 
@@ -82,6 +87,7 @@ class WorkflowItem
     {
         $this->entities = new ArrayCollection();
         $this->closed = false;
+        $this->data = new WorkflowItemData();
     }
 
     /**
@@ -241,12 +247,39 @@ class WorkflowItem
     }
 
     /**
-     * Set data
+     * Set serialized data.
+     *
+     * This method should be called only from WorkflowItemSerializeSubscriber.
      *
      * @param string $data
      * @return WorkflowItem
      */
-    public function setData($data)
+    public function setSerializedData($data)
+    {
+        $this->serializedData = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get serialized data
+     *
+     * This method should be called only from WorkflowItemSerializeSubscriber.
+     *
+     * @return string
+     */
+    public function getSerializedData()
+    {
+        return $this->serializedData;
+    }
+
+    /**
+     * Set data
+     *
+     * @param WorkflowItemData $data
+     * @return WorkflowItem
+     */
+    public function setData(WorkflowItemData $data)
     {
         $this->data = $data;
 
@@ -256,7 +289,7 @@ class WorkflowItem
     /**
      * Get data
      *
-     * @return string
+     * @return WorkflowItemData
      */
     public function getData()
     {
