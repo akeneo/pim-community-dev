@@ -390,7 +390,7 @@ class FixturesContext extends RawMinkContext
             ), $data);
 
             $product = $this->getProduct($data['product']);
-            $value   = $product->getValue($this->camelize($data['attribute']));
+            $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
 
             if ($value) {
                 if ($data['scope']) {
