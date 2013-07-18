@@ -2,6 +2,9 @@
  * Main Oro Application backbone.js namespace
  */
 var Oro = {
+
+    hashNavigationInstance: null,
+
     /**
      * Pack object to string
      *
