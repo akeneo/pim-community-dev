@@ -75,8 +75,7 @@ Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
             var url = tag[0].url;
 
             if (Oro.hashNavigationEnabled()) {
-                var navigationObject = Oro.Registry.getElement("oro.hashnavigation.object");
-                navigationObject.setLocation(url);
+                Oro.hashNavigationInstance.setLocation(url);
             } else {
                 window.location = url;
             }

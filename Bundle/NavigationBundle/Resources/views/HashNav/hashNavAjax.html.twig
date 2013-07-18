@@ -1,5 +1,10 @@
 {% spaceless %}
-{% set data = {
+{% if (app.request.get('hash-navigation-md5')) %}
+    {% set data = {
+        'content_md5': (content)|md5
+    } %}
+{% else %}
+    {% set data = {
     'title': oro_title_render(),
     'titleSerialized': oro_title_render_serialized(),
     'scripts': script,
@@ -8,7 +13,9 @@
     'history': oro_menu_render('history'),
     'mostviewed': oro_menu_render('mostviewed'),
     'content': content,
-    'showPinButton': (app.request.attributes.get('_route') != bap.start_route)
-} %}
-{{ data|json_encode|raw }}
+    'showPinButton': (app.request.attributes.get('_route') != bap.start_route),
+    'content_md5': (content)|md5
+    } %}
+{% endif %}
+    {{ data|json_encode|raw }}
 {% endspaceless %}

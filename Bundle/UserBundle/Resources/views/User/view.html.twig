@@ -17,7 +17,6 @@
 {% endmacro %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_user_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_user_user_update') %}
         {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(function() {
         if (Oro.hashNavigationEnabled()) {
-            Oro.Registry.setElement("oro.hashnavigation.object", new Oro.Navigation({baseUrl : '{{ app.request.getSchemeAndHttpHost() }}'}));
+            Oro.hashNavigationInstance = new Oro.Navigation({baseUrl : '{{ app.request.getSchemeAndHttpHost() }}'});
             if (!Backbone.History.started) {
                 Backbone.history.start();
             }
