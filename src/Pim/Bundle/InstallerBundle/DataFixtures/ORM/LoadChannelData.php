@@ -23,7 +23,7 @@ class LoadChannelData extends AbstractInstallerFixture
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['channels'] as $data) {
-            $channel = $this->createChannel($data['code'], $data['label']);
+            $channel = $this->createChannel($data['code'], $data['label'], $data['locales']);
             $manager->persist($channel);
         }
 
@@ -32,16 +32,20 @@ class LoadChannelData extends AbstractInstallerFixture
 
     /**
      * Create a channel
-     * @param string $code Channel code
-     * @param string $name Channel name
+     * @param string $code    Channel code
+     * @param string $name    Channel name
+     * @param array  $locales Activated locales
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Channel
      */
-    protected function createChannel($code, $name)
+    protected function createChannel($code, $name, $locales)
     {
         $channel = new Channel();
         $channel->setCode($code);
         $channel->setName($name);
+        foreach ($locales as $locale) {
+            $channel->addLocale($this->getReference('locale.'.$locale));
+        }
         $this->setReference('channel.'. $code, $channel);
 
         return $channel;
@@ -60,6 +64,6 @@ class LoadChannelData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 1;
+        return 3;
     }
 }
