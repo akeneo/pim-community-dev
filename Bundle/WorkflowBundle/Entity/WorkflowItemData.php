@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Entity;
 
-use Traversable;
-
 class WorkflowItemData implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
