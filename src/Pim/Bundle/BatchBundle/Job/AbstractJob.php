@@ -248,8 +248,8 @@ abstract class AbstractJob implements JobInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param JobExecution $jobExecution
-     * @param string       $status
+     * @param JobExecution $jobExecution Execution of the job
+     * @param string       $status       Status of the execution
      *
      * @return an {@link ExitStatus}
      */

@@ -378,6 +378,7 @@ class StepExecution
         $summary = "name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
             . ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"
             . ", processSkipCount=%d, commitCount=%d, rollbackCount=%d";
+
         return sprintf(
             $summary,
             $this->stepName,

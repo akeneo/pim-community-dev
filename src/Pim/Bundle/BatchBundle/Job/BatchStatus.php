@@ -68,6 +68,7 @@ class BatchStatus
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 

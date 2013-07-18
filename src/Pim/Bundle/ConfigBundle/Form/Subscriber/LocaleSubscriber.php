@@ -53,7 +53,8 @@ class LocaleSubscriber implements EventSubscriberInterface
         $locales = array(),
         $existingLocales = array(),
         $localesWithFallback = array()
-    ) {
+    )
+    {
         $this->factory = $factory;
         $this->locales = $locales;
         $this->existingLocales = $existingLocales;

@@ -22,12 +22,12 @@ class SimpleStepHandler implements StepHandlerInterface
     /* @var JobRepository $jobRepository */
     private $jobRepository = null;
 
-    /* @var ExecutionContext i$executionContext */
+    /* @var ExecutionContext $executionContext */
     private $executionContext = null;
 
     /**
-     * @param JobRepository    $jobRepository
-     * @param ExecutionContext $executionContext
+     * @param JobRepository    $jobRepository    Job repository
+     * @param ExecutionContext $executionContext Execution context
      */
     public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null)
     {
@@ -62,8 +62,8 @@ class SimpleStepHandler implements StepHandlerInterface
     */
 
     /**
-     * @param StepInterface $step
-     * @param JobExecution  $execution
+     * @param StepInterface $step      Step
+     * @param JobExecution  $execution Job execution
      *
      * @throws JobInterruptedException
      * @throws JobRestartException

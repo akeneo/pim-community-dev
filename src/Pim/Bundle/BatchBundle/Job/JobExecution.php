@@ -174,6 +174,7 @@ class JobExecution
     {
         $stepExecution = new StepExecution($stepName, $this);
         $this->stepExecutions->add($stepExecution);
+
         return $stepExecution;
     }
 
@@ -284,6 +285,7 @@ class JobExecution
         } catch (\Exception $e) {
             $string = $e->getMessage();
         }
+
         return $string;
     }
 }

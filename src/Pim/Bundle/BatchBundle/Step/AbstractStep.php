@@ -163,7 +163,6 @@ abstract class AbstractStep implements StepInterface
             $errorMsg =  "Encountered an error saving batch meta data."
                 ."This job is now in an unknown state and should not be restarted.";
             Logger::error($errorMsg, $e);
-            );
         }
 
         $stepExecution->setEndTime(time());
