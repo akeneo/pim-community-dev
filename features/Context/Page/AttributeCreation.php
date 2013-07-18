@@ -15,9 +15,11 @@ class AttributeCreation extends Page
 
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
-        'Attribute options list'  => array('css' => 'table.sortable_options tbody tr'),
+        'Attribute options table' => array('css' => 'table#sortable_options'),
+        'Attribute options'       => array('css' => 'table#sortable_options tbody tr'),
+        'Add option button'       => array('css' => 'a.btn.add_option_link'),
         'Tabs'                    => array('css' => '#form-navbar'),
-        'Default label field'     => array('css' => '#pim_product_attribute_form_label_label:default')
+        'Default label field'     => array('css' => '#pim_product_attribute_form_label_default'),
     );
 
     public function selectAttributeType($type)
@@ -32,10 +34,37 @@ class AttributeCreation extends Page
     {
         $field = parent::findField($name);
         if (!$field) {
-            $field = $this->getElement('Attribute options list')->find('css', sprintf('th:contains("%s")', $name));
+            $field = $this->getElement('Attribute options table')->find('css', sprintf('th:contains("%s")', $name));
         }
 
         return $field;
+    }
+
+    public function addOption($name, $selectedByDefault = 'no')
+    {
+        $selectedByDefault = strtolower($selectedByDefault == 'yes') ? true : false;
+
+        $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
+
+        foreach ($rows as $key => $row) {
+            if (!$row->find('css', '[id*="_defaultValue"]')->getValue()) {
+                $row->find('css', '[id*="_defaultValue"]')->setValue($name);
+                if ($selectedByDefault) {
+                    $row->find('css', 'input[name="default"]')->click();
+                }
+                return;
+            }
+        }
+
+        $this->getElement('Add option button')->click();
+
+        $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
+        $row = end($rows);
+
+        $row->find('css', '[id*="_defaultValue"]')->setValue($name);
+        if ($selectedByDefault) {
+            $row->find('css', 'input[name="default"]')->click();
+        }
     }
 
     public function save()

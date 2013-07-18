@@ -94,7 +94,7 @@ $(function() {
     initializeForm();
 
     function initializeOptions() {
-        $optionList = $('table.sortable_options');
+        $optionList = $('table#sortable_options');
         if (!$optionList.length) {
             return;
         }
@@ -119,15 +119,11 @@ $(function() {
             }
         });
 
-<<<<<<< HEAD
         if ($('button.action-delete-inline').length === 1) {
             $('button.action-delete-inline').attr('disabled', 'disabled');
         }
 
-        $('input[name="default"]').on('change', updateDefaultField);
-=======
         $(document).on('change', 'input[name="default"]', updateDefaultField);
->>>>>>> master
 
         $optionList.find('.handle input').hide();
 

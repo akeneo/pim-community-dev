@@ -284,6 +284,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the "([^"]*)" section$/
+     */
+    public function iShouldSeeTheSection($title)
+    {
+        if (!$this->getCurrentPage()->getSection($title)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the %s section.', $title));
+        }
+    }
+
+    /**
+     * @Given /^the Options section should contain ([^"]*) option$/
+     */
+    public function theOptionsSectionShouldContainOption()
+    {
+        if (1 !== $count = $this->getCurrentPage()->countOptions()) {
+            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
+        }
+    }
+
+    /**
+     * @Then /^the option should not be removable$/
+     */
+    public function theOptionShouldNotBeRemovable()
+    {
+        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
+            throw $this->createExpectationException('The option should not be removable.');
+        }
+    }
+
+    /**
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
@@ -676,9 +706,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following informations?:$/
+     * @Given /^I fill in the following information:$/
      */
-    public function iFillInTheFollowingInformations(TableNode $table)
+    public function iFillInTheFollowingInformation(TableNode $table)
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
@@ -686,12 +716,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following fields:$/
+     * @Given /^I create the following attribute options:$/
      */
-    public function iFillInTheFollowingFields(TableNode $table)
+    public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
-        foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value);
+        foreach ($table->getHash() as $data) {
+            $this->getCurrentPage()->addOption($data['Default value'], $data['Selected by default']);
         }
     }
 
