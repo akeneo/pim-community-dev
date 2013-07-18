@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -14,6 +15,6 @@ class PimImportExportBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new \Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
+        $container->addCompilerPass(new ReplacePimSerializerArgumentsPass());
     }
 }

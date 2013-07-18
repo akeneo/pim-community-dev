@@ -46,7 +46,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         if ($data instanceof \DateTime) {
             $data = $data->format('r');
-        } else if ($data instanceof \Doctrine\Common\Collections\Collection) {
+        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             $data = '"' . join(',', $data->toArray()) . '"';
         }
 

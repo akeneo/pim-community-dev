@@ -14,4 +14,3 @@ class FileExistsException extends \Exception
         parent::__construct(sprintf('File "%s" already exists.', $filename));
     }
 }
-

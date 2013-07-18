@@ -200,7 +200,13 @@ class CategoryHelper
      */
     protected static function getState(Category $category)
     {
-        return $category->hasChildren() ? 'closed' : 'leaf';
+        $state = $category->hasChildren() ? 'closed' : 'leaf';
+
+        if ($category->getParent() == null) {
+            $state .= ' jstree-root';
+        }
+
+        return $state;
     }
 
     /**
@@ -282,6 +288,10 @@ class CategoryHelper
 
         foreach ($categories as $category) {
             $state = 'leaf';
+
+            if ($category->getParent() == null) {
+                $state .= ' root';
+            }
 
             if (count($category['__children']) > 0) {
                 $state = 'open';
