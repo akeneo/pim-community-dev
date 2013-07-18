@@ -251,8 +251,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function getOrderedGroups()
     {
         $groups = array_map(
-            function ($value) {
-                return $value->getVirtualGroup();
+            function ($attribute) {
+                return $attribute->getVirtualGroup();
             },
             $this->getAttributes()
         );
