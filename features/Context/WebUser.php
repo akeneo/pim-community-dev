@@ -90,7 +90,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->activateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -101,7 +101,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->deactivateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -157,7 +157,43 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewProduct()
     {
         $this->getPage('Product index')->clickNewProductLink();
-        $this->wait(5000, '$(".ui-dialog:contains(\"Create a new product\")").css("display") === "block"');
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
+     */
+    public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
+    {
+        $entityType = ucfirst(strtolower($entityType));
+        $entityPage = $entityType.' index';
+
+        $page = $this->getPage($entityPage);
+        if (!$page) {
+            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $pageName));
+        }
+
+        $getter = 'get'.$entityType;
+        if (!method_exists($this, $getter)) {
+            throw $this->createExpectationException(sprintf('Cannot find method "%s"', $getter));
+        }
+
+        $entity = $this->$getter($entity);
+
+        $action = ucfirst(strtolower($action));
+
+        $page->clickOnAction($entity->getSku(), $action);
+    }
+
+    /**
+     * @Given /^I confirm the ([^"]*)$/
+     */
+    public function iConfirmThe($action)
+    {
+        $action = 'confirm'.ucfirst(strtolower($action));
+        $this->getCurrentPage()->$action();
+
+        $this->wait();
     }
 
     /**
@@ -178,7 +214,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -378,7 +414,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->getCurrentPage()->addSelectedAvailableAttributes();
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -387,7 +423,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -564,7 +600,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->selectAttributeType($type)
         ;
 
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -581,7 +617,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheChannelsPage()
     {
         $this->openPage('Channel index');
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -665,7 +701,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iPressTheButton($button)
     {
         $this->getCurrentPage()->pressButton($button);
-        $this->wait(2000, '$(".alert-success .message").length > 0');
+        $this->wait();
     }
 
     /**
@@ -781,7 +817,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this
             ->getPage('ProductIndex')
             ->clickCategoryFilterLink($category);
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -792,7 +828,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this
             ->getPage('ProductIndex')
             ->clickUnclassifiedCategoryFilterLink();
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -811,6 +847,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see product "([^"]*)"$/
+     */
+    public function iShouldSeeProduct($product)
+    {
+        if (!$this->getPage('Product index')->findProductRow($product)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see product %s, not found', $product)
+            );
+        }
+    }
+
+    /**
      * @Then /^I should not see products (.*)$/
      */
     public function iShouldNotSeeProducts($products)
@@ -822,6 +870,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                     sprintf('Expecting to not see product %s, but I see it', $product)
                 );
             }
+        }
+    }
+
+    /**
+     * @Then /^I should not see product "([^"]*)"$/
+     */
+    public function iShouldNotSeeProduct($product)
+    {
+        if ($this->getPage('Product index')->findProductRow($product)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to not see product %s, but I see it', $product)
+            );
         }
     }
 
@@ -845,7 +905,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-    private function wait($time, $condition = null)
+    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         return $this->getMainContext()->wait($time, $condition);
     }

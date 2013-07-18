@@ -60,7 +60,7 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $em = $this->getEntityManager();
-        $attr = $this->createAttribute('SKU', false, 'identifier');
+        $attr = $this->createAttribute('SKU', false, 'identifier', true);
         $em->persist($attr);
         $em->flush();
     }
@@ -638,12 +638,14 @@ class FixturesContext extends RawMinkContext
         return $product;
     }
 
-    private function createAttribute($label, $translatable = true, $type = 'text')
+    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
         $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
+        $attribute->setUseableAsGridColumn($showInGrid);
+        $attribute->setUseableAsGridFilter($showInGrid);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
