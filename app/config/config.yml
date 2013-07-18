@@ -190,3 +190,21 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
+pim_import_export:
+    encoders:
+        csv:
+            delimiter: ';'
+            enclosure: '"'
+            with_header: true
+    exports:
+        product:
+            format: csv
+            reader:
+                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
+                options:
+                    em: @doctrine.orm.default_entity_manager
+                    entity: "PimProductBundle:Product"
+            writer:
+                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
+                options:
+                    path: "/tmp/export.csv"
