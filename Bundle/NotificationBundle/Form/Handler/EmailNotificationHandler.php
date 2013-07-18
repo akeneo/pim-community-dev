@@ -51,7 +51,7 @@ class EmailNotificationHandler
 
             if ($this->form->isValid()) {
                 $this->manager->persist($entity);
-                $this->manager->flush($entity);
+                $this->manager->flush();
 
                 return true;
             }

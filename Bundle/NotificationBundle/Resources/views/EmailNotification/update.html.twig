@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% form_theme form with ['OroUIBundle:Form:fields.html.twig', 'OroUserBundle:Form:fields.html.twig'] %}
 {% set title = form.vars.value.id ? 'Edit notification rule #%id%'|trans({'%id%': form.vars.value.id}) : 'Add notification rule'|trans %}
 {% if form.vars.value.id %}
     {% oro_title_set({params : {"%id%": form.vars.value.id} }) %}
@@ -15,7 +15,7 @@
         {{
             UI.deleteButton({
                 'dataUrl': path('oro_api_delete_emailnotication', {'id': form.vars.value.id}),
-                'dataRedirect': path('oro_tag_index'),
+                'dataRedirect': path('oro_notification_emailnotification_index'),
                 'aCss': 'no-hash remove-button',
                 'id': 'btn-remove-emailnotification',
                 'dataId': form.vars.value.id,
@@ -46,14 +46,28 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'tag-edit' %}
+    {% set id = 'emailnotificaton-edit' %}
 
     {% set dataBlocks = [{
             'title': 'General',
             'class': 'active',
             'subblocks': [{
                 'title': '',
-                'data': [form_widget(form)]
+                'data': [
+                    form_row(form.event),
+                    form_row(form.entityName),
+                    form_row(form.template),
+                ]
+            }]
+        },
+        {
+            'title': 'Recipient List',
+            'class': '',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.children.recipientList),
+                ]
             }]
         }]
     %}
@@ -63,5 +77,6 @@
             'hiddenData': form_rest(form)
         }
     %}
+
     {{ parent() }}
 {% endblock content_data %}

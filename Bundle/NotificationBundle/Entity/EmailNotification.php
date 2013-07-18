@@ -44,7 +44,12 @@ class EmailNotification
     /**
      * @var string
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList", cascade={"persist"}, mappedBy="emailNotification")
+     * @ORM\OneToOne(
+     *     targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     mappedBy="emailNotification"
+     * )
      * @ORM\JoinColumn(name="recipient_list_id", referencedColumnName="id")
      */
     protected $recipientList;

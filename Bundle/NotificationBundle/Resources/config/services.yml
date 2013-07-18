@@ -2,6 +2,7 @@ parameters:
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
     oro_notification.email_handler.class: Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler
 
@@ -14,6 +15,7 @@ parameters:
 
     # Email notification form services
     oro_notification.form.type.email_notification.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationType
+    oro_notification.form.type.recipient_list.class: Oro\Bundle\NotificationBundle\Form\Type\RecipientListType
     oro_notification.form.handler.email_notification.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
 
     # Email notification API
@@ -48,6 +50,11 @@ services:
         arguments: [%oro_config.entities%, %oro_notification.emailnotification.templates_list%]
         tags:
             - { name: form.type, alias: emailnotification }
+
+    oro_notification.form.type.recipient_list:
+        class: %oro_notification.form.type.recipient_list.class%
+        tags:
+            - { name: form.type, alias: oro_notification_recipient_list }
 
     oro_notification.form.handler.email_notification:
         class: %oro_notification.form.handler.email_notification.class%

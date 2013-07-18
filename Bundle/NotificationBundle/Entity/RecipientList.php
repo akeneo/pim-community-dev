@@ -92,23 +92,43 @@ class RecipientList
     }
 
     /**
-     * Set groups
+     * Gets the groups related to contact
      *
-     * @param Group[] $groups
-     */
-    public function setGroups($groups)
-    {
-        $this->groups = $groups;
-    }
-
-    /**
-     * Getter for g
-     *
-     * @return Group[]
+     * @return ArrayCollection
      */
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * Add specified group
+     *
+     * @param Group $group
+     * @return $this
+     */
+    public function addGroup(Group $group)
+    {
+        if (!$this->getGroups()->contains($group)) {
+            $this->getGroups()->add($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove specified group
+     *
+     * @param Group $group
+     * @return $this
+     */
+    public function removeGroup(Group $group)
+    {
+        if ($this->getGroups()->contains($group)) {
+            $this->getGroups()->removeElement($group);
+        }
+
+        return $this;
     }
 
 

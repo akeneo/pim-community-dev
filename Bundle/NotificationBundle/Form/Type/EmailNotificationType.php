@@ -52,7 +52,8 @@ class EmailNotificationType extends AbstractType
                         ->orderBy('c.name', 'ASC');
                 },
                 'empty_value'   => '',
-                'empty_data'    => null
+                'empty_data'    => null,
+                'required'      => true
             )
         );
 
@@ -64,9 +65,11 @@ class EmailNotificationType extends AbstractType
                 'multiple'           => false,
                 'translation_domain' => 'config',
                 'empty_value'        => '',
-                'empty_data'         => null
+                'empty_data'         => null,
+                'required'           => true
             )
         );
+
         $builder->add(
             'template',
             'choice',
@@ -75,6 +78,15 @@ class EmailNotificationType extends AbstractType
                 'empty_value'      => '',
                 'empty_data'       => null,
                 'multiple'         => false,
+                'required'         => true
+            )
+        );
+
+        $builder->add(
+            'recipientList',
+            'oro_notification_recipient_list',
+            array(
+                'required' => true,
             )
         );
     }
@@ -86,8 +98,10 @@ class EmailNotificationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\NotificationBundle\Entity\EmailNotification',
-                'intention'  => 'emailnotification'
+                'data_class'           => 'Oro\Bundle\NotificationBundle\Entity\EmailNotification',
+                'intention'            => 'emailnotification',
+                'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+                'cascade_validation'   => true,
             )
         );
     }
