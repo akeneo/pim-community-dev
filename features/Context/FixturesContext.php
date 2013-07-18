@@ -32,6 +32,11 @@ class FixturesContext extends RawMinkContext
         'german'  => 'de',
     );
 
+    private $channels = array(
+        'ecommerce' => array('en_US', 'fr_FR'),
+        'mobile'    => array('fr_FR'),
+    );
+
     private $attributeTypes = array(
         'text'       => 'pim_product_text',
         'number'     => 'pim_product_number',
@@ -43,15 +48,21 @@ class FixturesContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
+    public function resetCurrentLocale()
+    {
+        foreach ($this->locales as $locale) {
+            $this->createLocale($locale);
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function resetChannels()
     {
-        $channel = new \Pim\Bundle\ConfigBundle\Entity\Channel;
-        $channel->setCode('ecommerce');
-        $channel->setName('ecommerce');
-
-        $em = $this->getEntityManager();
-        $em->persist($channel);
-        $em->flush();
+        foreach ($this->channels as $code => $locales) {
+            $this->createChannel($code, $locales);
+        }
     }
 
     /**
@@ -63,16 +74,6 @@ class FixturesContext extends RawMinkContext
         $attr = $this->createAttribute('SKU', false, 'identifier', true);
         $em->persist($attr);
         $em->flush();
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetCurrentLocale()
-    {
-        foreach ($this->locales as $locale) {
-            $this->createLocale($locale);
-        }
     }
 
     /**
@@ -688,6 +689,21 @@ class FixturesContext extends RawMinkContext
 
         $em = $this->getEntityManager();
         $em->persist($locale);
+        $em->flush();
+    }
+
+    private function createChannel($code, $locales)
+    {
+        $channel = new Channel;
+        $channel->setCode($code);
+        $channel->setName(ucfirst($code));
+
+        foreach ($locales as $localeCode) {
+            $channel->addLocale($this->getLocale($localeCode));
+        }
+
+        $em = $this->getEntityManager();
+        $em->persist($channel);
         $em->flush();
     }
 
