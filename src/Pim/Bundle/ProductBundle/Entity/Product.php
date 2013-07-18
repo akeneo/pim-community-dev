@@ -4,14 +4,15 @@ namespace Pim\Bundle\ProductBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 
 /**
  * Flexible product
@@ -181,7 +182,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Get the identifier of the product
      *
-     * @return string the identifier of the product
+     * @return ProductValue the identifier of the product
+     *
+     * @throw MissingIdentifierException if no identifier could be found
      */
     public function getIdentifier()
     {
@@ -191,9 +194,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface
                 return $value->getAttribute()->getAttributeType() === 'pim_product_identifier';
             }
         );
-        $value = reset($values);
 
-        return $value ? $value->getData() : null;
+        if (false === $identifier = reset($values)) {
+            throw new MissingIdentifierException($this);
+        }
+
+        return $identifier;
     }
 
     /**

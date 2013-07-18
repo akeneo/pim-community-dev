@@ -129,12 +129,12 @@ class ProductNormalizer implements NormalizerInterface
             'oro_api_get_product',
             array(
                 'scope' => $this->channel->getCode(),
-                'identifier' => $identifier
+                'identifier' => $identifier->getData()
             ),
             true
         );
 
-        return array($identifier => $data);
+        return array($identifier->getData() => $data);
     }
 
     /**

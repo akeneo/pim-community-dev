@@ -14,14 +14,12 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  */
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test related method
      */
     public function testConstruct()
     {
-        $product = new Product();
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', $product);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', new Product());
     }
 
     /**
@@ -153,20 +151,49 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($product->isEnabled());
     }
 
-    private function getAttributeMock($group = null)
+    public function testGetIdentifier()
     {
-        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getGroup'));
+        $product    = new Product;
+        $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_product_identifier'));
+        $name       = $this->getValueMock($this->getAttributeMock());
+
+        $product->addValue($identifier);
+        $product->addValue($name);
+
+        $this->assertSame($identifier, $product->getIdentifier());
+    }
+
+    /**
+     * @expectedException Pim\Bundle\ProductBundle\Exception\MissingIdentifierException
+     */
+    public function testThrowExceptionIfNoIdentifier()
+    {
+        $product = new Product;
+        $name    = $this->getValueMock($this->getAttributeMock());
+
+        $product->addValue($name);
+
+        $product->getIdentifier();
+    }
+
+    private function getAttributeMock($group = null, $type = 'pim_product_text')
+    {
+        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
-                  ->method('getGroup')
+                  ->method('getVirtualGroup')
                   ->will($this->returnValue($group));
+
+        $attribute->expects($this->any())
+                  ->method('getAttributeType')
+                  ->will($this->returnValue($type));
 
         return $attribute;
     }
 
     private function getValueMock($attribute, $data = null)
     {
-        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array('getAttribute', 'getData'));
+        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue');
 
         $value->expects($this->any())
               ->method('getAttribute')
@@ -181,7 +208,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     private function getGroupMock($name, $sortOrder)
     {
-        $group = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeGroup', array('getSortOrder', 'getName'));
+        $group = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
 
         $group->expects($this->any())
               ->method('getSortOrder')
