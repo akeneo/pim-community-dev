@@ -157,6 +157,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewProduct()
     {
         $this->getPage('Product index')->clickNewProductLink();
+        $this->currentPage = 'Product creation';
         $this->wait();
     }
 

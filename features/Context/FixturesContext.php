@@ -523,6 +523,25 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
+    /**
+     * @Given /^there is no identifier attribute$/
+     */
+    public function thereIsNoIdentifierAttribute()
+    {
+        $em = $this->getEntityManager();
+
+        $attributes = $em
+            ->getRepository('PimProductBundle:ProductAttribute')
+            ->findBy(array(
+                'attributeType' => 'pim_product_identifier',
+            ));
+
+        foreach ($attributes as $attribute) {
+            $em->remove($attribute);
+        }
+
+        $em->flush();
+    }
 
     private function getUser($username)
     {
