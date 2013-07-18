@@ -20,7 +20,7 @@ Feature: Expose product data via a REST API
       | text   | Color | no       | yes          |
     And the following product values:
       | product | attribute | locale | scope     | value                |
-      | Car     | Price     |        | web       | 10000 EUR, 15000 USD |
+      | Car     | Price     |        | mobile    | 10000 EUR, 15000 USD |
       | Car     | Price     |        | ecommerce | 10500 EUR, 16000 USD |
       | Car     | Color     | en_US  |           | red                  |
       | Car     | Color     | fr_FR  |           | rouge                |
