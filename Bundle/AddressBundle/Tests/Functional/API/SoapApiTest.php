@@ -169,7 +169,7 @@ class SoapApiTest extends WebTestCase
     {
         $result = $this->client->soapClient->getCountries();
         $result = ToolsAPI::classToArray($result);
-        return $result['item'];
+        return array_slice($result['item'], 0, 5);
     }
 
     /**
@@ -178,15 +178,10 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountry($countries)
     {
-        $i = 0;
         foreach ($countries as $country) {
             $result = $this->client->soapClient->getCountry($country['iso2Code']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($country, $result);
-            $i++;
-            if ($i % 5  == 0) {
-                break;
-            }
         }
     }
 
