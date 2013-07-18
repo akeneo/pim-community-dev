@@ -2,6 +2,7 @@ parameters:
     pim_serializer.class:                            Symfony\Component\Serializer\Serializer
     pim_serializer.encoder.xml.class:                Symfony\Component\Serializer\Encoder\XmlEncoder
     pim_serializer.encoder.json.class:               Symfony\Component\Serializer\Encoder\JsonEncoder
+    pim_serializer.normalizer.product.class:         Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer
     pim_serializer.normalizer.get_set_method.class:  Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
     pim_serializer.normalizer.flat_product.class:    Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
     pim_serializer.encoder.csv.class:                Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
@@ -21,6 +22,13 @@ services:
         class: %pim_serializer.encoder.json.class%
         tags:
             - { name: pim_serializer.encoder }
+
+    pim_serializer.normalizer.product:
+        class: %pim_serializer.normalizer.product.class%
+        arguments:
+            - @router
+        tags:
+            - { name: pim_serializer.normalizer }
 
     pim_serializer.encoder.csv:
         public: false
