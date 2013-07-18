@@ -53,7 +53,7 @@ assetic:
         - OroNavigationBundle
         - OroWindowsBundle
         - OroSegmentationTreeBundle
-#         - PimUIBundle
+        - PimUIBundle
 #         - PimProductBundle
 
     #java: /usr/bin/java
