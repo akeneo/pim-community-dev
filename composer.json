@@ -13,7 +13,8 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "oro/platform": "dev-master"
+        "oro/platform": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
@@ -22,10 +23,6 @@
         "behat/mink-browserkit-driver": "*",
         "sensiolabs/behat-page-object-extension": "*",
         "behat/mink-selenium2-driver":  "1.0.*",
-        "besimple/soap-common": "dev-master",
-        "besimple/soap-server": "dev-master",
-        "besimple/soap-bundle": "dev-master",
-        "behat/common-contexts": "*",
         "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [

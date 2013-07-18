@@ -35,10 +35,10 @@ twig:
             start_route:      pim_default
     form:
         resources:
-#            - 'PimUIBundle:Form:pim-fields.html.twig'
-            - 'OroUIBundle:Form:fields.html.twig'
-            - 'OroFormBundle:Form:fields.html.twig'
-            - 'OroTranslationBundle:Form:fields.html.twig'
+            - 'PimUIBundle:Form:pim-fields.html.twig'
+#            - 'OroUIBundle:Form:fields.html.twig'
+#            - 'OroFormBundle:Form:fields.html.twig'
+#            - 'OroTranslationBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -54,7 +54,7 @@ assetic:
         - OroWindowsBundle
         - OroSegmentationTreeBundle
         - PimUIBundle
-#         - PimProductBundle
+        - PimProductBundle
 
     #java: /usr/bin/java
     filters:
@@ -83,9 +83,9 @@ doctrine:
         auto_mapping:         true
         resolve_target_entities:
             Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
-#             Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
-#             Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
-#             Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
+            Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
+            Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
+            Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -190,20 +190,20 @@ oro_assetic:
     uncompress_js: ~
     uncompress_css: ~
 
-#oro_filter:
-#    twig:
-#        layout: PimFilterBundle:Filter:pim-layout.js.twig
+oro_filter:
+    twig:
+        layout: PimFilterBundle:Filter:pim-layout.js.twig
 
-# knp_gaufrette:
-#     adapters:
-#         pim_adapter:
-#             local:
-#                 directory: %upload_dir%
-#                 create:    true
-#     filesystems:
-#         pim:
-#             adapter: pim_adapter
-#             alias:   pim_filesystem
+knp_gaufrette:
+    adapters:
+        pim_adapter:
+            local:
+                directory: %upload_dir%
+                create:    true
+    filesystems:
+        pim:
+            adapter: pim_adapter
+            alias:   pim_filesystem
 
 # pim_import_export:
 #     encoders:

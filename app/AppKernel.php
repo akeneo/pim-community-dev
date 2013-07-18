@@ -58,13 +58,12 @@ class AppKernel extends Kernel
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
 
 
-            new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
-
             // PIM deps
-            //             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 /*
-            // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
+*/
+            // BAP overrided bundles
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\GridBundle\PimGridBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
@@ -73,16 +72,22 @@ class AppKernel extends Kernel
             // PIM bundles
 
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
-            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),*/
+            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
-                /*
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
+
+
+/*
             new Pim\Bundle\BatchBundle\PimBatchBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
 */
-        );
+
+            // tmp to fix placeholder issue
+            new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
+
+                );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

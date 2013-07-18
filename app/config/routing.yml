@@ -1,19 +1,19 @@
 pim_default:
     pattern:  /
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: oro_ui_index, permanent: true }
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: pim_product_product_index, permanent: true }
 
-#pim_product:
-#    resource: "@PimProductBundle/Controller/"
-#    type:     annotation
-#    prefix:   /enrich/
+pim_product:
+    resource: "@PimProductBundle/Controller/"
+    type:     annotation
+    prefix:   /enrich/
 
 #pim_product_api:
 #    resource: "@PimProductBundle/Resources/config/routing.yml"
 
-#pim_config:
-#    resource: "@PimConfigBundle/Controller/"
-#    type:     annotation
-#    prefix:   /configuration/
+pim_config:
+    resource: "@PimConfigBundle/Controller/"
+    type:     annotation
+    prefix:   /configuration/
 
 oro_default:
     pattern:  /
