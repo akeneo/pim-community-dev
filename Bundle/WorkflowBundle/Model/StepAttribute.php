@@ -22,7 +22,7 @@ class StepAttribute
     /**
      * @var array
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * Set form type name.
@@ -96,7 +96,7 @@ class StepAttribute
      * @param array $options
      * @return StepAttribute
      */
-    public function setOptions($options)
+    public function setOptions(array $options)
     {
         $this->options = $options;
         return $this;

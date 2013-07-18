@@ -2,17 +2,15 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+
 class Step
 {
     /**
      * @var string
      */
     protected $name;
-
-    /**
-     * @var array
-     */
-    protected $attributes;
 
     /**
      * @var string
@@ -27,12 +25,22 @@ class Step
     /**
      * @var boolean
      */
-    protected $isFinal;
+    protected $isFinal = false;
 
     /**
-     * @var array
+     * @var ArrayCollection
      */
-    protected $allowedTransitions;
+    protected $attributes;
+
+    /**
+     * @var string[]
+     */
+    protected $allowedTransitions = array();
+
+    public function __construct()
+    {
+        $this->attributes = new ArrayCollection();
+    }
 
     /**
      * Set allowed transitions.
@@ -57,21 +65,62 @@ class Step
     }
 
     /**
+     * Check transition is allowed for current step.
+     *
+     * @param string $transitionName
+     * @return bool
+     */
+    public function isAllowedTransition($transitionName)
+    {
+        return in_array($transitionName, $this->allowedTransitions);
+    }
+
+    /**
+     * Allow transition.
+     *
+     * @param string $transitionName
+     */
+    public function allowTransition($transitionName)
+    {
+        if (!$this->isAllowedTransition($transitionName)) {
+            $this->allowedTransitions[] = $transitionName;
+        }
+    }
+
+    /**
+     * Disallow transition.
+     *
+     * @param string $transitionName
+     */
+    public function disallowTransition($transitionName)
+    {
+        if ($this->isAllowedTransition($transitionName)) {
+            array_splice($this->allowedTransitions, array_search($transitionName, $this->allowedTransitions), 1);
+        }
+    }
+
+    /**
      * Set attributes.
      *
-     * @param array $attributes
+     * @param StepAttribute[] $attributes
      * @return Step
      */
-    public function setAttributes($attributes)
+    public function setAttributes(array $attributes)
     {
-        $this->attributes = $attributes;
+        $data = array();
+        /** @var StepAttribute $attribute */
+        foreach ($attributes as $attribute) {
+            $data[$attribute->getName()] = $attribute;
+        }
+        unset($attributes);
+        $this->attributes = new ArrayCollection($data);
         return $this;
     }
 
     /**
      * Get attributes.
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getAttributes()
     {
@@ -164,16 +213,5 @@ class Step
     public function getTemplate()
     {
         return $this->template;
-    }
-
-    /**
-     * Check transition is allowed for current step.
-     *
-     * @param string $transitionName
-     * @return bool
-     */
-    public function isTransitionAllowed($transitionName)
-    {
-        return in_array($transitionName, $this->allowedTransitions);
     }
 }
