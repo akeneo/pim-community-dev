@@ -88,6 +88,16 @@ class Step
     }
 
     /**
+     * Check if current step has allowed transitions.
+     *
+     * @return boolean
+     */
+    public function hasAllowedTransitions()
+    {
+        return count($this->allowedTransitions) > 0;
+    }
+
+    /**
      * Disallow transition.
      *
      * @param string $transitionName
@@ -140,11 +150,11 @@ class Step
     }
 
     /**
-     * Check step  is final.
+     * Check step is final.
      *
      * @return boolean
      */
-    public function getIsFinal()
+    public function isFinal()
     {
         return $this->isFinal;
     }

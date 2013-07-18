@@ -2,7 +2,6 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
 use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
 
 class StepTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,17 +25,27 @@ class StepTest extends \PHPUnit_Framework_TestCase
             'name' => array('name', 'test'),
             'order' => array('order', 1),
             'template' => array('template', 'test'),
-            'isFinal true' => array('isFinal', true),
-            'isFinal false' => array('isFinal', false),
             'allowedTransitions' => array('allowedTransitions', array('one', 'two')),
         );
+    }
+
+    public function testIsFinal()
+    {
+        $obj = new Step();
+        $this->assertFalse($obj->isFinal());
+        $obj->setIsFinal(true);
+        $this->assertTrue($obj->isFinal());
+        $obj->setIsFinal(false);
+        $this->assertFalse($obj->isFinal());
     }
 
     public function testAllowTransition()
     {
         $obj = new Step();
 
+        $this->assertFalse($obj->hasAllowedTransitions());
         $obj->allowTransition('test');
+        $this->assertTrue($obj->hasAllowedTransitions());
         $this->assertEquals(array('test'), $obj->getAllowedTransitions(), 'Transition was not allowed');
 
         // Check duplicate
