@@ -64,8 +64,7 @@ Oro.Tags.TagView =  Backbone.View.extend({
         );
         // process tag click redirect
         if (Oro.hashNavigationEnabled()) {
-            var navigationObject = Oro.Registry.getElement("oro.hashnavigation.object");
-            navigationObject.processClicks($('#tag-list a'));
+            Oro.hashNavigationInstance.processClicks($('#tag-list a'));
         }
 
         return this;

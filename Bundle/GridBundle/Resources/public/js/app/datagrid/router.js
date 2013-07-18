@@ -67,7 +67,7 @@ Oro.Datagrid.Router = Backbone.Router.extend({
         var encodedStateData = collection.encodeStateData(collection.state);
         var url = '';
         if (Oro.hashNavigationEnabled()) {
-            url = 'url=' + Oro.Navigation.prototype.getHashUrl() + '|g/' + encodedStateData;
+            url = 'url=' + Oro.hashNavigationInstance.getHashUrl() + '|g/' + encodedStateData;
         } else {
             url = 'g/' + encodedStateData;
         }
