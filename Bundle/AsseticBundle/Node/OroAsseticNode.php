@@ -116,9 +116,14 @@ class OroAsseticNode extends \Twig_Node
             ->raw('] = ');
 
         if ($this->compressedAsset == $asset) {
-            $this->compileCombineDebugAssetUrl($compiler, $asset, $name);
+            $this->compileCombineDebugAssetUrl($compiler, $asset->getTargetPath(), $name);
         } else {
-            $this->compileAssetUrl($compiler, $asset, $name);
+            $inputs = $this->getAttribute('inputs');
+            if (!in_array($asset->getSourcePath(), $inputs['uncompress'][0])) {
+                $this->compileAssetUrl($compiler, $asset, $name);
+            } else {
+                $this->compileCombineDebugAssetUrl($compiler, $asset->getSourcePath(), $name);
+            }
         }
 
         $compiler
@@ -128,16 +133,14 @@ class OroAsseticNode extends \Twig_Node
 
     /**
      * @param \Twig_Compiler $compiler
-     * @param AssetInterface $asset
+     * @param string $path
      * @param $name
      */
-    protected function compileCombineDebugAssetUrl(\Twig_Compiler $compiler, AssetInterface $asset, $name)
+    protected function compileCombineDebugAssetUrl(\Twig_Compiler $compiler, $path, $name)
     {
         $compiler->raw('$this->env->getExtension(\'assets\')->getAssetUrl(')
-            ->repr($asset->getTargetPath())
+            ->repr($path)
             ->raw(')');
-
-
     }
 
     /**

@@ -3,22 +3,32 @@
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
+
+use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 
 class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
 {
+    const TRANSLATION_PREFIX = 'trans_';
+
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $translator;
 
     /**
-     * @var \Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType
+     * @var AbstractChoiceType
      */
     protected $instance;
 
     public function setUp()
     {
-        $this->translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+            ->disableOriginalConstructor()
+            ->setMethods(array('trans'))
+            ->getMockForAbstractClass();
+
         $this->instance = $this->getMockForAbstractClass(
             '\Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType',
             array($this->translator)
@@ -31,98 +41,122 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
         unset($this->instance);
     }
 
-    public function testFinishViewEmptyValues()
-    {
-        // empty values form view
-        $this->translator->expects($this->never())
-            ->method('trans');
-
-        $formMock = $this->getFormMock();
-        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
-        $this->instance->finishView($formViewMock, $formMock, array());
-
-        // empty choice list
-        $choicesFormViewMock = $this->getFormViewMock();
-        $choicesFormViewMock->vars['choices'] = array();
-        $formViewMock->children['value'] = $choicesFormViewMock;
-        $this->instance->finishView($formViewMock, $formMock, array());
-    }
-
     /**
-     * @dataProvider provider
-     * @param $expectedDomain
-     * @param $options
-     * @param $parentTranslationDomain
-     */
-    public function testFinishView($expectedDomain, $options, $parentTranslationDomain)
-    {
-        $this->translator->expects($this->once())
-            ->method('trans')
-            ->with('testLabel', array(), $expectedDomain);
-
-        $formMock = $this->getFormMock();
-        $formViewMock = $this->getFormViewMock($parentTranslationDomain);
-
-        $this->instance->finishView($formViewMock, $formMock, $options);
-    }
-
-    /**
-     * Returns data
+     * @param string $expectedTranslationDomain
+     * @param array $options
+     * @param string|null $parentTranslationDomain
+     * @param array $expectedChoices
+     * @param array $inputChoices
      *
+     * @dataProvider finishViewDataProvider
+     */
+    public function testFinishView(
+        $expectedTranslationDomain,
+        $options,
+        $parentTranslationDomain = null,
+        $expectedChoices = array(),
+        $inputChoices = array()
+    ) {
+        // expectations for translator
+        if ($expectedChoices) {
+            $prefix = self::TRANSLATION_PREFIX;
+            $this->translator->expects($this->exactly(count($expectedChoices)))
+                ->method('trans')
+                ->with($this->isType('string'), array(), $expectedTranslationDomain)
+                ->will(
+                    $this->returnCallback(
+                        function ($id) use ($prefix) {
+                            return $prefix . $id;
+                        }
+                    )
+                );
+        } else {
+            $this->translator->expects($this->never())
+                ->method('trans');
+        }
+
+        /** @var FormInterface $form */
+        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $filterFormView = $this->getFilterFormView($parentTranslationDomain, $inputChoices);
+
+        $this->instance->finishView($filterFormView, $form, $options);
+
+        // get list of actual translated choices
+        /** @var FormView $valueFormView */
+        $valueFormView = $filterFormView->children['value'];
+        $choiceViews = $valueFormView->vars['choices'];
+        $actualChoices = array();
+        /** @var ChoiceView $choiceView */
+        foreach ($choiceViews as $choiceView) {
+            $actualChoices[$choiceView->value] = $choiceView->label;
+        }
+
+        $this->assertEquals($expectedChoices, $actualChoices);
+    }
+
+    /**
      * @return array
      */
-    public function provider()
+    public function finishViewDataProvider()
     {
         return array(
             'domain from options' => array(
-                'optionsDomain',
-                array('translation_domain' => 'optionsDomain'),
-                null
+                'expectedTranslationDomain' => 'optionsDomain',
+                'options'                   => array('translation_domain' => 'optionsDomain'),
+                'parentTranslationDomain'   => 'parentDomain',
+                'expectedChoices'           => array(
+                    'key1' => self::TRANSLATION_PREFIX . 'value1',
+                    'key2' => self::TRANSLATION_PREFIX . 'value2',
+                ),
+                'inputChoices'              => array(
+                    'key1' => 'value1',
+                    'key2' => 'value2',
+                ),
             ),
             'domain from parent' => array(
-                'parentDomain',
-                array('translation_domain' => null),
-                'parentDomain'
+                'expectedTranslationDomain' => 'parentDomain',
+                'options'                   => array(),
+                'parentTranslationDomain'   => 'parentDomain',
+                'expectedChoices'           => array('key' => self::TRANSLATION_PREFIX . 'value'),
+                'inputChoices'              => array('key' => 'value'),
             ),
             'default domain' => array(
-                'messages',
-                array('translation_domain' => null),
-                null
+                'expectedTranslationDomain' => 'messages',
+                'options'                   => array(),
+                'parentTranslationDomain'   => null,
+                'expectedChoices'           => array('key' => self::TRANSLATION_PREFIX . 'value'),
+                'inputChoices'              => array('key' => 'value'),
+            ),
+            'empty choices' => array(
+                'expectedTranslationDomain' => 'messages',
+                'options'                   => array(),
             )
         );
     }
 
     /**
-     * Get form object mock
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function getFormMock()
-    {
-        return $this->getMock('Symfony\Component\Form\Test\FormInterface');
-    }
-
-    /**
-     * Get form view mock object
+     * Get filter form view object
      *
      * @param string|null $parentTranslationDomain
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @param array $choices
+     * @return FormView
      */
-    protected function getFormViewMock($parentTranslationDomain = null)
+    protected function getFilterFormView($parentTranslationDomain = null, $choices = array())
     {
-        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
+        $choicesFormView = new FormView();
+        $choicesFormView->vars['choices'] = array();
+        foreach ($choices as $value => $label) {
+            $choicesFormView->vars['choices'][] = new ChoiceView('someData', $value, $label);
+        }
 
-        $parentFormViewMock = $this->getMock('Symfony\Component\Form\FormView');
-        $parentFormViewMock->vars['translation_domain'] = '';
+        $parentFormView = new FormView();
+        $parentFormView->vars['translation_domain'] = $parentTranslationDomain;
 
-        $choiceOneFormViewMock = new ChoiceView('testData', 'testValue', 'testLabel');
-        $choicesFormViewMock = $this->getMock('Symfony\Component\Form\FormView');
-        $choicesFormViewMock->vars['choices'] = array($choiceOneFormViewMock);
+        $filterFormView = new FormView($parentFormView);
+        $filterFormView->children['value'] = $choicesFormView;
 
-        $formViewMock->children['value'] = $choicesFormViewMock;
-        $formViewMock->parent = $parentFormViewMock;
-        $formViewMock->parent->vars['translation_domain'] = $parentTranslationDomain;
-
-        return $formViewMock;
+        return $filterFormView;
     }
 }

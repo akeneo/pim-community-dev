@@ -8,6 +8,13 @@ if (typeof Oro.PageStateTimer !== undefined && Oro.PageStateTimer) {
 }
 Oro.PageStateTimer = false;
 Oro.PageState.View = Backbone.View.extend({
+    /**
+     * A flag whether we need to restore data from server
+     */
+    needServerRestore: true,
+
+    stopCollecting: false,
+
     initialize: function () {
         this.init();
         this.listenTo(this.model, 'change:pagestate', this.handleStateChange);
@@ -16,8 +23,9 @@ Oro.PageState.View = Backbone.View.extend({
          * Init page state after hash navigation request is completed
          */
         Oro.Events.bind(
-            "hash_navigation_content:refresh",
+            "hash_navigation_request:complete",
             function() {
+                this.stopCollecting = false;
                 this.init();
             },
             this
@@ -28,6 +36,7 @@ Oro.PageState.View = Backbone.View.extend({
         Oro.Events.bind(
             "hash_navigation_request:start",
             function() {
+                this.stopCollecting = true;
                 this.clearTimer();
             },
             this
@@ -54,7 +63,7 @@ Oro.PageState.View = Backbone.View.extend({
                     pagestate : data.pagestate
                 });
 
-                if (parseInt(data.id) > 0  && self.model.get('restore')) {
+                if (parseInt(data.id) > 0  && self.model.get('restore') && self.needServerRestore) {
                     self.restore();
                 }
 
@@ -79,7 +88,7 @@ Oro.PageState.View = Backbone.View.extend({
     },
 
     collect: function() {
-        if (!this.hasForm()) {
+        if (!this.hasForm() || this.stopCollecting) {
             this.clearTimer();
             return;
         }
@@ -92,7 +101,7 @@ Oro.PageState.View = Backbone.View.extend({
         Backbone.$('form[data-collect=true]').each(function(index, el){
             data[index] = Backbone.$(el)
                 .find('input, textarea, select')
-                .not(':input[type=button], :input[type=submit], :input[type=reset], :input[type=password], :input[type=file]')
+                .not(':input[type=button], :input[type=submit], :input[type=reset], :input[type=password], :input[type=file], :input[name$="[_token]"]')
                 .serializeArray();
         });
 
@@ -100,6 +109,16 @@ Oro.PageState.View = Backbone.View.extend({
             pagestate: {
                 pageId : filterUrl,
                 data   : JSON.stringify(data)
+            }
+        });
+        Oro.Events.trigger("pagestate_collected", this.model);
+    },
+
+    updateState: function(data) {
+        this.model.set({
+            pagestate: {
+                pageId : '',
+                data   : data
             }
         });
     },
@@ -123,13 +142,14 @@ Oro.PageState.View = Backbone.View.extend({
                 }
             });
         });
+        Oro.Events.trigger("pagestate_restored");
     },
 
     filterUrl: function() {
         var self = this;
         var url = window.location;
-        if (Oro.hashNavigationEnabled()) {
-            url = new Url( Oro.Navigation.prototype.getHashUrl());
+        if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance) {
+            url = new Url(Oro.hashNavigationInstance.getHashUrl());
             url.search = url.query.toString();
             url.pathname = url.path;
         }

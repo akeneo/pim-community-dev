@@ -3,74 +3,73 @@
 namespace Oro\Bundle\GridBundle\Tests\Unit\Property;
 
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
-use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 
 class TranslateablePropertyTest extends \PHPUnit_Framework_TestCase
 {
-    const FIELD_NAME   = 'testFieldName';
-    const FIELD_ALIAS  = 'testFieldName';
-    const DOMAIN       = 'testDomain';
-    const LOCALE       = 'testLocale';
-    /**
-     * @var TranslateableProperty
-     */
-    protected $property;
+    const FIELD_NAME         = 'testFieldName';
+    const FIELD_ALIAS        = 'testFieldName';
+    const TRANSLATION_DOMAIN = 'testDomain';
+    const LOCALE             = 'testLocale';
+
+    const TRANSLATION_PREFIX = 'trans_';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @return array
      */
-    protected $translator;
-
-    public function setUp()
+    public function getValueDataProvider()
     {
-        $this->translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
-        $this->property = new TranslateableProperty(
-            self::FIELD_NAME,
-            $this->translator,
-            null,
-            self::DOMAIN,
-            self::LOCALE
+        return array(
+            'get value by name' => array(
+                'expectedValue' => self::TRANSLATION_PREFIX . 'fieldNameValue',
+                'data'          => array(self::FIELD_NAME => 'fieldNameValue'),
+                'name'          => self::FIELD_NAME,
+            ),
+            'get value by alias' => array(
+                'expectedValue' => self::TRANSLATION_PREFIX . 'fieldAliasValue',
+                'data'          => array(self::FIELD_NAME => 'fieldNameValue', self::FIELD_ALIAS => 'fieldAliasValue'),
+                'name'          => self::FIELD_NAME,
+                'alias'         => self::FIELD_ALIAS,
+                'domain'        => self::TRANSLATION_DOMAIN,
+                'locale'        => self::LOCALE,
+            )
         );
     }
 
-    public function tearDown()
-    {
-        unset($this->translator);
-        unset($this->property);
-    }
-
-    public function testGetValueByName()
-    {
-        $record = $this->createRecord(array(self::FIELD_NAME => 'testData'));
-
-        $this->translator->expects($this->once())
-            ->method('trans')
-            ->with('testData', array(), self::DOMAIN, self::LOCALE)
-            ->will($this->returnValue('translatedValue'));
-
-        $this->assertEquals('translatedValue', $this->property->getValue($record));
-    }
-
-    public function testGetValueByAlias()
-    {
-        $property = new TranslateableProperty(self::FIELD_NAME, $this->translator, self::FIELD_ALIAS);
-        $record = $this->createRecord(array(self::FIELD_NAME => 'testData', self::FIELD_ALIAS => 'aliasData'));
-
-        $this->translator->expects($this->once())
-            ->method('trans')
-            ->with('aliasData', array(), null, null)
-            ->will($this->returnValue('aliasTranslatedValue'));
-
-        $this->assertEquals('aliasTranslatedValue', $property->getValue($record));
-    }
-
     /**
+     * @param string $expectedValue
      * @param array $data
-     * @return ResultRecordInterface
+     * @param string $name
+     * @param string|null $alias
+     * @param string|null $domain
+     * @param string|null $locale
+     *
+     * @dataProvider getValueDataProvider
      */
-    private function createRecord(array $data)
+    public function testGetValue($expectedValue, array $data, $name, $alias = null, $domain = null, $locale = null)
     {
-        return new ResultRecord($data);
+        // prepare mock
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+            ->disableOriginalConstructor()
+            ->setMethods(array('trans'))
+            ->getMockForAbstractClass();
+
+        $prefix = self::TRANSLATION_PREFIX;
+        $translator->expects($this->once())
+            ->method('trans')
+            ->with($this->isType('string'), array(), $domain, $locale)
+            ->will(
+                $this->returnCallback(
+                    function ($id) use ($prefix) {
+                        return $prefix . $id;
+                    }
+                )
+            );
+
+        // test
+        $property = new TranslateableProperty($name, $translator, $alias, $domain, $locale);
+        $actualValue = $property->getValue(new ResultRecord($data));
+
+        $this->assertEquals($expectedValue, $actualValue);
     }
 }
