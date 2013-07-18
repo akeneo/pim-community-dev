@@ -14,6 +14,16 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given a "Car" product available in english
+    And the following product attributes:
+      | product | label | scopable | translatable |
+      | Car     | Price | yes      | no           |
+      | Car     | Color | no       | yes          |
+    And the following product values:
+      | product | attribute | locale | scope     | value |
+      | Car     | Price     |        | web       | 10000 |
+      | Car     | Price     |        | ecommerce | 10500 |
+      | Car     | Color     | en_US  |           | red   |
+      | Car     | Color     | fr_FR  |           | blue  |
     And I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "Car"
     Then the response code should be 200

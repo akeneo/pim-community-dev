@@ -320,12 +320,15 @@ class FixturesContext extends RawMinkContext
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $data = array_merge(array(
-                'position' => 0,
-                'group'    => null,
-                'product'  => null,
-                'family'   => null,
-                'required' => 'no',
-                'type'     => 'text',
+                'position'     => 0,
+                'group'        => null,
+                'product'      => null,
+                'family'       => null,
+                'required'     => 'no',
+                'type'         => 'text',
+                'scopable'     => false,
+                'scopable'     => 'no',
+                'translatable' => 'no',
             ), $data);
 
             try {
@@ -336,9 +339,11 @@ class FixturesContext extends RawMinkContext
 
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
-            $attribute->setRequired($data['required'] === 'yes');
+            $attribute->setRequired(strtolower($data['required']) === 'yes');
+            $attribute->setScopable(strtolower($data['scopable']) === 'yes');
+            $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
             $attribute->setUseableAsGridColumn(true);
-            $attribute->isUseableAsGridFilter(true);
+            $attribute->setUseableAsGridFilter(true);
 
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
@@ -377,22 +382,26 @@ class FixturesContext extends RawMinkContext
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
-                'scope' => null,
+                'scope'  => null,
+                'locale' => null,
             ), $data);
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']));
 
             if ($value) {
-                if (false === $value->getScope()) {
+                if (!$value->getScope()) {
                     $value->setScope($data['scope']);
+                }
+                if (!$value->getLocale()) {
+                    $value->setLocale($data['locale']);
                 }
                 if (null === $value->getData()) {
                     $value->setData($data['value']);
                 }
             } else {
                 $attribute = $this->getAttribute($data['attribute']);
-                $value = $this->createValue($attribute, $data['value'], null, $data['scope']);
+                $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
         }
@@ -527,7 +536,7 @@ class FixturesContext extends RawMinkContext
         $pm   = $this->getProductManager();
         $repo = $pm->getFlexibleRepository();
         $qb   = $repo->createQueryBuilder('p');
-        $repo->applyFilterByAttribute($qb, 'sKU', $sku);
+        $repo->applyFilterByAttribute($qb, $pm->getIdentifierAttribute()->getCode(), $sku);
         $product = $qb->getQuery()->getOneOrNullResult();
 
         return $product ?: $this->createProduct($sku);
@@ -763,7 +772,7 @@ class FixturesContext extends RawMinkContext
 
     private function camelize($string)
     {
-        return Inflector::camelize(str_replace(' ', '_', $string));
+        return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
     }
 
     private function getEntityManager()
