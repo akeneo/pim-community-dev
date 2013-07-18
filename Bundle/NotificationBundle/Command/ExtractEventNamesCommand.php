@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Command;
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -61,6 +62,15 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
             $extractor->extract($directory);
         }
         $extractor->dumpToDb();
+
+        // regenerate the cache to subscribe events (event names from db) in container
+        $command = $this->getApplication()->find('cache:clear');
+        $arguments = array(
+            'command' => 'cache:clear',
+            '--quiet' => true,
+        );
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         $output->writeln('Completed');
     }

@@ -21,6 +21,10 @@ parameters:
     oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
     oro_notification.form.handler.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
 
+    # Email notification services
+    oro_notification.mailer.transport.spool_db.class: Oro\Bundle\NotificationBundle\Provider\Mailer\DbSpool
+    oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
+
 services:
     # Event extractor services
     oro_notification.event_names.extractor:
@@ -104,6 +108,18 @@ services:
         class: %oro_notification.email_handler.class%
         arguments:
             - @twig
+            - @oro_notification.mailer
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
+    # email notification Swift mailer with file spool configured
+    oro_notification.mailer.transport.spool_db:
+        class: %oro_notification.mailer.transport.spool_db.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_notification.mailer.transport.spool_entity.class%
+
+    oro_notification.mailer:
+        class: %swiftmailer.class%
+        arguments:
+            - @oro_notification.mailer.transport.spool_db
