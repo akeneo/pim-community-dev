@@ -91,6 +91,8 @@ class OroUIExtension extends Extension
                         );
                     }
                 }
+            } else {
+                $placeholder['items'] = array();
             }
         }
 

@@ -94,7 +94,8 @@ class TagManager
      */
     public function replaceTags(array $tags, Taggable $resource)
     {
-        $resource->getTags()->clear();
+        $resource->setTags(new ArrayCollection());
+
         $this->addTags($tags, $resource);
     }
 

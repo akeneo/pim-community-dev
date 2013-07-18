@@ -32,7 +32,7 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
                 'compress' => 'compress_test_asset'
             ),
             array(),
-            array('compile1.css', 'compile2.css'),
+            array('uncompress' => array(array('compile1.css', 'compile2.css'))),
             new \Twig_Node(),
             array(),
             10,

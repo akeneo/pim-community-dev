@@ -91,7 +91,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
 
         Backbone.PageableCollection.prototype.initialize.apply(this, arguments);
 
-        if (this.state.sorters) {
+        if (this.state.sorters && options.state) {
             _.each(options.state.sorters, function(direction, field) {
                 this.setSorting(field, direction, {'reset': false});
             }, this);
@@ -498,5 +498,18 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
         if (delFullComp && fullCollection) delete fullCollection.comparator;
 
         return this;
+    },
+    /**
+     * Clone collection
+     *
+     * @return {Oro.PageableCollection}
+     */
+    clone: function() {
+        var collectionOptions = {};
+        collectionOptions.url = this.url;
+        collectionOptions.inputName = this.inputName;
+        var newCollection = new Oro.PageableCollection(this.toJSON(), collectionOptions);
+        newCollection.state = Oro.deepClone(this.state);
+        return newCollection;
     }
 });
