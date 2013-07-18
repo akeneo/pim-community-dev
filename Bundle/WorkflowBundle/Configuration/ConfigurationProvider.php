@@ -52,7 +52,8 @@ class ConfigurationProvider
         $workflowDefinitions = array();
         /** @var $file \SplFileInfo */
         foreach ($finder as $file) {
-            $configData = Yaml::parse($file->getRealPath());
+            $realPathName = $file->getRealPath();
+            $configData = Yaml::parse($realPathName);
             if (empty($configData[self::WORKFLOW_ROOT_NODE])) {
                 continue;
             }
@@ -62,7 +63,7 @@ class ConfigurationProvider
             } catch (InvalidConfigurationException $exception) {
                 $message = sprintf(
                     'Can\'t parse workflow configuration from %s. %s',
-                    $file->getRealPath(),
+                    $realPathName,
                     $exception->getMessage()
                 );
                 throw new InvalidConfigurationException($message);
