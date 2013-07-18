@@ -99,4 +99,193 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
     }
+
+    public function testCreateWorkflow()
+    {
+        $obj = new Workflow();
+        $obj->setStartStep($this->getStepMock('startStep'));
+        $obj->setName('testWorkflow');
+        $workflowItem = $obj->createWorkflowItem();
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);
+        $this->assertEquals('startStep', $workflowItem->getCurrentStepName());
+        $this->assertEquals('testWorkflow', $workflowItem->getWorkflowName());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Expected transition argument type is string or Transition
+     */
+    public function testIsTransitionAllowedArgumentException()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Workflow();
+        $obj->isTransitionAllowed($workflowItem, 1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Expected transition argument type is string or Transition
+     */
+    public function testTransitAllowedArgumentException()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Workflow();
+        $obj->transit($workflowItem, 1);
+    }
+
+    public function testIsTransitionAllowedUnknownTransition()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Workflow();
+        $this->assertFalse($obj->isTransitionAllowed($workflowItem, 'test'));
+    }
+
+    /**
+     * @dataProvider isAllowedDataProvider
+     * @param bool $isAllowed
+     */
+    public function testIsTransitionAllowedTransition($isAllowed)
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $transition = $this->getTransitionMock('transition');
+        $transition->expects($this->exactly(2))
+            ->method('isAllowed')
+            ->will($this->returnValue($isAllowed));
+
+        $obj = new Workflow();
+        $obj->setTransitions(array($transition));
+
+        $this->assertEquals($isAllowed, $obj->isTransitionAllowed($workflowItem, 'transition'));
+        $this->assertEquals($isAllowed, $obj->isTransitionAllowed($workflowItem, $transition));
+    }
+
+    /**
+     * @return array
+     */
+    public function isAllowedDataProvider()
+    {
+        return array(
+            'yes' => array(true),
+            'no' => array(false)
+        );
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException
+     * @expectedExceptionMessage Unknown transition "unknown".
+     */
+    public function testTransitUnknownTransitionException()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Workflow();
+        $obj->transit($workflowItem, 'unknown');
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
+     * @expectedExceptionMessage Unknown step "unknownStep".
+     */
+    public function testTransitUnknownStepException()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $workflowItem->expects($this->any())
+            ->method('getCurrentStepName')
+            ->will($this->returnValue('unknownStep'));
+        $transition = $this->getTransitionMock('transition');
+
+        $obj = new Workflow();
+        $obj->setTransitions(array($transition));
+        $obj->transit($workflowItem, $transition);
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
+     * @expectedTransitionMessage Transition "transition" is not allowed for step "stepOne".
+     */
+    public function testTransitForbiddenTransition()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $workflowItem->expects($this->any())
+            ->method('getCurrentStepName')
+            ->will($this->returnValue('stepOne'));
+
+        $transition = $this->getTransitionMock('transition');
+        $step = $this->getStepMock('stepOne');
+        $step->expects($this->once())
+            ->method('isAllowedTransition')
+            ->with('transition')
+            ->will($this->returnValue(false));
+
+        $obj = new Workflow();
+        $obj->setTransitions(array($transition));
+        $obj->setSteps(array($step));
+        $obj->transit($workflowItem, 'transition');
+    }
+
+    public function testTransit()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $workflowItem->expects($this->any())
+            ->method('getCurrentStepName')
+            ->will($this->returnValue('stepOne'));
+
+        $transition = $this->getTransitionMock('transition');
+        $transition->expects($this->once())
+            ->method('transit')
+            ->with($workflowItem);
+
+        $step = $this->getStepMock('stepOne');
+        $step->expects($this->once())
+            ->method('isAllowedTransition')
+            ->with('transition')
+            ->will($this->returnValue(true));
+
+        $obj = new Workflow();
+        $obj->setTransitions(array($transition));
+        $obj->setSteps(array($step));
+        $obj->transit($workflowItem, 'transition');
+    }
+
+    protected function getStepMock($name)
+    {
+        $step = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Step')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $step->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+        return $step;
+    }
+
+    protected function getTransitionMock($name)
+    {
+        $transition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Transition')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $transition->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+        return $transition;
+    }
 }

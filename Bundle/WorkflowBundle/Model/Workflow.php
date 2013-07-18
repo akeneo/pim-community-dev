@@ -5,6 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
@@ -215,8 +216,9 @@ class Workflow
      *
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
-     * @throws ForbiddenTransitionException
-     * @throws UnknownTransitionException
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException
      */
     public function transit(WorkflowItem $workflowItem, $transition)
     {
@@ -230,11 +232,20 @@ class Workflow
 
         /** @var Step $currentStep */
         $currentStep = $this->getSteps()->get($workflowItem->getCurrentStepName());
+        if (!$currentStep) {
+            throw new UnknownStepException(
+                sprintf('Unknown step "%s".', $workflowItem->getCurrentStepName())
+            );
+        }
         if ($currentStep->isAllowedTransition($transition->getName())) {
             $transition->transit($workflowItem);
         } else {
             throw new ForbiddenTransitionException(
-                sprintf('Transition "%s" is not allowed for step "%s".', $transition, $currentStep->getName())
+                sprintf(
+                    'Transition "%s" is not allowed for step "%s".',
+                    $transition->getName(),
+                    $currentStep->getName()
+                )
             );
         }
     }
@@ -246,7 +257,11 @@ class Workflow
      */
     public function createWorkflowItem()
     {
-        return new WorkflowItem();
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setWorkflowName($this->getName());
+        $workflowItem->setCurrentStepName($this->getStartStep()->getName());
+
+        return $workflowItem;
     }
 
     /**
