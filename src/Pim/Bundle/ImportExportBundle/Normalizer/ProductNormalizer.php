@@ -90,47 +90,12 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null)
     {
-        if (!$this->channel) {
-            throw new \LogicException('You must specify a channel to return the product for');
-        }
-
-        $channelCode = $this->channel->getCode();
-
-        $values = $product->getValues();
-
-        $values = $values->filter(
-            function ($value) use ($channelCode) {
-                return (!$value->getAttribute()->getScopable() || $value->getScope() == $channelCode);
-            }
-        );
-
-        $locales = $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
-            function ($locale) {
-                return $locale->getCode();
-            }
-        )->toArray();
-
-        $values = $values->filter(
-            function ($value) use ($locales) {
-                return (!$value->getAttribute()->getTranslatable() || in_array($value->getLocale(), $locales));
-            }
-        );
-
-        $attributes = $values->map(
-            function ($value) {
-                return $value->getAttribute();
-            }
-        );
-        $uniqueAttributes = array();
-        foreach ($attributes as $attribute) {
-            if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
-                $uniqueAttributes[$attribute->getCode()] = $attribute;
-            }
-        }
+        $values = $this->filterValues($product->getValues());
+        $attributes = $this->getAttributes($values);
 
         $data = array();
 
-        foreach ($uniqueAttributes as $attribute) {
+        foreach ($attributes as $attribute) {
             $code = $attribute->getCode();
 
             $attributeValues = $values->filter(
@@ -160,6 +125,67 @@ class ProductNormalizer implements NormalizerInterface
         );
 
         return array($identifier => $data);
+    }
+
+    /**
+     * Returns a subset of values that match the channel and locale requirements
+     *
+     * @param ArrayCollection $values
+     *
+     * @return ArrayCollection
+     */
+    public function filterValues($values)
+    {
+        if (!$this->channel) {
+            throw new \LogicException('You must specify a channel to return the product for');
+        }
+
+        $channelCode = $this->channel->getCode();
+
+        $values = $values->filter(
+            function ($value) use ($channelCode) {
+                return (!$value->getAttribute()->getScopable() || $value->getScope() == $channelCode);
+            }
+        );
+
+        $localeCodes = $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
+            function ($locale) {
+                return $locale->getCode();
+            }
+        )->toArray();
+
+        $values = $values->filter(
+            function ($value) use ($localeCodes) {
+                return (!$value->getAttribute()->getTranslatable() || in_array($value->getLocale(), $locales));
+            }
+        );
+
+        return $values;
+    }
+
+    /**
+     * Returns an array of all attrbutes for the provided values
+     *
+     * @param ArrayCollection $values
+     *
+     * @return array
+     */
+    public function getAttributes($values)
+    {
+        $attributes = $values->map(
+            function ($value) {
+                return $value->getAttribute();
+            }
+        );
+
+        $uniqueAttributes = array();
+        foreach ($attributes as $attribute) {
+            if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
+                $uniqueAttributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $uniqueAttributes;
     }
 
     /**
