@@ -47,10 +47,18 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $this->workflowDefinition->getManagedEntityClass());
     }
 
+    public function testStartStep()
+    {
+        $this->assertNull($this->workflowDefinition->getStartStep());
+        $value = 'step_one';
+        $this->workflowDefinition->setStartStep($value);
+        $this->assertEquals($value, $this->workflowDefinition->getStartStep());
+    }
+
     public function testConfiguration()
     {
-        $this->assertNull($this->workflowDefinition->getConfiguration());
-        $value = 'some_configuration_string';
+        $this->assertEmpty($this->workflowDefinition->getConfiguration());
+        $value = array('some', 'configuration', 'array');
         $this->workflowDefinition->setConfiguration($value);
         $this->assertEquals($value, $this->workflowDefinition->getConfiguration());
     }

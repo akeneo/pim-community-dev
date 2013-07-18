@@ -1,3 +1,8 @@
 parameters:
+    oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
 
 services:
+    oro_workflow.configuration_provider:
+        class: %oro_workflow.configuration_provider.class%
+        arguments:
+            - %kernel.bundles%
