@@ -5,7 +5,6 @@ namespace Oro\Bundle\NotificationBundle\Tests\Unit\Provider;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 use Oro\Bundle\NotificationBundle\Provider\DoctrineListener;
-use Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor;
 
 class DoctrineListenerTest extends TestCase
 {
@@ -63,15 +62,15 @@ class DoctrineListenerTest extends TestCase
         return array(
             'post update event case'  => array(
                 'method name'            => 'postUpdate',
-                'expected event name'    => 'oro.notification,event.entity_post_update'
+                'expected event name'    => 'oro.notification.event.entity_post_update'
             ),
             'post persist event case' => array(
                 'method name'            => 'postPersist',
-                'expected event name'    => 'oro.notification,event.entity_post_persist'
+                'expected event name'    => 'oro.notification.event.entity_post_persist'
             ),
             'post remove event case'  => array(
                 'method name'            => 'postRemove',
-                'expected event name'    => 'oro.notification,event.entity_post_remove'
+                'expected event name'    => 'oro.notification.event.entity_post_remove'
             ),
         );
     }
