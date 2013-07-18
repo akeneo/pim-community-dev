@@ -1,5 +1,9 @@
 oro_menu_config:
     items:
+        home:
+            extras:
+                icon: 'fa-icon-home'
+            route: 'pim_default'
         pim_enrich_tab:
             label: 'Enrich'
             uri: '#'
@@ -31,9 +35,9 @@ oro_menu_config:
 
                 pim_configuration_tab:
                     children:
-                        pim_enrich_family: ~
-                        pim_enrich_attribute: ~
                         pim_enrich_attributegroup: ~
+                        pim_enrich_attribute: ~
+                        pim_enrich_family: ~
 
                 pim_export_tab:
                     children:

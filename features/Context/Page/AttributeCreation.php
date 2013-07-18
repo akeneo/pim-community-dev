@@ -15,7 +15,8 @@ class AttributeCreation extends Page
 
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
-        'Attribute options'       => array('css' => 'table.sortable_options tbody tr'),
+        'Attribute options list'  => array('css' => 'table.sortable_options tbody tr'),
+        'Tabs'                    => array('css' => '#form-navbar'),
         'Default label field'     => array('css' => '#pim_product_attribute_form_label_label:default')
     );
 
@@ -25,6 +26,21 @@ class AttributeCreation extends Page
             ->getElement('Attribute type selector')
             ->selectOption($type)
         ;
+    }
+
+    public function findField($name)
+    {
+        $field = parent::findField($name);
+        if (!$field) {
+            $field = $this->getElement('Attribute options list')->find('css', sprintf('th:contains("%s")', $name));
+        }
+
+        return $field;
+    }
+
+    public function save()
+    {
+        $this->pressButton('Save');
     }
 
     public function getSection($title)
@@ -45,5 +61,10 @@ class AttributeCreation extends Page
     public function fillDefaultLabelField($value)
     {
         $this->getElement('Default label field')->setValue($value);
+    }
+
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
     }
 }

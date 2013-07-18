@@ -14,10 +14,12 @@ class FamilyEdit extends Page
     protected $path = '/enrich/family/edit/{family_id}';
 
     protected $elements = array(
-        'Available attributes'       => array('css' => '#pim_available_product_attributes_attributes'),
-        'Attributes'                 => array('css' => '#attributes table'),
-        'Tabs'                       => array('css' => '#form-navbar'),
-        'Attribute as label choices' => array('css' => '#pim_product_family_attributeAsLabel'),
+        'Available attributes'            => array('css' => '#pim_available_product_attributes_attributes'),
+        'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
+        'Available attributes add button' => array('css' => 'a:contains("Add")'),
+        'Attributes'                      => array('css' => '#attributes table'),
+        'Tabs'                            => array('css' => '#form-navbar'),
+        'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -61,7 +63,10 @@ class FamilyEdit extends Page
 
     public function addSelectedAvailableAttributes()
     {
-        $this->pressButton('Add attributes');
+        $this
+            ->getElement('Available attributes add button')
+            ->press()
+        ;
     }
 
     public function save()
@@ -82,7 +87,7 @@ class FamilyEdit extends Page
 
     public function getFieldLocator($name, $locale)
     {
-        return sprintf('pim_product_family_%s_%s', strtolower($name), $locale);
+        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
     }
 
     public function getRemoveLinkFor($attribute)
@@ -129,5 +134,11 @@ class FamilyEdit extends Page
         $this->getElement('Attribute as label choices')->selectOption($attribute);
 
         return $this;
+    }
+
+    public function openAvailableAttributesMenu()
+    {
+        $this->visitTab('Attributes');
+        $this->getElement('Available attributes menu')->click();
     }
 }

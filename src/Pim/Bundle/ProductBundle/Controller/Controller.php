@@ -15,6 +15,28 @@ use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
 class Controller extends BaseController
 {
     /**
+     * Custom method to generate url with a hash
+     * @param string  $route      The name of the route
+     * @param mixed   $parameters An array of parameters
+     * @param Boolean $absolute   Whether to generate an absolute URL
+     * @param string  $hash       The hash to prepend to the URL
+     *
+     * @return string
+     */
+    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
+    {
+        $url = parent::generateUrl($route, $parameters, $absolute);
+        if (!$hash) {
+            $hash = $this->getRequest()->query->get('hash');
+        }
+        if ($hash) {
+            $url .= '#'.$hash;
+        }
+
+        return $url;
+    }
+
+    /**
      * @return ObjectManager
      */
     protected function getEntityManager()
@@ -55,6 +77,46 @@ class Controller extends BaseController
     }
 
     /**
+     * Get the log entries datagrid for the given product
+     *
+     * @param Product $product
+     *
+     * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    protected function getDataAuditDatagrid($entity, $route, array $routeParams)
+    {
+        if (!is_object($entity)) {
+            throw new \InvalidArgumentException(
+                sprintf('Expected Object argument, got %s', gettype($entity))
+            );
+        }
+        $queryFactory = $this->get('pim_product.datagrid.manager.history.default_query_factory');
+
+        // TODO Change query builder to $this->getDataAuditRepository()->getLogEntriesQueryBuilder($product)
+        //      when BAP will be up-to-date. This is currently not achievable quickly because of the introduction
+        //      of the OroAsseticBundle that breaks the PIM UI.
+        $qb = $this
+            ->getDataAuditRepository()
+            ->createQueryBuilder('a')
+            ->where('a.objectId = :objectId AND a.objectClass = :objectClass')
+            ->orderBy('a.loggedAt', 'DESC')
+            ->setParameters(
+                array(
+                    'objectId'    => $entity->getId(),
+                    'objectClass' => get_class($entity)
+                )
+            );
+
+        $queryFactory->setQueryBuilder($qb);
+
+        $datagridManager = $this->get('pim_product.datagrid.manager.history');
+        $datagridManager->getRouteGenerator()->setRouteName($route);
+        $datagridManager->getRouteGenerator()->setRouteParameters($routeParams);
+
+        return $datagridManager->getDatagrid();
+    }
+
+    /**
      * Get the ProductAttribute entity repository
      *
      * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
@@ -70,5 +132,17 @@ class Controller extends BaseController
     protected function getProductManager()
     {
         return $this->get('pim_product.manager.product');
+    }
+
+    /**
+     * Get the data audit doctrine repository
+     *
+     * @return AuditRepository
+     */
+    protected function getDataAuditRepository()
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository('OroDataAuditBundle:Audit');
     }
 }

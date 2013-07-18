@@ -26,6 +26,7 @@ class LengthGuesser implements ConstraintGuesserInterface
             array(
                 'pim_product_text',
                 'pim_product_textarea',
+                'pim_product_identifier',
             )
         );
     }

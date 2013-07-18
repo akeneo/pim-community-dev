@@ -17,6 +17,8 @@ parameters:
 
     pim_product.entity.attribute_group.class:          Pim\Bundle\ProductBundle\Entity\AttributeGroup
     pim_product.handler.attribute_group.class:         Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
+    pim_product.handler.family.class:                  Pim\Bundle\ProductBundle\Form\Handler\FamilyHandler
+    pim_product.type.family.class:                     Pim\Bundle\ProductBundle\Form\Type\FamilyType
     pim_product.type.attribute_group.class:            Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
     pim_product.entity.export_profile.class:           Pim\Bundle\ProductBundle\Entity\ExportProfile

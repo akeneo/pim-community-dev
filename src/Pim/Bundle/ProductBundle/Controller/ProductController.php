@@ -20,6 +20,7 @@ use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Product Controller
@@ -50,11 +51,10 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->getProductManager()->setLocale($this->getDataLocale());
-        $this->getProductManager()->setScope($this->getDataScope());
-
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.datagrid.manager.product');
+        $gridManager->setFilterTreeId($this->getRequest()->get('treeId', 0));
+        $gridManager->setFilterCategoryId($this->getRequest()->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {
@@ -63,7 +63,14 @@ class ProductController extends Controller
             $view = 'PimProductBundle:Product:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        $params = array(
+            'datagrid'   => $datagrid->createView(),
+            'locales'    => $this->getLocaleManager()->getActiveLocales(),
+            'dataLocale' => $this->getDataLocale(),
+            'dataScope' => $this->getDataScope(),
+        );
+
+        return $this->render($view, $params);
     }
 
     /**
@@ -120,6 +127,19 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
+        $datagrid = $this->getDataAuditDatagrid(
+            $product,
+            'pim_product_product_edit',
+            array(
+                'id' => $product->getId()
+            )
+        );
+
+        // Refreshing the history datagrid
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         $channels = $this->getChannelRepository()->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
 
@@ -146,7 +166,6 @@ class ProductController extends Controller
                         array(
                             'id'         => $product->getId(),
                             'dataLocale' => $this->getDataLocale(),
-                            'tab'        => $request->query->get('tab')
                         )
                     )
                 );
@@ -166,43 +185,8 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
-            'tab'            => $request->query->get('tab')
+            'datagrid'       => $datagrid->createView(),
         );
-    }
-
-    /**
-     * Generate an array composed of an array of categories ids
-     * from category_id_* params and an array of tree ids from
-     * apply_to_tree_* params
-     *
-     * @param array $requestParameters
-     *
-     * @return array of categories data structured of two arrays
-     *      categories, trees
-     */
-    protected function getCategoriesData(array $requestParameters)
-    {
-        $categories = array();
-        $trees = array();
-
-        foreach ($requestParameters as $key => $value) {
-            if ($value === "1") {
-                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-
-                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
-                    if ($catId > 0) {
-                        $categories[] = $catId;
-                    }
-                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
-                    if ($treeId > 0) {
-                        $trees[] = $treeId;
-                    }
-                }
-            }
-        }
-
-        return array('categories' => $categories, "trees" => $trees);
     }
 
     /**
@@ -338,6 +322,41 @@ class ProductController extends Controller
     }
 
     /**
+     * Generate an array composed of an array of categories ids
+     * from category_id_* params and an array of tree ids from
+     * apply_to_tree_* params
+     *
+     * @param array $requestParameters
+     *
+     * @return array of categories data structured of two arrays
+     *      categories, trees
+     */
+    protected function getCategoriesData(array $requestParameters)
+    {
+        $categories = array();
+        $trees = array();
+
+        foreach ($requestParameters as $key => $value) {
+            if ($value === "1") {
+                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
+
+                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
+                    if ($catId > 0) {
+                        $categories[] = $catId;
+                    }
+                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
+                    if ($treeId > 0) {
+                        $trees[] = $treeId;
+                    }
+                }
+            }
+        }
+
+        return array('categories' => $categories, "trees" => $trees);
+    }
+
+    /**
      * Get product manager
      *
      * @return ProductManager
@@ -359,7 +378,6 @@ class ProductController extends Controller
     {
         return $this->container->get('pim_product.manager.category');
     }
-
 
     /**
      * Get locale manager
@@ -509,7 +527,7 @@ class ProductController extends Controller
      *
      * @return boolean
      */
-    private function checkValuesRemovability(array $values)
+    protected function checkValuesRemovability(array $values)
     {
         if (0 === count($values)) {
             return false;

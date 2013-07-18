@@ -29,7 +29,7 @@ twig:
         env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      pim_product_product_index
+            start_route:      pim_default
     form:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'
@@ -135,7 +135,6 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable:    true
-            translatable:     true
             tree:             true
             loggable:         true
 
@@ -175,7 +174,7 @@ oro_user:
     settings:
         name_format:
           value:              %%last%%, %%first%%
-          
+
 oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig

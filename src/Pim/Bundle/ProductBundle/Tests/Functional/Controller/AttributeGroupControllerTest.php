@@ -100,7 +100,7 @@ class AttributeGroupControllerTest extends ControllerTest
         $this->submitFormAndAssertFlashbag($form, $values, self::GROUP_SAVED_MSG);
 
         // assert entity well inserted
-        $attributeGroup = $this->getRepository()->findOneBy(array('name' => self::GROUP_NAME));
+        $attributeGroup = $this->getRepository()->findOneBy(array('code' => self::GROUP_CODE));
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $attributeGroup);
         $this->assertEquals(self::GROUP_NAME, $attributeGroup->getName());
         $this->assertEquals(self::GROUP_ORDER, $attributeGroup->getSortOrder());

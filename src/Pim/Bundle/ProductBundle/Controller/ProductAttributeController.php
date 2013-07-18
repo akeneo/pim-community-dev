@@ -1,19 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-
-use Symfony\Component\HttpFoundation\Response;
-
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\DateType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use YsTools\BackUrlBundle\Annotation\BackUrl;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product attribute controller
@@ -26,21 +21,6 @@ use YsTools\BackUrlBundle\Annotation\BackUrl;
  */
 class ProductAttributeController extends Controller
 {
-
-    /**
-     * Get product manager
-     * @return FlexibleManager
-     */
-    protected function getProductManager()
-    {
-        $pm = $this->container->get('pim_product.manager.product');
-        // force data locale if provided
-        $dataLocale = $this->getRequest()->get('dataLocale');
-        $pm->setLocale($dataLocale);
-
-        return $pm;
-    }
-
     /**
      * List product attributes
      * @param Request $request
@@ -54,24 +34,10 @@ class ProductAttributeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $queryBuilder QueryBuilder */
-        $productClass = $this->getProductManager()->getFlexibleName();
-        $queryBuilder = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('a')
-            ->from('PimProductBundle:ProductAttribute', 'a')
-            ->where("a.entityType = '{$productClass}'");
-
-        /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.datagrid.manager.productattribute.default_query_factory');
-        $queryFactory->setQueryBuilder($queryBuilder);
-
         /** @var $gridManager AttributeDatagridManager */
-        $gridManager = $this->get('pim_product.datagrid.manager.productattribute');
-        $datagrid = $gridManager->getDatagrid();
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $attributeGroups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+        $gridManager  = $this->get('pim_product.datagrid.manager.productattribute');
+        $datagrid     = $gridManager->getDatagrid();
+        $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -79,14 +45,14 @@ class ProductAttributeController extends Controller
             $view = 'PimProductBundle:ProductAttribute:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView(), 'groups' => $attributeGroups));
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**
      * Create attribute
      *
      * @Route("/create")
-     * @Template("PimProductBundle:ProductAttribute:edit.html.twig")
+     * @Template
      *
      * @return array
      */
@@ -94,38 +60,63 @@ class ProductAttributeController extends Controller
     {
         $attribute = $this->getProductManager()->createAttribute('pim_product_text');
 
-        return $this->editAction($attribute);
+        if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
+            $this->addFlash('success', 'Attribute successfully created');
+
+            return $this->redirect(
+                $this->generateUrl('pim_product_productattribute_edit', array('id' => $attribute->getId()))
+            );
+        }
+
+        $localeManager = $this->get('pim_config.manager.locale');
+
+        return array(
+            'form'            => $this->get('pim_product.form.attribute')->createView(),
+            'locales'         => $localeManager->getActiveLocales(),
+            'disabledLocales' => $localeManager->getDisabledLocales(),
+            'measures'        => $this->container->getParameter('oro_measure.measures_config')
+        );
     }
 
     /**
      * Edit attribute form
      *
-     * @param ProductAttribute $entity
+     * @param ProductAttribute $attribute
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      *
      * @return array
      */
-    public function editAction(ProductAttribute $entity)
+    public function editAction(ProductAttribute $attribute)
     {
-        if ($this->get('pim_product.form.handler.attribute')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
+        if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
+            $this->addFlash('success', 'Attribute successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_product_productattribute_edit', array('id' => $entity->getId()))
+                $this->generateUrl('pim_product_productattribute_edit', array('id' => $attribute->getId()))
             );
         }
 
         $localeManager = $this->get('pim_config.manager.locale');
-        $locales = $localeManager->getActiveLocales();
-        $disabledLocales = $localeManager->getDisabledLocales();
+        $datagrid = $this->getDataAuditDatagrid(
+            $attribute,
+            'pim_product_productattribute_edit',
+            array(
+                'id' => $attribute->getId()
+            )
+        );
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
 
         return array(
             'form'            => $this->get('pim_product.form.attribute')->createView(),
-            'locales'         => $locales,
-            'disabledLocales' => $disabledLocales,
-            'measures'        => $this->container->getParameter('oro_measure.measures_config')
+            'locales'         => $localeManager->getActiveLocales(),
+            'disabledLocales' => $localeManager->getDisabledLocales(),
+            'measures'        => $this->container->getParameter('oro_measure.measures_config'),
+            'datagrid'       => $datagrid->createView(),
         );
     }
 
@@ -135,7 +126,7 @@ class ProductAttributeController extends Controller
      * @param Request $request
      *
      * @Route("/preprocess")
-     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
+     * @Template("PimProductBundle:ProductAttribute:_form_parameters.html.twig")
      *
      * @return array
      */
@@ -143,21 +134,41 @@ class ProductAttributeController extends Controller
     {
         $data = $request->request->all();
         if (!isset($data['pim_product_attribute_form'])) {
-            return $this->redirect($this->generateUrl('pim_product_productattribute_create'));
+            return $this->redirect(
+                $this->generateUrl('pim_product_productattribute_create')
+            );
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->get('pim_product.form.handler.attribute')->preProcess($data['pim_product_attribute_form']);
+        $this
+            ->get('pim_product.form.handler.attribute')
+            ->preProcess($data['pim_product_attribute_form']);
 
-        $localeManager = $this->get('pim_config.manager.locale');
-        $locales = $localeManager->getActiveLocales();
+        $localeManager   = $this->get('pim_config.manager.locale');
+        $locales         = $localeManager->getActiveLocales();
         $disabledLocales = $localeManager->getDisabledLocales();
+        $form            = $this->get('pim_product.form.attribute')->createView();
 
-        return array(
-            'form' => $this->get('pim_product.form.attribute')->createView(),
-            'locales' => $locales,
-            'disabledLocales' => $disabledLocales
+        $data = array(
+            'parameters' => $this->renderView(
+                'PimProductBundle:ProductAttribute:_form_parameters.html.twig',
+                array(
+                    'form'            => $form,
+                    'locales'         => $locales,
+                    'disabledLocales' => $disabledLocales
+                )
+            ),
+            'values' => $this->renderView(
+                'PimProductBundle:ProductAttribute:_form_values.html.twig',
+                array(
+                    'form'            => $form,
+                    'locales'         => $locales,
+                    'disabledLocales' => $disabledLocales
+                )
+            )
         );
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -206,6 +217,14 @@ class ProductAttributeController extends Controller
      */
     public function removeAction(ProductAttribute $entity)
     {
+        if ($entity->getAttributeType() === 'pim_product_identifier') {
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new Response('', 403);
+            } else {
+                return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+            }
+        }
+
         $em = $this->getProductManager()->getStorageManager();
         $em->remove($entity);
         $em->flush();

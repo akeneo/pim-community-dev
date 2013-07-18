@@ -1,19 +1,16 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Controller;
-
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
-use Pim\Bundle\ProductBundle\Entity\Category;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * Category Tree Controller
@@ -130,7 +127,6 @@ class CategoryTreeController extends Controller
             }
         }
 
-
         if (($selectNode != null)
             && (!$this->getTreeManager()->isAncestor($parent, $selectNode))) {
             $selectNode = null;
@@ -155,25 +151,6 @@ class CategoryTreeController extends Controller
         }
 
         return array('data' => $data);
-    }
-
-
-    /**
-     * Find a category from its id
-     *
-     * @param integer $categoryId
-     *
-     * @return Category
-     */
-    protected function findCategory($categoryId)
-    {
-        $category = $this->getTreeManager()->getEntityRepository()->find($categoryId);
-
-        if (!$category) {
-            throw $this->createNotFoundException('Category not found');
-        }
-
-        return $category;
     }
 
     /**
@@ -244,7 +221,11 @@ class CategoryTreeController extends Controller
             $category->setParent($parent);
         }
 
-        return $this->editAction($category);
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
@@ -266,6 +247,18 @@ class CategoryTreeController extends Controller
         $request = $this->getRequest();
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
+        $datagrid = $this->getDataAuditDatagrid(
+            $category,
+            'pim_product_categorytree_edit',
+            array(
+                'id' => $category->getId()
+            )
+        );
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
@@ -286,7 +279,8 @@ class CategoryTreeController extends Controller
         }
 
         return array(
-            'form' => $form->createView()
+            'form'     => $form->createView(),
+            'datagrid' => $datagrid->createView(),
         );
     }
 
@@ -333,6 +327,24 @@ class CategoryTreeController extends Controller
 
             return $this->redirect($this->generateUrl('pim_product_categorytree_index', $params));
         }
+    }
+
+    /**
+     * Find a category from its id
+     *
+     * @param integer $categoryId
+     *
+     * @return Category
+     */
+    protected function findCategory($categoryId)
+    {
+        $category = $this->getTreeManager()->getEntityRepository()->find($categoryId);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
+        return $category;
     }
 
     /**

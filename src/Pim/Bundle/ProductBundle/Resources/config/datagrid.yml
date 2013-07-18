@@ -24,3 +24,13 @@ services:
               entity_hint: products
               flexible: true
               route_name: pim_product_product_index
+        calls:
+            - [ setCategoryManager, [@pim_product.manager.category] ]
+
+    pim_product.datagrid.manager.history:
+        class: Pim\Bundle\ProductBundle\Datagrid\AuditDatagridManager
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: attributes
+              entity_hint: attributes
+              route_name: current

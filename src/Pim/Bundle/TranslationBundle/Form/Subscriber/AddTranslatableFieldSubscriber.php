@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
@@ -22,7 +23,6 @@ use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
  */
 class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var ValidatorInterface
      */
@@ -93,15 +93,17 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         }
 
         $entity = $form->getParent()->getData();
-        $entity->setTranslatableLocale($this->getOption('default_locale'));
+        $entity->setLocale($this->getOption('default_locale'));
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
+            $method = 'get'.Inflector::camelize($this->getOption('field'));
+            $content = $binded['translation']->$method();
             $form->add(
                 $this->formFactory->createNamed(
                     $binded['fieldName'],
                     $this->getOption('widget'),
-                    $binded['translation']->getContent() !== null ? $binded['translation']->getContent() : '',
+                    $content !== null ? $content : '',
                     array(
                         'label'         => $binded['locale'],
                         'required'      => in_array($binded['locale'], $this->getOption('required_locale')),
@@ -136,7 +138,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             }
 
             $translation = $this->translationFactory->createTranslation($locale);
-            $translation->setContent($content);
+            $method = 'set'.Inflector::camelize($this->getOption('field'));
+            $translation->$method($content);
 
             $errors = $this->validator->validate(
                 $translation,
@@ -162,7 +165,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
 
         $entity = $form->getParent()->getData();
-        $entity->setTranslatableLocale($this->getOption('default_locale'));
+        $entity->setLocale($this->getOption('default_locale'));
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
@@ -170,15 +173,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $translation = $binded['translation'];
 
             if ($content !== null) {
-                // set the submitted content
-                $translation->setContent($content);
+                $method = 'set'.Inflector::camelize($this->getOption('field'));
+                $translation->$method($content);
                 $translation->setForeignKey($entity);
-
-                if ($translation->getLocale() === $this->getOption('default_locale')) {
-                    $methodName = 'set'. ucfirst($this->getOption('field'));
-                    $entity->$methodName($translation->getContent());
-                }
                 $entity->addTranslation($translation);
+
             } else {
                 $entity->removeTranslation($translation);
             }
@@ -199,9 +198,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $availableTranslations = array();
 
         foreach ($data as $translation) {
-            if (strtolower($translation->getField()) === strtolower($this->getOption('field'))) {
-                $availableTranslations[strtolower($translation->getLocale())] = $translation;
-            }
+            $availableTranslations[strtolower($translation->getLocale())] = $translation;
         }
 
         foreach ($this->getFieldNames() as $locale => $fieldName) {

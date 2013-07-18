@@ -15,11 +15,18 @@ class ProductIndex extends Page
 
     protected $elements = array(
         'Activated locales' => array('css' => '#select2-drop'),
+        'Categories tree'   => array('css' => '#tree'),
+        'Products'          => array('css' => 'table.grid'),
     );
 
     public function clickNewProductLink()
     {
         $this->clickLink('New product');
+    }
+
+    public function findProductRow($sku)
+    {
+        return $this->getElement('Products')->find('css', sprintf('tr:contains("%s")', $sku));
     }
 
     public function selectActivatedLocale($locale)
@@ -31,6 +38,32 @@ class ProductIndex extends Page
 
         if (!$elt) {
             throw new \Exception(sprintf('Could not find locale "%s".', $locale));
+        }
+
+        $elt->click();
+    }
+
+    public function clickCategoryFilterLink($category)
+    {
+        $elt = $this
+            ->getElement('Categories tree')
+            ->find('css', sprintf('#node_%s a', $category->getId()));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
+        }
+
+        $elt->click();
+    }
+
+    public function clickUnclassifiedCategoryFilterLink()
+    {
+        $elt = $this
+            ->getElement('Categories tree')
+            ->find('css', sprintf('#node_0 a'));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find unclassified category filter.'));
         }
 
         $elt->click();

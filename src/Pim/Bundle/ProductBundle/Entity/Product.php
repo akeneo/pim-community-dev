@@ -142,6 +142,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
     {
         $this->locales->removeElement($locale);
+
+        return $this;
     }
 
     /**

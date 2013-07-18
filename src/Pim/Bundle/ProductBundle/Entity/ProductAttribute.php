@@ -6,9 +6,10 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Custom properties for a product attribute
@@ -23,19 +24,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
+ * @Oro\Loggable
  */
-class ProductAttribute extends AbstractEntityAttribute implements Translatable
+class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface
 {
-    /**
-     * @var string $label
-     *
-     * @ORM\Column(name="label", type="string", length=255)
-     * @Gedmo\Translatable
-     */
-    protected $label;
-
     /**
      * Overrided to change target entity name
      *
@@ -48,11 +41,13 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"sortOrder" = "ASC"})
+     * @Oro\Versioned
      */
     protected $options;
 
     /**
      * @ORM\Column(name="sort_order", type="integer")
+     * @Oro\Versioned
      */
     protected $sortOrder = 0;
 
@@ -60,6 +55,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $description
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $description;
 
@@ -67,6 +63,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $variant
      *
      * @ORM\Column(name="variant", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $variant;
 
@@ -74,6 +71,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $smart
      *
      * @ORM\Column(name="is_smart", type="boolean")
+     * @Oro\Versioned
      */
     protected $smart;
 
@@ -82,6 +80,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attributes")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned
      */
     protected $group;
 
@@ -89,6 +88,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $useableAsGridColumn
      *
      * @ORM\Column(name="useable_as_grid_column", type="boolean", options={"default" = false})
+     * @Oro\Versioned
      */
     protected $useableAsGridColumn;
 
@@ -96,6 +96,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $useableAsGridFilter
      *
      * @ORM\Column(name="useable_as_grid_filter", type="boolean", options={"default" = false})
+     * @Oro\Versioned
      */
     protected $useableAsGridFilter;
 
@@ -104,6 +105,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
      * @ORM\JoinTable(name="pim_product_attribute_locale")
+     * @Oro\Versioned
      */
     protected $availableLocales;
 
@@ -111,6 +113,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var integer $maxCharacters
      *
      * @ORM\Column(name="max_characters", type="smallint", nullable=true)
+     * @Oro\Versioned
      */
     protected $maxCharacters;
 
@@ -118,6 +121,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $validationRule
      *
      * @ORM\Column(name="validation_rule", type="string", length=10, nullable=true)
+     * @Oro\Versioned
      */
     protected $validationRule;
 
@@ -125,6 +129,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $validationRegexp
      *
      * @ORM\Column(name="validation_regexp", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $validationRegexp;
 
@@ -132,6 +137,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $wysiwygEnabled
      *
      * @ORM\Column(name="wysiwyg_enabled", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $wysiwygEnabled;
 
@@ -139,6 +145,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var decimal $numberMin
      *
      * @ORM\Column(name="number_min", type="decimal", precision=14, scale=4, nullable=true)
+     * @Oro\Versioned
      */
     protected $numberMin;
 
@@ -146,6 +153,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var decimal $numberMax
      *
      * @ORM\Column(name="number_max", type="decimal", precision=14, scale=4, nullable=true)
+     * @Oro\Versioned
      */
     protected $numberMax;
 
@@ -153,6 +161,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $decimalsAllowed
      *
      * @ORM\Column(name="decimals_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $decimalsAllowed;
 
@@ -160,6 +169,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $negativeAllowed
      *
      * @ORM\Column(name="negative_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $negativeAllowed;
 
@@ -167,6 +177,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var boolean $valueCreationAllowed
      *
      * @ORM\Column(name="value_creation_allowed", type="boolean", nullable=true)
+     * @Oro\Versioned
      */
     protected $valueCreationAllowed;
 
@@ -174,6 +185,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $dateType
      *
      * @ORM\Column(name="date_type", type="string", length=20, nullable=true)
+     * @Oro\Versioned
      */
     protected $dateType;
 
@@ -181,6 +193,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var decimal $dateMin
      *
      * @ORM\Column(name="date_min", type="datetime", nullable=true)
+     * @Oro\Versioned
      */
     protected $dateMin;
 
@@ -188,6 +201,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var decimal $dateMax
      *
      * @ORM\Column(name="date_max", type="datetime", nullable=true)
+     * @Oro\Versioned
      */
     protected $dateMax;
 
@@ -195,6 +209,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $metricFamily
      *
      * @ORM\Column(name="metric_family", type="string", length=30, nullable=true)
+     * @Oro\Versioned
      */
     protected $metricFamily;
 
@@ -202,6 +217,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $defaultMetricUnit
      *
      * @ORM\Column(name="default_metric_unit", type="string", length=30, nullable=true)
+     * @Oro\Versioned
      */
     protected $defaultMetricUnit;
 
@@ -209,6 +225,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var string $allowedFileSources
      *
      * @ORM\Column(name="allowed_file_sources", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $allowedFileSources;
 
@@ -216,6 +233,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var integer $maxFileSize
      *
      * @ORM\Column(name="max_file_size", type="integer", nullable=true)
+     * @Oro\Versioned
      */
     protected $maxFileSize;
 
@@ -223,29 +241,64 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var array $allowedFileExtensions
      *
      * @ORM\Column(name="allowed_file_extensions", type="string", length=255, nullable=true)
+     * @Oro\Versioned
      */
     protected $allowedFileExtensions;
 
     /**
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
      * @var string $locale
-     *
-     * @Gedmo\Locale
      */
-    protected $locale;
+    protected $locale = self::FALLBACK_LOCALE;
 
     /**
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="ProductAttributeTranslation",
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"}
      * )
      */
     protected $translations;
+
+    /**
+     * @ORM\Column(name="is_required", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $required;
+
+    /**
+     * @ORM\Column(name="is_unique", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $unique;
+
+    /**
+     * @ORM\Column(name="default_value", type="text", length=65532, nullable=true)
+     * @Oro\Versioned
+     */
+    protected $defaultValue;
+
+    /**
+     * @ORM\Column(name="is_searchable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $searchable;
+
+    /**
+     * @ORM\Column(name="is_translatable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $translatable;
+
+    /**
+     * @ORM\Column(name="is_scopable", type="boolean")
+     * @Oro\Versioned
+     */
+    protected $scopable;
 
     /**
      * Constructor
@@ -354,7 +407,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __toString()
     {
-        return $this->label;
+        return ($this->getLabel() != '') ? (string) $this->getLabel() : $this->getCode();
     }
 
     /**
@@ -968,60 +1021,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return ProductAttribute
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function addTranslation(ProductAttributeTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function removeTranslation(ProductAttributeTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
-
-        return $this;
-    }
-
-    /**
      * Get sortOrder
      *
      * @return number
@@ -1063,6 +1062,101 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
             }
             $this->$method($value);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslation($locale = null)
+    {
+        $locale = ($locale) ? $locale : $this->locale;
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation      = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTranslation(AbstractTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTranslation(AbstractTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation';
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation()->getLabel();
+
+        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return string
+     */
+    public function setLabel($label)
+    {
+        $translation = $this->getTranslation()->setLabel($label);
 
         return $this;
     }

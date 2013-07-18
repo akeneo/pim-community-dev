@@ -11,13 +11,13 @@ Feature: Add attributes to a product
       | General |
       | Prices  |
     And the following product attribute:
-      | product | label        | group   |
-      | Car     | Release Date | General |
+      | product | label        | group   | position |
+      | Car     | Release Date | General | 1        |
     And the following product attributes:
-      | label            | group   |
-      | Long Description | General |
-      | Manufacturer     | General |
-      | Size             |         |
+      | label            | group   | position |
+      | Long Description | General | 10       |
+      | Manufacturer     | General | 20       |
+      | Size             |         | 10       |
     And I am logged in as "admin"
 
   Scenario: Display attributes that are not related to the current product
@@ -29,5 +29,5 @@ Feature: Add attributes to a product
   Scenario: Successfully add attributes to a product
     Given I am on the "Car" product page
     And I add available attributes Long Description and Size
-    Then attributes in group "General" should be Release date and Long description
-    And attribute in group "Other" should be Size
+    Then attributes in group "General" should be Release Date and Long Description
+    And attribute in group "Other" should be SKU and Size

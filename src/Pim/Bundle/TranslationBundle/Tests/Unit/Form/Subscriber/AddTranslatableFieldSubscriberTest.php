@@ -511,7 +511,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTranslatableEntityMock()
     {
-        return $this->getMockForAbstractClass('Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity');
+        return $this->getMockForAbstractClass('Pim\Bundle\TranslationBundle\Tests\Entity\Item');
     }
 
     /**
@@ -521,6 +521,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTranslationMock()
     {
-        return $this->getMockForAbstractClass('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation');
+        return $this->getMockForAbstractClass('Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation');
     }
 }

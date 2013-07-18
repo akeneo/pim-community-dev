@@ -1,12 +1,11 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
-use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
+use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Category repository
@@ -20,6 +19,15 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
  */
 class CategoryRepository extends SegmentRepository
 {
+    /**
+     * Get query builder for all existitng category trees
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTreesQB()
+    {
+        return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
+    }
 
     /**
      * Shortcut to get all children query builder
@@ -59,6 +67,39 @@ class CategoryRepository extends SegmentRepository
            ->join($firstRootAlias .'.products', 'p');
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Get product ids linked to a node or its children.
+     * You can define if you just want to get the property of the actual node or with its children with the direct
+     * parameter
+     *
+     * @param integer $categoryId   the requested node
+     * @param boolean $withChildren true to take only actual node
+     *
+     * @return array
+     */
+    public function getLinkedProductIds($categoryId, $withChildren = true)
+    {
+        $category = $this->find($categoryId);
+
+        $qb = ($withChildren) ?
+            $this->getAllChildrenQueryBuilder($category, $withChildren) :
+            $this->getNodeQueryBuilder($category);
+
+        $rootAlias = $qb->getRootAliases();
+        $firstRootAlias = $rootAlias[0];
+
+        $qb->select('p.id')->join($firstRootAlias .'.products', 'p');
+
+        $products = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $productIds = array();
+        foreach ($products as $product) {
+            $productIds[]= $product['id'];
+        }
+        $productIds = array_unique($productIds);
+
+        return $productIds;
     }
 
     /**
@@ -181,15 +222,18 @@ class CategoryRepository extends SegmentRepository
         $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('category.title')
-            ->from($config['useObjectClass'], 'category', 'category.id')
-            ->orderBy('category.title');
-
-        $categories = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         $choices = array();
-        foreach ($categories as $categoryId => $categoryData) {
-            $choices[$categoryId] = $categoryData['title'];
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('category, translations')
+            ->from($config['useObjectClass'], 'category', 'category.id')
+            ->leftJoin('category.translations', 'translations');
+
+        $categories = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_OBJECT);
+        $choices = array();
+
+        foreach ($categories as $category) {
+            $choices[$category->getId()] = $category->getTitle();
         }
 
         return $choices;

@@ -23,7 +23,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     protected $securityContext;
 
     /**
-     * @var Gedmo\Translatable\TranslatableListener
+     * @var Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener
      */
     protected $translatableListener;
 
@@ -45,11 +45,11 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Gedmo\Translatable\TranslatableListener
+     * @return Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener
      */
     protected function getTranslatableListenerMock()
     {
-        return $this->getMock('Gedmo\Translatable\TranslatableListener');
+        return $this->getMock('Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener');
     }
 
     /**
@@ -205,7 +205,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->translatableListener
              ->expects($this->once())
-             ->method('setTranslatableLocale')
+             ->method('setLocale')
              ->with($this->equalTo('en_US'));
 
         $this->target->onKernelRequest($this->getGetResponseEventMock());
@@ -223,7 +223,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->translatableListener
              ->expects($this->never())
-             ->method('setTranslatableLocale');
+             ->method('setLocale');
 
         $this->target->onKernelRequest($this->getGetResponseEventMock());
     }
@@ -241,7 +241,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->translatableListener
              ->expects($this->never())
-             ->method('setTranslatableLocale');
+             ->method('setLocale');
 
         $this->target->onKernelRequest($this->getGetResponseEventMock());
     }
@@ -260,7 +260,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->translatableListener
              ->expects($this->never())
-             ->method('setTranslatableLocale');
+             ->method('setLocale');
 
         $this->target->onKernelRequest($this->getGetResponseEventMock(HttpKernel::SUB_REQUEST));
     }

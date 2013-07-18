@@ -2,14 +2,12 @@
 
 namespace Context;
 
+use Doctrine\Common\Util\Inflector;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
-
-use Doctrine\Common\Util\Inflector;
-
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
-
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
@@ -33,9 +31,11 @@ class FixturesContext extends RawMinkContext
     );
 
     private $attributeTypes = array(
-        'text'     => 'pim_product_text',
-        'number'   => 'pim_product_number',
-        'textarea' => 'pim_product_textarea',
+        'text'       => 'pim_product_text',
+        'number'     => 'pim_product_number',
+        'textarea'   => 'pim_product_textarea',
+        'identifier' => 'pim_product_identifier',
+        'metric'     => 'pim_product_metric',
     );
 
     /**
@@ -175,7 +175,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following product:$/
+     * @Given /^the following products?:$/
      */
     public function theFollowingProduct(TableNode $table)
     {
@@ -190,6 +190,7 @@ class FixturesContext extends RawMinkContext
             if ($data['family']) {
                 $product->setFamily($this->getFamily($data['family']));
             }
+
             $pm->save($product);
         }
     }
@@ -329,13 +330,28 @@ class FixturesContext extends RawMinkContext
             } catch (\InvalidArgumentException $e) {
                 $attribute = $this->createAttribute($data['label'], false, $data['type']);
             }
+
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $attribute->setRequired($data['required'] === 'yes');
+            $attribute->setUseableAsGridColumn(true);
+            $attribute->isUseableAsGridFilter(true);
 
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
                 $family->addAttribute($attribute);
+            }
+
+            if ($data['type'] === 'metric') {
+                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                    $attribute->setMetricFamily($data['metric family']);
+                    $attribute->setDefaultMetricUnit($data['default metric unit']);
+                } else {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        $data['label']
+                    ));
+                }
             }
 
             if (!empty($data['product'])) {
@@ -346,6 +362,7 @@ class FixturesContext extends RawMinkContext
                 $this->getProductManager()->save($product);
             }
         }
+
         $em->flush();
     }
 
@@ -429,6 +446,13 @@ class FixturesContext extends RawMinkContext
             $category->setCode($data['code']);
             $category->setTitle($data['title']);
 
+            if (isset($data['products'])) {
+                $skus = explode(',', $data['products']);
+                foreach ($skus as $sku) {
+                    $category->addProduct($this->getProduct($sku));
+                }
+            }
+
             $em->persist($category);
         }
         $em->flush();
@@ -452,6 +476,47 @@ class FixturesContext extends RawMinkContext
             $em->persist($channel);
         }
         $em->flush();
+    }
+
+    /**
+     * @Given /^the following (\w+) "([^"]*)" updates:$/
+     */
+    public function theFollowingUpdates($entityName, $id, TableNode $table)
+    {
+        $entity = $this->{'get'.ucfirst($entityName)}($id);
+        $em     = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $audit = new Audit;
+            $audit->setAction($data['action']);
+            $audit->setLoggedAt(new \DateTime($data['loggedAt']));
+            $audit->setObjectId($entity->getId());
+            $audit->setObjectClass(get_class($entity));
+            $audit->setObjectName((string) $entity);
+            $audit->setVersion(1);
+            list($field, $change) = explode(': ', $data['change']);
+            list($old, $new) = explode(' => ', $change);
+            $audit->setData(array(
+                $field => array(
+                    'old' => $old,
+                    'new' => $new,
+                )
+            ));
+            $user = $this->getUser($data['updatedBy']);
+            $audit->setUsername($user->getUsername());
+            $audit->setUser($user);
+            $em->persist($audit);
+        }
+
+        $em->flush();
+    }
+
+
+    private function getUser($username)
+    {
+        return $this->getEntityOrException('OroUserBundle:User', array(
+            'username' => $username,
+        ));
     }
 
     public function getProduct($sku)
@@ -512,7 +577,7 @@ class FixturesContext extends RawMinkContext
     public function getAttribute($label)
     {
         return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
-            'label' => $label
+            'code' => $this->camelize($label)
         ));
     }
 
@@ -535,7 +600,7 @@ class FixturesContext extends RawMinkContext
     {
         try {
             return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
-                'name' => $name
+                'code' => $this->camelize($name)
             ));
         } catch (\InvalidArgumentException $e) {
             return null;
@@ -568,15 +633,6 @@ class FixturesContext extends RawMinkContext
         $attribute->setCode($this->camelize($label));
         $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
-
-        $translation = new ProductAttributeTranslation();
-        $translation->setContent($label);
-        $translation->setField('label');
-        $translation->setForeignKey($attribute);
-        $translation->setLocale('default');
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
-
-        $attribute->addTranslation($translation);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
@@ -638,10 +694,10 @@ class FixturesContext extends RawMinkContext
         return $role;
     }
 
-    private function getCategory($title)
+    public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array(
-            'title' => $title,
+            'code' => $code,
         ));
     }
 
@@ -665,10 +721,8 @@ class FixturesContext extends RawMinkContext
     private function createFamilyTranslation(Family $family, $content, $locale = 'default')
     {
         $translation = new FamilyTranslation();
-        $translation->setContent($content);
-        $translation->setField('label');
+        $translation->setLabel($content);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Family');
         $translation->setForeignKey($family);
 
         $em = $this->getEntityManager();

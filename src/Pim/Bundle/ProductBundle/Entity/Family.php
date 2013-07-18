@@ -1,15 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Product family
@@ -21,10 +20,9 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\FamilyTranslation")
  * @Oro\Loggable
  */
-class Family implements Translatable
+class Family implements TranslatableInterface
 {
     /**
      * @var integer $id
@@ -45,14 +43,6 @@ class Family implements Translatable
     protected $code;
 
     /**
-     * @var string $label
-     *
-     * @ORM\Column(nullable=true)
-     * @Gedmo\Translatable
-     */
-    protected $label;
-
-    /**
      * @var ArrayCollection $attributes
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute", cascade={"persist"})
@@ -66,20 +56,18 @@ class Family implements Translatable
     protected $attributes;
 
     /**
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
      * @var string $locale
-     *
-     * @Gedmo\Locale
      */
-    protected $locale;
+    protected $locale = self::FALLBACK_LOCALE;
 
     /**
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="FamilyTranslation",
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\FamilyTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -89,6 +77,7 @@ class Family implements Translatable
 
     /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @ORM\JoinColumn(name="label_attribute_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\Versioned("getCode")
      */
     protected $attributeAsLabel;
@@ -109,7 +98,7 @@ class Family implements Translatable
      */
     public function __toString()
     {
-        return ($this->label !== null) ? $this->label : $this->code;
+        return ($this->getLabel() != '') ? $this->getLabel() : $this->code;
     }
 
     /**
@@ -193,84 +182,6 @@ class Family implements Translatable
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return ProductAttribute
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * Get the label
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return Pim\Bundle\ProductBundle\Entity\Family
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param FamilyTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
-     */
-    public function addTranslation(FamilyTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param FamilyTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
-     */
-    public function removeTranslation(FamilyTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
-
-        return $this;
-    }
-
-    /**
      * @param ProductAttribute $attributeAsLabel
      */
     public function setAttributeAsLabel($attributeAsLabel)
@@ -293,8 +204,110 @@ class Family implements Translatable
     {
         return $this->attributes->filter(
             function ($attribute) {
-                return 'pim_product_text' === $attribute->getAttributeType();
+                return in_array(
+                    $attribute->getAttributeType(),
+                    array(
+                        'pim_product_text',
+                        'pim_product_identifier'
+                    )
+                );
             }
         )->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslation($locale = null)
+    {
+        $locale = ($locale) ? $locale : $this->locale;
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation      = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTranslation(AbstractTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTranslation(AbstractTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\ProductBundle\Entity\FamilyTranslation';
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation()->getLabel();
+
+        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return string
+     */
+    public function setLabel($label)
+    {
+        $translation = $this->getTranslation()->setLabel($label);
+
+        return $this;
     }
 }

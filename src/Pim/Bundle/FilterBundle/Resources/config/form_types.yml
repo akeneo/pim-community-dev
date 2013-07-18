@@ -14,14 +14,6 @@ services:
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
-    pim_filter.form.type.filter.locale:
-        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\LocaleFilterType
-        arguments:
-            - @translator
-            - @pim_config.manager.locale
-        tags:
-            - { name: form.type, alias: pim_type_locale_filter }
-
     pim_filter.form.type.filter.scope:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
         arguments:
