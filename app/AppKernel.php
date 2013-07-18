@@ -84,10 +84,10 @@ class AppKernel extends Kernel
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
 */
 
-            // tmp to fix placeholder issue
+            // TODO tmp to fix placeholder issue
             new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
 
-                );
+        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -95,7 +95,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
             // PIM demo bundle
-            //$bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
+            $bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
         }
 
         return $bundles;
