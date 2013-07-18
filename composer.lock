@@ -55,7 +55,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-07-13 17:33:25"
+            "time": "2013-07-18 12:04:41"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -178,17 +178,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapBundle.git",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5"
+                "reference": "1a4a3294af83066a40d746f046e0d65ce483705b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/90903e8a1b55243bd738c44f301ba3c3d93965c5",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/1a4a3294af83066a40d746f046e0d65ce483705b",
+                "reference": "1a4a3294af83066a40d746f046e0d65ce483705b",
                 "shasum": ""
             },
             "require": {
                 "ass/xmlsecurity": "dev-master",
-                "besimple/soap-common": "dev-master",
+                "besimple/soap-common": "self.version",
                 "php": ">=5.3.0",
                 "symfony/http-foundation": ">=2.0,<2.4-dev",
                 "zendframework/zend-mail": "2.1.*",
@@ -200,6 +200,11 @@
                 "besimple/soap-server": "dev-master"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "BeSimple\\SoapBundle": ""
@@ -230,33 +235,40 @@
                 "soap",
                 "soap-bundle"
             ],
-            "time": "2013-06-07 11:38:29"
+            "time": "2013-07-17 14:51:40"
         },
         {
             "name": "besimple/soap-common",
             "version": "dev-master",
+            "target-dir": "BeSimple/SoapCommon",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c"
+                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/db885b2be7328fd8e663ee256df2d8570daeac3c",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
+                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
                 "shasum": ""
             },
             "require": {
                 "ass/xmlsecurity": "dev-master",
+                "ext-soap": "*",
                 "php": ">=5.3.0"
             },
             "require-dev": {
                 "mikey179/vfsstream": "dev-master"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "BeSimple\\SoapCommon": "src/"
+                    "BeSimple\\SoapCommon": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -284,7 +296,7 @@
                 "soap",
                 "soap-common"
             ],
-            "time": "2013-02-27 16:03:38"
+            "time": "2013-07-18 14:33:11"
         },
         {
             "name": "besimple/soap-server",
@@ -293,22 +305,28 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapServer.git",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4"
+                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/127d06fcb9b401593203ce9287da14a4986158f4",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/04afa3d79c50a117610b3d6b98fb903adee24774",
+                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774",
                 "shasum": ""
             },
             "require": {
-                "besimple/soap-common": "dev-master",
+                "besimple/soap-common": "self.version",
+                "ext-soap": "*",
                 "php": ">=5.3.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "BeSimple\\SoapServer": "BeSimple/SoapServer/src/"
+                    "BeSimple\\SoapServer": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -336,7 +354,7 @@
                 "soap",
                 "soap-server"
             ],
-            "time": "2013-01-15 21:45:13"
+            "time": "2013-07-18 14:58:11"
         },
         {
             "name": "ddeboer/data-import",
@@ -2883,13 +2901,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:laboro/platform.git",
-                "reference": "e8b6687b835fe481ef30ac669124b380207c0c20"
+                "url": "https://github.com/orocrm/platform.git",
+                "reference": "1.0.0-alpha3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/e8b6687b835fe481ef30ac669124b380207c0c20",
-                "reference": "e8b6687b835fe481ef30ac669124b380207c0c20",
+                "url": "https://api.github.com/repos/orocrm/platform/zipball/1.0.0-alpha3",
+                "reference": "1.0.0-alpha3",
                 "shasum": ""
             },
             "require": {
@@ -2906,6 +2924,7 @@
                 "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
                 "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
                 "friendsofsymfony/rest-bundle": "0.11.*",
+                "genemu/form-bundle": "2.1.*",
                 "jms/aop-bundle": "dev-master",
                 "jms/di-extra-bundle": "1.3.*@dev",
                 "jms/job-queue-bundle": "dev-master",
@@ -2942,16 +2961,13 @@
                     "Oro\\Bundle": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Business Application Platform (BAP)",
-            "homepage": "https://github.com/laboro/platform.git",
-            "support": {
-                "source": "https://github.com/laboro/platform/tree/master",
-                "issues": "https://github.com/laboro/platform/issues"
-            },
-            "time": "2013-07-13 13:41:32"
+            "homepage": "https://github.com/orocrm/platform.git",
+            "time": "2013-06-27 15:06:05"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4599,12 +4615,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "64052d951cfb21d75b0d34f5ccf79d5ac0adfc92"
+                "reference": "052be6cc2ac800f28a97067da8587bdd2f2683cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/64052d951cfb21d75b0d34f5ccf79d5ac0adfc92",
-                "reference": "64052d951cfb21d75b0d34f5ccf79d5ac0adfc92",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/052be6cc2ac800f28a97067da8587bdd2f2683cf",
+                "reference": "052be6cc2ac800f28a97067da8587bdd2f2683cf",
                 "shasum": ""
             },
             "require": {
@@ -4658,7 +4674,7 @@
                 "Behat",
                 "Symfony2"
             ],
-            "time": "2013-07-01 09:38:54"
+            "time": "2013-07-11 11:11:51"
         },
         {
             "name": "behat/common-contexts",
@@ -4752,9 +4768,9 @@
                 "symfony/finder": "~2.0"
             },
             "require-dev": {
-                "symfony/config": ">=2.0,<3.0",
-                "symfony/translation": ">=2.0,<3.0",
-                "symfony/yaml": ">=2.0,<3.0"
+                "symfony/config": "~2.0",
+                "symfony/translation": "~2.0",
+                "symfony/yaml": "~2.0"
             },
             "suggest": {
                 "symfony/config": "If you want to use Config component to manage resources",
@@ -4924,7 +4940,7 @@
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": ">=1.0,<2.0"
+                "behat/mink-goutte-driver": "~1.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -5022,12 +5038,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Symfony2Extension.git",
-                "reference": "ae30307a6a6844eb4ddbdb4dcc9572bf835c8756"
+                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/ae30307a6a6844eb4ddbdb4dcc9572bf835c8756",
-                "reference": "ae30307a6a6844eb4ddbdb4dcc9572bf835c8756",
+                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/17b306a2f3904dc478aef006d3412dfbae542fea",
+                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea",
                 "shasum": ""
             },
             "require": {
@@ -5070,7 +5086,7 @@
                 "framework",
                 "symfony"
             ],
-            "time": "2013-07-02 17:51:22"
+            "time": "2013-07-09 08:46:53"
         },
         {
             "name": "instaclick/php-webdriver",
