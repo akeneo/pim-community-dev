@@ -7,7 +7,7 @@
     "license": "OSL",
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
+        "symfony/symfony": "2.*",
         "fzaninotto/faker": "~1.2",
         "nelmio/alice": "1.2.*"
     },
