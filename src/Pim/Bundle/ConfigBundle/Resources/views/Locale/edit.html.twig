@@ -6,6 +6,8 @@
 <div class="container-fluid">
 
     {% block content %}
+
+    {{ JSFV(form) }}
     <form class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_config_locale_edit', { id: form.vars.value.id }) :
         path('pim_config_locale_create') }}" method="POST" class="form-register">
