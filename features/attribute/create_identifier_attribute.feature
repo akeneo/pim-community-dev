@@ -15,12 +15,12 @@ Feature: Create an identifier attribute
     Given I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Identifier"
-    And I fill in the following informations:
+    And I fill in the following information:
       | Name           | myId |
       | Max characters | 100  |
       | Position       | 1    |
     And I visit the "Values" tab
-    And I fill in the following informations:
+    And I fill in the following information:
       | Default     | SKU           |
       | Description | My identifier |
     And I press the "Save" button
@@ -42,12 +42,12 @@ Feature: Create an identifier attribute
     And I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Identifier"
-    And I fill in the following informations:
+    And I fill in the following information:
       | Name           | mySecondId |
       | Max characters | 100        |
       | Position       | 2          |
     And I visit the "Values" tab
-    And I fill in the following informations:
+    And I fill in the following information:
       | Default     | Sku2              |
       | Description | My 2nd identifier |
     And I press the "Save" button
