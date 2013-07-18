@@ -60,6 +60,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
             array(
                 'defaultOptions' => array(
                     'field_options' => array('choices' => $this->booleanChoices),
+                    'translation_domain' => 'OroFilterBundle'
                 )
             )
         );

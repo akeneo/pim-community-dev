@@ -2,28 +2,13 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class BooleanFilterType extends AbstractType
+class BooleanFilterType extends AbstractChoiceType
 {
     const TYPE_YES = 1;
     const TYPE_NO = 2;
     const NAME = 'oro_type_boolean_filter';
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
 
     /**
      * {@inheritDoc}
@@ -47,13 +32,14 @@ class BooleanFilterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $fieldChoices = array(
-            self::TYPE_YES => $this->translator->trans('label_type_yes', array(), 'OroFilterBundle'),
-            self::TYPE_NO  => $this->translator->trans('label_type_no', array(), 'OroFilterBundle'),
+            self::TYPE_YES => 'label_type_yes',
+            self::TYPE_NO  => 'label_type_no',
         );
 
         $resolver->setDefaults(
             array(
-                'field_options' => array('choices' => $fieldChoices),
+                'field_options'      => array('choices' => $fieldChoices),
+                'translation_domain' => 'OroFilterBundle', // TODO Remove after translation refactoring
             )
         );
     }
