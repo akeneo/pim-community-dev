@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Serializer\WorkflowItemDataSerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Performs serialization and deserialization of WorkflowItem data
@@ -16,16 +16,21 @@ use Oro\Bundle\WorkflowBundle\Serializer\WorkflowItemDataSerializerInterface;
 class WorkflowItemSerializeSubscriber implements EventSubscriber
 {
     /**
-     * @var WorkflowItemDataSerializerInterface
+     * @var SerializerInterface
      */
     protected $serializer;
 
     /**
+     * @var string
+     */
+    protected $format = 'json';
+
+    /**
      * Constructor
      *
-     * @param WorkflowItemDataSerializerInterface $serializer
+     * @param SerializerInterface $serializer
      */
-    public function __construct(WorkflowItemDataSerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
@@ -54,13 +59,13 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->serializeWorkflowItemData($entity);
+                $this->serialize($entity);
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->serializeWorkflowItemData($entity);
+                $this->serialize($entity);
             }
         }
     }
@@ -74,7 +79,7 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
         if ($this->isSupported($args->getEntity($entity))) {
-            $this->deserializeWorkflowItemData($entity);
+            $this->deserialize($entity);
         }
     }
 
@@ -83,9 +88,11 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
      *
      * @param WorkflowItem $workflowItem
      */
-    protected function serializeWorkflowItemData(WorkflowItem $workflowItem)
+    protected function serialize(WorkflowItem $workflowItem)
     {
-        $workflowItem->setSerializedData($this->serializer->serialize($workflowItem->getData()));
+        // @TODO Get format ("json", "xml", ...) from WorkflowDefinition
+        $serializedData = $this->serializer->serialize($workflowItem->getData(), $this->format);
+        $workflowItem->setSerializedData($serializedData);
     }
 
     /**
@@ -93,9 +100,16 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
      *
      * @param WorkflowItem $workflowItem
      */
-    protected function deserializeWorkflowItemData(WorkflowItem $workflowItem)
+    protected function deserialize(WorkflowItem $workflowItem)
     {
-        $workflowItem->setData($this->serializer->deserialize($workflowItem->getSerializedData()));
+        // @TODO Get class name "Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData" from WorkflowDefinition
+        // @TODO Get format ("json", "xml", ...) from WorkflowDefinition
+        $data = $this->serializer->deserialize(
+            $workflowItem->getSerializedData(),
+            'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData',
+            $this->format
+        );
+        $workflowItem->setData($data);
     }
 
     /**

@@ -7,7 +7,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
-use Oro\Bundle\WorkflowBundle\Serializer\WorkflowItemDataSerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber;
 
 class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
@@ -24,7 +24,7 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowItemDataSerializerInterface');
+        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
         $this->subscriber = new WorkflowItemSerializeSubscriber($this->serializer);
     }
 
@@ -53,7 +53,12 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer->expects($this->never())->method('serialize');
         $this->serializer->expects($this->once())->method('deserialize')
-            ->with($serializedData)->will($this->returnValue($expectedData));
+            ->with(
+                $serializedData,
+                'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData',
+                'json'
+            )
+            ->will($this->returnValue($expectedData));
 
         $this->subscriber->postLoad($args);
 
@@ -107,13 +112,13 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->never())->method('deserialize');
 
         $this->serializer->expects($this->at(0))->method('serialize')
-            ->with($data1)->will($this->returnValue($expectedSerializedData1));
+            ->with($data1, 'json')->will($this->returnValue($expectedSerializedData1));
         $this->serializer->expects($this->at(1))->method('serialize')
-            ->with($data2)->will($this->returnValue($expectedSerializedData2));
+            ->with($data2, 'json')->will($this->returnValue($expectedSerializedData2));
         $this->serializer->expects($this->at(2))->method('serialize')
-            ->with($data4)->will($this->returnValue($expectedSerializedData4));
+            ->with($data4, 'json')->will($this->returnValue($expectedSerializedData4));
         $this->serializer->expects($this->at(3))->method('serialize')
-            ->with($data5)->will($this->returnValue($expectedSerializedData5));
+            ->with($data5, 'json')->will($this->returnValue($expectedSerializedData5));
 
         $this->subscriber->preFlush(
             new PreFlushEventArgs(
