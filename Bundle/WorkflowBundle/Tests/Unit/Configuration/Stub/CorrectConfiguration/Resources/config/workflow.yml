@@ -1,0 +1,17 @@
+workflows:
+    first_workflow:
+        label: 'First Workflow'
+        enabled: true
+        start_step: first_step
+        managed_entity_class: Oro\Bundle\FooBundle\Entity\BarEntity
+        steps: ~
+        transitions: ~
+        transition_definitions: ~
+    second_workflow:
+        label: 'Second Workflow'
+        enabled: false
+        start_step: second_step
+        managed_entity_class: Oro\Bundle\FooBundle\Entity\BazEntity
+        steps: ~
+        transitions: ~
+        transition_definitions: ~

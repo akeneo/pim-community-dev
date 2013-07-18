@@ -48,7 +48,14 @@ class WorkflowDefinition
     /**
      * @var string
      *
-     * @ORM\Column(name="configuration", type="blob")
+     * @ORM\Column(name="start_step", type="string", length=255)
+     */
+    protected $startStep;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="configuration", type="array")
      */
     protected $configuration;
 
@@ -58,6 +65,7 @@ class WorkflowDefinition
     public function __construct()
     {
         $this->enabled = false;
+        $this->configuration = array();
     }
 
     /**
@@ -155,7 +163,7 @@ class WorkflowDefinition
     /**
      * Set configuration
      *
-     * @param string $configuration
+     * @param array $configuration
      * @return WorkflowDefinition
      */
     public function setConfiguration($configuration)
@@ -168,10 +176,29 @@ class WorkflowDefinition
     /**
      * Get configuration
      *
-     * @return string
+     * @return array
      */
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * @param string $startStep
+     * @return WorkflowDefinition
+     */
+    public function setStartStep($startStep)
+    {
+        $this->startStep = $startStep;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartStep()
+    {
+        return $this->startStep;
     }
 }
