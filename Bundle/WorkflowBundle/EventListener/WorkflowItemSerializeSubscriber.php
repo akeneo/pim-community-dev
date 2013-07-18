@@ -79,29 +79,6 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
     }
 
     /**
-     * Before flush serializes all WorkflowItem's data
-     *
-     * @param PreFlushEventArgs $args
-     */
-    public function postLoadFlush(PreFlushEventArgs $args)
-    {
-        /** @var EntityManager $em */
-        $em = $args->getEntityManager();
-        $uow = $em->getUnitOfWork();
-        foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            if ($this->isSupported($entity)) {
-                $this->serializeWorkflowItemData($entity);
-            }
-        }
-
-        foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if ($this->isSupported($entity)) {
-                $this->serializeWorkflowItemData($entity);
-            }
-        }
-    }
-
-    /**
      * Serialize data of WorkflowItem
      *
      * @param WorkflowItem $workflowItem
