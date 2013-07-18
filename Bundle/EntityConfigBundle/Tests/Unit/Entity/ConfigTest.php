@@ -144,7 +144,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->configValue
             ->setCode('doctrine')
             ->setScope('datagrid')
-            ->setValue('a:7:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";s:6:"length";N;s:6:"unique";b:0;s:8:"nullable";b:0;s:9:"precision";N;s:5:"scale";N;}');
+            ->setValue('a:2:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";}');
 
         $values = array(
             'is_searchable' => true,
