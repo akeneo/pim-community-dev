@@ -3,6 +3,7 @@
 namespace Context;
 
 use Doctrine\Common\Util\Inflector;
+use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -16,6 +17,7 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 
@@ -43,6 +45,7 @@ class FixturesContext extends RawMinkContext
         'textarea'   => 'pim_product_textarea',
         'identifier' => 'pim_product_identifier',
         'metric'     => 'pim_product_metric',
+        'prices'     => 'pim_product_price_collection',
     );
 
     /**
@@ -390,14 +393,24 @@ class FixturesContext extends RawMinkContext
             $value   = $product->getValue($this->camelize($data['attribute']));
 
             if ($value) {
-                if (!$value->getScope()) {
+                if ($data['scope']) {
                     $value->setScope($data['scope']);
                 }
-                if (!$value->getLocale()) {
+                if ($data['locale']) {
                     $value->setLocale($data['locale']);
                 }
-                if (null === $value->getData()) {
-                    $value->setData($data['value']);
+                if ($data['value']) {
+                    if ($value->getAttribute()->getAttributeType() == $this->attributeTypes['prices']) {
+                        foreach ($value->getPrices() as $price) {
+                            $value->removePrice($price);
+                        }
+                        $prices = $this->createPricesFromString($data['value']);
+                        foreach ($prices as $price) {
+                            $value->addPrice($price);
+                        }
+                    } else {
+                        $value->setData($data['value']);
+                    }
                 }
             } else {
                 $attribute = $this->getAttribute($data['attribute']);
@@ -654,6 +667,15 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    public function createPrice($data, $currency = 'EUR')
+    {
+        $price = new ProductPrice();
+        $price->setData($data);
+        $price->setCurrency($currency);
+
+        return $price;
+    }
+
     private function createProduct($data)
     {
         $product = $this->getProductManager()->createFlexible();
@@ -691,7 +713,14 @@ class FixturesContext extends RawMinkContext
 
         $value = $pm->createFlexibleValue();
         $value->setAttribute($attribute);
-        $value->setData($data);
+        if ($attribute->getAttributeType() == $this->attributeTypes['prices']) {
+            $prices = $this->createPricesFromString($data);
+            foreach ($prices as $price) {
+                $value->addPrice($price);
+            }
+        } else {
+            $value->setData($data);
+        }
         $value->setLocale($locale);
 
         return $value;
@@ -787,6 +816,36 @@ class FixturesContext extends RawMinkContext
         $em->flush();
 
         return $translation;
+    }
+
+    private function createPricesFromString($prices)
+    {
+        $prices = explode(',', $prices);
+        $data = array();
+
+        foreach ($prices as $price) {
+            $price = explode(' ', trim($price));
+            $amount = array_filter(
+                $price,
+                function ($item) {
+                    return preg_match('/^[0-9]+(\.[0-9]+)?$/', $item);
+                }
+            );
+            $amount = reset($amount);
+            if (!$amount) {
+                continue;
+            }
+            $currency = array_filter(
+                $price,
+                function ($item) {
+                    return preg_match('/^[a-zA-Z]+(.+)$/', $item);
+                }
+            );
+            $currency = !empty($currency) ? reset($currency) : 'EUR';
+            $data[] = $this->createPrice($amount, $currency);
+        }
+
+        return new ArrayCollection($data);
     }
 
     private function camelize($string)
