@@ -111,8 +111,7 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($this->entity);
 
         $this->manager->expects($this->once())
-            ->method('flush')
-            ->with($this->entity);
+            ->method('flush');
 
         $this->assertTrue($this->handler->process($this->entity));
     }

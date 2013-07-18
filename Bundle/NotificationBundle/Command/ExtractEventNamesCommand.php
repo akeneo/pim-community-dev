@@ -84,15 +84,15 @@ class ExtractEventNamesCommand extends ContainerAwareCommand
      */
     public function getBundleDirs($bundleName = null, $oroOnly = false)
     {
-        $directories = false;
+        $directories = array();
         $bundles = $this->getContainer()->get('kernel')->getBundles();
 
+        /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
         foreach ($bundles as $bundle) {
             if ($oroOnly && substr($bundle->getName(), 0, 3) != 'Oro') {
                 continue;
             }
 
-            /** @var $bundle \Symfony\Component\HttpKernel\Bundle\BundleInterface  */
             $directories[$bundle->getName()] = $bundle->getPath();
         }
 

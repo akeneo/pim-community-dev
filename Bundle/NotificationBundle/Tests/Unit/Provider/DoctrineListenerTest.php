@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\NotificationBundle\Provider\DoctrineListener;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+
+use Oro\Bundle\NotificationBundle\Provider\DoctrineListener;
 use Oro\Bundle\NotificationBundle\Provider\EventNamesExtractor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DoctrineListenerTest extends TestCase
 {
@@ -15,7 +15,7 @@ class DoctrineListenerTest extends TestCase
     protected $listener;
 
     /**
-     * @var EventDispatcherInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $eventDispatcher;
 
@@ -23,9 +23,15 @@ class DoctrineListenerTest extends TestCase
     {
         $this->listener = new DoctrineListener();
         $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->listener->setEventDispatcher($this->eventDispatcher);
 
+        $this->listener->setEventDispatcher($this->eventDispatcher);
         $this->assertEquals($this->eventDispatcher, $this->listener->getEventDispatcher());
+    }
+
+    public function tearDown()
+    {
+        unset($this->listener);
+        unset($this->eventDispatcher);
     }
 
     /**
@@ -55,9 +61,18 @@ class DoctrineListenerTest extends TestCase
     public function eventData()
     {
         return array(
-            array('postUpdate',  'oro.event.entity.post_update'),
-            array('postPersist', 'oro.event.entity.post_persist'),
-            array('postRemove',  'oro.event.entity.post_remove'),
+            'post update event case'  => array(
+                'method name'            => 'postUpdate',
+                'expected event name'    => 'oro.notification,event.entity_post_update'
+            ),
+            'post persist event case' => array(
+                'method name'            => 'postPersist',
+                'expected event name'    => 'oro.notification,event.entity_post_persist'
+            ),
+            'post remove event case'  => array(
+                'method name'            => 'postRemove',
+                'expected event name'    => 'oro.notification,event.entity_post_remove'
+            ),
         );
     }
 }

@@ -4,7 +4,7 @@ namespace Oro\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
@@ -34,7 +34,6 @@ class TemplatesCompilerPass implements CompilerPassInterface
             $path = $bundle->getPath();
 
             $dirPath = $path . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . self::DIR_NAME;
-
             if (is_dir($dirPath)) {
                 $finder = new Finder();
                 $files = $finder->files()->in($dirPath);

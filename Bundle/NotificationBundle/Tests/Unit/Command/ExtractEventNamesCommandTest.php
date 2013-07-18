@@ -16,12 +16,31 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
      */
     private $container;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $application;
+
     public function setUp()
     {
         $this->command = new ExtractEventNamesCommand();
+        $this->application = $this->getMock('Symfony\Component\Console\Application');
+
+        $helper = $this->getMock('Symfony\Component\Console\Helper\HelperSet');
+        $this->application->expects($this->any())
+            ->method('getHelperSet')
+            ->will($this->returnValue($helper));
 
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $this->command->setContainer($this->container);
+        $this->command->setApplication($this->application);
+    }
+
+    public function tearDown()
+    {
+        unset($this->command);
+        unset($this->application);
+        unset($this->container);
     }
 
     public function testConfiguration()
@@ -79,6 +98,17 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('kernel'))
             ->will($this->returnValue($kernel));
 
+        $command = $this->getMockBuilder('Symfony\Component\Console\Command\Command')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $command->expects($this->once())
+            ->method('run');
+
+        $this->application->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo('cache:clear'))
+            ->will($this->returnValue($command));
+
         $this->command->execute($input, $output);
     }
 
@@ -114,9 +144,7 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
 
         if ($oroOnly) {
             $this->assertEmpty($dirs);
-        }
-
-        if (is_null($bundleName) && !$oroOnly) {
+        } elseif (is_null($bundleName)) {
             $this->assertEquals($dirs, array('TratataAbcBundle' => 'Oro\Bundles\OroAbcBundle'));
         }
     }
@@ -127,10 +155,10 @@ class ExtractEventNamesCommandTest extends \PHPUnit_Framework_TestCase
     public function bundleDirsProvider()
     {
         return array(
-            array(null, false), // all bundles
-            array(null, true),  // oro only
-            array('OroAbcBundle', false), // oro bundle
-            array('AbcAbcBundle', true), // not oro bundle with oro only
+            'all bundles'                  => array(null, false),
+            'oro only'                     => array(null, true),
+            'oro bundle'                   => array('OroAbcBundle', false),
+            'not oro bundle with oro only' => array('AbcAbcBundle', true)
         );
     }
 }

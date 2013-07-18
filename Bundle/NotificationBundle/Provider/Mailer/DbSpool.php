@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Provider\Mailer;
 
 use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\NotificationBundle\Entity\SpoolItem;
 
 class DbSpool extends \Swift_ConfigurableSpool
@@ -61,6 +62,7 @@ class DbSpool extends \Swift_ConfigurableSpool
      */
     public function queueMessage(\Swift_Mime_Message $message)
     {
+        /** @var SpoolItem $mailObject */
         $mailObject = new $this->entityClass;
         $mailObject->setMessage(serialize($message));
         $mailObject->setStatus(self::STATUS_READY);
@@ -79,7 +81,7 @@ class DbSpool extends \Swift_ConfigurableSpool
      * Sends messages using the given transport instance.
      *
      * @param \Swift_Transport $transport         A transport instance
-     * @param string[]        &$failedRecipients An array of failures by-reference
+     * @param string[]        &$failedRecipients  An array of failures by-reference
      *
      * @return int The number of sent emails
      */
@@ -100,6 +102,7 @@ class DbSpool extends \Swift_ConfigurableSpool
         $failedRecipients = (array) $failedRecipients;
         $count = 0;
         $time = time();
+        /** @var SpoolItem $email */
         foreach ($emails as $email) {
             $email->setStatus(self::STATUS_PROCESSING);
             $this->em->persist($email);
