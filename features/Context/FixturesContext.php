@@ -7,6 +7,8 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Acl;
+use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -58,7 +60,7 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $em = $this->getEntityManager();
-        $attr = $this->createAttribute('SKU', false);
+        $attr = $this->createAttribute('SKU', false, 'identifier', true);
         $em->persist($attr);
         $em->flush();
     }
@@ -78,7 +80,7 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $root = new Acl();
         $root
             ->setId('root')
             ->setName('root')
@@ -86,7 +88,7 @@ class FixturesContext extends RawMinkContext
             ->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT))
             ->addAccessRole($this->getRoleOrCreate('ROLE_SUPER_ADMIN'));
 
-        $oroSecurity = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $oroSecurity = new Acl();
         $oroSecurity
             ->setId('oro_security')
             ->setName('Oro Security')
@@ -94,21 +96,21 @@ class FixturesContext extends RawMinkContext
             ->setParent($root)
             ->addAccessRole($this->getRoleOrCreate('IS_AUTHENTICATED_ANONYMOUSLY'));
 
-        $oroLogin = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogin = new Acl();
         $oroLogin
             ->setId('oro_login')
             ->setName('Login page')
             ->setDescription('Oro Login page')
             ->setParent($oroSecurity);
 
-        $oroLoginCheck = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLoginCheck = new Acl();
         $oroLoginCheck
             ->setId('oro_login_check')
             ->setName('Login check')
             ->setDescription('Oro Login check')
             ->setParent($oroSecurity);
 
-        $oroLogout = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogout = new Acl();
         $oroLogout
             ->setId('oro_logout')
             ->setName('Logout')
@@ -530,7 +532,7 @@ class FixturesContext extends RawMinkContext
         return $product ?: $this->createProduct($sku);
     }
 
-    public function getOrCreateUser($username, $password = null)
+    public function getOrCreateUser($username, $password = null, $apiKey = 'admin_api_key')
     {
         $em = $this->getEntityManager();
 
@@ -541,6 +543,10 @@ class FixturesContext extends RawMinkContext
         }
 
         $user = new User;
+
+        if (!$password) {
+            $password = $username.'pass';
+        }
 
         $user->setUsername($username);
         $user->setEmail($username.'@example.com');
@@ -572,6 +578,11 @@ class FixturesContext extends RawMinkContext
 
         $this->getUserManager()->updateUser($user);
 
+        $api = new UserApi();
+        $api->setApiKey($apiKey)->setUser($user);
+
+        $this->getEntityManager()->persist($api);
+        $this->getEntityManager()->flush();
     }
 
     public function getAttribute($label)
@@ -627,12 +638,14 @@ class FixturesContext extends RawMinkContext
         return $product;
     }
 
-    private function createAttribute($label, $translatable = true, $type = 'text')
+    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
         $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
+        $attribute->setUseableAsGridColumn($showInGrid);
+        $attribute->setUseableAsGridFilter($showInGrid);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;

@@ -21,7 +21,7 @@ class FlatProductNormalizer implements NormalizerInterface
             if ($data instanceof \DateTime) {
                 $data = $data->format('r');
             } else if ($data instanceof \Doctrine\Common\Collections\Collection) {
-                $data = join(',', $data->toArray());
+                $data = '"' . join(',', $data->toArray()) . '"';
             }
 
             $results[$value->getAttribute()->getCode().$suffix] = (string) $data;
