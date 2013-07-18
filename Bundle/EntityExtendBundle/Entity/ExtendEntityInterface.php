@@ -1,11 +1,9 @@
 <?php
 
+//@codingStandardsIgnoreFile
+
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
-/**
- * @codingStandardsIgnoreFile
- * @SuppressWarnings()
- */
 interface ExtendEntityInterface
 {
     public function __toArray();

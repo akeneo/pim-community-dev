@@ -87,7 +87,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'Acme\Bundle\DemoBundle\Entity\TestAccount',
-            $this->configEntity->getClassName($this->configEntity->setClassName('Acme\Bundle\DemoBundle\Entity\TestAccount'))
+            $this->configEntity->getClassName(
+                $this->configEntity->setClassName('Acme\Bundle\DemoBundle\Entity\TestAccount')
+            )
         );
 
         /** test ConfigField set/getEntity */
@@ -142,9 +144,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->configValue
             ->setCode('doctrine')
             ->setScope('datagrid')
-            ->setValue('a:7:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";s:6:"length";N;s:6:"unique";b:0;s:8:"nullable";b:0;s:9:"precision";N;s:5:"scale";N;}')
-            //->setField($this->configField)
-        ;
+            ->setValue('a:7:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";s:6:"length";N;s:6:"unique";b:0;s:8:"nullable";b:0;s:9:"precision";N;s:5:"scale";N;}');
 
         $values = array(
             'is_searchable' => true,
@@ -154,11 +154,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $serializable = array(
             'doctrine' => true
         );
-
-//        $this->assertEquals(
-//            $this->configEntity,
-//            $this->configEntity->getValues()
-//        );
 
         $this->configField->addValue(new ConfigValue('is_searchable', 'datagrid', false));
         $this->configField->fromArray('datagrid', $values, $serializable);
@@ -170,14 +165,5 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             $this->configField->toArray('datagrid')
         );
-
-        //print_r($this->configField->toArray('datagrid'));
-
-//        $this->configEntity->fromArray('datagrid', $config);
-//        $this->assertEquals($config, $this->configEntity->toArray('datagrid'));
-
-//        $this->configEntity->fromArray('extend', $config);
-//        $this->assertEquals($config, $this->configEntity->toArray('extend'));
-
     }
 }

@@ -77,18 +77,20 @@ class AuditManager
         $oid = spl_object_hash($entity);
 
         if ($this->pendingInsertEntities && array_key_exists($oid, $this->pendingInsertEntities)) {
-//            $logEntry     = $this->pendingInsertEntities[$oid];
-//            $logEntryMeta = $em->getClassMetadata(get_class($logEntry));
-//
-//            $id = $this->getIdentifier($entity);
-//            $logEntryMeta->getReflectionProperty('objectId')->setValue($logEntry, $id);
-//            $uow->scheduleExtraUpdate($logEntry, array(
-//                'objectId' => array(null, $id)
-//            ));
-//
-//            $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $id);
-//
-//            unset($this->pendingLogEntityInserts[$oid]);
+            /*
+            $logEntry     = $this->pendingInsertEntities[$oid];
+            $logEntryMeta = $em->getClassMetadata(get_class($logEntry));
+
+            $id = $this->getIdentifier($entity);
+            $logEntryMeta->getReflectionProperty('objectId')->setValue($logEntry, $id);
+            $uow->scheduleExtraUpdate($logEntry, array(
+                'objectId' => array(null, $id)
+            ));
+
+            $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $id);
+
+            unset($this->pendingLogEntityInserts[$oid]);
+            */
         }
 
     }

@@ -55,8 +55,8 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionNotWritableDirectory()
     {
-//        $cacheDir = '/';
-//        $this->setExpectedException('\InvalidArgumentException', sprintf('The directory "%s" is not writable.', $cacheDir));
-//        $this->fileCache  = new FileCache($cacheDir);
+        $cacheDir = '/';
+        $this->setExpectedException('\InvalidArgumentException', sprintf('The directory "%s" is not writable.', $cacheDir));
+        $this->fileCache  = new FileCache($cacheDir);
     }
 }
