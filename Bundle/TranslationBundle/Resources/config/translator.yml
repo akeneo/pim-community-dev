@@ -1,0 +1,2 @@
+parameters:
+    translator.class: Oro\Bundle\TranslationBundle\Translation\Translator
