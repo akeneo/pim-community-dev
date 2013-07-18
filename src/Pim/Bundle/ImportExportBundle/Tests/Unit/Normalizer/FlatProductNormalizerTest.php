@@ -60,7 +60,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name_en_US' => 'Wheelbarrow',
             'name_es_ES' => 'Carretilla',
             'exportedAt' => $now->format('r'),
-            'elements'   => 'roue,poignées,benne',
+            'elements'   => '"roue,poignées,benne"',
         );
 
         $this->assertEquals(
