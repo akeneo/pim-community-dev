@@ -1,6 +1,6 @@
-#pim_default:
-#    pattern:  /
-#    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: pim_product_product_index, permanent: true }
+pim_default:
+    pattern:  /
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: oro_ui_index, permanent: true }
 
 #pim_product:
 #    resource: "@PimProductBundle/Controller/"
@@ -16,17 +16,18 @@
 #    prefix:   /configuration/
 
 oro_default:
-    pattern:  /{_locale}
+    pattern:  /
     defaults:
         template:    ::base.html.twig
-        _locale:     %locale%
         _controller: FrameworkBundle:Template:template
-    requirements:
-        _locale:  en|fr|de
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"
     prefix:   /ui
+
+oro_form:
+    resource: "@OroFormBundle/Resources/config/routing.yml"
+    prefix:   /
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
@@ -55,6 +56,14 @@ oro_config:
 
 oro_dataaudit:
     resource: "@OroDataAuditBundle/Resources/config/routing.yml"
+
+oro_tag:
+    resource: "@OroTagBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_assets:
+    resource: .
+    type: oro_assetic
 
 nelmio_api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"

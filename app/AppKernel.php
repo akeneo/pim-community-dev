@@ -53,6 +53,12 @@ class AppKernel extends Kernel
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
+            new Oro\Bundle\TagBundle\OroTagBundle(),
+            new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
+            new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
+
+
+            new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
 
             // PIM deps
             //             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
@@ -65,6 +71,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
 
             // PIM bundles
+
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
