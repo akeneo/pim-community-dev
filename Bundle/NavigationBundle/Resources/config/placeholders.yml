@@ -32,11 +32,11 @@ placeholders:
                 order: 100
     before_navigation:
         label: Top Navigation Before
+    after_navigation:
+        label: Top Navigation After
         items:
             dots_menu:
                 order: 100
-    after_navigation:
-        label: Top Navigation After
     pin_button:
         label: Pinbar buttons
         items:

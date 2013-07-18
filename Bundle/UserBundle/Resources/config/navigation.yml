@@ -8,6 +8,7 @@ oro_menu_config:
             route: 'oro_user_index'
             extras:
                 routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+                description: List of all system users
         user_create:
             label: 'Create User'
             route: 'oro_user_create'
@@ -16,11 +17,13 @@ oro_menu_config:
             route: 'oro_user_role_index'
             extras:
                 routes: ['oro_user_role_*']
+                description: List of all system roles
         user_groups:
             label: 'Groups'
             route: 'oro_user_group_index'
             extras:
                 routes: ['oro_user_group_*']
+                description: List of all system groups
         shortcut_new_user:
             label: Create new user
             route: oro_user_create
@@ -33,15 +36,23 @@ oro_menu_config:
             extras:
                 description: List of all system users
                 isCustomAction: true
+        shortcut_new_role:
+            label: Create new role
+            route: oro_user_role_create
+            extras:
+                description: Create new role instance
+        shortcut_new_group:
+            label: Create new group
+            route: oro_user_group_create
+            extras:
+                description: Create new group instance
 
     tree:
         application_menu:
             children:
                 system_tab:
                     children:
-                        user_list:
-                          children:
-                            user_create: ~
+                        user_list: ~
                         user_roles: ~
                         user_groups: ~
 
@@ -49,6 +60,8 @@ oro_menu_config:
             children:
                 shortcut_new_user: ~
                 shortcut_list_users: ~
+                shortcut_new_role: ~
+                shortcut_new_group: ~
 
 oro_titles:
     oro_user_view: %%username%% - Users
