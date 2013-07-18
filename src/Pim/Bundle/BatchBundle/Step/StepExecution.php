@@ -194,7 +194,7 @@ class StepExecution
      *
      * @param integer $writeCount the current number of written items for this execution
      */
-    public function setWriteCount( $writeCount)
+    public function setWriteCount($writeCount)
     {
         $this->writeCount = $writeCount;
     }
@@ -375,9 +375,11 @@ class StepExecution
      */
     public function getSummary()
     {
-        return sprintf("name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
-            + ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"
-            + ", processSkipCount=%d, commitCount=%d, rollbackCount=%d",
+        $summary = "name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
+            . ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"
+            . ", processSkipCount=%d, commitCount=%d, rollbackCount=%d";
+        return sprintf(
+            $summary,
             $this->stepName,
             $this->status->getValue(),
             $this->exitStatus->getExitCode(),
@@ -388,6 +390,7 @@ class StepExecution
             $this->writeSkipCount,
             $this->processSkipCount,
             $this->commitCount,
-            $this->rollbackCount);
+            $this->rollbackCount
+        );
     }
 }

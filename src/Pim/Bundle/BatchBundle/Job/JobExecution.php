@@ -4,6 +4,7 @@ namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Batch domain object representing the execution of a job
  *
@@ -72,11 +73,11 @@ class JobExecution
     {
         return $this->endTime;
     }
-/*
+    /*
     public void setJobInstance(JobInstance jobInstance) {
         this.jobInstance = jobInstance;
     }
-*/
+    */
 
     /**
      * Set end time
@@ -243,22 +244,22 @@ class JobExecution
      *
      * @return Date representing the last time this JobExecution was updated.
      */
-/*
+    /*
     public Date getLastUpdated() {
         return lastUpdated;
     }
-*/
+    */
 
     /**
      * Set the last time this JobExecution was updated.
      *
      * @param lastUpdated
      */
-/*
+    /*
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-*/
+    */
 
     /**
      * To string
@@ -268,7 +269,10 @@ class JobExecution
     {
         $string = "";
         try {
-            $string = sprintf("startTime=%s, endTime=%s, lastUpdated=%s, status=%s, exitStatus=%s, job=[%s], jobParameters=[%s]",
+            $message = "startTime=%s, endTime=%s, lastUpdated=%s, status=%s,"
+                . "exitStatus=%s, job=[%s], jobParameters=[%s]";
+            $string = sprintf(
+                $message,
                 $this->startTime,
                 $this->endTime,
                 $this->lastUpdated,
@@ -279,7 +283,6 @@ class JobExecution
             );
         } catch (\Exception $e) {
             $string = $e->getMessage();
-            echo $e->getTraceAsString();
         }
         return $string;
     }
