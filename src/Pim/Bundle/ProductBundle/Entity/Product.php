@@ -23,7 +23,7 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Assert\Callback(methods={"isLocalesValid"})
+ * @Assert\Callback(methods={"haveAtLeastOneActivatedLocale"})
  * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
@@ -294,7 +294,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @param ExecutionContext $context Execution Context
      */
-    public function isLocalesValid(ExecutionContext $context)
+    public function haveAtLeastOneActivatedLocale(ExecutionContext $context)
     {
         if ($this->locales->count() == 0) {
             $context->addViolationAtPath(
