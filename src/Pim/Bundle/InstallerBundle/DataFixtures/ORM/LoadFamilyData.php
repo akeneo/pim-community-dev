@@ -36,8 +36,8 @@ class LoadFamilyData extends AbstractInstallerFixture
 
     /**
      * Create product family
-     * @param string        $code         Product family code
-     * @param array         $data  Product family attributes
+     * @param string $code Product family code
+     * @param array  $data Product family attributes
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
      */

@@ -17,7 +17,7 @@
                 {% endif %}
 
                 {% if form.translatable is defined %}
-                    {{ form_row(form.translatable) }}
+                    {{ form_row(form.translatable, { 'label': 'Localizable'|trans }) }}
                 {% endif %}
 
                 {% if form.unique is defined %}

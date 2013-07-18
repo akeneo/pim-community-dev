@@ -105,7 +105,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Translatable'),
+                'label'       => $this->translate('Localizable'),
                 'field_name'  => 'translatable',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,

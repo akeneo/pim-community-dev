@@ -50,6 +50,8 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param string $code
      * @param array  $data
+     *
+     * @return ProductAttribute
      */
     public function createAttribute($code, $data)
     {
