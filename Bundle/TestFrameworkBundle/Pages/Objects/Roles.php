@@ -28,6 +28,7 @@ class Roles extends PageFilteredGrid
     public function open($roleName = array())
     {
         $this->getEntity($roleName)->click();
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
 

@@ -23,7 +23,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
 
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
-        $this->storeAScreenshot($test);
+        //$this->storeAScreenshot($test);
     }
 
     private function storeAScreenshot(\PHPUnit_Framework_Test $test)

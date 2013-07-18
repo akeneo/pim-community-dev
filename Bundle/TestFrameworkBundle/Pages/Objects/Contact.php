@@ -7,8 +7,10 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
 class Contact extends Page implements Entity
 {
+    protected $nameprefix;
     protected $firstname;
     protected $lastname;
+    protected $namesuffix;
     protected $email;
     protected $primary;
     protected $street;
@@ -26,17 +28,25 @@ class Contact extends Page implements Entity
 
     public function init()
     {
-        $this->firstname = $this->byId('orocrm_contact_form_values_1_varchar');
-        $this->lastname = $this->byId('orocrm_contact_form_values_2_varchar');
-        $this->email = $this->byId('orocrm_contact_form_values_10_varchar');
+        $this->nameprefix = $this->byId('orocrm_contact_form_values_name_prefix_varchar');
+        $this->firstname = $this->byId('orocrm_contact_form_values_first_name_varchar');
+        $this->lastname = $this->byId('orocrm_contact_form_values_last_name_varchar');
+        $this->namesuffix = $this->byId('orocrm_contact_form_values_name_suffix_varchar');
+        $this->email = $this->byId('orocrm_contact_form_values_email_varchar');
+        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_assigned_to_user']/a");
+        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_reports_to_contact']/a");
+        $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']");
+
         $this->primary = $this->byId('orocrm_contact_form_addresses_0_primary');
         $this->street = $this->byId('orocrm_contact_form_addresses_0_street');
         $this->city = $this->byId('orocrm_contact_form_addresses_0_city');
         $this->zipcode = $this->byId('orocrm_contact_form_addresses_0_postalCode');
         $this->country = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_country']/a");
-        $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_state']/a");
-        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_8_user']/a");
-        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_9_contact']/a");
+        if ($this->byId('orocrm_contact_form_addresses_0_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_contact_form_addresses_0_state_text');
+        } else {
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_state']/a");
+        }
 
         return $this;
     }
@@ -128,18 +138,26 @@ class Contact extends Page implements Entity
         $this->waitForAjax();
         $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$country}')]", "Country's autocoplete doesn't return search value");
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$country}')]")->click();
+        $this->waitForAjax();
 
         return $this;
     }
 
     public function setState($state)
     {
-        $this->state->click();
-        $this->waitForAjax();
-        $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
-        $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$state}')]", "Country's autocoplete doesn't return search value");
-        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$state}')]")->click();
+        if ($this->byId('orocrm_contact_form_addresses_0_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_contact_form_addresses_0_state_text');
+            $this->state->clear();
+            $this->state->value($state);
+        } else {
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_state']/a");
+            $this->state->click();
+            $this->waitForAjax();
+            $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
+            $this->waitForAjax();
+            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$state}')]", "Country's autocoplete doesn't return search value");
+            $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$state}')]")->click();
+        }
 
         return $this;
     }
