@@ -61,16 +61,12 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @return ProductNormalizer
      */
-    public function setlocale($locale = null)
+    public function setLocale($locale = null)
     {
         if ($this->channel) {
-            $locales = $this->channel->getLocales()->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
+            $localeCodes = $this->getLocales();
 
-            if (in_array($locale, $locales) || $locale === null) {
+            if (in_array($locale, $localeCodes) || $locale === null) {
                 $this->locale = $locale;
 
                 return $this;
@@ -78,6 +74,19 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         throw new \LogicException('This locale is not available for this channel');
+    }
+
+    /**
+     * Get an array of available locale codes
+     * @return array
+     */
+    public function getLocales()
+    {
+        return $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
+            function ($locale) {
+                return $locale->getCode();
+            }
+        )->toArray();
     }
 
     /**
@@ -92,6 +101,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $values = $this->filterValues($product->getValues());
         $attributes = $this->getAttributes($values);
+        $locales = $this->getLocales();
 
         $data = array();
 
@@ -148,15 +158,11 @@ class ProductNormalizer implements NormalizerInterface
             }
         );
 
-        $localeCodes = $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
-            function ($locale) {
-                return $locale->getCode();
-            }
-        )->toArray();
+        $localeCodes = $this->getLocales();
 
         $values = $values->filter(
             function ($value) use ($localeCodes) {
-                return (!$value->getAttribute()->getTranslatable() || in_array($value->getLocale(), $locales));
+                return (!$value->getAttribute()->getTranslatable() || in_array($value->getLocale(), $localeCodes));
             }
         );
 
