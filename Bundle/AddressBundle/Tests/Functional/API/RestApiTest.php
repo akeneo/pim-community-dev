@@ -207,7 +207,7 @@ class RestApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
-        return $result;
+        return array_slice($result, 0, 5);
     }
 
     /**
@@ -216,7 +216,6 @@ class RestApiTest extends WebTestCase
      */
     public function testGetRegion($regions)
     {
-        $i = 0;
         foreach ($regions as $region) {
             $this->client->request(
                 'GET',
@@ -228,10 +227,6 @@ class RestApiTest extends WebTestCase
             ToolsAPI::assertJsonResponse($result, 200);
             $result = ToolsAPI::jsonToArray($result->getContent());
             $this->assertEquals($region, $result);
-            $i++;
-            if ($i % 5  == 0) {
-                break;
-            }
         }
     }
 

@@ -138,6 +138,10 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValues()
     {
+        if (!isset($this->values) || !$this->values->count()) {
+            return $this->values;
+        }
+
         $collection = new ArrayCollection();
         foreach ($this->values as $value) {
             $collection[$value->getAttribute()->getCode()] = $value;
