@@ -196,7 +196,7 @@ pim_import_export:
             delimiter: ';'
             enclosure: '"'
             with_header: true
-    exports:
+    exporters:
         product:
             format: csv
             reader:
