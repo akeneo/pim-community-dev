@@ -3,7 +3,8 @@
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
 /**
- * @codingStandardsIgnoreFile(PHPCS.MethodDoubleUnderscore)
+ * @codingStandardsIgnoreFile
+ * @SuppressWarnings()
  */
 interface ExtendEntityInterface
 {
