@@ -29,7 +29,9 @@
         "behat/mink-selenium2-driver":  "1.0.*",
         "besimple/soap-common": "dev-master",
         "besimple/soap-server": "dev-master",
-        "besimple/soap-bundle": "dev-master"
+        "besimple/soap-bundle": "dev-master",
+        "behat/common-contexts": "*",
+        "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [
         {

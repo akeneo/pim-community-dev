@@ -22,4 +22,9 @@ class FamilyCreation extends Page
     {
         return $this->path;
     }
+
+    public function save()
+    {
+        $this->pressButton('Save');
+    }
 }
