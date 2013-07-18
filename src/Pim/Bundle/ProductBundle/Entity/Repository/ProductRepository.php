@@ -41,4 +41,20 @@ class ProductRepository extends FlexibleEntityRepository
            ->addSelect('AttributeGroupTranslation')
            ->leftJoin('AttributeGroup.translations', 'AttributeGroupTranslation');
     }
+
+    public function findByScope($scope)
+    {
+        $qb = $this->findByWithAttributesQB();
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->eq('Value.scope', '?1'),
+                    $qb->expr()->isNull('Value.scope')
+                )
+            )
+            ->setParameter(1, $scope)
+            ->getQuery()
+            ->execute();
+    }
 }
