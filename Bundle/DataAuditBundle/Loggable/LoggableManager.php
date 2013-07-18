@@ -256,6 +256,9 @@ class LoggableManager
             return;
         }
 
+        /**
+         * TODO::uncomment before merger to master
+         */
         $this->checkAuditable(get_class($entity));
 
         /** @var User $user */

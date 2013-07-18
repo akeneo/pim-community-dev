@@ -5,10 +5,14 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EntityBundle\Metadata\Annotation\AuditEntity;
+use Oro\Bundle\EntityBundle\Metadata\Annotation\AuditField;
+
 /**
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
+ * @AuditEntity
  */
 class ConfigEntity extends AbstractConfig
 {
@@ -37,6 +41,7 @@ class ConfigEntity extends AbstractConfig
     /**
      * @var string
      * @ORM\Column(name="class_name", type="string", length=255, nullable=false)
+     * @AuditField
      */
     protected $className;
 

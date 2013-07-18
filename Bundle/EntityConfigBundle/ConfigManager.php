@@ -186,7 +186,7 @@ class ConfigManager
             }
 
             $this->eventDispatcher->dispatch(
-                Events::NEW_ENTITY_CONFIG,
+                Events::CREATE_ENTITY_CONFIG,
                 new EntityConfigEvent($doctrineMetadata->getName(), $this)
             );
 
@@ -203,7 +203,7 @@ class ConfigManager
                 }
 
                 $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD_CONFIG,
+                    Events::CREATE_FIELD_CONFIG,
                     new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
             }
@@ -221,7 +221,7 @@ class ConfigManager
                 }
 
                 $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD_CONFIG,
+                    Events::CREATE_FIELD_CONFIG,
                     new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
             }

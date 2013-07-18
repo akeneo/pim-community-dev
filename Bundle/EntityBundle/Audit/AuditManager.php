@@ -21,8 +21,8 @@ class AuditManager
     /**
      * @var string
      */
-    const COMMIT_LEVEL_BASE     = 'commit_level_base';
-    const COMMIT_LEVEL_ADVANCED = 'commit_level_advanced';
+    const COMMIT_LEVEL_BASE     = 'commitLevel';
+    const COMMIT_LEVEL_ADVANCED = 'commitLevel';
 
     /**
      * @var ExtendManager

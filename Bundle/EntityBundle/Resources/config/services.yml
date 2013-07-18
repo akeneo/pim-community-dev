@@ -8,12 +8,11 @@ services:
         class:                                              %oro_entity.audit.audit_manager.class%
         arguments:                                          [@oro_entity.config.audit_config_provider, @oro_entity.metadata.audit.metadata_factory]
 
-#    oro_entity.listener.doctrine_subscriber:
-#        class:                                              %oro_entity.listener.doctrine_subscriber.class%
-#        arguments:                                          [@oro_entity.audit.audit_manager]
-#        tags:
-#            - { name: doctrine.event_subscriber, connection: default }
-
+    oro_entity.listener.doctrine_subscriber:
+        class:                                              %oro_entity.listener.doctrine_subscriber.class%
+        arguments:                                          [@oro_entity.audit.audit_manager]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     oro_entity.listener.config_subscriber:
         class:                                              %oro_entity.listener.config_subscriber.class%
