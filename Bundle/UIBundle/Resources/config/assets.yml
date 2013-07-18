@@ -37,6 +37,7 @@ js:
 
         - '@FOSJsRoutingBundle/Resources/public/js/router.js'
         - '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
+        - '@OroTranslationBundle/Resources/public/js/translator.js'
         - 'js/routes.js'
 css:
     'UI':
