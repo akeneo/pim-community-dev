@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -79,9 +78,9 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
 
     /**
      * Method called before set data
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         parent::preSetData($event);
         $data = $event->getData();

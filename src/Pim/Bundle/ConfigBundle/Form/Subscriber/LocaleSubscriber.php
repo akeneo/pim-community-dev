@@ -72,7 +72,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     /**
      * Method called before set data
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
     {
