@@ -14,7 +14,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    trusted_proxies: ~
     trusted_proxies: ~
     session:
         cookie_lifetime:      43200
@@ -46,8 +46,8 @@ assetic:
         - OroWindowsBundle
         - OroFilterBundle
         - OroSegmentationTreeBundle
-        - PimUIBundle
-        - PimProductBundle
+#         - PimUIBundle
+#         - PimProductBundle
 
     #java: /usr/bin/java
     filters:
@@ -76,9 +76,9 @@ doctrine:
         auto_mapping:         true
         resolve_target_entities:
             Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
-            Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
-            Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
-            Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
+#             Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
+#             Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
+#             Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -179,32 +179,32 @@ oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig
 
-knp_gaufrette:
-    adapters:
-        pim_adapter:
-            local:
-                directory: %upload_dir%
-                create:    true
-    filesystems:
-        pim:
-            adapter: pim_adapter
-            alias:   pim_filesystem
+# knp_gaufrette:
+#     adapters:
+#         pim_adapter:
+#             local:
+#                 directory: %upload_dir%
+#                 create:    true
+#     filesystems:
+#         pim:
+#             adapter: pim_adapter
+#             alias:   pim_filesystem
 
-pim_import_export:
-    encoders:
-        csv:
-            delimiter: ';'
-            enclosure: '"'
-            with_header: true
-    exporters:
-        product:
-            format: csv
-            reader:
-                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
-                options:
-                    em: @doctrine.orm.default_entity_manager
-                    entity: "PimProductBundle:Product"
-            writer:
-                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
-                options:
-                    path: "/tmp/export.csv"
+# pim_import_export:
+#     encoders:
+#         csv:
+#             delimiter: ';'
+#             enclosure: '"'
+#             with_header: true
+#     exporters:
+#         product:
+#             format: csv
+#             reader:
+#                 type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
+#                 options:
+#                     em: @doctrine.orm.default_entity_manager
+#                     entity: "PimProductBundle:Product"
+#             writer:
+#                 type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
+#                 options:
+#                     path: "/tmp/export.csv"
