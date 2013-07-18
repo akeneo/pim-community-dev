@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    $(document).on('click', '.additional-button', function () {
-        var additionalInput = $('input[name = "additional_data"]');
-        additionalInput.val($(this).attr('data-additional'));
-        $('#' + additionalInput.attr('data-form-id')).submit();
+    $(document).on('click', '.action-button', function () {
+        var actionInput = $('input[name = "input_action"]');
+        actionInput.val($(this).attr('data-action'));
+        $('#' + actionInput.attr('data-form-id')).submit();
     });
 });

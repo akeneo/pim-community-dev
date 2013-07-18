@@ -1,8 +1,14 @@
 parameters:
     oro_ui.twig.ceil.class:              Oro\Bundle\UIBundle\Twig\CeilExtension
     oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
+    oro_ui.router.class:                 Oro\Bundle\UIBundle\Route\Router
 
 services:
+    oro_ui.router:
+        class: %oro_ui.router.class%
+        scope: request
+        arguments: [@request, @router]
+
     oro_ui.twig.ceil_extension:
         class: %oro_ui.twig.ceil.class%
         tags:

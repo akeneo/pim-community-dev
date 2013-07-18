@@ -12,7 +12,7 @@
                         <div class="pull-right">
                             {% block navButtons %}
                             {% endblock navButtons %}
-                            <input type="hidden" name="additional_data" value="" data-form-id="{{ form.vars.name }}"/>
+                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
                         {% if (entityClass is defined and form.vars.value.id) %}
                             {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value } %}
