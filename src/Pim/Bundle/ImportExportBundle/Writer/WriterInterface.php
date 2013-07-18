@@ -9,6 +9,6 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
  */
 interface WriterInterface
 {
-    public function write($data, array $options);
+    public function write($data);
 }
 

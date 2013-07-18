@@ -34,13 +34,12 @@ class FamilyRepository extends EntityRepository
         foreach ($families as $family) {
             $orderedFamilies[$family->getId()]= $family->getLabel();
         }
-        uasort($orderedFamilies, function ($first, $second) {
-            if ($first === $second) {
-                return 0;
+        uasort(
+            $orderedFamilies,
+            function ($first, $second) {
+                return ($first === $second) ? 0 : strcasecmp($first, $second);
             }
-
-            return strcasecmp($first, $second);
-        });
+        );
 
         return $orderedFamilies;
     }

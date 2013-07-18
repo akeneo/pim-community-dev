@@ -191,8 +191,14 @@ knp_gaufrette:
             alias:   pim_filesystem
 
 pim_import_export:
-    exports:
+    encoders:
+        csv:
+            delimiter: ';'
+            enclosure: '"'
+            with_header: true
+    exporters:
         product:
+            format: csv
             reader:
                 type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
                 options:

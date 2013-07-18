@@ -12,6 +12,8 @@
 
         {% set title = 'Channels'|trans %}
 
+        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New channel'|trans %}
+
         {% set buttons %}
             <div class="btn-group icons-holder">
                 <a class="btn" href="{{ path('pim_config_channel_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
@@ -23,12 +25,6 @@
             {% endif %}
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-            </div>
-        {% endset %}
-
-        {% set subtitle %}
-            <div class="sub-title">
-                {{ form.vars.value.id ? form.vars.value.code : 'New channel'|trans }}
             </div>
         {% endset %}
 

@@ -25,14 +25,16 @@ class PimImportExportExtension extends Extension
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        $config = $configs[0];
-        $config = array_merge(array(
-            'exports' => array(),
-        ), $config);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('serializer.yml');
         $loader->load('import_export.yml');
+
+        $container->setParameter('pim_serializer.encoder.csv.delimiter', $config['encoders']['csv']['delimiter']);
+        $container->setParameter('pim_serializer.encoder.csv.enclosure', $config['encoders']['csv']['enclosure']);
+        $container->setParameter('pim_serializer.encoder.csv.with_header', $config['encoders']['csv']['with_header']);
 
         $this->createExporterServices($config, $container);
     }
@@ -40,7 +42,7 @@ class PimImportExportExtension extends Extension
     private function createExporterServices(array $config, ContainerBuilder $container)
     {
         $registry = $container->getDefinition('pim_import_export.exporter_registry');
-        foreach ($config['exports'] as $alias => $exportConfig) {
+        foreach ($config['exporters'] as $alias => $exportConfig) {
 
             $def = new Definition(
                 'Pim\\Bundle\\ImportExportBundle\\Exporter',
@@ -52,6 +54,7 @@ class PimImportExportExtension extends Extension
                     $this->factory->createReference(
                         $this->createService(sprintf('%s_writer', $alias), $exportConfig['writer'], $container)
                     ),
+                    $exportConfig['format']
                 )
             );
             $def->setPublic(false);
@@ -64,7 +67,7 @@ class PimImportExportExtension extends Extension
     {
         $def = new Definition;
         $def->setClass($config['type']);
-        $def->setArguments($this->resolveServices($config['options']));
+        $def->setArguments($this->resolveReferences($config['options']));
 
         $id  = sprintf('pim_import_export.%s', $suffix);
 
@@ -73,11 +76,13 @@ class PimImportExportExtension extends Extension
         return $id;
     }
 
-    private function resolveServices(array $options)
+    private function resolveReferences(array $options)
     {
         foreach ($options as $index => $option) {
-            if (0 === strpos($option, '@')) {
-                $options[$index] = $this->factory->createReference(substr($option, 1));
+            if (is_string($option)) {
+                if (0 === strpos($option, '@')) {
+                    $options[$index] = $this->factory->createReference(substr($option, 1));
+                }
             }
         }
 

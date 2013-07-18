@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -16,9 +17,9 @@ class ExportCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('export')
-            ->addArgument('alias')
-            ->addArgument('format')
+            ->setName('pim:export')
+            ->setDescription('Launch a configured export')
+            ->addArgument('alias', InputArgument::REQUIRED, 'The export alias defined in the configuration')
         ;
     }
 
@@ -26,7 +27,7 @@ class ExportCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
         $exporter  = $container->get('pim_import_export.exporter_registry')->getExporter($input->getArgument('alias'));
-        $exporter->export($input->getArgument('format'));
+        $exporter->export();
     }
 }
 
