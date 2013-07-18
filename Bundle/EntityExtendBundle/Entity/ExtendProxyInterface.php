@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
 /**
- * @SuppressWarnings
+ * @codingStandardsIgnoreFile(PHPCS.MethodDoubleUnderscore)
  */
 interface ExtendProxyInterface
 {
