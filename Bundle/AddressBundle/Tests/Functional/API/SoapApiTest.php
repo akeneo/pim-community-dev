@@ -64,19 +64,23 @@ class SoapApiTest extends WebTestCase
     );
 
     /** @var Client */
-    protected $client = null;
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
+        } else {
+            $this->client->restart();
+        }
 
-        $this->client->soap(
-            "http://localhost/api/soap",
-            array(
-                'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_2
-            )
-        );
     }
 
     public function testCreateAddress()
@@ -180,7 +184,7 @@ class SoapApiTest extends WebTestCase
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($country, $result);
             $i++;
-            if ($i % 25  == 0) {
+            if ($i % 5  == 0) {
                 break;
             }
         }
@@ -208,7 +212,7 @@ class SoapApiTest extends WebTestCase
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($region, $result);
             $i++;
-            if ($i % 25  == 0) {
+            if ($i % 5  == 0) {
                 break;
             }
         }
