@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TranslationController extends Controller
 {
+    const JS_TRANSLATION_TEMPLATE = 'OroTranslationBundle:Translation:translation.js.twig';
+
     public function indexAction(Request $request, $_locale)
     {
         $options = $this->container->getParameter('oro_translation.js_translation');
@@ -27,7 +29,7 @@ class TranslationController extends Controller
             }, array_keys($translations)), array_values($translations));
         }
 
-        return $this->render('OroTranslationBundle:Translation:translation.js.twig', array(
+        return $this->render(self::JS_TRANSLATION_TEMPLATE, array(
             'json' => $result
         ), new Response('', 200, array('Content-Type' => $request->getMimeType('js'))));
     }
