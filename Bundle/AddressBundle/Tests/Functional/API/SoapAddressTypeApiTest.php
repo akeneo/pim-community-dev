@@ -54,10 +54,11 @@ class SoapAddressTypeApiTest extends WebTestCase
      */
     public function testGetAddressType($expected)
     {
-        foreach ($expected as $addrType)
-        $result = $this->client->soapClient->getAddressType($addrType['name']);
-        $result = ToolsAPI::classToArray($result);
-        $this->assertNotEmpty($result);
-        $this->assertEquals($addrType, $result);
+        foreach ($expected as $addrType) {
+            $result = $this->client->soapClient->getAddressType($addrType['name']);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertNotEmpty($result);
+            $this->assertEquals($addrType, $result);
+        }
     }
 }
