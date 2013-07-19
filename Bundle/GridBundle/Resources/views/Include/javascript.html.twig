@@ -111,7 +111,7 @@
         };
 
         var containerSelector = {{ selector|json_encode|raw }};
-        var datagridTemplateSelector = {{ ("#"~ templateElId)|json_encode|raw }};
+        var datagridTemplateSelector = {{ ("#" ~ templateElId)|json_encode|raw }};
         var datagridFiltersSelector = {{ ("#" ~ filtersElId)|json_encode|raw }};
         var datagridBodySelector = {{ ("#" ~ bodyElId)|json_encode|raw }};
 
