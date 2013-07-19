@@ -11,7 +11,7 @@ class Translator extends BaseTranslator
      * takes in account fallback of locales.
      * Method is used for exposing of collected translations.
      *
-     * @param array       $domains list of required domains, by default empty, means all domains
+     * @param array $domains list of required domains, by default empty, means all domains
      * @param string|null $locale  locale of translations, by default is current locale
      * @return array
      */

@@ -19,8 +19,12 @@ class OroTranslationExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('form_types.yml');
-        $loader->load('translator.yml');
+        $loader->load('services.yml');
 
-        $container->setParameter('oro_translation.js_translation', $config['js_translation']);
+        $container
+            ->getDefinition('oro_translation.controller')
+            ->replaceArgument(3, $config['js_translation']);
+
+        $container->setParameter('oro_translation.js_translation.domains', $config['js_translation']['domains']);
     }
 }

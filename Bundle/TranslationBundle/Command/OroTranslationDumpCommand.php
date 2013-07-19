@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Oro\Bundle\TranslationBundle\Controller\TranslationController;
 
 class OroTranslationDumpCommand extends ContainerAwareCommand
 {
@@ -19,11 +18,13 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
         $this
             ->setName('oro:translation:dump')
             ->setDescription('Dumps oro js-translations')
-            ->addArgument('locale',
+            ->addArgument(
+                'locale',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
                 'List of locales, whose translations should to be dumped'
             )
-            ->addOption('debug',
+            ->addOption(
+                'debug',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Flag to dump js-translation resources with debug mode',
@@ -41,43 +42,24 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
             $locales[] = $this->getContainer()->getParameter('kernel.default_locale');
         }
 
-        $options = $this->getContainer()->getParameter('oro_translation.js_translation');
-        $targetFormat = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web')
+        $domains = $this->getContainer()->getParameter('oro_translation.js_translation.domains');
+        $targetPattern = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web')
             . $this->getContainer()->get('router')->getRouteCollection()
-                ->get('oro_translation_bundle')->getPath();
+                ->get('oro_translation_jstranslation')->getPath();
 
         foreach ($locales as $locale) {
-            $target = strtr($targetFormat, array('{_locale}' => $locale));
+            $target = strtr($targetPattern, array('{_locale}' => $locale));
 
-            $output->writeln(sprintf(
-                '<comment>%s</comment> <info>[file+]</info> %s',
-                date('H:i:s'),
-                basename($target)
-            ));
-
-            $domainsTranslations = $this->getContainer()->get('translator')
-                ->getTranslations($options['domains'], $locale);
-
-            $content = array(
-                'locale'         => $locale,
-                'defaultDomains' => $options['domains'],
-                'messages'       => array(),
+            $output->writeln(
+                sprintf(
+                    '<comment>%s</comment> <info>[file+]</info> %s',
+                    date('H:i:s'),
+                    basename($target)
+                )
             );
 
-            foreach ($domainsTranslations as $domain => $translations) {
-                $content['messages'] += array_combine(array_map(function($id) use ($domain) {
-                    return sprintf('%s:%s', $domain, $id);
-                }, array_keys($translations)), array_values($translations));
-            }
-
-            if ($input->getOption('debug')) {
-                $content['debug'] = true;
-            }
-
-            $content = $this->getContainer()->get('templating')
-                ->render(TranslationController::JS_TRANSLATION_TEMPLATE, array(
-                    'json' => $content
-                ));
+            $content = $this->getContainer()->get('oro_translation.controller')
+                ->renderJsTranslationContent($domains, $locale, $input->getOption('debug'));
 
             $this->getContainer()->get('filesystem')->mkdir(dirname($target), 0777);
 

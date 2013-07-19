@@ -33,7 +33,7 @@
      * @returns {Object} Translator
      */
     Translator.fromJSON = function(data) {
-        if(typeof data === "string") {
+        if (typeof data === "string") {
             data = JSON.parse(data);
         }
         debug = data.debug || false;
