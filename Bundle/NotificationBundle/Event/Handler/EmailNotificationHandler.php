@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use JMS\JobQueueBundle\Entity\Job;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
@@ -19,10 +20,16 @@ class EmailNotificationHandler implements EventHandlerInterface
      */
     protected $mailer;
 
-    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer)
+    /**
+     * @var ObjectManager
+     */
+    protected $em;
+
+    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em)
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
+        $this->em = $em;
     }
 
     /**
@@ -38,6 +45,7 @@ class EmailNotificationHandler implements EventHandlerInterface
             $params = array(
                 'event' => $event,
                 'notification' => $notification,
+                'entity' => $event->getEntity(),
             );
 
             $emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
@@ -50,8 +58,8 @@ class EmailNotificationHandler implements EventHandlerInterface
                 array(
                     'subject' => $subject,
                     'body'    => $emailTemplate->render($params),
-                    'from'    => '',
-                    'to'      => '',
+                    'from'    => 'ishakuta@gmail.com',
+                    'to'      => 'ishakuta@gmail.com',
                 )
             );
 
@@ -102,6 +110,7 @@ class EmailNotificationHandler implements EventHandlerInterface
         if (!$currJob) {
             $job = new Job($command, $commandArgs);
             $this->em->persist($job);
+            $this->em->flush($job);
         }
     }
 }

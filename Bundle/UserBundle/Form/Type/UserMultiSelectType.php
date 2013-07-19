@@ -21,7 +21,7 @@ class UserMultiSelectType extends UserSelectType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new StringToIdsTransformer($this->entityManager, 'OroUserBundle:User'));
+//        $builder->addViewTransformer(new StringToIdsTransformer($this->entityManager, 'OroUserBundle:User'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
