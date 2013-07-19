@@ -159,6 +159,8 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface $product
      * @param ArrayCollection  $categories
      * @param array            $onlyTrees
+     *
+     * @throws LogicException When a the product is assigned to a root category
      */
     public function setCategories(
         ProductInterface $product,
@@ -178,6 +180,9 @@ class ProductManager extends FlexibleManager
         foreach ($categories as $category) {
             if ($onlyTrees != null &&
                in_array($category->getRoot(), $onlyTrees)) {
+                if ($category->getParent() == null) {
+                    throw new \LogicException("A product cannot be assigned to a root category");
+                }
                 $category->addProduct($product);
             }
         }
