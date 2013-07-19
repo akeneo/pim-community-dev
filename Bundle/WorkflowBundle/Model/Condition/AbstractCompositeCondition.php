@@ -2,28 +2,26 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
+use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+
 abstract class AbstractCompositeCondition implements ConditionInterface
 {
     /**
      * @var ConditionInterface[]
      */
-    protected $conditions;
+    protected $conditions = array();
 
     /**
      * Initialize composite conditions
      *
      * @param array $options
-     * @throws \InvalidArgumentException
+     * @return AbstractCompositeCondition
+     * @throws ConditionInitializationException
      */
     public function initialize(array $options)
     {
         if (!$options) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Argument $options must have at least one element',
-                    'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
-                )
-            );
+            throw new ConditionInitializationException('Argument $options must have at least one element');
         }
 
         $this->conditions = array();
@@ -32,7 +30,7 @@ abstract class AbstractCompositeCondition implements ConditionInterface
             if ($condition instanceof ConditionInterface) {
                 $this->add($condition);
             } else {
-                throw new \InvalidArgumentException(
+                throw new ConditionInitializationException(
                     sprintf(
                         'Element of argument $options must be an instance of %s',
                         'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
@@ -43,6 +41,8 @@ abstract class AbstractCompositeCondition implements ConditionInterface
     }
 
     /**
+     * Add condition to composite
+     *
      * @param ConditionInterface $condition
      */
     public function add(ConditionInterface $condition)

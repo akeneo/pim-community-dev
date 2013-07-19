@@ -55,7 +55,7 @@ class WorkflowItem
     protected $closed;
 
     /**
-     * Entities relatd to this WorkflowItems
+     * Entities related to this WorkflowItems
      *
      * @var Collection
      *
