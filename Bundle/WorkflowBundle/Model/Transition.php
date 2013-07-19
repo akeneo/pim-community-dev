@@ -3,8 +3,8 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\ConditionInterface;
-use Oro\Bundle\WorkflowBundle\Model\PostActionInterface;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
+use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 
 class Transition

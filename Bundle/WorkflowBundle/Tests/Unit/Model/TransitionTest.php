@@ -28,8 +28,14 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         return array(
             'name' => array('name', 'test'),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
-            'condition' => array('condition', $this->getMock('Oro\Bundle\WorkflowBundle\Model\ConditionInterface')),
-            'postAction' => array('postAction', $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostActionInterface')),
+            'condition' => array(
+                'condition',
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
+            ),
+            'postAction' => array(
+                'postAction',
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
+            ),
         );
     }
 
@@ -43,7 +49,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\ConditionInterface');
+        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
         $condition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
@@ -70,13 +76,13 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $workflowItem->expects($this->never())
             ->method('setCurrentStepName');
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\ConditionInterface');
+        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
         $condition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
             ->will($this->returnValue(false));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
         $postAction->expects($this->never())
             ->method('execute');
 
@@ -108,13 +114,13 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
                 ->method('setClosed');
         }
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\ConditionInterface');
+        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
         $condition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
             ->will($this->returnValue(true));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
         $postAction->expects($this->once())
             ->method('execute')
             ->with($workflowItem);
