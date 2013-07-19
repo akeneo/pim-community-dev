@@ -3,16 +3,18 @@ namespace Oro\Bundle\TranslationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class Controller
 {
     /**
-     * @var \Oro\Bundle\TranslationBundle\Translation\Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine
+     * @var EngineInterface
      */
     protected $templating;
 
@@ -27,12 +29,12 @@ class Controller
     protected $options;
 
     /**
-     * @param \Oro\Bundle\TranslationBundle\Translation\Translator $translator
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     * @param TranslatorInterface $translator
+     * @param EngineInterface $templating
      * @param string $template path to template
      * @param array $options array('domains' => array(), 'debug' => true|false)
      */
-    public function __construct($translator, $templating, $template, $options)
+    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, $options)
     {
         $this->translator = $translator;
         $this->templating = $templating;
@@ -42,6 +44,7 @@ class Controller
 
     /**
      * Action point for js translation resource
+     *
      * @param Request $request
      * @param string $_locale
      * @return Response
@@ -58,12 +61,13 @@ class Controller
 
     /**
      * Combines JSON with js translation and renders js-resource
+     *
      * @param array $domains
      * @param string $locale
      * @param bool $debug
      * @return string
      */
-    public function renderJsTranslationContent($domains, $locale, $debug = false)
+    public function renderJsTranslationContent(array $domains, $locale, $debug = false)
     {
         $domainsTranslations = $this->translator->getTranslations($domains, $locale);
 

@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator as BaseTranslator;
 class Translator extends BaseTranslator
 {
     /**
+     * Collector of translations
+     *
      * Collects all translations for corresponded domains and locale,
      * takes in account fallback of locales.
      * Method is used for exposing of collected translations.
@@ -15,7 +17,7 @@ class Translator extends BaseTranslator
      * @param string|null $locale  locale of translations, by default is current locale
      * @return array
      */
-    public function getTranslations($domains = array(), $locale = null)
+    public function getTranslations(array $domains = array(), $locale = null)
     {
         if (null === $locale) {
             $locale = $this->getLocale();
