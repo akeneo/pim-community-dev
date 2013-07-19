@@ -1,4 +1,6 @@
 parameters:
+    oro_notification.send_from: example@example.com
+
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
@@ -101,6 +103,8 @@ services:
         arguments:
             - @twig
             - @oro_notification.mailer
+            - @doctrine.orm.entity_manager
+            - %oro_notification.send_from%
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
@@ -110,6 +114,9 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
+
+    swiftmailer.spool.db:
+        alias: oro_notification.mailer.spool_db
 
     oro_notification.mailer.transport:
         class: Swift_Transport_SpoolTransport
@@ -121,3 +128,26 @@ services:
         class: %swiftmailer.class%
         arguments:
             - @oro_notification.mailer.transport
+
+    oro_notification.twig.email_security_policy:
+        class: Twig_Sandbox_SecurityPolicy
+        arguments:
+            # tags
+            - [ 'if' ]
+            # filters
+            - [ 'upper' ]
+            # methods
+            -
+              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname]
+            # properties
+            -
+              Oro\Bundle\UserBundle\Entity\User: [username, firstname]
+            # functions
+            - []
+
+    oro_notification.twig.email_sandbox:
+        class: Twig_Extension_Sandbox
+        arguments:
+            - @oro_notification.twig.email_security_policy
+        tags:
+            - { name: 'twig.extension' }

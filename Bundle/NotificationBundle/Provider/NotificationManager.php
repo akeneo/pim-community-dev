@@ -55,7 +55,7 @@ class NotificationManager
         $notificationRules = $this->em->getRepository($this->className)
             ->getRulesByCriteria(get_class($entity), $event->getName());
 
-        if (!empty($rules)) {
+        if (!empty($notificationRules)) {
             /** @var EventHandlerInterface $handler */
             foreach ($this->handlers as $handler) {
                 $handler->handle($event, $notificationRules);

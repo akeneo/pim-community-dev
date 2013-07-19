@@ -12,7 +12,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
  * EmailNotification
  *
  * @ORM\Table("oro_notification_recipient_list")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\NotificationBundle\Entity\Repository\RecipientListRepository")
  */
 class RecipientList
 {
@@ -196,6 +196,16 @@ class RecipientList
                 $result = '';
                 break;
         }
+
+        return $result;
+    }
+
+    /**
+     * Return recipient list as array
+     */
+    public function toArray()
+    {
+        //$result = $this->ge
 
         return $result;
     }

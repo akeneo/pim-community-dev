@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use JMS\JobQueueBundle\Entity\Job;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
@@ -9,6 +10,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EmailNotificationHandler implements EventHandlerInterface
 {
+    const SEND_COMMAND = 'oro:spool:send';
+
     /**
      * @var \Twig_Environment
      */
@@ -19,10 +22,22 @@ class EmailNotificationHandler implements EventHandlerInterface
      */
     protected $mailer;
 
-    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer)
+    /**
+     * @var ObjectManager
+     */
+    protected $em;
+
+    /**
+     * @var string
+     */
+    protected $sendFrom;
+
+    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em, $sendFrom)
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
+        $this->em = $em;
+        $this->sendFrom = $sendFrom;
     }
 
     /**
@@ -38,20 +53,26 @@ class EmailNotificationHandler implements EventHandlerInterface
             $params = array(
                 'event' => $event,
                 'notification' => $notification,
+                'entity' => $event->getEntity(),
+                'templateName' => $notification->getTemplate(),
             );
 
-            $emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
+            //$emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
+            $emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
             $subject = ($emailTemplate->hasBlock("subject")
                 ? $emailTemplate->renderBlock("subject", $params)
                 : "oro_notification.default_notification_subject");
             $subject = trim($subject);
 
+            $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
+                ->getRecipientEmails($notification->getRecipientList());
+
             $params = new ParameterBag(
                 array(
                     'subject' => $subject,
                     'body'    => $emailTemplate->render($params),
-                    'from'    => '',
-                    'to'      => '',
+                    'from'    => $this->sendFrom,
+                    'to'      => $recipientEmails,
                 )
             );
 
@@ -82,7 +103,7 @@ class EmailNotificationHandler implements EventHandlerInterface
         $messageLimit = 100;
         $env          = 'prod';
 
-        $command = 'swiftmailer:spool:send';
+        $command = self::SEND_COMMAND;
         $commandArgs = array(
             'message-limit' => $messageLimit,
             'env'           => $env,
@@ -102,6 +123,7 @@ class EmailNotificationHandler implements EventHandlerInterface
         if (!$currJob) {
             $job = new Job($command, $commandArgs);
             $this->em->persist($job);
+            $this->em->flush($job);
         }
     }
 }
