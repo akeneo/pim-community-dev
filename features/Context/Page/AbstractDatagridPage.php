@@ -3,7 +3,6 @@
 namespace Context\Page;
 
 use Behat\Mink\Element\NodeElement;
-
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -13,9 +12,13 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @abstract
  */
 abstract class AbstractDatagridPage extends Page
 {
+    /**
+     * @var array
+     */
     protected $elements = array(
         'grid'        => array('css' => 'table.grid'),
         'grid-filter' => array('css' => 'div.filter-box')
