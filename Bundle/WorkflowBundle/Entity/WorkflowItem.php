@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+
 /**
  * Workflow item
  *
@@ -76,7 +78,7 @@ class WorkflowItem
     protected $serializedData;
 
     /**
-     * @var WorkflowItemData
+     * @var WorkflowData
      */
     protected $data;
 
@@ -87,7 +89,7 @@ class WorkflowItem
     {
         $this->entities = new ArrayCollection();
         $this->closed = false;
-        $this->data = new WorkflowItemData();
+        $this->data = new WorkflowData();
     }
 
     /**
@@ -276,10 +278,10 @@ class WorkflowItem
     /**
      * Set data
      *
-     * @param WorkflowItemData $data
+     * @param WorkflowData $data
      * @return WorkflowItem
      */
-    public function setData(WorkflowItemData $data)
+    public function setData(WorkflowData $data)
     {
         $this->data = $data;
 
@@ -289,7 +291,7 @@ class WorkflowItem
     /**
      * Get data
      *
-     * @return WorkflowItemData
+     * @return WorkflowData
      */
     public function getData()
     {

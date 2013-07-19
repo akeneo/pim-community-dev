@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Entity;
+namespace Oro\Bundle\WorkflowBundle\Model;
 
-class WorkflowItemData implements \ArrayAccess, \IteratorAggregate, \Countable
+class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
      * @var array
@@ -22,7 +22,7 @@ class WorkflowItemData implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @param string $name
      * @param mixed $value
-     * @return WorkflowItemData
+     * @return WorkflowData
      */
     public function set($name, $value)
     {

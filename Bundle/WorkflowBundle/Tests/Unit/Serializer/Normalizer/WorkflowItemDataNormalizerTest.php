@@ -7,10 +7,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowItemDataNormalizer;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
+use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
-class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
+class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var EntityManager
@@ -28,7 +28,7 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
     protected $serializer;
 
     /**
-     * @var WorkflowItemDataNormalizer
+     * @var WorkflowDataNormalizer
      */
     protected $normalizer;
 
@@ -44,13 +44,13 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
 
-        $this->normalizer = new WorkflowItemDataNormalizer($this->registry);
+        $this->normalizer = new WorkflowDataNormalizer($this->registry);
         $this->normalizer->setSerializer($this->serializer);
     }
 
     public function testNormalize()
     {
-        $data = new WorkflowItemData();
+        $data = new WorkflowData();
         $data->foo = 'bar';
 
         $this->assertEquals(array('foo' => 'bar'), $this->normalizer->normalize($data));
@@ -58,20 +58,20 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalize()
     {
-        $data = new WorkflowItemData();
+        $data = new WorkflowData();
         $data->foo = 'bar';
 
         $this->assertEquals(
             $data,
-            $this->normalizer->denormalize(array('foo' => 'bar'), 'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData')
+            $this->normalizer->denormalize(array('foo' => 'bar'), 'Oro\Bundle\WorkflowBundle\Model\WorkflowData')
         );
     }
 
     public function testSupportsNormalization()
     {
-        $this->assertTrue($this->normalizer->supportsNormalization(new WorkflowItemData()));
+        $this->assertTrue($this->normalizer->supportsNormalization(new WorkflowData()));
         $this->assertTrue($this->normalizer->supportsNormalization(
-            $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData'))
+            $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData'))
         );
         $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
     }
@@ -81,12 +81,12 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $data = array('foo' => 'bar');
         $this->assertTrue(
             $this->normalizer->supportsDenormalization(
-                $data, 'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData'
+                $data, 'Oro\Bundle\WorkflowBundle\Model\WorkflowData'
             )
         );
         $this->assertTrue(
             $this->normalizer->supportsDenormalization(
-                $data, $this->getMockClass('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData')
+                $data, $this->getMockClass('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
             )
         );
         $this->assertFalse(

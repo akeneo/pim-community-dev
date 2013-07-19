@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity;
 
 class WorkflowItemTest extends \PHPUnit_Framework_TestCase
@@ -46,9 +46,9 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testData()
     {
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData', $this->workflowItem->getData());
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\WorkflowData', $this->workflowItem->getData());
 
-        $data = new WorkflowItemData();
+        $data = new WorkflowData();
         $data['foo'] = 'Bar';
 
         $this->workflowItem->setData($data);

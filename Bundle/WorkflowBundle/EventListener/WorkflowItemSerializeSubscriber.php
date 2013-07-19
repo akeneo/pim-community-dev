@@ -102,11 +102,11 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
      */
     protected function deserialize(WorkflowItem $workflowItem)
     {
-        // @TODO Get class name "Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData" from WorkflowDefinition
+        // @TODO Get class name "Oro\Bundle\WorkflowBundle\Model\WorkflowData" from WorkflowDefinition
         // @TODO Get format ("json", "xml", ...) from WorkflowDefinition
         $data = $this->serializer->deserialize(
             $workflowItem->getSerializedData(),
-            'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData',
+            'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
             $this->format
         );
         $workflowItem->setData($data);

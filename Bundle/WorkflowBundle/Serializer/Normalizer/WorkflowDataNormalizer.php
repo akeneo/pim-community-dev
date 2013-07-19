@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
-class WorkflowItemDataNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
+class WorkflowDataNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @var array
@@ -127,14 +127,14 @@ class WorkflowItemDataNormalizer extends SerializerAwareNormalizer implements No
     }
 
     /**
-     * Checks if the given class is WorkflowItemData or it's ancestor.
+     * Checks if the given class is WorkflowData or it's ancestor.
      *
      * @param string $class
      * @return Boolean
      */
     protected function supportsClass($class)
     {
-        $workflowItemDataClass = 'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData';
-        return $workflowItemDataClass == $class || in_array($workflowItemDataClass, class_parents($class));
+        $WorkflowDataClass = 'Oro\Bundle\WorkflowBundle\Model\WorkflowData';
+        return $WorkflowDataClass == $class || in_array($WorkflowDataClass, class_parents($class));
     }
 }

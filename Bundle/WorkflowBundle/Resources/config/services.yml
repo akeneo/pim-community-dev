@@ -1,6 +1,6 @@
 parameters:
     oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
-    oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowItemDataNormalizer
+    oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
     oro_workflow.workflow_item_serialize_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber
 
     oro_workflow.condition.and.class: Oro\Bundle\WorkflowBundle\Model\Condition\AndCondition
