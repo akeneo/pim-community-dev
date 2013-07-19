@@ -1,4 +1,6 @@
 parameters:
+    oro_notification.send_from: example@example.com
+
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
@@ -100,6 +102,7 @@ services:
             - @twig
             - @oro_notification.mailer
             - @doctrine.orm.entity_manager
+            - %oro_notification.send_from%
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 

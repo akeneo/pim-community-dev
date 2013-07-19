@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EmailNotificationHandler implements EventHandlerInterface
 {
+    const SEND_COMMAND = 'oro:spool:send';
+
     /**
      * @var \Twig_Environment
      */
@@ -25,11 +27,17 @@ class EmailNotificationHandler implements EventHandlerInterface
      */
     protected $em;
 
-    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em)
+    /**
+     * @var string
+     */
+    protected $sendFrom;
+
+    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em, $sendFrom)
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->em = $em;
+        $this->sendFrom = $sendFrom;
     }
 
     /**
@@ -63,7 +71,7 @@ class EmailNotificationHandler implements EventHandlerInterface
                 array(
                     'subject' => $subject,
                     'body'    => $emailTemplate->render($params),
-                    'from'    => 'ishakuta@gmail.com',
+                    'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
                 )
             );
@@ -95,7 +103,7 @@ class EmailNotificationHandler implements EventHandlerInterface
         $messageLimit = 100;
         $env          = 'prod';
 
-        $command = 'swiftmailer:spool:send';
+        $command = self::SEND_COMMAND;
         $commandArgs = array(
             'message-limit' => $messageLimit,
             'env'           => $env,
