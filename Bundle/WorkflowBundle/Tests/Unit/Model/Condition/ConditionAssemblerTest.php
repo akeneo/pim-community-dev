@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
+use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 
 class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +27,7 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $assembler = new ConditionAssembler($factory);
+        $assembler = new ConditionAssembler($factory, new ParameterPass());
         $actual = $assembler->assemble($configuration);
         $this->assertEquals($expected, $actual);
     }

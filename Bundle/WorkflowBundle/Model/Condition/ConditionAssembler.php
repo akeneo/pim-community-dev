@@ -3,17 +3,29 @@
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
+use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
+use Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface;
 
-class ConditionAssembler
+class ConditionAssembler extends AbstractAssembler
 {
     /**
      * @var ConditionFactory
      */
     protected $factory;
 
-    public function __construct(ConditionFactory $factory)
+    /**
+     * @var PassInterface
+     */
+    protected $configurationPass;
+
+    /**
+     * @param ConditionFactory $factory
+     * @param PassInterface $configurationPass
+     */
+    public function __construct(ConditionFactory $factory, PassInterface $configurationPass)
     {
-        $this->factory = $factory;
+        $this->factory           = $factory;
+        $this->configurationPass = $configurationPass;
     }
 
     /**
@@ -27,8 +39,8 @@ class ConditionAssembler
         }
 
         $options = array();
-        $conditionType = $this->getConditionType($configuration);
-        $conditionParameters = $this->getConditionParameters($configuration);
+        $conditionType = $this->getEntityType($configuration);
+        $conditionParameters = $this->getEntityParameters($configuration);
         if (is_array($conditionParameters)) {
             foreach ($conditionParameters as $key => $conditionParameter) {
                 if ($this->isService($conditionParameter)) {
@@ -40,44 +52,9 @@ class ConditionAssembler
         } else {
             $options[] = $conditionParameters;
         }
-        return $this->factory->create($conditionType, $options);
-    }
 
-    /**
-     * Get condition name.
-     *
-     * @param array $configuration
-     * @return string
-     */
-    protected function getConditionType(array $configuration)
-    {
-        $keys = array_keys($configuration);
-        return $keys[0];
-    }
+        $passedOptions = $this->configurationPass->pass($options);
 
-    /**
-     * Get condition parameters.
-     *
-     * @param array $configuration
-     * @return mixed
-     */
-    protected function getConditionParameters(array $configuration)
-    {
-        $values = array_values($configuration);
-        return $values[0];
-    }
-
-    /**
-     * Check that configuration is a condition configuration.
-     *
-     * @param mixed $configuration
-     * @return bool
-     */
-    protected function isService($configuration)
-    {
-        if (!is_array($configuration) || count($configuration) != 1) {
-            return false;
-        }
-        return strpos($this->getConditionType($configuration), '@') === 0;
+        return $this->factory->create($conditionType, $passedOptions);
     }
 }
