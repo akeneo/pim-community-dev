@@ -3,11 +3,15 @@ parameters:
     oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
     oro_workflow.workflow_item_serialize_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber
 
+    oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
+
     oro_workflow.condition.and.class: Oro\Bundle\WorkflowBundle\Model\Condition\AndCondition
     oro_workflow.condition.or.class: Oro\Bundle\WorkflowBundle\Model\Condition\OrCondition
     oro_workflow.condition.true.class: Oro\Bundle\WorkflowBundle\Model\Condition\TrueCondition
     oro_workflow.condition.false.class: Oro\Bundle\WorkflowBundle\Model\Condition\FalseCondition
-    oro_workflow.condition.equals.class: Oro\Bundle\WorkflowBundle\Model\Condition\EqualsCondition
+    oro_workflow.condition.equals.class: Oro\Bundle\WorkflowBundle\Model\Condition\EqualToCondition
+    oro_workflow.condition.not_equals.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotEqualToCondition
+    oro_workflow.condition.not.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotCondition
 
 services:
     oro_workflow.configuration_provider:
@@ -32,6 +36,9 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    oro_workflow.context_accessor:
+        class: %oro_workflow.context_accessor.class%
+
     oro_workflow.condition.and:
         class: %oro_workflow.condition.and.class%
         tags:
@@ -54,5 +61,12 @@ services:
 
     oro_workflow.condition.equals:
         class: %oro_workflow.condition.equals.class%
+        args: [@doctrine, @oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: eq}
+
+    oro_workflow.condition.not_equals:
+        class: %oro_workflow.condition.not_equals.class%
+        arguments: [@oro_workflow.condition.equals]
+        tags:
+            - {name: oro_workflow.condition, alias: neq}
