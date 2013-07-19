@@ -2,20 +2,21 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-
 class AndCondition extends AbstractCompositeCondition
 {
     /**
-     * Check if all conditions meets WorkflowItem.
+     * Check if all conditions meets context.
      *
-     * @param WorkflowItem $workflowItem
+     * @param mixed $context
      * @return boolean
      */
-    public function isAllowed(WorkflowItem $workflowItem)
+    public function isAllowed($context)
     {
+        if (!$this->conditions) {
+            return true;
+        }
         foreach ($this->conditions as $condition) {
-            if (!$condition->isAllowed($workflowItem)) {
+            if (!$condition->isAllowed($context)) {
                 return false;
             }
         }

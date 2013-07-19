@@ -2,17 +2,15 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-
 class TrueCondition implements ConditionInterface
 {
     /**
      * Always return TRUE
      *
-     * @param WorkflowItem $workflowItem
+     * @param mixed $context
      * @return boolean
      */
-    public function isAllowed(WorkflowItem $workflowItem)
+    public function isAllowed($context)
     {
         return true;
     }
@@ -21,9 +19,10 @@ class TrueCondition implements ConditionInterface
      * Nothing to initialize
      *
      * @param array $options
+     * @return TrueCondition
      */
     public function initialize(array $options)
     {
-
+        return $this;
     }
 }

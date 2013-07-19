@@ -7,6 +7,7 @@ parameters:
     oro_workflow.condition.or.class: Oro\Bundle\WorkflowBundle\Model\Condition\OrCondition
     oro_workflow.condition.true.class: Oro\Bundle\WorkflowBundle\Model\Condition\TrueCondition
     oro_workflow.condition.false.class: Oro\Bundle\WorkflowBundle\Model\Condition\FalseCondition
+    oro_workflow.condition.equals.class: Oro\Bundle\WorkflowBundle\Model\Condition\EqualsCondition
 
 services:
     oro_workflow.configuration_provider:
@@ -50,3 +51,8 @@ services:
         class: %oro_workflow.condition.false.class%
         tags:
             - {name: oro_workflow.condition, alias: "false"}
+
+    oro_workflow.condition.equals:
+        class: %oro_workflow.condition.equals.class%
+        tags:
+            - {name: oro_workflow.condition, alias: eq}
