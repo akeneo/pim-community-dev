@@ -1,5 +1,6 @@
 parameters:
     oro_workflow.post_action_factory.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
+
     oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction
 
 services:

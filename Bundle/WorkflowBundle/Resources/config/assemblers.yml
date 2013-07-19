@@ -1,10 +1,18 @@
 parameters:
     oro_workflow.pass.parameter.class: Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass
+
+    oro_workflow.condition_assembler.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler
     oro_workflow.post_action_assembler.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler
 
 services:
     oro_workflow.pass.parameter:
         class: %oro_workflow.pass.parameter.class%
+
+    oro_workflow.condition_assembler.class:
+        class: %oro_workflow.condition_assembler.class%
+        arguments:
+            - @oro_workflow.condition_factory
+            - @oro_workflow.pass.parameter
 
     oro_workflow.post_action_assembler:
         class: %oro_workflow.post_action_assembler.class%

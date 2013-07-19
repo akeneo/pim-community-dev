@@ -1,6 +1,5 @@
 parameters:
     oro_workflow.condition_factory.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory
-    oro_workflow.condition_assembler.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler
 
     oro_workflow.condition.andx.class: Oro\Bundle\WorkflowBundle\Model\Condition\Andx
     oro_workflow.condition.orx.class: Oro\Bundle\WorkflowBundle\Model\Condition\Orx
@@ -17,11 +16,6 @@ services:
         arguments:
             - @service_container
             - []
-
-    oro_workflow.condition_assembler.class:
-        class: %oro_workflow.condition_assembler.class%
-        arguments:
-            - @oro_workflow.condition_factory
 
     oro_workflow.condition.andx:
         class: %oro_workflow.condition.andx.class%

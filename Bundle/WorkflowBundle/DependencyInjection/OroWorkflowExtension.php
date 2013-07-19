@@ -19,8 +19,8 @@ class OroWorkflowExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('assemblers.yml');
-        $loader->load('post_actions.yml');
         $loader->load('conditions.yml');
+        $loader->load('post_actions.yml');
+        $loader->load('assemblers.yml');
     }
 }
