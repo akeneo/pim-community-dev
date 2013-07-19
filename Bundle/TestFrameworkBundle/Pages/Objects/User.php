@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages\Objects;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\AbstractEntity;
 use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
-use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
-class User extends Page implements Entity
+class User extends AbstractEntity implements Entity
 {
     protected $username;
     protected $enabled;
@@ -158,19 +158,6 @@ class User extends Page implements Entity
     public function getGroups()
     {
 
-    }
-
-    public function save()
-    {
-        $this->byXPath("//button[contains(., 'Save')]")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-        return $this;
-    }
-
-    public function close()
-    {
-        return new Users($this->test);
     }
 
     public function edit()

@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages\Objects;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\AbstractEntity;
 use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
-use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
-class Account extends Page implements Entity
+class Account extends AbstractEntity implements Entity
 {
     protected $accountname;
     protected $street;
@@ -113,19 +113,6 @@ class Account extends Page implements Entity
     public function getZipCode()
     {
         return $this->zipcode->value();
-    }
-
-    public function save()
-    {
-        $this->byXPath("//button[contains(., 'Save')]")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-        return $this;
-    }
-
-    public function close()
-    {
-        return new Accounts($this->test);
     }
 
     public function edit()
