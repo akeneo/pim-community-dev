@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<ruleset name="PSR2-Symfony2">
- <description>A combination of PSR-2 and Symfony2 coding standards.</description>
-
- <!-- The order of the rule ref is very important as Symfony2 is more strict on
-       some rules like the line length limited to 80 characters (120 for PSR-2) -->
- <rule ref="Symfony2"/>
- <rule ref="PSR2"/>
-</ruleset>
