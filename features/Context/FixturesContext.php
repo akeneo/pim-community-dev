@@ -461,7 +461,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following categories:$/
+     * @Given /^the following categor(?:y|ies):$/
      */
     public function theFollowingCategories(TableNode $table)
     {

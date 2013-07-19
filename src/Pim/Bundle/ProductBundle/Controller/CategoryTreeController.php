@@ -23,7 +23,6 @@ use Pim\Bundle\ProductBundle\Entity\Category;
  */
 class CategoryTreeController extends Controller
 {
-
     /**
      * Index action
      *
@@ -214,14 +213,36 @@ class CategoryTreeController extends Controller
      */
     public function createAction(Category $parent = null)
     {
-        if ($parent === null) {
-            $category = $this->getTreeManager()->getTreeInstance();
-        } else {
+        if ($parent) {
             $category = $this->getTreeManager()->getSegmentInstance();
             $category->setParent($parent);
+        } else {
+            $category = $this->getTreeManager()->getTreeInstance();
         }
 
-        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+        $form    = $this->createForm($this->get('pim_product.form.type.category'), $category);
+        $request = $this->getRequest();
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
+
+                $this->addFlash('success', sprintf(
+                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
+                ));
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_categorytree_edit',
+                        array('id'=> $category->getId(), 'node' => $category->getId())
+                    )
+                );
+            }
+        }
 
         return array(
             'form' => $form->createView(),
@@ -244,9 +265,7 @@ class CategoryTreeController extends Controller
      */
     public function editAction(Category $category)
     {
-        $request = $this->getRequest();
-        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
-
+        $request  = $this->getRequest();
         $datagrid = $this->getDataAuditDatagrid(
             $category,
             'pim_product_categorytree_edit',
@@ -255,19 +274,23 @@ class CategoryTreeController extends Controller
             )
         );
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
         }
 
-        if ($request->getMethod() == 'POST') {
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getTreeManager()->getStorageManager()->persist($category);
-                $this->getTreeManager()->getStorageManager()->flush();
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
 
-                $nodeType = $category->getParent() ? 'Category' : 'Tree';
-                $this->get('session')->getFlashBag()->add('success', $nodeType. ' successfully saved');
+                $this->addFlash('success', sprintf(
+                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
+                ));
 
                 return $this->redirect(
                     $this->generateUrl(

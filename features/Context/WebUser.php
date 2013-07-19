@@ -707,7 +707,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following information:$/
+     * @Given /^I fill in the following informations?:$/
      */
     public function iFillInTheFollowingInformation(TableNode $table)
     {
@@ -914,6 +914,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 sprintf('Expecting to not see product %s, but I see it', $product)
             );
         }
+    }
+
+    /**
+     * @Given /^I am on the category tree creation page$/
+     */
+    public function iAmOnTheCategoryTreeCreationPage()
+    {
+        $this->openPage('Category tree creation');
+    }
+
+    /**
+     * @Given /^I am on the category "([^"]*)" node creation page$/
+     */
+    public function iAmOnTheCategoryNodeCreationPage($code)
+    {
+        $this->openPage('Category node creation', array(
+            'id' => $this->getCategory($code)->getId()
+        ));
+    }
+
+    /**
+     * @Then /^I should be on the category "([^"]*)" edit page$/
+     */
+    public function iShouldBeOnTheCategoryEditPage($code)
+    {
+        $this->assertSession()->addressEquals(
+            $this->getPage('Category edit')->getUrl(
+                $this->getCategory($code)
+            )
+        );
     }
 
     private function openPage($page, array $options = array())
