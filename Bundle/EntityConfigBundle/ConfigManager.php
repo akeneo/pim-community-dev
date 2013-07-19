@@ -362,7 +362,7 @@ class ConfigManager
 
     /**
      * @param null $scope
-     * @return array
+     * @return ConfigInterface[]|EntityConfigInterface[]
      */
     public function getUpdatedEntityConfig($scope = null)
     {
@@ -382,9 +382,9 @@ class ConfigManager
     /**
      * @param null $className
      * @param null $scope
-     * @return array
+     * @return ConfigInterface[]|FieldConfigInterface[]
      */
-    public function getUpdatedFieldConfig($className = null, $scope = null)
+    public function getUpdatedFieldConfig($scope = null, $className = null)
     {
         return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($className, $scope) {
             if (!$config instanceof FieldConfigInterface) {
