@@ -170,7 +170,7 @@ abstract class AbstractJob implements JobInterface
             //$execution->addFailureException($e);
         }
 
-        if ( ($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
+        if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
         ) {
             /* @var ExitStatus $exitStatus */
