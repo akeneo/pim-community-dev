@@ -13,17 +13,21 @@ Feature: Expose product data via a REST API
     Then the response code should be 200
 
   Scenario: Successfully retrieve a product
-    Given a "Car" product available in english
+    Given a "Car" product available in english and french
     And the following product attributes:
-      | type   | label | scopable | translatable |
-      | prices | Price | yes      | no           |
-      | text   | Color | no       | yes          |
+      | type   | label             | scopable | translatable |
+      | prices | Price             | no       | no           |
+      | text   | Color             | no       | yes          |
+      | text   | Short description | yes      | yes          |
     And the following product values:
-      | product | attribute | locale | scope     | value                |
-      | Car     | Price     |        | mobile    | 10000 EUR, 15000 USD |
-      | Car     | Price     |        | ecommerce | 10500 EUR, 16000 USD |
-      | Car     | Color     | en_US  |           | red                  |
-      | Car     | Color     | fr_FR  |           | rouge                |
+      | product | attribute         | locale | scope     | value                  |
+      | Car     | Price             |        |           | 10000 EUR, 15000 USD   |
+      | Car     | Color             | en_US  |           | red                    |
+      | Car     | Color             | fr_FR  |           | rouge                  |
+      | Car     | Short description | en_US  | mobile    | A nice car             |
+      | Car     | Short description | fr_FR  | mobile    | Une belle voiture      |
+      | Car     | Short description | en_US  | ecommerce | A very nice car        |
+      | Car     | Short description | fr_FR  | ecommerce | Une très belle voiture |
     And I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "Car"
     Then the response code should be 200
@@ -37,12 +41,16 @@ Feature: Expose product data via a REST API
           "fr_FR":"Car"
         },
         "price":{
-          "en_US":"10500 EUR, 16000 USD",
-          "fr_FR":"10500 EUR, 16000 USD"
+          "en_US":"10000.00 EUR, 15000.00 USD",
+          "fr_FR":"10000.00 EUR, 15000.00 USD"
         },
         "color":{
           "en_US":"red",
           "fr_FR":"rouge"
+        },
+        "shortDescription":{
+          "en_US":"A very nice car",
+          "fr_FR":"Une très belle voiture"
         },
         "resource":"http://akeneo-pim.local/app_behat.php/api/rest/ecommerce/products/Car"
       }

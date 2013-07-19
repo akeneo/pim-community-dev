@@ -722,6 +722,7 @@ class FixturesContext extends RawMinkContext
             $value->setData($data);
         }
         $value->setLocale($locale);
+        $value->setScope($scope);
 
         return $value;
     }
