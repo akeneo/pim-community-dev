@@ -345,7 +345,10 @@ class ConfigManager
     public function calculateConfigChangeSet(ConfigInterface $config)
     {
         $originConfig = $this->originalConfigs[spl_object_hash($config)];
-        $diff         = array_diff_assoc($config->getValues(), $originConfig->getValues());
+
+        $diff = array_udiff_assoc($config->getValues(), $originConfig->getValues(), function ($a, $b) {
+            return ($a === $b) ? 0 : 1;
+        });
 
         if (!isset($this->configChangeSets[spl_object_hash($config)])) {
             $this->configChangeSets[spl_object_hash($config)] = array();
