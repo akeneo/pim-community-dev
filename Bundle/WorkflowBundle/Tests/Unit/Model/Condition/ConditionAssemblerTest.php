@@ -73,6 +73,9 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 )
+            ),
+            array(
+                array(), null
             )
         );
     }

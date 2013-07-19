@@ -29,15 +29,6 @@ class ConditionFactory
 
     /**
      * @param string $type
-     * @return bool
-     */
-    public function hasType($type)
-    {
-        return isset($this->types[$type]);
-    }
-
-    /**
-     * @param string $type
      * @param array  $options
      * @return ConditionInterface
      * @throws \RunTimeException
