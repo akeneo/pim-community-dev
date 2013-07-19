@@ -24,7 +24,7 @@ class CsvEncoder implements EncoderInterface
         $this->withHeader = $withHeader;
     }
 
-    public function encode($data, $format)
+    public function encode($data, $format, array $context = array())
     {
         if (!is_array($data)) {
             throw new \InvalidArgumentException(sprintf(

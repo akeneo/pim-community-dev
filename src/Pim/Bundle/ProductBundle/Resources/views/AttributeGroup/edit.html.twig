@@ -123,7 +123,7 @@
 
 {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
     'form': attributesForm,
-    'action': path('pim_product_attributegroup_addproductattributes', {'id': group.id})
+    'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
 } %}
 
 {% include 'PimProductBundle:AttributeGroup:_attribute-sort-form.html.twig' with {

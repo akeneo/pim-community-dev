@@ -208,7 +208,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
      * @param string $translationClass Translation class name
      *
      * @dataProvider dataOptionsProvider
-     * @expectedException \Symfony\Component\Form\Exception\FormException
+     * @expectedException \Symfony\Component\Form\Exception\InvalidConfigurationException
      */
     public function testAssertException($entityClass, $fieldName, $translationClass)
     {

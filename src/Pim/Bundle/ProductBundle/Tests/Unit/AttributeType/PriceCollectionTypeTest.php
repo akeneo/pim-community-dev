@@ -26,7 +26,7 @@ class PriceCollectionTypeTest extends AttributeTypeTest
         $factory = $this->getFormFactoryMock();
         $value = $this->getFlexibleValueMock(array(
             'data'        => 'bar',
-            'backendType' => 'foo',
+            'backendType' => 'foo'
         ));
 
         $factory->expects($this->once())
@@ -41,6 +41,7 @@ class PriceCollectionTypeTest extends AttributeTypeTest
                 'allow_add'    => false,
                 'allow_delete' => false,
                 'by_reference' => false,
+                'auto_initialize' => false
             ));
 
         $this->target->buildValueFormType($factory, $value);

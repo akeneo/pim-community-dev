@@ -97,7 +97,7 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @return array|scalar
      */
-    public function normalize($product, $format = null)
+    public function normalize($product, $format = null, array $context = array())
     {
         $values = $this->filterValues($product->getValues());
         $attributes = $this->getAttributes($values);

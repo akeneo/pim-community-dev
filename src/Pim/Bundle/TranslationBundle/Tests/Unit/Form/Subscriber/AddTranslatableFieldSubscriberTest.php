@@ -291,7 +291,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     array(
                         'label'         => $locale,
                         'required'      => in_array($locale, $requiredLocales),
-                        'property_path' => false,
+                        'mapped' => false,
+                        'auto_initialize' => false
                     )
                 )
                 ->will($this->returnValue($field = $this->getFormMock()));
@@ -442,7 +443,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create DataEvent mock
+     * Create FormEvent mock
      *
      * @param Form  $form
      * @param array $parentData
@@ -453,7 +454,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function getEventMock($form, $parentData = null, array $data = null)
     {
         $event = $this
-            ->getMockBuilder('Symfony\Component\Form\Event\DataEvent')
+            ->getMockBuilder('Symfony\Component\Form\FormEvent')
             ->disableOriginalConstructor()
             ->setMethods(array('getData', 'getForm'))
             ->getMock();
