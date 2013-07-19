@@ -7,7 +7,7 @@ use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
@@ -40,14 +40,14 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::CREATE_ENTITY_CONFIG => 'newEntityConfig'
+            Events::NEW_ENTITY => 'newEntityConfig'
         );
     }
 
     /**
-     * @param EntityConfigEvent $event
+     * @param NewEntityEvent $event
      */
-    public function newEntityConfig(EntityConfigEvent $event)
+    public function newEntityConfig(NewEntityEvent $event)
     {
         /** @var ClassHierarchyMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());

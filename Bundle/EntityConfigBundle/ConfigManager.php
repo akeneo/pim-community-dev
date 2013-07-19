@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
@@ -24,8 +25,8 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
-use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 class ConfigManager
@@ -59,6 +60,21 @@ class ConfigManager
      * @var ConfigInterface[]
      */
     protected $removeConfigs = array();
+
+    /**
+     * @var ConfigInterface[]
+     */
+    protected $originalConfigs = array();
+
+    /**
+     * @var array
+     */
+    protected $configChangeSets = array();
+
+    /**
+     * @var array
+     */
+    protected $updatedConfigs = array();
 
     /**
      * @var ConfigProvider[]
@@ -132,34 +148,36 @@ class ConfigManager
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
+        $resultConfig = null;
         if (null !== $this->configCache
             && $config = $this->configCache->loadConfigFromCache($className, $scope)
         ) {
-            return $config;
+            $resultConfig = $config;
         } else {
             $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);
 
             /** @var ConfigEntity $entity */
             $entity = $this->isSchemaSynced() ? $entityConfigRepo->findOneBy(array('className' => $className)) : null;
             if ($entity) {
-                $config = new EntityConfig($className, $scope);
-                $config->setValues($entity->toArray($scope));
-
-                foreach ($entity->getFields() as $field) {
-                    $fieldConfig = new FieldConfig($className, $field->getCode(), $field->getType(), $scope);
-                    $fieldConfig->setValues($field->toArray($scope));
-                    $config->addField($fieldConfig);
-                }
+                $config = $this->entityToConfig($entity, $scope);
 
                 if (null !== $this->configCache) {
                     $this->configCache->putConfigInCache($config);
                 }
 
-                return $config;
+                $resultConfig = $config;
             } else {
-                return new EntityConfig($className, $scope);
+                $resultConfig = new EntityConfig($className, $scope);
             }
         }
+
+        $this->originalConfigs[spl_object_hash($resultConfig)] = clone $resultConfig;
+
+        foreach ($resultConfig->getFields() as $field) {
+            $this->originalConfigs[spl_object_hash($field)] = clone $field;
+        }
+
+        return $resultConfig;
     }
 
     public function hasConfig($className)
@@ -186,8 +204,8 @@ class ConfigManager
             }
 
             $this->eventDispatcher->dispatch(
-                Events::CREATE_ENTITY_CONFIG,
-                new EntityConfigEvent($doctrineMetadata->getName(), $this)
+                Events::NEW_ENTITY,
+                new NewEntityEvent($doctrineMetadata->getName(), $this)
             );
 
             foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
@@ -203,8 +221,8 @@ class ConfigManager
                 }
 
                 $this->eventDispatcher->dispatch(
-                    Events::CREATE_FIELD_CONFIG,
-                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
+                    Events::NEW_FIELD,
+                    new NewFieldEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
             }
 
@@ -221,8 +239,8 @@ class ConfigManager
                 }
 
                 $this->eventDispatcher->dispatch(
-                    Events::CREATE_FIELD_CONFIG,
-                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
+                    Events::NEW_FIELD,
+                    new NewFieldEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
             }
         }
@@ -284,6 +302,8 @@ class ConfigManager
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
             }
 
+            $this->calculateConfigChangeSet($config);
+
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
@@ -302,11 +322,91 @@ class ConfigManager
             }
         }
 
+        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new OnFlushConfigEvent($this));
+
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
         }
 
         $this->em()->flush();
+
+        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new OnFlushConfigEvent($this));
+
+        $this->persistConfigs   = array();
+        $this->removeConfigs    = array();
+        $this->configChangeSets = array();
+        $this->updatedConfigs   = array();
+    }
+
+
+    /**
+     * @param ConfigInterface $config
+     */
+    public function calculateConfigChangeSet(ConfigInterface $config)
+    {
+        $originConfig = $this->originalConfigs[spl_object_hash($config)];
+        $diff         = array_diff_assoc($config->getValues(), $originConfig->getValues());
+
+        if (!isset($this->configChangeSets[spl_object_hash($config)])) {
+            $this->configChangeSets[spl_object_hash($config)] = array();
+        }
+
+        if ($diff) {
+            $this->configChangeSets[spl_object_hash($config)] = array_merge($this->configChangeSets[spl_object_hash($config)], $diff);
+
+            if (!in_array($config, $this->updatedConfigs, true)) {
+                $this->updatedConfigs[] = $config;
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getUpdatedEntityConfig()
+    {
+        return array_filter($this->updatedConfigs, function (ConfigInterface $config) {
+            return $config instanceof EntityConfigInterface;
+        });
+    }
+
+    /**
+     * @param null $className
+     * @return array
+     */
+    public function getUpdatedFieldConfig($className = null)
+    {
+        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($className) {
+            return ($config->getClassName() == $className && $config instanceof FieldConfigInterface);
+        });
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @return array
+     */
+    public function getConfigChangeSet(ConfigInterface $config)
+    {
+        return isset($this->configChangeSets[spl_object_hash($config)]) ? $this->configChangeSets[spl_object_hash($config)] : array();
+    }
+
+    /**
+     * @param ConfigEntity $entity
+     * @param              $scope
+     * @return EntityConfig
+     */
+    protected function entityToConfig(ConfigEntity $entity, $scope)
+    {
+        $config = new EntityConfig($entity->getClassName(), $scope);
+        $config->setValues($entity->toArray($scope));
+
+        foreach ($entity->getFields() as $field) {
+            $fieldConfig = new FieldConfig($entity->getClassName(), $field->getCode(), $field->getType(), $scope);
+            $fieldConfig->setValues($field->toArray($scope));
+            $config->addField($fieldConfig);
+        }
+
+        return $config;
     }
 
     /**

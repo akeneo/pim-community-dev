@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\EntityBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -16,15 +17,16 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::CREATE_ENTITY_CONFIG => 'newEntityConfig',
-            Events::CREATE_FIELD_CONFIG  => 'newFieldConfig',
+            Events::NEW_ENTITY => 'newEntity',
+            Events::NEW_FIELD  => 'newField',
+            Events::ON_FLUSH   => 'onFlush',
         );
     }
 
     /**
-     * @param EntityConfigEvent $event
+     * @param NewEntityEvent $event
      */
-    public function newEntityConfig(EntityConfigEvent $event)
+    public function newEntity(NewEntityEvent $event)
     {
         $entityProvider   = $event->getConfigManager()->getProvider('entity');
         $datagridProvider = $event->getConfigManager()->getProvider('datagrid');
@@ -32,10 +34,16 @@ class ConfigSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FieldConfigEvent $event
+     * @param NewFieldEvent $event
      */
-    public function newFieldConfig(FieldConfigEvent $event)
+    public function newField(NewFieldEvent $event)
     {
 
+    }
+
+    public function onFlush(OnFlushConfigEvent $event)
+    {
+        //$event->getConfigManager()->getConfigChangeSet()
+        $auditProvider = $event->getConfigManager()->getProvider('audit');
     }
 }

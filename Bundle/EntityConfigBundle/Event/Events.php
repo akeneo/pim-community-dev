@@ -4,9 +4,11 @@ namespace Oro\Bundle\EntityConfigBundle\Event;
 
 final class Events
 {
-    const CREATE_ENTITY_CONFIG = 'entity_config.new.entity';
-    const CREATE_FIELD_CONFIG  = 'entity_config.new.field';
-
-    const UPDATE_ENTITY_CONFIG = 'entity_config.update.entity';
-    const UPDATE_FIELD_CONFIG  = 'entity_config.update.field';
+    /**
+     * Config Event Names
+     */
+    const NEW_ENTITY = 'entity_config.new.entity';
+    const NEW_FIELD  = 'entity_config.new.field';
+    const PRE_FLUSH  = 'entity_config.pre.flush';
+    const ON_FLUSH   = 'entity_config.on.flush';
 }

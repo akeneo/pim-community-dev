@@ -39,7 +39,6 @@ abstract class AbstractConfig implements ConfigInterface
     /**
      * @param $code
      * @param $value
-     * @throws RuntimeException
      * @return string
      */
     public function set($code, $value)
