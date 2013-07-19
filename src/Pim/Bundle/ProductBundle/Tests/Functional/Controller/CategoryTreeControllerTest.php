@@ -30,22 +30,22 @@ class CategoryTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const NODE_CODE = 'node-code';
+    const TREE_CREATED_MSG = 'Tree successfully created';
 
     /**
      * @staticvar string
      */
-    const NODE_TITLE = 'Node title';
+    const TREE_SAVED_MSG = 'Tree successfully updated';
 
     /**
      * @staticvar string
      */
-    const NODE_EDITED_CODE = 'node-edited-code';
+    const CATEGORY_CREATED_MSG = 'Category successfully created';
 
     /**
-     * @staticvar integer
+     * @staticvar string
      */
-    const NODE_IS_DYNAMIC = 1;
+    const CATEGORY_SAVED_MSG = 'Category successfully updated';
 
     /**
      * @staticvar string
@@ -65,12 +65,27 @@ class CategoryTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const TREE_SAVED_MSG = 'Tree successfully saved';
+    const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
      * @staticvar string
      */
-    const CATEGORY_REMOVED_MSG = 'Category successfully removed';
+    const NODE_CODE = 'node-code';
+
+    /**
+     * @staticvar string
+     */
+    const NODE_TITLE = 'Node title';
+
+    /**
+     * @staticvar string
+     */
+    const NODE_EDITED_CODE = 'node-edited-code';
+
+    /**
+     * @staticvar integer
+     */
+    const NODE_IS_DYNAMIC = 1;
 
     /**
      * Test create action for a tree
