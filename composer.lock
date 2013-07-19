@@ -243,12 +243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4"
+                "reference": "506877c5e4718aa73f3a3c1240519466cbfc3f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
-                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/506877c5e4718aa73f3a3c1240519466cbfc3f7c",
+                "reference": "506877c5e4718aa73f3a3c1240519466cbfc3f7c",
                 "shasum": ""
             },
             "type": "library",
@@ -296,12 +296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapServer.git",
-                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774"
+                "reference": "9bcae3c5cccb57418b62de24fc80e8ad6b794c75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/04afa3d79c50a117610b3d6b98fb903adee24774",
-                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/9bcae3c5cccb57418b62de24fc80e8ad6b794c75",
+                "reference": "9bcae3c5cccb57418b62de24fc80e8ad6b794c75",
                 "shasum": ""
             },
             "type": "library",
