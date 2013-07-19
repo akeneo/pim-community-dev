@@ -6,7 +6,6 @@
 <script type="text/javascript">
     {% set idSuffix = random() %}
     {% set templateElId = datagrid.name ~ '-datagrid-template-' ~ idSuffix %}
-    {% set titleElId = datagrid.name ~ '-datagrid-title-' ~ idSuffix %}
     {% set filtersElId = datagrid.name ~ '-datagrid-filters-' ~ idSuffix %}
     {% set bodyElId = datagrid.name ~ '-datagrid-body-' ~ idSuffix %}
 
@@ -112,7 +111,7 @@
         };
 
         var containerSelector = {{ selector|json_encode|raw }};
-        var datagridTemplateSelector = {{ ("#" ~ templateElId)|json_encode|raw }};
+        var datagridTemplateSelector = {{ ("#"~ templateElId)|json_encode|raw }};
         var datagridFiltersSelector = {{ ("#" ~ filtersElId)|json_encode|raw }};
         var datagridBodySelector = {{ ("#" ~ bodyElId)|json_encode|raw }};
 
@@ -186,7 +185,6 @@
 </script>
 
 <script type="text/template" id="{{ templateElId }}">
-    <div class="clearfix" id="{{ titleElId }}"></div>
     <div class="clearfix" id="{{ filtersElId }}"></div>
     <div class="clearfix" id="{{ bodyElId }}"></div>
 </script>
