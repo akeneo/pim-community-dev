@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class GreaterThanCondition extends CompareCondition
+class LessThan extends AbstractComparison
 {
     /**
-     * Checks that left values is greater than right value
+     * Checks that left values is less than right value
      *
      * @param mixed $left
      * @param mixed $right
@@ -13,6 +13,6 @@ class GreaterThanCondition extends CompareCondition
      */
     protected function doCompare($left, $right)
     {
-        return $left > $right;
+        return $left < $right;
     }
 }

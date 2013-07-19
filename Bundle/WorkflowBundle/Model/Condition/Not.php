@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
 
-class NotCondition implements ConditionInterface
+class Not implements ConditionInterface
 {
     /**
      * @var ConditionInterface
@@ -19,14 +19,14 @@ class NotCondition implements ConditionInterface
      */
     public function isAllowed($context)
     {
-        return !$this->isAllowed($context);
+        return !$this->condition->isAllowed($context);
     }
 
     /**
      * Nothing to initialize
      *
      * @param array $options
-     * @return TrueCondition
+     * @return Not
      * @throws ConditionInitializationException
      */
     public function initialize(array $options)
@@ -38,7 +38,7 @@ class NotCondition implements ConditionInterface
             } else {
                 throw new ConditionInitializationException(
                     sprintf(
-                        'Element of argument $options must be an instance of %s',
+                        'Options must contain an instance of %s',
                         'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
                     )
                 );
@@ -46,7 +46,7 @@ class NotCondition implements ConditionInterface
         } else {
             throw new ConditionInitializationException(
                 sprintf(
-                    'One element in $options argument is expected, %d given',
+                    'Options must have 1 element, but %d given',
                     count($options)
                 )
             );

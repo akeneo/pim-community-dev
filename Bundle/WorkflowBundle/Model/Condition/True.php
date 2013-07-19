@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class TrueCondition implements ConditionInterface
+use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+
+class True implements ConditionInterface
 {
     /**
      * Always return TRUE
@@ -19,10 +21,14 @@ class TrueCondition implements ConditionInterface
      * Nothing to initialize
      *
      * @param array $options
-     * @return TrueCondition
+     * @return True
+     * @throws ConditionInitializationException If options passed
      */
     public function initialize(array $options)
     {
+        if (!empty($options)) {
+            throw new ConditionInitializationException('Options are prohibited');
+        }
         return $this;
     }
 }

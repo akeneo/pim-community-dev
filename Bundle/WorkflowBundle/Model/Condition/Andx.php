@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class AndCondition extends AbstractCompositeCondition
+class Andx extends AbstractComposite
 {
     /**
      * Check if all conditions meets context.
