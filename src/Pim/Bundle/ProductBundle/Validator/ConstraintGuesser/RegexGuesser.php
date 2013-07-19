@@ -21,7 +21,13 @@ class RegexGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return 'pim_product_text' === $attribute->getAttributeType();
+        return in_array(
+            $attribute->getAttributeType(),
+            array(
+                'pim_product_text',
+                'pim_product_identifier',
+            )
+        );
     }
 
     /**

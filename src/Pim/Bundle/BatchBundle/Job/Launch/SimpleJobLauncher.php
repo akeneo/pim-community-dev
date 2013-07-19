@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job\Launch;
 
@@ -27,9 +27,10 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * Set the JobRepsitory.
      *
-     * @param jobRepository
+     * @param JobRepository $jobRepository
      */
-    public function setJobRepository(JobRepository $jobRepository) {
+    public function setJobRepository(JobRepository $jobRepository)
+    {
         $this->jobRepository = $jobRepository;
     }
 
@@ -38,8 +39,8 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     public function run(JobInterface $job, JobParameters $jobParameters)
     {
-//        assert.notNull(job, "The Job must not be null.");
-//        assert.notNull(jobParameters, "The JobParameters must not be null.");
+        //assert.notNull(job, "The Job must not be null.");
+        //assert.notNull(jobParameters, "The JobParameters must not be null.");
 
         /* @var JobExecution $jobExecution */
         $jobExecution = null;
@@ -48,17 +49,12 @@ class SimpleJobLauncher implements JobLauncherInterface
             if (!job.isRestartable()) {
                 throw new JobRestartException("JobInstance already exists and is not restartable");
             }
-            /*
-             * validate here if it has stepExecutions that are UNKNOWN
-             * retrieve the previous execution and check
-             */
-            /*
             for (StepExecution execution : lastExecution.getStepExecutions()) {
                 if (execution.getStatus() == BatchStatus.UNKNOWN) {
                     //throw
-                    throw new JobRestartException("Step [" + execution.getStepName() + "] is of status UNKNOWN"); 
+                    throw new JobRestartException("Step [" + execution.getStepName() + "] is of status UNKNOWN");
                 }//end if
-            }//end for          
+            }//end for
         }*/
 
         // Check the validity of the parameters before doing creating anything
@@ -71,7 +67,4 @@ class SimpleJobLauncher implements JobLauncherInterface
 
         return $jobExecution;
     }
-
-
-
 }

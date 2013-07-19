@@ -1,14 +1,13 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Job;
 
 /**
- * 
  * Abstract implementation of the {@link Job} interface. Common dependencies
  * such as a {@link JobRepository}, {@link JobExecutionListener}s, and various
  * configuration parameters are set here. Therefore, common error handling and
  * listener calling activities are abstracted away from implementations.
-
+ *
  * Inspired by Spring Batch org.springframework.batch.core.job.AbstractJob;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -18,9 +17,15 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class JobRepository
 {
+    /**
+     * Create a JobExecution object
+     * @param string        $jobName       Name of the job
+     * @param JobParameters $jobParameters Parameters for the execution of the job
+     *
+     * @return JobExecution
+     */
     public function createJobExecution($jobName, JobParameters $jobParameters)
     {
         return new JobExecution();
     }
-
 }

@@ -15,12 +15,12 @@ Feature: Product creation
   Scenario: Successfully display all required attributes in the product creation form
     Given I am on the products page
     And I create a new product
-    Then I should see the SKU, Reference, Product family and Activated locales fields
+    Then I should see the SKU, Reference, Family and Activated locales fields
 
   Scenario: Successfully create a product
     Given I am on the products page
     And I create a new product
-    And I fill in the following informations:
+    And I fill in the following information:
       | SKU               | barbecue  |
       | Reference         | BBQ       |
       | Activated locales | French    |

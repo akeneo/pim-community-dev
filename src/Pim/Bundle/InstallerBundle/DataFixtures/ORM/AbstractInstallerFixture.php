@@ -3,8 +3,8 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 /**
@@ -16,7 +16,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  *
  * @abstract
  */
-abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInt, ContainerAwareInt
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface

@@ -41,38 +41,42 @@ class OptionSimpleSelectType extends AbstractAttributeType
     {
         $properties = array(
             array(
-                'name' => 'valueCreationAllowed',
+                'name'      => 'valueCreationAllowed',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'searchable',
+                'name'      => 'searchable',
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'options',
+                'name'      => 'options',
                 'fieldType' => 'pim_product_options'
             ),
             array(
-                'name' => 'translatable',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
-            ),
-            array(
-                'name' => 'scopable',
-                'fieldType' => 'pim_product_scopable',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'name'      => 'translatable',
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(
-                'name' => 'unique',
+                'name'      => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name'      => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
+            ),
+            array(
+                'name'      => 'unique',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => true,
+                'options'   => array(
+                    'disabled'  => true,
                     'read_only' => true
                 )
             )

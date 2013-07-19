@@ -170,6 +170,7 @@ header h1.logo {
         border: 1px solid #d8d8d8;
         border-width: 1px 1px 0 1px;
         text-shadow: none;
+        cursor: pointer;
       }
     }
   }
@@ -199,10 +200,7 @@ header h1.logo {
 
 /* nav bar **********************************************************************************************************/
 
-i.icon-home {
-  .icon-home();
-}
-
+.navbar .fa-icon-home { font-size: 17px; }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus {
@@ -300,14 +298,6 @@ form.form-signin {
   }
 }
 
-/* Green bootstrapSwitch */
-.has-switch span {
-  padding: 4px 7px;
-  &.switch-primary, &.switch-left {
-    .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
-  }
-}
-
 a.return {
   line-height: 30px;
   margin-top: 8px;
@@ -384,8 +374,23 @@ th label {
   background-color: @backgroundColor-white;
 }
 
-.has-switch > div.switch-off, .has-switch > div.switch-on {
-  height: auto;
+/* bootstrapSwitch */
+.has-switch {
+  span {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 7px;
+    &.switch-primary, &.switch-left {
+      .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+    }
+  }
+  &>div.switch-off,
+  &>div.switch-on {
+    height: auto;
+  }
+}
+div.btn-group > .has-switch {
+  display: block;
 }
 
 .select2-container.input-large {
@@ -919,9 +924,13 @@ button.pimmultiselect {
 .table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
 table.grid { margin-bottom: 0; }
 .grid-container { overflow: visible; }
-#pim_product_product_quickcreate label {text-align: left; width: 200px;}
-#pim_product_product_quickcreate .select2-search-field, #pim_product_product_quickcreate .select2-container {width: 314px;}
-#pim_product_product_quickcreate input {width: 300px;}
+#pim_product_product_create label {text-align: left; width: 200px;}
+#pim_product_product_create .select2-search-field,
+#pim_product_product_create .select2-container {
+    width: 314px!important;
+    min-width: 314px!important;
+}
+#pim_product_product_create input {width: 300px;}
 .filter-box select.filter-select-oro {
   height: 25px;
   line-height: 25px;

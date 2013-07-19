@@ -47,7 +47,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         // assert instance and implementation
         $this->assertEntity($this->category);
         $this->assertInstanceOf('\Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $this->category);
-        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $this->category);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\TranslatableInterface', $this->category);
 
         // assert object properties
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->category->getChildren());
@@ -91,9 +91,9 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * Just a call to prevent fatal errors (no way to verify value is set)
      */
-    public function testSetTranslatableLocale()
+    public function testSetLocale()
     {
-        $this->assertEntity($this->category->setTranslatableLocale('en_US'));
+        $this->assertEntity($this->category->setLocale('en_US'));
     }
 
     /**

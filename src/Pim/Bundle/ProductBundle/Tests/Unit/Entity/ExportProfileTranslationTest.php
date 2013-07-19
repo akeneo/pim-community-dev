@@ -21,6 +21,6 @@ class ExportProfileTranslationTest extends \PHPUnit_Framework_TestCase
     {
         $profile = new ExportProfileTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $profile);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $profile);
     }
 }

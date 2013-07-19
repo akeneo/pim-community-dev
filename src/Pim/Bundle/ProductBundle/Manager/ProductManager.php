@@ -3,11 +3,8 @@
 namespace Pim\Bundle\ProductBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-
 use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
@@ -43,6 +40,71 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setLocale($code)
+    {
+        parent::setLocale($code);
+
+        $this->getFlexibleRepository()->setLocale($code);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScope($code)
+    {
+        parent::setScope($code);
+
+        $this->getFlexibleRepository()->setScope($code);
+
+        return $this;
+    }
+
+    /**
+     * Find a product by id
+     * Also ensure that it contains all required values
+     *
+     * @param int $id
+     *
+     * @return Product|null
+     */
+    public function find($id)
+    {
+        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
+
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
+        }
+
+        return $product;
+    }
+
+    /**
+     * Find a product by identifier
+     * Also ensure that it contains all required values
+     *
+     * @param string $identifier
+     *
+     * @return Product|null
+     */
+    public function findByIdentifier($identifier)
+    {
+        $code = $this->getIdentifierAttribute()->getCode();
+
+        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $product = reset($products);
+
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
+        }
+
+        return $product;
+    }
+
+    /**
      * Save a product in two phases :
      *   1) Persist and flush the entity as usual and associate it to the provided categories
      *      associated with the provided tree
@@ -72,6 +134,65 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Add missing prices (a price per currency)
+     *
+     * @param CurrencyManager  $manager the currency manager
+     * @param ProductInterface $product the product
+     */
+    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
+                $activeCurrencies = $manager->getActiveCodes();
+                $value->addMissingPrices($activeCurrencies);
+                $value->removeDisabledPrices($activeCurrencies);
+            }
+        }
+    }
+
+    /**
+     * Set the list of categories for a product. The categories not beloging
+     * to the array params are removed from product.
+     * The onlyTrees parameter allow to limit the scope of the removing or setting
+     * of categories to specific trees
+     *
+     * @param ProductInterface $product
+     * @param ArrayCollection  $categories
+     * @param array            $onlyTrees
+     */
+    public function setCategories(
+        ProductInterface $product,
+        ArrayCollection $categories = null,
+        array $onlyTrees = null
+    ) {
+        // Remove current categories
+        $currentCategories = $product->getCategories();
+        foreach ($currentCategories as $currentCategory) {
+            if ($onlyTrees != null &&
+               in_array($currentCategory->getRoot(), $onlyTrees)) {
+                $currentCategory->removeProduct($product);
+            }
+        }
+
+        // Add new categories
+        foreach ($categories as $category) {
+            if ($onlyTrees != null &&
+               in_array($category->getRoot(), $onlyTrees)) {
+                $category->addProduct($product);
+            }
+        }
+    }
+
+    /**
+     * Return the identifier attribute
+     * @return ProductAttribute|null
+     */
+    public function getIdentifierAttribute()
+    {
+        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_product_identifier'));
+    }
+
+    /**
      * Add empty values for product family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values
@@ -82,7 +203,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    private function ensureRequiredAttributeValues(ProductInterface $product)
+    protected function ensureRequiredAttributeValues(ProductInterface $product)
     {
         $channels  = $this->getChannels();
         $locales = $product->getLocales();
@@ -93,8 +214,6 @@ class ProductManager extends FlexibleManager
                 $attributes[] = $attribute;
             }
         }
-
-        $attributes = array_unique($attributes, SORT_REGULAR);
 
         foreach ($attributes as $attribute) {
             $existingValues = array();
@@ -151,23 +270,6 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Add missing prices (a price per currency)
-     *
-     * @param CurrencyManager  $manager the currency manager
-     * @param ProductInterface $product the product
-     */
-    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
-                $activeCurrencies = $manager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
-
-    /**
      * Add a missing value to the product
      *
      * @param ProductInterface $product
@@ -177,7 +279,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    private function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
+    protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
     {
         $value = $this->createFlexibleValue();
         if ($locale) {
@@ -199,7 +301,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    private function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
+    protected function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
     {
         $values = $product->getValues();
         $values = $values->filter(
@@ -222,7 +324,7 @@ class ProductManager extends FlexibleManager
     /**
      * @param ProductInterface $product
      */
-    private function handleMedia(ProductInterface $product)
+    protected function handleMedia(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if (null !== $media = $value->getMedia()) {
@@ -244,7 +346,7 @@ class ProductManager extends FlexibleManager
      *
      * @return string
      */
-    private function generateFilenamePrefix(ProductInterface $product, ProductValue $value)
+    protected function generateFilenamePrefix(ProductInterface $product, ProductValue $value)
     {
         return sprintf(
             '%s-%s-%s-%s-%s',
@@ -254,81 +356,5 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
-    }
-
-    /**
-     * Set the list of categories for a product. The categories not beloging
-     * to the array params are removed from product.
-     * The onlyTrees parameter allow to limit the scope of the removing or setting
-     * of categories to specific trees
-     *
-     * @param ProductInterface $product
-     * @param ArrayCollection  $categories
-     * @param array            $onlyTrees
-     */
-    public function setCategories(
-        ProductInterface $product,
-        ArrayCollection $categories = null,
-        array $onlyTrees = null
-    ) {
-        // Remove current categories
-        $currentCategories = $product->getCategories();
-        foreach ($currentCategories as $currentCategory) {
-            if ($onlyTrees != null &&
-               in_array($currentCategory->getRoot(), $onlyTrees)) {
-                $currentCategory->removeProduct($product);
-            }
-        }
-
-        // Add new categories
-        foreach ($categories as $category) {
-            if ($onlyTrees != null &&
-               in_array($category->getRoot(), $onlyTrees)) {
-                $category->addProduct($product);
-            }
-        }
-    }
-
-    /**
-     * Find a product
-     * Also ensure that it contains all required values
-     *
-     * @param int $id
-     *
-     * @return Product|null
-     */
-    public function find($id)
-    {
-        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
-
-        if ($product) {
-            $this->ensureRequiredAttributeValues($product);
-        }
-
-        return $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($code)
-    {
-        parent::setLocale($code);
-
-        $this->getFlexibleRepository()->setLocale($code);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        parent::setScope($code);
-
-        $this->getFlexibleRepository()->setScope($code);
-
-        return $this;
     }
 }

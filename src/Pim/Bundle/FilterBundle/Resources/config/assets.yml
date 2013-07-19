@@ -1,4 +1,3 @@
 js:
   - '@PimFilterBundle/Resources/public/js/app/filter/currencyfilter.js'
-  - '@PimFilterBundle/Resources/public/js/app/filter/localefilter.js'
   - '@PimFilterBundle/Resources/public/js/app/filter/scopefilter.js'

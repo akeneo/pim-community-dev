@@ -4,12 +4,13 @@ namespace Pim\Bundle\ProductBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Translatable\Translatable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -24,13 +25,12 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Oro\Loggable
  */
-class Category extends AbstractSegment implements Translatable, CategoryInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
 {
     /**
      * @var Category $parent
@@ -74,22 +74,12 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     protected $code;
 
     /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=64)
-     * @Gedmo\Translatable
-     */
-    protected $title;
-
-    /**
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
      * @var string $locale
-     *
-     * @Gedmo\Locale
      */
-    protected $locale;
+    protected $locale = self::FALLBACK_LOCALE;
 
     /**
      * Define if a node is dynamic or not
@@ -112,7 +102,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="CategoryTranslation",
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\CategoryTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"}
      * )
@@ -128,30 +118,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
 
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return string
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this->title;
     }
 
     /**
@@ -213,20 +179,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     }
 
     /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Category
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
      * Predicate to know if node is dynamic
      *
      * @return boolean
@@ -261,9 +213,38 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     }
 
     /**
-     * Get translations
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslation($locale = null)
+    {
+        $locale = ($locale) ? $locale : $this->locale;
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation      = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getTranslations()
     {
@@ -271,13 +252,9 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     }
 
     /**
-     * Add translation
-     *
-     * @param CategoryTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Category
+     * {@inheritdoc}
      */
-    public function addTranslation(CategoryTranslation $translation)
+    public function addTranslation(AbstractTranslation $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -287,15 +264,45 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     }
 
     /**
-     * Remove translation
-     *
-     * @param CategoryTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Category
+     * {@inheritdoc}
      */
-    public function removeTranslation(CategoryTranslation $translation)
+    public function removeTranslation(AbstractTranslation $translation)
     {
         $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\ProductBundle\Entity\CategoryTranslation';
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        $translated = $this->getTranslation()->getTitle();
+
+        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getTitle();
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return string
+     */
+    public function setTitle($title)
+    {
+        $translation = $this->getTranslation()->setTitle($title);
 
         return $this;
     }
@@ -305,6 +312,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return ($this->getTitle() != '') ? $this->getTitle() : $this->code;
     }
 }

@@ -2,21 +2,29 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + {{ tab ? ("'#" ~ tab ~ "'")|raw : 'location.hash' }} + ']');
-    activeTab && activeTab.tab('show');
+    if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
+        var activeTab = $('[href=' + location.hash + ']');
+        if (activeTab) {
+            activeTab.tab('show');
+        }
+    }
 
-    var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
+    var formAction = "{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}";
 
     $('#{{ form.vars.id }}').on('submit', function() {
-        var tab = $('#form-navbar .nav li.active a').attr('href');
-        tab && $(this).attr('action', formAction + '&tab=' + tab.substr(1));
+        var hash = $('#form-navbar .nav li.active a').attr('href');
+        if (hash) {
+            $(this).attr('action', formAction + '&hash=' + hash.substr(1));
+        }
         return true;
     });
 
     $('#locale-switcher a').on('click', function() {
-        var tab = $('.tab-groups li.tab.active a').attr('href');
-        tab && $(this).attr('href', $(this).attr('href') + '&tab=' + tab.substr(1));
-    })
+        var hash = $('.tab-groups li.tab.active a').attr('href');
+        if (hash) {
+            $(this).attr('href', $(this).attr('href') + hash);
+        }
+    });
 
     var updated = false;
     $('#updated').hide();
@@ -25,9 +33,11 @@ $(function() {
         updated = true;
         $('#updated').show();
         $('form [id^="{{ form.vars.id }}"]').off('change', formUpdated);
+        $('form#{{ form.vars.id }}').off('click', 'ins.jstree-checkbox', formUpdated);
     }
 
     $('form [id^="{{ form.vars.id }}"]').on('change', formUpdated);
+    $('form#{{ form.vars.id }}').on('click', 'ins.jstree-checkbox', formUpdated);
 
     $(window).on('beforeunload', function(){
         if (updated) {
@@ -35,20 +45,22 @@ $(function() {
         }
     });
 
-    $('button[type="submit"]').click(function(event) {
+    $('button[type="submit"]').click(function() {
         $('#pim_available_product_attributes_attributes').removeAttr('required');
         $(window).unbind('beforeunload');
     });
 
-    $('#btn-delete-product').click(function(event) {
-        doAction = function() {
+    $('#btn-delete-product').click(function() {
+        var doAction = function() {
             window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
         };
 
+        var message = "{{ 'Are you sure you want to delete this product' | trans }}";
+
         if (!_.isUndefined(Backbone.BootstrapModal)) {
-            confirm = new Backbone.BootstrapModal({
+            var confirm = new Backbone.BootstrapModal({
                 title: "{{ 'Delete Confirmation' | trans }}",
-                content: "{{ 'Are you sure you want to delete this product' | trans }}"
+                content: message
             });
             confirm.on('ok', doAction);
             confirm.open();

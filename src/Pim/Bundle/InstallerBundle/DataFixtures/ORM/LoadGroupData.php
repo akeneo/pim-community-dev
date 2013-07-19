@@ -53,7 +53,6 @@ class LoadGroupData extends AbstractInstallerFixture
     {
         $group = new AttributeGroup();
         $group->setCode($code);
-        $group->setName($translations['default']);
         $group->setSortOrder(++self::$order);
 
         foreach ($translations as $locale => $label) {
@@ -76,11 +75,9 @@ class LoadGroupData extends AbstractInstallerFixture
     protected function createTranslation($entity, $locale, $name)
     {
         $translation = new AttributeGroupTranslation();
-        $translation->setContent($name);
-        $translation->setField('name');
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
+        $translation->setName($name);
 
         return $translation;
     }

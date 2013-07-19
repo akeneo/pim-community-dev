@@ -34,7 +34,6 @@ class FamilyTypeTest extends AbstractFormTypeTest
     {
         // Assert fields
         $this->assertField('code', 'text');
-        $this->assertField('attributeAsLabel', 'entity');
 
         // Assert option class
         $this->assertEquals(
@@ -43,6 +42,6 @@ class FamilyTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_family', $this->form->getName());
+        $this->assertEquals('pim_family', $this->form->getName());
     }
 }

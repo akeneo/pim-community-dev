@@ -25,7 +25,7 @@ class ExportProfileTest extends \PHPUnit_Framework_TestCase
 
         // assert instance and implementation
         $this->assertEntity($exportProfile);
-        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $exportProfile);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\TranslatableInterface', $exportProfile);
 
         // assert object properties
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $exportProfile->getTranslations());
@@ -97,10 +97,10 @@ class ExportProfileTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * Just a call to prevent fatal errors (no way to verify value is set)
      */
-    public function testSetTranslatableLocale()
+    public function testLocale()
     {
         $exportProfile = new ExportProfile();
-        $exportProfile->setTranslatableLocale('en_US');
+        $exportProfile->setLocale('en_US');
     }
 
     /**

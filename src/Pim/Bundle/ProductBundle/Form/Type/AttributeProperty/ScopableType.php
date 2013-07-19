@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ProductBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -14,7 +13,6 @@ use Symfony\Component\Form\AbstractType;
  */
 class ScopableType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */

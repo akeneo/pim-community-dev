@@ -12,12 +12,7 @@
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_quickcreate') }}' });
-        $(function() {
-            var datagrid = Oro.Registry.getElement('datagrid', 'products');
-            $("#locale-switcher").append(datagrid.filters.locale.el);
-            $("#scope-switcher").append(datagrid.filters.scope.el);
-        });
+        $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_create') }}' });
     </script>
 {% endblock %}
 
@@ -30,8 +25,26 @@
     {% endset %}
 
     {% set subtitle %}
-        <div id="locale-switcher" class="sub-title"></div>
-        <div id="scope-switcher" class="sub-title"></div>
+        <div id="locale-switcher" class="btn-group sub-title">
+            <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                {{ dataLocale|flag }}
+                <span class="caret"></span>
+            </span>
+            <ul class="dropdown-menu">
+                {% for locale in locales %}
+                    <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
+                        <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
+                                {% if locale.code == dataLocale %}
+                            <span class="icon">
+                                    <i class="icon-bullet"></i>
+                            </span>
+                                {% endif %}
+                            {{ locale.code|flag }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle) }}
@@ -47,8 +60,8 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
-    var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
-    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
+    var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
     var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
     var filterInType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_CONTAINS') }};
     var filterUnclassifiedType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_UNCLASSIFIED') }};

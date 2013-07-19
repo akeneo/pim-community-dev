@@ -38,6 +38,6 @@ Feature: Edit a product family
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Jewels" family page
-    And I change the english Name to "Jewelery"
+    And I change the english Label to "Jewelery"
     And I save the family
     Then I should see the families Bags, Jewelery and Smartphone

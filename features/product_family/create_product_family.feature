@@ -7,7 +7,7 @@ Feature: Product family creation
     Given I am logged in as "admin"
     When I am on the family creation page
     And I change the Code to "computer"
-    And I change the default Name to "Computer"
+    And I change the default Label to "Computer"
     And I save the family
     Then I should see "Product family successfully created"
     And I should be on the "Computer" family page

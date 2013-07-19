@@ -2,11 +2,12 @@ parameters:
     pim_product.manager.product.class:                Pim\Bundle\ProductBundle\Manager\ProductManager
 
     pim_product.entity.product.class:                 Pim\Bundle\ProductBundle\Entity\Product
+    pim_product.form.type.product.view.class:         Pim\Bundle\ProductBundle\Form\View\ProductFormView
     pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
-    pim_product.form.type.simple_product.class:       Pim\Bundle\ProductBundle\Form\Type\SimpleProductType
+    pim_product.form.type.product_create.class:       Pim\Bundle\ProductBundle\Form\Type\ProductCreateType
     pim_product.form.type.product_value.class:        Pim\Bundle\ProductBundle\Form\Type\ProductValueType
 
-    pim_product.handler.simple_product.class:          Pim\Bundle\ProductBundle\Form\Handler\SimpleProductHandler
+    pim_product.handler.product_create.class:         Pim\Bundle\ProductBundle\Form\Handler\ProductCreateHandler
 
     pim_product.entity.product_attribute.class:        Pim\Bundle\ProductBundle\Entity\ProductAttribute
     pim_product.entity.product_value.class:            Pim\Bundle\ProductBundle\Entity\ProductValue
@@ -16,6 +17,8 @@ parameters:
 
     pim_product.entity.attribute_group.class:          Pim\Bundle\ProductBundle\Entity\AttributeGroup
     pim_product.handler.attribute_group.class:         Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
+    pim_product.handler.family.class:                  Pim\Bundle\ProductBundle\Form\Handler\FamilyHandler
+    pim_product.type.family.class:                     Pim\Bundle\ProductBundle\Form\Type\FamilyType
     pim_product.type.attribute_group.class:            Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
     pim_product.entity.export_profile.class:           Pim\Bundle\ProductBundle\Entity\ExportProfile
@@ -28,7 +31,7 @@ parameters:
     pim_product.form.type.category.class:              Pim\Bundle\ProductBundle\Form\Type\CategoryType
 
     pim_product.listener.user_context.class:           Pim\Bundle\ProductBundle\EventListener\UserContextListener
-    
+
     pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
     pim_product.manager.audit.class:                   Pim\Bundle\ProductBundle\Manager\AuditManager

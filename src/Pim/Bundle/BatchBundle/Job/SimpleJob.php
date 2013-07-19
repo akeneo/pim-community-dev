@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job;
 
@@ -9,7 +9,6 @@ use Pim\Bundle\BatchBundle\Logger;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * 
  * Simple implementation of {@link Job} interface providing the ability to run a
  * {@link JobExecution}. Sequentially executes a job by iterating through its
  * list of steps.  Any {@link Step} that fails will fail the job.  The job is
@@ -27,6 +26,10 @@ class SimpleJob extends AbstractJob
     /* @var ArrayCollection $steps */
     private $steps = null;
 
+    /**
+     * Constructor
+     * @param string $name
+     */
     public function __construct($name = "")
     {
         parent::__construct($name);
@@ -37,7 +40,7 @@ class SimpleJob extends AbstractJob
      * Public setter for the steps in this job. Overrides any calls to
      * addStep(Step).
      *
-     * @param steps the steps to execute
+     * @param Collection $steps the steps to execute
      */
     public function setSteps(Collection $steps)
     {
@@ -56,23 +59,26 @@ class SimpleJob extends AbstractJob
         foreach ($this->steps as $step) {
             $names[] = $step->getName();
         }
+
         return $names;
     }
 
     /**
      * Convenience method for adding a single step to the job.
      *
-     * @param step a {@link Step} to add
+     * @param StepInterface $step a {@link Step} to add
      */
     public function addStep(StepInterface $step)
     {
         $this->steps->add($step);
     }
 
-    /*
+    /**
      * Convenience method for adding a single step to the job.
      *
      * @param string $stepName Name of the step to get
+     *
+     * @return mixed
      */
     public function getStep($stepName)
     {
@@ -81,6 +87,7 @@ class SimpleJob extends AbstractJob
                 return $step;
             }
         }
+
         return null;
     }
 
@@ -89,7 +96,7 @@ class SimpleJob extends AbstractJob
      * before moving to the next. Returns the last {@link StepExecution}
      * successfully processed if it exists, and null if none were processed.
      *
-     * @param execution the current {@link JobExecution}
+     * @param JobExecution $execution the current {@link JobExecution}
      *
      * @see AbstractJob#handleStep(Step, JobExecution)
      * @throws JobInterruptedException
@@ -120,6 +127,4 @@ class SimpleJob extends AbstractJob
             $execution->setExitStatus($stepExecution->getExitStatus());
         }
     }
-    
 }
-

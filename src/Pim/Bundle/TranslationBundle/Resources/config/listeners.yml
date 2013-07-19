@@ -1,0 +1,7 @@
+services:
+
+    # inject current locale into translatable entities
+    pim_translation.listener.add_locale:
+        class: %pim_translation.listener.add_locale.class%
+        tags:
+            - { name: doctrine.event_subscriber }

@@ -29,8 +29,8 @@ oro_menu_config:
             children:
                 pim_configuration_tab:
                     children:
-                        pim_config_locale: ~
                         pim_config_currency: ~
+                        pim_config_locale: ~
 
                 pim_export_tab:
                     children:

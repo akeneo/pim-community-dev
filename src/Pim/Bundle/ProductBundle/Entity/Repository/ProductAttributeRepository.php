@@ -15,6 +15,18 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 class ProductAttributeRepository extends AttributeRepository
 {
     /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllWithTranslations()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('translation')
+            ->leftJoin('a.translations', 'translation');
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
      * Get the query builder to find all product attributes except the ones
      * defined in arguments
      *
@@ -49,8 +61,7 @@ class ProductAttributeRepository extends AttributeRepository
     public function findAllGrouped()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->where($qb->expr()->isNotNull('a.group'))
-           ->orderBy('a.label');
+        $qb->where($qb->expr()->isNotNull('a.group'))->orderBy('a.code');
 
         return $qb->getQuery()->getResult();
     }

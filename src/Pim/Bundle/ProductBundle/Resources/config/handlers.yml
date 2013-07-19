@@ -1,10 +1,10 @@
 services:
 
     # Handlers
-    pim_product.form.handler.simple_product:
-        class: %pim_product.handler.simple_product.class%
+    pim_product.form.handler.product_create:
+        class: %pim_product.handler.product_create.class%
         scope: request
-        arguments: [@pim_product.form.simple_product, @request, @pim_product.manager.product]
+        arguments: [@pim_product.form.product_create, @request, @pim_product.manager.product]
 
     pim_product.form.handler.attribute:
         class: %pim_product.form.handler.product_attribute.class%
@@ -20,3 +20,9 @@ services:
         class: %pim_product.handler.export_profile.class%
         scope: request
         arguments: [@pim_product.form.export_profile, @request, @doctrine.orm.entity_manager]
+
+    pim_product.form.handler.family:
+        class: %pim_product.handler.family.class%
+        scope: request
+        arguments: [@pim_product.form.family, @request, @doctrine.orm.entity_manager]
+

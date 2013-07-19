@@ -1,20 +1,30 @@
 services:
+    pim_product.form.type.product.view:
+        public: false
+        class: %pim_product.form.type.product.view.class%
+
     # Types
     pim_product.form.type.product:
         class:     %pim_product.form.type.product.class%
-        arguments: [@pim_product.manager.product, 'pim_product_value']
+        arguments:
+            - @pim_product.manager.product
+            - 'pim_product_value'
+            - @pim_product.form.type.product.view
         tags:
             - { name: form.type, alias: pim_product }
 
-    pim_product.form.type.simple_product:
-        class:     %pim_product.form.type.simple_product.class%
+    pim_product.form.type.product_create:
+        class:     %pim_product.form.type.product_create.class%
         arguments: [@pim_product.manager.product, 'pim_product_value']
         tags:
-            - { name: form.type, alias: pim_simple_product }
+            - { name: form.type, alias: pim_product_create }
 
     pim_product.form.type.product_value:
         class:     %pim_product.form.type.product_value.class%
-        arguments: [@pim_product.manager.product, @oro_flexibleentity.value_form.value_subscriber]
+        arguments:
+            - @pim_product.manager.product
+            - @oro_flexibleentity.value_form.value_subscriber
+            - @pim_product.form.type.product.view
         tags:
             - { name: form.type, alias: pim_product_value }
 
@@ -28,6 +38,11 @@ services:
         class: %pim_product.type.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_attribute_group }
+
+    pim_product.form.type.family:
+        class: %pim_product.type.family.class%
+        tags:
+            - { name: form.type, alias: pim_family }
 
     pim_product.form.type.export_profile:
         class: %pim_product.type.export_profile.class%

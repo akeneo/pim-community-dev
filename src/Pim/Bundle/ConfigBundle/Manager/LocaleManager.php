@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LocaleManager
 {
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */

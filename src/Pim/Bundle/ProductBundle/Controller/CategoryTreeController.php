@@ -1,19 +1,16 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Controller;
-
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
-use Pim\Bundle\ProductBundle\Entity\Category;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * Category Tree Controller
@@ -26,7 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class CategoryTreeController extends Controller
 {
-
     /**
      * Index action
      *
@@ -130,7 +126,6 @@ class CategoryTreeController extends Controller
             }
         }
 
-
         if (($selectNode != null)
             && (!$this->getTreeManager()->isAncestor($parent, $selectNode))) {
             $selectNode = null;
@@ -155,25 +150,6 @@ class CategoryTreeController extends Controller
         }
 
         return array('data' => $data);
-    }
-
-
-    /**
-     * Find a category from its id
-     *
-     * @param integer $categoryId
-     *
-     * @return Category
-     */
-    protected function findCategory($categoryId)
-    {
-        $category = $this->getTreeManager()->getEntityRepository()->find($categoryId);
-
-        if (!$category) {
-            throw $this->createNotFoundException('Category not found');
-        }
-
-        return $category;
     }
 
     /**
@@ -237,14 +213,40 @@ class CategoryTreeController extends Controller
      */
     public function createAction(Category $parent = null)
     {
-        if ($parent === null) {
-            $category = $this->getTreeManager()->getTreeInstance();
-        } else {
+        if ($parent) {
             $category = $this->getTreeManager()->getSegmentInstance();
             $category->setParent($parent);
+        } else {
+            $category = $this->getTreeManager()->getTreeInstance();
         }
 
-        return $this->editAction($category);
+        $form    = $this->createForm($this->get('pim_product.form.type.category'), $category);
+        $request = $this->getRequest();
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
+
+                $this->addFlash('success', sprintf(
+                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
+                ));
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_categorytree_edit',
+                        array('id'=> $category->getId(), 'node' => $category->getId())
+                    )
+                );
+            }
+        }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
@@ -263,18 +265,32 @@ class CategoryTreeController extends Controller
      */
     public function editAction(Category $category)
     {
-        $request = $this->getRequest();
+        $request  = $this->getRequest();
+        $datagrid = $this->getDataAuditDatagrid(
+            $category,
+            'pim_product_categorytree_edit',
+            array(
+                'id' => $category->getId()
+            )
+        );
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getTreeManager()->getStorageManager()->persist($category);
-                $this->getTreeManager()->getStorageManager()->flush();
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
 
-                $nodeType = $category->getParent() ? 'Category' : 'Tree';
-                $this->get('session')->getFlashBag()->add('success', $nodeType. ' successfully saved');
+                $this->addFlash('success', sprintf(
+                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
+                ));
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -286,7 +302,8 @@ class CategoryTreeController extends Controller
         }
 
         return array(
-            'form' => $form->createView()
+            'form'     => $form->createView(),
+            'datagrid' => $datagrid->createView(),
         );
     }
 
@@ -333,6 +350,24 @@ class CategoryTreeController extends Controller
 
             return $this->redirect($this->generateUrl('pim_product_categorytree_index', $params));
         }
+    }
+
+    /**
+     * Find a category from its id
+     *
+     * @param integer $categoryId
+     *
+     * @return Category
+     */
+    protected function findCategory($categoryId)
+    {
+        $category = $this->getTreeManager()->getEntityRepository()->find($categoryId);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
+        return $category;
     }
 
     /**

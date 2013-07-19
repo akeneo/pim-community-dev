@@ -1,11 +1,7 @@
-services:
-    pim_grid.orm.filter.type.category:
-        class:     Pim\Bundle\GridBundle\Filter\ORM\CategoryFilter
-        arguments:
-            - "@translator"
-        tags:
-            - { name: oro_grid.filter.type, alias: pim_grid_orm_category }
+parameters:
+    oro_grid.route.default_generator.class: Pim\Bundle\GridBundle\Route\SetterRouteGenerator
 
+services:
     pim_grid.orm.filter.type.currency:
         class:     Pim\Bundle\GridBundle\Filter\ORM\CurrencyFilter
         arguments:
@@ -19,13 +15,6 @@ services:
             - "@translator"
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_entity }
-
-    pim_grid.orm.filter.type.locale:
-        class:     Pim\Bundle\GridBundle\Filter\ORM\LocaleFilter
-        arguments:
-            - "@translator"
-        tags:
-            - { name: oro_grid.filter.type, alias: pim_grid_orm_locale }
 
     pim_grid.orm.filter.type.scope:
         class:     Pim\Bundle\GridBundle\Filter\ORM\ScopeFilter

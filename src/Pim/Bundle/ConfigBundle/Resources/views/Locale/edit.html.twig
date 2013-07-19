@@ -4,12 +4,14 @@
 
 {% block page_container %}
 <div class="container-fluid">
-    
+
     {% block content %}
-    <form class="form-horizontal" action="{{ form.vars.value.id ? 
-        path('pim_config_locale_edit', { id: form.vars.value.id }) : 
+
+    {{ JSFV(form) }}
+    <form class="form-horizontal" action="{{ form.vars.value.id ?
+        path('pim_config_locale_edit', { id: form.vars.value.id }) :
         path('pim_config_locale_create') }}" method="POST" class="form-register">
-    
+
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row-fluid">
                 <div class="pull-right">
@@ -41,23 +43,23 @@
             </div>
         </div>
 
-        <div class="row_fluid">
+        <div class="row-fluid">
             {% if form.vars.errors|length %}
                 <div class="alert alert-error">
                     {{ form_errors(form) }}
                 </div>
             {% endif %}
-            
+
             {{ form_row(form.id) }}
-            
+
             {{ form_row(form.code) }}
-            
+
             {{ form_row(form.fallback) }}
-            
+
             {{ form_row(form.defaultCurrency) }}
-            
+
             {{ form_row(form.activated) }}
-            
+
             {{ form_row(form._token) }}
         </div>
     </form>
@@ -69,7 +71,7 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    
+
     <script type="text/javascript">
     $(function() {
         $('select').select2({ allowClear: true });
@@ -82,7 +84,7 @@
                     window.location.href = "{{ path('pim_config_locale_enable', { id: form.vars.value.id }) }}";
                 }
             };
-            
+
             if (!_.isUndefined(Backbone.BootstrapModal)) {
                 if ($('#pim_config_locale_form_activated').val() == '1') {
                     confirm = new Backbone.BootstrapModal({

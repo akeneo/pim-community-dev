@@ -1,12 +1,11 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job;
 
 /**
- * 
  * Dummy class for job parameter.
  * TODO Implement job parameter
- A
+ *
  * Inspired by Spring Batch org.springframework.batch.core.job.SimpleJob
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -17,4 +16,3 @@ namespace Pim\Bundle\BatchBundle\Job;
 class JobParameters
 {
 }
-

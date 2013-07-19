@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
 
 /**
@@ -16,9 +17,31 @@ class FamilyRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function buildAllOrderedByName()
+    public function buildAllWithTranslations()
     {
-        return $this->build()->orderBy('family.code');
+        return $this->build()->addSelect('translation')->leftJoin('family.translations', 'translation');
+    }
+
+    /**
+     * Find all families ordered by label with fallback to default mecanism
+     *
+     * @return array
+     */
+    public function getIdToLabelOrderedByLabel()
+    {
+        $families = $this->buildAllWithTranslations()->getQuery()->execute();
+        $orderedFamilies = array();
+        foreach ($families as $family) {
+            $orderedFamilies[$family->getId()]= $family->getLabel();
+        }
+        uasort(
+            $orderedFamilies,
+            function ($first, $second) {
+                return ($first === $second) ? 0 : strcasecmp($first, $second);
+            }
+        );
+
+        return $orderedFamilies;
     }
 
     /**

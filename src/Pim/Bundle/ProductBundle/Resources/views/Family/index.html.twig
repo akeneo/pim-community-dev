@@ -3,12 +3,12 @@
 {% block page_container %}
 <div class="container-fluid">
     {% block content %}
-        {% set currentFamily = family is defined ? family : null %}
+        {% set currentFamily = family is defined ? family.id : null %}
         <div id="family-container" class="row-fluid">
             <div class="sidebar-list">
                 <ul>
-                    {% for family in families %}
-                    <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_family_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
+                    {% for familyId, familyLabel in families %}
+                    <li class="{{ familyId == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_family_edit', {'id': familyId}) }}">{{ familyLabel }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

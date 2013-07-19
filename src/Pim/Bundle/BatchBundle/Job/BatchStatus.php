@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job;
 
@@ -14,10 +14,14 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class BatchStatus
 {
-    const __default = self::UNKNOWN;
+    const __DEFAULT = self::UNKNOWN;
 
     protected $value;
 
+    /**
+     * Constructor
+     * @param integer $status
+     */
     public function __construct($status = self::UNKNOWN)
     {
         $this->value = $status;
@@ -57,11 +61,14 @@ class BatchStatus
     /**
      * Set the current status
      *
+     * @param mixed $value
+     *
      * @return $this
      */
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -77,7 +84,7 @@ class BatchStatus
 
     /**
      * Convenience method to decide if a status indicates work is in progress.
-     * 
+     *
      * @return true if the status is STARTING, STARTED
      */
     public function isRunning()
@@ -88,7 +95,7 @@ class BatchStatus
     /**
      * Convenience method to decide if a status indicates execution was
      * unsuccessful.
-     * 
+     *
      * @return true if the status is FAILED or greater
      */
     public function isUnsuccessful()
@@ -96,6 +103,14 @@ class BatchStatus
         return ($this->value == self::FAILED || $this->value > self::FAILED);
     }
 
+    /**
+     * Return the largest of two values
+     *
+     * @param integer $value1
+     * @param integer $value2
+     *
+     * @return integer
+     */
     public static function max($value1, $value2)
     {
         return max($value1, $value2);
@@ -108,8 +123,9 @@ class BatchStatus
      * returned. If both are STARTED or less than the value returned is the
      * largest in the sequence STARTING, STARTED, COMPLETED. Otherwise the value
      * returned is the maximum of the two.
-     * 
-     * @param other another status to compare to
+     *
+     * @param integer $otherStatus another status to compare to
+     *
      * @return either this or the other status depending on their priority
      */
     public function upgradeTo($otherStatus)
@@ -133,11 +149,11 @@ class BatchStatus
 
     /**
      * Return the string representation of the current status
+     *
+     * @return string
      */
     public function __toString()
     {
         return self::$statusLabels[$this->value];
     }
-
 }
-

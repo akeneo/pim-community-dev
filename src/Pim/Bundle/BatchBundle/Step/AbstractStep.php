@@ -24,9 +24,9 @@ abstract class AbstractStep implements StepInterface
 {
     private $name;
 
-//    private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
+    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
 
-//    private JobRepository jobRepository;
+    //private JobRepository jobRepository;
 
     /**
      * {@inheritdoc}
@@ -38,13 +38,17 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * Set the name property
-     *
+     * @param string $name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * Constructor
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
@@ -54,16 +58,18 @@ abstract class AbstractStep implements StepInterface
      * Extension point for subclasses to execute business logic. Subclasses should set the {@link ExitStatus} on the
      * {@link StepExecution} before returning. TODO
      *
-     * @param stepExecution the current step context
+     * @param StepExecution $stepExecution the current step context
+     *
      * @throws Exception
      */
-    protected abstract function doExecute(StepExecution $stepExecution);
+    abstract protected function doExecute(StepExecution $stepExecution);
 
     /**
      * Extension point for subclasses to provide callbacks to their collaborators at the beginning of a step, to open or
      * acquire resources. Does nothing by default.
      *
-     * @param ctx the {@link ExecutionContext} to use
+     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
+     *
      * @throws Exception
      */
     protected function open(ExecutionContext $ctx)
@@ -74,7 +80,8 @@ abstract class AbstractStep implements StepInterface
      * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
      * of the finally block), to close or release resources. Does nothing by default.
      *
-     * @param ctx the {@link ExecutionContext} to use
+     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
+     *
      * @throws Exception
      */
     protected function close(ExecutionContext $ctx)
@@ -91,7 +98,7 @@ abstract class AbstractStep implements StepInterface
      * @throws JobInterruptException
      * @throws UnexpectedJobExecutionException
      */
-    public final function execute(StepExecution $stepExecution)
+    final public function execute(StepExecution $stepExecution)
     {
         Logger::debug("Executing: id=" . $stepExecution->getId());
 
@@ -103,14 +110,13 @@ abstract class AbstractStep implements StepInterface
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
-//        StepSynchronizationManager.register(stepExecution);
+        //StepSynchronizationManager.register(stepExecution);
 
         try {
-//            getCompositeListener().beforeStep(stepExecution);
-//            $this->open($stepExecution->getExecutionContext());
+            //getCompositeListener().beforeStep(stepExecution);
+            //$this->open($stepExecution->getExecutionContext());
 
             $this->doExecute($stepExecution);
-//            catch (RepeatException e) {
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
@@ -123,8 +129,7 @@ abstract class AbstractStep implements StepInterface
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
             Logger::debug("Step execution success: id=" . $stepExecution->getId());
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
@@ -144,21 +149,20 @@ abstract class AbstractStep implements StepInterface
             // listeners can act on it
             $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
             $stepExecution->setExitStatus($exitStatus);
-//            $exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
-        }
-        catch (Exception $e) {
+            //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
+        } catch (Exception $e) {
             Logger::error("Exception in afterStep callback", $e);
         }
 
         try {
             //getJobRepository().updateExecutionContext(stepExecution);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
             $stepExecution->addFailureException($e);
-            Logger::error("Encountered an error saving batch meta data. "
-                    . "This job is now in an unknown state and should not be restarted.", $e);
+            $errorMsg =  "Encountered an error saving batch meta data."
+                ."This job is now in an unknown state and should not be restarted.";
+            Logger::error($errorMsg, $e);
         }
 
         $stepExecution->setEndTime(time());
@@ -166,21 +170,20 @@ abstract class AbstractStep implements StepInterface
 
         try {
             //getJobRepository().update(stepExecution);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
             $stepExecution->addFailureException($e);
-            Logger::error("Encountered an error saving batch meta data. "
-                    . "This job is now in an unknown state and should not be restarted.", $e);
+            $errorMsg = "Encountered an error saving batch meta data. "
+                . "This job is now in an unknown state and should not be restarted.";
+            Logger::error($errorMsg, $e);
         }
 
         try {
             $this->close($stepExecution->getExecutionContext());
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             Logger::error("Exception while closing step execution resources", $e);
-            $stepExecution.addFailureException(e);
+            // $stepExecution.addFailureException(e);
         }
 
         //StepSynchronizationManager.release();
@@ -188,16 +191,17 @@ abstract class AbstractStep implements StepInterface
         Logger::debug("Step execution complete: " . $stepExecution->getSummary());
     }
 
-
     /**
      * Determine the step status based on the exception.
+     * @param Exception $e
+     *
+     * @return mixed
      */
     private static function determineBatchStatus(\Exception $e)
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             return BatchStatus::STOPPED;
-        }
-        else {
+        } else {
             return BatchStatus::FAILED;
         }
     }
@@ -206,7 +210,8 @@ abstract class AbstractStep implements StepInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param ex the cause of the failure
+     * @param Exception $e the cause of the failure
+     *
      * @return an {@link ExitStatus}
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
@@ -215,13 +220,10 @@ abstract class AbstractStep implements StepInterface
 
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
-            $exitStatus->addExitDescription(get_class(JobInterruptedException));
-        }
-        /*
-        else if (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
-            exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
-        }*/
-        else {
+            $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
+            /*} else if (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
+                exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());*/
+        } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
         }
@@ -229,4 +231,3 @@ abstract class AbstractStep implements StepInterface
         return $exitStatus;
     }
 }
-

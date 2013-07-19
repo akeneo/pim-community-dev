@@ -50,12 +50,13 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param string $code
      * @param array  $data
+     *
+     * @return ProductAttribute
      */
     public function createAttribute($code, $data)
     {
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
-        $attribute->setLabel($data['labels']['default']);
         $attribute->setDescription($data['description']);
         $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
 
@@ -89,11 +90,9 @@ class LoadAttributeData extends AbstractInstallerFixture
     public function createTranslation($attribute, $locale, $content)
     {
         $translation = new ProductAttributeTranslation();
-        $translation->setContent($content);
-        $translation->setField('label');
         $translation->setForeignKey($attribute);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
+        $translation->setLabel($content);
 
         return $translation;
     }

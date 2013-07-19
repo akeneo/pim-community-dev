@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job;
 
@@ -22,14 +22,15 @@ class SimpleStepHandler implements StepHandlerInterface
     /* @var JobRepository $jobRepository */
     private $jobRepository = null;
 
-    /* @var ExecutionContext i$executionContext */
+    /* @var ExecutionContext $executionContext */
     private $executionContext = null;
 
     /**
-     * @param jobRepository
-     * @param executionContext
+     * @param JobRepository    $jobRepository    Job repository
+     * @param ExecutionContext $executionContext Execution context
      */
-    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null) {
+    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null)
+    {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
             $executionContext = new ExecutionContext();
@@ -39,25 +40,36 @@ class SimpleStepHandler implements StepHandlerInterface
 
     /**
      * @param jobRepository the jobRepository to set
-    public function setJobRepository(JobRepository $jobRepository) {
+     */
+    /*
+    public function setJobRepository(JobRepository $jobRepository)
+    {
         $this->jobRepository = $jobRepository;
     }
-     */
+    */
 
     /**
      * A context containing values to be added to the step execution before it
      * is handled.
      *
      * @param executionContext the execution context to set
-    public function setExecutionContext(ExecutionContext $executionContext) {
+     */
+    /*
+    public function setExecutionContext(ExecutionContext $executionContext)
+    {
         $this->executionContext = $executionContext;
     }
-     */
+    */
 
     /**
+     * @param StepInterface $step      Step
+     * @param JobExecution  $execution Job execution
+     *
      * @throws JobInterruptedException
      * @throws JobRestartException
      * @throws StartLimitExceededException
+     *
+     * @return mixed
      */
     public function handleStep(StepInterface $step, JobExecution $execution)
     {
@@ -68,7 +80,8 @@ class SimpleStepHandler implements StepHandlerInterface
         $currentStepExecution = $execution->createStepExecution($step->getName());
 
 
-/*        JobInstance jobInstance = execution.getJobInstance();
+        /*
+        JobInstance jobInstance = execution.getJobInstance();
 
         StepExecution lastStepExecution = jobRepository.getLastStepExecution(jobInstance, step.getName());
         if (stepExecutionPartOfExistingJobExecution(execution, lastStepExecution)) {
@@ -89,40 +102,37 @@ class SimpleStepHandler implements StepHandlerInterface
 
             if (isRestart) {
                 currentStepExecution.setExecutionContext(lastStepExecution.getExecutionContext());
-            }
-            else {
+            } else {
                 currentStepExecution.setExecutionContext(new ExecutionContext(executionContext));
             }
 
             jobRepository.add(currentStepExecution);
-*/
-            Logger::info("Executing step: [" . $step->getName() . "]");
-            try {
-                $step->execute($currentStepExecution);
-            }
-            catch (JobInterruptedException $e) {
-                // Ensure that the job gets the message that it is stopping
-                // and can pass it on to other steps that are executing
-                // concurrently.
-                $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
-                throw $e;
-            }
+            */
+        Logger::info("Executing step: [" . $step->getName() . "]");
+        try {
+            $step->execute($currentStepExecution);
+        } catch (JobInterruptedException $e) {
+            // Ensure that the job gets the message that it is stopping
+            // and can pass it on to other steps that are executing
+            // concurrently.
+            $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            throw $e;
+        }
 
-//            jobRepository.updateExecutionContext(execution);
+        //jobRepository.updateExecutionContext(execution);
 
-            if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
-                    || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                // Ensure that the job gets the message that it is stopping
-                $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
-                throw new JobInterruptedException("Job interrupted by step execution");
-            }
+        if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
+                || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+            // Ensure that the job gets the message that it is stopping
+            $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            throw new JobInterruptedException("Job interrupted by step execution");
+        }
             /*
 
-        }
-        else {
+        } else {
             // currentStepExecution.setExitStatus(ExitStatus.NOOP);
         }
-*/
+        */
 
         return $currentStepExecution;
     }
@@ -132,12 +142,13 @@ class SimpleStepHandler implements StepHandlerInterface
      * @param jobExecution the current job execution
      * @param stepExecution an existing step execution
      * @return
+     */
+    /*
     private boolean stepExecutionPartOfExistingJobExecution(JobExecution jobExecution, StepExecution stepExecution) {
         return stepExecution != null && stepExecution.getJobExecutionId() != null
                 && stepExecution.getJobExecutionId().equals(jobExecution.getId());
     }
-     */
-
+    */
 
     /**
      * Given a step and configuration, return true if the step should start,
@@ -150,14 +161,15 @@ class SimpleStepHandler implements StepHandlerInterface
      * for this step
      * @throws JobRestartException if the job is in an inconsistent state from
      * an earlier failure
+     */
+    /*
     private boolean shouldStart(StepExecution lastStepExecution, JobInstance jobInstance, Step step)
             throws JobRestartException, StartLimitExceededException {
 
         BatchStatus stepStatus;
         if (lastStepExecution == null) {
             stepStatus = BatchStatus.STARTING;
-        }
-        else {
+        } else {
             stepStatus = lastStepExecution.getStatus();
         }
 
@@ -178,15 +190,11 @@ class SimpleStepHandler implements StepHandlerInterface
         if (jobRepository.getStepExecutionCount(jobInstance, step.getName()) < step.getStartLimit()) {
             // step start count is less than start max, return true
             return true;
-        }
-        else {
+        } else {
             // start max has been exceeded, throw an exception.
             throw new StartLimitExceededException("Maximum start limit exceeded for step: " + step.getName()
                     + "StartMax: " + step.getStartLimit());
         }
     }
-     */
-
-
+    */
 }
-

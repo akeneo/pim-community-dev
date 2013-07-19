@@ -21,14 +21,20 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options   = parent::prepareValueFormOptions($value);
-        $orderBy   = $this->getEntityFieldToOrder();
+        $options        = parent::prepareValueFormOptions($value);
+        $orderBy        = $this->getEntityFieldToOrder();
+        $isTranslatable = $this->isTranslatable();
         $options['empty_value'] = false;
         $options['class']       = $this->getEntityAlias();
         $options['expanded']    = false;
         $options['multiple']    = $this->isMultiselect();
-        $options['query_builder'] = function (EntityRepository $er) use ($orderBy) {
-            return $er->createQueryBuilder('o')->orderBy('o.'.$orderBy);
+        $options['query_builder'] = function (EntityRepository $er) use ($orderBy, $isTranslatable) {
+            $qb = $er->createQueryBuilder('o');
+            if ($isTranslatable) {
+                $qb->addSelect('translation')->leftJoin('o.translations', 'translation');
+            }
+
+            return $qb->orderBy('o.'.$orderBy);
         };
 
         return $options;
@@ -42,6 +48,15 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * @abstract
      */
     abstract protected function isMultiselect();
+
+    /**
+     * Is translatable
+     *
+     * @return boolean
+     *
+     * @abstract
+     */
+    abstract protected function isTranslatable();
 
     /**
      * Get entity field to order

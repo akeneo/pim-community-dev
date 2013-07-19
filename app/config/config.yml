@@ -29,7 +29,7 @@ twig:
         env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      pim_product_product_index
+            start_route:      pim_default
     form:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'
@@ -135,7 +135,6 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable:    true
-            translatable:     true
             tree:             true
             loggable:         true
 
@@ -175,7 +174,7 @@ oro_user:
     settings:
         name_format:
           value:              %%last%%, %%first%%
-          
+
 oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig
@@ -191,3 +190,38 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
+pim_import_export:
+    encoders:
+        csv:
+            delimiter: ';'
+            enclosure: '"'
+            with_header: true
+    exporters:
+        product_ecommerce:
+            format: csv
+            reader:
+                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
+                options:
+                    em: @pim_product.manager.product
+                    entity: ~
+                    method_name: findByScope
+                    method_params:
+                        - ecommerce
+            writer:
+                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
+                options:
+                    path: "/tmp/export_ecommerce.csv"
+        product_mobile:
+            format: csv
+            reader:
+                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
+                options:
+                    em: @pim_product.manager.product
+                    entity: ~
+                    method_name: findByScope
+                    method_params:
+                        - mobile
+            writer:
+                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
+                options:
+                    path: "/tmp/export_mobile.csv"

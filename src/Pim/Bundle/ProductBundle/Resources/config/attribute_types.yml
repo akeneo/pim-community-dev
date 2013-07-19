@@ -1,4 +1,13 @@
 services:
+    pim_product.attributetype.identifier:
+        class: Pim\Bundle\ProductBundle\AttributeType\IdentifierType
+        arguments:
+            - "varchar"
+            - "text"
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: pim_product_identifier }
+
     pim_product.attributetype.text:
         class: Pim\Bundle\ProductBundle\AttributeType\TextType
         arguments:

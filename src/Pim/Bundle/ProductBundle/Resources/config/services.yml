@@ -27,6 +27,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
 
+    pim_product.form.validator.single_identifier_attribute:
+        class: Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttributeValidator
+        arguments:
+            - @pim_product.manager.product
+        tags:
+            - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
+
     pim_product.validator.constraints.unique_value:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\UniqueValueValidator
         arguments:
@@ -48,7 +55,7 @@ services:
         class: %pim_product.listener.user_context.class%
         arguments:
             - @security.context
-            - @stof_doctrine_extensions.listener.translatable
+            - @pim_translation.listener.add_locale
             - @pim_product.manager.product
         tags:
             - { name: kernel.event_subscriber }

@@ -3,7 +3,7 @@
         'labels':
             'default': 'SKU'
             'fr_FR':   'SKU'
-        'type': 'pim_product_text'
+        'type': 'pim_product_identifier'
         'description': 'the product sku'
         'group': 'general'
         'parameters':
@@ -12,4 +12,3 @@
             'useableAsGridColumn': true
             'useableAsGridFilter': true
             'sortOrder': 1
-

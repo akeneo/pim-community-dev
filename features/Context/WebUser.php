@@ -90,7 +90,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->activateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -101,7 +101,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->deactivateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -157,7 +157,44 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewProduct()
     {
         $this->getPage('Product index')->clickNewProductLink();
-        $this->wait(5000, '$(".ui-dialog:contains(\"Create a new product\")").css("display") === "block"');
+        $this->currentPage = 'Product creation';
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
+     */
+    public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
+    {
+        $entityType = ucfirst(strtolower($entityType));
+        $entityPage = $entityType.' index';
+
+        $page = $this->getPage($entityPage);
+        if (!$page) {
+            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $pageName));
+        }
+
+        $getter = 'get'.$entityType;
+        if (!method_exists($this, $getter)) {
+            throw $this->createExpectationException(sprintf('Cannot find method "%s"', $getter));
+        }
+
+        $entity = $this->$getter($entity);
+
+        $action = ucfirst(strtolower($action));
+
+        $page->clickOnAction($entity->getSku(), $action);
+    }
+
+    /**
+     * @Given /^I confirm the ([^"]*)$/
+     */
+    public function iConfirmThe($action)
+    {
+        $action = 'confirm'.ucfirst(strtolower($action));
+        $this->getCurrentPage()->$action();
+
+        $this->wait();
     }
 
     /**
@@ -167,7 +204,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $attribute = $this->getAttribute($label);
 
-        $this->openPage('Attribute', array(
+        $this->openPage('Attribute Edit', array(
             'id' => $attribute->getId(),
         ));
     }
@@ -178,7 +215,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
-        $this->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait();
     }
 
     /**
@@ -220,19 +257,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I save the product$/
+     * @Given /^I save the (.*)$/
      */
-    public function iSaveTheProduct()
+    public function iSave()
     {
-        $this->getPage('Product edit')->save();
-    }
-
-    /**
-     * @Given /^I save the family$/
-     */
-    public function iSaveTheFamily()
-    {
-        $this->getPage('Family edit')->save();
+        $this->getCurrentPage()->save();
     }
 
     /**
@@ -241,7 +270,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iChangeTheAttributePositionTo($position)
     {
         $this
-            ->getPage('Attribute')
+            ->getPage('Attribute Edit')
             ->setPosition($position)
             ->save()
         ;
@@ -256,12 +285,46 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the "([^"]*)" section$/
+     */
+    public function iShouldSeeTheSection($title)
+    {
+        if (!$this->getCurrentPage()->getSection($title)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the %s section.', $title));
+        }
+    }
+
+    /**
+     * @Given /^the Options section should contain ([^"]*) option$/
+     */
+    public function theOptionsSectionShouldContainOption()
+    {
+        if (1 !== $count = $this->getCurrentPage()->countOptions()) {
+            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
+        }
+    }
+
+    /**
+     * @Then /^the option should not be removable$/
+     */
+    public function theOptionShouldNotBeRemovable()
+    {
+        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
+            throw $this->createExpectationException('The option should not be removable.');
+        }
+    }
+
+    /**
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
+        $page       = $this->getPage('Product edit');
         $attributes = $this->listToArray($attributes);
+        $page->visitGroup($group);
+
         $group = $this->getGroup($group) ?: 'Other';
+
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(sprintf(
@@ -270,18 +333,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ));
         }
 
-        foreach ($attributes as $index => $attribute) {
-            $field = $this
-                ->getPage('Product edit')
-                ->getFieldAt($group, $index)
-            ;
+        $labels = array_map(function($field) {
+            return $field->getText();
+        }, $this->getPage('Product edit')->getFieldsForGroup($group));
 
-            if ($attribute !== $name = $field->getText()) {
-                throw new \Exception(sprintf('
-                    Expecting to see field "%s" at position %d, but saw "%s"',
-                    $attribute, $index + 1, $name
-                ));
-            }
+        if (count(array_diff($attributes, $labels))) {
+            throw $this->createExpectationException(sprintf('
+                Expecting to see attributes "%s" in group "%s", but saw "%s".',
+                join('", "', $attributes), $group, join('", "', $labels)
+            ));
         }
     }
 
@@ -375,7 +435,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I add available attributes (.*)$/
+     * @Given /^I add available attributes? (.*)$/
      */
     public function iAddAvailableAttributes($attributes)
     {
@@ -385,7 +445,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->getCurrentPage()->addSelectedAvailableAttributes();
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -394,6 +454,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
+        $this->wait();
     }
 
     /**
@@ -548,24 +609,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-    public function getGroup($name)
-    {
-        try {
-            return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
-                'name' => $name
-            ));
-        } catch (\InvalidArgumentException $e) {
-            return null;
-        }
-    }
-
-    public function getFamily($code)
-    {
-        return $this->getEntityOrException('PimProductBundle:Family', array(
-            'code' => $code
-        ));
-    }
-
     /**
      * @Given /^I choose "([^"]*)" as the label of the family$/
      */
@@ -588,7 +631,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->selectAttributeType($type)
         ;
 
-        $this->wait(2000);
+        $this->wait();
     }
 
     /**
@@ -597,6 +640,33 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheAttributeCreationPage()
     {
         $this->openPage('Attribute creation');
+    }
+
+    /**
+     * @Given /^I am on the channels page$/
+     */
+    public function iAmOnTheChannelsPage()
+    {
+        $this->openPage('Channel index');
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I am on the channel creation page$/
+     */
+    public function iAmOnTheChannelCreationPage()
+    {
+        $this->openPage('Channel creation');
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" category page$/
+     */
+    public function iAmOnTheCategoryPage($code)
+    {
+        $this->openPage('Category edit', array(
+            'id' => $this->getCategory($code)->getId(),
+        ));
     }
 
     /**
@@ -615,12 +685,44 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following informations:$/
+     * @Given /^the fields (.*) should be disabled$/
      */
-    public function iFillInTheFollowingInformations(TableNode $table)
+    public function theFieldsShouldBeDisabled($fields)
+    {
+        $fields = $this->listToArray($fields);
+        foreach ($fields as $fieldName) {
+            $field = $this->getCurrentPage()->findField($fieldName);
+            if (!$field) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting to see field "%s".', $fieldName
+                ));
+                return;
+            }
+            if (!$field->hasAttribute('disabled')) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting field "%s" to be disabled.', $fieldName
+                ));
+            }
+        }
+    }
+
+    /**
+     * @Given /^I fill in the following informations?:$/
+     */
+    public function iFillInTheFollowingInformation(TableNode $table)
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @Given /^I create the following attribute options:$/
+     */
+    public function iCreateTheFollowingAttributeOptions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->getCurrentPage()->addOption($data['Default value'], $data['Selected by default']);
         }
     }
 
@@ -630,7 +732,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iPressTheButton($button)
     {
         $this->getCurrentPage()->pressButton($button);
-        $this->wait(2000, '$(".alert-success .message").length > 0');
+        $this->wait();
     }
 
     /**
@@ -685,6 +787,165 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^I should see channels (.*)$/
+     */
+    public function iShouldSeeChannels($channels)
+    {
+        $channels = $this->listToArray($channels);
+
+        foreach ($channels as $channel) {
+            if (!$this->getPage('Channel index')->findChannelRow($channel)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see channel %s, not found', $channel)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^the channel (.*) is able to export category (.*)$/
+     */
+    public function theChannelIsAbleToExportCategory($channel, $category)
+    {
+        if (!$this->getPage('Channel index')->channelCanExport($channel, $category)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting channel %s to be able to export category %s', $channel, $category)
+            );
+        }
+    }
+
+    /**
+     * @Given /^the channel (.*) is not able to export category (.*)$/
+     */
+    public function theChannelIsNotAbleToExportCategory($channel, $category)
+    {
+        if ($this->getPage('Channel index')->channelCanExport($channel, $category)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting channel %s not to be able to export category %s', $channel, $category)
+            );
+        }
+    }
+
+    /**
+     * @Then /^there should be (\d+) update$/
+     */
+    public function thereShouldBeUpdate($count)
+    {
+        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
+            throw $this->createExpectationException(sprintf(
+                'Expected %d updates, saw %d.', $count, $countUpdates
+            ));
+        }
+    }
+
+    /**
+     * @Given /^I filter per category "([^"]*)"$/
+     */
+    public function iFilterPerCategory($code)
+    {
+        $category = $this->getCategory($code);
+        $this
+            ->getPage('ProductIndex')
+            ->clickCategoryFilterLink($category);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I filter per unclassified category$/
+     */
+    public function iFilterPerUnclassifiedCategory()
+    {
+        $this
+            ->getPage('ProductIndex')
+            ->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see products (.*)$/
+     */
+    public function iShouldSeeProducts($products)
+    {
+        $products = $this->listToArray($products);
+        foreach ($products as $product) {
+            if (!$this->getPage('Product index')->findProductRow($product)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see product %s, not found', $product)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should see product "([^"]*)"$/
+     */
+    public function iShouldSeeProduct($product)
+    {
+        if (!$this->getPage('Product index')->findProductRow($product)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see product %s, not found', $product)
+            );
+        }
+    }
+
+    /**
+     * @Then /^I should not see products (.*)$/
+     */
+    public function iShouldNotSeeProducts($products)
+    {
+        $products = $this->listToArray($products);
+        foreach ($products as $product) {
+            if ($this->getPage('Product index')->findProductRow($product)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to not see product %s, but I see it', $product)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should not see product "([^"]*)"$/
+     */
+    public function iShouldNotSeeProduct($product)
+    {
+        if ($this->getPage('Product index')->findProductRow($product)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to not see product %s, but I see it', $product)
+            );
+        }
+    }
+
+    /**
+     * @Given /^I am on the category tree creation page$/
+     */
+    public function iAmOnTheCategoryTreeCreationPage()
+    {
+        $this->openPage('Category tree creation');
+    }
+
+    /**
+     * @Given /^I am on the category "([^"]*)" node creation page$/
+     */
+    public function iAmOnTheCategoryNodeCreationPage($code)
+    {
+        $this->openPage('Category node creation', array(
+            'id' => $this->getCategory($code)->getId()
+        ));
+    }
+
+    /**
+     * @Then /^I should be on the category "([^"]*)" edit page$/
+     */
+    public function iShouldBeOnTheCategoryEditPage($code)
+    {
+        $this->assertSession()->addressEquals(
+            $this->getPage('Category edit')->getUrl(
+                $this->getCategory($code)
+            )
+        );
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -705,9 +966,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    {
+        return $this->getMainContext()->wait($time, $condition);
+    }
+
     private function getProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
+    }
+
+    private function getCategory($code)
+    {
+        return $this->getFixturesContext()->getCategory($code);
     }
 
     private function getGroup($name)

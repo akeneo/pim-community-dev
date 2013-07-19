@@ -160,6 +160,16 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     protected $prices;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->prices = new ArrayCollection();
+    }
+
+    /**
      * Remove an option
      *
      * @param AbstractEntityAttributeOption $option
@@ -320,7 +330,15 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function isRemovable()
     {
-        if (null === $this->entity || null === $this->entity->getFamily()) {
+        if (null === $this->entity) {
+            return true;
+        }
+
+        if ('pim_product_identifier' === $this->attribute->getAttributeType()) {
+            return false;
+        }
+
+        if (null === $this->entity->getFamily()) {
             return true;
         }
 

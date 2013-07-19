@@ -1,0 +1,46 @@
+<?php
+namespace Pim\Bundle\ProductBundle\Form\Type;
+
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
+
+/**
+ * Product creation form type
+ *
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ */
+class ProductCreateType extends FlexibleType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function addEntityFields(FormBuilderInterface $builder)
+    {
+        parent::addEntityFields($builder);
+
+        $builder
+            ->add('values', 'collection')
+            ->add('family')
+            ->add(
+                'locales',
+                'pim_product_available_locales',
+                array(
+                    'label' => 'Activated locales'
+                )
+            );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_product_create';
+    }
+}

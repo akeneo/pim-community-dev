@@ -25,6 +25,7 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     {
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('webUser', new WebUser());
+        $this->useContext('web_api', new WebApiContext($parameters['base_url']));
     }
 
     /**
@@ -34,6 +35,14 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     {
         $purger = new ORMPurger($this->getEntityManager());
         $purger->purge();
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function closeConnection()
+    {
+        $this->getEntityManager()->getConnection()->close();
     }
 
     /**

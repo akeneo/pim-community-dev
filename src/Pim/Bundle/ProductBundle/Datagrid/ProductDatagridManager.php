@@ -14,8 +14,11 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Property\CurrencyProperty;
+use Pim\Bundle\ProductBundle\Manager\CategoryManager;
 
 /**
  * Grid manager
@@ -38,6 +41,28 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
+     * @staticvar string
+     */
+    const UNCLASSIFIED_CATEGORY = 0;
+
+    /**
+     * @var Pim\Bundle\ProductBundle\Manager\CategoryManager
+     */
+    protected $categoryManager;
+
+    /**
+     * Filter by tree id, 0 means not tree selected
+     * @var integer
+     */
+    protected $filterTreeId = self::UNCLASSIFIED_CATEGORY;
+
+    /**
+     * Filter by category id, 0 means unclassified
+     * @var integer
+     */
+    protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
+
+    /**
      * Define constructor to add new price type
      */
     public function __construct()
@@ -46,6 +71,35 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
             'filter' => FilterInterface::TYPE_CURRENCY
         );
+    }
+
+    /**
+     * Configure the category manager
+     * @param CategoryManager $manager
+     */
+    public function setCategoryManager(CategoryManager $manager)
+    {
+        $this->categoryManager = $manager;
+    }
+
+    /**
+     * Define the tree to use to filter the product collection
+     *
+     * @param integer $treeId
+     */
+    public function setFilterTreeId($treeId)
+    {
+        $this->filterTreeId = $treeId;
+    }
+
+    /**
+     * Define the category to use to filter the product collection
+     *
+     * @param integer $categoryId
+     */
+    public function setFilterCategoryId($categoryId)
+    {
+        $this->filterCategoryId = $categoryId;
     }
 
     /**
@@ -88,10 +142,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $field = $this->createScopeField();
+        $fieldsCollection->add($field);
+
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
+
         // create flexible columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
@@ -106,15 +164,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
-
-        $field = $this->createLocaleField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createScopeField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createCategoryField();
-        $fieldsCollection->add($field);
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
@@ -132,11 +181,35 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         $backendType = $attribute->getBackendType();
-        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION and $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
+        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
+            && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
         }
 
+        if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
+            $result['type'] = FieldDescriptionInterface::TYPE_INTEGER;
+        }
+
         return $result;
+    }
+
+    /**
+     * @return AbstractAttribute[]
+     */
+    protected function getFlexibleAttributes()
+    {
+        if (null === $this->attributes) {
+            /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
+            $attributeRepository = $this->flexibleManager->getAttributeRepository();
+            $attributes = $attributeRepository->findAllWithTranslations();
+            $this->attributes = array();
+            /** @var $attribute AbstractAttribute */
+            foreach ($attributes as $attribute) {
+                $this->attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $this->attributes;
     }
 
     /**
@@ -146,13 +219,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createFamilyField()
     {
-        // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:Family')->findAll();
-        $choices = array();
-        foreach ($families as $family) {
-            $choices[$family->getId()] = $family->getLabel();
-        }
+        $choices = $em->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
         $field = new FieldDescription();
         $field->setName('family');
@@ -177,68 +245,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create a category field
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createCategoryField()
-    {
-        // get categories
-        $em = $this->flexibleManager->getStorageManager();
-        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
-        $choices = array();
-        foreach ($categories as $category) {
-            $choices[$category->getId()] = $category->getTitle();
-        }
-
-        $field = new FieldDescription();
-        $field->setName('categories');
-        $field->setProperty(new FixedProperty('categories', 'categoryTitlesAsString'));
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Categories'),
-                'field_name'  => 'categories',
-                'filter_type' => FilterInterface::TYPE_CATEGORY,
-                'required'    => false,
-                'sortable'    => false, //TODO To enable when PIM-603 is fixed
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $choices,
-                ),
-            )
-        );
-
-        return $field;
-    }
-
-    /**
-     * Create locale field description for datagrid
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createLocaleField()
-    {
-        $field = new FieldDescription();
-        $field->setName(self::LOCALE_FIELD_NAME);
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Data Locale'),
-                'field_name'  => 'data_locale',
-                'filter_type' => FilterInterface::TYPE_LOCALE,
-                'required'    => false,
-                'filterable'  => true,
-                'show_column' => false,
-                'show_filter' => true
-            )
-        );
-
-        return $field;
-    }
-
-    /**
      * Create scope field description for datagrid
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -250,7 +256,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Scope'),
+                'label'       => $this->translate('Channel'),
                 'field_name'  => 'scope',
                 'filter_type' => FilterInterface::TYPE_SCOPE,
                 'required'    => false,
@@ -330,26 +336,38 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
-
-        $this->flexibleManager->setLocale($this->getLocaleFilterValue());
         $this->flexibleManager->setScope($this->getScopeFilterValue());
+        $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
     }
 
     /**
-     * Get data locale value from parameters
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    protected function getLocaleFilterValue()
+    protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
-            $dataLocale = $filtersArray[self::LOCALE_FIELD_NAME]['value'];
-        } else {
-            $dataLocale = $this->flexibleManager->getLocale();
-        }
+        /**
+         * @var FlexibleQueryBuilder
+         */
+        $query
+            ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')
+            ->setParameter('filterlocale', $this->flexibleManager->getLocale());
 
-        return $dataLocale;
+        if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
+            $categoryRepository = $this->categoryManager->getEntityRepository();
+
+            if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
+                $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
+                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $expression = $query->expr()->in($query->getRootAlias().'.id', $productIds);
+                $query->where($expression);
+
+            } else {
+                $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
+                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $expression = $query->expr()->notIn($query->getRootAlias().'.id', $productIds);
+                $query->where($expression);
+            }
+        }
     }
 
     /**

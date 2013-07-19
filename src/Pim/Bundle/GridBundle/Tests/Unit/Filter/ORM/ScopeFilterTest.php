@@ -19,7 +19,7 @@ class ScopeFilterTest extends FilterTestCase
 {
 
     /**
-     * @var LocaleFilter
+     * @var ScopeFilter
      */
     protected $model;
 

@@ -2,14 +2,10 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Gedmo\Translatable\Translatable;
-
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Export profile entity
@@ -20,12 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(name="pim_export_profile")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation")
  * @UniqueEntity("code")
  */
-class ExportProfile implements Translatable
+class ExportProfile implements TranslatableInterface
 {
-
     /**
      * @var integer $id
      *
@@ -43,22 +37,12 @@ class ExportProfile implements Translatable
     protected $code;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @Gedmo\Translatable
-     */
-    protected $name;
-
-    /**
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
      * @var string $locale
-     *
-     * @Gedmo\Locale
      */
-    protected $locale;
+    protected $locale = self::FALLBACK_LOCALE;
 
     /**
      * @var ArrayCollection $translations
@@ -114,37 +98,9 @@ class ExportProfile implements Translatable
     }
 
     /**
-     * Get name
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
-     */
-    public function setTranslatableLocale($locale)
+    public function setLocale($locale)
     {
         $this->locale = $locale;
 
@@ -152,9 +108,7 @@ class ExportProfile implements Translatable
     }
 
     /**
-     * Get translations
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getTranslations()
     {
@@ -162,13 +116,30 @@ class ExportProfile implements Translatable
     }
 
     /**
-     * Add translation
-     *
-     * @param ExportProfileTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
+     * {@inheritdoc}
      */
-    public function addTranslation(ExportProfileTranslation $translation)
+    public function getTranslation($locale = null)
+    {
+        $locale = ($locale) ? $locale : $this->locale;
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation      = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTranslation(AbstractTranslation $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -178,15 +149,45 @@ class ExportProfile implements Translatable
     }
 
     /**
-     * Remove translation
-     *
-     * @param ExportProfileTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
+     * {@inheritdoc}
      */
-    public function removeTranslation(ExportProfileTranslation $translation)
+    public function removeTranslation(AbstractTranslation $translation)
     {
         $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation';
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        $translated = $this->getTranslation()->getName();
+
+        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getName();
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function setName($name)
+    {
+        $this->getTranslation()->setName($name);
 
         return $this;
     }

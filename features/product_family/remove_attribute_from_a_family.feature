@@ -27,7 +27,7 @@ Feature: Remove attribute from a product family
       | label            | family |
       | Long Description | Bags   |
       | Manufacturer     | Bags   |
-    And the following product:
+    And the following products:
       | sku            | family |
       | bag-dolce-vita | Bags   |
     And the attribute "Manufacturer" has been removed from the "Bags" family

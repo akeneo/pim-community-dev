@@ -1,9 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
-
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Product family translation entity
@@ -13,16 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity()
- * @ORM\Table(
- *     name="pim_product_family_translation",
- *     indexes={
- *         @ORM\Index(
- *             name="pim_product_family_translations_idx",
- *             columns={"locale", "object_class", "field", "foreign_key"}
- *         )
- *     }
- * )
- *
+ * @ORM\Table(name="pim_product_family_translation")
  */
 class FamilyTranslation extends AbstractTranslation
 {
@@ -37,4 +27,35 @@ class FamilyTranslation extends AbstractTranslation
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;
+
+    /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=64, nullable=true)
+     */
+    protected $label;
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return ProductAttribute
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get the label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

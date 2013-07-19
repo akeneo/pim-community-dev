@@ -30,8 +30,8 @@
 
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-    var urlCheckedCategories = "{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json' }) }}";
-    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}"
+    var urlCheckedCategories = "{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json', 'dataLocale': dataLocale }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}"
     {% if trees %}
         {% set firstTree = trees|first %}
         var preSelectedTree = '{{ firstTree['tree'].id }}' ;

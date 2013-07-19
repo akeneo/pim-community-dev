@@ -21,6 +21,6 @@ class AttributeGroupTranslationTest extends \PHPUnit_Framework_TestCase
     {
         $group = new AttributeGroupTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $group);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $group);
     }
 }

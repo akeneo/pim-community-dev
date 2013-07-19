@@ -28,7 +28,7 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         // assert instance and implementation
         $this->assertEntity($group);
         $this->assertInstanceOf('\Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface', $group);
-        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $group);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\TranslatableInterface', $group);
 
         // assert object properties
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $group->getAttributes());
@@ -168,10 +168,10 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * Just a call to prevent fatal errors (no way to verify value is set)
      */
-    public function testSetTranslatableLocale()
+    public function testSetLocale()
     {
         $group = new AttributeGroup();
-        $group->setTranslatableLocale('en_US');
+        $group->setLocale('en_US');
     }
 
     /**

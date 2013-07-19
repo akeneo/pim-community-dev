@@ -1,0 +1,46 @@
+<?php
+
+namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
+
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
+
+/**
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
+{
+    protected $factory;
+
+    public function __construct(ReferenceFactory $factory = null)
+    {
+        $this->factory = $factory ?: new ReferenceFactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('pim_serializer')) {
+            return;
+        }
+
+        $normalizerRefs = array();
+        $encoderRefs    = array();
+
+        foreach ($container->findTaggedServiceIds('pim_serializer.normalizer') as $id => $attributes) {
+            $normalizerRefs[] = $this->factory->createReference($id);
+        }
+
+        foreach ($container->findTaggedServiceIds('pim_serializer.encoder') as $id => $attributes) {
+            $encoderRefs[] = $this->factory->createReference($id);
+        }
+
+        $serializerDef = $container->getDefinition('pim_serializer');
+        $serializerDef->setArguments(array($normalizerRefs, $encoderRefs));
+    }
+}

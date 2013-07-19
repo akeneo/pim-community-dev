@@ -7,10 +7,12 @@ $(function() {
 
     function updateForm() {
         $.post(
-           'preprocess',
+            '{{ path("pim_product_productattribute_preprocess") }}',
             $('#'+formName).serialize(),
             function(data) {
-                $('#'+formName).replaceWith(data);
+                for (var prop in data) {
+                    $('#'+prop).html(data[prop]);
+                }
                 $('#'+formName+' div.alert').remove();
                 initializeForm();
             }
@@ -19,6 +21,7 @@ $(function() {
 
     function initializeForm() {
         $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#'+formName+' a.validation-tooltip').tooltip();
         $('#'+formName+' select').select2();
         $('#'+formName+' input.multiselect').select2({ tags: $('#'+formName+' input.multiselect').val() });
         initializeOptions();
@@ -95,7 +98,7 @@ $(function() {
         if (!$optionList.length) {
             return;
         }
-        $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="fa-icon-plus"></i>{{ 'Add an option'|trans }}</a>'));
+        $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="fa-icon-plus"></i>{{ "Add an option"|trans }}</a>'));
 
         $optionList.find('tr.att-option').each(function() {
             $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="fa-icon-remove"></i></button></td>'));
@@ -107,14 +110,18 @@ $(function() {
         });
 
         $(document).on('click', 'button.action-delete-inline', function(e) {
-            var rows = $optionList.find('tr').length;
-            if (rows > 2) {
+            var rows = $optionList.find('tbody tr').length;
+            if (rows > 1) {
                 $(this).parent().parent().remove();
-                if (rows == 3) {
-                    $('button.action-delete-inline').hide();
+                if (rows === 2) {
+                    $('button.action-delete-inline').attr('disabled', 'disabled');
                 }
             }
         });
+
+        if ($('button.action-delete-inline').length === 1) {
+            $('button.action-delete-inline').attr('disabled', 'disabled');
+        }
 
         $(document).on('change', 'input[name="default"]', updateDefaultField);
 
@@ -161,7 +168,7 @@ $(function() {
 
         $optionList.find('tbody').append($option);
 
-        $('button.action-delete-inline').show();
+        $('button.action-delete-inline').removeAttr('disabled');
         updateSortOrder();
     }
 

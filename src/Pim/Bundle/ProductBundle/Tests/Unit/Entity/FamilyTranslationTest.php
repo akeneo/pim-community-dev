@@ -21,6 +21,6 @@ class FamilyTranslationTest extends \PHPUnit_Framework_TestCase
     {
         $family = new FamilyTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $family);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $family);
     }
 }

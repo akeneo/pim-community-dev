@@ -12,6 +12,7 @@ services:
         tags:
             - { name: oro_flexibleentity_manager, entity: %pim_product.entity.product.class%}
         calls:
+            - [ addAttributeType, ['pim_product_identifier'] ]
             - [ addAttributeType, ['pim_product_text'] ]
             - [ addAttributeType, ['pim_product_textarea'] ]
             - [ addAttributeType, ['pim_product_number'] ]
@@ -36,8 +37,8 @@ services:
     pim_product.manager.media:
         class:     %pim_product.manager.media.class%
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
-        
+
     pim_product.manager.attribute_type:
         class:     %pim_product.manager.attribute_type.class%
         arguments: [@pim_product.manager.product, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
-        
+

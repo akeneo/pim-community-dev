@@ -1,55 +1,50 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit channel'|trans : 'Add channel'|trans %}
-
 {% block page_container %}
 <div class="container-fluid">
-    
+
     {% block content %}
-    <form class="form-horizontal" action="{{ form.vars.value.id ? 
-        path('pim_config_channel_edit', { id: form.vars.value.id }) : 
+
+    {{ JSFV(form) }}
+    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
+        path('pim_config_channel_edit', { id: form.vars.value.id }) :
         path('pim_config_channel_create') }}" method="POST" class="form-register">
 
-        <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row-fluid">
-                <div class="pull-right">
-                    <div class="pull-right">
-                        <div class="btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_config_channel_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-                        </div>
-                        <div class="btn-group icons-holder">
-                            <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-channel" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this channel ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                        </div>
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="pull-left">
-                    <div class="navbar-content pull-left">
-                        <div class="navbar-title clearfix-oro">
-                            <div class="sub-title">{{ 'Channels'|trans }}</div>
-                            <span class="separator">/</span>
-                            <div class="sub-title">{{ form.vars.value.id ? form.vars.value.code : 'New channel'|trans }}</div>
-                        </div>
-                   </div>
-                </div>
-            </div>
-        </div>
+        {% set title = 'Channels'|trans %}
 
-        <div class="row_fluid">
-            {% if form.vars.errors|length %}
-                <div class="alert alert-error">
-                    {{ form_errors(form) }}
+        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New channel'|trans %}
+
+        {% set buttons %}
+            <div class="btn-group icons-holder">
+                <a class="btn" href="{{ path('pim_config_channel_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
+            </div>
+            {% if form.vars.value.id %}
+                <div class="btn-group icons-holder">
+                    <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-channel" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this channel ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
                 </div>
             {% endif %}
-            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
+            </div>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, subtitle) }}
+
+        <div class="row-fluid">
+            {{ elements.form_errors(form) }}
+
             {{ form_row(form.id) }}
-            
+
             {{ form_row(form.code) }}
-            
+
             {{ form_row(form.name) }}
-            
+
+            {{ form_row(form.currencies) }}
+
+            {{ form_row(form.locales) }}
+
+            {{ form_row(form.category) }}
+
             {{ form_row(form._token) }}
         </div>
     </form>
@@ -61,14 +56,14 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    
+
     <script type="text/javascript">
     $(function() {
         $('#btn-delete-channel').click(function(event) {
             doAction = function() {
                 window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}";
             };
-            
+
             if (!_.isUndefined(Backbone.BootstrapModal)) {
                 confirm = new Backbone.BootstrapModal({
                     title: "{{ 'Delete Confirmation' | trans }}",

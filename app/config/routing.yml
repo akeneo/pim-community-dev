@@ -1,11 +1,14 @@
 pim_default:
     pattern:  /
-    defaults: { _controller: PimProductBundle:Product:index, _locale: %locale% }
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: pim_product_product_index, permanent: true }
 
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
     prefix:   /enrich/
+
+pim_product_api:
+    resource: "@PimProductBundle/Resources/config/routing.yml"
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"

@@ -73,7 +73,7 @@ class ProductAttributeControllerTest extends ControllerTest
     public function testRemove()
     {
         // initialize authentication to call container and get product attribute entity
-        $productAttribute = $this->getRepository()->findOneBy(array());
+        $productAttribute = $this->getRepository()->findOneBy(array('required' => false));
         $uri = '/enrich/product-attribute/remove/'. $productAttribute->getId();
 
         // assert without authentication

@@ -21,6 +21,6 @@ class CategoryTranslationTest extends \PHPUnit_Framework_TestCase
     {
         $category = new CategoryTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $category);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $category);
     }
 }

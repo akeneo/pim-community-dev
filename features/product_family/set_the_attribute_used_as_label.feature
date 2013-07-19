@@ -27,7 +27,7 @@ Feature: Set the attribute used as label
 
   Scenario: Succesfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label
-    And the following product:
+    And the following products:
       | sku      | family |
       | bag-jean | Bags   |
     And the following product value:
@@ -38,7 +38,7 @@ Feature: Set the attribute used as label
     Then the title of the product should be "Products/en Levis"
 
   Scenario: Succesfully display the id as the title of the product
-    Given the following product:
+    Given the following products:
       | sku      |
       | bag-jean |
     And I am logged in as "admin"

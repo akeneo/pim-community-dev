@@ -57,6 +57,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
 
         // Change value and assert new
         $newLabel = 'test-label';
+        $family->setLocale('en_US');
         $family->setLabel($newLabel);
         $this->assertEquals($newLabel, $family->getLabel());
     }

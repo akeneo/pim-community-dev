@@ -47,12 +47,12 @@ class TranslationFactory
     public function __construct($translationClass, $entityClass, $field)
     {
         $refl = new \ReflectionClass($translationClass);
-        if (!$refl->isSubClassOf('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation')) {
+        if (!$refl->isSubClassOf('Pim\Bundle\TranslationBundle\Entity\AbstractTranslation')) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The translation class "%s" must extends "%s"',
                     $translationClass,
-                    'Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation'
+                    'Pim\Bundle\TranslationBundle\Entity'
                 )
             );
         }
@@ -73,8 +73,6 @@ class TranslationFactory
     {
         $translation = new $this->translationClass();
         $translation->setLocale($locale);
-        $translation->setObjectClass($this->entityClass);
-        $translation->setField($this->field);
 
         return $translation;
     }

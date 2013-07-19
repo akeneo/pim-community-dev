@@ -29,6 +29,7 @@ Pim.Filter.ScopeFilter = Oro.Filter.SelectFilter.extend({
      */
     template: _.template(
         '<div class="btn filter-select filter-criteria-selector">' +
+            '<%= label %>: ' +
             '<select>' +
                 '<% _.each(options, function (hint, value) { %>' +
                     '<option value="<%= value %>"><%= hint %></option>' +

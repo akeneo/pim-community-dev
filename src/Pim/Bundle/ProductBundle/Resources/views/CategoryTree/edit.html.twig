@@ -1,5 +1,9 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'category' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
@@ -15,7 +19,7 @@
     <div id="category-tree-container" class="row-fluid">
         <div id="tree"></div>
 
-        <div id="form-tab">
+        <div>
             {{ JSFV(form) }}
             <form action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
@@ -27,15 +31,11 @@
                     </h3>
                 </div>
 
-                <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
-                    <div class="navbar-inner">
-                        <div class="row-fluid">
-                            <ul class="nav">
-                                <li class="active"><a href="#form-properties" data-toggle="tab">{{ 'Properties'|trans }}</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                {% if form.vars.value.id %}
+                    {{ elements.form_navbar(['Properties', 'History'], 'tab') }}
+                {% else %}
+                    {{ elements.form_navbar(['Properties'], 'tab') }}
+                {% endif %}
 
                 <div class="row-fluid tab-content">
                     {% if form.vars.errors|length %}
@@ -44,7 +44,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="tab-pane active" id="form-properties">
+                    <div class="tab-pane active" id="properties">
                         <div id="accordion1" class="accordion">
                             <div class="accordion-group">
                                 <div class="accordion-heading">
@@ -81,6 +81,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane" id="history">
+                        <div id="history-grid"></div>
+                    </div>
                 </div>
                 {{ form_rest(form) }}
             </form>
@@ -97,6 +101,9 @@
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
+    {% if form.vars.value.id %}
+        {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% endif %}
 
 {% endblock %}
 

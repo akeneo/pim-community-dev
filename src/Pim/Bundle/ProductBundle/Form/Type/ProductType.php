@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Product form type
@@ -18,92 +20,24 @@ use Symfony\Component\Form\FormInterface;
  */
 class ProductType extends FlexibleType
 {
+    protected $productFormView;
+
     /**
-     * Group value fields by group and scope if necessary and passes it to the view
-     *
-     * Exemple:
-     *     array(
-     *         groupId => array(
-     *             'name' => groupName
-     *             'attributes' => array(
-     *                 attributeId => array(
-     *                     'isRemovable' => true
-     *                     'code'        => 'name'
-     *                     'label'       => 'Name'
-     *                     'sortOrder'   => 0
-     *                     'value'       => FormView
-     *                 )
-     *                 attributeId => array(
-     *                     'isRemovable' => false
-     *                     'code'        => 'longDescription'
-     *                     'label'       => 'Long description'
-     *                     'sortOrder'   => 3
-     *                     'values'      => array(
-     *                         'ecommerce' => FormView
-     *                         'mobile'    => FormView
-     *                     'classes' => array(
-     *                         'scopable' => true
-     *                     )
-     *                 )
-     *                 attributeId => array(
-     *                     'isRemovable' => true
-     *                     'code'        => 'prices'
-     *                     'label'       => 'Prices'
-     *                     'sortOrder'   => 2
-     *                     'value'       => FormView
-     *                     'classes'     => array(
-     *                         'currency' => true
-     *                     )
-     *                 )
-     *             )
-     *         )
-     *     )
-     *
-     * Access it into the view through {{ form.vars.groups }}
-     *
+     * {@inheritdoc}
+     */
+    public function __construct(FlexibleManager $flexibleManager, $valueFormAlias, ProductFormView $productFormView)
+    {
+        parent::__construct($flexibleManager, $valueFormAlias);
+
+        $this->productFormView = $productFormView;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $groups = array();
-
-        $valueForms = $form->get('values')->getChildren();
-        foreach ($valueForms as $valueForm) {
-            $value     = $valueForm->getData();
-            $attribute = $value->getAttribute();
-            $attrId    = $attribute->getId();
-            $group     = $attribute->getVirtualGroup();
-            $groupId   = $group->getId();
-
-            if (!isset($groups[$groupId])) {
-                $groups[$groupId]['name'] = $group->getName();
-            }
-
-            if (!isset($groups[$groupId]['values'][$attrId])) {
-                $groups[$groupId]['attributes'][$attrId]['isRemovable'] = $value->isRemovable();
-                $groups[$groupId]['attributes'][$attrId]['code']        = $attribute->getCode();
-                $groups[$groupId]['attributes'][$attrId]['label']       = $attribute->getLabel();
-                $groups[$groupId]['attributes'][$attrId]['sortOrder']   = $attribute->getSortOrder();
-            }
-
-            $formView = $valueForm->createView($view->getChild('values'));
-            if ($value->getAttribute()->getScopable()) {
-                $groups[$groupId]['attributes'][$attrId]['classes']['scopable']        = true;
-                $groups[$groupId]['attributes'][$attrId]['values'][$value->getScope()] = $formView;
-            } else {
-                $groups[$groupId]['attributes'][$attrId]['value'] = $formView;
-            }
-
-            if ('pim_product_price_collection' === $attribute->getAttributeType()) {
-                $groups[$groupId]['attributes'][$attrId]['classes']['currency'] = true;
-            }
-        }
-
-        foreach ($groups as $id => $group) {
-            $groups[$id]['attributes'] = $this->sortAttributes($group['attributes']);
-        }
-
-        $view->vars['groups'] = $groups;
+        $view->vars['groups'] = $this->productFormView->getView();
     }
 
     /**
@@ -188,28 +122,5 @@ class ProductType extends FlexibleType
     public function getName()
     {
         return 'pim_product';
-    }
-
-    /**
-     * Sort an array of by the values of its sortOrder key
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function sortAttributes(array $attributes)
-    {
-        uasort(
-            $attributes,
-            function ($a, $b) {
-                if ($a['sortOrder'] === $b['sortOrder']) {
-                    return 0;
-                }
-
-                return $a['sortOrder'] > $b['sortOrder'] ? 1 : -1;
-            }
-        );
-
-        return $attributes;
     }
 }

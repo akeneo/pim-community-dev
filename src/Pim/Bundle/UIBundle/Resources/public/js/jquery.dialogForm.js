@@ -67,6 +67,7 @@
             });
 
             $(formId + ' select').select2({ allowClear: true });
+            $(formId + ' a.validation-tooltip').tooltip();
         }
 
         function processResponse(data, $dialog) {

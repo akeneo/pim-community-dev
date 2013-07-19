@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -67,8 +69,9 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Name'),
-                'field_name'  => 'label',
+                'label'       => $this->translate('Label'),
+                'entity_alias' => 'translation',
+                'field_name'   => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -102,7 +105,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Translatable'),
+                'label'       => $this->translate('Localizable'),
                 'field_name'  => 'translatable',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
@@ -124,19 +127,19 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function createGroupField()
     {
-        // get groups
         $em = $this->productManager->getStorageManager();
-        $groups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+        $groups = $em->getRepository('PimProductBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getName();
         }
+        asort($choices);
 
         $field = new FieldDescription();
         $field->setName('group');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translate('Group'),
                 'field_name'  => 'group',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
@@ -144,9 +147,7 @@ class AttributeDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $choices
-                ),
+                'field_options' => array('choices' => $choices),
             )
         );
 
@@ -245,5 +246,23 @@ class AttributeDatagridManager extends DatagridManager
         asort($fieldOptions);
 
         return $fieldOptions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createQuery()
+    {
+        $queryBuilder = $this->productManager->getStorageManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('attribute')
+            ->from('PimProductBundle:ProductAttribute', 'attribute')
+            ->addSelect('translation')
+            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->setParameter('locale', TranslatableInterface::FALLBACK_LOCALE);
+        $this->queryFactory->setQueryBuilder($queryBuilder);
+        $query = $this->queryFactory->createQuery();
+
+        return $query;
     }
 }

@@ -1,15 +1,14 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Job\Launch;
 
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 use Pim\Bundle\BatchBundle\Job\JobParameters;
 
 /**
- * 
  * Simple interface for controlling jobs, including possible ad-hoc executions,
  * based on different runtime identifiers.
- * 
+ *
  * Inspired by Spring Batch  org.springframework.batch.core.launch.JobLauncher;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -28,10 +27,13 @@ interface JobLauncherInterface
      * one created. A exception will only be thrown if there is a failure to
      * start the job. If the job encounters some error while processing, the
      * JobExecution will be returned, and the status will need to be inspected.
-     * 
+     *
+     * @param JobInterface  $job           The job to launch
+     * @param JobParameters $jobParameters The job parameters
+     *
      * @return the {@link JobExecution} if it returns synchronously. If the
      * implementation is asynchronous, the status might well be unknown.
-     * 
+     *
      * @throws JobExecutionAlreadyRunningException if the JobInstance identified
      * by the properties already has an execution running.
      * @throws IllegalArgumentException if the job or jobInstanceProperties are
@@ -43,6 +45,5 @@ interface JobLauncherInterface
      * @throws JobParametersInvalidException if the parameters are not valid for
      * this job
      */
-    public function run(JobInterface $job, JobParameters $jobParameters); 
-
+    public function run(JobInterface $job, JobParameters $jobParameters);
 }

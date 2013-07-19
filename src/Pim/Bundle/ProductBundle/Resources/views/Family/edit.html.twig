@@ -1,5 +1,9 @@
 {% extends 'PimProductBundle:Family:index.html.twig' %}
 
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {% set title = 'Family'|trans %}
 
 {% block familyTab %}
@@ -21,16 +25,7 @@
         </h3>
     </div>
 
-    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
-        <div class="navbar-inner">
-            <div class="row-fluid">
-                <ul class="nav">
-                    <li class="active"><a href="#properties" data-toggle="tab">{{ 'Properties' | trans }}</a></li>
-                    <li><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {{ elements.form_navbar(['Properties', 'Attributes', 'History'], 'tab') }}
 
     <div class="tab-content">
 
@@ -67,7 +62,7 @@
                     </div>
                     <div id="collapseTwo" class="accordion-body in">
                         <div class="accordion-inner">
-                            {{ form_row(form.name) }}
+                            {{ form_row(form.label) }}
                         </div>
                     </div>
                 </div>
@@ -119,6 +114,10 @@
             </table>
         </div>
 
+        <div class="tab-pane" id="history">
+            <div id="history-grid"></div>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -139,4 +138,5 @@
 
         });
     </script>
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
 {% endblock %}

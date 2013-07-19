@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,behat"/>
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
     <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
@@ -98,8 +98,6 @@
 
     <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
-            <arg value="--standard=Symfony2" />
-            <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
@@ -111,8 +109,6 @@
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
-            <arg value="--standard=Symfony2" />
-            <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
@@ -145,6 +141,7 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="bin/behat">
+            <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
         </exec>
@@ -172,6 +169,12 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
+        </exec>
+    </target>
+
+    <target name="dumpassets" description="Dump the assets">
+        <exec executable="app/console">
+          <arg value="assetic:dump" />
         </exec>
     </target>
 

@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as OroAttributeOptionRepository;
 use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
@@ -12,7 +13,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionRepository extends EntityRepository
+class AttributeOptionRepository extends OroAttributeOptionRepository
 {
     /**
      * Return query builder for all attribute options that belong to the provided ProductAttribute
@@ -22,6 +23,9 @@ class AttributeOptionRepository extends EntityRepository
      */
     public function findAllForAttribute(ProductAttribute $attribute)
     {
-        return $this->createQueryBuilder('o')->where('o.attribute = '.(int) $attribute->getId());
+        return $this->createQueryBuilder('o')
+            ->addSelect('OptionValue')
+            ->leftJoin('o.optionValues', 'OptionValue')
+            ->where('o.attribute = '.(int) $attribute->getId());
     }
 }

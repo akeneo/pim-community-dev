@@ -128,6 +128,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVirtualGroup()
     {
+        $this->attribute->getVirtualGroup()->setLocale('default');
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
         $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getName());
 
@@ -158,6 +159,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $string = 'test-string';
+        $this->attribute->setLocale('en_US');
         $this->attribute->setLabel($string);
         $this->assertEquals($string, $this->attribute->__toString());
     }
@@ -468,9 +470,9 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * Just a call to prevent fatal errors (no way to verify value is set)
      */
-    public function testSetTranslatableLocale()
+    public function testSetLocale()
     {
-        $this->attribute->setTranslatableLocale('en_US');
+        $this->attribute->setLocale('en_US');
     }
 
     /**
