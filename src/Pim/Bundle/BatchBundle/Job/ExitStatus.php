@@ -174,7 +174,8 @@ class ExitStatus
      *
      * @return severity
      */
-    private function severity() {
+    private function severity()
+    {
         $severity = self::MAX_SEVERITY;
 
         if (array_key_exists($this->exitCode, self::$statusSeverity)) {
@@ -221,7 +222,7 @@ class ExitStatus
             $description = $description->getTraceAsString();
         }
 
-        if (!empty($description) && $this->exitDescription != $description ) {
+        if (!empty($description) && $this->exitDescription != $description) {
             if (!empty($this->exitDescription)) {
                 $this->exitDescription .= ';';
             }
