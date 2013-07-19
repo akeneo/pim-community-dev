@@ -176,6 +176,10 @@ class CategoryHelper
                 $title .= ' ('.$category['item']->getProductsCount().')';
             }
 
+            if ($category['item']->getParent() == null) {
+                $state .= ' jstree-root';
+            }
+
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
@@ -200,7 +204,13 @@ class CategoryHelper
      */
     protected static function getState(Category $category)
     {
-        return $category->hasChildren() ? 'closed' : 'leaf';
+        $state = $category->hasChildren() ? 'closed' : 'leaf';
+
+        if ($category->getParent() == null) {
+            $state .= ' jstree-root';
+        }
+
+        return $state;
     }
 
     /**
@@ -283,6 +293,7 @@ class CategoryHelper
         foreach ($categories as $category) {
             $state = 'leaf';
 
+
             if (count($category['__children']) > 0) {
                 $state = 'open';
             } else {
@@ -310,6 +321,10 @@ class CategoryHelper
 
             if ($selectedChildrenCount > 0) {
                 $title = '<strong>'.$title.'</strong>';
+            }
+
+            if ($category['item']->getParent() == null) {
+                $state .= ' jstree-root';
             }
 
             $result[] = array(

@@ -27,9 +27,12 @@ class CsvEncoder implements EncoderInterface
     public function encode($data, $format, array $context = array())
     {
         if (!is_array($data)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expecting data of type array, got "%s".', gettype($data)
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expecting data of type array, got "%s".',
+                    gettype($data)
+                )
+            );
         }
 
         $result = '';
@@ -73,4 +76,3 @@ class CsvEncoder implements EncoderInterface
         return $csv;
     }
 }
-

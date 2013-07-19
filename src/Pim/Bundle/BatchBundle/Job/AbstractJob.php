@@ -24,11 +24,11 @@ abstract class AbstractJob implements JobInterface
 
     private $name;
 
-//    private boolean restartable = true;
-//    private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-//    private JobRepository jobRepository;
-//    private JobParametersIncrementer jobParametersIncrementer;
-//    private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
+    //private boolean restartable = true;
+    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
+    //private JobRepository jobRepository;
+    //private JobParametersIncrementer jobParametersIncrementer;
+    //private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
 
     /* @var StepHandler $stepHandler */
     private $stepHandler = null;
@@ -130,21 +130,21 @@ abstract class AbstractJob implements JobInterface
         Logger::debug("Job execution starting: " . $execution);
 
         try {
-//            jobParametersValidator.validate(execution.getJobParameters());
+            //jobParametersValidator.validate(execution.getJobParameters());
 
             if ($execution->getStatus()->getValue() != BatchStatus::STOPPING) {
 
                 $execution->setStartTime(time());
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
-//                listener.beforeJob(execution);
+                //listener.beforeJob(execution);
 
-//                try {
+                //try {
                     $this->doExecute($execution);
                     Logger::debug("Job execution complete: ". $execution);
-//                } catch (RepeatException e) {
-//                    throw e.getCause();
-//                }
+                //} catch (RepeatException e) {
+                //    throw e.getCause();
+                //}
             } else {
 
                 // The job was already stopped before we even got this far. Deal
@@ -161,16 +161,16 @@ abstract class AbstractJob implements JobInterface
             Logger::debug("Full exception", $e);
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-//            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
+            //$execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
             Logger::error("Encountered fatal error executing job", $e);
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
-//            $execution->addFailureException($e);
+            //$execution->addFailureException($e);
         }
 
-        if ( ($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
+        if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
         ) {
             /* @var ExitStatus $exitStatus */
@@ -183,12 +183,12 @@ abstract class AbstractJob implements JobInterface
         $execution->setEndTime(time());
 
         try {
-//            listener.afterJob(execution);
+            //listener.afterJob(execution);
         } catch (Exception $e) {
             Logger::error("Exception encountered in afterStep callback", $e);
         }
 
-//        jobRepository.update(execution);
+        //jobRepository.update(execution);
     }
 
 
@@ -233,9 +233,9 @@ abstract class AbstractJob implements JobInterface
 
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
-            $exitStatus->addExitDescription(get_class(JobInterruptedException));
+            $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
         } elseif ($e instanceof NoSuchJobException || $e->getPrevious() instanceof NoSuchJobException) {
-//            exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
+            //exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
@@ -248,15 +248,15 @@ abstract class AbstractJob implements JobInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param JobExecution $jobExecution
-     * @param string       $status
+     * @param JobExecution $jobExecution Execution of the job
+     * @param string       $status       Status of the execution
      *
      * @return an {@link ExitStatus}
      */
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-//        $jobRepository->update($jobExecution);
+        //$jobRepository->update($jobExecution);
     }
 
     /**

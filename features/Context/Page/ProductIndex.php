@@ -14,7 +14,6 @@ class ProductIndex extends Page
     protected $path = '/enrich/product/';
 
     protected $elements = array(
-        'Activated locales' => array('css' => '#select2-drop'),
         'Categories tree'   => array('css' => '#tree'),
         'Products'          => array('css' => 'table.grid tbody'),
         'Dialog'            => array('css' => 'div.modal'),
@@ -60,20 +59,6 @@ class ProductIndex extends Page
         }
 
         $button->click();
-    }
-
-    public function selectActivatedLocale($locale)
-    {
-        $elt = $this
-            ->getElement('Activated locales')
-            ->find('css', sprintf('li:contains("%s")', $locale))
-        ;
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s".', $locale));
-        }
-
-        $elt->click();
     }
 
     public function clickCategoryFilterLink($category)

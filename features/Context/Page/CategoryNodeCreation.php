@@ -1,13 +1,16 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer;
+namespace Context\Page;
 
 /**
+ * Category node creation page
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface WriterInterface
+class CategoryNodeCreation extends CategoryTreeCreation
 {
-    public function write($data);
+    protected $path = '/enrich/category-tree/create/{id}';
 }
+

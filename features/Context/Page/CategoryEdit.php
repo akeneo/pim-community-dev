@@ -3,6 +3,7 @@
 namespace Context\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -17,14 +18,27 @@ class CategoryEdit extends Page
         'Tabs' => array('css' => '#form-navbar'),
     );
 
+    /**
+     * Update the category
+     */
     public function save()
     {
         $this->pressButton('Save');
     }
 
+    /**
+     * Click on one of the horizontal tab
+     *
+     * @param string $tab the displayed name of the tab link
+     */
     public function visitTab($tab)
     {
         $this->getElement('Tabs')->clickLink($tab);
+    }
+
+    public function getUrl(Category $category)
+    {
+        return str_replace('{id}', $category->getId(), $this->getPath());
     }
 }
 

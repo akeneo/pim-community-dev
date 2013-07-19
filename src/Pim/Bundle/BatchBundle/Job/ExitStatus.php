@@ -15,6 +15,8 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class ExitStatus
 {
+    const MAX_SEVERITY = 7;
+
     /**
      * Convenient constant value representing unknown state - assumed not
      * continuable.
@@ -67,8 +69,8 @@ class ExitStatus
     /**
      * Constructor
      *
-     * @param integer $exitCode
-     * @param string  $exitDescription
+     * @param integer $exitCode        Code for the exit status
+     * @param string  $exitDescription Description of the exit status
      */
     public function __construct($exitCode = self::UNKNOWN, $exitDescription = "")
     {
@@ -109,16 +111,14 @@ class ExitStatus
         } else {
             $this->exitCode = $exitCode;
         }
+
         return $this;
     }
 
     /**
      * Create a new {@link ExitStatus} with a logical combination of the exit
      * code, and a concatenation of the descriptions. If either value has a
-     * higher severity then its exit code will be used in the result. In the
-     * case of equal severity, the exit code is replaced if the new value is
-     * alphabetically greater.<br/>
-     * <br/>
+     * higher severity then its exit code will be used in the result.
      *
      * Severity is defined by the exit code.
      * <ul>
@@ -143,7 +143,7 @@ class ExitStatus
         if ($status != null) {
             $this->addExitDescription($status->exitDescription);
             if ($this->compareTo($status) < 0) {
-                $exitCode = $status->exitCode;
+                $this->exitCode = $status->exitCode;
             }
         }
 
@@ -165,6 +165,7 @@ class ExitStatus
         if ($status->severity() < $this->severity()) {
             return 1;
         }
+
         return 0;
     }
 
@@ -175,7 +176,7 @@ class ExitStatus
      */
     private function severity()
     {
-        $severity = 7;
+        $severity = self::MAX_SEVERITY;
 
         if (array_key_exists($this->exitCode, self::$statusSeverity)) {
             $severity = self::$statusSeverity[$this->exitCode];
@@ -221,8 +222,11 @@ class ExitStatus
             $description = $description->getTraceAsString();
         }
 
-        if (!empty($description)) {
-            $this->description .= ';'.$description;
+        if (!empty($description) && $this->exitDescription != $description) {
+            if (!empty($this->exitDescription)) {
+                $this->exitDescription .= ';';
+            }
+            $this->exitDescription .= $description;
         }
 
         return $this;

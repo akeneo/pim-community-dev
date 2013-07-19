@@ -179,7 +179,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(
                     $values->filter(function ($value) {
                         return strtolower($value->getAttribute()->getCode()) == 'sku';
-                    })->first()->getData()
+                    })->first()
                 )
             );
 

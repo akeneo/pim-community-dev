@@ -19,8 +19,7 @@ class ExportCommand extends ContainerAwareCommand
         $this
             ->setName('pim:export')
             ->setDescription('Launch a configured export')
-            ->addArgument('alias', InputArgument::REQUIRED, 'The export alias defined in the configuration')
-        ;
+            ->addArgument('alias', InputArgument::REQUIRED, 'The export alias defined in the configuration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -30,4 +29,3 @@ class ExportCommand extends ContainerAwareCommand
         $exporter->export();
     }
 }
-

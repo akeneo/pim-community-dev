@@ -160,6 +160,16 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     protected $prices;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->prices = new ArrayCollection();
+    }
+
+    /**
      * Remove an option
      *
      * @param AbstractEntityAttributeOption $option

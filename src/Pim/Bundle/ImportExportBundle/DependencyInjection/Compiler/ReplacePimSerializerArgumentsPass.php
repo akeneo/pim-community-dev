@@ -44,4 +44,3 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
         $serializerDef->setArguments(array($normalizerRefs, $encoderRefs));
     }
 }
-
