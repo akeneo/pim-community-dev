@@ -46,20 +46,25 @@ class EmailNotificationHandler implements EventHandlerInterface
                 'event' => $event,
                 'notification' => $notification,
                 'entity' => $event->getEntity(),
+                'templateName' => $notification->getTemplate(),
             );
 
-            $emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
+            //$emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
+            $emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
             $subject = ($emailTemplate->hasBlock("subject")
                 ? $emailTemplate->renderBlock("subject", $params)
                 : "oro_notification.default_notification_subject");
             $subject = trim($subject);
+
+            $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
+                ->getRecipientEmails($notification->getRecipientList());
 
             $params = new ParameterBag(
                 array(
                     'subject' => $subject,
                     'body'    => $emailTemplate->render($params),
                     'from'    => 'ishakuta@gmail.com',
-                    'to'      => 'ishakuta@gmail.com',
+                    'to'      => $recipientEmails,
                 )
             );
 
