@@ -361,23 +361,45 @@ class ConfigManager
     }
 
     /**
+     * @param null $scope
      * @return array
      */
-    public function getUpdatedEntityConfig()
+    public function getUpdatedEntityConfig($scope = null)
     {
-        return array_filter($this->updatedConfigs, function (ConfigInterface $config) {
-            return $config instanceof EntityConfigInterface;
+        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($scope) {
+            if (!$config instanceof EntityConfigInterface) {
+                return false;
+            }
+
+            if ($scope && $config->getScope() != $scope) {
+                return false;
+            }
+
+            return true;
         });
     }
 
     /**
      * @param null $className
+     * @param null $scope
      * @return array
      */
-    public function getUpdatedFieldConfig($className = null)
+    public function getUpdatedFieldConfig($className = null, $scope = null)
     {
-        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($className) {
-            return ($config->getClassName() == $className && $config instanceof FieldConfigInterface);
+        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($className, $scope) {
+            if (!$config instanceof FieldConfigInterface) {
+                return false;
+            }
+
+            if ($scope && $config->getClassName() != $className) {
+                return false;
+            }
+
+            if ($scope && $config->getScope() != $scope) {
+                return false;
+            }
+
+            return ($config instanceof FieldConfigInterface && $config->getClassName() == $className);
         });
     }
 
