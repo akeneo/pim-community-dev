@@ -1,0 +1,15 @@
+parameters:
+    oro_workflow.post_action_factory.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
+    oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction
+
+services:
+    oro_workflow.post_action_factory:
+        class: %oro_workflow.post_action_factory.class%
+        arguments:
+            - @service_container
+            - []
+
+    oro_workflow.post_action.list:
+        class: %oro_workflow.post_action.list.class%
+        tags:
+            - { name: oro_workflow.post_action, alias: list }

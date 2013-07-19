@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
 {
     const CONDITION_TAG = 'oro_workflow.condition';
-    const CONDITION_FACTORY_KEY = 'oro_workflow.condition.factory';
-    const ACTION_TAG = 'oro_workflow.action';
-    const ACTION_FACTORY_KEY = 'oro_workflow.action.factory';
+    const CONDITION_FACTORY_KEY = 'oro_workflow.condition_factory';
+    const POST_ACTION_TAG = 'oro_workflow.post_action';
+    const POST_ACTION_FACTORY_KEY = 'oro_workflow.post_action_factory';
 
     /**
      * @param ContainerBuilder $container
@@ -19,7 +19,7 @@ class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $this->injectEntityTypesByTag($container, self::CONDITION_FACTORY_KEY, self::CONDITION_TAG);
-        $this->injectEntityTypesByTag($container, self::ACTION_FACTORY_KEY, self::ACTION_TAG);
+        $this->injectEntityTypesByTag($container, self::POST_ACTION_FACTORY_KEY, self::POST_ACTION_TAG);
     }
 
     /**

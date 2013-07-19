@@ -29,15 +29,6 @@ class PostActionFactory
 
     /**
      * @param string $type
-     * @return bool
-     */
-    public function hasType($type)
-    {
-        return isset($this->types[$type]);
-    }
-
-    /**
-     * @param string $type
      * @return PostActionInterface
      * @throws \RunTimeException
      */
