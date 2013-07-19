@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
 
-abstract class AbstractCompositeCondition implements ConditionInterface
+abstract class AbstractComposite implements ConditionInterface
 {
     /**
      * @var ConditionInterface[]
@@ -15,7 +15,7 @@ abstract class AbstractCompositeCondition implements ConditionInterface
      * Initialize composite conditions
      *
      * @param array $options
-     * @return AbstractCompositeCondition
+     * @return AbstractComposite
      * @throws ConditionInitializationException
      */
     public function initialize(array $options)
@@ -32,8 +32,9 @@ abstract class AbstractCompositeCondition implements ConditionInterface
             } else {
                 throw new ConditionInitializationException(
                     sprintf(
-                        'Element of argument $options must be an instance of %s',
-                        'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
+                        'Options must contain an instance of %s, %s is given',
+                        'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface',
+                        is_object($condition) ? get_class($condition) : gettype($condition)
                     )
                 );
             }

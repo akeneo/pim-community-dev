@@ -4,9 +4,9 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Oro\Bundle\WorkflowBundle\ContextAccessor;
+use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-class EqualToCondition extends CompareCondition
+class EqualTo extends AbstractComparison
 {
     /**
      * @var ManagerRegistry
@@ -17,12 +17,12 @@ class EqualToCondition extends CompareCondition
      * Constructor
      *
      * @param ManagerRegistry $registry
-     * @param ContextAccessor $ContextAccessor
+     * @param ContextAccessor $contextAccessor
      */
-    public function __construct(ManagerRegistry $registry, ContextAccessor $ContextAccessor)
+    public function __construct(ManagerRegistry $registry, ContextAccessor $contextAccessor)
     {
         $this->registry = $registry;
-        parent::__construct($ContextAccessor);
+        parent::__construct($contextAccessor);
     }
 
     /**

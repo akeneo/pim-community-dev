@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\ContextAccessor;
+use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 use Oro\Bundle\WorkflowBundle\Exception\ConditionOptionRequiredException;
 
-abstract class CompareCondition implements ConditionInterface
+abstract class AbstractComparison implements ConditionInterface
 {
     /**
      * @var string
@@ -20,16 +20,16 @@ abstract class CompareCondition implements ConditionInterface
     /**
      * @var ContextAccessor
      */
-    protected $ContextAccessor;
+    protected $contextAccessor;
 
     /**
      * Constructor
      *
-     * @param ContextAccessor $ContextAccessor
+     * @param ContextAccessor $contextAccessor
      */
-    public function __construct(ContextAccessor $ContextAccessor)
+    public function __construct(ContextAccessor $contextAccessor)
     {
-        $this->ContextAccessor = $ContextAccessor;
+        $this->contextAccessor = $contextAccessor;
     }
 
     /**
@@ -41,8 +41,8 @@ abstract class CompareCondition implements ConditionInterface
     public function isAllowed($context)
     {
         return $this->doCompare(
-            $this->ContextAccessor->getValue($context, $this->left),
-            $this->ContextAccessor->getValue($context, $this->right)
+            $this->contextAccessor->getValue($context, $this->left),
+            $this->contextAccessor->getValue($context, $this->right)
         );
     }
 
@@ -59,7 +59,7 @@ abstract class CompareCondition implements ConditionInterface
      * Initialize condition options
      *
      * @param array $options
-     * @return CompareCondition
+     * @return AbstractComparison
      * @throws ConditionOptionRequiredException If "left" or "right" option is empty
      */
     public function initialize(array $options)

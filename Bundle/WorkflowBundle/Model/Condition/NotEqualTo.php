@@ -2,21 +2,21 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\EqualToCondition;
+use Oro\Bundle\WorkflowBundle\Model\Condition\EqualTo;
 
-class NotEqualToCondition implements ConditionInterface
+class NotEqualTo implements ConditionInterface
 {
     /**
-     * @var EqualToCondition
+     * @var EqualTo
      */
     protected $equalToCondition;
 
     /**
      * Constructor
      *
-     * @param EqualToCondition $equalToCondition
+     * @param EqualTo $equalToCondition
      */
-    public function __construct(EqualToCondition $equalToCondition)
+    public function __construct(EqualTo $equalToCondition)
     {
         $this->equalToCondition = $equalToCondition;
     }
@@ -36,7 +36,7 @@ class NotEqualToCondition implements ConditionInterface
      * Initialize condition options
      *
      * @param array $options
-     * @return NotEqualToCondition
+     * @return NotEqualTo
      */
     public function initialize(array $options)
     {
