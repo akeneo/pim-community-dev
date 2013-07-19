@@ -18,12 +18,15 @@
         "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
-        "behat/behat": "2.4.*",
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*",
+        "behat/behat":  "2.4.*@stable",
+
+        "behat/symfony2-extension":      "*",
+        "behat/mink-extension":          "*",
+        "behat/mink-browserkit-driver":  "*",
+        "behat/mink-selenium2-driver":   "*",
+        "behat/common-contexts": "*",
+
         "sensiolabs/behat-page-object-extension": "*",
-        "behat/mink-selenium2-driver":  "1.0.*",
         "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [
