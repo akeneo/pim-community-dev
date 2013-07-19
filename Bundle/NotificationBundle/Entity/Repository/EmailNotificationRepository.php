@@ -9,6 +9,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmailNotificationRepository extends EntityRepository
 {
+    /**
+     * @param string $entityName
+     * @param string $eventName
+     * @return array
+     */
     public function getRulesByCriteria($entityName, $eventName)
     {
         return $this->createQueryBuilder('emn')

@@ -9,32 +9,38 @@ use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 /**
  * @outputBuffering enabled
  * @db_isolation
+ * @db_reindex
  */
 class SoapAdvancedSearchApiTest extends WebTestCase
 {
     /** Default value for offset and max_records */
     const DEFAULT_VALUE = 0;
     /** @var Client */
-    protected $client = null;
+    protected $client;
 
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
+
+        } else {
+            $this->client->restart();
+        }
+
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
         self::$hasLoaded = true;
-
-        $this->client->soap(
-            "http://localhost.com/api/soap",
-            array(
-                'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_2
-            )
-        );
-
     }
 
     /**

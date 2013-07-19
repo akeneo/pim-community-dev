@@ -8,7 +8,7 @@ $(function() {
                 type: 'DELETE',
                 success: function (data) {
                     if (Oro.hashNavigationEnabled()) {
-                        Oro.Navigation.prototype.setLocation(el.data('redirect'))
+                        Oro.hashNavigationInstance.setLocation(el.data('redirect'))
                     } else {
                         window.location.href = el.data('redirect');
                     }

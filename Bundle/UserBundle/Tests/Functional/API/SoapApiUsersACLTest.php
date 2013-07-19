@@ -19,12 +19,26 @@ class SoapApiUsersACLTest extends WebTestCase
     const DEFAULT_USER_ID = '1';
 
     /** @var Client */
-    protected $client = null;
+    protected $client;
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD));
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
+
+        } else {
+            $this->client->restart();
+        }
+
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }

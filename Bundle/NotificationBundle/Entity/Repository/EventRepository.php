@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 
 class EventRepository extends EntityRepository
 {
+    /**
+     * @return array
+     */
     public function getEventNames()
     {
         return $this->createQueryBuilder('e')
