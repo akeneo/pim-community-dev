@@ -57,20 +57,17 @@ class AppKernel extends Kernel
             new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
 
-
             // PIM deps
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-/*
-            new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
-*/
+
             // BAP overrided bundles
+            new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\GridBundle\PimGridBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
 
             // PIM bundles
-
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
@@ -78,11 +75,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
-
-/*
-            new Pim\Bundle\BatchBundle\PimBatchBundle(),
-            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-*/
+            // new Pim\Bundle\BatchBundle\PimBatchBundle(),
+            // new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
 
             // TODO tmp to fix placeholder issue
             new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
