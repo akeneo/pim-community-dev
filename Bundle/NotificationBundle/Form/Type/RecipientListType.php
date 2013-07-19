@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -10,14 +11,28 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class RecipientListType extends AbstractType
 {
     /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add(
-            'users',
-            'oro_user_multiselect'
+            $builder->create(
+                'users',
+                'oro_user_multiselect',
+                array(
+                    'required' => false
+                )
+            )
         );
 
         // groups

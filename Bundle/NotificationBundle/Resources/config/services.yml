@@ -40,6 +40,8 @@ services:
 
     oro_notification.form.type.recipient_list:
         class: %oro_notification.form.type.recipient_list.class%
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_notification_recipient_list }
 

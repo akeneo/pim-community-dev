@@ -92,7 +92,7 @@ class RecipientList
     }
 
     /**
-     * Gets the groups related to contact
+     * Gets the groups related to list
      *
      * @return ArrayCollection
      */

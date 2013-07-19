@@ -52,8 +52,13 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->entity->getGroups()->isEmpty());
 
         // test setter
-        $this->entity->setGroups(array($group));
+        $this->entity->addGroup($group);
         $this->assertContains($group, $this->entity->getGroups());
+
+
+        // remove group
+        $this->entity->removeGroup($group);
+        $this->assertTrue($this->entity->getGroups()->isEmpty());
     }
 
     public function testSetterGetterForEmail()
@@ -74,6 +79,8 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
+        $group = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+
         // test when owner filled
         $this->entity->setOwner(true);
         $this->assertInternalType('string', $this->entity->__toString());
@@ -96,11 +103,11 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
         $this->entity->setUsers(array());
 
         // test when groups filled
-        $this->entity->setGroups(array('testUser'));
+        $this->entity->addGroup($group);
         $this->assertInternalType('string', $this->entity->__toString());
         $this->assertNotEmpty($this->entity->__toString());
         // clear email
-        $this->entity->setGroups(array());
+        $this->entity->getGroups()->clear();
 
         // should be empty if nothing filled
         $this->assertEmpty($this->entity->__toString());
