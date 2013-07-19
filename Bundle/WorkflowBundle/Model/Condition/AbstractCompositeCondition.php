@@ -21,12 +21,7 @@ abstract class AbstractCompositeCondition implements ConditionInterface
     public function initialize(array $options)
     {
         if (!$options) {
-            throw new ConditionInitializationException(
-                sprintf(
-                    'Argument $options must have at least one element',
-                    'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
-                )
-            );
+            throw new ConditionInitializationException('Argument $options must have at least one element');
         }
 
         $this->conditions = array();
