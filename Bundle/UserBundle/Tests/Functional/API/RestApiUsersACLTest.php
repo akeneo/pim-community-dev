@@ -20,16 +20,21 @@ class RestApiUsersACLTest extends WebTestCase
     /**
      * @var Client
      */
-    protected $client = null;
+    protected $client;
 
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->client = static::createClient(
-            array(),
-            ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
-        );
+        if (!isset($this->client)) {
+            $this->client = static::createClient(
+                array(),
+                ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
+            );
+        } else {
+            $this->client->restart();
+        }
+
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }

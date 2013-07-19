@@ -2,16 +2,17 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
+
+use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
+use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 
 /**
  * Class ConfigGridController
@@ -21,7 +22,12 @@ use Symfony\Component\Form\FormError;
 class ConfigEntityGridController extends Controller
 {
     /**
-     * @Route("/unique-key/{id}", name="oro_entityextend_entity_unique_key", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route(
+     *      "/unique-key/{id}",
+     *      name="oro_entityextend_entity_unique_key",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
      * @Template
      */
     public function uniqueAction(ConfigEntity $entity)
@@ -34,9 +40,16 @@ class ConfigEntityGridController extends Controller
 
         $request = $this->getRequest();
 
-        $form = $this->createForm(new UniqueKeyCollectionType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
-            return $fieldConfig->getType() != 'ref-many';
-        })), $data);
+        $form = $this->createForm(
+            new UniqueKeyCollectionType(
+                $entityConfig->getFields(
+                    function (FieldConfig $fieldConfig) {
+                        return $fieldConfig->getType() != 'ref-many';
+                    }
+                )
+            ),
+            $data
+        );
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -73,7 +86,9 @@ class ConfigEntityGridController extends Controller
                     $configProvider->persist($entityConfig);
                     $configProvider->flush();
 
-                    return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $entity->getId())));
+                    return $this->redirect(
+                        $this->generateUrl('oro_entityconfig_view', array('id' => $entity->getId()))
+                    );
                 }
             }
         }

@@ -6,18 +6,22 @@ Each bundle can have a config file assets.yml with the list of js and css files.
 
 ```yaml
 js:
-  'some_group'
-    - '@Path/To/Js/first.js'
-    - '@Path/To/Js/second.js'
-    - '@Path/To/Js/third.js'
+    'some_group'
+        - 'Assets/Path/To/Js/first.js'
+        - 'Assets/Path/To/Js/second.js'
+        - 'Assets/Path/To/Js/third.js'
 css:
-  'css_group':
-      - '@Path/To/Css/first.css'
-      - '@Path/To/Css/second.css'
-      - '@Path/To/Css/third.css'
+    'css_group':
+        - 'Assets/Path/To/Css/first.css'
+        - 'Assets/Path/To/Css/second.css'
+        - 'Assets/Path/To/Css/third.css'
 ```
 
 Js and css sections contain groups of files. This groups can be uncompressed for debugging.
+
+The path to file can be in @BundleName/Resources/puclic/path/to/file.ext or bundles/bundle/path/to/file.ext. If the file path
+contains @, then in uncompiled mode it will be taken via controller. If path doesn't contain @, then file will be taken
+via request to web folder.
 
 For example, to turn off compression of css files from 'css_group' the next configuration mut be added in config.yml file:
 

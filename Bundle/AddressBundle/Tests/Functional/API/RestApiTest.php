@@ -14,11 +14,15 @@ use Symfony\Component\BrowserKit\Response;
 class RestApiTest extends WebTestCase
 {
     /** @var Client */
-    protected $client = null;
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
@@ -162,7 +166,7 @@ class RestApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
-        return $result;
+        return array_slice($result, 0, 5);
     }
 
     /**
@@ -171,7 +175,6 @@ class RestApiTest extends WebTestCase
      */
     public function testGetCountry($countries)
     {
-        $i = 0;
         foreach ($countries as $country) {
             $this->client->request(
                 'GET',
@@ -182,10 +185,6 @@ class RestApiTest extends WebTestCase
             ToolsAPI::assertJsonResponse($result, 200);
             $result = ToolsAPI::jsonToArray($result->getContent());
             $this->assertEquals($country, $result);
-            $i++;
-            if ($i % 25  == 0) {
-                break;
-            }
         }
     }
 
@@ -225,7 +224,7 @@ class RestApiTest extends WebTestCase
             $result = ToolsAPI::jsonToArray($result->getContent());
             $this->assertEquals($region, $result);
             $i++;
-            if ($i % 25  == 0) {
+            if ($i % 5  == 0) {
                 break;
             }
         }

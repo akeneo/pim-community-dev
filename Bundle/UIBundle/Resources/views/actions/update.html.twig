@@ -12,6 +12,7 @@
                         <div class="pull-right">
                             {% block navButtons %}
                             {% endblock navButtons %}
+                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
                         {% if (entityClass is defined and form.vars.value.id) %}
                             {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
