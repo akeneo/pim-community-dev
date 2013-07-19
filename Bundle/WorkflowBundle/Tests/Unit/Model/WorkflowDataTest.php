@@ -1,19 +1,19 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
-class WorkflowItemDataTest extends \PHPUnit_Framework_TestCase
+class WorkflowDataTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var WorkflowItemData
+     * @var WorkflowData
      */
     protected $data;
 
     protected function setUp()
     {
-        $this->data = new WorkflowItemData();
+        $this->data = new WorkflowData();
     }
 
     public function testHasGetSetRemove()

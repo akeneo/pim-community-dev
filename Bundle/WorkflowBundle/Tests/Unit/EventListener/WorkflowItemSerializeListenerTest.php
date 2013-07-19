@@ -6,7 +6,7 @@ use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber;
 
@@ -46,7 +46,7 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $serializedData = '_serialized_data_';
         $entity->setSerializedData($serializedData);
 
-        $expectedData = new WorkflowItemData();
+        $expectedData = new WorkflowData();
         $expectedData->foo = 'foo';
 
         $args = new LifecycleEventArgs($entity, $em);
@@ -55,7 +55,7 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->once())->method('deserialize')
             ->with(
                 $serializedData,
-                'Oro\Bundle\WorkflowBundle\Entity\WorkflowItemData',
+                'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
                 'json'
             )
             ->will($this->returnValue($expectedData));
@@ -81,24 +81,24 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreFlush()
     {
         $entity1 = new WorkflowItem();
-        $data1 = new WorkflowItemData();
+        $data1 = new WorkflowData();
         $data1->foo = 'foo';
         $entity1->setData($data1);
 
         $entity2 = new WorkflowItem();
-        $data2 = new WorkflowItemData();
+        $data2 = new WorkflowData();
         $data2->bar = 'bar';
         $entity2->setData($data2);
 
         $entity3 = new \stdClass();
 
         $entity4 = new WorkflowItem();
-        $data4 = new WorkflowItemData();
+        $data4 = new WorkflowData();
         $data4->foo = 'baz';
         $entity4->setData($data4);
 
         $entity5 = new WorkflowItem();
-        $data5 = new WorkflowItemData();
+        $data5 = new WorkflowData();
         $data5->qux = 'qux';
         $entity5->setData($data5);
 

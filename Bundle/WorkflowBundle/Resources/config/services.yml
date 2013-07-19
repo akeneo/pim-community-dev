@@ -1,7 +1,12 @@
 parameters:
     oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
-    oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowItemDataNormalizer
+    oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
     oro_workflow.workflow_item_serialize_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber
+
+    oro_workflow.condition.and.class: Oro\Bundle\WorkflowBundle\Model\Condition\AndCondition
+    oro_workflow.condition.or.class: Oro\Bundle\WorkflowBundle\Model\Condition\OrCondition
+    oro_workflow.condition.true.class: Oro\Bundle\WorkflowBundle\Model\Condition\TrueCondition
+    oro_workflow.condition.false.class: Oro\Bundle\WorkflowBundle\Model\Condition\FalseCondition
 
 services:
     oro_workflow.configuration_provider:
@@ -9,19 +14,39 @@ services:
         arguments:
             - %kernel.bundles%
 
-#    oro_workflow.workflow_item_data_serializer:
-#        class: %serializer.class%
-#        arguments:
-#          - [@oro_workflow.workflow_item_data_normalizer]
-#          - [@serializer.encoder.json]
-#
-#    oro_workflow.workflow_item_data_normalizer:
-#        class: %oro_workflow.workflow_item_data_normalizer.class%
-#        arguments: [@doctrine.orm.entity_manager]
-#
-#    oro_workflow.workflow_item_serialize_subscriber:
-#        class: %oro_workflow.workflow_item_serialize_subscriber.class%
-#        arguments:
-#            - @oro_workflow.workflow_item_data_serializer
-#        tags:
-#            - { name: doctrine.event_subscriber }
+    oro_workflow.workflow_item_data_serializer:
+        class: %serializer.class%
+        arguments:
+          - [@oro_workflow.workflow_item_data_normalizer]
+          - [@serializer.encoder.json]
+
+    oro_workflow.workflow_item_data_normalizer:
+        class: %oro_workflow.workflow_item_data_normalizer.class%
+        arguments: [@doctrine]
+
+    oro_workflow.workflow_item_serialize_subscriber:
+        class: %oro_workflow.workflow_item_serialize_subscriber.class%
+        arguments:
+            - @oro_workflow.workflow_item_data_serializer
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    oro_workflow.condition.and:
+        class: %oro_workflow.condition.and.class%
+        tags:
+            - {name: oro_workflow.condition, alias: and}
+
+    oro_workflow.condition.or:
+        class: %oro_workflow.condition.or.class%
+        tags:
+            - {name: oro_workflow.condition, alias: or}
+
+    oro_workflow.condition.true:
+        class: %oro_workflow.condition.true.class%
+        tags:
+            - {name: oro_workflow.condition, alias: "true"}
+
+    oro_workflow.condition.false:
+        class: %oro_workflow.condition.false.class%
+        tags:
+            - {name: oro_workflow.condition, alias: "false"}
