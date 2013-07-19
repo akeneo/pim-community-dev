@@ -59,6 +59,7 @@ class SimpleJob extends AbstractJob
         foreach ($this->steps as $step) {
             $names[] = $step->getName();
         }
+
         return $names;
     }
 
@@ -86,6 +87,7 @@ class SimpleJob extends AbstractJob
                 return $step;
             }
         }
+
         return null;
     }
 

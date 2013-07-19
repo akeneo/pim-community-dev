@@ -67,8 +67,8 @@ class ExitStatus
     /**
      * Constructor
      *
-     * @param integer $exitCode
-     * @param string  $exitDescription
+     * @param integer $exitCode        Code for the exit status
+     * @param string  $exitDescription Description of the exit status
      */
     public function __construct($exitCode = self::UNKNOWN, $exitDescription = "")
     {
@@ -109,6 +109,7 @@ class ExitStatus
         } else {
             $this->exitCode = $exitCode;
         }
+
         return $this;
     }
 
@@ -165,6 +166,7 @@ class ExitStatus
         if ($status->severity() < $this->severity()) {
             return 1;
         }
+
         return 0;
     }
 

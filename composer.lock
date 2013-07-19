@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:akeneo/DemoBundle.git",
-                "reference": "14bdb538c812d8cace1ac9bcf40a30d85b16aacb"
+                "reference": "6de071b161cb9f8ed286382f6c5f92f901c32763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/14bdb538c812d8cace1ac9bcf40a30d85b16aacb",
-                "reference": "14bdb538c812d8cace1ac9bcf40a30d85b16aacb",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/6de071b161cb9f8ed286382f6c5f92f901c32763",
+                "reference": "6de071b161cb9f8ed286382f6c5f92f901c32763",
                 "shasum": ""
             },
             "require": {
@@ -178,17 +178,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapBundle.git",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5"
+                "reference": "1a4a3294af83066a40d746f046e0d65ce483705b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/90903e8a1b55243bd738c44f301ba3c3d93965c5",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/1a4a3294af83066a40d746f046e0d65ce483705b",
+                "reference": "1a4a3294af83066a40d746f046e0d65ce483705b",
                 "shasum": ""
             },
             "require": {
                 "ass/xmlsecurity": "dev-master",
-                "besimple/soap-common": "dev-master",
+                "besimple/soap-common": "self.version",
                 "php": ">=5.3.0",
                 "symfony/http-foundation": ">=2.0,<2.4-dev",
                 "zendframework/zend-mail": "2.1.*",
@@ -200,6 +200,11 @@
                 "besimple/soap-server": "dev-master"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "BeSimple\\SoapBundle": ""
@@ -230,7 +235,7 @@
                 "soap",
                 "soap-bundle"
             ],
-            "time": "2013-06-07 11:38:29"
+            "time": "2013-07-17 14:51:40"
         },
         {
             "name": "besimple/soap-common",
@@ -238,53 +243,51 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c"
+                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/db885b2be7328fd8e663ee256df2d8570daeac3c",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
+                "reference": "e8fff0c8a1c5bf4fee52469ec98aad29267f49d4",
                 "shasum": ""
             },
-            "require": {
-                "ass/xmlsecurity": "dev-master",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "dev-master"
-            },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapCommon": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "description": "Build and consume SOAP Common based web services",
+            "keywords": [ "soap", "soap-common" ],
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
+            "license": "MIT",
             "authors": [
                 {
                     "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com",
-                    "homepage": "http://www.apercite.fr"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
+                    "email": "francis.besset@gmail.com"
                 },
                 {
                     "name": "Christian Kerl",
                     "email": "christian-kerl@web.de"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
                 }
             ],
-            "description": "Build and consume SOAP Common based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
-            "keywords": [
-                "soap",
-                "soap-common"
-            ],
-            "time": "2013-02-27 16:03:38"
+            "require": {
+                "php": ">=5.3.0",
+                "ext-soap": "*",
+                "ass/xmlsecurity": "dev-master"
+            },
+            "require-dev": {
+                "mikey179/vfsStream": "dev-master"
+            },
+            "autoload": {
+                "psr-0": { "BeSimple\\SoapCommon": "" }
+            },
+            "target-dir": "BeSimple/SoapCommon",
+            "minimum-stability": "dev",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            }
         },
         {
             "name": "besimple/soap-server",
@@ -293,50 +296,48 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapServer.git",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4"
+                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/127d06fcb9b401593203ce9287da14a4986158f4",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/04afa3d79c50a117610b3d6b98fb903adee24774",
+                "reference": "04afa3d79c50a117610b3d6b98fb903adee24774",
                 "shasum": ""
             },
-            "require": {
-                "besimple/soap-common": "dev-master",
-                "php": ">=5.3.0"
-            },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapServer": "BeSimple/SoapServer/src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "description": "Build and consume SOAP Server based web services",
+            "keywords": [ "soap", "soap-server" ],
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
+            "license": "MIT",
             "authors": [
                 {
                     "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com",
-                    "homepage": "http://www.apercite.fr"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
+                    "email": "francis.besset@gmail.com"
                 },
                 {
                     "name": "Christian Kerl",
                     "email": "christian-kerl@web.de"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
                 }
             ],
-            "description": "Build and consume SOAP Server based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
-            "keywords": [
-                "soap",
-                "soap-server"
-            ],
-            "time": "2013-01-15 21:45:13"
+            "require": {
+                "php": ">=5.3.0",
+                "ext-soap": "*",
+                "besimple/soap-common": "self.version"
+            },
+            "autoload": {
+                "psr-0": { "BeSimple\\SoapServer": "" }
+            },
+            "target-dir": "BeSimple/SoapServer",
+            "minimum-stability": "dev",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            }
         },
         {
             "name": "ddeboer/data-import",

@@ -26,8 +26,8 @@ class JobInstance
 
     /**
      * Constructor
-     * @param integer $id
-     * @param string  $jobName
+     * @param integer $id      Id of the job instance
+     * @param string  $jobName Name of the job
      */
     public function __construct($id, $jobName)
     {

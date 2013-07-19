@@ -89,4 +89,3 @@ class PimImportExportExtension extends Extension
         return $options;
     }
 }
-

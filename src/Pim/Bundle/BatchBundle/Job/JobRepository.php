@@ -19,8 +19,8 @@ class JobRepository
 {
     /**
      * Create a JobExecution object
-     * @param string        $jobName
-     * @param JobParameters $jobParameters
+     * @param string        $jobName       Name of the job
+     * @param JobParameters $jobParameters Parameters for the execution of the job
      *
      * @return JobExecution
      */

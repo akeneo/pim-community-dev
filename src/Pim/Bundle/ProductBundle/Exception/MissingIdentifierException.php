@@ -16,4 +16,3 @@ class MissingIdentifierException extends \Exception
         parent::__construct(sprintf('Product %d has no identifier attribute', $product->getId()));
     }
 }
-

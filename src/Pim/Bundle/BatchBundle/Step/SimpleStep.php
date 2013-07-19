@@ -67,6 +67,7 @@ class SimpleStep
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 

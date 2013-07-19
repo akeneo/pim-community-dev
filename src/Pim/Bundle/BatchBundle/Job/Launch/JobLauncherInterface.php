@@ -28,8 +28,8 @@ interface JobLauncherInterface
      * start the job. If the job encounters some error while processing, the
      * JobExecution will be returned, and the status will need to be inspected.
      *
-     * @param JobInterface  $job
-     * @param JobParameters $jobParameters
+     * @param JobInterface  $job           The job to launch
+     * @param JobParameters $jobParameters The job parameters
      *
      * @return the {@link JobExecution} if it returns synchronously. If the
      * implementation is asynchronous, the status might well be unknown.
