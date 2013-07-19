@@ -2,6 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Exception;
 
-class UnknownTransitionException extends WorkflowException
+class ConditionException extends WorkflowException
 {
 }

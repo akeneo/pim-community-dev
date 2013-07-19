@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
 
 interface ConditionInterface
 {
@@ -18,6 +19,7 @@ interface ConditionInterface
      * Initialize condition options
      *
      * @param array $options
+     * @throws ConditionInitializationException If initialization fails
      */
     public function initialize(array $options);
 }

@@ -2,6 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Exception;
 
-class UnknownStepException extends \Exception
+class UnknownStepException extends WorkflowException
 {
 }
