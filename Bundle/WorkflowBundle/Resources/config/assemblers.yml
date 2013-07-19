@@ -8,7 +8,7 @@ services:
     oro_workflow.pass.parameter:
         class: %oro_workflow.pass.parameter.class%
 
-    oro_workflow.condition_assembler.class:
+    oro_workflow.condition_assembler:
         class: %oro_workflow.condition_assembler.class%
         arguments:
             - @oro_workflow.condition_factory
