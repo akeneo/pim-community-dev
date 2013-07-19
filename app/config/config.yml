@@ -32,7 +32,7 @@ twig:
         env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      pim_default
+            start_route:      oro_default
     form:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'

@@ -3,7 +3,7 @@ oro_menu_config:
         home:
             extras:
                 icon: 'fa-icon-home'
-            route: 'pim_default'
+            route: 'oro_default'
         pim_enrich_tab:
             label: 'Enrich'
             uri: '#'
@@ -44,7 +44,7 @@ oro_menu_config:
                         pim_enrich_exportprofile: ~
 
 oro_titles:
-    pim_default:                             Dashboard
+    oro_default:                             Dashboard
     pim_product_attributegroup_index:        Attribute groups
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit

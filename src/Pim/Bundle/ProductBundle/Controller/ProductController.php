@@ -43,7 +43,7 @@ class ProductController extends Controller
      *
      * @param Request $request the request
      *
-     * @Route("/.{_format}",
+     * @Route("/index/.{_format}",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
