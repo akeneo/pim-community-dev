@@ -27,7 +27,18 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $assembler = new ConditionAssembler($factory, new ParameterPass());
+        $parametersPass = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface')
+            ->getMockForAbstractClass();
+        $parametersPass->expects($this->any())
+            ->method('pass')
+            ->will(
+                $this->returnCallback(
+                    function ($options) {
+                        return array('passed' => $options);
+                    }
+                )
+            );
+        $assembler = new ConditionAssembler($factory, $parametersPass);
         $actual = $assembler->assemble($configuration);
         $this->assertEquals($expected, $actual);
     }
@@ -57,20 +68,26 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     '_@or' => array(
-                        array(
-                            '_@and' => array(
-                                array('_@graterOrEquals' => array('$contact.budget', 2000)),
-                                array('_@isDevMode' => array(null)),
-                                array(
-                                    '_@inChoiceList' => array(
-                                        'type' => '$contact.type',
-                                        array('a' => 1, 'b' => 2)
+                        'passed' => array(
+                            array(
+                                '_@and' => array(
+                                    'passed' => array(
+                                        array('_@graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
+                                        array('_@isDevMode' => array('passed' => array(null))),
+                                        array(
+                                            '_@inChoiceList' => array(
+                                                'passed' => array(
+                                                    'type' => '$contact.type',
+                                                    array('a' => 1, 'b' => 2)
+                                                )
+                                            )
+                                        )
                                     )
                                 )
+                            ),
+                            array(
+                                '_@notEmpty' => array('passed' => array('$lead.name'))
                             )
-                        ),
-                        array(
-                            '_@notEmpty' => array('$lead.name')
                         )
                     )
                 )
