@@ -1,7 +1,9 @@
 (function(Translator, _, Oro) {
     var dict = {},
+        debug = false,
         add = Translator.add,
-        get = Translator.get;
+        get = Translator.get,
+        fromJSON = Translator.fromJSON;
 
     /**
      * Adds a translation to Translator object and stores
@@ -25,12 +27,26 @@
     };
 
     /**
-     * Checks if translation for passed id exist, if it's Oro.debug mode
+     * Parses JSON data in store translations inside,
+     * also turns on debug mode if in data was such directive
+     * @param {Object} data
+     * @returns {Object} Translator
+     */
+    Translator.fromJSON = function(data) {
+        if(typeof data === "string") {
+            data = JSON.parse(data);
+        }
+        debug = data.debug || false;
+        return fromJSON.call(Translator, data);
+    };
+
+    /**
+     * Checks if translation for passed id exist, if it's debug mode
      * and there's no translation - output error message in console
      * @param {string} id
      */
     function checkTranslation(id) {
-        if (!Oro.debug) {
+        if (!debug) {
             return;
         }
         var domains = Translator.defaultDomains,

@@ -1,0 +1,3 @@
+oro_translation_bundle:
+    path:      /js/translation/{_locale}.js
+    defaults:  { _controller:  OroTranslationBundle:Translation:index }
