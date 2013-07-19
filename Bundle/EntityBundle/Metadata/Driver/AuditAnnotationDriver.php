@@ -51,6 +51,10 @@ class AuditAnnotationDriver implements DriverInterface
             }
         }
 
-        return $metadata;
+        if ($metadata->auditable && count($metadata->propertyMetadata)) {
+            return $metadata;
+        }
+
+        return null;
     }
 }
