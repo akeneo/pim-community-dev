@@ -1,0 +1,9 @@
+parameters:                                                                     
+    pim_batch.simple_job.class: Pim\Bundle\BatchBundle\Job\SimpleJob
+
+services:
+    pim_batch.my_super_job:
+        class:     %pim_batch.simple_job.class%
+        arguments: ['My Super Job as a service !']
+        tags:
+            - { name: pim_batch.job }
