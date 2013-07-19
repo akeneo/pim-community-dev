@@ -14,10 +14,14 @@ use Pim\Bundle\BatchBundle\Job\JobRepository;
 use Pim\Bundle\BatchBundle\Job\Launch\SimpleJobLauncher;
 
 use Pim\Bundle\BatchBundle\Item\Support\ArrayReader;
-use Pim\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
+use Pim\Bundle\BatchBundle\Item\Support\NoopProcessor;
 use Pim\Bundle\BatchBundle\Item\Support\EchoWriter;
 
 use Pim\Bundle\BatchBundle\Step\ItemStep;
+
+use Pim\Bundle\ProductBundle\ImportExport\Reader\ProductReader;
+use Pim\Bundle\ProductBundle\ImportExport\Writer\EchoProductWriter;
+use Pim\Bundle\ProductBundle\ImportExport\Processor\ProductToArrayProcessor;
 
 /**
  * Batch command
@@ -34,8 +38,8 @@ class BatchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('ie:test:test')
-            ->setDescription('Test import expor infrastructure');
+            ->setName('pim:batch:job')
+            ->setDescription('Launch a registered job');
     }
 
     /**
@@ -43,12 +47,21 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $simpleJob = $this->getContainer()->get('pim_batch.my_super_job');
+
+        $dummyJobParameters = new JobParameters();
         $dummyJobRepository = new JobRepository();
 
-        $itemReader = new ArrayReader();
-        $itemReader->setItems(array('hello', 'world', 'akeneo', 'is', 'great'));
-        $itemProcessor = new UcfirstProcessor();
-        $itemWriter = new EchoWriter();
+
+        //$itemReader = new ArrayReader();
+        //$itemReader->setItems(array('hello', 'world', 'akeneo', 'is', 'great'));
+        $productManager = $this->getContainer()->get('pim_product.manager.product');
+        $itemReader = new ProductReader($productManager);
+        //$itemProcessor = new UcfirstProcessor();
+        //$itemProcessor = new NoopProcessor();
+        $itemProcessor = new ProductToArrayProcessor();
+        //$itemWriter = new EchoWriter();
+        $itemWriter = new EchoProductWriter();
 
         $step1 = new ItemStep("My simple step");
 
@@ -56,15 +69,14 @@ class BatchCommand extends ContainerAwareCommand
         $step1->setProcessor($itemProcessor);
         $step1->setWriter($itemWriter);
 
-        $simpleJob = new SimpleJob("My super job");
+        //$simpleJob = new SimpleJob("My super job");
         $simpleJob->setJobRepository($dummyJobRepository);
         $simpleJob->addStep($step1);
-
-        $dummyJobParameters = new JobParameters();
 
         $jobLauncher = new SimpleJobLauncher();
         $jobLauncher->setJobRepository($dummyJobRepository);
         $jobExecution = $jobLauncher->run($simpleJob, $dummyJobParameters);
+
 
         echo $simpleJob."\n";
         echo $jobExecution."\n";
