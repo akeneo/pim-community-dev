@@ -231,9 +231,10 @@ class CategoryTreeController extends Controller
                 $sm->persist($category);
                 $sm->flush();
 
-                $this->addFlash('success', sprintf(
-                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
-                ));
+                $this->addFlash(
+                    'success',
+                    sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
+                );
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -288,9 +289,10 @@ class CategoryTreeController extends Controller
                 $sm->persist($category);
                 $sm->flush();
 
-                $this->addFlash('success', sprintf(
-                    '%s successfully created.', $category->getParent() ? 'Category' : 'Tree'
-                ));
+                $this->addFlash(
+                    'success',
+                    sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
+                );
 
                 return $this->redirect(
                     $this->generateUrl(
