@@ -50,6 +50,16 @@ class CategoryTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
+    const TREE_CREATED_MSG = 'Tree successfully created';
+
+    /**
+     * @staticvar string
+     */
+    const CATEGORY_CREATED_MSG = 'Category successfully created';
+
+    /**
+     * @staticvar string
+     */
     const CATEGORY_SAVED_MSG = 'Category successfully saved';
 
     /**
@@ -102,7 +112,7 @@ class CategoryTreeControllerTest extends ControllerTest
             'pim_category[title][default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_CREATED_MSG);
 
         // assert entity well inserted
         $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
@@ -155,7 +165,7 @@ class CategoryTreeControllerTest extends ControllerTest
             'pim_category[title][default]' => self::NODE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_CREATED_MSG);
 
         // assert entity well inserted
         $category = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));

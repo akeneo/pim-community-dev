@@ -291,7 +291,7 @@ class CategoryTreeController extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
+                    sprintf('%s successfully saved.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
                 return $this->redirect(
