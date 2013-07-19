@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Model;
+namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
@@ -13,4 +13,11 @@ interface ConditionInterface
      * @return boolean
      */
     public function isAllowed(WorkflowItem $workflowItem);
+
+    /**
+     * Initialize condition options
+     *
+     * @param array $options
+     */
+    public function initialize(array $options);
 }

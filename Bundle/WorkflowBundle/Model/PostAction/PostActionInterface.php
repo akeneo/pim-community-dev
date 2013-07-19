@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Model;
+namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 

@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
 class WorkflowItemDataNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
@@ -22,16 +23,16 @@ class WorkflowItemDataNormalizer extends SerializerAwareNormalizer implements No
     protected $ignoredAttributes = array();
 
     /**
-     * @var EntityManager
+     * @var ManagerRegistry
      */
-    protected $em;
+    protected $registry;
 
     /**
-     * @param EntityManager $em
+     * @param ManagerRegistry $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->em = $em;
+        $this->registry = $registry;
     }
 
     /**

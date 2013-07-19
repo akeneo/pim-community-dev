@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Serializer\Normalizer;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -15,6 +16,11 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var ManagerRegistry
+     */
+    protected $registry;
 
     /**
      * @var SerializerInterface
@@ -32,9 +38,13 @@ class WorkflowItemDataNormalizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
 
-        $this->normalizer = new WorkflowItemDataNormalizer($this->em);
+        $this->normalizer = new WorkflowItemDataNormalizer($this->registry);
         $this->normalizer->setSerializer($this->serializer);
     }
 
