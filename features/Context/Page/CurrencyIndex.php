@@ -51,8 +51,7 @@ class CurrencyIndex extends Page
     {
         $currencyRow = $this
             ->getElement('Currencies')
-            ->find('css', sprintf('tr:contains("%s")', $currency))
-        ;
+            ->find('css', sprintf('tr:contains("%s")', $currency));
 
         if (!$currencyRow) {
             throw new \InvalidArgumentException(sprintf(
