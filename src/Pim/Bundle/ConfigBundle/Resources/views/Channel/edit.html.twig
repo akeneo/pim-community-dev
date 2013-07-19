@@ -61,7 +61,7 @@
     $(function() {
         $('#btn-delete-channel').click(function(event) {
             doAction = function() {
-                window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}";
+                window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id ? form.vars.value.id : 0 }) }}";
             };
 
             if (!_.isUndefined(Backbone.BootstrapModal)) {
