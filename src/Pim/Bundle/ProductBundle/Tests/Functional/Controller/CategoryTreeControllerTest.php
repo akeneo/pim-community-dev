@@ -50,21 +50,6 @@ class CategoryTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const TREE_CREATED_MSG = 'Tree successfully created';
-
-    /**
-     * @staticvar string
-     */
-    const CATEGORY_CREATED_MSG = 'Category successfully created';
-
-    /**
-     * @staticvar string
-     */
-    const CATEGORY_SAVED_MSG = 'Category successfully saved';
-
-    /**
-     * @staticvar string
-     */
     const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
