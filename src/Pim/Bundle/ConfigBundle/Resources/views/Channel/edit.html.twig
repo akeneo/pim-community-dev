@@ -52,6 +52,7 @@
 </div>
 {% endblock %}
 
+
 {% block head_script_component %}
     {{ parent() }}
 
@@ -59,21 +60,14 @@
 
     <script type="text/javascript">
     $(function() {
-        $('#btn-delete-channel').click(function(event) {
-            doAction = function() {
+        'use strict';
+        $('#btn-delete-channel').click(function() {
+            var message = '{{ "Are you sure you want to delete this item?" | trans }}';
+            var title = '{{ "Delete Confirmation" | trans }}';
+            var doAction = function() {
                 window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id ? form.vars.value.id : 0 }) }}";
             };
-
-            if (!_.isUndefined(Backbone.BootstrapModal)) {
-                confirm = new Backbone.BootstrapModal({
-                    title: "{{ 'Delete Confirmation' | trans }}",
-                    content: "{{ 'Are you sure you want to delete this item' | trans }}"
-                });
-                confirm.on('ok', doAction);
-                confirm.open();
-            } else if (window.confirm(message)) {
-                doAction();
-            }
+            PimDialog.confirm(message, title, doAction);
         });
     });
     </script>

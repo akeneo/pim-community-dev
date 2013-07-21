@@ -15,7 +15,7 @@ class DoctrineReader implements ReaderInterface
     {
         if ($entityManager instanceof EntityManager) {
             $this->repository = $entityManager->getRepository($entity);
-        } elseif ($this->entityManager instanceof FlexibleManager) {
+        } elseif ($entityManager instanceof FlexibleManager) {
             $this->repository = $entityManager->getFlexibleRepository();
         } else {
             throw new \InvalidArgumentException(
