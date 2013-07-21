@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,6 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -49,9 +49,9 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function newEntityConfig(NewEntityEvent $event)
     {
-        /** @var ClassHierarchyMetadata $metadata */
+        /** @var ExtendClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
-        if ($metadata->getOutsideClassMetadata()->isExtend) {
+        if ($metadata && $metadata->isExtend) {
             $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
             $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
 

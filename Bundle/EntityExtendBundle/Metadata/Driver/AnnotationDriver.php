@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 
 use Metadata\Driver\DriverInterface;
 
-use Oro\Bundle\EntityExtendBundle\Metadata\ClassMetadata;
+use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -33,7 +33,7 @@ class AnnotationDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        $metadata = new ClassMetadata($class->getName());
+        $metadata = new ExtendClassMetadata($class->getName());
 
         if ($this->reader->getClassAnnotation($class, self::EXTEND)) {
             $metadata->isExtend = true;
