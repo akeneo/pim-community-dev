@@ -5,8 +5,8 @@ namespace Oro\Bundle\EntityBundle\Audit;
 use Metadata\MetadataFactory;
 
 use Oro\Bundle\EntityBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityBundle\Metadata\AuditEntityMetadata;
 
+use Oro\Bundle\EntityBundle\Metadata\AuditEntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class AuditManager
@@ -97,12 +97,14 @@ class AuditManager
 
     protected function createDiff($action, $entity)
     {
-        if ($this->isEntityAuditable(get_class($entity))) {
+        /** @var AuditEntityMetadata $metadata */
+        if (($metadata = $this->metadataFactory->getMetadataForClass(get_class($entity)))
+            && $metadata->auditable
+        ) {
             $entityId = $this->getIdentifier($entity);
 
             if (!$entityId && $action === self::ACTION_CREATE) {
                 $this->pendingInsertEntities[spl_object_hash($entity)] = $entity;
-
                 return;
             }
 
@@ -144,48 +146,5 @@ class AuditManager
         $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
 
         return $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
-    }
-
-    protected function isEntityAuditable($entityClassName)
-    {
-        if ($this->auditConfigProvider->hasConfig($entityClassName)
-            && $this->auditConfigProvider->getConfig($entityClassName)->is('auditable')
-        ) {
-            return true;
-        }
-
-        /** @var AuditEntityMetadata $metadata */
-        if ($metadata = $this->metadataFactory->getMetadataForClass($entityClassName)) {
-            return $metadata->auditable;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $entityClassName
-     * @param $fieldName
-     * @return bool|mixed
-     */
-    protected function isFieldAuditable($entityClassName, $fieldName)
-    {
-        if (!$this->isEntityAuditable($entityClassName)) {
-            return false;
-        }
-
-        if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $fieldName)
-            && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $fieldName))
-        ) {
-            return $fieldConfig->get('auditable');
-        }
-
-        /** @var AuditEntityMetadata $metadata */
-        if ($metadata = $this->metadataFactory->getMetadataForClass($entityClassName)
-            && isset($metadata->propertyMetadata[$fieldName])
-        ) {
-            return $metadata->propertyMetadata[$fieldName]->commitLevel;
-        }
-
-        return false;
     }
 }
