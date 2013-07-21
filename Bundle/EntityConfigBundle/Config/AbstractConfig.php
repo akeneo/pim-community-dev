@@ -12,11 +12,6 @@ abstract class AbstractConfig implements ConfigInterface
     protected $values = array();
 
     /**
-     * @var array
-     */
-    protected $serializeValues = array();
-
-    /**
      * @param                   $code
      * @param  bool             $strict
      * @throws RuntimeException

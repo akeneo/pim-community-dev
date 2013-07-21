@@ -92,7 +92,7 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
     }
 
     /**
-     * @param  callable      $filter
+     * @param  callable $filter
      * @return FieldConfig[]
      */
     public function getFields(\Closure $filter = null)
@@ -124,5 +124,23 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
             $this->fields,
             $this->values,
             ) = unserialize($serialized);
+    }
+
+    /**
+     * Clone Config
+     */
+    public function __clone()
+    {
+        $this->values = array_map(function ($value) {
+            if (is_object($value)) {
+                return clone $value;
+            } else {
+                return $value;
+            }
+        }, $this->values);
+
+        $this->fields = array_map(function ($field) {
+            return clone $field;
+        }, $this->fields);
     }
 }

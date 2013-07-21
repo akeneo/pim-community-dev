@@ -129,4 +129,19 @@ class FieldConfig extends AbstractConfig implements FieldConfigInterface
             $this->values,
             ) = unserialize($serialized);
     }
+
+    /**
+     * Clone Config
+     */
+    public function __clone()
+    {
+        $this->values = array_map(function ($value) {
+            if (is_object($value)) {
+                return clone $value;
+            } else {
+                return $value;
+            }
+        }, $this->values);
+
+    }
 }

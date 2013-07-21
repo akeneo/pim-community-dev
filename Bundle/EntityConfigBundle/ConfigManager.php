@@ -135,6 +135,14 @@ class ConfigManager
     }
 
     /**
+     * @return EventDispatcher
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
      * @param $className
      * @param $scope
      * @throws Exception\RuntimeException
@@ -358,9 +366,19 @@ class ConfigManager
             $originConfigValue = $originConfig->getValues();
         }
 
-        $diff = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
-            return ($a === $b) ? 0 : 1;
+        $diffNew = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
+            return ($a == $b) ? 0 : 1;
         });
+
+        $diffOld = array_udiff_assoc($originConfigValue, $config->getValues(), function ($a, $b) {
+            return ($a == $b) ? 0 : 1;
+        });
+
+        $diff = array();
+        foreach ($diffNew as $key => $value) {
+            $oldValue   = isset($diffOld[$key]) ? $diffOld[$key] : null;
+            $diff[$key] = array($oldValue, $value);
+        }
 
         if (!isset($this->configChangeSets[spl_object_hash($config)])) {
             $this->configChangeSets[spl_object_hash($config)] = array();
@@ -406,7 +424,7 @@ class ConfigManager
                 return false;
             }
 
-            if ($scope && $config->getClassName() != $className) {
+            if ($className && $config->getClassName() != $className) {
                 return false;
             }
 
@@ -414,7 +432,7 @@ class ConfigManager
                 return false;
             }
 
-            return ($config instanceof FieldConfigInterface && $config->getClassName() == $className);
+            return true;
         });
     }
 
