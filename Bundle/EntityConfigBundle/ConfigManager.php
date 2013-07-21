@@ -5,12 +5,11 @@ namespace Oro\Bundle\EntityConfigBundle;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
@@ -25,6 +24,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
+use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
@@ -142,9 +142,9 @@ class ConfigManager
      */
     public function getConfig($className, $scope)
     {
-        /** @var ClassHierarchyMetadata $metadata */
+        /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
-        if (!$metadata->getOutsideClassMetadata()->configurable) {
+        if (!$metadata || !$metadata->configurable) {
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
@@ -180,19 +180,27 @@ class ConfigManager
         return $resultConfig;
     }
 
+    /**
+     * @param $className
+     * @return bool
+     */
     public function hasConfig($className)
     {
-        /** @var ClassHierarchyMetadata $metadata */
+        /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
 
-        return $metadata->getOutsideClassMetadata()->configurable;
+        return $metadata ? $metadata->configurable : false;
     }
 
+    /**
+     * @param ClassMetadataInfo $doctrineMetadata
+     */
     public function initConfigByDoctrineMetadata(ClassMetadataInfo $doctrineMetadata)
     {
-        /** @var ClassHierarchyMetadata $metadata */
+        /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
-        if ($metadata->getOutsideClassMetadata()->configurable
+        if ($metadata
+            && $metadata->configurable
             && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
                 'className' => $doctrineMetadata->getName()))
         ) {
@@ -344,9 +352,13 @@ class ConfigManager
      */
     public function calculateConfigChangeSet(ConfigInterface $config)
     {
-        $originConfig = $this->originalConfigs[spl_object_hash($config)];
+        $originConfigValue = array();
+        if (isset($this->originalConfigs[spl_object_hash($config)])) {
+            $originConfig      = $this->originalConfigs[spl_object_hash($config)];
+            $originConfigValue = $originConfig->getValues();
+        }
 
-        $diff = array_udiff_assoc($config->getValues(), $originConfig->getValues(), function ($a, $b) {
+        $diff = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
             return ($a === $b) ? 0 : 1;
         });
 

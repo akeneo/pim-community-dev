@@ -156,6 +156,8 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
         $this->initConfigManager();
 
+        $this->configManager->addProvider($this->provider);
+
         $this->configCache->expects($this->any())->method('removeConfigFromCache')->will($this->returnValue(null));
         $this->configManager->setCache($this->configCache);
 

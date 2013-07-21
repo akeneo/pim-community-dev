@@ -29,5 +29,12 @@ abstract class AbstractEntityManagerTest extends OrmTestCase
             'Fixture'               => 'Oro\\Bundle\\EntityConfigBundle\\Tests\\Unit\\Fixture'
         ));
         $this->em->getConfiguration()->setMetadataDriverImpl($metadataDriver);
+
+        $schema = $this->getMockBuilder('Doctrine\Tests\Mocks\SchemaManagerMock')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $schema->expects($this->any())->method('listTableNames')->will($this->returnValue(array('oro_config_entity')));
+        $this->em->getConnection()->getDriver()->setSchemaManager($schema);
     }
 }
