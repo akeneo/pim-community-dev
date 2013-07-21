@@ -10,13 +10,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Metadata\Driver\AnnotationDriver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\Repository\NotFoundEntityConfigRepository;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class ConfigManagerTest extends AbstractEntityManagerTest
 {
@@ -105,12 +106,30 @@ class ConfigManagerTest extends AbstractEntityManagerTest
         $this->assertEquals(true, $this->configManager->hasConfig(self::DEMO_ENTITY, 'test'));
     }
 
+    public function testGetEventDispatcher()
+    {
+        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventDispatcher', $this->configManager->getEventDispatcher());
+    }
+
+    public function testClearCache()
+    {
+        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
+        $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
+
+        $this->configCache->expects($this->any())->method('removeConfigFromCache')->will($this->returnValue(null));
+        $this->configManager->setCache($this->configCache);
+        $this->configManager->addProvider($this->provider);
+
+        $this->configManager->clearCache($meta->getName());
+    }
+
     public function testAddAndGetProvider()
     {
         $this->configManager->addProvider($this->provider);
 
         $providers = $this->configManager->getProviders();
-        $provider = $this->configManager->getProvider('test');
+        $provider  = $this->configManager->getProvider('test');
 
         $this->assertEquals(array('test' => $this->provider), $providers);
         $this->assertEquals($this->provider, $provider);
@@ -168,6 +187,42 @@ class ConfigManagerTest extends AbstractEntityManagerTest
         $this->configManager->persist($configField);
 
         $this->configManager->flush();
+    }
+
+    public function testChangeSet()
+    {
+        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
+        $config      = $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
+        $configField = reset($config->getFields());
+
+        $configField->set('test_field_value1', 'test_field_value1_new');
+
+        $config->set('test_value', 'test_value_new');
+        $config->set('test_value1', 'test_value1_new');
+
+        $config->set('test_value_serializable', array('test_value' => 'test_value_new'));
+
+        $this->configManager->calculateConfigChangeSet($config);
+        $this->configManager->calculateConfigChangeSet($configField);
+
+        $result = array(
+            'test_value'              => array('test_value_origin', 'test_value_new'),
+            'test_value_serializable' => array(
+                array('test_value' => 'test_value_origin'),
+                array('test_value' => 'test_value_new')
+            ),
+            'test_value1'             => array(null, 'test_value1_new'),
+        );
+
+        $this->assertEquals($result, $this->configManager->getConfigChangeSet($config));
+
+        $this->assertEquals(array($config), $this->configManager->getUpdatedEntityConfig());
+        $this->assertEquals(array(), $this->configManager->getUpdatedEntityConfig('test1'));
+
+        $this->assertEquals(array(1 => $configField), $this->configManager->getUpdatedFieldConfig());
+        $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig('test1'));
+        $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig(null, 'WrongClass'));
     }
 
     protected function initConfigManager()
