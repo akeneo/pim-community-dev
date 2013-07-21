@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Metadata;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\ClassMetadata;
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
 
 class ClassMetadataTest extends \PHPUnit_Framework_TestCase
@@ -11,7 +11,7 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->classMetadata = new ClassMetadata(ConfigManagerTest::DEMO_ENTITY);
+        $this->classMetadata = new ConfigClassMetadata(ConfigManagerTest::DEMO_ENTITY);
     }
 
     public function testSerialize()

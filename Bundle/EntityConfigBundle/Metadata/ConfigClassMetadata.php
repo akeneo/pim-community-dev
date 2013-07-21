@@ -2,11 +2,27 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Metadata;
 
-use Metadata\ClassMetadata as BaseClassMetadata;
+use Metadata\MergeableClassMetadata;
+use Metadata\MergeableInterface;
 
-class ClassMetadata extends BaseClassMetadata
+class ConfigClassMetadata extends MergeableClassMetadata
 {
+    /**
+     * @var bool
+     */
     public $configurable = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function merge(MergeableInterface $object)
+    {
+        parent::merge($object);
+
+        if ($object instanceof ConfigClassMetadata) {
+            $this->configurable = $object->configurable;
+        }
+    }
 
     /**
      * {@inheritdoc}
