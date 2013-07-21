@@ -111,18 +111,19 @@
     {% block javascripts %}
         {{ parent() }}
         <script type="text/javascript">
-    $(function() {
-        $('#btn-delete-category').click(function(event) {
-            doRemove = function() {
-                window.location.href = "{{ path('pim_product_categorytree_remove', { id: form.vars.value.id }) }}";
-            };
-            PimDialog.confirm(
-                "{{ 'Are you sure you want to delete this item' | trans }}",
-                "{{ 'Delete Confirmation' | trans }}",
-                doRemove
-            );
-        });
-    });
+            'use strict';
+            $(function() {
+                $('#btn-delete-category').click(function() {
+                    var doRemove = function() {
+                        window.location.href = "{{ path('pim_product_categorytree_remove', { id: form.vars.value.id }) }}";
+                    };
+                    PimDialog.confirm(
+                        "{{ 'Are you sure you want to delete this item' | trans }}",
+                        "{{ 'Delete Confirmation' | trans }}",
+                        doRemove
+                    );
+                });
+            });
         </script>
     {% endblock %}
 {% endif %}

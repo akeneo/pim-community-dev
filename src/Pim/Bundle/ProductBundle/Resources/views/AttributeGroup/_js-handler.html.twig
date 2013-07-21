@@ -1,8 +1,11 @@
 <script type="text/javascript">
+'use strict';
 $(function() {
 
     var activeTab = $('[href=' + location.hash + ']');
-    activeTab && activeTab.tab('show');
+    if (activeTab) {
+        activeTab.tab('show');
+    }
 
     function updateSortOrder() {
         var num = 0;
@@ -12,7 +15,7 @@ $(function() {
         });
 
         $.ajax({
-            url: '{{ path('pim_product_attributegroup_sort') }}',
+            url: '{{ path("pim_product_attributegroup_sort") }}',
             type: 'POST',
             data: $('#pim_product_attributegroup_sort').serialize()
         });
@@ -25,7 +28,7 @@ $(function() {
         update: updateSortOrder
     });
 
-    var addBtn = $('<a href="{{ path('pim_product_attributegroup_create') }}">')
+    var addBtn = $('<a href="{{ path("pim_product_attributegroup_create") }}">')
         .html($('<i>', { 'class': 'icon-plus-sign' }));
 
     $('#group-container').sidebarize({ buttons: [ addBtn ] });

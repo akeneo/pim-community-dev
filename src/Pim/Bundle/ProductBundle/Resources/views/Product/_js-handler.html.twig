@@ -51,22 +51,12 @@ $(function() {
     });
 
     $('#btn-delete-product').click(function() {
+        var message = '{{ "Are you sure you want to delete this product" | trans }}';
+        var title = '{{ "Delete Confirmation" | trans }}';
         var doAction = function() {
             window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
         };
-
-        var message = "{{ 'Are you sure you want to delete this product' | trans }}";
-
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            var confirm = new Backbone.BootstrapModal({
-                title: "{{ 'Delete Confirmation' | trans }}",
-                content: message
-            });
-            confirm.on('ok', doAction);
-            confirm.open();
-        } else if (window.confirm(message)) {
-            doAction();
-        }
+        PimDialog.confirm(message, title, doAction);
     });
 
     $('#attribute-buttons .dropdown-menu').click(function (e) {
