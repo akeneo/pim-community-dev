@@ -9,17 +9,17 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
 {
     const CONDITION_TAG = 'oro_workflow.condition';
-    const CONDITION_FACTORY_KEY = 'oro_workflow.condition_factory';
+    const CONDITION_FACTORY_SERVICE = 'oro_workflow.condition_factory';
     const POST_ACTION_TAG = 'oro_workflow.post_action';
-    const POST_ACTION_FACTORY_KEY = 'oro_workflow.post_action_factory';
+    const POST_ACTION_FACTORY_SERVICE = 'oro_workflow.post_action_factory';
 
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        $this->injectEntityTypesByTag($container, self::CONDITION_FACTORY_KEY, self::CONDITION_TAG);
-        $this->injectEntityTypesByTag($container, self::POST_ACTION_FACTORY_KEY, self::POST_ACTION_TAG);
+        $this->injectEntityTypesByTag($container, self::CONDITION_FACTORY_SERVICE, self::CONDITION_TAG);
+        $this->injectEntityTypesByTag($container, self::POST_ACTION_FACTORY_SERVICE, self::POST_ACTION_TAG);
     }
 
     /**
@@ -29,8 +29,7 @@ class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
      */
     protected function injectEntityTypesByTag(ContainerBuilder $container, $serviceId, $tagName)
     {
-        $definition = $container->getDefinition($serviceId);
-        $types      = array();
+        $types = array();
 
         foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
             $container->getDefinition($id)->setScope(ContainerInterface::SCOPE_PROTOTYPE);
@@ -41,6 +40,7 @@ class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
             }
         }
 
+        $definition = $container->getDefinition($serviceId);
         $definition->replaceArgument(1, $types);
     }
 }

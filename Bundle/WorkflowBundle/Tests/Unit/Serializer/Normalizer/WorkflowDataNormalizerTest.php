@@ -70,8 +70,10 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testSupportsNormalization()
     {
         $this->assertTrue($this->normalizer->supportsNormalization(new WorkflowData()));
-        $this->assertTrue($this->normalizer->supportsNormalization(
-            $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData'))
+        $this->assertTrue(
+            $this->normalizer->supportsNormalization(
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
+            )
         );
         $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
     }
@@ -81,17 +83,20 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $data = array('foo' => 'bar');
         $this->assertTrue(
             $this->normalizer->supportsDenormalization(
-                $data, 'Oro\Bundle\WorkflowBundle\Model\WorkflowData'
+                $data,
+                'Oro\Bundle\WorkflowBundle\Model\WorkflowData'
             )
         );
         $this->assertTrue(
             $this->normalizer->supportsDenormalization(
-                $data, $this->getMockClass('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
+                $data,
+                $this->getMockClass('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
             )
         );
         $this->assertFalse(
             $this->normalizer->supportsDenormalization(
-                $data, 'stdClass'
+                $data,
+                'stdClass'
             )
         );
     }

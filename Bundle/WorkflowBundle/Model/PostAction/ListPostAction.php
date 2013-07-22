@@ -9,7 +9,7 @@ class ListPostAction implements PostActionInterface
     /**
      * @var PostActionInterface[]
      */
-    protected $postActions;
+    protected $postActions = array();
 
     /**
      * @param PostActionInterface $postAction

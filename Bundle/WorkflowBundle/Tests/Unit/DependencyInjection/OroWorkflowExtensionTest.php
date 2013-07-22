@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Definition;
 
-use Oro\Bundle\TranslationBundle\DependencyInjection\OroTranslationExtension;
+use Oro\Bundle\WorkflowBundle\DependencyInjection\OroWorkflowExtension;
 
 class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,15 +12,20 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $expectedDefinitions = array(
-        'oro_translation.form.type.translatable_entity',
-        'oro_translation.form.type.jqueryselect2_translatable_entity'
+        'oro_workflow.pass.parameter',
+        'oro_workflow.condition_factory',
+        'oro_workflow.post_action_factory',
+        'oro_workflow.configuration_provider',
     );
 
     /**
      * @var array
      */
     protected $expectedParameters = array(
-        'oro_translation.form.type.translatable_entity.class',
+        'oro_workflow.pass.parameter.class',
+        'oro_workflow.condition_factory.class',
+        'oro_workflow.post_action_factory.class',
+        'oro_workflow.configuration_provider.class',
     );
 
     public function testLoad()
@@ -50,7 +55,7 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $extension = new OroTranslationExtension();
+        $extension = new OroWorkflowExtension();
         $extension->load(array(), $container);
 
         foreach ($this->expectedDefinitions as $serviceId) {
