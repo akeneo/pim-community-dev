@@ -57,7 +57,8 @@ class EmailNotificationHandler implements EventHandlerInterface
                 'templateName' => $notification->getTemplate(),
             );
 
-            $emailTemplate = $this->twig->loadTemplate($notification->getTemplate());
+            $template = str_replace('Bundle:', '/../emails/', $notification->getTemplate());
+            $emailTemplate = $this->twig->loadTemplate($template);
             // TODO: There's a bug with sandbox and forms, to be investigated
             //$emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
             $subject = ($emailTemplate->hasBlock("subject")
