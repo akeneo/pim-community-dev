@@ -19,11 +19,7 @@
     </div>
 
     <div class="form-row">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
+        {{ elements.form_errors(form) }}
 
         <div id="accordion1" class="accordion">
             <div class="accordion-group">

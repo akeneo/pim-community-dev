@@ -21,7 +21,7 @@ $(function() {
         });
 
         $.ajax({
-            url: '{{ path('pim_product_productattribute_sort') }}',
+            url: '{{ path("pim_product_productattribute_sort") }}',
             type: 'POST',
             data: $form.serialize()
         });

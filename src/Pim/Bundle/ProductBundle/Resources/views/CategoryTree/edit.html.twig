@@ -31,18 +31,11 @@
                     </h3>
                 </div>
 
-                {% if form.vars.value.id %}
-                    {{ elements.form_navbar(['Properties', 'History'], 'tab') }}
-                {% else %}
-                    {{ elements.form_navbar(['Properties'], 'tab') }}
-                {% endif %}
+                {% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
+                {{ elements.form_navbar(tabs) }}
 
                 <div class="row-fluid tab-content">
-                    {% if form.vars.errors|length %}
-                        <div class="alert alert-error">
-                            {{ form_errors(form) }}
-                        </div>
-                    {% endif %}
+                    {{ elements.form_errors(form) }}
 
                     <div class="tab-pane active" id="properties">
                         <div id="accordion1" class="accordion">

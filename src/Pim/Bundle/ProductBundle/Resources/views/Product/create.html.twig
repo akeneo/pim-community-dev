@@ -2,11 +2,7 @@
 
     {{ JSFV(form) }}
 
-    {% if form.vars.errors|length %}
-        <div class="alert alert-error">
-            {{ form_errors(form) }}
-        </div>
-    {% endif %}
+    {{ elements.form_errors(form) }}
 
     <div class="row-fluid">
         {{ form_row(form.id) }}
