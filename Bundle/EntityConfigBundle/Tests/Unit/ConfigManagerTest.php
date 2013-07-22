@@ -194,7 +194,8 @@ class ConfigManagerTest extends AbstractEntityManagerTest
         $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
         $config      = $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
-        $configField = reset($config->getFields());
+        $fields      = $config->getFields();
+        $configField = reset($fields);
 
         $configField->set('test_field_value1', 'test_field_value1_new');
 
