@@ -19,6 +19,11 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->entity->getId());
     }
 
+    public function tearDown()
+    {
+        unset($this->entity);
+    }
+
     public function testGetterSetterForEntityName()
     {
         $this->assertNull($this->entity->getEntityName());

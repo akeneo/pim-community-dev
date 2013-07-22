@@ -6,5 +6,8 @@ Oro\Bundle\NotificationBundle\Entity\EmailNotification:
             - NotBlank: ~
         entityName:
             - NotBlank: ~
-#        template:
-#            - NotBlank: ~
+
+Oro\Bundle\NotificationBundle\Entity\RecipientList:
+    constraints:
+        - Callback:
+            methods:   [isValid]

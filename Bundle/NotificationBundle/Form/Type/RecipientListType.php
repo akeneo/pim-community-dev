@@ -49,6 +49,24 @@ class RecipientListType extends AbstractType
                 'required'      => false,
             )
         );
+
+        // custom email
+        $builder->add(
+            'email',
+            'email',
+            array(
+                'required'      => false
+            )
+        );
+
+        // owner
+        $builder->add(
+            'owner',
+            'checkbox',
+            array(
+                'required'      => false
+            )
+        );
     }
 
     /**

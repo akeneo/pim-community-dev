@@ -19,6 +19,11 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->event->getId());
     }
 
+    public function tearDown()
+    {
+        unset($this->event);
+    }
+
     public function testSetterGetterForName()
     {
         $this->assertEquals('test.name.from.construct', $this->event->getName());
