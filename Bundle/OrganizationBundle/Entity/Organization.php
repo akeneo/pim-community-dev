@@ -17,7 +17,7 @@ class Organization
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTtestAccountAutocmpleteO")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -119,5 +119,13 @@ class Organization
     public function getPrecision()
     {
         return $this->precision;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

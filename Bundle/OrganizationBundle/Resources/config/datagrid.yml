@@ -1,0 +1,12 @@
+parameters:
+    oro_organization.business_unit_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager
+
+services:
+    oro_organization.business_unit_datagrid_manager:
+        class: %oro_organization.business_unit_datagrid_manager.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: business_units
+              entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+              entity_hint: business_units
+              route_name: oro_business_unit_index

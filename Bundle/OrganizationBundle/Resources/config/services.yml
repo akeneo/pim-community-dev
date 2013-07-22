@@ -1,0 +1,19 @@
+parameters:
+    oro_organization.type.business_unit.class:         Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType
+    oro_organization.handler.business_unit.class:      Oro\Bundle\OrganizationBundle\Form\Handler\BusinessUnitHandler
+services:
+    oro_organization.form.business_unit:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_business_unit_form", "oro_business_unit"]
+    oro_organization.form.handler.business_unit:
+        class:                        %oro_organization.handler.business_unit.class%
+        scope:                        request
+        arguments:                    ["@oro_organization.form.business_unit", "@request", "@doctrine.orm.entity_manager"]
+        tags:
+            - { name: oro_tag.tag_manager }
+    oro_organization.form.type.business_unit:
+        class:                        %oro_organization.type.business_unit.class%
+        tags:
+            - { name: form.type, alias: oro_business_unit }

@@ -24,6 +24,7 @@ use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 use DateTime;
 
@@ -284,15 +285,30 @@ class User extends AbstractEntityFlexible implements
      */
     protected $tags;
 
+    /**
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinTable(name="oro_user_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @Soap\ComplexType("int[]", nillable=true)
+     * @Exclude
+     * @Oro\Versioned("getName")
+     */
+    protected $businessUnits;
+
     public function __construct()
     {
         parent::__construct();
 
-        $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles    = new ArrayCollection();
-        $this->groups   = new ArrayCollection();
-        $this->statuses = new ArrayCollection();
-        $this->emails   = new ArrayCollection();
+        $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles           = new ArrayCollection();
+        $this->groups          = new ArrayCollection();
+        $this->statuses        = new ArrayCollection();
+        $this->emails          = new ArrayCollection();
+        $this->businessUnits   = new ArrayCollection();
     }
 
     /**
@@ -1148,6 +1164,53 @@ class User extends AbstractEntityFlexible implements
     public function setTags($tags)
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getBusinessUnits()
+    {
+        $this->businessUnits = $this->businessUnits ?: new ArrayCollection();
+
+        return $this->businessUnits;
+    }
+
+    /**
+     * @param ArrayCollection $businessUnits
+     * @return User
+     */
+    public function setBusinessUnits($businessUnits)
+    {
+        $this->businessUnits = $businessUnits;
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function addBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if (!$this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->add($businessUnit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function removeBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if ($this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->removeElement($businessUnit);
+        }
 
         return $this;
     }
