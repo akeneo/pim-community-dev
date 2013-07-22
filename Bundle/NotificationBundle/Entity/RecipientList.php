@@ -200,25 +200,39 @@ class RecipientList
      */
     public function __toString()
     {
-        switch(true) {
-            case $this->getEmail():
-                $result = 'Email: ' . $this->getEmail();
-                break;
-            case count($this->getGroups()):
-                $result = 'List of groups';
-                break;
-            case count($this->getUsers()):
-                $result = 'List of users';
-                break;
-            case $this->getOwner():
-                $result = 'Entity owner';
-                break;
-            default:
-                $result = '';
-                break;
+        // get user emails
+        $results = $this->getUsers()->map(
+            function (User $user) {
+                return sprintf(
+                    '%s %s <%s>',
+                    $user->getFirstName(),
+                    $user->getLastName(),
+                    $user->getEmail()
+                );
+            }
+        )->toArray();
+
+        $results = array_merge(
+            $results,
+            $this->getGroups()->map(
+                function (Group $group) use (&$results) {
+                    return sprintf(
+                        '%s (group)',
+                        $group->getName()
+                    );
+                }
+            )->toArray()
+        );
+
+        if ($this->getEmail()) {
+            $results[] = sprintf('Custom email: <%s>', $this->getEmail());
         }
 
-        return $result;
+        if ($this->getOwner()) {
+            $results[] = 'Entity owner';
+        }
+
+        return implode(', ', $results);
     }
 
     /**

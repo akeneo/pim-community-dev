@@ -8,3 +8,8 @@ oro:
             event_name: "Event name"
             recipients: "Recipients"
             entity_name: "Entity name"
+            recipient:
+                user: "User recipient name"
+                group: "Group recipient name"
+                custom_email: "Custom email recipient"
+                owner: "Entity owner recipient"
