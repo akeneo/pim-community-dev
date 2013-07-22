@@ -29,7 +29,8 @@ class DoctrineListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $this->getEventDispatcher()->dispatch('oro.notification.event.entity_post_update', $this->getNotificationEvent($args));
+        $this->getEventDispatcher()
+            ->dispatch('oro.notification.event.entity_post_update', $this->getNotificationEvent($args));
 
         return $this;
     }
@@ -42,7 +43,8 @@ class DoctrineListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $this->getEventDispatcher()->dispatch('oro.notification.event.entity_post_persist', $this->getNotificationEvent($args));
+        $this->getEventDispatcher()
+            ->dispatch('oro.notification.event.entity_post_persist', $this->getNotificationEvent($args));
 
         return $this;
     }
@@ -55,7 +57,8 @@ class DoctrineListener
      */
     public function postRemove(LifecycleEventArgs $args)
     {
-        $this->getEventDispatcher()->dispatch('oro.notification.event.entity_post_remove', $this->getNotificationEvent($args));
+        $this->getEventDispatcher()
+            ->dispatch('oro.notification.event.entity_post_remove', $this->getNotificationEvent($args));
 
         return $this;
     }
