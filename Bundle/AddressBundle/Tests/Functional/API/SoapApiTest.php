@@ -192,7 +192,7 @@ class SoapApiTest extends WebTestCase
     {
         $result = $this->client->soapClient->getRegions();
         $result = ToolsAPI::classToArray($result);
-        return $result['item'];
+        return array_slice($result['item'], 0, 5);
     }
 
     /**
@@ -201,15 +201,10 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetRegion($regions)
     {
-        $i = 0;
         foreach ($regions as $region) {
             $result = $this->client->soapClient->getRegion($region['combinedCode']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($region, $result);
-            $i++;
-            if ($i % 5  == 0) {
-                break;
-            }
         }
     }
 

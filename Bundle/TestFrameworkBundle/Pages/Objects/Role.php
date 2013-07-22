@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages\Objects;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\AbstractEntity;
 use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
-use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
-class Role extends Page implements Entity
+class Role extends AbstractEntity implements Entity
 {
 
     protected $name;
@@ -45,18 +45,5 @@ class Role extends Page implements Entity
     {
         $this->byXPath("//div[@id='acl_tree']//a[contains(., '$aclName')]/ins[@class='jstree-checkbox']")->click();
         return $this;
-    }
-
-    public function save()
-    {
-        $this->byXPath("//button[contains(., 'Save')]")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-        return $this;
-    }
-
-    public function close()
-    {
-        return new Roles($this->test, false);
     }
 }
