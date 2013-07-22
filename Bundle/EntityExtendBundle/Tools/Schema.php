@@ -41,19 +41,6 @@ class Schema
         }
     }
 
-    public function checkDeleteField($table, $fieldCode)
-    {
-        print_r($table);
-        print_r($fieldCode);
-        die('qwerty');
-
-        try {
-
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
     /**
      * @param $statement
      * @return int
