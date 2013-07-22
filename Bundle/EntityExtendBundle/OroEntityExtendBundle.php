@@ -5,7 +5,8 @@ namespace Oro\Bundle\EntityExtendBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-use Oro\Bundle\EntityExtendBundle\DependencyInjection\CompilerPass\DoctrineOrmMappingsPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class OroEntityExtendBundle extends Bundle
