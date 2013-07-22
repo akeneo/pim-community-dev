@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
-class OnFlushConfigEvent extends Event
+class FlushConfigEvent extends Event
 {
     /**
      * @var ConfigManager
