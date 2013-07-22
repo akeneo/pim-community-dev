@@ -115,7 +115,6 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         }
     }
 
-
     /**
      * Data provider for testBindData
      *
@@ -125,6 +124,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     public function bindDataProvider()
     {
         $entityId1 = $this->createMockEntity('id', 1);
+
         return array(
             'use autocomplete_alias' => array(
                 '1',
@@ -213,8 +213,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
 
     /**
      * @dataProvider createErrorsDataProvider
-     * @param array $options
-     * @param array $expectedCalls
+     * @param array  $options
+     * @param array  $expectedCalls
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
@@ -318,6 +318,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 
@@ -395,6 +396,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();
         }
+
         return $this->entityToIdTransformer;
     }
 }
