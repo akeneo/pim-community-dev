@@ -2,11 +2,13 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\JobQueueBundle\Entity\Job;
+
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\TemplatesCompilerPass;
 
 class EmailNotificationHandler implements EventHandlerInterface
 {
@@ -49,30 +51,37 @@ class EmailNotificationHandler implements EventHandlerInterface
      */
     public function handle(NotificationEvent $event, $matchedNotifications)
     {
+        $entity = $event->getEntity();
+
         foreach ($matchedNotifications as $notification) {
-            $params = array(
+            $templateParams = array(
                 'event' => $event,
                 'notification' => $notification,
-                'entity' => $event->getEntity(),
+                'entity' => $entity,
                 'templateName' => $notification->getTemplate(),
             );
 
-            $template = str_replace('Bundle:', '/../emails/', $notification->getTemplate());
+            $template = str_replace(
+                'Bundle:',
+                '/../' . TemplatesCompilerPass::DIR_NAME . DIRECTORY_SEPARATOR,
+                $notification->getTemplate()
+            );
+
             $emailTemplate = $this->twig->loadTemplate($template);
             // TODO: There's a bug with sandbox and forms, to be investigated
             //$emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
+
             $subject = ($emailTemplate->hasBlock("subject")
-                ? $emailTemplate->renderBlock("subject", $params)
+                ? trim($emailTemplate->renderBlock("subject", $templateParams))
                 : "oro_notification.default_notification_subject");
-            $subject = trim($subject);
 
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
-                ->getRecipientEmails($notification->getRecipientList());
+                ->getRecipientEmails($notification->getRecipientList(), $entity);
 
             $params = new ParameterBag(
                 array(
                     'subject' => $subject,
-                    'body'    => $emailTemplate->render($params),
+                    'body'    => $emailTemplate->render($templateParams),
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
                 )

@@ -199,14 +199,4 @@ class RecipientList
 
         return $result;
     }
-
-    /**
-     * Return recipient list as array
-     */
-    public function toArray()
-    {
-        //$result = $this->ge
-
-        return $result;
-    }
 }
