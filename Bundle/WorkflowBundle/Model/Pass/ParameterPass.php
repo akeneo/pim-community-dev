@@ -11,6 +11,19 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 class ParameterPass implements PassInterface
 {
     /**
+     * @var string
+     */
+    protected $prefix;
+
+    /**
+     * @param string|null $prefix
+     */
+    public function __construct($prefix = null)
+    {
+        $this->prefix = $prefix;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function pass(array $data)
@@ -42,6 +55,9 @@ class ParameterPass implements PassInterface
     protected function convertParameterToPropertyPath($string)
     {
         $property = substr($string, 1);
+        if ($this->prefix) {
+            $property = $this->prefix . '.' .  $property;
+        }
 
         return new PropertyPath($property);
     }

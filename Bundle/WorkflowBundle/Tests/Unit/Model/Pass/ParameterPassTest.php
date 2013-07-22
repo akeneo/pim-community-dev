@@ -11,12 +11,13 @@ class ParameterPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $sourceData
      * @param array $expectedData
+     * @param string $prefix
      *
      * @dataProvider passDataProvider
      */
-    public function testPass(array $sourceData, array $expectedData)
+    public function testPass(array $sourceData, array $expectedData, $prefix = null)
     {
-        $parameterPass = new ParameterPass();
+        $parameterPass = new ParameterPass($prefix);
         $actualData = $parameterPass->pass($sourceData);
 
         $this->assertEquals($expectedData, $this->replacePropertyPathsWithElements($actualData));
@@ -62,6 +63,21 @@ class ParameterPassTest extends \PHPUnit_Framework_TestCase
                         'c' => array('another', 'path', 'component'),
                     )
                 )
+            ),
+            'data with prefix' => array(
+                'sourceData' => array(
+                    'a' => '$path.component',
+                    'b' => array(
+                        'c' => '$another.path.component'
+                    )
+                ),
+                'expectedData' => array(
+                    'a' => array('prefix', 'path', 'component'),
+                    'b' => array(
+                        'c' => array('prefix', 'another', 'path', 'component'),
+                    )
+                ),
+                'prefix' => 'prefix'
             ),
         );
     }
