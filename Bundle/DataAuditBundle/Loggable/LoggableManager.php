@@ -259,7 +259,7 @@ class LoggableManager
         /**
          * TODO::uncomment before merger to master
          */
-        $this->checkAuditable(get_class($entity));
+        //$this->checkAuditable(get_class($entity));
 
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));

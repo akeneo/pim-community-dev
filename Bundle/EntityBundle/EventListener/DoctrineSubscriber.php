@@ -88,7 +88,7 @@ class DoctrineSubscriber implements EventSubscriber
     public function onFlush(OnFlushEventArgs $event)
     {
         $this->auditManager->setExtendManager($event->getEntityManager());
-        $this->auditManager->log();
+        //$this->auditManager->log();
     }
 
     /**

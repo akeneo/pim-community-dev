@@ -171,16 +171,25 @@ class ConfigProvider implements ConfigProviderInterface
         return $className;
     }
 
+    /**
+     * @param ConfigInterface $config
+     */
     public function persist(ConfigInterface $config)
     {
         $this->configManager->persist($config);
     }
 
+    /**
+     * Flush configs
+     */
     public function flush()
     {
         $this->configManager->flush();
     }
 
+    /**
+     * @return string
+     */
     public function getScope()
     {
         return $this->scope;

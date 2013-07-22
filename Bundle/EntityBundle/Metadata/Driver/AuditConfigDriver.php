@@ -25,8 +25,6 @@ class AuditConfigDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        $metadata = new AuditEntityMetadata($class->getName());
-
         if ($this->auditConfigProvider->hasConfig($class->getName())
             && $this->auditConfigProvider->getConfig($class->getName())->is('auditable')
         ) {
@@ -50,6 +48,6 @@ class AuditConfigDriver implements DriverInterface
             }
         }
 
-        return $metadata;
+        return null;
     }
 }

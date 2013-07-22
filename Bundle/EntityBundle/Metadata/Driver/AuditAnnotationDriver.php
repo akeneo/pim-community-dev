@@ -43,7 +43,7 @@ class AuditAnnotationDriver implements DriverInterface
 
         foreach ($class->getProperties() as $field) {
             if ($annotation = $this->reader->getPropertyAnnotation($field, self::AUDIT_FIELD)) {
-                $fieldMeta = new AuditFieldMetadata($class, $field->getName());
+                $fieldMeta = new AuditFieldMetadata($class->getName(), $field->getName());
 
                 $fieldMeta->auditable = $annotation->commitLevel;
 
