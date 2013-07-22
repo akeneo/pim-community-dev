@@ -31,8 +31,12 @@ class ListPostActionTest extends \PHPUnit_Framework_TestCase
         $expectedPostActions = array();
         for ($i = 0; $i < 3; $i++) {
             $postAction = $this->getPostActionMock();
-            $this->listPostAction->addPostAction($postAction);
-            $expectedPostActions[] = $postAction;
+            $breakOnFailure = (bool)$i%2;
+            $this->listPostAction->addPostAction($postAction, $breakOnFailure);
+            $expectedPostActions[] = array(
+                'instance' => $postAction,
+                'breakOnFailure' => $breakOnFailure
+            );
         }
 
         $this->assertAttributeEquals($expectedPostActions, 'postActions', $this->listPostAction);

@@ -29,10 +29,11 @@ class PostActionFactory
 
     /**
      * @param string $type
-     * @return PostActionInterface
+     * @param array $options
      * @throws \RunTimeException
+     * @return PostActionInterface
      */
-    public function create($type)
+    public function create($type, array $options = array())
     {
         if (!$type) {
             throw new \RunTimeException('The post action type must be defined');
@@ -50,6 +51,8 @@ class PostActionFactory
         if (!$postAction instanceof PostActionInterface) {
             throw new \RunTimeException(sprintf('The service `%s` must implement `PostActionInterface`', $id));
         }
+
+        $postAction->initialize($options);
 
         return $postAction;
     }

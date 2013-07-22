@@ -7,6 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ContextAccessor
 {
@@ -14,6 +15,22 @@ class ContextAccessor
      * @var PropertyAccessor
      */
     protected $propertyAccessor;
+
+    /**
+     * Set value to context.
+     *
+     * @param object|array $context
+     * @param string|PropertyPathInterface $property
+     * @param mixed $value
+     */
+    public function setValue($context, $property, $value)
+    {
+        $this->getPropertyAccessor()->setValue(
+            $context,
+            $property,
+            $this->getValue($context, $value)
+        );
+    }
 
     /**
      * Get value from context

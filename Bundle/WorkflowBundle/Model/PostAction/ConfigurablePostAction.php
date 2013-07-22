@@ -30,11 +30,12 @@ class ConfigurablePostAction implements PostActionInterface
     }
 
     /**
-     * @param array $configuration
+     * {@inheritDoc}
      */
     public function initialize(array $configuration)
     {
         $this->configuration = $configuration;
+        return $this;
     }
 
     /**

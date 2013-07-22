@@ -13,6 +13,8 @@ services:
 
     oro_workflow.post_action.list:
         class: %oro_workflow.post_action.list.class%
+        arguments:
+            - @?logger
         tags:
             - { name: oro_workflow.post_action, alias: list }
 

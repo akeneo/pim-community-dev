@@ -21,7 +21,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
         $listPostAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction')
             ->setMethods(array('addPostAction'))
             ->getMock();
-        $listPostAction->expects($this->any())
+        $listPostAction->expects($this->exactly(count($source)))
             ->method('addPostAction')
             ->will(
                 $this->returnCallback(
@@ -30,6 +30,12 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
+        for ($i = 0; $i < count($source); $i++) {
+            $postActionConfig = array_values($source[$i]);
+            $listPostAction->expects($this->at($i))
+                ->method('addPostAction')
+                ->with($this->anything(), !empty($postActionConfig[0]['breakOnFailure']));
+        }
 
         $factory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory')
             ->disableOriginalConstructor()
@@ -43,8 +49,10 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->will(
                 $this->returnCallback(
-                    function ($type) {
-                        return new ArrayPostAction(array('_type' => $type));
+                    function ($type, $options) {
+                        $postAction = new ArrayPostAction(array('_type' => $type));
+                        $postAction->initialize($options);
+                        return $postAction;
                     }
                 )
             );
@@ -104,14 +112,11 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                 'expected' => array(
                     array(
                         '_type' => '@create_new_entity',
-                        'parameters' => array('class_name' => 'TestClass'),
-                        '_pass' => true,
+                        'parameters' => array('class_name' => 'TestClass', '_pass' => true)
                     ),
                     array(
                         '_type' => '@assign_value',
-                        'parameters' => array('from' => 'name', 'to' => 'contact.name'),
-                        'breakOnFailure' => true,
-                        '_pass' => true,
+                        'parameters' => array('from' => 'name', 'to' => 'contact.name', '_pass' => true)
                     ),
                 ),
             )
