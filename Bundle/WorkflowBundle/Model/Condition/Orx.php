@@ -13,7 +13,7 @@ class Orx extends AbstractComposite
     public function isAllowed($context)
     {
         if (!$this->conditions) {
-            return true;
+            return false;
         }
         foreach ($this->conditions as $condition) {
             if ($condition->isAllowed($context)) {

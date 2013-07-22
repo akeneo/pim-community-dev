@@ -34,9 +34,7 @@ class EqualTo extends AbstractComparison
      */
     protected function doCompare($left, $right)
     {
-        if ($left == $right) {
-            return true;
-        } elseif (is_object($left) && is_object($right)) {
+        if (is_object($left) && is_object($right)) {
             $leftClass = get_class($left);
             $rightClass = get_class($right);
             $leftManager = $this->registry->getManagerForClass(get_class($left));
@@ -45,10 +43,14 @@ class EqualTo extends AbstractComparison
                 $leftMetadata = $leftManager->getClassMetadata($leftClass);
                 $rightMetadata = $rightManager->getClassMetadata($rightClass);
                 if ($leftMetadata->getName() == $rightMetadata->getName()) {
-                    return $leftMetadata->getIdentifierValues($left) == $rightMetadata->getIdentifierValues($right);
+                    $leftIdentifiers = $leftMetadata->getIdentifierValues($left);
+                    $rightIdentifiers = $rightMetadata->getIdentifierValues($right);
+                    return $leftIdentifiers == $rightIdentifiers;
+                } else {
+                    return false;
                 }
             }
         }
-        return false;
+        return $left == $right;
     }
 }

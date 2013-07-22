@@ -21,7 +21,7 @@ abstract class AbstractComposite implements ConditionInterface
     public function initialize(array $options)
     {
         if (!$options) {
-            throw new ConditionInitializationException('Argument $options must have at least one element');
+            throw new ConditionInitializationException('Options must have at least one element');
         }
 
         $this->conditions = array();

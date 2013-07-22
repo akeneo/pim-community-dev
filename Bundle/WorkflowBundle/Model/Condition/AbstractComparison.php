@@ -53,7 +53,9 @@ abstract class AbstractComparison implements ConditionInterface
      * @param mixed $right
      * @return boolean
      */
+    // @codeCoverageIgnoreStart
     abstract protected function doCompare($left, $right);
+    // @codeCoverageIgnoreEnd
 
     /**
      * Initialize condition options

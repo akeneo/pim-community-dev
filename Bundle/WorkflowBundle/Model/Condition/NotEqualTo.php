@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\EqualTo;
-
 class NotEqualTo implements ConditionInterface
 {
     /**

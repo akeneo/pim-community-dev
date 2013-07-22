@@ -26,6 +26,15 @@ class AbstractCompositeTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($conditions, 'conditions', $this->condition);
     }
 
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedExceptionMessage Options must have at least one element
+     */
+    public function testInitializeFailsWithEmptyElements()
+    {
+        $this->condition->initialize(array());
+    }
+
     // @codingStandardsIgnoreStart
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException

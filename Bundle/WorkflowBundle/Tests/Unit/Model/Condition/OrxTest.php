@@ -37,4 +37,9 @@ class OrxTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertFalse($this->condition->isAllowed('anything'));
     }
+
+    public function testIsAllowedEmpty()
+    {
+        $this->assertFalse($this->condition->isAllowed('anything'));
+    }
 }

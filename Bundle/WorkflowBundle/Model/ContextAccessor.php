@@ -6,6 +6,8 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+
 class ContextAccessor
 {
     /**
@@ -22,7 +24,16 @@ class ContextAccessor
      */
     public function getValue($context, $value)
     {
-        return $value instanceof PropertyPath ? $this->getPropertyAccessor()->getValue($context, $value) : $value;
+        if ($value instanceof PropertyPath) {
+            try {
+                return $this->getPropertyAccessor()->getValue($context, $value);
+            } catch (NoSuchPropertyException $e) {
+                return null;
+            }
+
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -32,7 +43,7 @@ class ContextAccessor
      */
     protected function getPropertyAccessor()
     {
-        if ($this->propertyAccessor) {
+        if (!$this->propertyAccessor) {
             $this->propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         }
         return $this->propertyAccessor;
