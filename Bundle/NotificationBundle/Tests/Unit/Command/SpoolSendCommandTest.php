@@ -39,23 +39,17 @@ class SpoolSendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mailer->expects($this->once())
-            ->method('getTransport')
-            ->will($this->returnValue(false));
-
-        $this->container
-            ->expects($this->at(0))
+        $this->container->expects($this->at(0))
             ->method('get')
-            ->with($this->equalTo('oro_notification.mailer'))
+            ->with('oro_notification.mailer')
             ->will($this->returnValue($mailer));
 
-        $this->container
-            ->expects($this->once())
+        $this->container->expects($this->once())
             ->method('set')
-            ->with('mailer', $mailer);
+            ->with('mailer', $mailer)
+            ->will($this->returnSelf());
 
-        $this->container
-            ->expects($this->at(1))
+        $this->container->expects($this->at(2))
             ->method('get')
             ->with('mailer')
             ->will($this->returnValue($mailer));

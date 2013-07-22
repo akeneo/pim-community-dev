@@ -33,8 +33,6 @@ class SpoolSendCommand extends SendEmailCommand
         $mailer = $this->getContainer()->get('oro_notification.mailer');
         $this->getContainer()->set('mailer', $mailer);
 
-        var_dump($this->getContainer()->get('mailer'));die;
-
         parent::execute($input, $output);
     }
 }
