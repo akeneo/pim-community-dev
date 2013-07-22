@@ -37,6 +37,9 @@ class EmailNotificationTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $builder->expects($this->exactly(4))
+            ->method('add');
+
         $this->type->buildForm($builder, array());
     }
 }

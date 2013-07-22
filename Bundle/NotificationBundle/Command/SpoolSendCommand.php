@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\NotificationBundle\Command;
 
-use Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand;
 
 /**
  * Class SpoolSendCommand
@@ -35,7 +35,4 @@ class SpoolSendCommand extends SendEmailCommand
 
         parent::execute($input, $output);
     }
-
-
-
 }

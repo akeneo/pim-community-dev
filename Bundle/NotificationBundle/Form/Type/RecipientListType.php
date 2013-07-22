@@ -26,12 +26,10 @@ class RecipientListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            $builder->create(
-                'users',
-                'oro_user_multiselect',
-                array(
-                    'required' => false
-                )
+            'users',
+            'oro_user_multiselect',
+            array(
+                'required' => false
             )
         );
 
@@ -47,6 +45,24 @@ class RecipientListType extends AbstractType
                 'empty_value'   => '',
                 'empty_data'    => null,
                 'required'      => false,
+            )
+        );
+
+        // custom email
+        $builder->add(
+            'email',
+            'email',
+            array(
+                'required'      => false
+            )
+        );
+
+        // owner
+        $builder->add(
+            'owner',
+            'checkbox',
+            array(
+                'required'      => false
             )
         );
     }

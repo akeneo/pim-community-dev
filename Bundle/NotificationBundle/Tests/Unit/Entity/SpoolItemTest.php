@@ -19,6 +19,11 @@ class SpoolItemTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->entity->getId());
     }
 
+    public function tearDown()
+    {
+        unset($this->entity);
+    }
+
     public function testSetterGetterStatus()
     {
         // empty from construct

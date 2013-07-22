@@ -5,6 +5,8 @@ namespace Oro\Bundle\NotificationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\ExecutionContext;
+
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
 
@@ -131,21 +133,40 @@ class RecipientList
         return $this;
     }
 
+    /**
+     * Add specified user
+     *
+     * @param User $user
+     * @return $this
+     */
+    public function addUser(User $user)
+    {
+        if (!$this->getUsers()->contains($user)) {
+            $this->getUsers()->add($user);
+        }
+
+        return $this;
+    }
 
     /**
-     * Setter for users
+     * Remove specified user
      *
-     * @param User[] $users
+     * @param User $user
+     * @return $this
      */
-    public function setUsers($users)
+    public function removeUser(User $user)
     {
-        $this->users = $users;
+        if ($this->getUsers()->contains($user)) {
+            $this->getUsers()->removeElement($user);
+        }
+
+        return $this;
     }
 
     /**
      * Getters for users
      *
-     * @return User[]
+     * @return ArrayCollection
      */
     public function getUsers()
     {
@@ -198,5 +219,28 @@ class RecipientList
         }
 
         return $result;
+    }
+
+    /**
+     * Custom validation constraint
+     * Not valid if no one recipient specified
+     *
+     * @param ExecutionContext $context
+     */
+    public function isValid(ExecutionContext $context)
+    {
+        $notValid =
+            $this->getGroups()->isEmpty()
+            && $this->getUsers()->isEmpty()
+            && $this->getEmail() == null
+            && $this->getOwner() == null;
+
+        if ($notValid) {
+            $propertyPath = $context->getPropertyPath() . '.recipientList';
+            $context->addViolationAt(
+                $propertyPath,
+                'oro.notification.validators.recipient_list.empty.message'
+            );
+        }
     }
 }

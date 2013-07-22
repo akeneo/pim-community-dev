@@ -22,6 +22,11 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->entity->getGroups());
     }
 
+    public function tearDown()
+    {
+        unset($this->entity);
+    }
+
     public function testSetterGetterForUsers()
     {
         // test adding through array collection interface
@@ -35,8 +40,13 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->entity->getUsers()->isEmpty());
 
         // test setter
-        $this->entity->setUsers(array($user));
+        $this->entity->addUser($user);
         $this->assertContains($user, $this->entity->getUsers());
+
+
+        // remove group
+        $this->entity->removeUser($user);
+        $this->assertTrue($this->entity->getUsers()->isEmpty());
     }
 
     public function testSetterGetterForGroups()
@@ -80,6 +90,7 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $group = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
 
         // test when owner filled
         $this->entity->setOwner(true);
@@ -96,20 +107,72 @@ class RecipientListTest extends \PHPUnit_Framework_TestCase
         $this->entity->setEmail(null);
 
         // test when users filled
-        $this->entity->setUsers(array('testUser'));
+        $this->entity->addUser($user);
         $this->assertInternalType('string', $this->entity->__toString());
         $this->assertNotEmpty($this->entity->__toString());
-        // clear email
-        $this->entity->setUsers(array());
+        // clear users
+        $this->entity->getUsers()->clear();
 
         // test when groups filled
         $this->entity->addGroup($group);
         $this->assertInternalType('string', $this->entity->__toString());
         $this->assertNotEmpty($this->entity->__toString());
-        // clear email
+        // clear groups
         $this->entity->getGroups()->clear();
 
         // should be empty if nothing filled
         $this->assertEmpty($this->entity->__toString());
+    }
+
+    public function testNotValidData()
+    {
+        $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $context->expects($this->once())
+            ->method('getPropertyPath')
+            ->will($this->returnValue('testPath'));
+        $context->expects($this->once())
+            ->method('addViolationAt');
+
+        $this->entity->isValid($context);
+    }
+
+    public function testValidData()
+    {
+        $group = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $context->expects($this->never())
+            ->method('getPropertyPath');
+        $context->expects($this->never())
+            ->method('addViolationAt');
+
+        //only users
+        $this->entity->addUser($user);
+        $this->entity->isValid($context);
+        // clear users
+        $this->entity->getUsers()->clear();
+
+        //only groups
+        $this->entity->addGroup($group);
+        $this->entity->isValid($context);
+        // clear groups
+        $this->entity->getGroups()->clear();
+
+        // only email
+        $this->entity->setEmail('test Email');
+        $this->entity->isValid($context);
+        $this->entity->setEmail(null);
+
+        // only owner
+        $this->entity->setOwner(true);
+        $this->entity->isValid($context);
+        $this->entity->setEmail(null);
     }
 }
