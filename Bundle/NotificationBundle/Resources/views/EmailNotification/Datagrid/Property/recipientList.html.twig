@@ -1,0 +1,9 @@
+{% if value is not empty %}
+    {% set valueArray = value|split(',') %}
+    {% if valueArray|length > 3 %}
+        {{ valueArray[:3]|join(', ') }}
+        <span class="label">...</span>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endif %}
