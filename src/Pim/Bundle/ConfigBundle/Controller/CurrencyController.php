@@ -65,9 +65,14 @@ class CurrencyController extends Controller
      */
     public function toggleAction(Currency $currency)
     {
-        $currency->toggleActivation();
+        try {
+            $currency->toggleActivation();
+            $this->getEntityManager()->flush();
 
-        $this->getEntityManager()->flush();
+            $this->get('session')->getFlashBag()->add('success', 'Currency is successfully updated.');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashbag()->add('error', 'Action failed. Please retry.');
+        }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
