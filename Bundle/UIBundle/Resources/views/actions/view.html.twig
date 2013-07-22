@@ -11,7 +11,7 @@
                     {% endblock navButtons %}
                 </div>
                 {% if (entity is defined and entityClass is defined) %}
-                    {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': entity } %}
+                    {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': audit_title|default(entity), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
                 {% endif %}
             </div>
             <div class="span9">
@@ -28,6 +28,12 @@
                                 <div class="pull-left">
                                     <div class="sub-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
                                     <span class="separator">/</span>
+                                    {% if breadcrumbs.additional is defined %}
+                                        {% for breadcrumb in breadcrumbs.additional %}
+                                            <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                            <span class="separator">/</span>
+                                        {% endfor %}
+                                    {% endif %}
                                     <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
                                 </div>
                             {% endblock breadcrumbs %}
