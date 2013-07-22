@@ -39,7 +39,18 @@ class RecipientListRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRecipientEmails()
     {
-        $users = $groups = new ArrayCollection();
+        $userMock = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $userMock->expects($this->once())
+            ->method('getEmail')
+            ->will($this->returnValue('a@a.com'));
+
+        $groupMock = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $groupMock->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+
+        $users = new ArrayCollection(array($userMock));
+        $groups = new ArrayCollection(array($groupMock));
 
         $recipientList = $this->getMock('Oro\Bundle\NotificationBundle\Entity\RecipientList');
         $recipientList->expects($this->once())
@@ -47,7 +58,7 @@ class RecipientListRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($users));
         $recipientList->expects($this->once())
             ->method('getGroups')
-            ->will($this->returnValue($users));
+            ->will($this->returnValue($groups));
 
         $recipientList->expects($this->once())
             ->method('getOwner')
@@ -72,7 +83,7 @@ class RecipientListRepositoryTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getResult'))
             ->getMockForAbstractClass();
         $query->expects($this->once())->method('getResult')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array(array('email' => 'b@b.com'))));
 
         $entityAlias = 'u';
 
