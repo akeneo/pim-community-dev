@@ -156,6 +156,8 @@ class WorkflowItemEntity
     public function setWorkflowItem(WorkflowItem $workflowItem)
     {
         $this->workflowItem = $workflowItem;
+
+        return $this;
     }
 
     /**
