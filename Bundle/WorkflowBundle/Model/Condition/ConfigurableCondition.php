@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 class ConfigurableCondition implements ConditionInterface
 {
+    const ALIAS = 'configurable';
+
     /**
      * @var array
      */
