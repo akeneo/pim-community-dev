@@ -4,7 +4,11 @@ namespace Oro\Bundle\OrganizationBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Doctrine\ORM\EntityRepository;
 
 class BusinessUnitType extends AbstractType
 {
@@ -66,6 +70,26 @@ class BusinessUnitType extends AbstractType
                     'property' => 'name',
                     'required' => true,
                     'multiple' => false,
+                )
+            )
+            ->add(
+                'appendUsers',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'OroUserBundle:User',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                )
+            )
+            ->add(
+                'removeUsers',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'OroUserBundle:User',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
                 )
             );
         // tags

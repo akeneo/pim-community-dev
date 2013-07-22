@@ -11,16 +11,16 @@
     {% set listenerParameters = {
         'columnName': 'has_business_unit',
         'selectors': {
-            'included': '#business_unitAppendUsers',
-            'excluded': '#business_unitRemoveUsers'
+            'included': '#businessUnitAppendUsers',
+            'excluded': '#businessUnitRemoveUsers'
         }
     } %}
 
-    {# {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %} #}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_business_unit_remove') %}
+    {% if form.vars.value.id and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_api_delete_business_unit', {'id': form.vars.value.id}),
             'dataRedirect': path('oro_business_unit_index'),
@@ -64,6 +64,8 @@
                 {
                     'title': '',
                     'data': [
+                        form_widget(form.appendUsers, {'id': 'businessUnitAppendUsers'}),
+                        form_widget(form.removeUsers, {'id': 'businessUnitRemoveUsers'}),
                         form_row(form.name),
                         form_row(form.organization),
                         form_row(form.parent),
@@ -76,6 +78,21 @@
                 }
             ]
         }]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(
+        [{
+            'title' : 'Users',
+            'subblocks':
+            [
+                {
+                    'title' : null,
+                    'useSpan': false,
+                    'data' : [UI.gridBlock(gridId)]
+                }
+            ]
+        }]
+    )
     %}
 
     {% set data =

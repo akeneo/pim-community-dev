@@ -25,7 +25,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         return array(
             new UrlProperty('view_link', $this->router, 'oro_business_unit_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_business_unit_update', array('id')),
-            new UrlProperty('delete_link', $this->router, 'oro_api_delete_tag', array('id')), //oro_api_delete_business_unit
+            new UrlProperty('delete_link', $this->router, 'oro_api_delete_business_unit', array('id')),
         );
     }
 
@@ -157,7 +157,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $businessUnitDeleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'oro_business_unit_remove',
+            'acl_resource' => 'oro_business_unit_delete',
             'options'      => array(
                 'label' => 'Delete',
                 'icon'  => 'trash',

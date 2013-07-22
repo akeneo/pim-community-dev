@@ -3,9 +3,9 @@ oro_organization_bundle:
     type:         annotation
     prefix:       /organization
 
-#oro_organziation_api:
-#    resource:     "@OroOrganizationBundle/Controller/Api/Rest/BusinessUnitController.php"
-#    type:         rest
-#    prefix:       api/rest/{version}/
-#    defaults:
-#        version:  latest
+oro_organziation_api:
+    resource:     "@OroOrganizationBundle/Controller/Api/Rest/BusinessUnitController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest

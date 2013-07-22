@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
@@ -49,10 +50,11 @@ class BusinessUnitController extends Controller
      *      parent="oro_business_unit"
      * )
      */
-    public function viewAction(BusinessUnit $businessUnit)
+    public function viewAction(BusinessUnit $entity)
     {
         return array(
-            'entity' => $businessUnit,
+            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'view')->getDatagrid()->createView(),
+            'entity' => $entity,
         );
     }
 
@@ -85,6 +87,7 @@ class BusinessUnitController extends Controller
         }
 
         return array(
+            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
             'form'     => $this->get('oro_organization.form.business_unit')->createView(),
         );
     }
@@ -114,5 +117,59 @@ class BusinessUnitController extends Controller
             $view,
             array('datagrid' => $datagrid->createView())
         );
+    }
+
+    /**
+     * Get grid users data
+     *
+     * @Route(
+     *      "/update_grid/{id}",
+     *      name="oro_business_update_unit_user_grid",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0, "_format"="json"}
+     * )
+     * @Template("OroGridBundle:Datagrid:list.json.php")
+     * @AclAncestor("oro_business_unit_list")
+     */
+    public function updateGridDataAction(BusinessUnit $entity = null)
+    {
+        if (!$entity) {
+            $entity = new BusinessUnit();
+        }
+
+        return array('datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')
+            ->getDatagrid()->createView());
+    }
+
+    /**
+     * Get grid users data
+     *
+     * @Route(
+     *      "/view_grid/{id}",
+     *      name="oro_business_view_unit_user_grid",
+     *      requirements={"id"="\d+"},
+     *      defaults={"_format"="json"}
+     * )
+     * @Template("OroGridBundle:Datagrid:list.json.php")
+     * @AclAncestor("oro_business_unit_list")
+     */
+    public function viewGridDataAction(BusinessUnit $entity)
+    {
+        return array('datagrid' => $this->getBusinessUnitDatagridManager($entity, 'view')->getDatagrid()->createView());
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @param  string       $action
+     * @return BusinessUnitUpdateUserDatagridManager
+     */
+    protected function getBusinessUnitDatagridManager(BusinessUnit $businessUnit, $action)
+    {
+        /** @var $result BusinessUnitUpdateUserDatagridManager */
+        $result = $this->get('oro_organization.business_unit_' . $action . '_user_datagrid_manager');
+        $result->setBusinessUnit($businessUnit);
+        $result->getRouteGenerator()->setRouteParameters(array('id' => $businessUnit->getId()));
+
+        return $result;
     }
 }

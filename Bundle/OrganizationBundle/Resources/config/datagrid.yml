@@ -1,5 +1,7 @@
 parameters:
     oro_organization.business_unit_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager
+    oro_organization.business_unit_update_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager
+    oro_organization.business_unit_view_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager
 
 services:
     oro_organization.business_unit_datagrid_manager:
@@ -10,3 +12,23 @@ services:
               entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
               entity_hint: business_units
               route_name: oro_business_unit_index
+
+    oro_organization.business_unit_update_user_datagrid_manager:
+            class: %oro_organization.business_unit_update_user_datagrid_manager.class%
+            tags:
+                - name: oro_grid.datagrid.manager
+                  datagrid_name: business_units_update_users
+                  entity_name: Oro\Bundle\UserBundle\Entity\User
+                  query_entity_alias: user
+                  entity_hint: users
+                  route_name: oro_business_update_unit_user_grid
+
+    oro_organization.business_unit_view_user_datagrid_manager:
+            class: %oro_organization.business_unit_view_user_datagrid_manager.class%
+            tags:
+                - name: oro_grid.datagrid.manager
+                  datagrid_name: business_units_view_users
+                  entity_name: Oro\Bundle\UserBundle\Entity\User
+                  query_entity_alias: user
+                  entity_hint: users
+                  route_name: oro_business_view_unit_user_grid

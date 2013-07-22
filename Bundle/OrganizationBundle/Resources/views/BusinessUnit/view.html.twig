@@ -2,6 +2,10 @@
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
 
 {% oro_title_set({params : {"%business_unitname%": entity.name|default('N/A') }}) %}
+{% set gridId = 'users-grid' %}
+{% block head_script %}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+{% endblock %}
 {% set entityClass = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
 
 {% block navButtons %}
@@ -9,7 +13,7 @@
     {% if resource_granted('oro_business_unit_update') %}
         {{ UI.button({'path' : path('oro_business_unit_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit business_unit', 'label' : 'Edit'}) }}
     {% endif %}
-    {% if resource_granted('oro_business_unit_delete') and entity.id!=app.business_unit.id %}
+    {% if resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_api_delete_business_unit', {'id': entity.id}),
             'dataRedirect': path('oro_business_unit_index'),
@@ -42,33 +46,50 @@
         {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
     {% endif %}
 
-    {% set data = {
-        'dataBlocks':
-            [
+    {% set dataBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
                 {
-                    'title': 'General',
-                    'class': 'active',
-                    'subblocks': [
-                        {
-                            'title': 'Basic Information',
-                            'data': [
-                                UI.attibuteRow('Name', entity.name),
-                                UI.attibuteRow('Phone', entity.phone),
-                                UI.attibuteRow('Organization', entity.organization),
-                                UI.attibuteRow('Parent', entity.parent),
-                                UI.attibuteRow('Website', entity.website),
-                                UI.attibuteRow('Email', entity.email),
-                                UI.attibuteRow('Fax', entity.fax),
-                            ]
-                        },
-                        {
-                            'title': 'Tags',
-                            'data': dataSubBlocks
-                        }
+                    'title': 'Basic Information',
+                    'data': [
+                        UI.attibuteRow('Name', entity.name),
+                        UI.attibuteRow('Phone', entity.phone),
+                        UI.attibuteRow('Organization', entity.organization),
+                        UI.attibuteRow('Parent', entity.parent),
+                        UI.attibuteRow('Website', entity.website),
+                        UI.attibuteRow('Email', entity.email),
+                        UI.attibuteRow('Fax', entity.fax),
                     ]
+                },
+                {
+                    'title': 'Tags',
+                    'data': dataSubBlocks
                 }
             ]
+        }]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(
+        [{
+            'title' : 'Users',
+            'subblocks':
+            [
+                {
+                    'title' : null,
+                    'useSpan': false,
+                    'data' : [UI.gridBlock(gridId)]
+                }
+            ]
+        }]
+    )
+    %}
+
+    {% set data =
+        {
+            'dataBlocks': dataBlocks,
         }
     %}
+
     {{ parent() }}
 {% endblock content_data %}

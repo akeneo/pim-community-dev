@@ -60,8 +60,8 @@ class BusinessUnitHandler implements TagHandlerInterface
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $appendUsers = array();//$this->form->get('appendUsers')->getData();
-                $removeUsers = array();//$this->form->get('removeUsers')->getData();
+                $appendUsers = $this->form->get('appendUsers')->getData();
+                $removeUsers = $this->form->get('removeUsers')->getData();
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
 
                 return true;
@@ -80,15 +80,15 @@ class BusinessUnitHandler implements TagHandlerInterface
      */
     protected function onSuccess(BusinessUnit $entity, array $appendUsers, array $removeUsers)
     {
-        //$this->appendUsers($entity, $appendUsers);
-        //$this->removeUsers($entity, $removeUsers);
+        $this->appendUsers($entity, $appendUsers);
+        $this->removeUsers($entity, $removeUsers);
         $this->manager->persist($entity);
         $this->manager->flush();
         $this->tagManager->saveTagging($entity);
     }
 
     /**
-     * Append users to group
+     * Append users to business unit
      *
      * @param BusinessUnit  $businessUnit
      * @param User[] $users
@@ -103,7 +103,7 @@ class BusinessUnitHandler implements TagHandlerInterface
     }
 
     /**
-     * Remove users from group
+     * Remove users from business unit
      *
      * @param BusinessUnit  $businessUnit
      * @param User[] $users
