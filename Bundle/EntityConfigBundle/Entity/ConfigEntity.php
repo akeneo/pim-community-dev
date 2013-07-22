@@ -8,11 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityBundle\Metadata\Annotation\AuditEntity;
 use Oro\Bundle\EntityBundle\Metadata\Annotation\AuditField;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 /**
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @AuditEntity
+ * @Configurable(viewMode="hidden")
  */
 class ConfigEntity extends AbstractConfig
 {
@@ -50,6 +53,7 @@ class ConfigEntity extends AbstractConfig
         $this->className = $className;
         $this->fields    = new ArrayCollection();
         $this->values    = new ArrayCollection();
+        $this->mode      = self::MODE_VIEW_DEFAULT;
     }
 
     /**
@@ -103,7 +107,7 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param  callable                      $filter
+     * @param  callable $filter
      * @return ConfigField[]|ArrayCollection
      */
     public function getFields(\Closure $filter = null)

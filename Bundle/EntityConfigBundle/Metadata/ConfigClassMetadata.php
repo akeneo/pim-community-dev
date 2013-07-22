@@ -13,6 +13,11 @@ class ConfigClassMetadata extends MergeableClassMetadata
     public $configurable = false;
 
     /**
+     * @var string
+     */
+    public $viewMode;
+
+    /**
      * {@inheritdoc}
      */
     public function merge(MergeableInterface $object)
@@ -21,6 +26,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
 
         if ($object instanceof ConfigClassMetadata) {
             $this->configurable = $object->configurable;
+            $this->viewMode     = $object->viewMode;
         }
     }
 
@@ -31,6 +37,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
     {
         return serialize(array(
             $this->configurable,
+            $this->viewMode,
             parent::serialize(),
         ));
     }
@@ -42,6 +49,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
     {
         list(
             $this->configurable,
+            $this->viewMode,
             $parentStr
             ) = unserialize($str);
 
