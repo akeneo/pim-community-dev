@@ -32,6 +32,7 @@ use Oro\Bundle\EntityConfigBundle\Event\Events;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class ConfigManager
 {
