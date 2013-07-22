@@ -50,20 +50,7 @@ class ImapServicesFactory
     {
         $defaultImapStorage = $this->getDefaultImapStorage($config);
 
-        $serverCapabilities = $defaultImapStorage->capability();
-        $foundItem = null;
-        foreach ($this->imapServicesMapping as $key => $item) {
-            $filterResult = array_filter(
-                $serverCapabilities,
-                function ($capability) use ($key) {
-                    return 0 === strcasecmp($capability, $key);
-                }
-            );
-            if (!empty($filterResult)) {
-                $foundItem = $item;
-                break;
-            }
-        }
+        $foundItem = $this->findImapServicesConfig($defaultImapStorage->capability());
 
         $imapStorageClass =
             ($foundItem === null || strcmp($foundItem[0], get_class($defaultImapStorage)) === 0)
@@ -74,10 +61,12 @@ class ImapServicesFactory
                 ? $this->defaultImapServices[1]
                 : $foundItem[1];
 
+        $imapStorage = $imapStorageClass === null
+            ? $defaultImapStorage
+            : new $imapStorageClass($defaultImapStorage);
+
         return new ImapServices(
-            $imapStorageClass === null
-                ? $defaultImapStorage
-                : new $imapStorageClass($defaultImapStorage),
+            $imapStorage,
             new $searchStringBuilderClass()
         );
     }
@@ -99,5 +88,30 @@ class ImapServicesFactory
         $defaultImapStorageClass = $this->defaultImapServices[0];
 
         return new $defaultImapStorageClass($params);
+    }
+
+    /**
+     * Finds the configuration of IMAP services for the given IMAP server capabilities
+     *
+     * @param array $serverCapabilities
+     * @return array
+     */
+    protected function findImapServicesConfig(array $serverCapabilities)
+    {
+        $result = null;
+        foreach ($this->imapServicesMapping as $key => $item) {
+            $filterResult = array_filter(
+                $serverCapabilities,
+                function ($capability) use ($key) {
+                    return 0 === strcasecmp($capability, $key);
+                }
+            );
+            if (!empty($filterResult)) {
+                $result = $item;
+                break;
+            }
+        }
+
+        return $result;
     }
 }

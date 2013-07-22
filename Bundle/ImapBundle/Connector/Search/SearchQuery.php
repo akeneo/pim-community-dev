@@ -65,11 +65,10 @@ class SearchQuery
         }
 
         $this->andOperatorIfNeeded();
-        $this->expr->add(
-            $value instanceof SearchQuery
-                ? $value->getExpression()
-                : new SearchQueryExprValue($value, $match)
-        );
+        $expr = $value instanceof SearchQuery
+            ? $value->getExpression()
+            : new SearchQueryExprValue($value, $match);
+        $this->expr->add($expr);
     }
 
     /**
@@ -97,14 +96,10 @@ class SearchQuery
         }
 
         $this->andOperatorIfNeeded();
-        $this->expr->add(
-            new SearchQueryExprItem(
-                $name,
-                $value instanceof SearchQuery
-                    ? $value->getExpression()
-                    : $value,
-                $match)
-        );
+        $value = $value instanceof SearchQuery
+            ? $value->getExpression()
+            : $value;
+        $this->expr->add(new SearchQueryExprItem($name, $value, $match));
     }
 
     /**
