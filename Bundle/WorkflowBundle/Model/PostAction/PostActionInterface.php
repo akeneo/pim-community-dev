@@ -2,14 +2,12 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-
 interface PostActionInterface
 {
     /**
      * Execute post action.
      *
-     * @param WorkflowItem $workflowItem
+     * @param mixed $context
      */
-    public function execute(WorkflowItem $workflowItem);
+    public function execute($context);
 }

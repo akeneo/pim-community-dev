@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 
-class FilterFactoryTest extends \PHPUnit_Framework_TestCase
+class PostActionFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**#@+
      * Test parameters

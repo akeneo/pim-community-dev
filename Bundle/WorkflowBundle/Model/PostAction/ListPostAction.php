@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-
 class ListPostAction implements PostActionInterface
 {
     const ALIAS = 'list';
@@ -27,10 +25,10 @@ class ListPostAction implements PostActionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(WorkflowItem $workflowItem)
+    public function execute($context)
     {
         foreach ($this->postActions as $postAction) {
-            $postAction->execute($workflowItem);
+            $postAction->execute($context);
         }
     }
 }
