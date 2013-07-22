@@ -24,7 +24,6 @@ class ExtendClassMetadata extends MergeableClassMetadata
         }
     }
 
-
     /**
      * {@inheritdoc}
      */

@@ -270,14 +270,14 @@ class Generator
             ->setMethod(
                 $this->generateClassMethod(
                     '__proxy__createFromEntity',
-                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value){$this->$key=$value;}',
+                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value) {$this->$key=$value;}',
                     array('entity')
                 )
             )
             ->setMethod(
                 $this->generateClassMethod(
                     '__proxy__cloneToEntity',
-                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value){$entity->$key=$this->$key;}',
+                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value) {$entity->$key=$this->$key;}',
                     array('entity')
                 )
             );
