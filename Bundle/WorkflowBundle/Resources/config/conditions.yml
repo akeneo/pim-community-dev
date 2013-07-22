@@ -56,6 +56,7 @@ services:
 
     oro_workflow.condition.configurable:
         class: %oro_workflow.condition.configurable.class%
-        arguments: @oro_workflow.condition_assembler
+        arguments:
+            - @oro_workflow.condition_assembler
         tags:
             - {name: oro_workflow.condition, alias: configurable}
