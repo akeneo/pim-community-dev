@@ -1,0 +1,236 @@
+oro_entity_config:
+    entity:
+        entity:
+            form:
+                block_config:
+                    entity:
+                        priority:           20
+            items:
+                icon:
+                    priority:               10
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                label:
+                    priority:               20
+                    grid:
+                        type:               string
+                        label:              'Label'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                plural_label:
+                    priority:               30
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                description:
+                    priority:               50
+                    grid:
+                        type:               text
+                        label:              'Description'
+                        filter_type:        oro_grid_orm_string
+                        required:           false
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               textarea
+                        options:
+                            block:          entity
+                            required:       false
+        field:
+            items:
+                label:
+                    priority:               10
+                    grid:
+                        type:               string
+                        label:              'Label'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                description:
+                    priority:               30
+                    grid:
+                        type:               text
+                        label:              'Description'
+                        filter_type:        oro_grid_orm_string
+                        required:           false
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                    form:
+                        type:               textarea
+                        options:
+                            block:          entity
+                            required:       false
+
+    audit:
+        entity:
+            items:
+                auditable:
+                    priority:               60
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          entity
+                            label:          'Auditable'
+
+        field:
+            items:
+                auditable:
+                    priority:               60
+                    parent_value:                                           #enabled or not by parent value
+                        name:               auditable                       #name of parent field, by default similar with child field name
+                        value:              true                            #comparison conditions
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          entity
+                            label:          'Auditable'
+
+    datagrid:
+        field:
+            form:
+                block_config:
+                    datagrid:
+                        title:              'Datagrid Config'
+                        subblocks:
+                            base:           ~
+            items:
+                is_searchable:
+                    default_value:          false
+                    entity_grid:            false
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid search'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid search"
+
+    extend:
+        entity:
+            items:
+                owner:
+                    priority:               40
+                    default_value:          'System'
+                    grid:
+                        type:               string
+                        label:              'Type'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               text
+                        block:              entity
+                        options:
+                            read_only:      true
+                            required:       false
+                            label:          'Type'
+                    view:
+                        type:               string
+                        stats:              false
+                        block:
+                is_extend:
+                    default_value:          false
+
+                extend_class:               ~
+
+                unique_key:
+                    serializable:           true
+
+
+                proxy_class:                ~
+
+        field:
+            grid_action:
+                -                           {'name':'Remove', 'route':'oro_entityextend_field_remove', 'type':'delete', 'icon':'trash', 'acl_resource':'root', 'filter':'is_extend', 'args':['id']}
+            layout_action:
+                -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
+                -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
+            items:
+                owner:
+                    priority:               20
+                    default_value:          'System'
+                    grid:
+                        type:               string
+                        label:              'Type'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            read_only:      true
+                            required:       false
+                            label:          'Type'
+
+                is_extend:
+                    default_value:          false
+#                    grid:
+#                        type:               boolean
+#                        label:              'Is Extend Field'
+#                        filter_type:        oro_grid_orm_boolean
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         false
+#                        show_filter:        false
+                    form:
+                        type:               choice
+                        block:              entity
+                        options:
+                            choices:        ['No', 'Yes']
+                            read_only:      true
+                            required:       false
+                            label:          "Is Extend Field"
