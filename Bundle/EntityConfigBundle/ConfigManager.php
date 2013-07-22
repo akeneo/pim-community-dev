@@ -338,7 +338,7 @@ class ConfigManager
             }
         }
 
-        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new OnFlushConfigEvent($this));
+        $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new OnFlushConfigEvent($this));
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
