@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Model\PostAction\ConfigurablePostAction;
+use Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable;
 
 class ConfigurablePostActionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ConfigurablePostAction
+     * @var Configurable
      */
     protected $configurablePostAction;
 
@@ -32,7 +32,7 @@ class ConfigurablePostActionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('assemble'))
             ->getMock();
-        $this->configurablePostAction = new ConfigurablePostAction($this->assembler);
+        $this->configurablePostAction = new Configurable($this->assembler);
     }
 
     protected function tearDown()
