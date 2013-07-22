@@ -57,6 +57,8 @@ class CurrencyController extends Controller
     }
 
     /**
+     * Activate/Desactivate a currency
+     *
      * @param Currency $currency
      *
      * @Route("/{id}/toggle", requirements={"id"="\d+"})
@@ -74,11 +76,7 @@ class CurrencyController extends Controller
             $this->get('session')->getFlashbag()->add('error', 'Action failed. Please retry.');
         }
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirect($this->generateUrl('pim_config_currency_index'));
-        }
+        return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }
 
     /**
@@ -89,15 +87,5 @@ class CurrencyController extends Controller
     protected function getEntityManager()
     {
         return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get currency repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCurrencyRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
     }
 }
