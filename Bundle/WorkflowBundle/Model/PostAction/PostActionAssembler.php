@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction;
+use Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
@@ -39,8 +39,8 @@ class PostActionAssembler extends AbstractAssembler
      */
     public function assemble(array $configuration)
     {
-        /** @var ListPostAction $listPostAction */
-        $listPostAction = $this->factory->create(ListPostAction::ALIAS);
+        /** @var ListExecutor $listPostAction */
+        $listPostAction = $this->factory->create(ListExecutor::ALIAS);
 
         foreach ($configuration as $actionConfiguration) {
             if ($this->isService($actionConfiguration)) {

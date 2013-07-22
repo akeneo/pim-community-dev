@@ -3,7 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction;
+use Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayPostAction;
 
 class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
@@ -43,7 +43,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $factory->expects($this->at(0))
             ->method('create')
-            ->with(ListPostAction::ALIAS)
+            ->with(ListExecutor::ALIAS)
             ->will($this->returnValue($listPostAction));
         $factory->expects($this->any())
             ->method('create')

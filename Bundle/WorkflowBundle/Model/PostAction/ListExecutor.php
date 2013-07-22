@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Psr\Log\LoggerInterface;
 
-class ListPostAction implements PostActionInterface
+class ListExecutor implements PostActionInterface
 {
     const ALIAS = 'list';
 
@@ -32,7 +32,7 @@ class ListPostAction implements PostActionInterface
     /**
      * @param PostActionInterface $postAction
      * @param bool $breakOnFailure
-     * @return ListPostAction
+     * @return ListExecutor
      */
     public function addPostAction(PostActionInterface $postAction, $breakOnFailure = false)
     {
