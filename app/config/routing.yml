@@ -1,3 +1,7 @@
+oro_default:
+    pattern:  /
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: pim_product_product_index, permanent: true }
+
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
@@ -10,12 +14,6 @@ pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
     prefix:   /configuration/
-
-oro_default:
-    pattern:  /
-    defaults:
-        template:    PimUpgradeBundle:Dashboard:index.html.twig
-        _controller: FrameworkBundle:Template:template
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"

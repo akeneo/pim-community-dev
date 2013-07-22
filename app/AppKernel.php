@@ -75,12 +75,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
-            // new Pim\Bundle\BatchBundle\PimBatchBundle(),
-            // new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-
-            // TODO tmp to fix placeholder issue
-            new Pim\Bundle\UpgradeBundle\PimUpgradeBundle(),
-
+            new Pim\Bundle\BatchBundle\PimBatchBundle(),
+            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {

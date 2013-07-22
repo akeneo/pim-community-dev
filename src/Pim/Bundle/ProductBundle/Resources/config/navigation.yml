@@ -52,7 +52,7 @@ oro_titles:
     pim_product_categorytree_index:          Category trees
     pim_product_categorytree_listtree:       Category trees | List
     pim_product_categorytree_manage:         Category trees | Manage
-    pim_product_categorytree_view:           Category trees | View
+    pim_product_categorytree_edit:           Category trees | View
     pim_product_categorytree_create:         Category trees | Create
     pim_product_categorytree_edit:           Category trees | Edit
     pim_product_exportprofile_index:         Export profiles
