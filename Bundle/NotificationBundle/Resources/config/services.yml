@@ -105,6 +105,9 @@ services:
             - @oro_notification.mailer
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
+        calls:
+            - [ setEnv, ['prod'] ]
+            - [ setMessageLimit, [100] ]
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
