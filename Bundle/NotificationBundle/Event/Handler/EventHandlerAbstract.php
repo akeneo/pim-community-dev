@@ -14,6 +14,8 @@ abstract class EventHandlerAbstract implements EventHandlerInterface
     /**
      * Add command to job queue if it has not been added earlier
      *
+     * @param $command
+     * @param $commandArgs
      * @return boolean|integer
      */
     public function addJob($command, $commandArgs)

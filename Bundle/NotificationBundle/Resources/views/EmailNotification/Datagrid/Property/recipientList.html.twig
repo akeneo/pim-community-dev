@@ -2,7 +2,7 @@
     {% set valueArray = value|split(',') %}
     {% if valueArray|length > 3 %}
         {{ valueArray[:3]|join(', ') }}
-        <span class="label">...</span>
+        <span class="label show-more">{{ '...'|trans}}</span>
     {% else %}
         {{ value }}
     {% endif %}
