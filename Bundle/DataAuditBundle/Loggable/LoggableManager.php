@@ -255,7 +255,7 @@ class LoggableManager
         if (!$this->username) {
             return;
         }
-        
+
         $this->checkAuditable(get_class($entity));
 
         /** @var User $user */
