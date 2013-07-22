@@ -10,7 +10,7 @@ class SearchRegistry
     protected $searchHandlers = array();
 
     /**
-     * @param string                 $name
+     * @param string $name
      * @param SearchHandlerInterface $searchHandler
      */
     public function addSearchHandler($name, SearchHandlerInterface $searchHandler)
@@ -19,7 +19,7 @@ class SearchRegistry
     }
 
     /**
-     * @param  string                 $name
+     * @param string $name
      * @return SearchHandlerInterface
      * @throws \RuntimeException
      */
@@ -33,7 +33,7 @@ class SearchRegistry
     }
 
     /**
-     * @param  string  $name
+     * @param string $name
      * @return boolean
      */
     public function hasSearchHandler($name)

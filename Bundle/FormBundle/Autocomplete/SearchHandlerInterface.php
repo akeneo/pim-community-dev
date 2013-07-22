@@ -7,9 +7,9 @@ interface SearchHandlerInterface extends ConverterInterface
     /**
      * Gets search results, that includes found items and any additional information.
      *
-     * @param  string $query
-     * @param  int    $page
-     * @param  int    $perPage
+     * @param string $query
+     * @param int $page
+     * @param int $perPage
      * @return array
      */
     public function search($query, $page, $perPage);

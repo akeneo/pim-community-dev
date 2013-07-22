@@ -40,8 +40,8 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider transformDataProvider
      *
      * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expectedValue
+     * @param mixed $value
+     * @param mixed $expectedValue
      */
     public function testTransform($property, $value, $expectedValue)
     {
@@ -125,7 +125,6 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
         $self = $this;
         $entitiesId1234 = $this->createMockEntityList('id', array(1, 2, 3, 4));
         $entitiesCodeAbc = $this->createMockEntityList('code', array('a', 'b', 'c'));
-
         return array(
             'default' => array(
                 'TestClass',
@@ -206,7 +205,6 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
                 function ($repository, array $ids) use ($self) {
                     $result = $repository->createQueryBuilder('o');
                     $result->where('o.id IN (:values)')->setParameter('values', $ids);
-
                     return $result;
                 },
                 array(1, 2, 3, 4),
@@ -242,13 +240,13 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider reverseTransformFailsDataProvider
      *
-     * @param mixed  $className
-     * @param mixed  $property
-     * @param mixed  $queryBuilderCallback
-     * @param mixed  $value
+     * @param mixed $className
+     * @param mixed $property
+     * @param mixed $queryBuilderCallback
+     * @param mixed $value
      * @param string $expectedException
      * @param string $expectedExceptionMessage
-     * @param array  $expectedCalls
+     * @param array $expectedCalls
      */
     public function testReverseTransformFails(
         $className,
@@ -280,7 +278,6 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
     public function reverseTransformFailsDataProvider()
     {
         $entitiesId1234 = $this->createMockEntityList('id', array(1, 2, 3, 4));
-
         return array(
             'not array' => array(
                 'TestClass',
@@ -373,7 +370,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param \PHPUnit_Framework_MockObject_MockObject|string $mock
-     * @param array                                           $expectedCalls
+     * @param array $expectedCalls
      */
     private function addMockExpectedCalls($mock, array $expectedCalls)
     {
@@ -402,8 +399,8 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create list of mocked entities by id property name and values
      *
-     * @param  string                                     $property
-     * @param  array                                      $values
+     * @param string $property
+     * @param array $values
      * @return \PHPUnit_Framework_MockObject_MockObject[]
      */
     private function createMockEntityList($property, array $values)
@@ -419,8 +416,8 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create mock entity by id property name and value
      *
-     * @param  string                                   $property
-     * @param  mixed                                    $value
+     * @param string $property
+     * @param mixed $value
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockEntity($property, $value)

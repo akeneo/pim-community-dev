@@ -3,6 +3,8 @@
 namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
@@ -307,8 +309,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     /**
      * Create mock entity by id property name and value
      *
-     * @param  string                                   $property
-     * @param  mixed                                    $value
+     * @param string $property
+     * @param mixed $value
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockEntity($property, $value)

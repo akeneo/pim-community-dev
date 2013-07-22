@@ -79,7 +79,6 @@ class OroJquerySelect2HiddenType extends AbstractType
                         if (!$value) {
                             throw new InvalidConfigurationException('The option "entity_class" must be set.');
                         }
-
                         return $value;
                     },
                     'transformer' => function (Options $options, $value) use ($formType) {
@@ -93,7 +92,6 @@ class OroJquerySelect2HiddenType extends AbstractType
                                 )
                             );
                         }
-
                         return $value;
                     }
                 )
@@ -121,7 +119,6 @@ class OroJquerySelect2HiddenType extends AbstractType
                             'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
                         );
                     }
-
                     return $value;
                 }
             )
@@ -130,7 +127,7 @@ class OroJquerySelect2HiddenType extends AbstractType
 
     /**
      * @param OptionsResolverInterface $resolver
-     * @param array                    $defaultConfig
+     * @param array $defaultConfig
      */
     protected function setConfigsNormalizer(OptionsResolverInterface $resolver, array $defaultConfig)
     {
@@ -167,7 +164,7 @@ class OroJquerySelect2HiddenType extends AbstractType
     }
 
     /**
-     * @param  string                $entityClass
+     * @param string $entityClass
      * @return EntityToIdTransformer
      */
     public function createDefaultTransformer($entityClass)
@@ -178,9 +175,9 @@ class OroJquerySelect2HiddenType extends AbstractType
     /**
      * Set data-title attribute to element to show selected value
      *
-     * @param FormView      $view
+     * @param FormView $view
      * @param FormInterface $form
-     * @param array         $options
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

@@ -53,6 +53,7 @@ class OroDateTimeType extends AbstractType
             $view->vars['attr']['data-dateformat'] . ' ' . $view->vars['attr']['data-timeformat'];
     }
 
+
     /**
      * {@inheritdoc}
      */

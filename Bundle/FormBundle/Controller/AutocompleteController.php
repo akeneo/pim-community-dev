@@ -4,6 +4,7 @@ namespace Oro\Bundle\FormBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -13,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\FormBundle\Autocomplete\Security;
+use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 
 /**

@@ -8,10 +8,10 @@ class ArrayToStringTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider transformDataProvider
-     * @param string  $delimiter
+     * @param string $delimiter
      * @param boolean $filterUinqueValues
-     * @param mixed   $value
-     * @param mixed   $expectedValue
+     * @param mixed $value
+     * @param mixed $expectedValue
      */
     public function testTransform($delimiter, $filterUinqueValues, $value, $expectedValue)
     {
@@ -79,10 +79,10 @@ class ArrayToStringTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider reverseTransformDataProvider
-     * @param string  $delimiter
+     * @param string $delimiter
      * @param boolean $filterUinqueValues
-     * @param mixed   $value
-     * @param mixed   $expectedValue
+     * @param mixed $value
+     * @param mixed $expectedValue
      */
     public function testReverseTransform($delimiter, $filterUinqueValues, $value, $expectedValue)
     {
@@ -154,8 +154,8 @@ class ArrayToStringTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string                   $delimiter
-     * @param  boolean                  $filterUinqueValues
+     * @param string $delimiter
+     * @param boolean $filterUinqueValues
      * @return ArrayToStringTransformer
      */
     private function createTestTransfomer($delimiter = ',', $filterUinqueValues = false)
