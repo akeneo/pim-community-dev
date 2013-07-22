@@ -24,11 +24,6 @@ class EmailNotificationHandler extends EventHandlerAbstract
     protected $mailer;
 
     /**
-     * @var ObjectManager
-     */
-    protected $em;
-
-    /**
      * @var string
      */
     protected $sendFrom;
@@ -97,7 +92,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
             );
 
             $this->notify($params);
-            $this->addJob();
+            $this->addJob(self::SEND_COMMAND);
         }
     }
 
@@ -118,18 +113,21 @@ class EmailNotificationHandler extends EventHandlerAbstract
     /**
      * Add swiftmailer spool send task to job queue if it has not been added earlier
      */
-    public function addJob()
+    public function addJob($command, $commandArgs = array())
     {
-        $commandArgs = array(
-            'message-limit' => $this->messageLimit,
-            'env'           => $this->env,
+        $commandArgs = array_merge(
+            array(
+                'message-limit' => $this->messageLimit,
+                'env'           => $this->env,
+            ),
+            $commandArgs
         );
 
         if ($commandArgs['env'] == 'prod') {
             $commandArgs['no-debug'] = true;
         }
 
-        return parent::addJob(self::SEND_COMMAND, $commandArgs);
+        return parent::addJob($command, $commandArgs);
     }
 
     /**

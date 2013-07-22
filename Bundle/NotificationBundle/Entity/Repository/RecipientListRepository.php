@@ -5,6 +5,7 @@ namespace Oro\Bundle\NotificationBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\NotificationBundle\Entity\RecipientList;
+use Oro\Bundle\TagBundle\Entity\ContainAuthorInterface;
 
 class RecipientListRepository extends EntityRepository
 {

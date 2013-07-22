@@ -7,6 +7,11 @@ use JMS\JobQueueBundle\Entity\Job;
 abstract class EventHandlerAbstract implements EventHandlerInterface
 {
     /**
+     * @var ObjectManager
+     */
+    protected $em;
+
+    /**
      * Add command to job queue if it has not been added earlier
      *
      * @return boolean|integer

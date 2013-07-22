@@ -25,5 +25,7 @@ class NotificationEventTest extends \PHPUnit_Framework_TestCase
     public function testGetEntity()
     {
         $this->assertEquals($this->entity, $this->event->getEntity());
+        $this->event->setEntity(null);
+        $this->assertEquals(null, $this->event->getEntity());
     }
 }
