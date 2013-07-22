@@ -8,10 +8,26 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
+use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
+use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+
+/**
+ * @TODO Cover with unit tests
+ */
 class WorkflowDataNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    /**
+     * Local cache for StepAttributes of Workflow
+     *
+     * @var Collection[]
+     */
+    protected $stepAttributesByWorkflow = array();
+
     /**
      * @var array
      */
@@ -65,9 +81,6 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
 
     /**
      * {@inheritdoc}
-     *
-     * @TODO Cover with unit tests
-     * @TODO Use Workflow StepAttributes to normalize values, use EntityManager to normalize entities.
      */
     public function normalize($object, $format = null, array $context = array())
     {
@@ -79,6 +92,11 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
 
             if (array_key_exists($attributeName, $this->callbacks)) {
                 $attributeValue = call_user_func($this->callbacks[$attributeName], $attributeValue);
+            }
+
+            $stepAttribute = $this->getStepAttributes()->get($attributeName);
+            if ($stepAttribute) {
+                $attributeValue = $this->normalizeStepAttribute($stepAttribute, $attributeValue);
             }
 
             if (null !== $attributeValue &&
@@ -96,18 +114,48 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
 
     /**
      * {@inheritdoc}
-     *
-     * @TODO Use Workflow StepAttributes to normalize values, use EntityManager to normalize entities.
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         $object = new $class;
 
-        foreach ($data as $attribute => $value) {
-            $object->set($attribute, $value);
+        foreach ($data as $attributeName => $attributeValue) {
+            $stepAttribute = $this->getStepAttributes()->get($attributeName);
+
+            if ($stepAttribute) {
+                $attributeValue = $this->denormalizeStepAttribute($stepAttribute, $attributeValue);
+            }
+
+            $object->set($attributeName, $attributeValue);
         }
 
         return $object;
+    }
+
+    /**
+     * Normalizes a value of StepAttribute into a scalar
+     *
+     * @param StepAttribute $stepAttribute
+     * @param mixed $attributeValue
+     * @return mixed
+     */
+    public function normalizeStepAttribute(StepAttribute $stepAttribute, $attributeValue)
+    {
+        // @TODO Check is attribute is an entity and return it's id
+        return $attributeValue;
+    }
+
+    /**
+     * Denormalizes value of StepAttrubute back into it's model representation
+     *
+     * @param StepAttribute $stepAttribute
+     * @param mixed $attributeValue
+     * @return mixed
+     */
+    public function denormalizeStepAttribute(StepAttribute $stepAttribute, $attributeValue)
+    {
+        // @TODO Check is attribute is an entity and convert it's id to object
+        return $attributeValue;
     }
 
     /**
@@ -136,5 +184,40 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
     {
         $WorkflowDataClass = 'Oro\Bundle\WorkflowBundle\Model\WorkflowData';
         return $WorkflowDataClass == $class || in_array($WorkflowDataClass, class_parents($class));
+    }
+
+    /**
+     * Get collection of StepAttributes for current Workflow
+     *
+     * @return Collection
+     * @throws WorkflowException
+     */
+    protected function getStepAttributes()
+    {
+        $workflow = $this->getWorkflow();
+        $workflowName = $workflow->getName();
+        if (!isset($this->stepAttributesByWorkflow[$workflowName])) {
+            $this->stepAttributesByWorkflow[$workflowName] = $workflow->getStepAttributes();
+        }
+        return $this->stepAttributesByWorkflow[$workflowName];
+    }
+
+    /**
+     * Get Workflow
+     *
+     * @return Workflow
+     * @throws WorkflowException
+     */
+    protected function getWorkflow()
+    {
+        if (!$this->serializer instanceof WorkflowAwareSerializer) {
+            throw new WorkflowException(
+                sprintf(
+                    'Cannot get Workflow. Serializer must implement %s',
+                    'Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer'
+                )
+            );
+        }
+        return $this->serializer->getWorkflow();
     }
 }

@@ -1,7 +1,10 @@
 parameters:
     oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
-    oro_workflow.workflow_item_data_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
-    oro_workflow.workflow_item_serialize_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber
+    oro_workflow.registry.class: Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
+
+    oro_workflow.data_serialize.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
+    oro_workflow.data_serialize.normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
+    oro_workflow.data_serialize.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
 
     oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
 
@@ -11,22 +14,28 @@ services:
         arguments:
             - %kernel.bundles%
 
-    oro_workflow.workflow_item_data_serializer:
-        class: %serializer.class%
-        arguments:
-          - [@oro_workflow.workflow_item_data_normalizer]
-          - [@serializer.encoder.json]
-
-    oro_workflow.workflow_item_data_normalizer:
-        class: %oro_workflow.workflow_item_data_normalizer.class%
-        arguments: [@doctrine]
-
-    oro_workflow.workflow_item_serialize_subscriber:
-        class: %oro_workflow.workflow_item_serialize_subscriber.class%
-        arguments:
-            - @oro_workflow.workflow_item_data_serializer
-        tags:
-            - { name: doctrine.event_subscriber }
-
     oro_workflow.context_accessor:
         class: %oro_workflow.context_accessor.class%
+
+    oro_workflow.registry:
+        class: %oro_workflow.registry.class%
+
+    # Services for WorkflowData serialization
+    oro_workflow.data_serialize.serializer:
+        class: %oro_workflow.data_serialize.serializer.class%
+        arguments:
+          - [@oro_workflow.data_serialize.normalizer]
+          - [@serializer.encoder.json]
+        calls:
+          - [setWorkflowRegistry, [@oro_workflow.registry]]
+
+    oro_workflow.data_serialize.normalizer:
+        class: %oro_workflow.data_serialize.normalizer.class%
+        arguments: [@doctrine]
+
+    oro_workflow.data_serialize.doctrine_subscriber:
+        class: %oro_workflow.data_serialize.doctrine_subscriber.class%
+        arguments:
+            - @oro_workflow.data_serialize.serializer
+        tags:
+            - { name: doctrine.event_subscriber }

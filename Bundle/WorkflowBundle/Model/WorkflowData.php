@@ -68,6 +68,16 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
+     * Is data empty
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->data);
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */
