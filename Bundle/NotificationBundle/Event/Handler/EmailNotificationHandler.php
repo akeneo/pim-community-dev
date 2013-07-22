@@ -49,7 +49,6 @@ class EmailNotificationHandler implements EventHandlerInterface
      */
     public function handle(NotificationEvent $event, $matchedNotifications)
     {
-        $a = 1;
         foreach ($matchedNotifications as $notification) {
             $params = array(
                 'event' => $event,
