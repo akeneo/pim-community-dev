@@ -108,7 +108,7 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
             $subblocks[] = array(
                 'code'  => $code,
                 'title' => $data['title'],
-                'data'  => array()
+                'data'  => array('some_data')
             );
             $subBlock = new SubBlockConfig($code);
 
@@ -121,6 +121,9 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
 
             $subBlock->setCode($code);
             $this->assertEquals($code, $subBlock->getCode());
+
+            $subBlock->setData(array('some_data'));
+            $this->assertEquals(array('some_data'), $subBlock->getData());
 
             /** test SubBlockConfig addSubBlock */
             $this->blockConfig->addSubBlock($subBlock);

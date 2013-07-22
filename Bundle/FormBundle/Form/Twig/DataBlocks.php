@@ -130,7 +130,7 @@ class DataBlocks
                 $subBlockCode = $name . '__subblock';
             }
 
-            $subBlock = $this->createSubBlock($subBlockCode, array('title' => ''));
+            $subBlock = $this->createSubBlock($subBlockCode, array('title' => null));
             $block->addSubBlock($subBlock);
         }
 
