@@ -65,6 +65,11 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
                     'title' => null,
                     'data'  => array(null),
                 ),
+                'first' => array(
+                    'code'  => 'first',
+                    'title' => null,
+                    'data'  => array(null),
+                ),
             ),
         ),
     );
@@ -121,7 +126,8 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
         $builder->add('text_2', null, array('block' => 'first'));
         $builder->add('text_3', null, array('block' => 'second'));
         $builder->add('text_4', null, array('block' => 'third'));
-        $builder->add('text_5', null);
+        $builder->add('text_5', null, array('block' => 'third', 'subblock' => 'first'));
+        $builder->add('text_6', null);
 
         $formView = $builder->getForm()->createView();
 
