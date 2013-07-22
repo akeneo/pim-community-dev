@@ -3,7 +3,6 @@ oro_entity_config:
         entity:
             items:
                 auditable:
-                    priority:               60
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -17,7 +16,7 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          entity
+                            block:          auditable
                             label:          'Auditable'
         field:
             items:
@@ -39,5 +38,5 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          entity
+                            block:          auditable
                             label:          'Auditable'
