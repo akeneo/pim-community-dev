@@ -619,22 +619,22 @@ Oro.Navigation = Backbone.Router.extend({
         }, this));
 
         $(document).on('click', '.page-refresh', _.bind(function() {
-            var data = this.getCachedData();
-            var formState;
-            if (data.states) {
-                formState = data.states.getObjectCache('form');
-                /**
-                 *  saving form state for future restore after content refresh, uncomment after new page states logic is
-                 *  implemented
-                 */
-                //this.formState = formState;
-            }
-            if (formState && formState['form_data'].length) {
-                this.confirmModal.open();
-            } else {
-                this.refreshPage();
-            }
-        }, this)
+                var data = this.getCachedData();
+                var formState;
+                if (data.states) {
+                    formState = data.states.getObjectCache('form');
+                    /**
+                     *  saving form state for future restore after content refresh, uncomment after new page states logic is
+                     *  implemented
+                     */
+                    //this.formState = formState;
+                }
+                if (formState && formState['form_data'].length) {
+                    this.confirmModal.open();
+                } else {
+                    this.refreshPage();
+                }
+            }, this)
         );
 
         this.processForms(this.selectors.forms);

@@ -5,10 +5,10 @@ $(document).ready(function () {
     if ((typeof Oro.hashNavigationEnabled == "undefined") ||
         !Oro.hashNavigationEnabled() ||
         !Oro.Navigation.prototype.checkHashForUrl()) {
-        if ($('#page-title').size()) {
-            document.title = $('#page-title').text();
-        }
-        hideProgressBar();
+            if ($('#page-title').size()) {
+                document.title = $('#page-title').text();
+            }
+            hideProgressBar();
     }
 
     /* side bar functionality */
@@ -105,9 +105,9 @@ $(document).ready(function () {
         });
     })
 
-    /* ============================================================
-     *Oro Dropdown close prevent
-     * ============================================================ */
+/* ============================================================
+ *Oro Dropdown close prevent
+ * ============================================================ */
     var dropdownToggles = $('.oro-dropdown-toggle');
     dropdownToggles.click(function(e) {
         $(this).parent().toggleClass('open')
@@ -125,7 +125,7 @@ $(document).ready(function () {
         $('.open:not(._currently_clicked)').removeClass('open')
         clickingTarget.removeClass('_currently_clicked');
     });
-});
+ });
 
 function hideProgressBar() {
     if ($('#progressbar').is(':visible')) {

@@ -161,13 +161,13 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance.useCache) {
             var pinnedItem = this.getItemForCurrentPage(true);
             if (pinnedItem.length) {
-                var hashUrl = Oro.hashNavigationInstance.getHashUrl(true, true);
-                _.each(pinnedItem, function(item) {
-                    if (item.get('url') !== hashUrl) {
-                        item.set('url', hashUrl);
-                        item.save();
-                    }
-                }, this);
+                 var hashUrl = Oro.hashNavigationInstance.getHashUrl(true, true);
+                 _.each(pinnedItem, function(item) {
+                     if (item.get('url') !== hashUrl) {
+                         item.set('url', hashUrl);
+                         item.save();
+                     }
+                 }, this);
             }
         }
     },
