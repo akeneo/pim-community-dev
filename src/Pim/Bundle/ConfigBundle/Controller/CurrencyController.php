@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -57,6 +56,8 @@ class CurrencyController extends Controller
     }
 
     /**
+     * Activate/Desactivate a currency
+     *
      * @param Currency $currency
      *
      * @Route("/{id}/toggle", requirements={"id"="\d+"})
@@ -65,15 +66,16 @@ class CurrencyController extends Controller
      */
     public function toggleAction(Currency $currency)
     {
-        $currency->toggleActivation();
+        try {
+            $currency->toggleActivation();
+            $this->getEntityManager()->flush();
 
-        $this->getEntityManager()->flush();
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirect($this->generateUrl('pim_config_currency_index'));
+            $this->get('session')->getFlashBag()->add('success', 'Currency is successfully updated.');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashbag()->add('error', 'Action failed. Please retry.');
         }
+
+        return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }
 
     /**
@@ -84,15 +86,5 @@ class CurrencyController extends Controller
     protected function getEntityManager()
     {
         return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get currency repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCurrencyRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
     }
 }
