@@ -239,7 +239,7 @@ class RecipientList
             $propertyPath = $context->getPropertyPath() . '.recipientList';
             $context->addViolationAt(
                 $propertyPath,
-                'oro.notification.recipient_list.empty.message'
+                'oro.notification.validators.recipient_list.empty.message'
             );
         }
     }

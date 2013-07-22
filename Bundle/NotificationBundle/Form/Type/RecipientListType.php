@@ -26,12 +26,10 @@ class RecipientListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            $builder->create(
-                'users',
-                'oro_user_multiselect',
-                array(
-                    'required' => false
-                )
+            'users',
+            'oro_user_multiselect',
+            array(
+                'required' => false
             )
         );
 
