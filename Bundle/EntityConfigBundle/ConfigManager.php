@@ -29,6 +29,10 @@ use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ */
 class ConfigManager
 {
     /**
