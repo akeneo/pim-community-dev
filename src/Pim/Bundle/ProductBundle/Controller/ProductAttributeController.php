@@ -212,6 +212,7 @@ class ProductAttributeController extends Controller
      * @param Attribute $entity
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

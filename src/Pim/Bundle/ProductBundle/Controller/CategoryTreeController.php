@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
 
@@ -319,6 +320,7 @@ class CategoryTreeController extends Controller
      *     requirements={"_format"="json|html", "id"="\d+"},
      *     defaults={"_format"="html", "id"="\d+"}
      * )
+     * @Method("DELETE")
      * @Template()
      *
      * @return array
