@@ -17,13 +17,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         ),
     );
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Please provide valid twig template as third argument
+     */
     public function testConstructor()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Please provide valid twig template as third argument'
-        );
-
         $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
             ->getMockForAbstractClass();
         $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
@@ -46,8 +45,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $translator->expects($this->once())
             ->method('getTranslations')
             ->will($this->returnValue(array()));
-        $controller = new Controller($translator, $templating,
-            'OroTranslationBundle:Translation:translation.js.twig', array());
+        $controller = new Controller(
+            $translator,
+            $templating,
+            'OroTranslationBundle:Translation:translation.js.twig',
+            array()
+        );
 
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
@@ -97,11 +100,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $controller = new Controller($translator, $templating,
-            'OroTranslationBundle:Translation:translation.js.twig', array(
-                'domains' => array(),
-                'debug' => false
-            ));
+        $controller = new Controller(
+            $translator,
+            $templating,
+            'OroTranslationBundle:Translation:translation.js.twig',
+            array()
+        );
         $result = call_user_func_array(array($controller, 'renderJsTranslationContent'), $params);
 
         $this->assertEquals($expected, $result);
