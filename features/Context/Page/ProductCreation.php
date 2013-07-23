@@ -3,6 +3,7 @@
 namespace Context\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
