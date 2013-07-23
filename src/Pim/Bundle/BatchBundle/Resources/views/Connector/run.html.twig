@@ -1,0 +1,47 @@
+{% extends 'PimBatchBundle::layout.html.twig' %}
+
+{% set title = 'Prepare running' %}
+
+{% block page_container %}
+    {% block content %}
+
+        <form action="{{ path('pim_batch_connector_run', { id: connector.id })}}" method="POST">
+
+            {% set buttons %}
+                {{ elements.backLink(path('pim_batch_connector_index')) }}
+                {{ elements.submitBtn("Run" | trans) }}
+            {% endset %}
+    
+            {{ elements.page_header(title, buttons) }}
+
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>{{ "ID" | trans }}</th>
+                        <th>{{ "Description" | trans }}</th>
+                        <th>{{ "Type" | trans }}</th>
+                        <th>{{ "Service" | trans }}</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr>
+                        <td>{{ connector.id }}</td>
+                        <td>{{ connector.description }}</td>
+                        <td>Connector</td>
+                        <td>{{ (connector.serviceId ~ ".label") | trans }}</td>
+                    </tr>
+                    {% for job in connector.jobs %}
+                    <tr>
+                        <td>-</td>
+                        <td> {{ job.description }}</td>
+                        <td>Job</td>
+                        <td>{{ (job.serviceId ~ ".label") | trans }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    
+    {% endblock %}
+{% endblock %}

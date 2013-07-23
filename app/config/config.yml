@@ -86,6 +86,7 @@ doctrine:
             Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
             Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
             Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
+            Pim\Bundle\ImportExportBundle\Model\ExportInterface:  Pim\Bundle\ImportExportBundle\Entity\Export
 
 # Swiftmailer Configuration
 swiftmailer:
