@@ -20,7 +20,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $this->setExpectedException(
-            'InvalidArgumentException', 'Please provide valid twig template as third argument'
+            'InvalidArgumentException',
+            'Please provide valid twig template as third argument'
         );
 
         $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
@@ -36,17 +37,17 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $content = 'CONTENT';
         $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
             ->getMockForAbstractClass();
+        $templating->expects($this->once())
+            ->method('render')
+            ->will($this->returnValue($content));
         $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
-        $controller = $this->getMock(
-            'Oro\Bundle\TranslationBundle\Controller\Controller',
-            array('renderJsTranslationContent'),
-            array($translator, $templating, 'OroTranslationBundle:Translation:translation.js.twig', array())
-        );
-        $controller->expects($this->once())
-            ->method('renderJsTranslationContent')
-            ->will($this->returnValue($content));
+        $translator->expects($this->once())
+            ->method('getTranslations')
+            ->will($this->returnValue(array()));
+        $controller = new Controller($translator, $templating,
+            'OroTranslationBundle:Translation:translation.js.twig', array());
 
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
