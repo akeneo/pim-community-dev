@@ -3,24 +3,24 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Manager\MediaManager;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ProductBundle\Form\Type\ProductType;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
-use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Form\Type\ProductType;
+use Pim\Bundle\ProductBundle\Manager\MediaManager;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 
 /**
  * Product Controller
@@ -229,7 +229,7 @@ class ProductController extends Controller
      * @param integer $id Id of the product to remove
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
-     *
+     * @Method("DELETE")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction($id)

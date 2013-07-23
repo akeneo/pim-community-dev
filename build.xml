@@ -2,7 +2,7 @@
 <project name="pim" default="build">
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -169,12 +169,19 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
+            <arg value="--prefer-dist" />
         </exec>
     </target>
 
     <target name="dumpassets" description="Dump the assets">
         <exec executable="app/console">
-          <arg value="assetic:dump" />
+            <arg value="oro:navigation:init" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="assetic:dump" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="oro:assetic:dump" />
         </exec>
     </target>
 
@@ -194,6 +201,9 @@
           <arg value="--complete" />
           <arg value="--force" />
         </exec>
+    </target>
+
+    <target name="fixtures" description="Load fixtures">
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />

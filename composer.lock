@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6a42999b9630ffe4801d96945cd2eb19",
+    "hash": "1f8d7e5d9b3f22da5fe37c41cc2364c9",
     "packages": [
         {
             "name": "akeneo/DemoBundle",
@@ -240,6 +240,7 @@
         {
             "name": "besimple/soap-common",
             "version": "dev-master",
+            "target-dir": "BeSimple/SoapCommon",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
@@ -251,11 +252,28 @@
                 "reference": "ad2736aa3c9920fcda5392544af551ba645b7888",
                 "shasum": ""
             },
+            "require": {
+                "ass/xmlsecurity": "dev-master",
+                "ext-soap": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "dev-master"
+            },
             "type": "library",
-            "description": "Build and consume SOAP Common based web services",
-            "keywords": [ "soap", "soap-common" ],
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
-            "license": "MIT",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "BeSimple\\SoapCommon": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Francis Besset",
@@ -270,24 +288,12 @@
                     "email": "mail@andreass.net"
                 }
             ],
-            "require": {
-                "php": ">=5.3.0",
-                "ext-soap": "*",
-                "ass/xmlsecurity": "dev-master"
-            },
-            "require-dev": {
-                "mikey179/vfsStream": "dev-master"
-            },
-            "autoload": {
-                "psr-0": { "BeSimple\\SoapCommon": "" }
-            },
-            "target-dir": "BeSimple/SoapCommon",
-            "minimum-stability": "dev",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            }
+            "description": "Build and consume SOAP Common based web services",
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
+            "keywords": [
+                "soap",
+                "soap-common"
+            ]
         },
         {
             "name": "besimple/soap-server",
@@ -304,11 +310,25 @@
                 "reference": "b029419311a4ff7a12247e6024dbe43be5fbe180",
                 "shasum": ""
             },
+            "require": {
+                "besimple/soap-common": "self.version",
+                "ext-soap": "*",
+                "php": ">=5.3.0"
+            },
             "type": "library",
-            "description": "Build and consume SOAP Server based web services",
-            "keywords": [ "soap", "soap-server" ],
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
-            "license": "MIT",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "BeSimple\\SoapServer": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Francis Besset",
@@ -323,21 +343,12 @@
                     "email": "mail@andreass.net"
                 }
             ],
-            "require": {
-                "php": ">=5.3.0",
-                "ext-soap": "*",
-                "besimple/soap-common": "self.version"
-            },
-            "autoload": {
-                "psr-0": { "BeSimple\\SoapServer": "" }
-            },
-            "target-dir": "BeSimple/SoapServer",
-            "minimum-stability": "dev",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            }
+            "description": "Build and consume SOAP Server based web services",
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
+            "keywords": [
+                "soap",
+                "soap-server"
+            ]
         },
         {
             "name": "ddeboer/data-import",
@@ -519,7 +530,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -607,12 +618,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "3db3ab843ff76774bee4679d4cb3a10cffb0a935"
+                "reference": "623caf42551b416460df786154d89bc50e3d1798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/3db3ab843ff76774bee4679d4cb3a10cffb0a935",
-                "reference": "3db3ab843ff76774bee4679d4cb3a10cffb0a935",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/623caf42551b416460df786154d89bc50e3d1798",
+                "reference": "623caf42551b416460df786154d89bc50e3d1798",
                 "shasum": ""
             },
             "require": {
@@ -666,7 +677,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2013-05-26 05:21:22"
+            "time": "2013-07-23 08:27:26"
         },
         {
             "name": "doctrine/common",
@@ -1040,9 +1051,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1101,7 +1112,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1611,12 +1622,12 @@
             "version": "v0.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/avalanche123/Imagine.git",
+                "url": "https://github.com/avalanche123/Imagine",
                 "reference": "v0.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/v0.4.1",
+                "url": "https://github.com/avalanche123/Imagine/archive/v0.4.1.zip",
                 "reference": "v0.4.1",
                 "shasum": ""
             },
@@ -1660,12 +1671,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Incenteev/ParameterHandler.git",
-                "reference": "8e559af963b6442a208fcd8f9c675e60cf99e0f8"
+                "reference": "d76d17d14abfaa5103342a43cfeb4126000abab6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/8e559af963b6442a208fcd8f9c675e60cf99e0f8",
-                "reference": "8e559af963b6442a208fcd8f9c675e60cf99e0f8",
+                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/d76d17d14abfaa5103342a43cfeb4126000abab6",
+                "reference": "d76d17d14abfaa5103342a43cfeb4126000abab6",
                 "shasum": ""
             },
             "require": {
@@ -1673,12 +1684,14 @@
                 "symfony/yaml": "~2.0"
             },
             "require-dev": {
-                "composer/composer": "*"
+                "composer/composer": "1.0.*@dev",
+                "phpspec/prophecy-phpunit": "~1.0",
+                "symfony/filesystem": "~2.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -1701,7 +1714,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2013-07-15 09:27:51"
+            "time": "2013-07-20 18:35:49"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1791,7 +1804,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1975,7 +1988,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2026,7 +2039,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2126,7 +2139,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2194,7 +2207,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -3009,7 +3022,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-07-18 14:43:44"
+            "time": "2013-07-23 08:47:20"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3097,7 +3110,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -3721,13 +3734,13 @@
                 "symfony/framework-bundle": "~2.1"
             },
             "require-dev": {
-                "symfony/class-loader": "~2.1",
-                "symfony/console": "~2.1",
-                "symfony/css-selector": "~2.1",
-                "symfony/dom-crawler": "~2.1",
-                "symfony/form": "~2.1",
-                "symfony/twig-bundle": "~2.1",
-                "symfony/yaml": "~2.1"
+                "symfony/class-loader": ">=2.1,<3.0",
+                "symfony/console": ">=2.1,<3.0",
+                "symfony/css-selector": ">=2.1,<3.0",
+                "symfony/dom-crawler": ">=2.1,<3.0",
+                "symfony/form": ">=2.1,<3.0",
+                "symfony/twig-bundle": ">=2.1,<3.0",
+                "symfony/yaml": ">=2.1,<3.0"
             },
             "suggest": {
                 "symfony/twig-bundle": "~2.1"
@@ -3930,12 +3943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "40f7e6875fdf15cddebdd21a7be791023c6a0255"
+                "reference": "b45f18b81d52a730c5857a5f886e6b0d96368c89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/40f7e6875fdf15cddebdd21a7be791023c6a0255",
-                "reference": "40f7e6875fdf15cddebdd21a7be791023c6a0255",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/b45f18b81d52a730c5857a5f886e6b0d96368c89",
+                "reference": "b45f18b81d52a730c5857a5f886e6b0d96368c89",
                 "shasum": ""
             },
             "require": {
@@ -4030,7 +4043,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-07-17 08:47:37"
+            "time": "2013-07-21 20:18:49"
         },
         {
             "name": "twig/extensions",
@@ -4915,9 +4928,9 @@
                 "symfony/finder": "~2.0"
             },
             "require-dev": {
-                "symfony/config": "~2.0",
-                "symfony/translation": "~2.0",
-                "symfony/yaml": "~2.0"
+                "symfony/config": ">=2.0,<3.0",
+                "symfony/translation": ">=2.0,<3.0",
+                "symfony/yaml": ">=2.0,<3.0"
             },
             "suggest": {
                 "symfony/config": "If you want to use Config component to manage resources",
@@ -5087,7 +5100,7 @@
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "~1.0"
+                "behat/mink-goutte-driver": ">=1.0,<2.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -5400,7 +5413,8 @@
     "stability-flags": {
         "oro/platform": 20,
         "akeneo/demobundle": 20,
-        "knplabs/knp-gaufrette-bundle": 20
+        "knplabs/knp-gaufrette-bundle": 20,
+        "behat/behat": 0
     },
     "platform": {
         "php": ">=5.3.3"

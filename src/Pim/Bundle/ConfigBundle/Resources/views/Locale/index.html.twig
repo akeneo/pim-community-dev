@@ -13,9 +13,7 @@
 
     {% set title = 'Locales overview'|trans %}
 
-    {% set buttons %}
-        <a class="btn btn-primary pull-right" href="{{ path('pim_config_locale_create') }}">{{ 'New locale'|trans }}</a>
-    {% endset %}
+    {% set buttons = elements.createBtn('New locale', path('pim_config_locale_create')) %}
 
     {{ elements.page_header(title, buttons) }}
 

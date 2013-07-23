@@ -1,11 +1,12 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Pim\Bundle\ProductBundle\Entity\ExportProfile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Pim\Bundle\ProductBundle\Entity\ExportProfile;
 
 /**
  * Export profile Controller
@@ -62,7 +63,7 @@ class ExportProfileController extends Controller
     public function editAction(ExportProfile $profile)
     {
         if ($this->get('pim_product.form.handler.export_profile')->process($profile)) {
-            $this->get('session')->getFlashBag()->add('success', 'Export profile successfully saved');
+            $this->addFlash('success', 'Export profile successfully saved');
 
             return $this->redirect(
                 $this->generateUrl('pim_product_exportprofile_index')
@@ -80,6 +81,7 @@ class ExportProfileController extends Controller
      * @param ExportProfile $profile
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -88,7 +90,7 @@ class ExportProfileController extends Controller
         $this->getEntityManager()->remove($profile);
         $this->getEntityManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Export Profile successfully removed');
+        $this->addFlash('success', 'Export profile successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_exportprofile_index'));
     }

@@ -1,7 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Category tree overview'|trans %}
-
 {% block head_script %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
@@ -18,9 +16,7 @@
 
         <div id="form-tab">
 
-            <div class="form-row">
-                <h3>{{ title|trans }}</h3>
-            </div>
+            {{ elements.page_header('Category tree overview'|trans) }}
 
             <div id="list">
                 <table id="product_grid" border="1"></table>

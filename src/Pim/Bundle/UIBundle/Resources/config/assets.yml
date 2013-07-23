@@ -12,7 +12,6 @@ js:
     - '@PimUIBundle/Resources/public/js/pim-ajax.js'
     - '@PimUIBundle/Resources/public/js/jquery.scopableField.js'
     - '@PimUIBundle/Resources/public/js/jquery.currencyField.js'
-    - '@PimUIBundle/Resources/public/js/unsafe-method-link.js'
     - '@OroUIBundle/Resources/public/lib/jstree/jquery.cookie.js'
 css:
   pim_ui:
