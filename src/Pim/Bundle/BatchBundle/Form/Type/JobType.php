@@ -12,8 +12,6 @@ use Pim\Bundle\BatchBundle\Entity\Connector;
 
 /**
  * Base job type
- *
- *
  */
 class JobType extends AbstractType
 {

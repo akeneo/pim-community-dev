@@ -1,7 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Job;
-
+namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
