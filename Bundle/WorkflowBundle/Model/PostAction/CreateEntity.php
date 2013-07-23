@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
+use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class CreateEntity extends AbstractPostAction
 {
@@ -21,10 +23,12 @@ class CreateEntity extends AbstractPostAction
     protected $registry;
 
     /**
+     * @param ContextAccessor $contextAccessor
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ContextAccessor $contextAccessor, ManagerRegistry $registry)
     {
+        parent::__construct($contextAccessor);
         $this->registry = $registry;
     }
 
@@ -48,6 +52,9 @@ class CreateEntity extends AbstractPostAction
 
         if (empty($options['attribute'])) {
             throw new InvalidParameterException('Attribute name parameter is required');
+        }
+        if (!$options['attribute'] instanceof PropertyPath) {
+            throw new InvalidParameterException('Attribute must be valid property definition.');
         }
 
         $this->options = $options;

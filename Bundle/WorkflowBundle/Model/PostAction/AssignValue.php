@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class AssignValue extends AbstractPostAction
 {
@@ -16,7 +17,27 @@ class AssignValue extends AbstractPostAction
      */
     public function execute($context)
     {
-        $this->contextAccessor->setValue($context, $this->options[0], $this->options[1]);
+        $this->contextAccessor->setValue($context, $this->getAttribute(), $this->getValue());
+    }
+
+    /**
+     * Get target.
+     *
+     * @return mixed
+     */
+    protected function getAttribute()
+    {
+        return array_key_exists('attribute', $this->options) ? $this->options['attribute'] : $this->options[0];
+    }
+
+    /**
+     * Get value.
+     *
+     * @return mixed
+     */
+    protected function getValue()
+    {
+        return array_key_exists('value', $this->options) ? $this->options['value'] : $this->options[1];
     }
 
     /**
@@ -25,9 +46,20 @@ class AssignValue extends AbstractPostAction
     public function initialize(array $options)
     {
         if (count($options) != 2) {
-            throw new InvalidParameterException('Assignee and assigned parameters are required.');
+            throw new InvalidParameterException('Attribute and value parameters are required.');
         }
+
         $this->options = $options;
+
+        if (!isset($options['attribute']) && !isset($options[0])) {
+            throw new InvalidParameterException('Attribute must be defined.');
+        }
+        if (!isset($options['value']) && !isset($options[1])) {
+            throw new InvalidParameterException('Value must be defined.');
+        }
+        if (!($this->getAttribute() instanceof PropertyPath)) {
+            throw new InvalidParameterException('Attribute must be valid property definition.');
+        }
         return $this;
     }
 }

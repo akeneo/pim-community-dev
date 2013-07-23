@@ -17,59 +17,105 @@ class CreateEntityTest extends \PHPUnit_Framework_TestCase
      */
     protected $postAction;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $registry;
+
     protected function setUp()
     {
         $this->contextAccessor = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\ContextAccessor')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->postAction = new CreateEntity($this->contextAccessor);
+
+        $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->postAction = new CreateEntity($this->contextAccessor, $this->registry);
     }
 
     /**
-     * @param mixed $options
-     * @dataProvider invalidOptionsDataProvider
      * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Class name and property parameters are required
+     * @expectedExceptionMessage Class name parameter is required
      */
-    public function testInitializeException($options)
+    public function testInitializeExceptionNoClassName()
     {
-        $this->postAction->initialize($options);
-    }
-
-    public function invalidOptionsDataProvider()
-    {
-        return array(
-            array(array()),
-            array(array(1))
-        );
+        $this->postAction->initialize(array('some' => 1, 'attribute' => $this->getPropertyPath()));
     }
 
     /**
-     * @param mixed $options
-     * @dataProvider validOptionsDataProvider
+     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedExceptionMessage Attribute name parameter is required
      */
-    public function testInitialize($options)
+    public function testInitializeExceptionNoAttribute()
     {
+        $this->postAction->initialize(array('class' => 'stdClass', 'some' => $this->getPropertyPath()));
+    }
+
+    /**
+     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedExceptionMessage Attribute must be valid property definition.
+     */
+    public function testInitializeExceptionInvalidAttribute()
+    {
+        $this->postAction->initialize(array('class' => 'stdClass', 'attribute' => 'string'));
+    }
+
+    public function testInitialize()
+    {
+        $options = array('class' => 'stdClass', 'attribute' => $this->getPropertyPath());
         $this->assertInstanceOf(
             'Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface',
             $this->postAction->initialize($options)
         );
-    }
-
-    public function validOptionsDataProvider()
-    {
-        return array(
-            array(array('stdClass', 'test'))
-        );
+        $this->assertAttributeEquals($options, 'options', $this->postAction);
     }
 
     public function testExecute()
     {
         $context = array();
+        $options = array('class' => 'stdClass', 'attribute' => $this->getPropertyPath());
         $this->contextAccessor->expects($this->once())
             ->method('setValue')
-            ->with($context, 'test', $this->isInstanceOf('stdClass'));
-        $this->postAction->initialize(array('stdClass', 'test'));
+            ->with($context, $options['attribute'], $this->isInstanceOf('stdClass'));
+
+        $em = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $em->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf('stdClass'));
+        $em->expects($this->once())
+            ->method('flush')
+            ->with($this->isInstanceOf('stdClass'));
+
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->will($this->returnValue($em));
+
+        $this->postAction->initialize($options);
         $this->postAction->execute($context);
+    }
+
+    /**
+     * @expectedException Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
+     * @expectedExceptionMessage Entity class "stdClass" is not manageable.
+     */
+    public function testExecuteException()
+    {
+        $options = array('class' => 'stdClass', 'attribute' => $this->getPropertyPath());
+        $context = array();
+        $this->contextAccessor->expects($this->never())
+            ->method('setValue');
+        $this->postAction->initialize($options);
+        $this->postAction->execute($context);
+    }
+
+    protected function getPropertyPath()
+    {
+        return $this->getMockBuilder('Symfony\Component\PropertyAccess\PropertyPath')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
