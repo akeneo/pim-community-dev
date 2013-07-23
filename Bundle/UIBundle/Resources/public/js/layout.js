@@ -125,6 +125,10 @@ $(document).ready(function () {
         $('.open:not(._currently_clicked)').removeClass('open')
         clickingTarget.removeClass('_currently_clicked');
     });
+
+    $('#main-menu').mouseover(function() {
+        $('.open').removeClass('open');
+    })
  });
 
 function hideProgressBar() {

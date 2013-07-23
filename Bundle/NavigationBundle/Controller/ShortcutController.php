@@ -34,6 +34,7 @@ class ShortcutController extends Controller
         $shortcuts = $provider->get('shortcuts');
         $menuItems = $provider->get('application_menu');
         $result = array_merge($this->getResults($shortcuts), $this->getResults($menuItems));
+        ksort($result);
 
         return array(
             'actionsList'  => $result,
