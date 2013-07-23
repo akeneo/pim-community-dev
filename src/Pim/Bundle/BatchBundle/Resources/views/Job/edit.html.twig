@@ -1,23 +1,21 @@
-{% extends bap.layout is defined ? bap.layout : 'PimBatchBundle::layout.html.twig' %}
+{% extends 'PimBatchBundle::layout.html.twig' %}
 
 {% set title = job.id ? "Edit job" : "Create job" %}
 
-{% block content %}
+{% block page_container %}
+    {% block content %}
 
-    <form action="{{ job.id ? path('pim_batch_job_edit', { id: job.id }) : path('pim_batch_job_create', { id: connector.id }) }}" method="POST">
+        <form action="{{ job.id ? path('pim_batch_job_edit', { id: job.id }) : path('pim_batch_job_create', { id: connector.id }) }}" method="POST">
 
-        <fieldset>
-            <legend>
-                {{ title | trans }}
-                <a class="btn btn-primary pull-right" href="{{ path('pim_batch_connector_index') }}">{{ "Back" | trans }}</a>
-            </legend>
-    
+            {% set buttons %}
+                {{ elements.backLink(path('pim_batch_connector_index')) }}
+                {{ elements.submitBtn }}
+            {% endset %}
+
+            {{ elements.page_header(title, buttons) }}
+
             {{ form_widget(form) }}
+        </form>
     
-            <div class="form-row">
-                <button class="btn btn-large btn-primary pull-right" type="submit">{{ "Save" | trans }}</button>
-            </div>
-        </fieldset>
-    </form>
-
+    {% endblock %}
 {% endblock %}

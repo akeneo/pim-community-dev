@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,12 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Entity connector is an instance of a configured connector
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @ORM\Table(name="pim_batch_connector")
  * @ORM\Entity()
  */
 class Connector
 {
-
     /**
      * @var integer $id
      *

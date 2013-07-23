@@ -7,12 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Entity job is an instance of a configured job for a configured connector
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @ORM\Table(name="pim_batch_job")
  * @ORM\Entity()
  */
 class Job
 {
-
     /**
      * @var integer $id
      *
@@ -34,7 +37,7 @@ class Job
     /**
      * @var Connector $connector
      *
-     * @ORM\ManyToOne(targetEntity="Connector")
+     * @ORM\ManyToOne(targetEntity="Connector", inversedBy="jobs")
      * @ORM\JoinColumn(name="connector_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $connector;

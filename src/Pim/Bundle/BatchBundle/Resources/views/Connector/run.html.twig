@@ -1,18 +1,19 @@
-{% extends bap.layout is defined ? bap.layout : 'PimBatchBundle::layout.html.twig' %}
+{% extends 'PimBatchBundle::layout.html.twig' %}
 
 {% set title = 'Prepare running' %}
 
-{% block content %}
+{% block page_container %}
+    {% block content %}
 
-    <form action="{{ path('pim_batch_connector_run', { id: connector.id })}}" method="POST">
+        <form action="{{ path('pim_batch_connector_run', { id: connector.id })}}" method="POST">
 
-        <fieldset>
-            <legend>
-                {{ title | trans }}
-                <a class="btn btn-primary pull-right" href="{{ path('pim_batch_connector_index') }}">{{ "Back" | trans }}</a>
-            </legend>
-        
+            {% set buttons %}
+                {{ elements.backLink(path('pim_batch_connector_index')) }}
+                {{ elements.submitBtn("Run" | trans) }}
+            {% endset %}
     
+            {{ elements.page_header(title, buttons) }}
+
             <table class="table table-bordered table-striped table-condensed">
                 <thead>
                     <tr>
@@ -40,12 +41,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-
-            <div class="form-row">
-                <button class="btn btn-large btn-primary pull-right" type="submit">{{ "Run" | trans }}</button>
-            </div>
-        </fieldset>
-
-    </form>
-
+        </form>
+    
+    {% endblock %}
 {% endblock %}
