@@ -3,13 +3,16 @@
 namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 class AuditDatagridManager extends DatagridManager
 {
@@ -52,48 +55,17 @@ class AuditDatagridManager extends DatagridManager
         $fieldId->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Diff Id',
+                'label'       => 'Commit Id',
                 'field_name'  => 'id',
                 'filter_type' => FilterInterface::TYPE_NUMBER,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => false,
                 'show_filter' => false,
+                'show_column' => false,
             )
         );
         $fieldsCollection->add($fieldId);
-
-        $fieldCommitId = new FieldDescription();
-        $fieldCommitId->setName('commit_id');
-        $fieldCommitId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Commit Id',
-                'field_name'  => 'commit_id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldCommitId);
-
-        $fieldCode = new FieldDescription();
-        $fieldCode->setName('code');
-        $fieldCode->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Property',
-                'field_name'  => 'code',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldCode);
 
         $fieldAuthor = new FieldDescription();
         $fieldAuthor->setName('author');
@@ -112,14 +84,15 @@ class AuditDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldAuthor);
 
-
-        $fieldDiff = new FieldDescription();
-        $fieldDiff->setName('value_diff');
-        $fieldDiff->setOptions(
+        $logDiffs = new FieldDescription();
+        $logDiffs->setName('diffs');
+        $logDiffs->setProperty(new FixedProperty('diffs', 'diffs'));
+        $logDiffs->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => 'Diff(s)',
-                'field_name'  => 'value_diff',
+                'label'       => 'Diffs',
+                'field_name'  => 'diffs',
+                'expression'  => 'diff',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => false,
@@ -128,39 +101,52 @@ class AuditDatagridManager extends DatagridManager
             )
         );
         $templateDiffProperty = new TwigTemplateProperty(
-            $fieldDiff,
-            'OroEntityBundle:Audit:data.html.twig'
+            $logDiffs,
+            'OroEntityConfigBundle:Audit:data.html.twig'
         );
-        $fieldDiff->setProperty($templateDiffProperty);
-        $fieldsCollection->add($fieldDiff);
+        $logDiffs->setProperty($templateDiffProperty);
+        $fieldsCollection->add($logDiffs);
+
+        $fieldCreated = new FieldDescription();
+        $fieldCreated->setName('loggedAt');
+        $fieldCreated->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => 'Logged at',
+                'field_name'  => 'loggedAt',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => false,
+                'show_filter' => false,
+            )
+        );
+        $fieldsCollection->add($fieldCreated);
     }
 
     /**
-     * @return ProxyQueryInterface
+     * {@inheritDoc}
      */
-    protected function createQuery()
+    protected function getDefaultSorters()
     {
-        $query = parent::createQuery();
-
-        $query->addSelect('diff', true);
-        $query->addSelect('diff.diff AS value_diff', true);
-        $query->addSelect('commit.id AS commit_id');
-        $query->addSelect('commit');
-        $query->addSelect($this->authorExpression . ' AS author', true);
-        $query->addSelect('value_object.code as code');
-
-        $query->innerJoin('diff.commit', 'commit');
-        $query->leftJoin('commit.user', 'user');
-        $query->innerJoin('commit.diffs', 'entity_diff', 'WITH', 'entity_diff.objectId = :objectId AND entity_diff.className = :objectClass');
-        $query->leftJoin('OroEntityConfigBundle:ConfigValue', 'value_object', 'WITH', 'value_object.id = diff.objectId');
-
-        $query->where('diff.className = \'Oro\\Bundle\\EntityConfigBundle\\Entity\\ConfigValue\'');
-        $query->setParameters(
-            array(
-                'objectClass' => $this->entityClass,
-                'objectId'    => $this->entityClassId
-            )
+        return array(
+            'loggedAt' => SorterInterface::DIRECTION_DESC
         );
+    }
+
+    /**
+     * @param ProxyQueryInterface $query
+     * @return ProxyQueryInterface|void
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
+        $query->addSelect($this->authorExpression . ' AS author', true);
+
+        $query->leftJoin('log.user', 'user');
+        $query->leftJoin('log.diffs', 'diff');
+
+        $query->where('diff.className = :className AND diff.fieldName IS NULL');
+        $query->setParameter('className', $this->entityClass);
 
         return $query;
     }

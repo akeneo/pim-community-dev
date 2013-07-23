@@ -27,7 +27,8 @@ class Schema
 
     /**
      * @param EntityManager $em
-     * @param string        $backend
+     * @param $backend
+     * @param ExtendManager $extendManager
      */
     public function __construct(EntityManager $em, $backend, ExtendManager $extendManager)
     {

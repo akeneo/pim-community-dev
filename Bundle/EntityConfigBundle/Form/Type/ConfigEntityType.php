@@ -55,9 +55,7 @@ class ConfigEntityType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array(
-            'class_name',
-        ));
+        $resolver->setRequired(array('class_name'));
     }
 
     /**

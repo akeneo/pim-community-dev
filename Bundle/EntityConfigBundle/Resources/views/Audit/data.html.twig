@@ -1,12 +1,9 @@
-{% set value = value|unserialize %}
 <ul>
-{% for fieldKey, fieldValue in value %}
-    <li>
-        {% if fieldKey == 'remove' %}
-            <s>{{ fieldValue.value }}</s>
-        {% else %}
-            {{ fieldValue.value }}
-        {% endif %}
-    </li>
+{% for val in value %}
+    {% for key, value in val.diff %}
+        <li>
+            <b>{{ key|capitalize|replace('_',' ') }}</b>: <s>{{ value[0]|default('N/A') }}</s> {{ value[1] }}
+        </li>
+    {% endfor %}
 {% endfor %}
 </ul>
