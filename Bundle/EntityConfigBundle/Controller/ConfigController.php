@@ -59,7 +59,10 @@ class ConfigController extends Controller
         $form = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,
-            array('class_name' => $entity->getClassName())
+            array(
+                'class_name' => $entity->getClassName(),
+                'entity_id'  => $entity->getId()
+            )
         );
 
         if ($request->getMethod() == 'POST') {
@@ -202,6 +205,7 @@ class ConfigController extends Controller
             array(
                 'class_name' => $field->getEntity()->getClassName(),
                 'field_name' => $field->getCode(),
+                'field_id'   => $field->getId(),
             )
         );
         $request = $this->getRequest();

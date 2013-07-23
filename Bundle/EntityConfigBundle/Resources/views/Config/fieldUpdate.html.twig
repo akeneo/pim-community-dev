@@ -6,6 +6,10 @@
 
 {% set formAction = path('oro_entityconfig_field_update', {id: field.id}) %}
 
+{% set entityClass = field.entity.className|replace('\\', '_') %}
+{% set audit_title = entity_config.get('label') %}
+{% set audit_path = 'oro_entityconfig_audit_field' %}
+
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
 

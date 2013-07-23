@@ -4,12 +4,12 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
-class AuditDatagridManager extends AuditDatagrid
+class AuditFieldDatagridManager extends AuditDatagrid
 {
     /**
-     * @var int
+     * @var string
      */
-    public $entityClassId;
+    public $fieldName;
 
     /**
      * @param ProxyQueryInterface $query
@@ -19,8 +19,13 @@ class AuditDatagridManager extends AuditDatagrid
     {
         parent::prepareQuery($query);
 
-        $query->where('diff.className = :className AND diff.fieldName IS NULL');
-        $query->setParameter('className', $this->entityClass);
+        $query->where('diff.className = :className AND diff.fieldName = :fieldName');
+        $query->setParameters(
+            array(
+                'className' => $this->entityClass,
+                'fieldName' => $this->fieldName,
+            )
+        );
 
         return $query;
     }

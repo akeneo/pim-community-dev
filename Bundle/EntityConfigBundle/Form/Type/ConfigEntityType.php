@@ -31,8 +31,14 @@ class ConfigEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $className = $options['class_name'];
+        $fieldId   = $options['entity_id'];
 
-        $data = array();
+        $data = array(
+            'id' => $fieldId,
+        );
+
+        $builder->add('id', 'hidden');
+
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasEntityForm()) {
                 $builder->add(
@@ -55,7 +61,7 @@ class ConfigEntityType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('class_name'));
+        $resolver->setRequired(array('class_name', 'entity_id'));
     }
 
     /**

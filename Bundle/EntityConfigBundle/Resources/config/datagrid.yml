@@ -2,6 +2,7 @@ parameters:
     oro_entity_config.datagrid.manager.class:               Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
     oro_entity_config.entityfieldsdatagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager
     oro_entity_config.audit_datagrid.manager.class:         Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager
+    oro_entity_config.audit_field_datagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager
 
 services:
     oro_entity_config.datagrid.manager:
@@ -38,4 +39,16 @@ services:
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
               entity_hint:                      oro_entityconfig_diff
               route_name:                       oro_entityconfig_audit
+              query_entity_alias:               log
+
+    oro_entity_config.audit_field_datagrid.manager:
+        class:                                  %oro_entity_config.audit_field_datagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity_audit_field_log
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
+              entity_hint:                      oro_entityconfig_field_diff
+              route_name:                       oro_entityconfig_audit_field
               query_entity_alias:               log

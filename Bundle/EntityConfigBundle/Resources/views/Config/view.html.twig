@@ -3,7 +3,6 @@
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set entityClass = entity.classname|replace('\\', '_') %}
-{#{% set entityClass = 'Oro_Bundle_EntityConfigBundle_Entity_ConfigEntity' %}#}
 {% set audit_title = entity_config.get('label') %}
 {% set audit_path = 'oro_entityconfig_audit' %}
 

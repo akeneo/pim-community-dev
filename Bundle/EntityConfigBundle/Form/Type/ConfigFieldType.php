@@ -32,8 +32,14 @@ class ConfigFieldType extends AbstractType
     {
         $className = $options['class_name'];
         $fieldName = $options['field_name'];
+        $fieldId   = $options['field_id'];
 
-        $data = array();
+        $data = array(
+            'id' => $fieldId,
+        );
+
+        $builder->add('id', 'hidden');
+
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasFieldForm()) {
                 $builder->add(
@@ -60,6 +66,7 @@ class ConfigFieldType extends AbstractType
             array(
                 'class_name',
                 'field_name',
+                'field_id',
             )
         );
     }
