@@ -16,6 +16,20 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
         $this->data = new WorkflowData();
     }
 
+    public function testIsModified()
+    {
+        $this->assertFalse($this->data->isModified());
+        $this->data->set('foo', 'bar');
+        $this->assertTrue($this->data->isModified());
+
+        $this->data = new WorkflowData(array('foo' => 'bar'));
+        $this->assertFalse($this->data->isModified());
+        $this->data->set('foo', 'bar');
+        $this->assertFalse($this->data->isModified());
+        $this->data->set('foo', 'baz');
+        $this->assertTrue($this->data->isModified());
+    }
+
     public function testHasGetSetRemove()
     {
         $this->assertFalse($this->data->has('foo'));

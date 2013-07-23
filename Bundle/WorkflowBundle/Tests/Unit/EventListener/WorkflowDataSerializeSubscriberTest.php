@@ -86,8 +86,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $entity4->setData($data4);
 
         $entity5 = new WorkflowItem();
-        $data5 = new WorkflowData();
-        $data5->qux = 'qux';
+        $data5 = new WorkflowData(); // Leave this data not modified
         $entity5->setData($data5);
 
         $entity6 = new \stdClass();
@@ -95,7 +94,6 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $expectedSerializedData1 = 'serialized_data_1';
         $expectedSerializedData2 = 'serialized_data_2';
         $expectedSerializedData4 = 'serialized_data_4';
-        $expectedSerializedData5 = 'serialized_data_5';
 
         $this->serializer->expects($this->never())->method('deserialize');
 
@@ -105,8 +103,6 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->with($data2, 'json')->will($this->returnValue($expectedSerializedData2));
         $this->serializer->expects($this->at(2))->method('serialize')
             ->with($data4, 'json')->will($this->returnValue($expectedSerializedData4));
-        $this->serializer->expects($this->at(3))->method('serialize')
-            ->with($data5, 'json')->will($this->returnValue($expectedSerializedData5));
 
         $this->subscriber->onFlush(
             new OnFlushEventArgs(
@@ -120,7 +116,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($expectedSerializedData1, 'serializedData', $entity1);
         $this->assertAttributeEquals($expectedSerializedData2, 'serializedData', $entity2);
         $this->assertAttributeEquals($expectedSerializedData4, 'serializedData', $entity4);
-        $this->assertAttributeEquals($expectedSerializedData5, 'serializedData', $entity5);
+        $this->assertAttributeEquals(null, 'serializedData', $entity5);
     }
 
     /**

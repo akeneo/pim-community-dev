@@ -90,9 +90,10 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
      */
     protected function serialize(WorkflowItem $workflowItem)
     {
-        // @TODO Get format ("json", "xml", ...) from WorkflowDefinition
-        $serializedData = $this->serializer->serialize($workflowItem->getData(), $this->format);
-        $workflowItem->setSerializedData($serializedData);
+        if ($workflowItem->getData()->isModified()) {
+            $serializedData = $this->serializer->serialize($workflowItem->getData(), $this->format);
+            $workflowItem->setSerializedData($serializedData);
+        }
     }
 
     /**
@@ -103,7 +104,7 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     protected function deserialize(WorkflowItem $workflowItem)
     {
         // Pass serializer into $workflowItem to make lazy loading of workflow item data.
-        $workflowItem->setSerializer($this->serializer);
+        $workflowItem->setSerializer($this->serializer, $this->format);
     }
 
     /**

@@ -10,11 +10,25 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     protected $data;
 
     /**
+     * @var bool
+     */
+    protected $modified;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(array $data = array())
     {
-        $this->data = array();
+        $this->data = $data;
+        $this->modified = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isModified()
+    {
+        return $this->modified;
     }
 
     /**
@@ -26,8 +40,10 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function set($name, $value)
     {
-        $this->data[$name] = $value;
-
+        if (!isset($this->data[$name]) || $this->data[$name] != $value) {
+            $this->data[$name] = $value;
+            $this->modified = true;
+        }
         return $this;
     }
 
@@ -61,10 +77,15 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      * Remove value by name
      *
      * @param string $name
+     * @return WorkflowData
      */
     public function remove($name)
     {
-        unset($this->data[$name]);
+        if (isset($this->data[$name])) {
+            unset($this->data[$name]);
+            $this->modified = true;
+        }
+        return $this;
     }
 
     /**
@@ -100,7 +121,7 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function __unset($name)
     {
-        unset($this->data[$name]);
+        $this->remove($name);
     }
 
     /**
@@ -109,7 +130,7 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function __isset($name)
     {
-        return isset($this->data[$name]);
+        return $this->has($name);
     }
 
     /**
@@ -141,7 +162,7 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function offsetUnset($offset)
     {
-        unset($this->data[$offset]);
+        $this->remove($offset);
     }
 
     /**

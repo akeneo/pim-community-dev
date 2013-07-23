@@ -14,17 +14,17 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EntityManager
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $em;
+    protected $workflow;
 
     /**
-     * @var ManagerRegistry
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $registry;
+    protected $attributeNormalizer;
 
     /**
-     * @var SerializerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $serializer;
 
@@ -35,50 +35,129 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->attributeNormalizer =
+            $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer')
+                ->setMethods(array('normalize', 'denormalize'))
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $this->workflow = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Workflow')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $this->serializer = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer')
+            ->setMethods(array('getWorkflow', 'normalize'))
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
-        $this->serializer->expects($this->any())->method('getWorkflow')
-            ->will($this->returnValue(new Workflow()));
-
-        $this->normalizer = new WorkflowDataNormalizer($this->registry);
+        $this->normalizer = new WorkflowDataNormalizer($this->attributeNormalizer);
         $this->normalizer->setSerializer($this->serializer);
     }
 
     public function testNormalize()
     {
-        $data = new WorkflowData();
-        $data->foo = 'bar';
+        $fooEntity = $this->getMock('FooEntityClass');
 
-        $this->assertEquals(array('foo' => 'bar'), $this->normalizer->normalize($data));
+        $data = new WorkflowData(
+            array(
+                'foo' => $fooEntity,
+                'bar' => 'scalar_value',
+                'baz' => array('compound_value'),
+                'qux' => null,
+            )
+        );
+
+        $expectedData = array(
+            'foo' => 100,
+            'bar' => 'scalar_value',
+            'baz' => array('normalized_compound_value'),
+            'qux' => null,
+        );
+
+        $this->attributeNormalizer->expects($this->at(0))
+            ->method('normalize')
+            ->with($this->workflow, 'foo', $data->get('foo'))
+            ->will($this->returnValue($expectedData['foo']));
+
+        $this->attributeNormalizer->expects($this->at(1))
+            ->method('normalize')
+            ->with($this->workflow, 'bar', $data->get('bar'))
+            ->will($this->returnValue($expectedData['bar']));
+
+        $this->attributeNormalizer->expects($this->at(2))
+            ->method('normalize')
+            ->with($this->workflow, 'baz', $data->get('baz'))
+            ->will($this->returnValue($data->get('baz')));
+
+        $this->attributeNormalizer->expects($this->at(3))
+            ->method('normalize')
+            ->with($this->workflow, 'qux', $data->get('qux'))
+            ->will($this->returnValue($expectedData['qux']));
+
+        $this->serializer->expects($this->any())->method('getWorkflow')
+            ->will($this->returnValue($this->workflow));
+
+        $this->serializer->expects($this->once())
+            ->method('normalize')
+            ->with($data->get('baz'), null)
+            ->will($this->returnValue($expectedData['baz']));
+
+        $this->assertEquals(
+            $expectedData,
+            $this->normalizer->normalize($data)
+        );
     }
 
     public function testDenormalize()
     {
-        $data = new WorkflowData();
-        $data->foo = 'bar';
+        $fooEntity = $this->getMock('FooEntityClass');
+
+        $data = array(
+            'foo' => 100,
+            'bar' => 'scalar_value',
+            'baz' => null,
+        );
+
+        $expectedData = new WorkflowData(
+            array(
+                'foo' => $fooEntity,
+                'bar' => 'scalar_value',
+                'baz' => null,
+            )
+        );
+
+        $this->attributeNormalizer->expects($this->at(0))
+            ->method('denormalize')
+            ->with($this->workflow, 'foo', $data['foo'])
+            ->will($this->returnValue($expectedData->get('foo')));
+
+        $this->attributeNormalizer->expects($this->at(1))
+            ->method('denormalize')
+            ->with($this->workflow, 'bar', $data['bar'])
+            ->will($this->returnValue($expectedData->get('bar')));
+
+        $this->attributeNormalizer->expects($this->at(2))
+            ->method('denormalize')
+            ->with($this->workflow, 'baz', $data['baz'])
+            ->will($this->returnValue($expectedData->get('baz')));
+
+        $this->serializer->expects($this->any())->method('getWorkflow')
+            ->will($this->returnValue($this->workflow));
 
         $this->assertEquals(
-            $data,
-            $this->normalizer->denormalize(array('foo' => 'bar'), 'Oro\Bundle\WorkflowBundle\Model\WorkflowData')
+            $expectedData,
+            $this->normalizer->denormalize($data, 'Oro\Bundle\WorkflowBundle\Model\WorkflowData')
         );
     }
 
     public function testSupportsNormalization()
     {
         $this->assertTrue($this->normalizer->supportsNormalization(new WorkflowData()));
-        $this->assertTrue(
-            $this->normalizer->supportsNormalization(
-                $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
-            )
-        );
+        $this->assertTrue($this->normalizer->supportsNormalization(
+            $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData')
+        ));
         $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
+        $this->assertFalse($this->normalizer->supportsNormalization(array()));
     }
 
     public function testSupportsDenormalization()
@@ -102,5 +181,20 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
                 'stdClass'
             )
         );
+    }
+
+    // @codingStandardsIgnoreStart
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
+     * @expectedExceptionMessage Cannot get Workflow. Serializer must implement Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer
+     */
+    // @codingStandardsIgnoreEnd
+    public function testGetWorkflowFails()
+    {
+        $data = new WorkflowData(array('foo' => 'bar'));
+
+        $serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
+        $this->normalizer->setSerializer($serializer);
+        $this->normalizer->normalize($data);
     }
 }

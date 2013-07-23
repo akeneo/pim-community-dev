@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Oro\Bundle\WorkflowBundle\Model\Step;
+use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowTest extends \PHPUnit_Framework_TestCase
@@ -265,6 +267,31 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $obj->setTransitions(array($transition));
         $obj->setSteps(array($step));
         $obj->transit($workflowItem, 'transition');
+    }
+
+    public function testGetStepAttributes()
+    {
+        $obj = new Workflow();
+
+        $attributeFoo = new StepAttribute();
+        $attributeFoo->setName('foo');
+        $step = new Step();
+        $step->setAttributes(array($attributeFoo));
+        $obj->getSteps()->add($step);
+
+        $attributeBar = new StepAttribute();
+        $attributeBar->setName('bar');
+        $step = new Step();
+        $step->setAttributes(array($attributeBar));
+        $obj->getSteps()->add($step);
+
+        $attributes = $obj->getStepAttributes();
+
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
+        $this->assertEquals(
+            array('foo' => $attributeFoo, 'bar' => $attributeBar),
+            $attributes->toArray()
+        );
     }
 
     protected function getStepMock($name)

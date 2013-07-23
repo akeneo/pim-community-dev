@@ -61,7 +61,7 @@ class ContextAccessor
     protected function getPropertyAccessor()
     {
         if (!$this->propertyAccessor) {
-            $this->propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
+            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         }
         return $this->propertyAccessor;
     }

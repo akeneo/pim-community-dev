@@ -104,6 +104,11 @@ class WorkflowItem
     protected $serializer;
 
     /**
+     * @var string
+     */
+    protected $serializeFormat;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -287,6 +292,8 @@ class WorkflowItem
     /**
      * Get serialized data.
      *
+     * This method should be called only from WorkflowDataSerializeSubscriber.
+     *
      * @return string $data
      */
     public function getSerializedData()
@@ -325,7 +332,7 @@ class WorkflowItem
                 $this->data = $this->serializer->deserialize(
                     $this->serializedData,
                     'Oro\Bundle\WorkflowBundle\Model\WorkflowData', // @TODO Make this class name configurable?
-                    'json' // @TODO Take this option from parameter of WorkflowItem
+                    $this->serializeFormat
                 );
             }
         }
@@ -333,15 +340,17 @@ class WorkflowItem
     }
 
     /**
-     * Set serializer
+     * Set serializer.
      *
      * This method should be called only from WorkflowDataSerializeSubscriber.
      *
      * @param WorkflowAwareSerializer $serializer
+     * @param string $format
      */
-    public function setSerializer(WorkflowAwareSerializer $serializer)
+    public function setSerializer(WorkflowAwareSerializer $serializer, $format)
     {
         $this->serializer = $serializer;
+        $this->serializeFormat = $format;
     }
 
     /**
@@ -369,7 +378,7 @@ class WorkflowItem
      *
      * @ORM\PrePersist
      */
-    public function beforeSave()
+    public function prePersist()
     {
         $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
     }

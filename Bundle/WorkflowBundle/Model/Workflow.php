@@ -174,7 +174,6 @@ class Workflow
      * Get step attributes.
      *
      * @return Collection
-     * @TODO Cover method with tests
      */
     public function getStepAttributes()
     {

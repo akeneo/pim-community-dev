@@ -72,7 +72,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
             ->with($serializedData, 'Oro\Bundle\WorkflowBundle\Model\WorkflowData', 'json')
             ->will($this->returnValue($data));
 
-        $workflowItem->setSerializer($serializer);
+        $workflowItem->setSerializer($serializer, 'json');
         $workflowItem->setSerializedData($serializedData);
 
         $this->assertSame($data, $workflowItem->getData());
@@ -198,5 +198,23 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
     public function testSetEntitiesFails()
     {
         $this->workflowItem->setEntities('roles');
+    }
+
+    public function testCreatedAtAndPrePersist()
+    {
+        $this->assertNull($this->workflowItem->getCreatedAt());
+        $this->workflowItem->prePersist();
+        $this->assertInstanceOf('DateTime', $this->workflowItem->getCreatedAt());
+
+        $this->assertEquals($this->workflowItem->getCreatedAt()->getTimestamp(), time(), '', 5);
+    }
+
+    public function testUpdatedAndPreUpdate()
+    {
+        $this->assertNull($this->workflowItem->getUpdatedAt());
+        $this->workflowItem->preUpdate();
+        $this->assertInstanceOf('DateTime', $this->workflowItem->getUpdatedAt());
+
+        $this->assertEquals($this->workflowItem->getUpdatedAt()->getTimestamp(), time(), '', 5);
     }
 }

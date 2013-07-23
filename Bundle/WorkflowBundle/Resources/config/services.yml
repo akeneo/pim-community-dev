@@ -5,6 +5,7 @@ parameters:
 
     oro_workflow.data_serialize.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
     oro_workflow.data_serialize.normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
+    oro_workflow.data_serialize.attribute_normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer
     oro_workflow.data_serialize.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
 
     oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
@@ -22,7 +23,7 @@ services:
 
     oro_workflow.context_accessor:
         class: %oro_workflow.context_accessor.class%
-        
+
     oro_workflow.entity_binder:
         class: %oro_workflow.entity_binder.class%
         arguments:
@@ -42,7 +43,12 @@ services:
 
     oro_workflow.data_serialize.normalizer:
         class: %oro_workflow.data_serialize.normalizer.class%
-        arguments: 
+        arguments:
+            - @oro_workflow.data_serialize.attribute_normalizer
+
+    oro_workflow.data_serialize.attribute_normalizer:
+        class: %oro_workflow.data_serialize.attribute_normalizer.class%
+        arguments:
             - @doctrine
 
     oro_workflow.data_serialize.doctrine_subscriber:
