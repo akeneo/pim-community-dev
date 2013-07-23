@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Client as BaseClient;
 use Oro\Bundle\TestFrameworkBundle\Test\SoapClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\TerminableInterface;
+use Doctrine\DBAL\Connection;
 
 class Client extends BaseClient
 {
@@ -20,7 +21,7 @@ class Client extends BaseClient
      */
     protected $router = null;
 
-    /** @var shared doctrine connection */
+    /** @var  \Doctrine\DBAL\Connection shared doctrine connection */
     static protected $connection = null;
 
     protected $hasPerformedRequest;
@@ -32,6 +33,19 @@ class Client extends BaseClient
             self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
         }
         $this->router = $this->getContainer()->get('router');
+    }
+
+    public function __destruct()
+    {
+        if (isset($this->soapClient)) {
+            unset($this->soapClient);
+        }
+        if (!is_null(self::$connection)) {
+            if (self::$connection->getTransactionNestingLevel()>0) {
+                self::$connection->rollback();
+            }
+            self::$connection = null;
+        }
     }
 
     /**

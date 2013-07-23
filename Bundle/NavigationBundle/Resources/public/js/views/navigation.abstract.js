@@ -24,14 +24,29 @@ navigation.MainViewAbstract = Backbone.View.extend({
 
     /**
      * Search for pinbar items for current page.
-     *
+     * @param  {Boolean} excludeGridParams
+     * @param  {String}  url
      * @return {*}
      */
-    getItemForCurrentPage: function() {
-        var currentItemUrl = this.cleanupUrl(this.getCurrentPageItemData().url);
+    getItemForCurrentPage: function(excludeGridParams) {
+        return this.getItemForPage(this.getCurrentPageItemData().url, excludeGridParams);
+    },
+
+    /**
+     * Search for pinbar items for url.
+     * @param  {String}  url
+     * @param  {Boolean} excludeGridParams
+     * @return {*}
+     */
+    getItemForPage: function(url, excludeGridParams) {
+        url = this.cleanupUrl(url);
         return this.options.collection.filter(_.bind(function (item) {
             var itemUrl = this.cleanupUrl(item.get('url'));
-            return itemUrl == currentItemUrl;
+            if (!_.isUndefined(excludeGridParams) && excludeGridParams) {
+                itemUrl = itemUrl.split('#g')[0];
+                url = url.split('#g')[0];
+            }
+            return itemUrl == url;
         }, this));
     },
 
@@ -42,7 +57,7 @@ navigation.MainViewAbstract = Backbone.View.extend({
     getCurrentPageItemData: function() {
         var url = '';
         if (Oro.hashNavigationEnabled()) {
-            url = Oro.Navigation.prototype.getHashUrl();
+            url = Oro.hashNavigationInstance.getHashUrl(true, true);
         } else {
             url = window.location.pathname + window.location.search + window.location.hash;
         }

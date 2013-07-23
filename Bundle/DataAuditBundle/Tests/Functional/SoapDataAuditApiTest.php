@@ -18,20 +18,19 @@ class SoapDataAuditApiTest extends WebTestCase
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
 
-        $this->client->soap(
-            "http://localhost/api/soap",
-            array(
-                'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_2
-            )
-        );
-    }
-
-    public function tearDown()
-    {
-        unset($this->client);
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
@@ -43,7 +42,7 @@ class SoapDataAuditApiTest extends WebTestCase
         $result = $this->client->soapClient->getAudits();
         $result = ToolsAPI::classToArray($result);
         if (!empty($result)) {
-            if (!is_array(array_shift($result['item']))) {
+            if (!is_array(reset($result['item']))) {
                 $result[] = $result['item'];
                 unset($result['item']);
             } else {

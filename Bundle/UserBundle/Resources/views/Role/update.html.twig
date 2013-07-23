@@ -48,7 +48,8 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
