@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Reference;
@@ -8,12 +9,9 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * CompilerPass Connector
- *
- *
  */
 class ConnectorCompilerPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -24,7 +22,7 @@ class ConnectorCompilerPass implements CompilerPassInterface
         }
 
         $registryDefinition = $container->getDefinition('pim_batch.connectors');
-        $taggedJobServices = $container->findTaggedServiceIds('pim_batch_job');
+        $taggedJobServices = $container->findTaggedServiceIds('pim_batch.job');
 
         foreach ($taggedJobServices as $jobId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {

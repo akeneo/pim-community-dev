@@ -5,13 +5,27 @@ parameters:
     pim_batch.connectors_config: ~
     pim_batch.jobs_config: ~
 
+    pim_batch.connector.csv.class:           Pim\Bundle\BatchBundle\Connector\CsvConnector
+    pim_batch.configuration.csv.class:       Pim\Bundle\BatchBundle\Configuration\CsvConfiguration
+    
+    pim_batch.form.type.csv_connector.class: Pim\Bundle\BatchBundle\Form\Type\CsvConnectorType
+
 services:
     pim_batch.my_super_job:
         class:     %pim_batch.simple_job.class%
-        arguments: ['My Super Job as a service !']
+        arguments: ['My Super Job as a service !', %pim_batch.configuration.csv.class%, %pim_batch.configuration.csv.class%]
         tags:
-            - { name: pim_batch.job }
+            - { name: pim_batch.job, connector: pim_batch.connector.csv }
 
     # connectors registry
     pim_batch.connectors:
         class: %pim_batch.connectors.class%
+        
+    pim_batch.connector.csv:
+        class: %pim_batch.connector.csv.class%
+        arguments: [%pim_batch.configuration.csv.class%]
+        
+    pim_batch.form.type.connector_csv:
+        class: %pim_batch.form.type.csv_connector.class%
+        tags:
+            - { name: form.type, alias: pim_configuration_csv }

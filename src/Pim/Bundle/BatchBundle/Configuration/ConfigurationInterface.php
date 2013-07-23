@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Configuration;
 
 /**

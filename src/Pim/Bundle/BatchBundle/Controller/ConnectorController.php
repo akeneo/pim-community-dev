@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Controller;
 
+use Pim\Bundle\BatchBundle\Job\JobExecution;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -136,17 +138,11 @@ class ConnectorController extends Controller
 
             // TODO deal with jobs order (depends on scheduler ?)
             foreach ($entity->getJobs() as $job) {
-
                 $confJob = $job->getRawConfiguration()->getConfiguration();
                 $service = $this->get($job->getServiceId());
                 $service->configure($confConnector, $confJob);
-                $service->run();
+                $service->execute(new JobExecution());
                 $this->get('session')->getFlashBag()->add('success', 'Run job '.$job->getServiceId());
-
-                $messages = $service->getMessages();
-                foreach ($messages as $message) {
-                    $this->get('session')->getFlashBag()->add($message[0], $message[1]);
-                }
             }
         }
 

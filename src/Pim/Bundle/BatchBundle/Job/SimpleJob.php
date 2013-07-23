@@ -24,17 +24,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 class SimpleJob extends AbstractJob
 {
     /* @var ArrayCollection $steps */
-    private $steps = null;
+//     protected $steps = null;
 
     /**
      * Constructor
      * @param string $name
      */
-    public function __construct($name = "")
-    {
-        parent::__construct($name);
-        $this->steps = new ArrayCollection();
-    }
+//     public function __construct($name = "")
+//     {
+//         parent::__construct($name);
+//         $this->steps = new ArrayCollection();
+//     }
 
     /**
      * Public setter for the steps in this job. Overrides any calls to

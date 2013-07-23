@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -8,8 +9,6 @@ use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
 
 /**
  * Aims to register all connectors
- *
- *
  */
 class ConnectorRegistry
 {

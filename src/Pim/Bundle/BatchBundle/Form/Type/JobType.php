@@ -49,7 +49,7 @@ class JobType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Oro\Bundle\DataFlowBundle\Entity\Job'));
+        $resolver->setDefaults(array('data_class' => 'Pim\Bundle\BatchBundle\Entity\Job'));
         $resolver->setRequired(array('serviceIds'));
     }
 
