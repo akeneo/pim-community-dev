@@ -43,6 +43,7 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         parent::__construct($params);
+        $this->messageClass = 'Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Message';
         $this->getMessageItems = array(self::FLAGS, self::RFC822_HEADER, self::UID);
     }
 

@@ -6,8 +6,8 @@ use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface;
 use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap;
+use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Message;
 use Zend\Mail\Storage\Folder;
-use Zend\Mail\Storage\Message;
 
 /**
  * A base class for connectors intended to work with email's servers through IMAP protocol.

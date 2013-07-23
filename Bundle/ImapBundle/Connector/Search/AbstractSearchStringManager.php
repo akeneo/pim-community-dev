@@ -12,7 +12,7 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
      *
      * @return string
      */
-    protected abstract function getNameValueDelimiter();
+    abstract protected function getNameValueDelimiter();
 
     /**
      * Gets a keyword of SEARCH command which corresponds the given item name
@@ -20,7 +20,7 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
      * @param string $itemName The item name
      * @return string|bool a string if the the keyword exists; otherwise, false.
      */
-    protected abstract function getKeyword($itemName);
+    abstract protected function getKeyword($itemName);
 
     /**
      * @param SearchQueryExpr $expr The search expression
@@ -47,11 +47,9 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
                 if ($needWhitespace) {
                     $result .= ' ';
                 }
-                if ($item instanceof SearchQueryExpr) {
-                    $result .= $this->processSubQueryValue($itemName, $item);
-                } else {
-                    $result .= $this->processItem($item, $itemName);
-                }
+                $result .= $item instanceof SearchQueryExpr
+                    ? $this->processSubQueryValue($itemName, $item)
+                    : $this->processItem($item, $itemName);
                 $needWhitespace = true;
             }
         }

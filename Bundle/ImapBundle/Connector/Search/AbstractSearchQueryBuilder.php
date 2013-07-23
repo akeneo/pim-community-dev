@@ -30,6 +30,7 @@ abstract class AbstractSearchQueryBuilder
         if ($callback instanceof Closure) {
             $this->processCallback($callback);
         }
+
         return $this;
     }
 
@@ -45,6 +46,7 @@ abstract class AbstractSearchQueryBuilder
         if ($callback instanceof Closure) {
             $this->processCallback($callback);
         }
+
         return $this;
     }
 
@@ -60,6 +62,7 @@ abstract class AbstractSearchQueryBuilder
         if ($callback instanceof Closure) {
             $this->processCallback($callback);
         }
+
         return $this;
     }
 
@@ -71,6 +74,7 @@ abstract class AbstractSearchQueryBuilder
     public function openParenthesis()
     {
         $this->query->openParenthesis();
+
         return $this;
     }
 
@@ -82,6 +86,7 @@ abstract class AbstractSearchQueryBuilder
     public function closeParenthesis()
     {
         $this->query->closeParenthesis();
+
         return $this;
     }
 
