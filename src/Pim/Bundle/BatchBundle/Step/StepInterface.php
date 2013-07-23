@@ -26,7 +26,7 @@ interface StepInterface
      * StepExecution provided. The Step is responsible for setting the meta
      * information and also saving it if required by the implementation.
      *
-     * @param StepExecution stepExecution an entity representing the step to be executed
+     * @param StepExecution $stepExecution an entity representing the step to be executed
      *
      * @throws JobInterruptedException if the step is interrupted externally
      */

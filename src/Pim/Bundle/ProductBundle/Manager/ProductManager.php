@@ -64,7 +64,7 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Find a product
+     * Find a product by id
      * Also ensure that it contains all required values
      *
      * @param int $id
@@ -73,7 +73,29 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->find($id);
+        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
+
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
+        }
+
+        return $product;
+    }
+
+    /**
+     * Find a product by identifier
+     * Also ensure that it contains all required values
+     *
+     * @param string $identifier
+     *
+     * @return Product|null
+     */
+    public function findByIdentifier($identifier)
+    {
+        $code = $this->getIdentifierAttribute()->getCode();
+
+        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $product = reset($products);
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
@@ -137,6 +159,8 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface $product
      * @param ArrayCollection  $categories
      * @param array            $onlyTrees
+     *
+     * @throws LogicException When a the product is assigned to a root category
      */
     public function setCategories(
         ProductInterface $product,
@@ -156,6 +180,9 @@ class ProductManager extends FlexibleManager
         foreach ($categories as $category) {
             if ($onlyTrees != null &&
                in_array($category->getRoot(), $onlyTrees)) {
+                if ($category->getParent() == null) {
+                    throw new \LogicException("A product cannot be assigned to a root category");
+                }
                 $category->addProduct($product);
             }
         }

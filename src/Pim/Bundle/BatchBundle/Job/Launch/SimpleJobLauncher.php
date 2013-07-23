@@ -39,8 +39,8 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     public function run(JobInterface $job, JobParameters $jobParameters)
     {
-//        assert.notNull(job, "The Job must not be null.");
-//        assert.notNull(jobParameters, "The JobParameters must not be null.");
+        //assert.notNull(job, "The Job must not be null.");
+        //assert.notNull(jobParameters, "The JobParameters must not be null.");
 
         /* @var JobExecution $jobExecution */
         $jobExecution = null;
@@ -49,11 +49,6 @@ class SimpleJobLauncher implements JobLauncherInterface
             if (!job.isRestartable()) {
                 throw new JobRestartException("JobInstance already exists and is not restartable");
             }
-            /*
-             * validate here if it has stepExecutions that are UNKNOWN
-             * retrieve the previous execution and check
-             */
-            /*
             for (StepExecution execution : lastExecution.getStepExecutions()) {
                 if (execution.getStatus() == BatchStatus.UNKNOWN) {
                     //throw

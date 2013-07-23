@@ -16,4 +16,3 @@ class ReferenceFactory
         return new Reference($serviceId);
     }
 }
-

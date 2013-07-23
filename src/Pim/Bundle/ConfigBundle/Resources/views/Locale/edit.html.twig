@@ -1,52 +1,39 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit locale'|trans : 'Add locale'|trans %}
-
 {% block page_container %}
 <div class="container-fluid">
 
     {% block content %}
+
+    {{ JSFV(form) }}
     <form class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_config_locale_edit', { id: form.vars.value.id }) :
         path('pim_config_locale_create') }}" method="POST" class="form-register">
 
-        <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row-fluid">
-                <div class="pull-right">
-                    <div class="pull-right">
-                        <div class="btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_config_locale_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-                        </div>
-                        <div class="btn-group icons-holder">
-                            {% if form.vars.value.id %}
-                                <a class="btn pull-right" href="#" id="btn-disable-locale">
-                                    {% if form.vars.value.activated %} {{ "Disable" | trans }} {% else %} {{ "Enable" | trans }} {% endif %}
-                                </a>
-                            {% endif %}
-                        </div>
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="pull-left">
-                    <div class="navbar-content pull-left">
-                        <div class="navbar-title clearfix-oro">
-                            <div class="sub-title">{{ 'Locale'|trans }}</div>
-                            <span class="separator">/</span>
-                            <div class="sub-title">{{ form.vars.value.id ? form.vars.value.code : 'New locale'|trans }}</div>
-                        </div>
-                   </div>
-                </div>
+        {% set title = 'Locale'|trans %}
+
+        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New locale'|trans %}
+
+        {% set buttons %}
+            <div class="btn-group icons-holder">
+                <a class="btn" href="{{ path('pim_config_locale_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
             </div>
-        </div>
+            <div class="btn-group icons-holder">
+                {% if form.vars.value.id %}
+                    <a class="btn pull-right" href="#" id="btn-disable-locale">
+                        {% if form.vars.value.activated %} {{ "Disable" | trans }} {% else %} {{ "Enable" | trans }} {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
+            </div>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, subtitle) }}
 
         <div class="row-fluid">
-            {% if form.vars.errors|length %}
-                <div class="alert alert-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
+            {{ elements.form_errors(form) }}
 
             {{ form_row(form.id) }}
 
@@ -72,34 +59,15 @@
 
     <script type="text/javascript">
     $(function() {
-        $('select').select2({ allowClear: true });
-        $('input.multiselect').select2({ tags: $(this).val() });
-        $('#btn-disable-locale').click(function(event) {
-            doAction = function() {
-                if ($('#pim_config_locale_form_activated').val() == '1') {
-                    window.location.href = "{{ path('pim_config_locale_disable', { id: form.vars.value.id }) }}";
-                } else {
-                    window.location.href = "{{ path('pim_config_locale_enable', { id: form.vars.value.id }) }}";
-                }
+        'use strict';
+        $('#btn-disable-locale').on('click', function() {
+            var message = '{{ form.activated.vars.value ? "Are you sure you want to disable this item?" | trans : "Are you sure you want to enable this item?" | trans }}';
+            var title = '{{ form.activated.vars.value ? "Disable Confirmation" | trans : "Enable Confirmation" | trans }}';
+            var url = '{{ form.activated.vars.value ? path("pim_config_locale_disable", { id: form.vars.value.id }) : path("pim_config_locale_enable", { id: form.vars.value.id }) }}';
+            var doAction = function() {
+                window.location.href = url;
             };
-
-            if (!_.isUndefined(Backbone.BootstrapModal)) {
-                if ($('#pim_config_locale_form_activated').val() == '1') {
-                    confirm = new Backbone.BootstrapModal({
-                        title: "{{ 'Disable Confirmation' | trans }}",
-                        content: "{{ 'Are you sure you want to disable this item' | trans }}"
-                    });
-                } else {
-                    confirm = new Backbone.BootstrapModal({
-                        title: "{{ 'Enable Confirmation' | trans }}",
-                        content: "{{ 'Are you sure you want to enable this item' | trans }}"
-                    });
-                }
-                confirm.on('ok', doAction);
-                confirm.open();
-            } else if (window.confirm(message)) {
-                doAction();
-            }
+            PimDialog.confirm(message, title, doAction);
         });
     });
     </script>

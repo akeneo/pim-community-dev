@@ -29,25 +29,5 @@ class FilePutContentsWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists(self::EXPORT_PATH);
         $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
     }
-
-    public function testWriteChunks()
-    {
-        file_put_contents(self::EXPECT_PATH, 'foobar');
-        $writer = new FilePutContentsWriter(self::EXPORT_PATH);
-        $writer->write('foo');
-        $writer->write('bar');
-
-        $this->assertFileExists(self::EXPORT_PATH);
-        $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
-    }
-
-    /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\FileExistsException
-     */
-    public function testPathExists()
-    {
-        touch(self::EXPORT_PATH);
-        new FilePutContentsWriter(self::EXPORT_PATH);
-    }
 }
 

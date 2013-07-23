@@ -81,7 +81,7 @@ class ProductAttributeController extends Controller
     /**
      * Edit attribute form
      *
-     * @param ProductAttribute $entity
+     * @param ProductAttribute $attribute
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
@@ -100,7 +100,11 @@ class ProductAttributeController extends Controller
 
         $localeManager = $this->get('pim_config.manager.locale');
         $datagrid = $this->getDataAuditDatagrid(
-            $attribute, 'pim_product_productattribute_edit', array('id' => $attribute->getId())
+            $attribute,
+            'pim_product_productattribute_edit',
+            array(
+                'id' => $attribute->getId()
+            )
         );
 
         if ($this->getRequest()->isXmlHttpRequest()) {

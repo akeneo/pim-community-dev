@@ -144,7 +144,16 @@ abstract class ControllerTest extends WebTestCase
     protected function assertFlashBagMessage(Crawler $crawler, $message)
     {
         $i18nMessage = $this->getTranslator()->trans($message);
-        $this->assertCount(1, $crawler->filter('div.alert-success:contains("'. $i18nMessage .'")'));
+        $flashbagSelector = 'div.alert-success';
+
+        try {
+            $text = $crawler->filter($flashbagSelector)->text();
+        } catch (\InvalidArgumentException $e) {
+            $text = "";
+        }
+
+        $this->assertNotEmpty($text,'Unable to find the flash bag message using selector '.$flashbagSelector);
+        $this->assertContains($i18nMessage, $text);
     }
 
     /**

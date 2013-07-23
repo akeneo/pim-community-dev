@@ -11,7 +11,7 @@
                     <div class="sub-title">{{ title }}</div>
                     {% if subtitle is not empty %}
                         <span class="separator">/</span>
-                        {{ subtitle }}
+                        <div class="sub-title">{{ subtitle }}</div>
                     {% endif %}
                 </div>
                 {{ left }}
@@ -21,7 +21,7 @@
     </div>
 {% endmacro %}
 
-{% macro form_navbar(tabs, toggle) %}
+{% macro form_navbar(tabs) %}
     <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="row-fluid">
@@ -29,7 +29,7 @@
                     <ul class="nav">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
-                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|lower }}"{% if toggle is not empty %} data-toggle="{{ toggle }}"{% endif %}>{{ tab|trans }}</a></li>
+                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|lower }}" data-toggle="tab">{{ tab|trans }}</a></li>
                             {% endfor %}
                         {% else %}
                             <li class="active"><a href="#{{ tabs|lower }}" data-toggle="tab">{{ tabs|trans|capitalize }}</a></li>

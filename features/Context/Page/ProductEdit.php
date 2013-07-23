@@ -26,7 +26,44 @@ class ProductEdit extends Page
         'Locales selector'                => array('css' => '#pim_product_locales'),
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
         'Updates grid'                    => array('css' => '#history table.grid'),
+        'Dialog'                          => array('css' => 'div.modal'),
     );
+
+    public function pressButton($locator)
+    {
+        $button = $this->findButton($locator);
+
+        if (!$button) {
+            $button =  $this->find('named', array(
+                'link', $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+            ));
+        }
+
+        if (null === $button) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'button', 'id|name|title|alt|value', $locator
+            );
+        }
+
+        $button->click();
+    }
+
+    public function confirmRemoval()
+    {
+        $element = $this->getElement('Dialog');
+
+        if (!$element) {
+            throw new \Exception('Could not find dialog window');
+        }
+
+        $button = $element->find('css', 'a.btn.ok');
+
+        if (!$button) {
+            throw new \Exception('Could not find confirmation button');
+        }
+
+        $button->click();
+    }
 
     public function findLocaleLink($locale, $content = null)
     {

@@ -25,7 +25,8 @@ class Exporter
     {
         $this->writer->write(
             $this->serializer->serialize(
-                $this->reader->read(), $this->format
+                $this->reader->read(),
+                $this->format
             )
         );
     }

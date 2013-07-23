@@ -17,14 +17,14 @@
                 {% endif %}
 
                 {% if form.translatable is defined %}
-                    {{ form_row(form.translatable) }}
+                    {{ form_row(form.translatable, { 'label': 'Localizable'|trans }) }}
                 {% endif %}
 
                 {% if form.unique is defined %}
                     {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
                 {% endif %}
 
-                {{ form_row(form.required) }}
+                {# {{ form_row(form.required) }} #}
 
                 {% if form.availableLocales is defined %}
                     <div class="control-group">

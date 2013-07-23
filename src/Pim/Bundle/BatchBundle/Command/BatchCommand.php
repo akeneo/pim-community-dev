@@ -37,8 +37,8 @@ class BatchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('ie:test:test')
-            ->setDescription('Test import expor infrastructure');
+            ->setName('pim:batch:job')
+            ->setDescription('Launch a registered job');
     }
 
     /**

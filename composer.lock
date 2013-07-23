@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fd1c6eaa59337c2438d18d530bc79278",
+    "hash": "8c95fa8d0ce8bfa23f4ef0edefcfa9ea",
     "packages": [
         {
             "name": "akeneo/DemoBundle",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:akeneo/DemoBundle.git",
-                "reference": "d312ce57b6644058d22abf9e891c39bb1307aca1"
+                "reference": "6de071b161cb9f8ed286382f6c5f92f901c32763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/d312ce57b6644058d22abf9e891c39bb1307aca1",
-                "reference": "d312ce57b6644058d22abf9e891c39bb1307aca1",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/6de071b161cb9f8ed286382f6c5f92f901c32763",
+                "reference": "6de071b161cb9f8ed286382f6c5f92f901c32763",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-07-02 12:14:16"
+            "time": "2013-07-13 17:33:25"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -178,17 +178,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapBundle.git",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5"
+                "reference": "eef45c60a78ffa145a59b6b81c8a90bfb1ca12d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/90903e8a1b55243bd738c44f301ba3c3d93965c5",
-                "reference": "90903e8a1b55243bd738c44f301ba3c3d93965c5",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/eef45c60a78ffa145a59b6b81c8a90bfb1ca12d7",
+                "reference": "eef45c60a78ffa145a59b6b81c8a90bfb1ca12d7",
                 "shasum": ""
             },
             "require": {
                 "ass/xmlsecurity": "dev-master",
-                "besimple/soap-common": "dev-master",
+                "besimple/soap-common": "self.version",
                 "php": ">=5.3.0",
                 "symfony/http-foundation": ">=2.0,<2.4-dev",
                 "zendframework/zend-mail": "2.1.*",
@@ -200,6 +200,11 @@
                 "besimple/soap-server": "dev-master"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "BeSimple\\SoapBundle": ""
@@ -230,7 +235,7 @@
                 "soap",
                 "soap-bundle"
             ],
-            "time": "2013-06-07 11:38:29"
+            "time": "2013-07-17 14:51:40"
         },
         {
             "name": "besimple/soap-common",
@@ -238,53 +243,51 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c"
+                "reference": "ad2736aa3c9920fcda5392544af551ba645b7888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/db885b2be7328fd8e663ee256df2d8570daeac3c",
-                "reference": "db885b2be7328fd8e663ee256df2d8570daeac3c",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/ad2736aa3c9920fcda5392544af551ba645b7888",
+                "reference": "ad2736aa3c9920fcda5392544af551ba645b7888",
                 "shasum": ""
             },
-            "require": {
-                "ass/xmlsecurity": "dev-master",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "dev-master"
-            },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapCommon": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "description": "Build and consume SOAP Common based web services",
+            "keywords": [ "soap", "soap-common" ],
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
+            "license": "MIT",
             "authors": [
                 {
                     "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com",
-                    "homepage": "http://www.apercite.fr"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
+                    "email": "francis.besset@gmail.com"
                 },
                 {
                     "name": "Christian Kerl",
                     "email": "christian-kerl@web.de"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
                 }
             ],
-            "description": "Build and consume SOAP Common based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
-            "keywords": [
-                "soap",
-                "soap-common"
-            ],
-            "time": "2013-02-27 16:03:38"
+            "require": {
+                "php": ">=5.3.0",
+                "ext-soap": "*",
+                "ass/xmlsecurity": "dev-master"
+            },
+            "require-dev": {
+                "mikey179/vfsStream": "dev-master"
+            },
+            "autoload": {
+                "psr-0": { "BeSimple\\SoapCommon": "" }
+            },
+            "target-dir": "BeSimple/SoapCommon",
+            "minimum-stability": "dev",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            }
         },
         {
             "name": "besimple/soap-server",
@@ -293,50 +296,48 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapServer.git",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4"
+                "reference": "b029419311a4ff7a12247e6024dbe43be5fbe180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/127d06fcb9b401593203ce9287da14a4986158f4",
-                "reference": "127d06fcb9b401593203ce9287da14a4986158f4",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/b029419311a4ff7a12247e6024dbe43be5fbe180",
+                "reference": "b029419311a4ff7a12247e6024dbe43be5fbe180",
                 "shasum": ""
             },
-            "require": {
-                "besimple/soap-common": "dev-master",
-                "php": ">=5.3.0"
-            },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapServer": "BeSimple/SoapServer/src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "description": "Build and consume SOAP Server based web services",
+            "keywords": [ "soap", "soap-server" ],
+            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
+            "license": "MIT",
             "authors": [
                 {
                     "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com",
-                    "homepage": "http://www.apercite.fr"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
+                    "email": "francis.besset@gmail.com"
                 },
                 {
                     "name": "Christian Kerl",
                     "email": "christian-kerl@web.de"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
                 }
             ],
-            "description": "Build and consume SOAP Server based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapServer",
-            "keywords": [
-                "soap",
-                "soap-server"
-            ],
-            "time": "2013-01-15 21:45:13"
+            "require": {
+                "php": ">=5.3.0",
+                "ext-soap": "*",
+                "besimple/soap-common": "self.version"
+            },
+            "autoload": {
+                "psr-0": { "BeSimple\\SoapServer": "" }
+            },
+            "target-dir": "BeSimple/SoapServer",
+            "minimum-stability": "dev",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            }
         },
         {
             "name": "ddeboer/data-import",
@@ -2884,12 +2885,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "e8b6687b835fe481ef30ac669124b380207c0c20"
+                "reference": "6e27a08080564b42fe7fcfe4b7e5693e49c61c75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/e8b6687b835fe481ef30ac669124b380207c0c20",
-                "reference": "e8b6687b835fe481ef30ac669124b380207c0c20",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/6e27a08080564b42fe7fcfe4b7e5693e49c61c75",
+                "reference": "6e27a08080564b42fe7fcfe4b7e5693e49c61c75",
                 "shasum": ""
             },
             "require": {
@@ -2951,7 +2952,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-07-04 12:45:10"
+            "time": "2013-07-13 13:41:32"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4661,6 +4662,79 @@
             "time": "2013-07-01 09:38:54"
         },
         {
+            "name": "behat/common-contexts",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Behat/CommonContexts.git",
+                "reference": "cb2da81067f3298a1426998ffd7791cb7329e97e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Behat/CommonContexts/zipball/cb2da81067f3298a1426998ffd7791cb7329e97e",
+                "reference": "cb2da81067f3298a1426998ffd7791cb7329e97e",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": ">=2.2.2",
+                "php": ">=5.3.1"
+            },
+            "suggest": {
+                "behat/mink-extension": "*",
+                "behat/symfony2-extension": "*",
+                "doctrine/data-fixtures": "*",
+                "doctrine/doctrine-bundle": "*",
+                "kriswallsmith/buzz": ">=0.5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Behat\\CommonContexts": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                },
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                },
+                {
+                    "name": "Jakub Zalas",
+                    "email": "jakub@zalas.pl",
+                    "homepage": "http://www.zalas.eu/"
+                },
+                {
+                    "name": "Geoffrey Bachelet",
+                    "email": "geoffrey.bachelet@gmail.com",
+                    "homepage": "https://github.com/ubermuda"
+                }
+            ],
+            "description": "Commonly used contexts for Behat",
+            "homepage": "http://behat.org/",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "Context",
+                "Symfony2"
+            ],
+            "time": "2013-06-20 09:38:27"
+        },
+        {
             "name": "behat/gherkin",
             "version": "dev-develop",
             "source": {
@@ -5053,6 +5127,54 @@
                 "webtest"
             ],
             "time": "2013-06-19 13:54:29"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "d7545a943496c401f7f5248f285e44b33c86905e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d7545a943496c401f7f5248f285e44b33c86905e",
+                "reference": "d7545a943496c401f7f5248f285e44b33c86905e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2013-06-04 15:32:22"
         },
         {
             "name": "sensiolabs/behat-page-object-extension",

@@ -23,4 +23,3 @@ class SetterRouteGenerator extends DefaultRouteGenerator
         $this->routeName = $routeName;
     }
 }
-

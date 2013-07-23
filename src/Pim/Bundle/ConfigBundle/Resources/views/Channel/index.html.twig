@@ -1,7 +1,5 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = 'Channels overview'|trans %}
-
 {% block head_script %}
     {{ parent() }}
 
@@ -13,13 +11,16 @@
 <div class="container-fluid">
     {% block content %}
 
-    {% set buttons %}
-        <a class="btn btn-primary pull-right" href="{{ path('pim_config_channel_create') }}">{{ 'New channel'|trans }}</a>
-    {% endset %}
+        {% set title = 'Channels overview'|trans %}
 
-    {{ elements.page_header(title, buttons) }}
+        {% set buttons %}
+            <a class="btn btn-primary pull-right" href="{{ path('pim_config_channel_create') }}">{{ 'New channel'|trans }}</a>
+        {% endset %}
 
-    <div id="channel-grid"></div>
-{% endblock %}
+        {{ elements.page_header(title, buttons) }}
+
+        <div id="channel-grid"></div>
+
+    {% endblock %}
 </div>
 {% endblock %}

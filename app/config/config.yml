@@ -196,15 +196,32 @@ pim_import_export:
             delimiter: ';'
             enclosure: '"'
             with_header: true
-    exports:
-        product:
+    exporters:
+        product_ecommerce:
             format: csv
             reader:
                 type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
                 options:
-                    em: @doctrine.orm.default_entity_manager
-                    entity: "PimProductBundle:Product"
+                    em: @pim_product.manager.product
+                    entity: ~
+                    method_name: findByScope
+                    method_params:
+                        - ecommerce
             writer:
                 type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
                 options:
-                    path: "/tmp/export.csv"
+                    path: "/tmp/export_ecommerce.csv"
+        product_mobile:
+            format: csv
+            reader:
+                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
+                options:
+                    em: @pim_product.manager.product
+                    entity: ~
+                    method_name: findByScope
+                    method_params:
+                        - mobile
+            writer:
+                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
+                options:
+                    path: "/tmp/export_mobile.csv"

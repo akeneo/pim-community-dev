@@ -76,7 +76,11 @@ class FamilyController extends Controller
         $family   = $this->findFamilyOr404($id);
         $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
         $datagrid = $this->getDataAuditDatagrid(
-            $family, 'pim_product_family_edit', array('id' => $family->getId())
+            $family,
+            'pim_product_family_edit',
+            array(
+                'id' => $family->getId()
+            )
         );
 
         if ($this->getRequest()->isXmlHttpRequest()) {

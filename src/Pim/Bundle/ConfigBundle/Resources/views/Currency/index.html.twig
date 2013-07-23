@@ -1,7 +1,5 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = 'Currencies overview'|trans %}
-
 {% block head_script %}
     {{ parent() }}
 
@@ -12,10 +10,13 @@
 {% block page_container %}
 <div class="container-fluid">
     {% block content %}
-    <div class="usser-row">
-        <h1>{{ title }}</h1> 
-        <div id="currency-grid"></div>
-    </div>
+
+    {% set title = 'Currencies overview'|trans %}
+
+    {{ elements.page_header(title) }}
+
+    <div id="currency-grid"></div>
+
     {% endblock %}
 </div>
 {% endblock %}

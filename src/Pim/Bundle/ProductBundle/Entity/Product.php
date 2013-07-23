@@ -4,14 +4,15 @@ namespace Pim\Bundle\ProductBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 
 /**
  * Flexible product
@@ -22,7 +23,7 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Assert\Callback(methods={"isLocalesValid"})
+ * @Assert\Callback(methods={"haveAtLeastOneActivatedLocale"})
  * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
@@ -179,6 +180,29 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
+     * Get the identifier of the product
+     *
+     * @return ProductValue the identifier of the product
+     *
+     * @throw MissingIdentifierException if no identifier could be found
+     */
+    public function getIdentifier()
+    {
+        $values = array_filter(
+            $this->getValues()->toArray(),
+            function ($value) {
+                return $value->getAttribute()->getAttributeType() === 'pim_product_identifier';
+            }
+        );
+
+        if (false === $identifier = reset($values)) {
+            throw new MissingIdentifierException($this);
+        }
+
+        return $identifier;
+    }
+
+    /**
      * Get the attributes of the product
      *
      * @return array the attributes of the current product
@@ -227,8 +251,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function getOrderedGroups()
     {
         $groups = array_map(
-            function ($value) {
-                return $value->getVirtualGroup();
+            function ($attribute) {
+                return $attribute->getVirtualGroup();
             },
             $this->getAttributes()
         );
@@ -270,7 +294,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @param ExecutionContext $context Execution Context
      */
-    public function isLocalesValid(ExecutionContext $context)
+    public function haveAtLeastOneActivatedLocale(ExecutionContext $context)
     {
         if ($this->locales->count() == 0) {
             $context->addViolationAtPath(

@@ -3,10 +3,13 @@
 namespace Context;
 
 use Doctrine\Common\Util\Inflector;
+use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Acl;
+use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -14,6 +17,7 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 
@@ -30,38 +34,19 @@ class FixturesContext extends RawMinkContext
         'german'  => 'de',
     );
 
+    private $channels = array(
+        'ecommerce' => array('en_US', 'fr_FR'),
+        'mobile'    => array('fr_FR'),
+    );
+
     private $attributeTypes = array(
         'text'       => 'pim_product_text',
         'number'     => 'pim_product_number',
         'textarea'   => 'pim_product_textarea',
         'identifier' => 'pim_product_identifier',
         'metric'     => 'pim_product_metric',
+        'prices'     => 'pim_product_price_collection',
     );
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetChannels()
-    {
-        $channel = new \Pim\Bundle\ConfigBundle\Entity\Channel;
-        $channel->setCode('ecommerce');
-        $channel->setName('ecommerce');
-
-        $em = $this->getEntityManager();
-        $em->persist($channel);
-        $em->flush();
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function createRequiredAttribute()
-    {
-        $em = $this->getEntityManager();
-        $attr = $this->createAttribute('SKU', false);
-        $em->persist($attr);
-        $em->flush();
-    }
 
     /**
      * @BeforeScenario
@@ -76,9 +61,30 @@ class FixturesContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
+    public function resetChannels()
+    {
+        foreach ($this->channels as $code => $locales) {
+            $this->createChannel($code, $locales);
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function createRequiredAttribute()
+    {
+        $em = $this->getEntityManager();
+        $attr = $this->createAttribute('SKU', false, 'identifier', true);
+        $em->persist($attr);
+        $em->flush();
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function resetAcl()
     {
-        $root = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $root = new Acl();
         $root
             ->setId('root')
             ->setName('root')
@@ -86,7 +92,7 @@ class FixturesContext extends RawMinkContext
             ->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT))
             ->addAccessRole($this->getRoleOrCreate('ROLE_SUPER_ADMIN'));
 
-        $oroSecurity = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $oroSecurity = new Acl();
         $oroSecurity
             ->setId('oro_security')
             ->setName('Oro Security')
@@ -94,21 +100,21 @@ class FixturesContext extends RawMinkContext
             ->setParent($root)
             ->addAccessRole($this->getRoleOrCreate('IS_AUTHENTICATED_ANONYMOUSLY'));
 
-        $oroLogin = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogin = new Acl();
         $oroLogin
             ->setId('oro_login')
             ->setName('Login page')
             ->setDescription('Oro Login page')
             ->setParent($oroSecurity);
 
-        $oroLoginCheck = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLoginCheck = new Acl();
         $oroLoginCheck
             ->setId('oro_login_check')
             ->setName('Login check')
             ->setDescription('Oro Login check')
             ->setParent($oroSecurity);
 
-        $oroLogout = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogout = new Acl();
         $oroLogout
             ->setId('oro_logout')
             ->setName('Logout')
@@ -317,12 +323,15 @@ class FixturesContext extends RawMinkContext
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $data = array_merge(array(
-                'position' => 0,
-                'group'    => null,
-                'product'  => null,
-                'family'   => null,
-                'required' => 'no',
-                'type'     => 'text',
+                'position'     => 0,
+                'group'        => null,
+                'product'      => null,
+                'family'       => null,
+                'required'     => 'no',
+                'type'         => 'text',
+                'scopable'     => false,
+                'scopable'     => 'no',
+                'translatable' => 'no',
             ), $data);
 
             try {
@@ -333,9 +342,11 @@ class FixturesContext extends RawMinkContext
 
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
-            $attribute->setRequired($data['required'] === 'yes');
+            $attribute->setRequired(strtolower($data['required']) === 'yes');
+            $attribute->setScopable(strtolower($data['scopable']) === 'yes');
+            $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
             $attribute->setUseableAsGridColumn(true);
-            $attribute->isUseableAsGridFilter(true);
+            $attribute->setUseableAsGridFilter(true);
 
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
@@ -374,22 +385,36 @@ class FixturesContext extends RawMinkContext
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
-                'scope' => null,
+                'scope'  => null,
+                'locale' => null,
             ), $data);
 
             $product = $this->getProduct($data['product']);
-            $value   = $product->getValue($this->camelize($data['attribute']));
+            $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
 
             if ($value) {
-                if (false === $value->getScope()) {
+                if ($data['scope']) {
                     $value->setScope($data['scope']);
                 }
-                if (null === $value->getData()) {
-                    $value->setData($data['value']);
+                if ($data['locale']) {
+                    $value->setLocale($data['locale']);
+                }
+                if ($data['value']) {
+                    if ($value->getAttribute()->getAttributeType() == $this->attributeTypes['prices']) {
+                        foreach ($value->getPrices() as $price) {
+                            $value->removePrice($price);
+                        }
+                        $prices = $this->createPricesFromString($data['value']);
+                        foreach ($prices as $price) {
+                            $value->addPrice($price);
+                        }
+                    } else {
+                        $value->setData($data['value']);
+                    }
                 }
             } else {
                 $attribute = $this->getAttribute($data['attribute']);
-                $value = $this->createValue($attribute, $data['value'], null, $data['scope']);
+                $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
         }
@@ -436,7 +461,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following categories:$/
+     * @Given /^the following categor(?:y|ies):$/
      */
     public function theFollowingCategories(TableNode $table)
     {
@@ -511,6 +536,25 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
+    /**
+     * @Given /^there is no identifier attribute$/
+     */
+    public function thereIsNoIdentifierAttribute()
+    {
+        $em = $this->getEntityManager();
+
+        $attributes = $em
+            ->getRepository('PimProductBundle:ProductAttribute')
+            ->findBy(array(
+                'attributeType' => 'pim_product_identifier',
+            ));
+
+        foreach ($attributes as $attribute) {
+            $em->remove($attribute);
+        }
+
+        $em->flush();
+    }
 
     private function getUser($username)
     {
@@ -524,13 +568,13 @@ class FixturesContext extends RawMinkContext
         $pm   = $this->getProductManager();
         $repo = $pm->getFlexibleRepository();
         $qb   = $repo->createQueryBuilder('p');
-        $repo->applyFilterByAttribute($qb, 'sKU', $sku);
+        $repo->applyFilterByAttribute($qb, $pm->getIdentifierAttribute()->getCode(), $sku);
         $product = $qb->getQuery()->getOneOrNullResult();
 
         return $product ?: $this->createProduct($sku);
     }
 
-    public function getOrCreateUser($username, $password = null)
+    public function getOrCreateUser($username, $password = null, $apiKey = 'admin_api_key')
     {
         $em = $this->getEntityManager();
 
@@ -541,6 +585,10 @@ class FixturesContext extends RawMinkContext
         }
 
         $user = new User;
+
+        if (!$password) {
+            $password = $username.'pass';
+        }
 
         $user->setUsername($username);
         $user->setEmail($username.'@example.com');
@@ -572,6 +620,11 @@ class FixturesContext extends RawMinkContext
 
         $this->getUserManager()->updateUser($user);
 
+        $api = new UserApi();
+        $api->setApiKey($apiKey)->setUser($user);
+
+        $this->getEntityManager()->persist($api);
+        $this->getEntityManager()->flush();
     }
 
     public function getAttribute($label)
@@ -614,6 +667,15 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    public function createPrice($data, $currency = 'EUR')
+    {
+        $price = new ProductPrice();
+        $price->setData($data);
+        $price->setCurrency($currency);
+
+        return $price;
+    }
+
     private function createProduct($data)
     {
         $product = $this->getProductManager()->createFlexible();
@@ -627,12 +689,14 @@ class FixturesContext extends RawMinkContext
         return $product;
     }
 
-    private function createAttribute($label, $translatable = true, $type = 'text')
+    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
         $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
+        $attribute->setUseableAsGridColumn($showInGrid);
+        $attribute->setUseableAsGridFilter($showInGrid);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
@@ -649,8 +713,16 @@ class FixturesContext extends RawMinkContext
 
         $value = $pm->createFlexibleValue();
         $value->setAttribute($attribute);
-        $value->setData($data);
+        if ($attribute->getAttributeType() == $this->attributeTypes['prices']) {
+            $prices = $this->createPricesFromString($data);
+            foreach ($prices as $price) {
+                $value->addPrice($price);
+            }
+        } else {
+            $value->setData($data);
+        }
         $value->setLocale($locale);
+        $value->setScope($scope);
 
         return $value;
     }
@@ -675,6 +747,21 @@ class FixturesContext extends RawMinkContext
 
         $em = $this->getEntityManager();
         $em->persist($locale);
+        $em->flush();
+    }
+
+    private function createChannel($code, $locales)
+    {
+        $channel = new Channel;
+        $channel->setCode($code);
+        $channel->setName(ucfirst($code));
+
+        foreach ($locales as $localeCode) {
+            $channel->addLocale($this->getLocale($localeCode));
+        }
+
+        $em = $this->getEntityManager();
+        $em->persist($channel);
         $em->flush();
     }
 
@@ -732,9 +819,39 @@ class FixturesContext extends RawMinkContext
         return $translation;
     }
 
+    private function createPricesFromString($prices)
+    {
+        $prices = explode(',', $prices);
+        $data = array();
+
+        foreach ($prices as $price) {
+            $price = explode(' ', trim($price));
+            $amount = array_filter(
+                $price,
+                function ($item) {
+                    return preg_match('/^[0-9]+(\.[0-9]+)?$/', $item);
+                }
+            );
+            $amount = reset($amount);
+            if (!$amount) {
+                continue;
+            }
+            $currency = array_filter(
+                $price,
+                function ($item) {
+                    return preg_match('/^[a-zA-Z]+(.+)$/', $item);
+                }
+            );
+            $currency = !empty($currency) ? reset($currency) : 'EUR';
+            $data[] = $this->createPrice($amount, $currency);
+        }
+
+        return new ArrayCollection($data);
+    }
+
     private function camelize($string)
     {
-        return Inflector::camelize(str_replace(' ', '_', $string));
+        return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
     }
 
     private function getEntityManager()
