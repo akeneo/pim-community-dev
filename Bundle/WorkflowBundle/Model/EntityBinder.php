@@ -8,11 +8,12 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity;
+use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class EntityBinder
 {
     /**
-     * @var EntityManager
+     * @var ManagerRegistry
      */
     protected $registry;
 
@@ -27,28 +28,32 @@ class EntityBinder
     /**
      * @param WorkflowItem $item
      * @param object $entity
-     * @return WorkflowItemEntity|null
+     * @param string $assignedStep
+     * @return WorkflowItemEntity
+     * @throws \LogicException
+     * @throws NotManageableEntityException
      */
-    public function bind(WorkflowItem $item, $entity)
+    public function bind(WorkflowItem $item, $entity, $assignedStep = null)
     {
         if (!is_object($entity)) {
-            return null;
+            throw new \LogicException('Bind operation requires object entity.');
         }
 
         $entityClass = $this->getEntityClass($entity);
         /** @var EntityManager $entityManager */
         $entityManager = $this->registry->getManagerForClass($entityClass);
         if (!$entityManager) {
-            return null;
+            throw new NotManageableEntityException($entityClass);
         }
 
         $entityId = $this->getEntityId($entityManager, $entityClass, $entity);
+        $itemEntityStep = $assignedStep ?: $item->getCurrentStepName();
 
         $itemEntity = new WorkflowItemEntity();
         $itemEntity->setEntityClass($entityClass)
             ->setEntityId($entityId)
             ->setWorkflowItem($item)
-            ->setStepName($item->getCurrentStepName());
+            ->setStepName($itemEntityStep);
 
         $item->addEntity($itemEntity);
 
@@ -69,17 +74,8 @@ class EntityBinder
         $entityIdValues = $classMetadata->getIdentifierValues($entity);
         $entityId = $entityIdValues[$idField];
 
-        // if object wasn't flushed
         if (!$entityId) {
-            $entityManager->persist($entity);
-            $entityManager->flush($entity);
-
-            $entityIdValues = $classMetadata->getIdentifierValues($entity);
-            $entityId = $entityIdValues[$idField];
-        }
-
-        if (!$entityId) {
-            throw new \LogicException(sprintf('Can\'t extract entity ID from class %s', $entityClass));
+            throw new \LogicException('Bound object must have ID value.');
         }
 
         return $entityId;

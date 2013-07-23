@@ -11,36 +11,34 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
 class EntityBinderTest extends \PHPUnit_Framework_TestCase
 {
-    const STEP = 'current_test_step';
+    const DEFAULT_STEP = 'default_step';
+    const CUSTOM_STEP = 'custom_step';
     const ENTITY_ID = 42;
     const ENTITY_CLASS = 'Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\BoundEntity';
 
     /**
-     * @param $successful
-     * @param $entity
+     * @param object $entity
+     * @param string|null $step
      *
      * @dataProvider bindDataProvider
      */
-    public function testBind($successful, $entity)
+    public function testBind($entity, $step = null)
     {
         $entityManager = $this->getEntityManager($entity);
         $managerRegistry = $this->getManagerRegistry($entity, $entityManager);
 
         $workflowItem = new WorkflowItem();
-        $workflowItem->setCurrentStepName(self::STEP);
+        $workflowItem->setCurrentStepName(self::DEFAULT_STEP);
 
         $entityBinder = new EntityBinder($managerRegistry);
-        $workflowItemEntity = $entityBinder->bind($workflowItem, $entity);
+        $workflowItemEntity = $entityBinder->bind($workflowItem, $entity, $step);
 
-        if ($successful) {
-            $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity', $workflowItemEntity);
-            $this->assertEquals(self::ENTITY_CLASS, $workflowItemEntity->getEntityClass());
-            $this->assertEquals(self::ENTITY_ID, $workflowItemEntity->getEntityId());
-            $this->assertEquals(self::STEP, $workflowItemEntity->getStepName());
-            $this->assertEquals($workflowItem, $workflowItemEntity->getWorkflowItem());
-        } else {
-            $this->assertNull($workflowItemEntity);
-        }
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity', $workflowItemEntity);
+        $this->assertEquals(self::ENTITY_CLASS, $workflowItemEntity->getEntityClass());
+        $this->assertEquals(self::ENTITY_ID, $workflowItemEntity->getEntityId());
+        $this->assertEquals($step ?: self::DEFAULT_STEP, $workflowItemEntity->getStepName());
+        $this->assertEquals($workflowItem, $workflowItemEntity->getWorkflowItem());
+        $this->assertEquals(array($workflowItemEntity), $workflowItem->getEntities()->toArray());
     }
 
     /**
@@ -49,21 +47,12 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     public function bindDataProvider()
     {
         return array(
-            'not an object' => array(
-                'successful' => false,
-                'entity'     => array(1, 2, 3),
+            'default step' => array(
+                'entity' => new BoundEntity(self::ENTITY_ID),
             ),
-            'not manageable object' => array(
-                'successful' => false,
-                'entity'     => new \DateTime('now'),
-            ),
-            'existing object' => array(
-                'successful' => true,
-                'entity'     => new BoundEntity(self::ENTITY_ID)
-            ),
-            'new object' => array(
-                'successful' => true,
-                'entity'     => new BoundEntity()
+            'custom step' => array(
+                'entity' => new BoundEntity(self::ENTITY_ID),
+                'step'   => self::CUSTOM_STEP,
             ),
         );
     }
@@ -79,7 +68,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('getManagerForClass'))
             ->getMockForAbstractClass();
-        if (is_object($entity)) {
+        if (is_object($entity) && $entity instanceof BoundEntity) {
             $managerRegistry->expects($this->once())
                 ->method('getManagerForClass')
                 ->with(get_class($entity))
@@ -91,76 +80,82 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param mixed $entity
-     * @param boolean $isValidExtraction
-     * @return null|\PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getEntityManager($entity, $isValidExtraction = true)
+    protected function getEntityManager($entity)
     {
-        $entityManager = null;
-        if ($entity instanceof BoundEntity) {
-            $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getIdentifierValues'))
-                ->getMock();
-            $classMetadata->expects($this->any())
-                ->method('getIdentifierValues')
-                ->with($this->isInstanceOf(self::ENTITY_CLASS))
-                ->will(
-                    $this->returnCallback(
-                        function (BoundEntity $entity) {
-                            return array('id' => $entity->id);
-                        }
-                    )
-                );
-            /** @var ClassMetadata $classMetadata */
-            $classMetadata->setIdentifier(array('id'));
+        $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getIdentifierValues'))
+            ->getMock();
+        $classMetadata->expects($this->any())
+            ->method('getIdentifierValues')
+            ->with($this->isInstanceOf(self::ENTITY_CLASS))
+            ->will(
+                $this->returnCallback(
+                    function (BoundEntity $entity) {
+                        return array('id' => $entity->id);
+                    }
+                )
+            );
+        /** @var ClassMetadata $classMetadata */
+        $classMetadata->setIdentifier(array('id'));
 
-            $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getClassMetadata', 'persist', 'flush'))
-                ->getMock();
-            $entityManager->expects($this->once())
+        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getClassMetadata'))
+            ->getMock();
+        if (is_object($entity) && $entity instanceof BoundEntity) {
+            $entityManager->expects($this->any())
                 ->method('getClassMetadata')
                 ->with(self::ENTITY_CLASS)
                 ->will($this->returnValue($classMetadata));
-            if (!$entity->id) {
-                $entityManager->expects($this->once())
-                    ->method('persist')
-                    ->with($entity);
-                $entityManager->expects($this->once())
-                    ->method('flush')
-                    ->with($entity)
-                    ->will(
-                        $this->returnCallback(
-                            function (BoundEntity $entity) use ($isValidExtraction) {
-                                if ($isValidExtraction) {
-                                    $entity->id = EntityBinderTest::ENTITY_ID;
-                                }
-                            }
-                        )
-                    );
-            }
         }
 
         return $entityManager;
     }
 
-    // @codingStandardsIgnoreStart
     /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Can't extract entity ID from class Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\BoundEntity
+     * @param mixed $entity
      */
-    // @codingStandardsIgnoreEnd
-    public function testBindExtractIdException()
+    protected function executeBind($entity)
     {
-        $entity = new BoundEntity();
-
-        $entityManager = $this->getEntityManager($entity, false);
+        $entityManager = $this->getEntityManager($entity);
         $managerRegistry = $this->getManagerRegistry($entity, $entityManager);
 
         $workflowItem = new WorkflowItem();
 
         $entityBinder = new EntityBinder($managerRegistry);
         $entityBinder->bind($workflowItem, $entity);
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Bind operation requires object entity
+     */
+    public function testBindNotAnObjectException()
+    {
+        $entity = array(1, 2, 3);
+        $this->executeBind($entity);
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
+     * @expectedExceptionMessage Entity class "DateTime" is not manageable.
+     */
+    public function testBindNotManageableEntityException()
+    {
+        $entity = new \DateTime('now');
+        $this->executeBind($entity);
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Bound object must have ID value.
+     */
+    public function testBindEmptyEntityIdException()
+    {
+        $entity = new BoundEntity();
+        $this->executeBind($entity);
     }
 }
