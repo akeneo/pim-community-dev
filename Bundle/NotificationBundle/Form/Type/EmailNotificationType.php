@@ -6,8 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmailNotificationType extends AbstractType
@@ -62,22 +60,6 @@ class EmailNotificationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'event',
-            'entity',
-            array(
-                'class'         => 'OroNotificationBundle:Event',
-                'property'      => 'name',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->orderBy('c.name', 'ASC');
-                },
-                'empty_value'   => '',
-                'empty_data'    => null,
-                'required'      => true
-            )
-        );
-
-        $builder->add(
             'entityName',
             'choice',
             array(
@@ -90,6 +72,22 @@ class EmailNotificationType extends AbstractType
                 'attr'               => array(
                     'data-entities' => json_encode($this->entitiesData)
                 )
+            )
+        );
+
+        $builder->add(
+            'event',
+            'entity',
+            array(
+                'class'         => 'OroNotificationBundle:Event',
+                'property'      => 'name',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
+                'empty_value'   => '',
+                'empty_data'    => null,
+                'required'      => true
             )
         );
 
