@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Configuration;
+namespace Pim\Bundle\ImportExportBundle\Configuration;
+
+use Pim\Bundle\BatchBundle\Configuration\AbstractConfiguration;
 
 use JMS\Serializer\Annotation\Type;
 

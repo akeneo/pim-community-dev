@@ -1,0 +1,23 @@
+parameters:
+    pim_import_export.simple_job.class:              Pim\Bundle\ImportExportBundle\Job\SimpleJob
+    
+    pim_import_export.connector.csv.class:           Pim\Bundle\ImportExportBundle\Connector\CsvConnector
+    pim_import_export.configuration.csv.class:       Pim\Bundle\ImportExportBundle\Configuration\CsvConfiguration
+    
+    pim_import_export.form.type.csv_connector.class: Pim\Bundle\ImportExportBundle\Form\Type\CsvConnectorType
+    
+services:
+    pim_import_export.my_super_job:
+        class:     %pim_import_export.simple_job.class%
+        arguments: ['My Super Job as a service !', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.csv.class%]
+        tags:
+            - { name: pim_batch.job, connector: pim_import_export.connector.csv }
+
+    pim_import_export.connector.csv:
+        class: %pim_import_export.connector.csv.class%
+        arguments: [%pim_import_export.configuration.csv.class%]
+
+    pim_import_export.form.type.connector_csv:
+        class: %pim_import_export.form.type.csv_connector.class%
+        tags:
+            - { name: form.type, alias: pim_configuration_csv }

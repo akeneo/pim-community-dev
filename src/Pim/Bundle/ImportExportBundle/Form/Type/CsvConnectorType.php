@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Form\Type;
+namespace Pim\Bundle\ImportExportBundle\Form\Type;
+
+use Pim\Bundle\BatchBundle\Form\Type\AbstractConfigurationType;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -36,7 +37,7 @@ class CsvConnectorType extends AbstractConfigurationType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\BatchBundle\Configuration\CsvConfiguration'
+                'data_class' => 'Pim\Bundle\ImportExportBundle\Configuration\CsvConfiguration'
             )
         );
     }

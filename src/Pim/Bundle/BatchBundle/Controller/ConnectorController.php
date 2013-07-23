@@ -133,7 +133,6 @@ class ConnectorController extends Controller
     public function runAction(Connector $entity)
     {
         if ($this->getRequest()->getMethod() === 'POST') {
-
             $confConnector = $entity->getRawConfiguration()->getConfiguration();
 
             // TODO deal with jobs order (depends on scheduler ?)

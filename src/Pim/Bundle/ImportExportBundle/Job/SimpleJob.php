@@ -1,9 +1,11 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Job;
+namespace Pim\Bundle\ImportExportBundle\Job;
 
+
+use Pim\Bundle\BatchBundle\Job\AbstractJob;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
-
 use Pim\Bundle\BatchBundle\Logger;
 
 use Doctrine\Common\Collections\ArrayCollection;

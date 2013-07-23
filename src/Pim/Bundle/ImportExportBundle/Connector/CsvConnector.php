@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Connector;
+namespace Pim\Bundle\ImportExportBundle\Connector;
+
+use Pim\Bundle\BatchBundle\Connector\AbstractConnector;
 
 /**
  * Csv Connector
