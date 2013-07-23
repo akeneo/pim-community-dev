@@ -2,7 +2,7 @@
 <project name="pim" default="build">
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -201,6 +201,9 @@
           <arg value="--complete" />
           <arg value="--force" />
         </exec>
+    </target>
+
+    <target name="fixtures" description="Load fixtures">
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />
