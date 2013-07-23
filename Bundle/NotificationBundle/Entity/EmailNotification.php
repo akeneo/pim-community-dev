@@ -165,6 +165,10 @@ class EmailNotification
      */
     public function getRecipientGroupsList()
     {
+        if (!$this->getRecipientList()) {
+            return '';
+        }
+
         return implode(
             ', ',
             $this->getRecipientList()->getGroups()->map(
@@ -182,6 +186,10 @@ class EmailNotification
      */
     public function getRecipientUsersList()
     {
+        if (!$this->getRecipientList()) {
+            return '';
+        }
+
         return implode(
             ', ',
             $this->getRecipientList()->getUsers()->map(
