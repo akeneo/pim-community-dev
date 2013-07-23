@@ -3,6 +3,9 @@ parameters:
 
     oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction
     oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable
+    oro_workflow.post_action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\AssignValue
+    oro_workflow.post_action.create_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\CreateEntity
+    oro_workflow.post_action.bind_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\BindEntity
 
 services:
     oro_workflow.post_action_factory:
@@ -24,3 +27,25 @@ services:
             - @oro_workflow.post_action_assembler
         tags:
             - { name: oro_workflow.post_action, alias: configurable }
+
+    oro_workflow.post_action.assign_value:
+        class: %oro_workflow.post_action.assign_value.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.post_action, alias: assign_value }
+
+    oro_workflow.post_action.create_entity:
+        class: %oro_workflow.post_action.create_entity.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.post_action, alias: create_entity }
+
+    oro_workflow.post_action.bind_entity:
+        class: %oro_workflow.post_action.bind_entity.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @oro_workflow.entity_binder
+        tags:
+            - { name: oro_workflow.post_action, alias: bind_entity }

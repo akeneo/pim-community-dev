@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable;
 
-class ConfigurablePostActionTest extends \PHPUnit_Framework_TestCase
+class ConfigurableTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Configurable
