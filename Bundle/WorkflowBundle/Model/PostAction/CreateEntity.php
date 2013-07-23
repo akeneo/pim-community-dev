@@ -34,7 +34,7 @@ class CreateEntity extends AbstractPostAction
     public function execute($context)
     {
         $entity = $this->createEntity();
-        $this->contextAccessor->setValue($context, $this->options[1], $entity);
+        $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
     /**
@@ -42,10 +42,16 @@ class CreateEntity extends AbstractPostAction
      */
     public function initialize(array $options)
     {
-        if (count($options) < 2) {
-            throw new InvalidParameterException('Class name and property parameters are required');
+        if (empty($options['class'])) {
+            throw new InvalidParameterException('Class name parameter is required');
         }
+
+        if (empty($options['attribute'])) {
+            throw new InvalidParameterException('Attribute name parameter is required');
+        }
+
         $this->options = $options;
+
         return $this;
     }
 
@@ -74,6 +80,6 @@ class CreateEntity extends AbstractPostAction
      */
     protected function getEntityClassName()
     {
-        return $this->options[0];
+        return $this->options['class'];
     }
 }
