@@ -1,0 +1,45 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+
+{% set title = 'Update Entity' %}
+{% oro_title_set({params : {"%username%": 'User' }}) %}
+
+{% set formAction = path('oro_entityconfig_field_update', {id: field.id}) %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity'      : 'entity',
+        'indexPath'   : path('oro_entityconfig_index'),
+        'indexLabel'  : 'Entities',
+        'entityTitle' : field.id ? field_config.get('label')|default(field.code|capitalize) : 'New Field'|trans,
+        'additional'  : [
+            {
+                'indexPath'  : path('oro_entityconfig_view', {id: field.entity.id}),
+                'indexLabel' : entity_config.get('label'),
+            },
+        ]
+    }%}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'configfield-update' %}
+    {% set dataBlocks = form_data_blocks(form) %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}
