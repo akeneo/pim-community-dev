@@ -11,34 +11,13 @@ services:
     pim_serializer:
         class: %pim_serializer.class%
 
-    pim_serializer.encoder.xml:
-        public: false
-        class: %pim_serializer.encoder.xml.class%
-        tags:
-            - { name: pim_serializer.encoder }
-
-    pim_serializer.encoder.json:
-        public: false
-        class: %pim_serializer.encoder.json.class%
-        tags:
-            - { name: pim_serializer.encoder }
-
+    # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
         arguments:
             - @router
         tags:
             - { name: pim_serializer.normalizer }
-
-    pim_serializer.encoder.csv:
-        public: false
-        class: %pim_serializer.encoder.csv.class%
-        arguments:
-            - %pim_serializer.encoder.csv.delimiter%
-            - %pim_serializer.encoder.csv.enclosure%
-            - %pim_serializer.encoder.csv.with_header%
-        tags:
-            - { name: pim_serializer.encoder }
 
     pim_serializer.normalizer.flat_product:
         public: false
@@ -51,3 +30,26 @@ services:
         class: %pim_serializer.normalizer.get_set_method.class%
         tags:
             - { name: pim_serializer.normalizer }
+
+    # Serializers
+    pim_serializer.encoder.xml:
+        public: false
+        class: %pim_serializer.encoder.xml.class%
+        tags:
+            - { name: pim_serializer.encoder }
+
+    pim_serializer.encoder.json:
+        public: false
+        class: %pim_serializer.encoder.json.class%
+        tags:
+            - { name: pim_serializer.encoder }
+
+    pim_serializer.encoder.csv:
+        public: false
+        class: %pim_serializer.encoder.csv.class%
+        arguments:
+            - %pim_serializer.encoder.csv.delimiter%
+            - %pim_serializer.encoder.csv.enclosure%
+            - %pim_serializer.encoder.csv.with_header%
+        tags:
+            - { name: pim_serializer.encoder }
