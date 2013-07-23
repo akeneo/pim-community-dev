@@ -99,6 +99,48 @@ class BusinessUnitDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldPhone);
 
+        $parent = new FieldDescription();
+        $parent->setName('parent');
+        $parent->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Parent',
+                'field_name'  => 'parentName',
+                'expression'  => 'parent',
+                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => true,
+                'show_filter' => true,
+                // entity filter options
+                'class'           => 'OroOrganizationBundle:BusinessUnit',
+                'property'        => 'name',
+                'filter_by_where' => true,
+            )
+        );
+        $fieldsCollection->add($parent);
+
+        $organization = new FieldDescription();
+        $organization->setName('organization');
+        $organization->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Organization',
+                'field_name'  => 'organizationName',
+                'expression'  => 'organization',
+                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => true,
+                'show_filter' => true,
+                // entity filter options
+                'class'           => 'OroOrganizationBundle:Organization',
+                'property'        => 'name',
+                'filter_by_where' => true,
+            )
+        );
+        $fieldsCollection->add($organization);
+
         $fieldCreated = new FieldDescription();
         $fieldCreated->setName('created_at');
         $fieldCreated->setOptions(
@@ -114,6 +156,19 @@ class BusinessUnitDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldCreated);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
+        $entityAlias = $query->getRootAlias();
+        $query->addSelect('organization.name as organizationName', true);
+        $query->addSelect('parent.name as parentName', true);
+        /** @var $query QueryBuilder */
+        $query->leftJoin($entityAlias . '.organization', 'organization');
+        $query->leftJoin($entityAlias . '.parent', 'parent');
     }
 
     /**

@@ -1,9 +1,10 @@
 parameters:
-    oro_organization.type.business_unit.class:         Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType
-    oro_organization.handler.business_unit.class:      Oro\Bundle\OrganizationBundle\Form\Handler\BusinessUnitHandler
-    oro_organization.business_unit.form.type.business_unit.api.class: Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitApiType
-    oro_organization.business_unit.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_organization.business_unit.entity.class: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+    oro_organization.type.business_unit.class:                          Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType
+    oro_organization.handler.business_unit.class:                       Oro\Bundle\OrganizationBundle\Form\Handler\BusinessUnitHandler
+    oro_organization.business_unit.form.type.business_unit.api.class:   Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitApiType
+    oro_organization.business_unit.manager.api.class:                   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_organization.business_unit.entity.class:                        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+    oro_organization.business_unit.manager.class:                       Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
 services:
     oro_organization.form.business_unit:
         class:                        Symfony\Component\Form\Form
@@ -14,8 +15,7 @@ services:
         class:                        %oro_organization.handler.business_unit.class%
         scope:                        request
         arguments:                    ["@oro_organization.form.business_unit", "@request", "@doctrine.orm.entity_manager"]
-        tags:
-            - { name: oro_tag.tag_manager }
+
     oro_organization.form.type.business_unit:
         class:                        %oro_organization.type.business_unit.class%
         tags:
@@ -46,3 +46,7 @@ services:
             - @oro_organization.form.type.business_unit.api
             - @request
             - @doctrine.orm.entity_manager
+
+    oro_organization.business_unit_manager:
+        class:                        %oro_organization.business_unit.manager.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]

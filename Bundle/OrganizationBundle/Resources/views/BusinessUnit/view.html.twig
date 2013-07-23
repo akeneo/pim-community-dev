@@ -1,6 +1,4 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroTagBundle::macros.html.twig' as _tag %}
-
 {% oro_title_set({params : {"%business_unitname%": entity.name|default('N/A') }}) %}
 {% set gridId = 'users-grid' %}
 {% block head_script %}
@@ -42,9 +40,6 @@
     {% set id = 'business-unit-profile' %}
 
     {% set dataSubBlocks = [] %}
-    {% if resource_granted('oro_tag_view_tag_cloud') %}
-        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
-    {% endif %}
 
     {% set dataBlocks = [{
             'title': 'General',

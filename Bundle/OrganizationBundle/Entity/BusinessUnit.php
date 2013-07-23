@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,11 +11,11 @@ use DateTime;
  * BusinessUnit
  *
  * @ORM\Table("oro_business_unit")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
  */
-class BusinessUnit implements Taggable
+class BusinessUnit
 {
     /**
      * @var integer
@@ -154,6 +153,16 @@ class BusinessUnit implements Taggable
     }
 
     /**
+     * Get parent name
+     *
+     * @return string
+     */
+    public function getParentName()
+    {
+        return $this->parent ? $this->parent->getName() : '';
+    }
+
+    /**
      * Set organization
      *
      * @param Organization $organization
@@ -174,6 +183,16 @@ class BusinessUnit implements Taggable
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * Get organization name
+     *
+     * @return string
+     */
+    public function getOrganizationName()
+    {
+        return $this->organization->getName();
     }
 
     /**
@@ -315,33 +334,5 @@ class BusinessUnit implements Taggable
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTags()
-    {
-        $this->tags = $this->tags ?: new ArrayCollection();
-
-        return $this->tags;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
     }
 }

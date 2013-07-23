@@ -16,6 +16,8 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
+use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+
 /**
  * @Acl(
  *      id="oro_user_user",
@@ -120,6 +122,7 @@ class UserController extends Controller
 
         return array(
             'form' => $this->get('oro_user.form.user')->createView(),
+            'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree()
         );
     }
 
@@ -144,5 +147,13 @@ class UserController extends Controller
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
+    }
+
+    /**
+     * @return BusinessUnitManager
+     */
+    protected function getBusinessUnitManager()
+    {
+        return $this->get('oro_organization.business_unit_manager');
     }
 }

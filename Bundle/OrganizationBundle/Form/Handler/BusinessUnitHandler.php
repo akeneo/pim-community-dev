@@ -7,12 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\TagBundle\Entity\TagManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\TagBundle\Form\Handler\TagHandlerInterface;
 
-class BusinessUnitHandler implements TagHandlerInterface
+class BusinessUnitHandler
 {
     /**
      * @var FormInterface
@@ -28,11 +26,6 @@ class BusinessUnitHandler implements TagHandlerInterface
      * @var ObjectManager
      */
     protected $manager;
-
-    /**
-     * @var TagManager
-     */
-    protected $tagManager;
 
     /**
      * @param FormInterface $form
@@ -84,7 +77,6 @@ class BusinessUnitHandler implements TagHandlerInterface
         $this->removeUsers($entity, $removeUsers);
         $this->manager->persist($entity);
         $this->manager->flush();
-        $this->tagManager->saveTagging($entity);
     }
 
     /**
@@ -115,13 +107,5 @@ class BusinessUnitHandler implements TagHandlerInterface
             $user->removeBusinessUnit($businessUnit);
             $this->manager->persist($user);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTagManager(TagManager $tagManager)
-    {
-        $this->tagManager = $tagManager;
     }
 }

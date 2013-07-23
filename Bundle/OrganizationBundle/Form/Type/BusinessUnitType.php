@@ -26,7 +26,7 @@ class BusinessUnitType extends AbstractType
                 'phone',
                 'text',
                 array(
-                    'required' => true,
+                    'required' => false,
                 )
             )
             ->add(
@@ -40,7 +40,7 @@ class BusinessUnitType extends AbstractType
                 'email',
                 'text',
                 array(
-                    'required' => true,
+                    'required' => false,
                 )
             )
             ->add(
@@ -92,11 +92,6 @@ class BusinessUnitType extends AbstractType
                     'multiple' => true,
                 )
             );
-        // tags
-        $builder->add(
-            'tags',
-            'oro_tag_select'
-        );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
