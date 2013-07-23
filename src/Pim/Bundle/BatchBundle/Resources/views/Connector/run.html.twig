@@ -1,0 +1,51 @@
+{% extends bap.layout is defined ? bap.layout : 'PimBatchBundle::layout.html.twig' %}
+
+{% set title = 'Prepare running' %}
+
+{% block content %}
+
+    <form action="{{ path('pim_batch_connector_run', { id: connector.id })}}" method="POST">
+
+        <fieldset>
+            <legend>
+                {{ title | trans }}
+                <a class="btn btn-primary pull-right" href="{{ path('pim_batch_connector_index') }}">{{ "Back" | trans }}</a>
+            </legend>
+        
+    
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>{{ "ID" | trans }}</th>
+                        <th>{{ "Description" | trans }}</th>
+                        <th>{{ "Type" | trans }}</th>
+                        <th>{{ "Service" | trans }}</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr>
+                        <td>{{ connector.id }}</td>
+                        <td>{{ connector.description }}</td>
+                        <td>Connector</td>
+                        <td>{{ (connector.serviceId ~ ".label") | trans }}</td>
+                    </tr>
+                    {% for job in connector.jobs %}
+                    <tr>
+                        <td>-</td>
+                        <td> {{ job.description }}</td>
+                        <td>Job</td>
+                        <td>{{ (job.serviceId ~ ".label") | trans }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="form-row">
+                <button class="btn btn-large btn-primary pull-right" type="submit">{{ "Run" | trans }}</button>
+            </div>
+        </fieldset>
+
+    </form>
+
+{% endblock %}
