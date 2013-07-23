@@ -11,7 +11,7 @@ use Oro\Bundle\EntityBundle\Metadata\AuditEntityMetadata;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
@@ -56,9 +56,9 @@ class AuditConfigSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param OnFlushConfigEvent $event
+     * @param FlushConfigEvent $event
      */
-    public function onFlush(OnFlushConfigEvent $event)
+    public function onFlush(FlushConfigEvent $event)
     {
         $clearClassNames = array();
 
