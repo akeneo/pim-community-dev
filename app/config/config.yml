@@ -196,3 +196,15 @@ pim_import_export:
             delimiter: ';'
             enclosure: '"'
             with_header: true
+
+pim_batch:
+    jobs:
+        product_export:
+            title: "CSV export of products"
+            steps:
+                export:
+                    title:      "Product export"
+                    reader:     pim_import_export.reader.orm_cursor
+                    processor:  pim_import_export.processor.serializer
+                    writer:     pim_import_export.writer.file
+

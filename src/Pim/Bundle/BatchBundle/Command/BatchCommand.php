@@ -18,9 +18,9 @@ use Pim\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
 use Pim\Bundle\BatchBundle\Item\Support\EchoWriter;
 
 use Pim\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BatchBundle\Item\Support\DoctrineReader;
 use Pim\Bundle\BatchBundle\Item\Support\SerializerProcessor;
-use Pim\Bundle\BatchBundle\Item\Support\FilePutContentsWriter;
+use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
+use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
 
 /**
  * Batch command
@@ -49,7 +49,7 @@ class BatchCommand extends ContainerAwareCommand
         $container = $this->getContainer();
         $dummyJobRepository = new JobRepository();
 
-        $productReader = new DoctrineReader();
+        $productReader = new ORMCursorReader();
         $productReader->setQuery(
             $container
                 ->get('doctrine.orm.default_entity_manager')
@@ -61,7 +61,7 @@ class BatchCommand extends ContainerAwareCommand
         $productProcessor = new SerializerProcessor($container->get('pim_serializer'));
         $productProcessor->setFormat('csv');
 
-        $productWriter = new FilePutContentsWriter();
+        $productWriter = new FileWriter();
         $productWriter->setPath('/tmp/export'.uniqid().'.csv');
 
         $step1 = new ItemStep("Product export");

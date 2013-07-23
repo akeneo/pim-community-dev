@@ -55,6 +55,11 @@ class JobExecution
         $this->createTime = time();
     }
 
+    public function setJobParameters($jobParameters)
+    {
+        $this->jobParameters = $jobParameters;
+    }
+
     /**
      * Return the parameters of the job
      *
