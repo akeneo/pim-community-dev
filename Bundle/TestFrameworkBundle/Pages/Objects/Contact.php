@@ -96,7 +96,7 @@ class Contact extends AbstractEntity implements Entity
         $types = $this->elements($this->using('xpath')->value("//input[@name = 'orocrm_contact_form[addresses][{$addressId}][types][]']"));
         foreach ($types as $type) {
             if ($type->selected()) {
-                $values[] = $type->value();
+                $values[] = $type->attribute('value');
             }
         }
 
@@ -121,7 +121,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressFirstName($addressId = 0)
     {
         $addressFirstName = $this->byId("orocrm_contact_form_addresses_{$addressId}_firstName");
-        return $addressFirstName->value();
+        return $addressFirstName->attribute('value');
     }
 
     public function setAddressLastName($value, $addressId = 0)
@@ -137,7 +137,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressLastName($addressId = 0)
     {
         $addressLastName = $this->byId("orocrm_contact_form_addresses_{$addressId}_lastName");
-        return $addressLastName->value();
+        return $addressLastName->attribute('value');
     }
 
     public function setAddressStreet($value, $addressId = 0)
@@ -152,7 +152,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressStreet($addressId = 0)
     {
         $street = $this->byId("orocrm_contact_form_addresses_{$addressId}_street");
-        return $street->value();
+        return $street->attribute('value');
     }
 
     public function setAddressCity($value, $addressId = 0)
@@ -166,7 +166,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressCity($addressId = 0)
     {
         $city = $this->byId("orocrm_contact_form_addresses_{$addressId}_city");
-        return $city->value();
+        return $city->attribute('value');
     }
 
     public function setAddressPostalCode($value, $addressId = 0)
@@ -180,7 +180,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressPostalCode($addressId = 0)
     {
         $zipcode = $this->byId("orocrm_contact_form_addresses_{$addressId}_postalCode");
-        return $zipcode->value();
+        return $zipcode->attribute('value');
     }
 
     public function setAddressCountry($value, $addressId = 0)
