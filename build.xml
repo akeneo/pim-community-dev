@@ -174,7 +174,13 @@
 
     <target name="dumpassets" description="Dump the assets">
         <exec executable="app/console">
-          <arg value="assetic:dump" />
+            <arg value="oro:navigation:init" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="assetic:dump" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="oro:assetic:dump" />
         </exec>
     </target>
 
