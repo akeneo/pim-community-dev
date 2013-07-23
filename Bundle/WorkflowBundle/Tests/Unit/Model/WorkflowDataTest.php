@@ -77,6 +77,14 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($this->data));
     }
 
+    public function testIsEmpty()
+    {
+        $this->assertTrue($this->data->isEmpty());
+
+        $this->data->set('foo', 'bar');
+        $this->assertFalse($this->data->isEmpty());
+    }
+
     public function testIterable()
     {
         $this->data->set('foo', 'bar');

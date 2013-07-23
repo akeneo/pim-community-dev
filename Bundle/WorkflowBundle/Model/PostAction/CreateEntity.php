@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class CreateEntity extends AbstractPostAction
 {
@@ -12,12 +16,25 @@ class CreateEntity extends AbstractPostAction
     protected $options;
 
     /**
+     * @var ManagerRegistry
+     */
+    protected $registry;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function execute($context)
     {
         $entity = $this->createEntity();
-        $this->contextAccessor->setValue($context, $this->options[1], $entity);
+        $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
     /**
@@ -25,31 +42,44 @@ class CreateEntity extends AbstractPostAction
      */
     public function initialize(array $options)
     {
-        if (count($options) < 2) {
-            throw new InvalidParameterException('Class name and property parameters are required');
+        if (empty($options['class'])) {
+            throw new InvalidParameterException('Class name parameter is required');
         }
+
+        if (empty($options['attribute'])) {
+            throw new InvalidParameterException('Attribute name parameter is required');
+        }
+
         $this->options = $options;
+
         return $this;
     }
 
     /**
-     * Create entity.
-     *
      * @return object
+     * @throws NotManageableEntityException
      */
     protected function createEntity()
     {
         $entityClassName = $this->getEntityClassName();
-        return new $entityClassName();
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->registry->getManagerForClass($entityClassName);
+        if (!$entityManager) {
+            throw new NotManageableEntityException($entityClassName);
+        }
+
+        $entity = new $entityClassName();
+        $entityManager->persist($entity);
+        $entityManager->flush($entity);
+
+        return $entity;
     }
 
     /**
-     * Get entity class name.
-     *
      * @return string
      */
     protected function getEntityClassName()
     {
-        return $this->options[0];
+        return $this->options['class'];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
@@ -23,12 +24,12 @@ class Workflow
     protected $enabled;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $steps;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $transitions;
 
@@ -157,11 +158,31 @@ class Workflow
     /**
      * Get steps.
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getSteps()
     {
         return $this->steps;
+    }
+
+    /**
+     * Get step attributes.
+     *
+     * @return Collection
+     * @TODO Cover method with tests
+     */
+    public function getStepAttributes()
+    {
+        $result = new ArrayCollection();
+        /** @var $step Step */
+        foreach ($this->steps as $step) {
+            /** @var $attribute StepAttribute */
+            foreach ($step->getAttributes() as $attribute) {
+                $result->set($attribute->getName(), $attribute);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -184,7 +205,7 @@ class Workflow
     /**
      * Get transitions.
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getTransitions()
     {

@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Performs serialization and deserialization of WorkflowItem data
  */
-class WorkflowItemSerializeSubscriber implements EventSubscriber
+class WorkflowDataSerializeSubscriber implements EventSubscriber
 {
     /**
      * @var SerializerInterface
@@ -102,14 +102,8 @@ class WorkflowItemSerializeSubscriber implements EventSubscriber
      */
     protected function deserialize(WorkflowItem $workflowItem)
     {
-        // @TODO Get class name "Oro\Bundle\WorkflowBundle\Model\WorkflowData" from WorkflowDefinition
-        // @TODO Get format ("json", "xml", ...) from WorkflowDefinition
-        $data = $this->serializer->deserialize(
-            $workflowItem->getSerializedData(),
-            'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
-            $this->format
-        );
-        $workflowItem->setData($data);
+        // Pass serializer into $workflowItem to make lazy loading of workflow item data.
+        $workflowItem->setSerializer($this->serializer);
     }
 
     /**

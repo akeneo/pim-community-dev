@@ -2,7 +2,7 @@ parameters:
     oro_workflow.post_action_factory.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
 
     oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction
-    oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ConfigurablePostAction
+    oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable
 
 services:
     oro_workflow.post_action_factory:

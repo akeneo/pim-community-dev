@@ -7,13 +7,12 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
-use Symfony\Component\Serializer\SerializerInterface;
-use Oro\Bundle\WorkflowBundle\EventListener\WorkflowItemSerializeSubscriber;
+use Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber;
 
-class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
+class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var WorkflowItemSerializeSubscriber
+     * @var WorkflowDataSerializeSubscriber
      */
     protected $subscriber;
 
@@ -24,8 +23,8 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
-        $this->subscriber = new WorkflowItemSerializeSubscriber($this->serializer);
+        $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
+        $this->subscriber = new WorkflowDataSerializeSubscriber($this->serializer);
     }
 
     public function testGetSubscribedEvents()
@@ -43,26 +42,15 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $entity = new WorkflowItem();
-        $serializedData = '_serialized_data_';
-        $entity->setSerializedData($serializedData);
-
-        $expectedData = new WorkflowData();
-        $expectedData->foo = 'foo';
 
         $args = new LifecycleEventArgs($entity, $em);
 
         $this->serializer->expects($this->never())->method('serialize');
-        $this->serializer->expects($this->once())->method('deserialize')
-            ->with(
-                $serializedData,
-                'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
-                'json'
-            )
-            ->will($this->returnValue($expectedData));
+        $this->serializer->expects($this->never())->method('deserialize');
 
         $this->subscriber->postLoad($args);
 
-        $this->assertEquals($expectedData, $entity->getData());
+        $this->assertAttributeSame($this->serializer, 'serializer', $entity);
     }
 
     public function testPostEntityNotSupported()
@@ -129,10 +117,10 @@ class WorkflowItemSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals($expectedSerializedData1, $entity1->getSerializedData());
-        $this->assertEquals($expectedSerializedData2, $entity2->getSerializedData());
-        $this->assertEquals($expectedSerializedData4, $entity4->getSerializedData());
-        $this->assertEquals($expectedSerializedData5, $entity5->getSerializedData());
+        $this->assertAttributeEquals($expectedSerializedData1, 'serializedData', $entity1);
+        $this->assertAttributeEquals($expectedSerializedData2, 'serializedData', $entity2);
+        $this->assertAttributeEquals($expectedSerializedData4, 'serializedData', $entity4);
+        $this->assertAttributeEquals($expectedSerializedData5, 'serializedData', $entity5);
     }
 
     /**

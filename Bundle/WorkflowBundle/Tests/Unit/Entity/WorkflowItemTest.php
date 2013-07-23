@@ -55,14 +55,64 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $this->workflowItem->getData());
     }
 
+    public function testGetDataWithSerialization()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
+
+        $serializedData = 'serialized_data';
+
+        $data = new WorkflowData();
+        $data->set('foo', 'bar');
+
+        $serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
+        $serializer->expects($this->once())->method('deserialize')
+            ->with($serializedData, 'Oro\Bundle\WorkflowBundle\Model\WorkflowData', 'json')
+            ->will($this->returnValue($data));
+
+        $workflowItem->setSerializer($serializer);
+        $workflowItem->setSerializedData($serializedData);
+
+        $this->assertSame($data, $workflowItem->getData());
+        $this->assertSame($data, $workflowItem->getData());
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
+     * @expectedExceptionMessage Cannot deserialize data of workflow item. Serializer is not available.
+     */
+    public function testGetDataWithSerializationFails()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
+        $workflowItem->setSerializedData('serialized_data');
+        $workflowItem->getData();
+    }
+
+    public function testGetDataWithWithEmptySerializedData()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
+
+        $data = $workflowItem->getData();
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\WorkflowData', $data);
+        $this->assertTrue($data->isEmpty());
+    }
+
     public function testSerializedData()
     {
-        $this->assertNull($this->workflowItem->getSerializedData());
+        $this->assertAttributeEmpty('serializedData', $this->workflowItem);
 
         $data = 'serialized_data';
 
         $this->workflowItem->setSerializedData($data);
-        $this->assertEquals($data, $this->workflowItem->getSerializedData());
+        $this->assertAttributeEquals($data, 'serializedData', $this->workflowItem);
     }
 
     public function testClosed()

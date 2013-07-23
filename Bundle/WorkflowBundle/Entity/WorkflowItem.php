@@ -6,8 +6,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
 /**
@@ -81,6 +83,11 @@ class WorkflowItem
      * @var WorkflowData
      */
     protected $data;
+
+    /**
+     * @var WorkflowAwareSerializer
+     */
+    protected $serializer;
 
     /**
      * Constructor
@@ -251,7 +258,7 @@ class WorkflowItem
     /**
      * Set serialized data.
      *
-     * This method should be called only from WorkflowItemSerializeSubscriber.
+     * This method should be called only from WorkflowDataSerializeSubscriber.
      *
      * @param string $data
      * @return WorkflowItem
@@ -261,18 +268,6 @@ class WorkflowItem
         $this->serializedData = $data;
 
         return $this;
-    }
-
-    /**
-     * Get serialized data
-     *
-     * This method should be called only from WorkflowItemSerializeSubscriber.
-     *
-     * @return string
-     */
-    public function getSerializedData()
-    {
-        return $this->serializedData;
     }
 
     /**
@@ -292,9 +287,36 @@ class WorkflowItem
      * Get data
      *
      * @return WorkflowData
+     * @throws WorkflowException If data cannot be deserialized
      */
     public function getData()
     {
+        if (!$this->data) {
+            if (!$this->serializedData) {
+                $this->data = new WorkflowData();
+            } elseif (!$this->serializer) {
+                throw new WorkflowException('Cannot deserialize data of workflow item. Serializer is not available.');
+            } else {
+                $this->serializer->setWorkflowName($this->workflowName);
+                $this->data = $this->serializer->deserialize(
+                    $this->serializedData,
+                    'Oro\Bundle\WorkflowBundle\Model\WorkflowData', // @TODO Make this class name configurable?
+                    'json' // @TODO Take this option from parameter of WorkflowItem
+                );
+            }
+        }
         return $this->data;
+    }
+
+    /**
+     * Set serializer
+     *
+     * This method should be called only from WorkflowDataSerializeSubscriber.
+     *
+     * @param WorkflowAwareSerializer $serializer
+     */
+    public function setSerializer(WorkflowAwareSerializer $serializer)
+    {
+        $this->serializer = $serializer;
     }
 }

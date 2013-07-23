@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
-class ConfigurablePostAction implements PostActionInterface
+class Configurable implements PostActionInterface
 {
     const ALIAS = 'configurable';
 

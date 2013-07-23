@@ -5,6 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Serializer\Normalizer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer;
@@ -42,7 +43,9 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
+        $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
+        $this->serializer->expects($this->any())->method('getWorkflow')
+            ->will($this->returnValue(new Workflow()));
 
         $this->normalizer = new WorkflowDataNormalizer($this->registry);
         $this->normalizer->setSerializer($this->serializer);
