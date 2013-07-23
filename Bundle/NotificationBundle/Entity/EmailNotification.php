@@ -4,6 +4,9 @@ namespace Oro\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\UserBundle\Entity\Group;
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * EmailNotification
  *
@@ -148,10 +151,44 @@ class EmailNotification
     /**
      * Get recipient
      *
-     * @return string 
+     * @return RecipientList
      */
     public function getRecipientList()
     {
         return $this->recipientList;
+    }
+
+    /**
+     * Returns comma separated list
+     *
+     * @return string
+     */
+    public function getRecipientGroupsList()
+    {
+        return implode(
+            ', ',
+            $this->getRecipientList()->getGroups()->map(
+                function (Group $group) {
+                    return $group->getName();
+                }
+            )->toArray()
+        );
+    }
+
+    /**
+     * Returns comma separated list
+     *
+     * @return string
+     */
+    public function getRecipientUsersList()
+    {
+        return implode(
+            ', ',
+            $this->getRecipientList()->getUsers()->map(
+                function (User $user) {
+                    return sprintf('%s <%s>', $user->getFullname(), $user->getEmail());
+                }
+            )->toArray()
+        );
     }
 }

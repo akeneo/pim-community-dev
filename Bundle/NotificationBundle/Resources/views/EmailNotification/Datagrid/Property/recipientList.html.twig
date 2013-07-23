@@ -1,9 +1,8 @@
-{% if value is not empty %}
-    {% set valueArray = value|split(',') %}
-    {% if valueArray|length > 3 %}
-        {{ valueArray[:3]|join(', ') }}
-        <span class="label show-more">{{ '...'|trans}}</span>
-    {% else %}
-        {{ value }}
-    {% endif %}
+{% set valueArray = value|split(',') %}
+{% if valueArray is not empty %}
+    <ul>
+        {% for recipient in valueArray %}
+            <li>{{ recipient }}</li>
+        {% endfor %}
+    </ul>
 {% endif %}

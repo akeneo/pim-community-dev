@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Property\TranslateableProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
@@ -130,39 +131,19 @@ class EmailNotificationDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldTemplate);
 
+        // Recipient filters
         $fieldRecipientList = new FieldDescription();
-        $fieldRecipientList->setName('recipientList');
+        $fieldRecipientList->setName('recipientUsersList');
         $fieldRecipientList->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('oro.notification.datagrid.recipients'),
-                'field_name'  => 'recipientList',
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-            )
-        );
-        $templateDataProperty = new TwigTemplateProperty(
-            $fieldRecipientList,
-            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig'
-        );
-        $fieldRecipientList->setProperty($templateDataProperty);
-        $fieldsCollection->add($fieldRecipientList);
-
-        // Recipient filters
-        $fieldRecipientList = new FieldDescription();
-        $fieldRecipientList->setName('userRecipient');
-        $fieldRecipientList->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'field_name'  => 'userRecipient',
-                'expression'  => 'userRecipient',
+                'field_name'  => 'recipientUsersList',
+                'expression'  => 'recipientUsersList',
                 'label'       => $this->translate('oro.notification.datagrid.recipient.user'),
-                'show_column' => false,
                 'required'    => false,
                 'sortable'    => false,
                 'filterable'  => true,
-                'show_filter' => false,
+                'show_filter' => true,
                 // entity filter options
                 'multiple'            => true,
                 'filter_type'         => FilterInterface::TYPE_ENTITY,
@@ -174,21 +155,25 @@ class EmailNotificationDatagridManager extends DatagridManager
                 },
             )
         );
-
+        $templateDataProperty = new TwigTemplateProperty(
+            $fieldRecipientList,
+            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig'
+        );
+        $fieldRecipientList->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldRecipientList);
 
         $fieldRecipientList = new FieldDescription();
-        $fieldRecipientList->setName('groupRecipient');
+        $fieldRecipientList->setName('recipientGroupsList');
         $fieldRecipientList->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'field_name'  => 'groupRecipient',
-                'expression'  => 'groupRecipient',
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
+                'field_name'  => 'recipientGroupsList',
+                'expression'  => 'recipientGroupsList',
                 'label'       => $this->translate('oro.notification.datagrid.recipient.group'),
-                'show_column' => false,
                 'required'    => false,
                 'sortable'    => false,
                 'filterable'  => true,
+                'show_filter' => true,
                 // entity filter options
                 'multiple'            => true,
                 'filter_type'         => FilterInterface::TYPE_ENTITY,
@@ -200,6 +185,11 @@ class EmailNotificationDatagridManager extends DatagridManager
                 },
             )
         );
+        $templateDataProperty = new TwigTemplateProperty(
+            $fieldRecipientList,
+            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig'
+        );
+        $fieldRecipientList->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldRecipientList);
 
         $fieldRecipientList = new FieldDescription();
@@ -207,14 +197,14 @@ class EmailNotificationDatagridManager extends DatagridManager
         $fieldRecipientList->setOptions(
             array(
                 'type'               => FieldDescriptionInterface::TYPE_TEXT,
-                'field_name'         => 'recipientList.email',
+                'field_name'         => 'emailRecipient',
                 'expression'         => 'recipientList.email',
                 'label'              => $this->translate('oro.notification.datagrid.recipient.custom_email'),
-                'show_column'        => false,
                 'required'           => false,
                 'sortable'           => false,
+                'show_filter'        => true,
                 'filterable'         => true,
-                'filter_by_where'    => true,
+                'filter_by_having'   => true,
                 'filter_type'        => FilterInterface::TYPE_STRING
             )
         );
@@ -224,15 +214,15 @@ class EmailNotificationDatagridManager extends DatagridManager
         $fieldRecipientList->setName('ownerRecipient');
         $fieldRecipientList->setOptions(
             array(
-                'type'               => FieldDescriptionInterface::TYPE_TEXT,
-                'field_name'         => 'recipientList.owner',
+                'type'               => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'field_name'         => 'ownerRecipient',
                 'expression'         => 'recipientList.owner',
                 'label'              => $this->translate('oro.notification.datagrid.recipient.owner'),
-                'show_column'        => false,
                 'required'           => false,
                 'sortable'           => false,
                 'filterable'         => true,
-                'filter_by_where'    => true,
+                'show_filter'        => true,
+                'filter_by_having'   => true,
                 'filter_type'        => FilterInterface::TYPE_BOOLEAN
             )
         );
@@ -288,10 +278,13 @@ class EmailNotificationDatagridManager extends DatagridManager
         $entityAlias = $query->getRootAlias();
 
         /** @var $query QueryBuilder */
-        $query->addSelect('event.name as eventName', true);
         $query->leftJoin($entityAlias . '.event', 'event');
         $query->leftJoin($entityAlias . '.recipientList', 'recipientList');
-        $query->leftJoin('recipientList.users', 'userRecipient');
-        $query->leftJoin('recipientList.groups', 'groupRecipient');
+        $query->leftJoin('recipientList.users', 'recipientUsersList');
+        $query->leftJoin('recipientList.groups', 'recipientGroupsList');
+
+        $query->addSelect('event.name as eventName', true);
+        $query->addSelect('recipientList.owner as ownerRecipient', true);
+        $query->addSelect('recipientList.email as emailRecipient', true);
     }
 }

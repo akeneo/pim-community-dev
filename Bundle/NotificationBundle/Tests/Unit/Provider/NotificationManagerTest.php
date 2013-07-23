@@ -69,9 +69,9 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
             ->method('isPropagationStopped')
             ->will($this->returnValue($eventPropagationStopped));
 
-        $repository = $this->getMockBuilder('Oro\Bundle\NotificationBundle\Entity\Repository\EmailNotificationRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->getMockBuilder(
+            'Oro\Bundle\NotificationBundle\Entity\Repository\EmailNotificationRepository'
+        )->disableOriginalConstructor()->getMock();
         $repository->expects($this->once())
             ->method('getRulesByCriteria')
             ->with(get_class($entity), $eventName)

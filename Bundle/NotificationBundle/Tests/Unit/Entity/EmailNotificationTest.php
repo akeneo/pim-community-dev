@@ -55,4 +55,14 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
         $this->entity->setRecipientList($list);
         $this->assertEquals($list, $this->entity->getRecipientList());
     }
+
+    public function testGetUsersRecipientsList()
+    {
+        $this->assertEmpty($this->entity->getRecipientUsersList());
+    }
+
+    public function testGetGroupsRecipientsList()
+    {
+        $this->assertEmpty($this->entity->getRecipientGroupsList());
+    }
 }
