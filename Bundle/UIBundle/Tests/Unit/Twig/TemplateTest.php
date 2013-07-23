@@ -23,7 +23,7 @@ class JsonTemplateTest extends Template
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        echo json_encode(array('json' => 'test'));
+        echo json_encode(array('content' => 'test'));
     }
 }
 
@@ -43,5 +43,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $output = $object->render(array());
         $output = json_decode($output);
         $this->assertTrue($output->template_name == 'json.twig');
+        $this->assertContains('<!-- Start Template: json.twig -->', $output->content);
     }
 }

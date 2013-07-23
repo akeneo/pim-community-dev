@@ -18,16 +18,31 @@ abstract class Template extends Twig_Template
         $templateJson = json_decode($templateContent);
         if ($templateJson) {
             $templateJson->template_name = $this->getTemplateName();
+            if ($templateJson->content) {
+                $templateJson->content = $this->wrapContent($templateJson->content);
+            }
             $content = json_encode($templateJson);
         } else {
-            $content = '<!-- Start Template: ' . $this->getTemplateName();
-            if ($this->parent) {
-                $content.= ' (Parent Template: ' . $this->parent->getTemplateName(). ')';
-            }
-            $content.= " -->\n";
-            $content.= $templateContent;
-            $content.= '<!-- End Template: ' . $this->getTemplateName() . ' -->';
+            $content = $this->wrapContent($templateContent);
         }
+        return $content;
+    }
+
+    /**
+     * Wraps content into additional HTML comment tags with template name information
+     *
+     * @param string $originalContent
+     * @return string
+     */
+    protected function wrapContent($originalContent)
+    {
+        $content = '<!-- Start Template: ' . $this->getTemplateName();
+        if ($this->parent) {
+            $content.= ' (Parent Template: ' . $this->parent->getTemplateName(). ')';
+        }
+        $content.= " -->\n";
+        $content.= $originalContent;
+        $content.= '<!-- End Template: ' . $this->getTemplateName() . ' -->';
         return $content;
     }
 }
