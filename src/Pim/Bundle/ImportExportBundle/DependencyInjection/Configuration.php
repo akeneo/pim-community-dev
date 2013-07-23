@@ -32,33 +32,9 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('exporters')
-                    ->requiresAtLeastOneElement()
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('format')->isRequired()->end()
-                            ->append($this->addConfigurationNode('reader'))
-                            ->append($this->addConfigurationNode('writer'))
-                        ->end()
-                    ->end()
-                ->end()
             ->end()
         ->end();
 
         return $treeBuilder;
-    }
-
-    private function addConfigurationNode($name)
-    {
-        $builder = new TreeBuilder();
-        $node    = $builder->root($name);
-        $node
-            ->children()
-                ->scalarNode('type')->isRequired()->end()
-                ->variableNode('options')->end()
-            ->end()
-        ->end();
-
-        return $node;
     }
 }

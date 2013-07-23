@@ -6,8 +6,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\FileLocator;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
-use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -16,13 +14,6 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class PimImportExportExtension extends Extension
 {
-    private $factory;
-
-    public function __construct()
-    {
-        $this->factory = new ReferenceFactory;
-    }
-
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -30,7 +21,6 @@ class PimImportExportExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('serializer.yml');
-        $loader->load('import_export.yml');
 
         $container->setParameter('pim_serializer.encoder.csv.delimiter', $config['encoders']['csv']['delimiter']);
         $container->setParameter('pim_serializer.encoder.csv.enclosure', $config['encoders']['csv']['enclosure']);
