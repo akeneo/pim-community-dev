@@ -1,18 +1,21 @@
 {% macro submitBtn(text, icon) %}
 {% spaceless %}
-    <button type="submit" class="btn btn-primary">
+    {% set text = text ? text : 'Save' %}
+    <button type="submit" class="btn btn-primary" title="{{ text|trans }}">
         {% if icon %}
             <i class="fa-icon-{{ icon }}"></i>
         {% endif %}
-        {{ text ? text|trans : 'Save'|trans }}
+        {{ text|trans }}
     </button>
 {% endspaceless %}
 {% endmacro %}
 
-{% macro link(text, url, opts = { icon: null }) %}
+{% macro link(text, url, opts = {}) %}
 {% spaceless %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn{% if text and opts.icon %} icons-holder-text{% elseif opts.icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript: void(0);' }}"{% if text %} title="{{ text }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
-        {% if opts.icon %}<i class="fa-icon-{{ opts.icon }}"></i>{% endif %}
+    {% set title = opts.title is defined ? opts.title : text %}
+    {% set icon = opts.icon is defined ? opts.icon : null %}
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript: void(0);' }}"{% if title %} title="{{ title|trans }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+        {% if icon %}<i class="fa-icon-{{ icon }}"></i>{% endif %}
         {{ text|trans }}
     </a>
 {% endspaceless %}
