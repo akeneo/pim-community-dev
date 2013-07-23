@@ -42,7 +42,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\JsFormValidationBundle\OroJsFormValidationBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
             new Oro\Bundle\SearchBundle\OroSearchBundle(),
-            new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
+//             new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
             new Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle(),
@@ -74,7 +74,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-
             new Pim\Bundle\BatchBundle\PimBatchBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
         );

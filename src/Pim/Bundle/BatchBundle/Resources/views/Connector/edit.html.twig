@@ -1,0 +1,19 @@
+{% extends 'PimBatchBundle::layout.html.twig' %}
+
+{% set title = connector.id ? "Edit connector" : "Create connector" %}
+
+{% block page_container %}
+    {% block content %}
+        <form action="{{ connector.id ? path('pim_batch_connector_edit', { id: connector.id }) : path('pim_batch_connector_create', {'serviceId': connector.serviceId}) }}" method="POST">
+        
+            {% set buttons %}
+                {{ elements.backLink(path('pim_batch_connector_index')) }}
+                {{ elements.submitBtn }}
+            {% endset %}
+    
+            {{ elements.page_header(title, buttons) }}
+        
+            {{ form_widget(form) }}
+        </form>
+    {% endblock %}
+{% endblock %}
