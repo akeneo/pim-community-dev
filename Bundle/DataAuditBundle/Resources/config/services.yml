@@ -14,7 +14,7 @@ services:
         class:                                      %oro_dataaudit.loggable.loggable_manager.class%
         arguments:
             - %oro_dataaudit.loggable.entity.class%
-            - @oro_entity.config.audit_config_provider
+            - @oro_dataaudit.config.config_provider
 
     oro_dataaudit.metadata.metadata_factory:
         class:                                      %oro_dataaudit.metadata.metadata_factory.class%
@@ -39,3 +39,7 @@ services:
         arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @security.context]
         tags:
             - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}
+
+    oro_dataaudit.config.config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: dataaudit }

@@ -71,6 +71,7 @@ class LoggableManager
 
     /**
      * Stack of logged flexible entities
+     *
      * @var array
      */
     protected $loggedObjects = array();
@@ -130,7 +131,7 @@ class LoggableManager
         if (is_string($username)) {
             $this->username = $username;
         } elseif (is_object($username) && method_exists($username, 'getUsername')) {
-            $this->username = (string)$username->getUsername();
+            $this->username = (string) $username->getUsername();
         } else {
             throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
         }
@@ -256,10 +257,7 @@ class LoggableManager
             return;
         }
 
-        /**
-         * TODO::uncomment before merger to master
-         */
-        //$this->checkAuditable(get_class($entity));
+        $this->checkAuditable(get_class($entity));
 
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
@@ -416,7 +414,7 @@ class LoggableManager
                         ', ',
                         array_map(
                             function ($item) {
-                                return (string)$item;
+                                return (string) $item;
                             },
                             $newDataArray
                         )
@@ -426,7 +424,7 @@ class LoggableManager
                         ', ',
                         array_map(
                             function ($item) {
-                                return (string)$item;
+                                return (string) $item;
                             },
                             $oldDataArray
                         )
@@ -437,8 +435,8 @@ class LoggableManager
                     $newData = $newData->format(\DateTime::ISO8601);
 
                 } elseif (is_object($newData)) {
-                    $oldData = (string)$oldData;
-                    $newData = (string)$newData;
+                    $oldData = (string) $oldData;
+                    $newData = (string) $newData;
                 }
 
                 // special case for, as an example, decimal values
@@ -448,7 +446,7 @@ class LoggableManager
                 }
 
                 $data = array_merge(
-                    (array)$logEntry->getData(),
+                    (array) $logEntry->getData(),
                     array(
                         $entity->getAttribute()->getCode() => array(
                             'old' => $oldData,
@@ -493,8 +491,8 @@ class LoggableManager
     }
 
     /**
-     * @param       $entity
-     * @param  null $entityMeta
+     * @param $entity
+     * @param  null  $entityMeta
      * @return mixed
      */
     protected function getIdentifier($entity, $entityMeta = null)

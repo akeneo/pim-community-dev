@@ -24,11 +24,16 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
-use Oro\Bundle\EntityConfigBundle\Event\OnFlushConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
+ */
 class ConfigManager
 {
     /**
@@ -338,7 +343,7 @@ class ConfigManager
             }
         }
 
-        $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new OnFlushConfigEvent($this));
+        $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new FlushConfigEvent($this));
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
@@ -346,7 +351,7 @@ class ConfigManager
 
         $this->em()->flush();
 
-        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new OnFlushConfigEvent($this));
+        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
 
         $this->persistConfigs   = array();
         $this->removeConfigs    = array();
