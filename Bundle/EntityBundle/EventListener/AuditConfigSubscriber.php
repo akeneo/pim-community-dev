@@ -96,8 +96,8 @@ class AuditConfigSubscriber implements EventSubscriberInterface
         /** @var AuditEntityMetadata $metadata */
         $metadata = $this->auditMetadataFactory->getMetadataForClass($event->getClassName());
         if ($metadata && $metadata->auditable) {
-            var_dump($metadata);
+            //var_dump($metadata);
         }
-        die('hi');
+        //die('hi');
     }
 }
