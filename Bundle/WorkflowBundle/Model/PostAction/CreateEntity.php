@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class CreateEntity extends AbstractPostAction
 {
@@ -10,6 +14,19 @@ class CreateEntity extends AbstractPostAction
      * @var array
      */
     protected $options;
+
+    /**
+     * @var ManagerRegistry
+     */
+    protected $registry;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
 
     /**
      * {@inheritdoc}
@@ -33,19 +50,26 @@ class CreateEntity extends AbstractPostAction
     }
 
     /**
-     * Create entity.
-     *
      * @return object
+     * @throws NotManageableEntityException
      */
     protected function createEntity()
     {
         $entityClassName = $this->getEntityClassName();
-        return new $entityClassName();
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->registry->getManagerForClass($entityClassName);
+        if (!$entityManager) {
+            throw new NotManageableEntityException($entityClassName);
+        }
+
+        $entity = new $entityClassName();
+        $entityManager->persist($entity);
+        $entityManager->flush($entity);
+
+        return $entity;
     }
 
     /**
-     * Get entity class name.
-     *
      * @return string
      */
     protected function getEntityClassName()
