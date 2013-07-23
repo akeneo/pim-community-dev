@@ -12,7 +12,7 @@ parameters:
     oro_workflow.condition.greater_than_or_equal.class: Oro\Bundle\WorkflowBundle\Model\Condition\GreaterThanOrEqual
     oro_workflow.condition.less_than.class: Oro\Bundle\WorkflowBundle\Model\Condition\LessThan
     oro_workflow.condition.less_than_or_equal.class: Oro\Bundle\WorkflowBundle\Model\Condition\LessThanOrEqual
-    oro_workflow.condition.configurable.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConfigurableCondition
+    oro_workflow.condition.configurable.class: Oro\Bundle\WorkflowBundle\Model\Condition\Configurable
 
 services:
     oro_workflow.condition_factory:

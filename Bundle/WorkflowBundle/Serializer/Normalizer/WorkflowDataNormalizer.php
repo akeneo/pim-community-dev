@@ -141,12 +141,20 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      */
     public function normalizeStepAttribute(StepAttribute $stepAttribute, $attributeValue)
     {
-        // @TODO Check is attribute is an entity and return it's id
+        $entityManager = $this->getStepAttributeEntityManager($stepAttribute);
+        if (null !== $attributeValue && $entityManager) {
+            $ids = $this->getEntityIdentifierValues($stepAttribute, $attributeValue, $entityManager);
+            if (count($ids) == 1) {
+                $attributeValue = current($ids);
+            } else {
+                $attributeValue = $ids;
+            }
+        }
         return $attributeValue;
     }
 
     /**
-     * Denormalizes value of StepAttrubute back into it's model representation
+     * Denormalizes value of StepAttribute back into it's model representation
      *
      * @param StepAttribute $stepAttribute
      * @param mixed $attributeValue
@@ -154,8 +162,76 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      */
     public function denormalizeStepAttribute(StepAttribute $stepAttribute, $attributeValue)
     {
-        // @TODO Check is attribute is an entity and convert it's id to object
+        $entityManager = $this->getStepAttributeEntityManager($stepAttribute);
+        if (null !== $attributeValue && $entityManager) {
+            if (is_array($attributeValue) || is_scalar($attributeValue)) {
+                $attributeValue = $entityManager->getReference(
+                    $stepAttribute->getOption('entity_class'),
+                    $attributeValue
+                );
+            } else {
+                $attributeValue = null;
+                /*throw new WorkflowException(
+                    'Serialized data of "%s" attribute of workflow "%s" contains invalid entity ID.',
+                    $stepAttribute->getName(),
+                    $this->getWorkflow()->getName()
+                );*/
+            }
+        }
         return $attributeValue;
+    }
+
+    /**
+     * Returs EntityManager if StepAttribute has option "entity_class", otherwise return null
+     *
+     * @param StepAttribute $stepAttribute
+     * @return EntityManager|null
+     * @throws WorkflowException If option 'entity_class' is not managed Doctrine entity
+     */
+    protected function getStepAttributeEntityManager(StepAttribute $stepAttribute)
+    {
+        $result = null;
+        $entityClass = $stepAttribute->getOption('entity_class');
+        if ($entityClass) {
+            $result = $this->registry->getManagerForClass($entityClass);
+            if (!$result) {
+                throw new WorkflowException(
+                    '"%s" attribute of workflow "%s" refers to "%s", but it\'s not managed entity class',
+                    $stepAttribute->getName(),
+                    $this->getWorkflow()->getName(),
+                    $entityClass
+                );
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Returns an array of identifiers of entity.
+     *
+     * @param StepAttribute $stepAttribute
+     * @param object $entity
+     * @param EntityManager $entityManager
+     * @return array
+     * @throws WorkflowException If cannot get entity ID
+     */
+    protected function getEntityIdentifierValues(StepAttribute $stepAttribute, $entity, EntityManager $entityManager)
+    {
+        $metadata = $entityManager->getClassMetadata(get_class($entity));
+        $result = $metadata->getIdentifierValues($entity);
+
+        if (!$result) {
+            throw new WorkflowException(
+                sprintf(
+                    'Can\'t access id of entity in workflow data attribute "%s".'
+                    . ' You must flush entity explicitly or set ID manually if you want to save it to workflow data.',
+                    $stepAttribute->getName(),
+                    $this->getWorkflow()->getName()
+                )
+            );
+        }
+
+        return $result;
     }
 
     /**

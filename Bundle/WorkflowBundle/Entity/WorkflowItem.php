@@ -71,11 +71,25 @@ class WorkflowItem
     protected $entities;
 
     /**
+     * @var \Datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var \Datetime $updated
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $updated;
+
+    /**
      * Serialized data of WorkflowItem
      *
      * @var string
      *
-     * @ORM\Column(name="data", type="blob")
+     * @ORM\Column(name="data", type="text", nullable=true)
      */
     protected $serializedData;
 
@@ -271,6 +285,16 @@ class WorkflowItem
     }
 
     /**
+     * Get serialized data.
+     *
+     * @return string $data
+     */
+    public function getSerializedData()
+    {
+        return $this->serializedData;
+    }
+
+    /**
      * Set data
      *
      * @param WorkflowData $data
@@ -318,5 +342,53 @@ class WorkflowItem
     public function setSerializer(WorkflowAwareSerializer $serializer)
     {
         $this->serializer = $serializer;
+    }
+
+    /**
+     * Get created date/time
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Get last update date/time
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Invoked before the entity is updated.
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->setUpdated();
+    }
+
+    /**
+     * Set updated property to actual Date
+     */
+    public function setUpdated()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

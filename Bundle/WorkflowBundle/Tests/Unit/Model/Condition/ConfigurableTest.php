@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\ConfigurableCondition;
+use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable;
 
-class ConfigurableConditionTest extends \PHPUnit_Framework_TestCase
+class ConfigurableTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -12,7 +12,7 @@ class ConfigurableConditionTest extends \PHPUnit_Framework_TestCase
     protected $assembler;
 
     /**
-     * @var ConfigurableCondition
+     * @var Configurable
      */
     protected $condition;
 
@@ -21,7 +21,7 @@ class ConfigurableConditionTest extends \PHPUnit_Framework_TestCase
         $this->assembler = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->condition = new ConfigurableCondition($this->assembler);
+        $this->condition = new Configurable($this->assembler);
     }
 
     public function testInitialize()

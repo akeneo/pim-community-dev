@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\PreFlushEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -42,7 +42,7 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'preFlush',
+            'onFlush',
             'postLoad'
         );
     }
@@ -50,9 +50,9 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     /**
      * Before flush serializes all WorkflowItem's data
      *
-     * @param PreFlushEventArgs $args
+     * @param OnFlushEventArgs $args
      */
-    public function preFlush(PreFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args)
     {
         /** @var EntityManager $em */
         $em = $args->getEntityManager();

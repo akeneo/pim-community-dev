@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\Event\PreFlushEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -30,7 +30,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvents()
     {
         $this->assertEquals(
-            array('preFlush', 'postLoad'),
+            array('onFlush', 'postLoad'),
             $this->subscriber->getSubscribedEvents()
         );
     }
@@ -66,7 +66,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber->postLoad($args);
     }
 
-    public function testPreFlush()
+    public function testOnFlush()
     {
         $entity1 = new WorkflowItem();
         $data1 = new WorkflowData();
@@ -108,9 +108,9 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->at(3))->method('serialize')
             ->with($data5, 'json')->will($this->returnValue($expectedSerializedData5));
 
-        $this->subscriber->preFlush(
-            new PreFlushEventArgs(
-                $this->getPreFlushEntityManagerMock(
+        $this->subscriber->onFlush(
+            new OnFlushEventArgs(
+                $this->getOnFlushEntityManagerMock(
                     array($entity1, $entity2, $entity3),
                     array($entity4, $entity5, $entity6)
                 )
@@ -128,7 +128,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param array $updateEntities
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getPreFlushEntityManagerMock(array $insertEntities, array $updateEntities)
+    protected function getOnFlushEntityManagerMock(array $insertEntities, array $updateEntities)
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->setMethods(array('getUnitOfWork'))

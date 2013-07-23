@@ -5,9 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 
-/**
- * @TODO Add dependency from WorkflowRepository and WorkflowAssembler
- */
 class WorkflowRegistry
 {
     /**
