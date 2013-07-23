@@ -11,7 +11,6 @@ use JMS\Serializer\Annotation\Type;
  */
 class MyConfiguration extends AbstractConfiguration
 {
-
     /**
      * @Type("string")
      * @var string

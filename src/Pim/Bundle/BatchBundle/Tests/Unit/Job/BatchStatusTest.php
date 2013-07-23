@@ -118,5 +118,5 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
         $starting = new BatchStatus(BatchStatus::STARTING);
         $this->assertFalse($starting->isUnsuccessful());
     }
-
 }
+

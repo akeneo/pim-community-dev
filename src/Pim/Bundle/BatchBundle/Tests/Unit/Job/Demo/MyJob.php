@@ -1,36 +1,13 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job\Demo;
 
-use Pim\Bundle\BatchBundle\Job\AbstractJob;
+use Pim\Bundle\BatchBundle\Job\SimpleJob;
 
 /**
  * Demo job
  *
  *
  */
-class MyJob extends AbstractJob
+class MyJob extends SimpleJob
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function extract()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function transform()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function load()
-    {
-        return true;
-    }
 }

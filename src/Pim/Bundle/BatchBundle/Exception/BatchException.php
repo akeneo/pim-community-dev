@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Exception;
 
 /**
- * DataFlow exception
+ * Batch exception
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -12,7 +12,6 @@ use Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyOtherConfiguration;
  */
 class ConnectorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var MyConnector
      */
@@ -28,7 +27,7 @@ class ConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->configurationName = 'Oro\Bundle\DataFlowBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
+        $this->configurationName = 'Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
         $this->connector = new MyConnector($this->configurationName);
     }
 

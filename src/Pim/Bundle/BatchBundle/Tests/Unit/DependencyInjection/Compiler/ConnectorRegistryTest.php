@@ -12,7 +12,6 @@ use Pim\Bundle\BatchBundle\Tests\Unit\Job\Demo\MyJob;
  */
 class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ConnectorRegistry
      */
@@ -43,7 +42,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddJobToConnector()
     {
-        $confName = 'Oro\Bundle\DataFlowBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
+        $confName = 'Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
         $connector = new MyConnector($confName);
         $job = new MyJob($confName, $confName);
         $this->assertEquals(count($this->registry->getConnectors()), 0);

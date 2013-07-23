@@ -1,16 +1,14 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Controller;
 
-use Pim\Bundle\BatchBundle\Job\JobExecution;
-
+use Symfony\Component\Form\FormInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\BatchBundle\Form\Type\ConnectorType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\RawConfiguration;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
 
 /**
  * Connector controller

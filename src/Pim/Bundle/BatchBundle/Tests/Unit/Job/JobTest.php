@@ -4,6 +4,7 @@ namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 use Pim\Bundle\BatchBundle\Tests\Unit\Job\Demo\MyJob;
 use Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyConfiguration;
 use Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyOtherConfiguration;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
 
 /**
  * Test related class
@@ -33,9 +34,9 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->conConfName = 'Oro\Bundle\DataFlowBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
-        $this->jobConfName = 'Oro\Bundle\DataFlowBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
-        $this->job = new MyJob($this->conConfName, $this->jobConfName);
+        $this->conConfName = 'Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
+        $this->jobConfName = 'Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo\MyConfiguration';
+        $this->job = new MyJob('My job', $this->conConfName, $this->jobConfName);
     }
 
     /**
@@ -83,8 +84,8 @@ class JobTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testRun()
+    public function testExecute()
     {
-        $this->job->run();
+        $this->job->execute(new JobExecution());
     }
 }

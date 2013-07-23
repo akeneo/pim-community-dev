@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class ConnectorCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ConnectorCompilerPass
      */
@@ -31,7 +30,7 @@ class ConnectorCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->compiler = new ConnectorCompilerPass();
 
         $this->builder = new ContainerBuilder();
-        $defRegistry = new Definition('Oro\Bundle\DataFlowBundle\DependencyInjection\Compiler\ConnectorRegistry');
+        $defRegistry = new Definition('Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorRegistry');
         $definitions = array('pim_batch.connectors' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }
