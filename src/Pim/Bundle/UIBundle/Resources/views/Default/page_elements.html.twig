@@ -26,7 +26,7 @@
 {% spaceless %}
     {% set message = message ? message : 'Are you sure you want to delete this item?' %}
     {% set title = title ? title : 'Delete confirmation' %}
-    <a class="btn icons-holder-text" href="{{ url }}" title="{{ 'Delete'|trans }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}">
+    <a class="btn icons-holder-text" href="{{ url }}" title="{{ 'Delete'|trans }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}" data-method="DELETE">
         <i class="fa-icon-trash"></i>
         {{ 'Delete'|trans }}
     </a>

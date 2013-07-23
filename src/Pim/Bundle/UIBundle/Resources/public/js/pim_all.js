@@ -30,8 +30,12 @@ $(function() {
         var title = $el.data('title');
         if ($el.data('dialog') ==  'confirm') {
             var doAction = function() {
-                $el.off('click')[0].click();
+                $el.off('click');
+                var $form = $('<form>', { method: 'POST', action: $el.attr('href')});
+                $('<input>', { type: 'hidden', name: '_method', value: $el.data('method')}).appendTo($form);
+                $form.appendTo('body').submit();
             };
+
             PimDialog.confirm(message, title, doAction);
         } else {
             PimDialog.alert(message, title);
