@@ -16,20 +16,7 @@ class LocaleCreation extends Page
     protected $path = '/configuration/locale/create';
 
     protected $elements = array(
+        'page'      => array('css' => 'body'),
         'container' => array('css' => 'div[id=container]')
     );
-
-//     public function fillField($field, $value)
-//     {
-//         if ($field === 'Locale') {
-//             $elt = $this->getElement('container')
-//                         ->find('div[id=s2id_pim_config_locale_form_code]');
-//             $elt->click();
-
-//             $div = $this->find($selector, $locator)
-//             $this->fillField('select')
-//         }
-
-// //         return parent::fillField($field, $value);
-//     }
 }
