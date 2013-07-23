@@ -13,7 +13,7 @@ abstract class AbstractSearchQueryBuilder
      *
      * @param SearchQuery $query
      */
-    protected function __construct(SearchQuery $query)
+    public function __construct(SearchQuery $query)
     {
         $this->query = $query;
     }

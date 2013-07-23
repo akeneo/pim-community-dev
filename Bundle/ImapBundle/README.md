@@ -4,6 +4,8 @@ ImapBundle
 This bundle provides a functionality to work with email servers through IMAP protocol.
 
 Dependencies
+------------
+
 "zendframework/zend-mail": "2.1.*"
 
 Notes: We cannot use more recent version of zend-mail because besimple/soap-bundle uses it as well and requires 2.1.* version.
@@ -63,5 +65,5 @@ Usage
         ->get();
 
     // Request an IMAP server for find emails
-    $emails = $ewsConnector->findItems('INBOX',$query);
+    $emails = $ewsConnector->findItems('INBOX', $query);
 ```
