@@ -58,8 +58,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $locales = array_keys($this->messages);
         $translator = $this->getTranslator($this->getLoader());
-        $translator->setLocale($locale);
-        $translator->setFallbackLocales(array_slice($locales, array_search($locale, $locales) + 1));
+        $_locale = !is_null($locale) ? $locale : reset($locales);
+        $translator->setLocale($_locale);
+        $translator->setFallbackLocales(array_slice($locales, array_search($_locale, $locales) + 1));
         $result = $translator->getTranslations(array('jsmessages', 'validators'), $locale);
 
         $this->assertEquals($expected, $result);
@@ -68,6 +69,22 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     public function dataProviderGetTranslations()
     {
         return array(
+            array(
+                null,
+                array(
+                    'validators' => array(
+                        'other choice' =>
+                        '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
+                        'choice' => '{0} choice 0 (EN)|{1} choice 1 (EN)|]1,Inf] choice inf (EN)',
+                    ),
+                    'jsmessages' => array(
+                        'foobarfoo' => 'foobarfoo (PT-PT)',
+                        'foobar' => 'foobar (ES)',
+                        'foo' => 'foo (FR)',
+                        'bar' => 'bar (EN)',
+                    ),
+                )
+            ),
             array(
                 'fr',
                 array(

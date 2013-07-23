@@ -17,6 +17,51 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         ),
     );
 
+    public function testConstructor()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException', 'Please provide valid twig template as third argument'
+        );
+
+        $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
+            ->getMockForAbstractClass();
+        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
+        new Controller($translator, $templating, '', array());
+    }
+
+    public function testIndexAction()
+    {
+        $content = 'CONTENT';
+        $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
+            ->getMockForAbstractClass();
+        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $controller = $this->getMock(
+            'Oro\Bundle\TranslationBundle\Controller\Controller',
+            array('renderJsTranslationContent'),
+            array($translator, $templating, 'OroTranslationBundle:Translation:translation.js.twig', array())
+        );
+        $controller->expects($this->once())
+            ->method('renderJsTranslationContent')
+            ->will($this->returnValue($content));
+
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $request->expects($this->once())
+            ->method('getMimeType')
+            ->with('js')
+            ->will($this->returnValue('JS'));
+        $response = $controller->indexAction($request, 'en');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals($content, $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('JS', $response->headers->get('Content-Type'));
+    }
+
     /**
      * @dataProvider dataProviderRenderJsTranslationContent
      */
@@ -35,14 +80,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $translator = $this->getMock(
-            'Oro\Bundle\TranslationBundle\Translation\Translator',
-            array(),
-            array(
-                $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface'),
-                $this->getMock('Symfony\Component\Translation\MessageSelector'),
-            )
-        );
+        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $translations = $this->translations;
         $translator
             ->expects($this->any())
@@ -55,7 +96,11 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $controller = new Controller($translator, $templating, '', array());
+        $controller = new Controller($translator, $templating,
+            'OroTranslationBundle:Translation:translation.js.twig', array(
+                'domains' => array(),
+                'debug' => false
+            ));
         $result = call_user_func_array(array($controller, 'renderJsTranslationContent'), $params);
 
         $this->assertEquals($expected, $result);

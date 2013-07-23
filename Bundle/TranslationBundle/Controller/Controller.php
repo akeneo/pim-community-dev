@@ -3,13 +3,15 @@ namespace Oro\Bundle\TranslationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
+//use Symfony\Component\Translation\TranslatorInterface;
+use Oro\Bundle\TranslationBundle\Translation\Translator;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class Controller
 {
     /**
-     * @var TranslatorInterface
+     * @var Translator
      */
     protected $translator;
 
@@ -19,7 +21,7 @@ class Controller
     protected $templating;
 
     /**
-     * @var string
+     * @var string|TemplateReferenceInterface
      */
     protected $template;
 
@@ -29,15 +31,19 @@ class Controller
     protected $options;
 
     /**
-     * @param TranslatorInterface $translator
+     * @param Translator $translator
      * @param EngineInterface $templating
-     * @param string $template path to template
+     * @param string|TemplateReferenceInterface $template a template name or a TemplateReferenceInterface instance
      * @param array $options array('domains' => array(), 'debug' => true|false)
+     * @throws \InvalidArgumentException
      */
-    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, $options)
+    public function __construct(Translator $translator, EngineInterface $templating, $template, $options)
     {
         $this->translator = $translator;
         $this->templating = $templating;
+        if (empty($template) || !($template instanceof TemplateReferenceInterface || is_string($template))) {
+            throw new \InvalidArgumentException('Please provide valid twig template as third argument');
+        }
         $this->template = $template;
         $this->options = $options;
     }
@@ -51,8 +57,8 @@ class Controller
      */
     public function indexAction(Request $request, $_locale)
     {
-        $domains = $this->options['domains'];
-        $debug = (bool)$this->options['debug'];
+        $domains = isset($this->options['domains']) ? $this->options['domains'] : array();
+        $debug = isset($this->options['debug']) ? (bool)$this->options['debug'] : false;
 
         $content = $this->renderJsTranslationContent($domains, $_locale, $debug);
 
