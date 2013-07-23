@@ -52,7 +52,7 @@ class ProductAttributeController extends Controller
      * Create attribute
      *
      * @Route("/create")
-     * @Template
+     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
      *
      * @return array
      */
@@ -84,7 +84,7 @@ class ProductAttributeController extends Controller
      * @param ProductAttribute $attribute
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
+     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
      *
      * @return array
      */

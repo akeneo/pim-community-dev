@@ -14,11 +14,14 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    trusted_proxies: ~
     trusted_proxies: ~
     session:
         cookie_lifetime:      43200
         name:                 BAPID
+    fragments:
+        enabled: true
+        path: /_fragment # used for controller action in template
 
 # Twig Configuration
 twig:
@@ -29,22 +32,26 @@ twig:
         env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      pim_default
+            start_route:      oro_default
     form:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'
+#            - 'OroUIBundle:Form:fields.html.twig'
+#            - 'OroFormBundle:Form:fields.html.twig'
+#            - 'OroTranslationBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
     debug:                    false
     use_controller:           false
     bundles:
+        - OroAsseticBundle
         - OroUIBundle
         - OroUserBundle
         - OroGridBundle
+        - OroFilterBundle
         - OroNavigationBundle
         - OroWindowsBundle
-        - OroFilterBundle
         - OroSegmentationTreeBundle
         - PimUIBundle
         - PimProductBundle
@@ -160,6 +167,10 @@ liip_imagine:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
 
+genemu_form:
+    select2: ~
+    autocomplete: ~
+
 oro_search:
     engine:                   orm
     realtime_update:          true
@@ -175,6 +186,10 @@ oro_user:
     settings:
         name_format:
           value:              %%last%%, %%first%%
+
+oro_assetic:
+    uncompress_js: ~
+    uncompress_css: ~
 
 oro_filter:
     twig:
