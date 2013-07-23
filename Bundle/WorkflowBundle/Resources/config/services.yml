@@ -1,6 +1,6 @@
 parameters:
     oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
-    oro_workflow.configuration_tree_builder.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTreeBuilder
+    oro_workflow.configuration_tree.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree
     oro_workflow.registry.class: Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
 
     oro_workflow.data_serialize.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
@@ -12,14 +12,14 @@ parameters:
     oro_workflow.entity_binder.class: Oro\Bundle\WorkflowBundle\Model\EntityBinder
 
 services:
-    oro_workflow.configuration_tree_builder:
-        class: %oro_workflow.configuration_tree_builder.class%
+    oro_workflow.configuration_tree:
+        class: %oro_workflow.configuration_tree.class%
 
     oro_workflow.configuration_provider:
         class: %oro_workflow.configuration_provider.class%
         arguments:
             - %kernel.bundles%
-            - @oro_workflow.configuration_tree_builder
+            - @oro_workflow.configuration_tree
 
     oro_workflow.context_accessor:
         class: %oro_workflow.context_accessor.class%

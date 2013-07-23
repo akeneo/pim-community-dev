@@ -6,9 +6,8 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\NodeInterface;
 
-class ConfigurationTreeBuilder
+class ConfigurationTree
 {
-    const NODE_CONFIGURATION = 'configuration';
     const NODE_STEPS = 'steps';
     const NODE_TRANSITIONS = 'transitions';
     const NODE_TRANSITION_DEFINITIONS = 'transition_definitions';
@@ -19,18 +18,21 @@ class ConfigurationTreeBuilder
     protected $nodeDefinitions;
 
     /**
-     * @return NodeInterface
+     * @param array $configuration
+     * @return array
      */
-    public function buildTree()
+    public function parseConfiguration(array $configuration)
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root(self::NODE_CONFIGURATION);
+        $rootNode = $treeBuilder->root('configuration');
         $nodeBuilder = $rootNode->children();
         foreach ($this->getNodeDefinitions() as $nodeDefinition) {
             $nodeBuilder->append($nodeDefinition);
         }
 
-        return $treeBuilder->buildTree();
+        $rootTree = $treeBuilder->buildTree();
+
+        return $rootTree->finalize($configuration);
     }
 
     /**

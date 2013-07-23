@@ -9,7 +9,7 @@ use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\CorrectConfiguration\CorrectConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\EmptyConfiguration\EmptyConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\IncorrectConfiguration\IncorrectConfigurationBundle;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTreeBuilder;
+use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsIncorrectConfiguration()
     {
         $bundles = array(new IncorrectConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTreeBuilder());
+        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
         $configurationProvider->getWorkflowDefinitions();
     }
 
@@ -28,7 +28,7 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
         $expectedWorkflowConfiguration = $this->getExpectedWokflowConfiguration('CorrectConfiguration');
 
         $bundles = array(new CorrectConfigurationBundle(), new EmptyConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTreeBuilder());
+        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
         $actualWorkflowDefinitions = $configurationProvider->getWorkflowDefinitions();
 
         $this->assertSameSize($expectedWorkflowConfiguration, $actualWorkflowDefinitions);

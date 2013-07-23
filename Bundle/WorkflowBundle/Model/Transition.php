@@ -20,12 +20,12 @@ class Transition
     protected $stepTo;
 
     /**
-     * @var ConditionInterface
+     * @var ConditionInterface|null
      */
     protected $condition;
 
     /**
-     * @var PostActionInterface
+     * @var PostActionInterface|null
      */
     protected $postAction;
 
@@ -35,7 +35,7 @@ class Transition
      * @param ConditionInterface $condition
      * @return Transition
      */
-    public function setCondition(ConditionInterface $condition)
+    public function setCondition(ConditionInterface $condition = null)
     {
         $this->condition = $condition;
         return $this;
@@ -44,7 +44,7 @@ class Transition
     /**
      * Get condition.
      *
-     * @return ConditionInterface
+     * @return ConditionInterface|null
      */
     public function getCondition()
     {
@@ -79,7 +79,7 @@ class Transition
      * @param PostActionInterface $postAction
      * @return Transition
      */
-    public function setPostAction(PostActionInterface $postAction)
+    public function setPostAction(PostActionInterface $postAction = null)
     {
         $this->postAction = $postAction;
         return $this;
@@ -146,7 +146,9 @@ class Transition
                 $workflowItem->setClosed(true);
             }
 
-            $this->postAction->execute($workflowItem);
+            if ($this->postAction) {
+                $this->postAction->execute($workflowItem);
+            }
         }
     }
 }

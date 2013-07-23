@@ -6,6 +6,7 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
@@ -32,16 +33,16 @@ class ConfigurationProvider
     /**
      * @var
      */
-    protected $configurationTreeBuilder;
+    protected $configurationTree;
 
     /**
      * @param array $kernelBundles
-     * @param ConfigurationTreeBuilder $configurationTreeBuilder
+     * @param ConfigurationTree $configurationTreeBuilder
      */
-    public function __construct(array $kernelBundles, ConfigurationTreeBuilder $configurationTreeBuilder)
+    public function __construct(array $kernelBundles, ConfigurationTree $configurationTreeBuilder)
     {
         $this->kernelBundles = $kernelBundles;
-        $this->configurationTreeBuilder = $configurationTreeBuilder;
+        $this->configurationTree = $configurationTreeBuilder;
     }
 
     /**
@@ -55,7 +56,7 @@ class ConfigurationProvider
         $finder = new Finder();
         $finder->in($configDirectories)->name($this->configFilePattern);
 
-        $treeNode = $this->getConfigurationTreeBuilder()->buildTree();
+        $treeNode = $this->getConfigurationTree();
 
         $workflowDefinitions = array();
         /** @var $file \SplFileInfo */
@@ -106,9 +107,9 @@ class ConfigurationProvider
     }
 
     /**
-     * @return TreeBuilder
+     * @return NodeInterface
      */
-    protected function getConfigurationTreeBuilder()
+    protected function getConfigurationTree()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root(self::NODE_WORKFLOWS);
@@ -133,11 +134,11 @@ class ConfigurationProvider
                         ->cannotBeEmpty()
                     ->end();
 
-        foreach ($this->configurationTreeBuilder->getNodeDefinitions() as $nodeDefinition) {
+        foreach ($this->configurationTree->getNodeDefinitions() as $nodeDefinition) {
             $nodeBuilder->append($nodeDefinition);
         }
 
-        return $treeBuilder;
+        return $treeBuilder->buildTree();
     }
 
     /**
