@@ -72,7 +72,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     /**
      * Method called before set data
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
     {
@@ -108,7 +108,8 @@ class LocaleSubscriber implements EventSubscriberInterface
             'disabled'          => $data->getId(),
             'read_only'         => $data->getId(),
             'preferred_choices' => array('fr_FR', 'en_US'),
-            'label'             => 'Locale'
+            'label'             => 'Locale',
+            'auto_initialize' => false
         );
 
         $form->add($this->factory->createNamed('code', 'choice', null, $options));
@@ -153,7 +154,8 @@ class LocaleSubscriber implements EventSubscriberInterface
             'read_only'         => $fallbackDisabled,
             'preferred_choices' => array('fr_FR', 'en_US'),
             'label'             => 'Inherited locale',
-            'attr'              => array('data-placeholder' => $placeholder)
+            'attr'              => array('data-placeholder' => $placeholder),
+            'auto_initialize' => false
         );
 
         $form->add($this->factory->createNamed('fallback', 'choice', null, $options));

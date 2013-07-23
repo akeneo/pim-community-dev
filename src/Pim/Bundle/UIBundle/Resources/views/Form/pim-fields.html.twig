@@ -109,6 +109,8 @@
 {% endspaceless %}
 {% endblock oro_flexibleentity_metric_widget %}
 
+{#
+
 {% block pim_product_price_collection_widget %}
     {% for child in form.children %}
         {% if child.vars.value.currency == localeCurrency() %}
@@ -122,6 +124,10 @@
     {% endfor %}
 {% endblock pim_product_price_collection_widget %}
 
+#}
+
+{#
+
 {% block pim_product_price_widget %}
 {% spaceless %}
     {{ form_widget(form.currency) }}
@@ -129,4 +135,4 @@
 {% endspaceless %}
 {% endblock pim_product_price_widget %}
 
-
+#}
