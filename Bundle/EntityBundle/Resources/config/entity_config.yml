@@ -83,55 +83,6 @@ oro_entity_config:
                             block:          entity
                             required:       false
 
-    audit:
-        entity:
-            items:
-                auditable:
-                    priority:               60
-                    grid:
-                        type:               boolean
-                        label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          entity
-                            label:          'Auditable'
-
-        field:
-            items:
-                auditable:
-                    priority:               60
-                    #serializable:           true
-                    parent_value:                                           #enabled or not by parent value
-                        name:               auditable                       #name of parent field, by default similar with child field name
-                        value:              true                            #comparison conditions
-                    grid:
-                        type:               boolean
-                        label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          entity
-                            label:          'Auditable'
-
-#                        type:               entity_audit_field_config_type
-#                        options:
-#                            block:          auditable
-
     datagrid:
         field:
             form:

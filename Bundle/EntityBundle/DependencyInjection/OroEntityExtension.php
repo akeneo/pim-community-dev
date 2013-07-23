@@ -30,7 +30,6 @@ class OroEntityExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('datagrid.yml');
-        $loader->load('metadata.yml');
         $loader->load('form_type.yml');
     }
 

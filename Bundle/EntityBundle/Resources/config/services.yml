@@ -1,27 +1,21 @@
 parameters:
-    oro_entity.listener.audit_config_subscriber.class:      Oro\Bundle\EntityBundle\EventListener\AuditConfigSubscriber
-    oro_entity.listener.doctrine_subscriber.class:          Oro\Bundle\EntityBundle\EventListener\DoctrineSubscriber
-    oro_entity.audit.audit_manager.class:                   Oro\Bundle\EntityBundle\Audit\AuditManager
+#    oro_entity.listener.audit_config_subscriber.class:      Oro\Bundle\EntityBundle\EventListener\AuditConfigSubscriber
+#    oro_entity.listener.doctrine_subscriber.class:          Oro\Bundle\EntityBundle\EventListener\DoctrineSubscriber
 
 services:
-    oro_entity.audit.audit_manager:
-        class:                                              %oro_entity.audit.audit_manager.class%
-        arguments:                                          [@oro_entity.config.audit_config_provider, @oro_entity.metadata.audit.metadata_factory]
+#    oro_entity.listener.doctrine_subscriber:
+#        class:                                              %oro_entity.listener.doctrine_subscriber.class%
+#        tags:
+#            - { name: doctrine.event_subscriber, connection: default }
 
-    oro_entity.listener.doctrine_subscriber:
-        class:                                              %oro_entity.listener.doctrine_subscriber.class%
-        arguments:                                          [@oro_entity.audit.audit_manager]
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-
-    oro_entity.listener.audit_config_subscriber:
-        class:                                              %oro_entity.listener.audit_config_subscriber.class%
-        arguments:
-            - @oro_entity.config.audit_config_provider
-            - @oro_entity.metadata.audit.metadata_factory
-            - @oro_entity.metadata.audit.file_cache
-        tags:
-            - { name: kernel.event_subscriber}
+#    oro_entity.listener.audit_config_subscriber:
+#        class:                                              %oro_entity.listener.audit_config_subscriber.class%
+#        arguments:
+#            - @oro_entity.config.audit_config_provider
+#            - @oro_entity.metadata.audit.metadata_factory
+#            - @oro_entity.metadata.audit.file_cache
+#        tags:
+#            - { name: kernel.event_subscriber}
 
     oro_entity.config.entity_config_provider:
         tags:
@@ -30,7 +24,3 @@ services:
     oro_entity.config.datagrid_config_provider:
         tags:
             - { name: oro_entity_config.provider, scope: datagrid }
-
-    oro_entity.config.audit_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: audit }
