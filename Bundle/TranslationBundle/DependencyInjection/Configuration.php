@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->root('oro_translation')
             ->children()
                 ->arrayNode('js_translation')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('domains')
                             ->requiresAtLeastOneElement()
