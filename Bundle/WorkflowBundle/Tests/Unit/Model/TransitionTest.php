@@ -42,29 +42,43 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider isAllowedDataProvider
      * @param bool $isAllowed
+     * @param bool $expected
      */
-    public function testIsAllowed($isAllowed)
+    public function testIsAllowed($isAllowed, $expected)
     {
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
-        $condition->expects($this->once())
-            ->method('isAllowed')
-            ->with($workflowItem)
-            ->will($this->returnValue($isAllowed));
-
         $obj = new Transition();
-        $obj->setCondition($condition);
-        $this->assertEquals($isAllowed, $obj->isAllowed($workflowItem));
+
+        if (null !== $isAllowed) {
+            $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+            $condition->expects($this->once())
+                ->method('isAllowed')
+                ->with($workflowItem)
+                ->will($this->returnValue($isAllowed));
+            $obj->setCondition($condition);
+        }
+
+        $this->assertEquals($expected, $obj->isAllowed($workflowItem));
     }
 
     public function isAllowedDataProvider()
     {
         return array(
-            'yes' => array(true),
-            'no' => array(false)
+            'allowed' => array(
+                'isAllowed' => true,
+                'expected'  => true
+            ),
+            'not allowed' => array(
+                'isAllowed' => false,
+                'expected'  => false,
+            ),
+            'no condition' => array(
+                'isAllowed' => null,
+                'expected'  => true,
+            ),
         );
     }
 

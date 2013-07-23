@@ -125,6 +125,10 @@ class Transition
      */
     public function isAllowed(WorkflowItem $workflowItem)
     {
+        if (!$this->condition) {
+            return true;
+        }
+
         return $this->condition->isAllowed($workflowItem);
     }
 
