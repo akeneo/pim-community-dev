@@ -107,6 +107,7 @@ class DbSpool extends \Swift_ConfigurableSpool
             $this->em->persist($email);
             $this->em->flush();
 
+            /** @var \Swift_Message $message */
             $message = unserialize($email->getMessage());
             $count += $transport->send($message, $failedRecipients);
             $this->em->remove($email);
