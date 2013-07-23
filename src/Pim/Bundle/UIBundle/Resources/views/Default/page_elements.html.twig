@@ -22,6 +22,17 @@
 {% endspaceless %}
 {% endmacro %}
 
+{% macro deleteLink(url, message, title) %}
+{% spaceless %}
+    {% set message = message ? message : 'Are you sure you want to delete this item?' %}
+    {% set title = title ? title : 'Delete confirmation' %}
+    <a class="btn icons-holder-text" href="{{ url }}" title="{{ 'Delete'|trans }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}">
+        <i class="fa-icon-trash"></i>
+        {{ 'Delete'|trans }}
+    </a>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro link(text, url, opts = {}) %}
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
