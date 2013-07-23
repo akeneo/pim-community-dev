@@ -1,3 +1,9 @@
+{% macro createBtn(text, url) %}
+{% spaceless %}
+    <a class="btn btn-primary pull-right" href="{{ url }}" title="{{ text|trans }}">{{ text|trans }}</a>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro submitBtn(text, icon) %}
 {% spaceless %}
     {% set text = text ? text : 'Save' %}
@@ -7,6 +13,12 @@
         {% endif %}
         {{ text|trans }}
     </button>
+{% endspaceless %}
+{% endmacro %}
+
+{% macro backLink(url) %}
+{% spaceless %}
+    <a class="btn icons-holder" href="{{ url }}" title="{{ 'Back to grid'|trans }}"><i class="fa-icon-chevron-left"></i></a>
 {% endspaceless %}
 {% endmacro %}
 
