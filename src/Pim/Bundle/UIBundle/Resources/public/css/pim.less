@@ -990,10 +990,13 @@ table.grid { margin-bottom: 0; }
   margin: 0 3px;
 }
 
-a.icons-holder {
-  height: 28px;
-  line-height: 28px;
-  [class^="fa-icon-"] {
+a {
+  &.icons-holder,
+  &.icons-holder-text {
+    height: 28px;
+    line-height: 28px;
+  }
+  &.icons-holder [class^="fa-icon-"] {
     margin: 0 -3px;
   }
 }

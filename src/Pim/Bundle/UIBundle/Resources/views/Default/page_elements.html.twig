@@ -11,7 +11,7 @@
 
 {% macro link(text, url, opts = { icon: null }) %}
 {% spaceless %}
-    <a {% if opts.id is defined %}id="{{ opts.id }}" {% endif %}class="btn{% if text and opts.icon %} icons-holder-text{% elseif opts.icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript: void(0);' }}"{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn{% if text and opts.icon %} icons-holder-text{% elseif opts.icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript: void(0);' }}"{% if text %} title="{{ text }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {% if opts.icon %}<i class="fa-icon-{{ opts.icon }}"></i>{% endif %}
         {{ text|trans }}
     </a>
