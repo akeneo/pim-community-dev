@@ -65,6 +65,11 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
         return $this->kernel->getContainer();
     }
 
+    /**
+     * Returns entity manager instance.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
     public function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();

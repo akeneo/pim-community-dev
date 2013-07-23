@@ -105,6 +105,99 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I am on the locales page$/
+     */
+    public function iAmOnTheLocalesPage()
+    {
+        $this->openPage('Locale index');
+        $this->wait();
+    }
+
+
+    /**
+     * @Given /^I should be on the locales page$/
+     */
+    public function iShouldBeOnTheLocalesPage()
+    {
+        $this->assertSession()->addressEquals(
+            $this->getPage('Locale index')->getUrl()
+        );
+    }
+
+    /**
+     * @Given /^I should be on the locale creation page$/
+     */
+    public function iShouldBeOnTheLocaleCreationPage()
+    {
+        $this->openPage('Locale creation');
+        $this->wait();
+    }
+
+    /**
+     * @When /^I should see activated locales? (.*)$/
+     */
+    public function iShouldSeeActivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not activated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should see deactivated locales? (.*)$/
+     */
+    public function iShouldSeeDeactivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not deactivated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should not see locales? (.*)$/
+     */
+    public function iShouldNotSeeLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            try {
+                $gridRow = $this->getPage('Locale index')->getGridRow($locale);
+                $this->createExpectationException(
+                    sprintf('Locale "%s" should not be seen', $locale)
+                );
+            } catch (\InvalidArgumentException $e) {
+                // here we must catch an exception because the row is not found
+                continue;
+            }
+        }
+    }
+
+    /**
+     * @When /^I create a new locale$/
+     */
+    public function iCreateANewLocale()
+    {
+        $this->getPage('Locale index')->clickNewLocaleLink();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I filter my locales per (.*) "([^"]*)"$/
+     */
+    public function iFilterMyLocalesPer($filter, $value)
+    {
+        $this->getPage('Locale index')->filterBy($filter, $value);
+        $this->wait(5000);
+    }
+
+    /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
