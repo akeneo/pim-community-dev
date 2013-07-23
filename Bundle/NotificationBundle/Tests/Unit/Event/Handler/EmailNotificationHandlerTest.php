@@ -52,6 +52,9 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
         unset($this->handler);
     }
 
+    /**
+     * Test handler
+     */
     public function testHandle()
     {
         $entity = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
@@ -114,6 +117,73 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('send')
             ->with($this->isInstanceOf('\Swift_Message'));
+
+        $this->addJob();
+
+        $this->handler->handle($event, $notifications);
+    }
+
+    /**
+     * Test handler with expection and empty recipients
+     */
+    public function testHandleErrors()
+    {
+        $entity = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
+        $event = $this->getMock('Oro\Bundle\NotificationBundle\Event\NotificationEvent', array(), array($entity));
+        $event->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($entity));
+
+        $template = '@OroAbcBundle:update_entity.html.twig';
+        $notification = $this->getMock('Oro\Bundle\NotificationBundle\Entity\EmailNotification');
+        $notification->expects($this->exactly(2))
+            ->method('getTemplate')
+            ->will($this->returnValue($template));
+
+        $recipientList = $this->getMock('Oro\Bundle\NotificationBundle\Entity\RecipientList');
+        $notification->expects($this->once())
+            ->method('getRecipientList')
+            ->will($this->returnValue($recipientList));
+
+        $notifications = array(
+            $notification,
+        );
+
+        $emailTemplate = $this->getMock(
+            '\Twig_Template',
+            array('hasBlock', 'renderBlock', 'render', 'doDisplay', 'getTemplateName'),
+            array(),
+            '',
+            false
+        );
+        $emailTemplate->expects($this->once())
+            ->method('hasBlock')
+            ->with($this->equalTo('subject'))
+            ->will($this->returnValue(false));
+        $emailTemplate->expects($this->once())
+            ->method('render')
+            ->will($this->throwException(new \Twig_Error('bla bla bla')));
+
+        $this->twig->expects($this->once())
+            ->method('loadTemplate')
+            ->with($this->equalTo('@OroAbc/../emails/update_entity.html.twig'))
+            ->will($this->returnValue($emailTemplate));
+
+        $entity = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
+
+        $repo = $this->getMockBuilder('Oro\Bundle\NotificationBundle\Entity\Repository\RecipientListRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo->expects($this->once())
+            ->method('getRecipientEmails')
+            ->with($recipientList, $entity)
+            ->will($this->returnValue(array()));
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with('Oro\Bundle\NotificationBundle\Entity\RecipientList')
+            ->will($this->returnValue($repo));
 
         $this->addJob();
 

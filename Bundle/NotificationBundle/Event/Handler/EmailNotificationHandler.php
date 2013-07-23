@@ -82,10 +82,16 @@ class EmailNotificationHandler extends EventHandlerAbstract
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
                 ->getRecipientEmails($notification->getRecipientList(), $entity);
 
+            try {
+                $templateRendered = $emailTemplate->render($templateParams);
+            } catch (\Twig_Error $e) {
+                $templateRendered = '';
+            }
+
             $params = new ParameterBag(
                 array(
                     'subject' => $subject,
-                    'body'    => $emailTemplate->render($templateParams),
+                    'body'    => $templateRendered,
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
                 )
@@ -101,13 +107,21 @@ class EmailNotificationHandler extends EventHandlerAbstract
      */
     public function notify(ParameterBag $params)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject($params->get('subject'))
-            ->setFrom($params->get('from'))
-            ->setTo($params->get('to'))
-            ->setBody($params->get('body'));
+        $recipients = $params->get('to');
+        if (empty($recipients)) {
+            return false;
+        }
 
-        $this->mailer->send($message);
+        foreach ($recipients as $email) {
+            $message = \Swift_Message::newInstance()
+                ->setSubject($params->get('subject'))
+                ->setFrom($params->get('from'))
+                ->setTo($email)
+                ->setBody($params->get('body'));
+            $this->mailer->send($message);
+        }
+
+        return true;
     }
 
     /**

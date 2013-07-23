@@ -90,10 +90,10 @@ class DbSpool extends \Swift_ConfigurableSpool
             $transport->start();
         }
 
-        $repoClass = $this->em->getRepository($this->entityClass);
+        $repo = $this->em->getRepository($this->entityClass);
         $limit = $this->getMessageLimit();
         $limit = $limit > 0 ? $limit : null;
-        $emails = $repoClass->findBy(array("status" => self::STATUS_READY), null, $limit);
+        $emails = $repo->findBy(array("status" => self::STATUS_READY), null, $limit);
         if (!count($emails)) {
             return 0;
         }
