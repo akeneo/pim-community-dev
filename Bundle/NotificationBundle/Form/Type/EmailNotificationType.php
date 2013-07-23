@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmailNotificationType extends AbstractType
@@ -18,15 +20,33 @@ class EmailNotificationType extends AbstractType
     /**
      * @var array
      */
+    protected $entitiesData = array();
+
+    /**
+     * @var array
+     */
     protected $templateNameChoices = array();
 
     public function __construct($entitiesConfig = array(), $templatesList = array())
     {
-        $this->entityNameChoise = array_map(
+        $this->entityNameChoices = array_map(
             function ($value) {
                 return isset($value['name'])? $value['name'] : '';
             },
             $entitiesConfig
+        );
+        $this->entitiesData = $entitiesConfig;
+        array_walk(
+            $this->entitiesData,
+            function (&$value, $key) {
+                $reflection = new \ReflectionClass($key);
+                $interfaces = $reflection->getInterfaceNames();
+
+                /**
+                 * @TODO change interface name when entityConfigBundle will provide responsibility of owner interface
+                 */
+                $value = array_search('Oro\\Bundle\\TagBundle\\Entity\\ContainAuthorInterface', $interfaces) !== false;
+            }
         );
         $this->templateNameChoices = array_map(
             function ($value) {
@@ -61,12 +81,15 @@ class EmailNotificationType extends AbstractType
             'entityName',
             'choice',
             array(
-                'choices'            => $this->entityNameChoise,
+                'choices'            => $this->entityNameChoices,
                 'multiple'           => false,
                 'translation_domain' => 'config',
                 'empty_value'        => '',
                 'empty_data'         => null,
-                'required'           => true
+                'required'           => true,
+                'attr'               => array(
+                    'data-entities' => json_encode($this->entitiesData)
+                )
             )
         );
 
