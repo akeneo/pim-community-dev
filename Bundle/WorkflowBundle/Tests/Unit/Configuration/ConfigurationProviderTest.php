@@ -9,6 +9,7 @@ use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\CorrectConfiguration\CorrectConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\EmptyConfiguration\EmptyConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\IncorrectConfiguration\IncorrectConfigurationBundle;
+use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTreeBuilder;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +19,7 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsIncorrectConfiguration()
     {
         $bundles = array(new IncorrectConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles);
+        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTreeBuilder());
         $configurationProvider->getWorkflowDefinitions();
     }
 
@@ -27,7 +28,7 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
         $expectedWorkflowConfiguration = $this->getExpectedWokflowConfiguration('CorrectConfiguration');
 
         $bundles = array(new CorrectConfigurationBundle(), new EmptyConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles);
+        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTreeBuilder());
         $actualWorkflowDefinitions = $configurationProvider->getWorkflowDefinitions();
 
         $this->assertSameSize($expectedWorkflowConfiguration, $actualWorkflowDefinitions);
@@ -65,8 +66,8 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     {
         $fileName = realpath(__DIR__ . '/Stub/' . $bundleName . '/Resources/config/workflow.yml');
         $data = Yaml::parse(file_get_contents($fileName));
-        $this->assertArrayHasKey(ConfigurationProvider::WORKFLOW_ROOT_NODE, $data, 'Invalid stub data');
+        $this->assertArrayHasKey(ConfigurationProvider::NODE_WORKFLOWS, $data, 'Invalid stub data');
 
-        return $data[ConfigurationProvider::WORKFLOW_ROOT_NODE];
+        return $data[ConfigurationProvider::NODE_WORKFLOWS];
     }
 }

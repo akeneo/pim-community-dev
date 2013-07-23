@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Configuration;
 
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -11,7 +12,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 
 class ConfigurationProvider
 {
-    const WORKFLOW_ROOT_NODE = 'workflows';
+    const NODE_WORKFLOWS = 'workflows';
 
     /**
      * @var string
@@ -29,11 +30,18 @@ class ConfigurationProvider
     protected $kernelBundles = array();
 
     /**
-     * @param array $kernelBundles
+     * @var
      */
-    public function __construct(array $kernelBundles)
+    protected $configurationTreeBuilder;
+
+    /**
+     * @param array $kernelBundles
+     * @param ConfigurationTreeBuilder $configurationTreeBuilder
+     */
+    public function __construct(array $kernelBundles, ConfigurationTreeBuilder $configurationTreeBuilder)
     {
         $this->kernelBundles = $kernelBundles;
+        $this->configurationTreeBuilder = $configurationTreeBuilder;
     }
 
     /**
@@ -54,12 +62,12 @@ class ConfigurationProvider
         foreach ($finder as $file) {
             $realPathName = $file->getRealPath();
             $configData = Yaml::parse($realPathName);
-            if (empty($configData[self::WORKFLOW_ROOT_NODE])) {
+            if (empty($configData[self::NODE_WORKFLOWS])) {
                 continue;
             }
 
             try {
-                $finalizedData = $treeNode->finalize($configData[self::WORKFLOW_ROOT_NODE]);
+                $finalizedData = $treeNode->finalize($configData[self::NODE_WORKFLOWS]);
             } catch (InvalidConfigurationException $exception) {
                 $message = sprintf(
                     'Can\'t parse workflow configuration from %s. %s',
@@ -102,28 +110,32 @@ class ConfigurationProvider
      */
     protected function getConfigurationTreeBuilder()
     {
-        // TODO Define full workflow configuration format
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root(self::WORKFLOW_ROOT_NODE);
-        $rootNode
+        $rootNode = $treeBuilder->root(self::NODE_WORKFLOWS);
+        /** @var NodeBuilder $nodeBuilder */
+        $nodeBuilder = $rootNode
             ->prototype('array')
-            ->children()
-                ->scalarNode('label')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                ->end()
-                ->booleanNode('enabled')
-                    ->defaultTrue()
-                ->end()
-                ->scalarNode('start_step')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                ->end()
-                ->scalarNode('managed_entity_class')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                ->end()
-            ->end();
+                ->children()
+                    // workflow parameters
+                    ->scalarNode('label')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->booleanNode('enabled')
+                        ->defaultTrue()
+                    ->end()
+                    ->scalarNode('start_step')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->scalarNode('managed_entity_class')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end();
+
+        foreach ($this->configurationTreeBuilder->getNodeDefinitions() as $nodeDefinition) {
+            $nodeBuilder->append($nodeDefinition);
+        }
 
         return $treeBuilder;
     }

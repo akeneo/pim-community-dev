@@ -4,14 +4,36 @@ workflows:
         enabled: true
         start_step: first_step
         managed_entity_class: Oro\Bundle\FooBundle\Entity\BarEntity
-        steps: ~
-        transitions: ~
-        transition_definitions: ~
+        steps:
+            first_step:
+                label: 'First Step'
+                template: My:Custom:template.html.twig
+        transitions:
+            first_transition:
+                label: 'First Transition'
+                step_from: first_step
+                step_to: first_step
+                transition_definition: first_transition_definition
+        transition_definitions:
+            first_transition_definition:
+                conditions:
+                    @true: ~
+                post_actions:
+                    - @custom_post_action: ~
     second_workflow:
         label: 'Second Workflow'
         enabled: false
         start_step: second_step
         managed_entity_class: Oro\Bundle\FooBundle\Entity\BazEntity
-        steps: ~
-        transitions: ~
-        transition_definitions: ~
+        steps:
+            second_step:
+                label: 'Second Step'
+                template: ~
+        transitions:
+            first_transition:
+                label: 'Second Transition'
+                step_from: second_step
+                step_to: first_step
+                transition_definition: second_transition_definition
+        transition_definitions:
+            second_transition_definition: []
