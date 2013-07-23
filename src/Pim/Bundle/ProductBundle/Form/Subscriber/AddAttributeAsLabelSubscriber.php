@@ -56,11 +56,12 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                 'entity',
                 $data->getAttributeAsLabel(),
                 array(
-                    'required'    => false,
-                    'empty_value' => 'Id',
-                    'label'       => 'Attribute used as label',
-                    'class'       => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-                    'choices'     => $data->getAttributeAsLabelChoices(),
+                    'required'        => false,
+                    'empty_value'     => 'Id',
+                    'label'           => 'Attribute used as label',
+                    'class'           => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+                    'choices'         => $data->getAttributeAsLabelChoices(),
+                    'auto_initialize' => false
                 )
             );
             $form->add($field);
