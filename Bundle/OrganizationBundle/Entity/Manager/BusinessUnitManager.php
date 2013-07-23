@@ -5,6 +5,8 @@ namespace Oro\Bundle\OrganizationBundle\Entity\Manager;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 class BusinessUnitManager
 {
     /**
@@ -19,12 +21,22 @@ class BusinessUnitManager
 
     /**
      * Get user query builder
-     *
+     * @param User $entity
      * @return QueryBuilder
      */
-    public function getBusinessUnitsTree()
+    public function getBusinessUnitsTree(User $entity)
     {
-        return $this->getBusinessUnitRepo()->getBusinessUnitsTree();
+        return $this->getBusinessUnitRepo()->getBusinessUnitsTree($entity);
+    }
+
+    /**
+     * @param User $entity
+     * @param array $businessUnits
+     */
+    public function assignBusinessUnits($entity, array $businessUnits)
+    {
+        $businessUnits = $this->getBusinessUnitRepo()->getBusinessUnits($businessUnits);
+        $entity->setBusinessUnits($businessUnits);
     }
 
     /**

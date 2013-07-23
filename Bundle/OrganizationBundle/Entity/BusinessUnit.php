@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -95,6 +97,11 @@ class BusinessUnit
      * @var ArrayCollection $tags
      */
     protected $tags;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
+     */
+    protected $users;
 
     /**
      * Get id
