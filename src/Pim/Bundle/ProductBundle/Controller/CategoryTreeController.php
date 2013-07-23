@@ -336,7 +336,7 @@ class CategoryTreeController extends Controller
             if ($this->getRequest()->isXmlHttpRequest()) {
                 return new JsonResponse($errorMessage, 400);
             } else {
-                $this->get('session')->getFlashBag()->add('error', $errorMessage);
+                $this->addFlash('error', $errorMessage);
 
                 return $this->redirect(
                     $this->generateUrl('pim_product_categorytree_index', array('node' => $category->getId()))
@@ -347,7 +347,7 @@ class CategoryTreeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new JsonResponse();
         } else {
-            $this->get('session')->getFlashBag()->add('success', 'Category successfully removed');
+            $this->addFlash('success', 'Category successfully removed');
             $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
             return $this->redirect($this->generateUrl('pim_product_categorytree_index', $params));

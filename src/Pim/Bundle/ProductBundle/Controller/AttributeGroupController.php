@@ -64,7 +64,7 @@ class AttributeGroupController extends Controller
         $groups = $this->getAttributeGroupRepository()->getIdToNameOrderedBySortOrder();
 
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
-            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
+            $this->addFlash('success', 'Attribute group successfully saved');
 
             return $this->redirectToAttributeGroupAttributesTab($group->getId());
         }
@@ -127,7 +127,7 @@ class AttributeGroupController extends Controller
         $this->getEntityManager()->remove($group);
         $this->getEntityManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Group successfully removed');
+        $this->addFlash('success', 'Attribute group successfully removed');
 
         $request = $this->getRequest();
 
@@ -197,7 +197,7 @@ class AttributeGroupController extends Controller
         $group->removeAttribute($attribute);
         $this->getEntityManager()->flush();
 
-        $this->addFlash('success', 'The group is successfully updated.');
+        $this->addFlash('success', 'Attribute group successfully updated.');
 
         return $this->redirectToAttributeGroupAttributesTab($group->getId());
     }
