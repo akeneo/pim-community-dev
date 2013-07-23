@@ -1,8 +1,6 @@
 {% set valueArray = value|split(',') %}
-{% if valueArray is not empty %}
-    <ul>
-        {% for recipient in valueArray %}
-            <li>{{ recipient }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+<ul>
+    {% for recipient in valueArray if recipient is not empty %}
+        <li>{{ recipient }}</li>
+    {% endfor %}
+</ul>
