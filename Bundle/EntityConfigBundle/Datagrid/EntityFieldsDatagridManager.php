@@ -164,8 +164,8 @@ class EntityFieldsDatagridManager extends DatagridManager
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
                     $fieldObject->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cfv_' . $provider->getScope() . $code . '.value',
-                        'field_name' => $provider->getScope() . $code,
+                        'expression' => 'cfv_' . $code . '.value',
+                        'field_name' => $code,
                     )));
 
                     if (isset($item['priority']) && !isset($fields[$item['priority']])) {
@@ -245,7 +245,7 @@ class EntityFieldsDatagridManager extends DatagridManager
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
-                $code  = $provider->getScope() . $code;
+                //$code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
                 $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
                 $query->addSelect($alias . '.value as ' . $code, true);

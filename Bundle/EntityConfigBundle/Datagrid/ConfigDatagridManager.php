@@ -120,8 +120,8 @@ class ConfigDatagridManager extends DatagridManager
                         array_merge(
                             $item['grid'],
                             array(
-                                'expression' => 'cev' . $provider->getScope() . $code . '.value',
-                                'field_name' => $provider->getScope() . $code,
+                                'expression' => 'cev' . $code . '.value',
+                                'field_name' => $code,
                             )
                         )
                     );
@@ -317,7 +317,6 @@ class ConfigDatagridManager extends DatagridManager
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                $code = $provider->getScope() . $code;
                 $alias = 'cev' . $code;
                 $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
                 $query->addSelect($alias . '.value as ' . $code, true);
