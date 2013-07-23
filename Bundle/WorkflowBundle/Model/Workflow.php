@@ -34,14 +34,19 @@ class Workflow
     protected $transitions;
 
     /**
-     * @var Step
+     * @var string
      */
-    protected $startStep;
+    protected $startStepName;
 
     /**
      * @var string
      */
-    protected $managedEntityType;
+    protected $managedEntityClass;
+
+    /**
+     * @var string
+     */
+    protected $label;
 
     public function __construct()
     {
@@ -78,9 +83,9 @@ class Workflow
      * @param string $managedEntityType
      * @return Workflow
      */
-    public function setManagedEntityType($managedEntityType)
+    public function setManagedEntityClass($managedEntityType)
     {
-        $this->managedEntityType = $managedEntityType;
+        $this->managedEntityClass = $managedEntityType;
         return $this;
     }
 
@@ -89,9 +94,9 @@ class Workflow
      *
      * @return string
      */
-    public function getManagedEntityType()
+    public function getManagedEntityClass()
     {
-        return $this->managedEntityType;
+        return $this->managedEntityClass;
     }
 
     /**
@@ -119,23 +124,23 @@ class Workflow
     /**
      * Set start step.
      *
-     * @param Step $startStep
+     * @param string $startStep
      * @return Workflow
      */
-    public function setStartStep($startStep)
+    public function setStartStepName($startStep)
     {
-        $this->startStep = $startStep;
+        $this->startStepName = $startStep;
         return $this;
     }
 
     /**
-     * Get startStep.
+     * Get start step name
      *
-     * @return Step
+     * @return string
      */
-    public function getStartStep()
+    public function getStartStepName()
     {
-        return $this->startStep;
+        return $this->startStepName;
     }
 
     /**
@@ -280,7 +285,7 @@ class Workflow
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());
-        $workflowItem->setCurrentStepName($this->getStartStep()->getName());
+        $workflowItem->setCurrentStepName($this->getStartStepName());
 
         return $workflowItem;
     }
@@ -296,5 +301,27 @@ class Workflow
         if (!is_string($transition) && !($transition instanceof Transition)) {
             throw new \InvalidArgumentException('Expected transition argument type is string or Transition');
         }
+    }
+
+    /**
+     * Set label.
+     *
+     * @param string $label
+     * @return Workflow
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    /**
+     * Get label.
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 }

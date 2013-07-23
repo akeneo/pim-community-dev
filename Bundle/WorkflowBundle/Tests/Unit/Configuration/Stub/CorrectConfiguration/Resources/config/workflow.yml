@@ -8,10 +8,20 @@ workflows:
             first_step:
                 label: 'First Step'
                 template: My:Custom:template.html.twig
+                order: 1
+                is_final: true
+                allowed_transitions:
+                    - first_transition
+                attributes:
+                    first_attribute:
+                        form_type: text
+                        label: 'First Attribute'
+                        options:
+                            required: true
+                            # ... other attributes
         transitions:
             first_transition:
                 label: 'First Transition'
-                step_from: first_step
                 step_to: first_step
                 transition_definition: first_transition_definition
         transition_definitions:
@@ -29,10 +39,13 @@ workflows:
             second_step:
                 label: 'Second Step'
                 template: ~
+                order: 1
+                is_final: false
+                allowed_transitions: []
+                attributes: []
         transitions:
             first_transition:
                 label: 'Second Transition'
-                step_from: second_step
                 step_to: first_step
                 transition_definition: second_transition_definition
         transition_definitions:

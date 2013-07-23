@@ -27,8 +27,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'name' => array('name', 'test'),
-            'startStep' => array('startStep', $this->getMock('Oro\Bundle\WorkflowBundle\Model\Step')),
-            'managedEntityType' => array('managedEntityType', 'Test\Bundle\FooBundle\Entity\Bar')
+            'startStepName' => array('startStepName', 'current_step'),
+            'managedEntityClass' => array('managedEntityClass', 'Test\Bundle\FooBundle\Entity\Bar')
         );
     }
 
@@ -103,7 +103,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function testCreateWorkflow()
     {
         $obj = new Workflow();
-        $obj->setStartStep($this->getStepMock('startStep'));
+        $obj->setStartStepName('startStep');
         $obj->setName('testWorkflow');
         $workflowItem = $obj->createWorkflowItem();
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);

@@ -15,6 +15,11 @@ class Step
     /**
      * @var string
      */
+    protected $label;
+
+    /**
+     * @var string
+     */
     protected $template;
 
     /**
@@ -222,5 +227,27 @@ class Step
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set label.
+     *
+     * @param string $label
+     * @return Step
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    /**
+     * Get label.
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 }
