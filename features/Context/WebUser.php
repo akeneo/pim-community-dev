@@ -215,6 +215,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
+        $this->wait();
     }
 
     /**
@@ -453,6 +454,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
+        $this->wait();
     }
 
     /**
@@ -646,6 +648,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheChannelsPage()
     {
         $this->openPage('Channel index');
+        $this->wait();
     }
 
     /**
@@ -664,6 +667,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category edit', array(
             'id' => $this->getCategory($code)->getId(),
         ));
+        $this->wait();
     }
 
     /**
@@ -947,10 +951,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->currentPage = $page;
 
-        $page = $this->getCurrentPage()->open($options);
-        $this->wait();
-
-        return $page;
+        return $this->getCurrentPage()->open($options);
     }
 
     private function getCurrentPage()
