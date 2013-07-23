@@ -151,7 +151,7 @@ class EntityFieldsDatagridManager extends DatagridManager
     }
 
     /**
-     * @param $fieldsCollection
+     * @param      $fieldsCollection
      * @param bool $checkEntityGrid
      */
     protected function addDynamicRows($fieldsCollection, $checkEntityGrid = false)
@@ -164,9 +164,9 @@ class EntityFieldsDatagridManager extends DatagridManager
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
                     $fieldObject->setOptions(array_merge($item['grid'], array(
-                                'expression' => 'cfv_' . $code . '.value',
-                                'field_name' => $code,
-                            )));
+                        'expression' => 'cfv_' . $provider->getScope() . $code . '.value',
+                        'field_name' => $provider->getScope() . $code,
+                    )));
 
                     if (isset($item['priority']) && !isset($fields[$item['priority']])) {
                         $fields[$item['priority']] = $fieldObject;
@@ -245,6 +245,7 @@ class EntityFieldsDatagridManager extends DatagridManager
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+                $code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
                 $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
                 $query->addSelect($alias . '.value as ' . $code, true);
