@@ -78,3 +78,13 @@ oro_entity_config:
                             read_only:      true
                             required:       false
                             label:          "Is Extend Field"
+
+                doctrine:
+                    priority:               50
+                    form:
+                        type:               textarea
+                        options:
+                            block:          entity
+                            subblock:       properties
+                            required:       true
+

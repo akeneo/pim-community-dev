@@ -3,6 +3,10 @@
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\AbstractQuery;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class Schema
 {
@@ -17,13 +21,19 @@ class Schema
     protected $backend;
 
     /**
+     * @var ExtendManager
+     */
+    protected $extendManager;
+
+    /**
      * @param EntityManager $em
      * @param string        $backend
      */
-    public function __construct(EntityManager $em, $backend)
+    public function __construct(EntityManager $em, $backend, ExtendManager $extendManager)
     {
-        $this->em      = $em;
-        $this->backend = $backend;
+        $this->em            = $em;
+        $this->backend       = $backend;
+        $this->extendManager = $extendManager;
     }
 
     /**
@@ -41,17 +51,53 @@ class Schema
         }
     }
 
-    public function checkDeleteField($table, $fieldCode)
+    public function checkIsSynchronized($table)
     {
-        print_r($table);
-        print_r($fieldCode);
-        die('qwerty');
-
         try {
 
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * @param $field ConfigField
+     * @return bool
+     */
+    public function checkFieldIsSystem(ConfigField $field)
+    {
+        $isSystem = false;
+        $metadata = $this->em->getClassMetadata($field->getEntity()->getClassName());
+        if (in_array($field->getCode(), $metadata->fieldNames)) {
+            $isSystem =  true;
+        }
+
+        return $isSystem;
+    }
+
+    /**
+     * @param $field ConfigField
+     * @return bool
+     */
+    public function checkFieldCanDelete(ConfigField $field)
+    {
+        $canDelete = false;
+        if ($field->getEntity()->getClassName()
+            && $field->getCode()
+            && !$this->checkFieldIsSystem($field)
+        ) {
+            $extendClass = $this->extendManager->getExtendClass($field->getEntity()->getClassName());
+
+            /** @var QueryBuilder $builder */
+            $builder = $this->em->getRepository($extendClass)->createQueryBuilder('ex');
+            $builder->select('MAX(ex.'.$field->getCode(). ')');
+
+            if (!$builder->getQuery()->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR)) {
+                $canDelete = true;
+            }
+        }
+
+        return $canDelete;
     }
 
     /**

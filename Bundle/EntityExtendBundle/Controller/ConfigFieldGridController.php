@@ -21,6 +21,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 
+use Oro\Bundle\EntityExtendBundle\Tools\Schema;
+
 /**
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
@@ -124,13 +126,15 @@ class ConfigFieldGridController extends Controller
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
+        /** @var Schema $schema */
+        $schema = $this->get('oro_entity_extend.tools.schema');
+
         $fieldConfig = $extendManager->getConfigProvider()
             ->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
-        if (!$fieldConfig->is('is_extend')) {
+
+        if (!$fieldConfig->is('is_extend') || !$schema->checkFieldCanDelete($field)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
-
-        $entityConfig = $extendManager->getConfigProvider()->getConfig($field->getEntity()->getClassName());
 
         $this->getDoctrine()->getManager()->remove($field);
         $this->getDoctrine()->getManager()->flush($field);

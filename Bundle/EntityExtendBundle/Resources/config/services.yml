@@ -16,7 +16,7 @@ services:
 
     oro_entity_extend.tools.schema:
         class:                                              %oro_entity_extend.tools.schema.class%
-        arguments:                                          [@doctrine.orm.default_entity_manager, %oro_entity_extend.backend%]
+        arguments:                                          [@doctrine.orm.default_entity_manager, %oro_entity_extend.backend%, @oro_entity_extend.extend.extend_manager]
 
     oro_entity_extend.listener.doctrine_subscriber:
         class:                                              %oro_entity_extend.listener.doctrine_subscriber.class%
