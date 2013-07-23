@@ -9,16 +9,17 @@ use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
@@ -28,6 +29,7 @@ use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -55,6 +57,11 @@ class ConfigManager
      * @var CacheInterface
      */
     protected $configCache;
+
+    /**
+     * @var AuditManager
+     */
+    protected $auditManager;
 
     /**
      * @var ConfigInterface[]
@@ -90,12 +97,15 @@ class ConfigManager
      * @param MetadataFactory $metadataFactory
      * @param EventDispatcher $eventDispatcher
      * @param ServiceProxy    $proxyEm
+     * @param ServiceProxy    $security
      */
-    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
+    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $security)
     {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
+
+        $this->auditManager = new AuditManager($this, $security);
     }
 
     /**
@@ -349,6 +359,8 @@ class ConfigManager
             $this->em()->persist($entity);
         }
 
+        $this->auditManager->log();
+
         $this->em()->flush();
 
         $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
@@ -480,7 +492,7 @@ class ConfigManager
         $entity = $entityConfigRepo->findOneBy(array('className' => $className));
         if (!$entity) {
             $metadata = $this->metadataFactory->getMetadataForClass($className);
-            $entity = new ConfigEntity($className);
+            $entity   = new ConfigEntity($className);
             $entity->setMode($metadata->viewMode);
         }
 

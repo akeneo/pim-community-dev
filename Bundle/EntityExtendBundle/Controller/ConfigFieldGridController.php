@@ -130,8 +130,6 @@ class ConfigFieldGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        $entityConfig = $extendManager->getConfigProvider()->getConfig($field->getEntity()->getClassName());
-
         $this->getDoctrine()->getManager()->remove($field);
         $this->getDoctrine()->getManager()->flush($field);
 

@@ -92,7 +92,7 @@ abstract class AbstractConfig
      */
     public function getValues(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->values->toArray(), $filter) : $this->values;
+        return $filter ? $this->values->filter($filter) : $this->values;
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class AbstractConfig
      */
     public function getValue($code, $scope)
     {
-        $values = $this->values->filter(function (ConfigValue $value) use ($code, $scope) {
+        $values = $this->getValues(function (ConfigValue $value) use ($code, $scope) {
             return ($value->getScope() == $scope && $value->getCode() == $code);
         });
 
