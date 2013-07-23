@@ -10,13 +10,13 @@
  * Example:
  *      PimDialog.alert('{{ 'MyMessage' | trans }}', 'MyTitle');
  */
-var PimDialog = function() {
+var PimDialog = {
     /**
      * Open a modal dialog without cancel button
      * @param string content
      * @param string title
      */
-    this.alert = function(content, title) {
+    alert: function(content, title) {
         if (!_.isUndefined(Backbone.BootstrapModal)) {
             var alert = new Backbone.BootstrapModal({
                 allowCancel: false,
@@ -36,7 +36,7 @@ var PimDialog = function() {
      * @param string title
      * @param function callback
      */
-    this.confirm = function(content, title, callback) {
+    confirm: function(content, title, callback) {
         if (!_.isUndefined(Backbone.BootstrapModal)) {
             var confirm = new Backbone.BootstrapModal({
                 title: title,
@@ -47,5 +47,5 @@ var PimDialog = function() {
         } else if (window.confirm(content)) {
             callback();
         }
-    };
+    }
 };
