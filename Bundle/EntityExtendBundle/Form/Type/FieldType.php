@@ -27,14 +27,12 @@ class FieldType extends AbstractType
             'block'    => 'type',
             'subblock' => 'common',
         ));
-
         $builder->add('type', 'choice', array(
             'choices'     => array_combine(array_values($this->types), $this->types),
             'empty_value' => false,
             'block'       => 'type',
             'subblock'    => 'common',
         ));
-
         $builder->add('length', 'integer', array(
             'block'    => 'type',
             'subblock' => 'custom',
@@ -60,7 +58,6 @@ class FieldType extends AbstractType
             'subblock' => 'custom',
             'required' => false,
         ));
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Controller;
+namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,26 +8,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\EntityBundle\Datagrid\AuditDatagridManager;
+use Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager;
 
 /**
  * EntityBundle controller.
- * @Route("/oro_entity")
+ * @Route("/oro_entityconfig")
  */
 class AuditController extends Controller
 {
     /**
      * @Route(
      *      "/audit/{entity}/{id}/{_format}",
-     *      name="oro_entity_audit",
+     *      name="oro_entityconfig_audit",
      *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_entity_audit",
+     *      id="oro_entityconfig_audit",
      *      name="View entity history",
      *      description="View entity history audit log",
-     *      parent="oro_entity"
+     *      parent="oro_entityconfig"
      * )
      *
      * @param $entity
@@ -37,7 +37,7 @@ class AuditController extends Controller
     public function auditAction($entity, $id)
     {
         /** @var $datagridManager AuditDatagridManager */
-        $datagridManager = $this->get('oro_entity.audit_datagrid.manager');
+        $datagridManager = $this->get('oro_entity_config.audit_datagrid.manager');
 
         $datagridManager->entityClass   = str_replace('_', '\\', $entity);
         $datagridManager->entityClassId = $id;
@@ -53,7 +53,7 @@ class AuditController extends Controller
 
         $view = 'json' == $this->getRequest()->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityBundle:Audit:audit.html.twig';
+            : 'OroEntityConfigBundle:Audit:audit.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
     }

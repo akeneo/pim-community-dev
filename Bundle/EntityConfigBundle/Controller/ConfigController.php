@@ -69,7 +69,15 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+                return $this->get('oro_ui.router')->actionRedirect(
+                    array(
+                        'route' => 'oro_entityconfig_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_index'
+                    )
+                );
             }
         }
 
@@ -188,10 +196,14 @@ class ConfigController extends Controller
     {
         $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
 
-        $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
-            'class_name' => $field->getEntity()->getClassName(),
-            'field_name' => $field->getCode(),
-        ));
+        $form  = $this->createForm(
+            'oro_entity_config_config_field_type',
+            null,
+            array(
+                'class_name' => $field->getEntity()->getClassName(),
+                'field_name' => $field->getCode(),
+            )
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
@@ -201,11 +213,16 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_view',
+                return $this->get('oro_ui.router')->actionRedirect(
                     array(
-                        'id' => $field->getEntity()->getId()
+                        'route' => 'oro_entityconfig_field_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $field->getEntity()->getId())
                     )
-                ));
+                );
             }
         }
 

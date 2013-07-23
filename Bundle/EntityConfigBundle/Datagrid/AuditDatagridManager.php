@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Datagrid;
+namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 class AuditDatagridManager extends DatagridManager
 {
