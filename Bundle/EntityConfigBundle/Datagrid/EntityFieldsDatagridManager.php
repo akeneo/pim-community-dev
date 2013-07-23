@@ -188,6 +188,17 @@ class EntityFieldsDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => 'Edit',
+                'link'          => 'update_link',
+                'runOnRowClick' => true,
+            )
+        );
+
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -199,7 +210,7 @@ class EntityFieldsDatagridManager extends DatagridManager
             )
         );
 
-        $actions = array($updateAction);
+        $actions = array($clickAction, $updateAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
