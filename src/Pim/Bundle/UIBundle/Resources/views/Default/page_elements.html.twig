@@ -1,8 +1,28 @@
+{% macro submitBtn(text, icon) %}
+{% spaceless %}
+    <button type="submit" class="btn btn-primary">
+        {% if icon %}
+            <i class="fa-icon-{{ icon }}"></i>
+        {% endif %}
+        {{ text ? text|trans : 'Save'|trans }}
+    </button>
+{% endspaceless %}
+{% endmacro %}
+
+{% macro link(text, url, opts = { icon: null }) %}
+{% spaceless %}
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn{% if text and opts.icon %} icons-holder-text{% elseif opts.icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript: void(0);' }}"{% if text %} title="{{ text }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+        {% if opts.icon %}<i class="fa-icon-{{ opts.icon }}"></i>{% endif %}
+        {{ text|trans }}
+    </a>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro page_header(title, buttons, subtitle, left, right) %}
-    <div class="navigation clearfix navbar-extra navbar-extra-right">
+    <div class="navigation clearfix navbar-extra">
         <div class="row-fluid">
             {% if buttons is not empty %}
-                <div class="navbar-content pull-right">
+                <div class="navbar-buttons pull-right">
                     {{ buttons }}
                 </div>
             {% endif %}

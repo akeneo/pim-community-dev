@@ -2,11 +2,8 @@
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
 use Symfony\Component\Form\FormFactoryInterface;
-
-use Symfony\Component\Form\Event\DataEvent;
-
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -49,9 +46,9 @@ class CategorySubscriber implements EventSubscriberInterface
 
     /**
      * Method called before set data
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
 

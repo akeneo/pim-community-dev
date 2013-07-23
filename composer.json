@@ -15,28 +15,25 @@
         "php": ">=5.3.3",
         "oro/platform": "dev-master",
         "akeneo/DemoBundle": "dev-master",
-        "ddeboer/data-import": "dev-master",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
-        "fzaninotto/faker": "~1.2",
-        "genemu/form-bundle": "2.1.*"
+        "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
-        "behat/behat": "2.4.*",
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*",
-        "sensiolabs/behat-page-object-extension": "*",
-        "behat/mink-selenium2-driver":  "1.0.*",
-        "besimple/soap-common": "dev-master",
-        "besimple/soap-server": "dev-master",
-        "besimple/soap-bundle": "dev-master",
+        "behat/behat":  "2.4.*@stable",
+
+        "behat/symfony2-extension":      "*",
+        "behat/mink-extension":          "*",
+        "behat/mink-browserkit-driver":  "*",
+        "behat/mink-selenium2-driver":   "*",
         "behat/common-contexts": "*",
+
+        "sensiolabs/behat-page-object-extension": "*",
         "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:laboro/platform.git"
+            "url": "git@github.com:laboro/platform.git",
+            "branch": "master"
         },
         {
             "type": "vcs",
@@ -70,6 +67,9 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "symlink"
+        "symfony-assets-install": "symlink",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
     }
 }
