@@ -61,6 +61,7 @@ oro_entity_config:
                             label:          'Type'
 
                 is_extend:
+                    priority:               40
                     default_value:          false
 #                    grid:
 #                        type:               boolean
