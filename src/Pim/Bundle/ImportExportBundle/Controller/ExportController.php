@@ -58,15 +58,27 @@ class ExportController extends Controller
      *     "/create",
      *     name="pim_ie_export_create"
      * )
-     * @Template("PimImportExportBundle:Export:edit.html.twig")
+     * @Template("PimImportExportBundle:Export:create.html.twig")
      *
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $job = new Job();
+        // get parameters
+        $connector = $request->query->get('connector');
+        $jobType   = $request->query->get('job_type');
+        $jobAlias  = $request->query->get('job_alias');
 
-        return $this->editAction($job);
+        $registry = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($connector, $jobType, $jobAlias);
+
+        $job = new Job();
+        $job->setJobDefinition($jobDefinition);
+
+
+        return array(
+            'form' => $this->createForm(new JobType(), $job)
+        );
     }
 
     /**

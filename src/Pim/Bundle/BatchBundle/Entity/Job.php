@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
+use Pim\Bundle\BatchBundle\Job\SimpleJob;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,15 +57,6 @@ class Job
     protected $connector;
 
     /**
-     * Job service id
-     *
-     * @var string
-     *
-     * @ORM\Column(name="service_id", type="string", length=255)
-     */
-    protected $serviceId;
-
-    /**
      * Job type export or import
      *
      * @var string
@@ -81,6 +74,11 @@ class Job
     protected $rawConfiguration;
 
     /**
+     * @var SimpleJob
+     */
+    protected $jobDefinition;
+
+    /**
      * Get id
      *
      * @return integer
@@ -88,20 +86,6 @@ class Job
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -270,5 +254,29 @@ class Job
     public function getRawConfiguration()
     {
         return $this->rawConfiguration;
+    }
+
+    /**
+     * Set job definition
+     *
+     * @param string $jobDefinition
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setJobDefinition($jobDefinition)
+    {
+        $this->jobDefinition = $jobDefinition;
+
+        return $this;
+    }
+
+    /**
+     * Get job definition
+     *
+     * @return string
+     */
+    public function getJobDefinition()
+    {
+        return $this->jobDefinition;
     }
 }

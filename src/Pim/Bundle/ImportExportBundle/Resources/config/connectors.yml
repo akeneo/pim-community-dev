@@ -5,7 +5,7 @@ parameters:
 
 services:
     pim_import_export.reader.product:
-        class: %pim_config.reader.product.class%
+        class: %pim_import_export.reader.product.class%
         arguments:
             - @doctrine.orm.default_entity_manager
             - @pim_config.manager.channel
