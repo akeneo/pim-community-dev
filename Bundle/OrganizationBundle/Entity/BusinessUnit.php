@@ -177,16 +177,6 @@ class BusinessUnit
     }
 
     /**
-     * Get parent name
-     *
-     * @return string
-     */
-    public function getParentName()
-    {
-        return $this->parent ? $this->parent->getName() : '';
-    }
-
-    /**
      * Set organization
      *
      * @param Organization $organization
@@ -207,16 +197,6 @@ class BusinessUnit
     public function getOrganization()
     {
         return $this->organization;
-    }
-
-    /**
-     * Get organization name
-     *
-     * @return string
-     */
-    public function getOrganizationName()
-    {
-        return $this->organization->getName();
     }
 
     /**

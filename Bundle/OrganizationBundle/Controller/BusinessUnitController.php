@@ -159,6 +159,7 @@ class BusinessUnitController extends Controller
     {
         $datagridView = $this->getBusinessUnitDatagridManager($entity, 'view')
             ->getDatagrid()->createView();
+
         return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
