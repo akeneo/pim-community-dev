@@ -34,7 +34,6 @@ class FieldType extends AbstractType
             'empty_value' => 'Please choice type...',
             'block'       => 'type',
         ));
-
         $builder->add('options', 'oro_entity_config_config_field_type', array(
             'class_name' => $options['class_name'],
             'field_id'   => '',

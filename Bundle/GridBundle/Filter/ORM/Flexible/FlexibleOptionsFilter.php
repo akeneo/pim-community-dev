@@ -79,16 +79,15 @@ class FlexibleOptionsFilter extends AbstractFlexibleFilter
 
             /** @var $optionsRepository ObjectRepository */
             $optionsRepository = $flexibleManager->getAttributeOptionRepository();
-            $options = $optionsRepository->findBy(
-                array('attribute' => $attribute)
-            );
-
+            $options = $optionsRepository->findAllForAttributeWithValues($attribute);
             $this->valueOptions = array();
             /** @var $option AttributeOption */
             foreach ($options as $option) {
                 $optionValue = $option->getOptionValue();
                 if ($optionValue) {
                     $this->valueOptions[$option->getId()] = $optionValue->getValue();
+                } else {
+                    $this->valueOptions[$option->getId()] = $option->getDefaultValue();
                 }
             }
         }

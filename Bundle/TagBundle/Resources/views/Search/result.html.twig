@@ -17,6 +17,6 @@
 {% set entityType = entity_output.name|trans({}, 'config') %}
 
 {% set entityInfo = [
-    {'title': 'Created', 'value': entity.created ? macros.time(entity.created) : 'N/A'},
-    {'title': 'Updated', 'value': entity.updated ? macros.time(entity.updated) : 'N/A'},
+    {'title': 'Created', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
+    {'title': 'Updated', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
 ] %}

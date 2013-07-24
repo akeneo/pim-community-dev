@@ -3,7 +3,7 @@
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set entityClass = entity.classname|replace('\\', '_') %}
-{% set audit_title = entity_config.get('label') %}
+{% set audit_title = entity_config.get('label')|default(entity_name) %}
 {% set audit_path = 'oro_entityconfig_audit' %}
 
 {% block navButtons %}
@@ -34,7 +34,7 @@
         'entity':      entity,
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': entity_config.get('label'),
+        'entityTitle': entity_config.get('label')|default(entity_name),
     }%}
 
     {{ parent() }}

@@ -82,10 +82,11 @@ class AttributeTypeSubscriber implements EventSubscriberInterface
                 'collection',
                 null,
                 array(
-                    'type'         => new AttributeOptionType(),
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'by_reference' => false
+                    'type'            => new AttributeOptionType(),
+                    'allow_add'       => true,
+                    'allow_delete'    => true,
+                    'by_reference'    => false,
+                    'auto_initialize' => false
                 )
             )
         );
