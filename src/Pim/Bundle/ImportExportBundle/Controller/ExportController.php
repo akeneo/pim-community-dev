@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\BatchBundle\Form\Type\JobType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Entity\RawConfiguration;
@@ -73,11 +73,19 @@ class ExportController extends Controller
         $jobDefinition = $registry->getJob($connector, $jobType, $jobAlias);
 
         $job = new Job();
+        // TODO : Job setConnector setType, setAlias
         $job->setJobDefinition($jobDefinition);
 
+        $form = $this->createForm(new JobType(), $job);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            // TODO : don't set it like this
+            $job->setRawConfiguration($jobDefinition->getConfiguration());
+        }
 
         return array(
-            'form' => $this->createForm(new JobType(), $job)
+            'form' => $form->createView()
         );
     }
 

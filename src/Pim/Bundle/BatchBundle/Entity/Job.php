@@ -66,10 +66,9 @@ class Job
     protected $type = 'export'; // TODO: temporary, must be setuped during creation
 
     /**
-     * @var RawConfiguration $connectorConfiguration
+     * @var array $rawConfiguration
      *
-     * @ORM\ManyToOne(targetEntity="RawConfiguration", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="raw_configuration_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\Column(type="array")
      */
     protected $rawConfiguration;
 
@@ -235,11 +234,11 @@ class Job
     /**
      * Set job configuration
      *
-     * @param RawConfiguration $configuration
+     * @param array $configuration
      *
      * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
-    public function setRawConfiguration(RawConfiguration $configuration)
+    public function setRawConfiguration($configuration)
     {
         $this->rawConfiguration = $configuration;
 
@@ -247,13 +246,13 @@ class Job
     }
 
     /**
-     * Get job configuration
+     * Get raw configuration
      *
-     * @return RawConfiguration
+     * @return array
      */
     public function getRawConfiguration()
     {
-        return $this->rawConfiguration;
+        return $this->jobDefinition->getConfiguration();
     }
 
     /**
@@ -265,7 +264,10 @@ class Job
      */
     public function setJobDefinition($jobDefinition)
     {
+        var_dump('set job definition');
         $this->jobDefinition = $jobDefinition;
+
+        $this->rawConfiguration = $jobDefinition->getConfiguration();
 
         return $this;
     }
