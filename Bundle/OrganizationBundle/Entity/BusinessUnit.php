@@ -35,6 +35,7 @@ class BusinessUnit
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @Soap\ComplexType("string", nillable=false)
+     * @Oro\Versioned
      */
     protected $name;
 
@@ -44,6 +45,7 @@ class BusinessUnit
      * @ORM\ManyToOne(targetEntity="BusinessUnit")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
      */
     protected $parent;
 
@@ -61,6 +63,7 @@ class BusinessUnit
      *
      * @ORM\Column(name="phone", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
      */
     protected $phone;
 
@@ -69,6 +72,7 @@ class BusinessUnit
      *
      * @ORM\Column(name="website", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
      */
     protected $website;
 
@@ -77,6 +81,7 @@ class BusinessUnit
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
      */
     protected $email;
 
@@ -85,6 +90,7 @@ class BusinessUnit
      *
      * @ORM\Column(name="fax", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
+     * @Oro\Versioned
      */
     protected $fax;
 
