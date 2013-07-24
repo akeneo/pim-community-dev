@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
@@ -9,7 +10,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base entity attribute
- *
  *
  * @ORM\Table(
  *     name="oro_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},

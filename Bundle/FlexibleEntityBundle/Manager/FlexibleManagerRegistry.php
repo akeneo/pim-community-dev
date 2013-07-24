@@ -1,12 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 
 /**
  * A registry which knows all flexible entity managers
- *
- *
  */
 class FlexibleManagerRegistry
 {
@@ -83,6 +82,7 @@ class FlexibleManagerRegistry
         if (!isset($this->entityToManager[$realClassName])) {
             throw new \InvalidArgumentException(sprintf('Cannot get flexible manager for class "%s".', $entityFQCN));
         }
+
         return $this->entityToManager[$realClassName];
     }
 }

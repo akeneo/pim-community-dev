@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model\Behavior;
 
 /**
@@ -8,7 +9,6 @@ namespace Oro\Bundle\FlexibleEntityBundle\Model\Behavior;
  */
 interface TimestampableInterface
 {
-
     /**
      * Get created datetime
      *

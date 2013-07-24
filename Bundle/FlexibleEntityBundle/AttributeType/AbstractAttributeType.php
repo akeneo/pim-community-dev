@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Symfony\Component\Validator\Constraints;
@@ -10,8 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type
- *
- *
  */
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
@@ -58,8 +57,9 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string $backendType the backend type
-     * @param string $formType    the form type
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the form type
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
@@ -146,6 +146,10 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
 
     /**
      * Guess the constraints to apply on the form
+     *
+     * @param FlexibleValueInterface $value
+     *
+     * @return multitype:NULL |multitype:
      */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {
