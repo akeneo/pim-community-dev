@@ -166,12 +166,12 @@ class Workflow
     /**
      * Set steps.
      *
-     * @param Step[]|ArrayCollection $steps
+     * @param Step[]|Collection $steps
      * @return Workflow
      */
     public function setSteps($steps)
     {
-        if ($steps instanceof ArrayCollection) {
+        if ($steps instanceof Collection) {
             $this->steps = $steps;
         } else {
             $data = array();
@@ -198,12 +198,12 @@ class Workflow
     /**
      * Set attributes.
      *
-     * @param Attribute[]|ArrayCollection $attributes
+     * @param Attribute[]|Collection $attributes
      * @return Workflow
      */
     public function setAttributes($attributes)
     {
-        if ($attributes instanceof ArrayCollection) {
+        if ($attributes instanceof Collection) {
             $this->attributes = $attributes;
         } else {
             $data = array();
@@ -230,12 +230,12 @@ class Workflow
     /**
      * Set transitions.
      *
-     * @param Transition[]|ArrayCollection $transitions
+     * @param Transition[]|Collection $transitions
      * @return Workflow
      */
     public function setTransitions($transitions)
     {
-        if ($transitions instanceof ArrayCollection) {
+        if ($transitions instanceof Collection) {
             $this->transitions = $transitions;
         } else {
             $data = array();
@@ -323,6 +323,7 @@ class Workflow
      *
      * @param object|null $entity
      * @return WorkflowItem
+     * @throws \LogicException
      */
     public function createWorkflowItem($entity = null)
     {

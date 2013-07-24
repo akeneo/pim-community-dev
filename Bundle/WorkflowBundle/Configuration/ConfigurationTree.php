@@ -108,9 +108,10 @@ class ConfigurationTree
                     ->end()
                     ->scalarNode('form_type')
                         ->isRequired()
-                    ->cannotBeEmpty()
+                        ->cannotBeEmpty()
                     ->end()
                     ->arrayNode('options')
+                    ->end()
                 ->end()
             ->end();
 
