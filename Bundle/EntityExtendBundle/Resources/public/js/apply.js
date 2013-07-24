@@ -5,7 +5,6 @@ $(function() {
             dialogOptions: {
                 allowMaximize: false,
                 allowMinimize: false,
-                //dblclick: 'maximize',
                 maximizedHeightDecreaseBy: 'minimize-bar',
                 width : 1000,
                 minHeight: 560,

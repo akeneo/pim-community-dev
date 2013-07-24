@@ -92,7 +92,7 @@ oro_entity_config:
                         default_value:      255
                         required_property:
                             property_path:  extend.owner
-                            value:          Custome
+                            value:          Custom
                     form:
                         type:               text
                         options:
@@ -107,7 +107,7 @@ oro_entity_config:
                         default_value:      2
                         required_property:
                             property_path:  extend.owner
-                            value:          Custome
+                            value:          Custom
                     form:
                         type:               text
                         options:
@@ -122,7 +122,7 @@ oro_entity_config:
                         default_value:      2
                         required_property:
                             property_path:  extend.owner
-                            value:          Custome
+                            value:          Custom
                     form:
                         type:               text
                         options:
