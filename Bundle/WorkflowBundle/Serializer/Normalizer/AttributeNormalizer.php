@@ -43,7 +43,7 @@ class AttributeNormalizer
     public function normalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getStepAttributes()->get($attributeName);
+        $stepAttribute = $this->getStepAttribute($attributeName);
         if (!$stepAttribute) {
             return $attributeValue;
         }
@@ -71,7 +71,7 @@ class AttributeNormalizer
     public function denormalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getStepAttributes()->get($attributeName);
+        $stepAttribute = $this->getStepAttribute($attributeName);
         if (!$stepAttribute) {
             return $attributeValue;
         }
@@ -100,10 +100,12 @@ class AttributeNormalizer
             $result = $this->registry->getManagerForClass($entityClass);
             if (!$result) {
                 throw new WorkflowException(
-                    '"%s" attribute of workflow "%s" refers to "%s", but it\'s not managed entity class',
-                    $stepAttribute->getName(),
-                    $this->workflow->getName(),
-                    $entityClass
+                    sprintf(
+                        '"%s" attribute of workflow "%s" refers to "%s", but it\'s not managed entity class',
+                        $stepAttribute->getName(),
+                        $this->workflow->getName(),
+                        $entityClass
+                    )
                 );
             }
         }
@@ -121,7 +123,7 @@ class AttributeNormalizer
      */
     protected function getEntityIdentifierValues(StepAttribute $stepAttribute, $entity, EntityManager $entityManager)
     {
-        $metadata = $entityManager->getClassMetadata(get_class($entity));
+        $metadata = $entityManager->getClassMetadata($stepAttribute->getOption('entity_class'));
         $result = $metadata->getIdentifierValues($entity);
 
         if (!$result) {
@@ -139,7 +141,20 @@ class AttributeNormalizer
     }
 
     /**
-     * Get collection of StepAttributes for current Workflow
+     * Get StepAttribute by name if it exist in workflow
+     *
+     * @param string $attributeName
+     * @return StepAttribute|null
+     */
+    protected function getStepAttribute($attributeName)
+    {
+        return $this->getStepAttributes()->get($attributeName);
+    }
+
+    /**
+     * Get collection of StepAttributes for current Workflow.
+     *
+     * This method caches results of Workflow::getStepAttributes method
      *
      * @return Collection
      */
