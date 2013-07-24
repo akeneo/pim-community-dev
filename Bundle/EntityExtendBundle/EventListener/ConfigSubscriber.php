@@ -81,9 +81,10 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         if ($event->getConfig()->getScope() == 'extend' && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))) {
             $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
-            var_dump(2);
+
             $event->getConfig()->set('state', 'Updated');
-            $entityConfig->set('state', 'Updated');
+            //$entityConfig->set('state', 'Updated');
+
         }
     }
 }
