@@ -173,6 +173,21 @@ class EntityConfigContainer
     /**
      * @return array
      */
+    public function getFieldRequiredPropertyValues()
+    {
+        $result = array();
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['options']['required_property'])) {
+                $result[$code] = $item['options']['required_property'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
     public function getFieldSerializableValues()
     {
         $result = array();
