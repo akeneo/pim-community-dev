@@ -17,8 +17,9 @@ class WorkflowItemRepository extends EntityRepository
     {
         $entityClass = ClassUtils::getRealClass(get_class($entity));
         $metadata = $this->getEntityManager()->getClassMetadata($entityClass);
-        $property = $metadata->getSingleIdReflectionProperty();
-        $entityId = $property->getValue($entity);
+        $idField = $metadata->getSingleIdentifierFieldName();
+        $entityIdValues = $metadata->getIdentifierValues($entity);
+        $entityId = $entityIdValues[$idField];
 
         $qb = $this->getEntityManager()
             ->createQueryBuilder()

@@ -3,7 +3,6 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
@@ -26,6 +25,10 @@ class WorkflowRegistry
      */
     protected $workflowByName;
 
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param WorkflowAssembler $workflowAssembler
+     */
     public function __construct(ManagerRegistry $managerRegistry, WorkflowAssembler $workflowAssembler)
     {
         $this->managerRegistry = $managerRegistry;
@@ -81,6 +84,7 @@ class WorkflowRegistry
         foreach ($workflowDefinitions as $workflowDefinition) {
             $result[$workflowDefinition->getName()] = $this->getAssembledWorkflow($workflowDefinition);
         }
+
         return $result;
     }
 
