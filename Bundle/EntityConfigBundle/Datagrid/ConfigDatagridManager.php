@@ -126,8 +126,8 @@ class ConfigDatagridManager extends DatagridManager
                         )
                     );
 
-                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
-                        $fields[$item['priority']] = $fieldObjectProvider;
+                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                        $fields[$item['options']['priority']] = $fieldObjectProvider;
                     } else {
                         $fields[] = $fieldObjectProvider;
                     }

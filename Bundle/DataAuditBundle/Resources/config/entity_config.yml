@@ -3,7 +3,9 @@ oro_entity_config:
         entity:
             items:
                 auditable:
-                    priority:               60
+                    options:
+                        priority:           60
+                        is_bool:            true
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -22,10 +24,9 @@ oro_entity_config:
         field:
             items:
                 auditable:
-                    priority:               60
-                    parent_value:
-                        name:               auditable
-                        value:              true
+                    options:
+                        priority:           60
+                        is_bool:            true
                     grid:
                         type:               boolean
                         label:              'Auditable'

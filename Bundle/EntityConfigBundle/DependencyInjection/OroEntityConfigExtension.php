@@ -31,6 +31,7 @@ class OroEntityConfigExtension extends Extension
         $loader->load('services.yml');
         $loader->load('metadata.yml');
         $loader->load('datagrid.yml');
+        $loader->load('form_type.yml');
     }
 
     protected function loadBundleConfig(ContainerBuilder $container)

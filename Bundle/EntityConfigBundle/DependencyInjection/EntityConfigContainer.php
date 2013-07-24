@@ -60,8 +60,8 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['default_value'])) {
-                $result[$code] = $item['default_value'];
+            if (isset($item['options']['default_value'])) {
+                $result[$code] = $item['options']['default_value'];
             }
         }
 
@@ -75,8 +75,8 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['serializable'])) {
-                $result[$code] = (bool) $item['serializable'];
+            if (isset($item['options']['serializable'])) {
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -162,8 +162,8 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getFieldItems() as $code => $item) {
-            if (isset($item['default_value'])) {
-                $result[$code] = $item['default_value'];
+            if (isset($item['options']['default_value'])) {
+                $result[$code] = $item['options']['default_value'];
             }
         }
 
@@ -177,8 +177,8 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['serializable'])) {
-                $result[$code] = (bool) $item['serializable'];
+            if (isset($item['options']['serializable'])) {
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 

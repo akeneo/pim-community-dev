@@ -13,11 +13,18 @@ class ConfigType extends AbstractType
     protected $items;
 
     /**
-     * @param $items
+     * @var string
      */
-    public function __construct($items)
+    protected $fieldType;
+
+    /**
+     * @param $items
+     * @param $fieldType
+     */
+    public function __construct($items, $fieldType)
     {
-        $this->items = $items;
+        $this->items     = $items;
+        $this->fieldType = $fieldType;
     }
 
     /**
@@ -27,7 +34,8 @@ class ConfigType extends AbstractType
     {
         foreach ($this->items as $code => $config) {
             if (isset($config['form']) && isset($config['form']['type'])) {
-                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
+                $options               = isset($config['form']['options']) ? $config['form']['options'] : array();
+                $options['field_type'] = $this->fieldType;
                 $builder->add($code, $config['form']['type'], $options);
             }
         }

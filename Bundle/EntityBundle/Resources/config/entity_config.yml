@@ -7,14 +7,16 @@ oro_entity_config:
                         priority:           20
             items:
                 icon:
-                    priority:               10
+                    options:
+                        priority:           10
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
                 label:
-                    priority:               20
+                    options:
+                        priority:           20
                     grid:
                         type:               string
                         label:              'Label'
@@ -29,14 +31,16 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 plural_label:
-                    priority:               30
+                    options:
+                        priority:           30
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
                 description:
-                    priority:               50
+                    options:
+                        priority:           50
                     grid:
                         type:               text
                         label:              'Description'
@@ -53,7 +57,8 @@ oro_entity_config:
         field:
             items:
                 label:
-                    priority:               10
+                    options:
+                        priority:           10
                     grid:
                         type:               string
                         label:              'Label'
@@ -68,7 +73,8 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 description:
-                    priority:               30
+                    options:
+                        priority:           30
                     grid:
                         type:               text
                         label:              'Description'
@@ -93,8 +99,9 @@ oro_entity_config:
                             base:           ~
             items:
                 is_searchable:
-                    default_value:          false
-                    entity_grid:            false
+                    options:
+                        default_value:      false
+                        is_bool:            true
                     grid:
                         type:               boolean
                         label:              'Datagrid search'

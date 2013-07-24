@@ -77,7 +77,6 @@ abstract class AbstractConfig implements ConfigInterface
                 break;
             default:
                 return $this->values;
-
         }
     }
 
