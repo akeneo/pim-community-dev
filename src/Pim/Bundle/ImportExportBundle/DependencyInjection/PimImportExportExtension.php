@@ -32,6 +32,7 @@ class PimImportExportExtension extends Extension
         $loader->load('connectors.yml');
         $loader->load('serializer.yml');
         $loader->load('import_export.yml');
+        $loader->load('datagrid.yml');
 
         $container->setParameter('pim_serializer.encoder.csv.delimiter', $config['encoders']['csv']['delimiter']);
         $container->setParameter('pim_serializer.encoder.csv.enclosure', $config['encoders']['csv']['enclosure']);

@@ -30,7 +30,7 @@ class ConnectorCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->compiler = new ConnectorCompilerPass();
 
         $this->builder = new ContainerBuilder();
-        $defRegistry = new Definition('Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorRegistry');
+        $defRegistry = new Definition('Pim\Bundle\BatchBundle\Connector\ConnectorRegistry');
         $definitions = array('pim_batch.connectors' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }

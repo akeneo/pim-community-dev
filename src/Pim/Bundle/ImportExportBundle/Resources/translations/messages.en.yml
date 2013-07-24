@@ -1,3 +1,4 @@
 'pim_import_export.job.export_product.csv.label': 'Export product CSV'
 'pim_import_export.job.export_attribute.csv.label': 'Export attribute CSV'
 'pim_import_export.job.export_category.csv.label': 'Export category CSV'
+'pim_import_export.connector.csv.label': 'Connector CSV'

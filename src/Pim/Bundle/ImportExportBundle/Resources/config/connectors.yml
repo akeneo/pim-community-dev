@@ -32,20 +32,21 @@ services:
         class:     %pim_import_export.job.export_product.class%
         arguments: ['Export product', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_product.class%]
         tags:
-            - { name: pim_batch.job, connector: pim_import_export.connector.csv }
+            - { name: pim_batch.job, connector: pim_import_export.connector.csv, type: export }
             
     pim_import_export.job.export_attribute.csv:
         class:     %pim_import_export.job.export_attribute.class%
         arguments: ['Export attribute', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_attribute.class%]
         tags:
-            - { name: pim_batch.job, connector: pim_import_export.connector.csv }
+            - { name: pim_batch.job, connector: pim_import_export.connector.csv, type: export }
             
     pim_import_export.job.export_category.csv:
         class:     %pim_import_export.job.export_category.class%
         arguments: ['Export category', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_category.class%]
         tags:
-            - { name: pim_batch.job, connector: pim_import_export.connector.csv }
+            - { name: pim_batch.job, connector: pim_import_export.connector.csv, type: export }
 
+    # configuration form types
     pim_import_export.form.type.export_product:
       class: %pim_import_export.form.type.export_product.class%
       tags:
