@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType as FlexibleAttributeOptionType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionValueType as ProductAttributeOptionValueType;
 
 /**

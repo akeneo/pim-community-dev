@@ -1,15 +1,12 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
-use Pim\Bundle\ConfigBundle\Form\Subscriber\LocaleSubscriber;
-
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-
-use Symfony\Component\Locale\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\ConfigBundle\Form\Subscriber\LocaleSubscriber;
 
 /**
  * Type for locale form

@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

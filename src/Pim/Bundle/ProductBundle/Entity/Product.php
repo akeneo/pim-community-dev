@@ -1,13 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Handler\ArrayCollectionHandler;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
