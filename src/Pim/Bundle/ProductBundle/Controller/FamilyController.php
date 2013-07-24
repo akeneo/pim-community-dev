@@ -73,7 +73,7 @@ class FamilyController extends Controller
      */
     public function editAction($id)
     {
-        $family   = $this->findFamilyOr404($id);
+        $family   = $this->findOr404('PimProductBundle:Family', $id);
         $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
         $datagrid = $this->getDataAuditDatagrid(
             $family,
@@ -136,7 +136,7 @@ class FamilyController extends Controller
      */
     public function addProductAttributes($id)
     {
-        $family              = $this->findFamilyOr404($id);
+        $family              = $this->findOr404('PimProductBundle:Family', $id);
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $family->getAttributes()->toArray(),
@@ -167,8 +167,8 @@ class FamilyController extends Controller
      */
     public function removeProductAttribute($familyId, $attributeId)
     {
-        $family    = $this->findFamilyOr404($familyId);
-        $attribute = $this->findAttributeOr404($attributeId);
+        $family    = $this->findOr404('PimProductBundle:Family', $familyId);
+        $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
             throw $this->createNotFoundException(
@@ -202,40 +202,6 @@ class FamilyController extends Controller
         $url = $this->generateUrl('pim_product_family_edit', array('id' => $id));
 
         return $this->redirect(sprintf('%s#attributes', $url));
-    }
-
-    /**
-     * Find family
-     *
-     * @param integer $id
-     *
-     * @return Family
-     */
-    protected function findFamilyOr404($id)
-    {
-        $family = $this->getFamilyRepository()->findOneWithAttributes($id);
-        if (!$family) {
-            throw $this->createNotFoundException(sprintf('Couldn\'t find a product family with id %d', $id));
-        }
-
-        return $family;
-    }
-
-    /**
-     * Find attribute
-     *
-     * @param integer $id
-     *
-     * @return Attribute
-     */
-    protected function findAttributeOr404($id)
-    {
-        $attribute = $this->getProductAttributeRepository()->findOneBy(array('id' => $id));
-        if (!$attribute) {
-            throw $this->createNotFoundException(sprintf('Couldn\'t find a product family with id %d', $id));
-        }
-
-        return $attribute;
     }
 
     /**

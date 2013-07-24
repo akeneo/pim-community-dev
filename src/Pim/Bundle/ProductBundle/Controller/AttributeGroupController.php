@@ -153,7 +153,7 @@ class AttributeGroupController extends Controller
      */
     public function addProductAttributes($id)
     {
-        $group              = $this->findGroupOr404($id);
+        $group               = $this->findOr404('PimProductBundle:AttributeGroup', $id);
         $availableAttributes = new AvailableProductAttributes;
 
         $attributesForm      = $this->getAvailableProductAttributesForm(
@@ -185,8 +185,8 @@ class AttributeGroupController extends Controller
      */
     public function removeProductAttribute($groupId, $attributeId)
     {
-        $group    = $this->findGroupOr404($groupId);
-        $attribute = $this->findAttributeOr404($attributeId);
+        $group     = $this->findOr404('PimProductBundle:AttributeGroup', $groupId);
+        $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
             throw $this->createNotFoundException(
@@ -211,45 +211,9 @@ class AttributeGroupController extends Controller
      */
     protected function redirectToAttributeGroupAttributesTab($id)
     {
-        $url = $this->generateUrl('pim_product_attributegroup_edit', array('id' => $id));
+        $url = $this->generateUrl('pim_product_attributegroup_edit', array('id' => $id), false, 'attributes');
 
-        return $this->redirect(sprintf('%s#attributes', $url));
-    }
-
-    /**
-     * Find the group
-     *
-     * @param integer $id
-     *
-     * @return Group
-     */
-    protected function findGroupOr404($id)
-    {
-        $group = $this->getAttributeGroupRepository()->findOne($id);
-        if (!$group) {
-            throw $this->createNotFoundException(
-                sprintf('Couldn\'t find an attribute group with id %d', $id)
-            );
-        }
-
-        return $group;
-    }
-
-    /**
-     * Find the attribute
-     *
-     * @param integer $id
-     *
-     * @return Attribute
-     */
-    protected function findAttributeOr404($id)
-    {
-        $attribute = $this->getProductAttributeRepository()->findOneBy(array('id' => $id));
-        if (!$attribute) {
-            throw $this->createNotFoundException(sprintf('Couldn\'t find an attribute group with id %d', $id));
-        }
-
-        return $attribute;
+        return $this->redirect($url);
     }
 
     /**

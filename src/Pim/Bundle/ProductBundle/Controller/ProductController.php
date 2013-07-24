@@ -233,7 +233,7 @@ class ProductController extends Controller
      */
     public function removeAction($id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
 
         $em = $this->getProductManager()->getStorageManager();
         $em->remove($product);
