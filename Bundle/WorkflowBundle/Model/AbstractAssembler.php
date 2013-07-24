@@ -2,14 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException;
+
 abstract class AbstractAssembler
 {
-    /**
-     * @param array $configuration
-     * @return mixed
-     */
-    abstract public function assemble(array $configuration);
-
     /**
      * Get entity type
      *
@@ -46,5 +42,19 @@ abstract class AbstractAssembler
             return false;
         }
         return strpos($this->getEntityType($configuration), '@') === 0;
+    }
+
+    /**
+     * @param array $options
+     * @param array $requiredOptions
+     * @throws MissedRequiredOptionException
+     */
+    protected function assertOptions(array $options, array $requiredOptions)
+    {
+        foreach ($requiredOptions as $optionName) {
+            if (empty($options[$optionName])) {
+                throw new MissedRequiredOptionException(sprintf('Option "%s" is required', $optionName));
+            }
+        }
     }
 }

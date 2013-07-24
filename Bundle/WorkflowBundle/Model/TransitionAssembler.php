@@ -12,7 +12,7 @@ use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable as ConfigurablePostAction;
 
-class TransitionAssembler
+class TransitionAssembler extends AbstractAssembler
 {
     /**
      * @var ConditionFactory

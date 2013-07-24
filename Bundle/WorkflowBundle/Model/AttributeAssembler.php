@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
-class AttributeAssembler
+class AttributeAssembler extends AbstractAssembler
 {
     /**
      * @param array $configuration
@@ -30,6 +30,7 @@ class AttributeAssembler
      */
     protected function assembleAttribute($name, array $options)
     {
+        $this->assertOptions($options, array('label', 'form_type'));
         $attributeOptions = !empty($options['options']) ? $options['options'] : array();
 
         $attribute = new Attribute();

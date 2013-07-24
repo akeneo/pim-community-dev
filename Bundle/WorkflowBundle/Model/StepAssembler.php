@@ -8,7 +8,7 @@ use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 
-class StepAssembler
+class StepAssembler extends AbstractAssembler
 {
     /**
      * @param array $configuration
