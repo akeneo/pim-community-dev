@@ -76,6 +76,11 @@ class ConfigManager
     /**
      * @var ConfigInterface[]
      */
+    protected $runtimeCacheConfigs = array();
+
+    /**
+     * @var ConfigInterface[]
+     */
     protected $originalConfigs = array();
 
     /**
@@ -171,6 +176,10 @@ class ConfigManager
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
+        if (isset($this->runtimeCacheConfigs[$className . '-' . $scope])) {
+            return $this->runtimeCacheConfigs[$className . '-' . $scope];
+        }
+
         $resultConfig = null;
         if (null !== $this->configCache
             && $config = $this->configCache->loadConfigFromCache($className, $scope)
@@ -199,6 +208,8 @@ class ConfigManager
         foreach ($resultConfig->getFields() as $field) {
             $this->originalConfigs[spl_object_hash($field)] = clone $field;
         }
+
+        $this->runtimeCacheConfigs[$className . '-' . $scope] = $resultConfig;
 
         return $resultConfig;
     }
@@ -294,6 +305,10 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
+        var_dump('start-------------ddd');
+        var_dump(get_class($config));
+        var_dump($config->getValues());
+        var_dump('end-------------ddd');
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
@@ -374,7 +389,7 @@ class ConfigManager
 
         $this->persistConfigs   = array();
         $this->removeConfigs    = array();
-        $this->originalConfigs = array();
+        $this->originalConfigs  = array();
         $this->configChangeSets = array();
         $this->updatedConfigs   = array();
 
@@ -415,8 +430,6 @@ class ConfigManager
         if (count($diff)) {
             $this->configChangeSets[spl_object_hash($config)] = array_merge($this->configChangeSets[spl_object_hash($config)], $diff);
 
-            //var_dump($config);
-            //var_dump($diff);
             if (!isset($this->updatedConfigs[spl_object_hash($config)])) {
                 $this->updatedConfigs[spl_object_hash($config)] = $config;
             }

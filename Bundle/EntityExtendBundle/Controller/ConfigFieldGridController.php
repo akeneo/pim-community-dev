@@ -41,6 +41,9 @@ class ConfigFieldGridController extends Controller
      */
     public function createAction(ConfigEntity $entity)
     {
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
@@ -60,7 +63,8 @@ class ConfigFieldGridController extends Controller
                 )
             )
         );
-        $form    = $this->createForm(new FieldType(), $data, array('class_name' => $entity->getClassName()));
+
+        $form = $this->createForm(new FieldType($configManager), $data, array('class_name' => $entity->getClassName()));
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -93,20 +97,8 @@ class ConfigFieldGridController extends Controller
                 }
 
                 if (!$error) {
-                    /** @var ConfigManager $configManager */
-                    $configManager = $this->get('oro_entity_config.config_manager');
+
                     $configManager->clearCache($entity->getClassName());
-
-                    foreach ($data['options'] as $scope => $values) {
-                        /** TODO:: remove this shit */
-                        if ($scope == 'id') {
-                            continue;
-                        }
-
-                        $configManager->getProvider($scope)->createFieldConfig($entity->getClassName(), $data['code'], $data['type'], $values);
-                    }
-
-                    $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
