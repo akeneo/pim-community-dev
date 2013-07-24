@@ -22,7 +22,8 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 class ApplyController extends Controller
 {
     /**
-     * @ Route(
+     * View Apply
+     * @Route(
      *      "/apply/{id}",
      *      name="oro_entityextend_apply",
      *      requirements={"id"="\d+"},
@@ -34,16 +35,6 @@ class ApplyController extends Controller
      *      description="Apply entityconfig changes",
      *      parent="oro_entityextend"
      * )
-     *
-     * @ param $id
-     * @ return array
-     */
-
-
-
-    /**
-     * View Entity
-     * @Route("/apply/{id}", name="oro_entityextend_apply")
      * @Template()
      */
     public function applyAction($id)

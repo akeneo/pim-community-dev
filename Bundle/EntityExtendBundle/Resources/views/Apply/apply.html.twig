@@ -1,100 +1,79 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{#{% set gridId = 'fields-grid' %}#}
-{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
-
-{#{% set entityClass = entity.classname|replace('\\', '_') %}#}
-{#{% set audit_title = entity_config.get('label') %}#}
-{#{% set audit_path = 'oro_entityconfig_audit' %}#}
-
-{% block navButtons %}
-    {#{{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}#}
-    {#{% if resource_granted('oro_user_user_update') %}#}
-        {#{{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}#}
-    {#{% endif %}#}
-
-    {#{% for button in button_config %}#}
-        {#{{ UI.button({#}
-            {#'path'   : path(button.route, button.args|default({})),#}
-            {#'iClass' : button.aClass|default(''),#}
-            {#'title'  : button.title|default(button.name),#}
-            {#'label'  : button.name#}
-        {#}) }}#}
-    {#{% endfor %}#}
-{% endblock navButtons %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% block head_script %}
-    {#{{ parent() }}#}
-
-    {#{% placeholder prepare_grid with {'datagrid': entity_fields, 'selector': '#' ~ gridId, 'parameters': ''} %}#}
+    {#{% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#' ~ gridId} %}#}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block pageHeader %}
-    {#{% set breadcrumbs = {#}
-        {#'entity':      entity,#}
-        {#'indexPath':   path('oro_entityconfig_index'),#}
-        {#'indexLabel': 'Entities',#}
-        {#'entityTitle': entity_config.get('label'),#}
-    {#}%}#}
+{% block page_container %}
+    <div class="container-fluid" style="height:500px; overflow: scroll;">
+        {% block content %}
+            {% set id = 'apply-view' %}
+            {% set general_fields = [
+                UI.attibuteRow('Icon', entity_config.get('icon')),
+                UI.attibuteRow('Label', entity_config.get('label')),
+                UI.attibuteRow('Plural Label', entity_config.get('plural_label')),
+                UI.attibuteRow('Type', entity_extend.get('owner')),
+                UI.attibuteRow('Description', entity_config.get('description')),
 
-    {#{{ parent() }}#}
-{% endblock pageHeader %}
+            ]%}
 
-{% block stats %}
-    {#<li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>#}
-    {#<li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>#}
-    {#<li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>#}
-{% endblock stats%}
+            {#{% for key,property in entity_config.getValues %}#}
+                {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
+            {#{% endfor %}#}
+            {#{% set general_fields = general_fields|merge([UI.attibuteRow('Type', entity_extend.get('type'))])%}#}
+            {#{% for key,property in entity_extend.getValues %}#}
+                {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
+            {#{% endfor %}#}
 
-
-{% block content_data %}
-    {% set id = 'entityconfig-view' %}
-    {% set general_fields = [
-        UI.attibuteRow('Icon', entity_config.get('icon')),
-        UI.attibuteRow('Label', entity_config.get('label')),
-        UI.attibuteRow('Plural Label', entity_config.get('plural_label')),
-        UI.attibuteRow('Type', entity_extend.get('owner')),
-        UI.attibuteRow('Description', entity_config.get('description')),
-
-    ]%}
-
-    {#{% for key,property in entity_config.getValues %}#}
-        {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
-    {#{% endfor %}#}
-    {#{% set general_fields = general_fields|merge([UI.attibuteRow('Type', entity_extend.get('type'))])%}#}
-    {#{% for key,property in entity_extend.getValues %}#}
-        {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
-    {#{% endfor %}#}
-
-    {% set data = {
-        'dataBlocks': [
-            {
-                'title': 'General',
-                'class': 'active',
-                'subblocks': [
-                    {'title': 'General Information', 'data': general_fields},
+            {% set data = {
+                'dataBlocks': [
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
+                    {
+                        'title': 'General',
+                        'class': 'active',
+                        'subblocks': [
+                            {'title': 'General Information', 'data': general_fields},
+                        ]
+                    },
                 ]
-            }
-        ]
-    }%}
+            }%}
 
-    {{ parent() }}
-{% endblock content_data %}
-
-{#{% extends bap.layout %}#}
-{#{% import 'OroUIBundle::macros.html.twig' as UI %}#}
-{#{% block head_script %}#}
-    {#{{ parent() }}#}
-    {#{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}#}
-{#{% endblock %}#}
-{#{% block content %}#}
-    {#<div class="container-fluid">#}
-        {#<h1>{{ (pageTitle is defined ? pageTitle : '')|trans }}#}
-            {#{% if buttons is defined %}#}
-                {#{% for button in buttons %}#}
-                    {#{{ button }}#}
-                {#{% endfor %}#}
-            {#{% endif %}#}
-        {#</h1>#}
-    {#</div>#}
-    {#{{ UI.gridBlock(gridId) }}#}
-{#{% endblock content %}#}
+            {{ UI.scrollData(id, data) }}
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -3,11 +3,13 @@ $(function() {
         new Oro.widget.DialogView({
             url: $(this).attr('href'),
             dialogOptions: {
-                allowMaximize: true,
-                allowMinimize: true,
-                dblclick: 'maximize',
+                allowMaximize: false,
+                allowMinimize: false,
+                //dblclick: 'maximize',
                 maximizedHeightDecreaseBy: 'minimize-bar',
                 width : 1000,
+                minHeight: 560,
+                resizable: false,
                 title: $(this).attr('title')
             }
         }).render();

@@ -95,7 +95,6 @@ oro_entity_config:
                         options:
                             required:       false
                             label:          'Length'
-                            attr:           ['dfdf']
                             allowed_type:   'string'
                             block:          entity
                             subblock:       properties
