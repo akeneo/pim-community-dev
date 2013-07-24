@@ -1,0 +1,23 @@
+oro_menu_config:
+    items:
+        pim_export_connector:
+            label: 'Connector'
+            route: 'pim_batch_connector_index'
+
+    tree:
+        application_menu:
+            children:
+                pim_export_tab:
+                    children:
+                        pim_export_connector: ~
+
+oro_titles:
+    pim_batch_connector_index: DataFlow management
+    pim_batch_configuration_edit: DataFlow management - Configuration
+    pim_batch_connector_index: DataFlow management - Connectors
+    pim_batch_connector_create: DataFlow management - Create connector
+    pim_batch_connector_edit: DataFlow management - Edit connector
+    pim_batch_connector_run: DataFlow management - Prepare running
+
+    pim_batch_job_create: DataFlow management - Create job
+    pim_batch_job_edit: DataFlow management - Edit job

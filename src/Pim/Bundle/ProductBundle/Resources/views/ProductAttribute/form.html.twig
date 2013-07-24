@@ -9,9 +9,9 @@
         {% set title = 'Attributes'|trans %}
 
         {% set buttons %}
-            {{ elements.link(null, path("pim_product_productattribute_index"), { icon: 'chevron-left'}) }}
+            {{ elements.backLink(path('pim_product_productattribute_index')) }}
             {% if form.vars.value.id and form.attributeType.vars.value != 'pim_product_identifier' %}
-                {{ elements.link('Delete', path("pim_product_productattribute_remove", { id: form.vars.value.id }), { icon: 'trash', attr: { 'data-dialog': 'confirm', 'data-title': 'Delete confirmation'|trans, 'data-id': form.vars.value.id, 'data-message': 'Are you sure you want to delete this attribute?'|trans }}) }}
+                {{ elements.deleteLink(path('pim_product_productattribute_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this attribute?') }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}

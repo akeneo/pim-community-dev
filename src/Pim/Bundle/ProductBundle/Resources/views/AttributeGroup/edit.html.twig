@@ -2,28 +2,22 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-<form action="{{ form.vars.value.id ?
+<form class="form-horizontal" action="{{ form.vars.value.id ?
     path('pim_product_attributegroup_edit', { id: form.vars.value.id }) :
-    path('pim_product_attributegroup_create') }}" method="POST" class="form-horizontal">
-    <div class="form-row">
-        <h3>
-            {% if form.vars.value.id %}
-                {{ 'Group'|trans }} - {{ form.vars.data.name }}
-            {% else %}
-                {{ 'New group'|trans }}
-            {% endif %}
-            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            {% if form.vars.value.id %}
-                <a href="{{ path('pim_product_attributegroup_remove', {'id': form.vars.value.id}) }}"
-                    class="btn pull-right" data-method="DELETE"
-                    data-confirm="{{ 'Are you sure you want to remove the group %group%?'|trans({'%group%': form.vars.data.name}) }}">
-                    {{ 'Delete'|trans }}
-                </a>
-            {% endif %}
-        </h3>
-    </div>
+    path('pim_product_attributegroup_create') }}" method="POST">
 
-   {% set tabs = form.vars.value.id ? ['Properties', 'Attributes'] : 'Properties' %}
+    {% set title = form.vars.value.id ? 'Group'|trans ~ ' - ' ~ form.vars.data.name : 'New group'|trans %}
+
+    {% set buttons %}
+        {{ elements.submitBtn }}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(path('pim_product_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
+        {% endif %}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {% set tabs = form.vars.value.id ? ['Properties', 'Attributes'] : 'Properties' %}
 
     {{ elements.form_navbar(tabs) }}
 

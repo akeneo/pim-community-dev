@@ -667,6 +667,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category edit', array(
             'id' => $this->getCategory($code)->getId(),
         ));
+        $this->wait();
     }
 
     /**

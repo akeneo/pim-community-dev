@@ -119,7 +119,7 @@ class FamilyController extends Controller
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Product family successfully removed');
+        $this->addFlash('success', 'Product family successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_family_index'));
     }
