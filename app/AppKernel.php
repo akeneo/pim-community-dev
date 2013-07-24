@@ -42,7 +42,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\JsFormValidationBundle\OroJsFormValidationBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
             new Oro\Bundle\SearchBundle\OroSearchBundle(),
-//             new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
             new Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle(),
