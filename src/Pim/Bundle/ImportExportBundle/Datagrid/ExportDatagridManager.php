@@ -49,12 +49,76 @@ class ExportDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
-        $field->setName('description');
+        $field->setName('code');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Description'),
-                'field_name'  => 'description',
+                'label'       => $this->translate('Code'),
+                'field_name'  => 'code',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('label');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'label',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('connector');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Connector'),
+                'field_name'  => 'connector',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('job');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Job'),
+                'field_name'  => 'job',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('status');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Status'),
+                'field_name'  => 'status',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,

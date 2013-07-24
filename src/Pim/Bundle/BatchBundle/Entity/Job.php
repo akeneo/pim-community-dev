@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_batch_job")
+ * @ORM\Table(name="pim_job")
  * @ORM\Entity()
  */
 class Job
@@ -26,13 +26,25 @@ class Job
     protected $id;
 
     /**
-     * Description
+     * @var string $code
      *
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="code", type="string", length=100)
      */
-    protected $description;
+    protected $code;
+
+    /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     */
+    protected $label;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    protected $status;
 
     /**
      * @var Connector $connector
@@ -83,7 +95,7 @@ class Job
      *
      * @param integer $id
      *
-     * @return Connector
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
     public function setId($id)
     {
@@ -93,27 +105,75 @@ class Job
     }
 
     /**
-     * Set description
+     * Set code
      *
-     * @param string $description
+     * @param string $code
      *
-     * @return Job
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
-    public function setDescription($description)
+    public function setCode($code)
     {
-        $this->description = $description;
+        $this->code = $code;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get code
      *
      * @return string
      */
-    public function getDescription()
+    public function getCode()
     {
-        return $this->description;
+        return $this->code;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -121,7 +181,7 @@ class Job
      *
      * @param string $type
      *
-     * @return Job
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
     public function setType($type)
     {
@@ -145,7 +205,7 @@ class Job
      *
      * @param Connector $connector
      *
-     * @return Job
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
     public function setConnector(Connector $connector)
     {
@@ -169,7 +229,7 @@ class Job
      *
      * @param string $serviceId
      *
-     * @return Job
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
     public function setServiceId($serviceId)
     {
@@ -193,7 +253,7 @@ class Job
      *
      * @param RawConfiguration $configuration
      *
-     * @return Job
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
     public function setRawConfiguration(RawConfiguration $configuration)
     {
