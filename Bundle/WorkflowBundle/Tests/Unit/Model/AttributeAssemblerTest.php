@@ -44,8 +44,33 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
 
     public function testAssemble()
     {
-        $this->markTestIncomplete('Incomplete');
-//        $assembler = new AttributeAssembler();
-//        $assembler->assemble($configuration);
+        $configuration = array(
+            'attribute_one' => array(
+                'label' => 'label',
+                'form_type' => 'form_type'
+            ),
+            'attribute_two' => array(
+                'label' => 'label',
+                'form_type' => 'form_type',
+                'options' => array('option_one' => 'value')
+            ),
+        );
+
+        $assembler = new AttributeAssembler();
+        $attributes = $assembler->assemble($configuration);
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
+        $this->assertCount(2, $attributes);
+        $this->assertTrue($attributes->containsKey('attribute_one'));
+        $this->assertTrue($attributes->containsKey('attribute_two'));
+
+        $attributeOne = $attributes->get('attribute_one');
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\Attribute', $attributeOne);
+        $this->assertEquals($configuration['attribute_one']['label'], $attributeOne->getLabel());
+        $this->assertEquals($configuration['attribute_one']['form_type'], $attributeOne->getFormTypeName());
+        $this->assertEquals(array(), $attributeOne->getOptions());
+        $this->assertEquals('attribute_one', $attributeOne->getName());
+
+        $attributeTwo = $attributes->get('attribute_two');
+        $this->assertEquals($configuration['attribute_two']['options'], $attributeTwo->getOptions());
     }
 }
