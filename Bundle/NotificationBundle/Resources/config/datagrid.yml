@@ -1,5 +1,6 @@
 parameters:
     oro_navigation.emailnotification.datagrid_manager.class: Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager
+    oro_navigation.emailtemplate.datagrid_manager.class: Oro\Bundle\NotificationBundle\Datagrid\EmailTemplateDatagridManager
 
 services:
     oro_navigation.emailnotification.datagrid_manager:
@@ -11,3 +12,12 @@ services:
               entity_name: %oro_navigation.emailnotification.entity.class%
               entity_hint: transactional email
               route_name: oro_notification_emailnotification_index
+
+    oro_navigation.emailtemplate.datagrid_manager:
+        class: %oro_navigation.emailtemplate.datagrid_manager.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: emailtemplate
+              entity_name: %oro_navigation.emailtemplate.entity.class%
+              entity_hint: email templates
+              route_name: oro_notification_emailtemplate_index

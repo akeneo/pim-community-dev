@@ -1,0 +1,15 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridId = 'email-template-grid' %}
+{% block content %}
+    {% set pageTitle = 'Email Templates' %}
+    {% if resource_granted('oro_notification_emailnotification_create') %}
+        {% set buttons = [
+                UI.addButton(
+                    {'path' : path('oro_notification_emailnotification_create'), 'title' : 'Create notification rule', 'label' : 'Create notification rule'}
+                )
+            ]
+        %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

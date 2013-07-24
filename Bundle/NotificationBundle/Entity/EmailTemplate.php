@@ -88,7 +88,6 @@ class EmailTemplate implements Translatable
      */
     protected $locale;
 
-
     /**
      * @param $name
      * @param string $content
@@ -238,10 +237,13 @@ class EmailTemplate implements Translatable
 
     /**
      * @param boolean $isSystem
+     * @return EmailTemplate
      */
     public function setIsSystem($isSystem)
     {
         $this->isSystem = $isSystem;
+
+        return $this;
     }
 
     /**
@@ -254,7 +256,7 @@ class EmailTemplate implements Translatable
 
     /**
      * @param mixed $locale
-     * @return $this
+     * @return EmailTemplate
      */
     public function setLocale($locale)
     {
@@ -273,7 +275,7 @@ class EmailTemplate implements Translatable
 
     /**
      * @param string $type
-     * @return $this
+     * @return EmailTemplate
      */
     public function setType($type)
     {

@@ -5,14 +5,25 @@ oro_menu_config:
             route: 'oro_notification_emailnotification_index'
             extras:
                 routes: ['oro_notification_emailnotification_*']
+        oro_notification_emailtemplate_list:
+            label: 'Email templates'
+            route: 'oro_notification_emailtemplate_index'
+            extras:
+                routes: ['oro_notification_emailtemplate_*']
     tree:
         application_menu:
             children:
                 system_tab:
                     children:
                         oro_notification_emailnotification_list: ~
+                        oro_notification_emailtemplate_list: ~
 
 oro_titles:
     oro_notification_emailnotification_index: "Transactional Emails"
     oro_notification_emailnotification_update: "Edit notification rule #%%id%%"
     oro_notification_emailnotification_create: "Add notification rule"
+
+    oro_notification_emailtemplate_index: "Email Templates"
+    oro_notification_emailtemplate_update: "Edit template %%name%%"
+    oro_notification_emailtemplate_create: "Create email template"
+    oro_notification_emailtemplate_clone: "Clone email template"

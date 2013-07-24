@@ -3,6 +3,7 @@ parameters:
 
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
+    oro_navigation.emailtemplate.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailTemplate
     oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
     # Event manager and event handler classes
