@@ -25,7 +25,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         return array(
             new UrlProperty('view_link', $this->router, 'oro_business_unit_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_business_unit_update', array('id')),
-            new UrlProperty('delete_link', $this->router, 'oro_api_delete_business_unit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'oro_api_delete_businessunit', array('id')),
         );
     }
 
