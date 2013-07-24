@@ -44,7 +44,7 @@ class RequestFix
         unset($data[$requestAttributeKey]);
         $data[$attributeKey] = array();
 
-        foreach ($attrDef as $i => $attr) {
+        foreach ($attrDef as $attr) {
             /* @var AbstractEntityAttribute $attr */
             if ($attr->getBackendType() == 'options') {
                 if (in_array(
@@ -65,22 +65,23 @@ class RequestFix
                 $default = null;
             }
 
-            $data[$attributeKey][$i] = array();
-            $data[$attributeKey][$i]['id'] = $attr->getId();
-            $data[$attributeKey][$i][$type] = $default;
+            $attrCode = $attr->getCode();
+            $data[$attributeKey][$attrCode] = array();
+            $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+            $data[$attributeKey][$attrCode][$type] = $default;
 
             foreach ($attrVal as $fieldCode => $fieldValue) {
                 if ($attr->getCode() == (string)$fieldCode) {
                     if (is_array($fieldValue)) {
                         if (array_key_exists('scope', $fieldValue)) {
-                            $data[$attributeKey][$i]['scope'] = $fieldValue['scope'];
+                            $data[$attributeKey][$attrCode]['scope'] = $fieldValue['scope'];
                         }
                         if (array_key_exists('locale', $fieldValue)) {
-                            $data[$attributeKey][$i]['locale'] = $fieldValue['locale'];
+                            $data[$attributeKey][$attrCode]['locale'] = $fieldValue['locale'];
                         }
                         $fieldValue = $fieldValue['value'];
                     }
-                    $data[$attributeKey][$i][$type] = (string)$fieldValue;
+                    $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
 
                     break;
                 }

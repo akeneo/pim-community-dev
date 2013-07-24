@@ -30,6 +30,7 @@ class Users extends PageFilteredGrid
     {
         $user = $this->getEntity($entityData);
         $user->click();
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
 

@@ -55,6 +55,13 @@ class Router
 
         $params = isset($routeData['parameters']) ? $routeData['parameters'] : array();
 
-        return new RedirectResponse($this->router->generate($routeName, $params, UrlGeneratorInterface::ABSOLUTE_PATH), $status);
+        return new RedirectResponse(
+            $this->router->generate(
+                $routeName,
+                $params,
+                UrlGeneratorInterface::ABSOLUTE_PATH
+            ),
+            $status
+        );
     }
 }

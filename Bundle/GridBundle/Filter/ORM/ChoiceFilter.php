@@ -115,6 +115,11 @@ class ChoiceFilter extends AbstractFilter
             $formOptions['field_options']['multiple'] = $multiple;
         }
 
+        $translationDomain = $this->getOption('translation_domain');
+        if (null !== $translationDomain) {
+            $formOptions['translation_domain'] = $translationDomain;
+        }
+
         return array($formType, $formOptions);
     }
 }

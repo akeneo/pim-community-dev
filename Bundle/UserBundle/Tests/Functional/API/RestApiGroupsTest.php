@@ -15,11 +15,15 @@ class RestApiGroupsTest extends WebTestCase
     /**
      * @var Client
      */
-    protected $client = null;
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
