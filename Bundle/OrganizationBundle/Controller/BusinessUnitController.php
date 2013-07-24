@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager;
+use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager;
+use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
@@ -105,18 +107,19 @@ class BusinessUnitController extends Controller
      *      description="List of business_units",
      *      parent="oro_business_unit"
      * )
+     * @Template()
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->get('oro_organization.business_unit_datagrid_manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroOrganizationBundle:BusinessUnit:index.html.twig';
+        /** @var BusinessUnitDatagridManager $gridManager */
+        $gridManager = $this->get('oro_organization.business_unit_datagrid_manager');
+        $datagridView = $gridManager->getDatagrid()->createView();
 
-        return $this->render(
-            $view,
-            array('datagrid' => $datagrid->createView())
-        );
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        }
+
+        return array('datagrid' => $datagridView);
     }
 
     /**
@@ -128,7 +131,6 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @Template("OroGridBundle:Datagrid:list.json.php")
      * @AclAncestor("oro_business_unit_list")
      */
     public function updateGridDataAction(BusinessUnit $entity = null)
@@ -136,9 +138,10 @@ class BusinessUnitController extends Controller
         if (!$entity) {
             $entity = new BusinessUnit();
         }
+        $datagridView = $this->getBusinessUnitDatagridManager($entity, 'update')
+            ->getDatagrid()->createView();
 
-        return array('datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')
-            ->getDatagrid()->createView());
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -150,12 +153,13 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"_format"="json"}
      * )
-     * @Template("OroGridBundle:Datagrid:list.json.php")
      * @AclAncestor("oro_business_unit_list")
      */
     public function viewGridDataAction(BusinessUnit $entity)
     {
-        return array('datagrid' => $this->getBusinessUnitDatagridManager($entity, 'view')->getDatagrid()->createView());
+        $datagridView = $this->getBusinessUnitDatagridManager($entity, 'view')
+            ->getDatagrid()->createView();
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
     /**
