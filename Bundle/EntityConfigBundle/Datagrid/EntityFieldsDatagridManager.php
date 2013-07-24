@@ -147,19 +147,18 @@ class EntityFieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldType);
 
-        $this->addDynamicRows($fieldsCollection, true);
+        $this->addDynamicRows($fieldsCollection);
     }
 
     /**
      * @param      $fieldsCollection
-     * @param bool $checkEntityGrid
      */
-    protected function addDynamicRows($fieldsCollection, $checkEntityGrid = false)
+    protected function addDynamicRows($fieldsCollection)
     {
         $fields = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldItems($checkEntityGrid) as $code => $item) {
+            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
                 if (isset($item['grid'])) {
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
@@ -168,8 +167,8 @@ class EntityFieldsDatagridManager extends DatagridManager
                         'field_name' => $code,
                     )));
 
-                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
-                        $fields[$item['priority']] = $fieldObject;
+                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                        $fields[$item['options']['priority']] = $fieldObject;
                     } else {
                         $fields[] = $fieldObject;
                     }

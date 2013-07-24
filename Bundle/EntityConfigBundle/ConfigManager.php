@@ -29,7 +29,6 @@ use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)

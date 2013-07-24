@@ -3,8 +3,9 @@ oro_entity_config:
         entity:
             items:
                 owner:
-                    priority:               40
-                    default_value:          'System'
+                    options:
+                        priority:               40
+                        default_value:          'System'
                     grid:
                         type:               string
                         label:              'Type'
@@ -25,13 +26,15 @@ oro_entity_config:
                         stats:              false
                         block:
                 is_extend:
-                    default_value:          false
+                    options:
+                        default_value:      false
+                        is_bool:            true
 
                 extend_class:               ~
 
                 unique_key:
-                    serializable:           true
-
+                    options:
+                        serializable:       true
 
                 proxy_class:                ~
 
@@ -44,8 +47,9 @@ oro_entity_config:
                 -                           {'name':'Apply', 'route':'oro_entityextend_apply', 'entity_id':true, 'aClass':'entity-extend-apply'}
             items:
                 owner:
-                    priority:               20
-                    default_value:          'System'
+                    options:
+                        priority:           20
+                        default_value:      'System'
                     grid:
                         type:               string
                         label:              'Type'
@@ -62,8 +66,10 @@ oro_entity_config:
                             label:          'Type'
 
                 is_extend:
-                    priority:               40
-                    default_value:          false
+                    options:
+                        priority:           40
+                        default_value:      false
+                        is_bool:            true
 #                    grid:
 #                        type:               boolean
 #                        label:              'Is Extend Field'
@@ -81,12 +87,39 @@ oro_entity_config:
                             required:       false
                             label:          "Is Extend Field"
 
-                doctrine:
-                    priority:               50
+                length:
+                    options:
+                        default_value:      255
                     form:
-                        type:               textarea
+                        type:               text
                         options:
+                            required:       false
+                            label:          'Length'
+                            attr:           ['dfdf']
+                            allowed_type:   'string'
                             block:          entity
                             subblock:       properties
-                            required:       true
 
+                precision:
+                    options:
+                        default_value:      0
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Precision'
+                            allowed_type:   'decimal'
+                            block:          entity
+                            subblock:       properties
+
+                scale:
+                    options:
+                        default_value:      0
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Scale'
+                            allowed_type:   'decimal'
+                            block:          entity
+                            subblock:       properties
