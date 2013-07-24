@@ -1,5 +1,5 @@
 parameters:
-    pim_batch.connectors.class: Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorRegistry
+    pim_batch.connectors.class: Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
     pim_batch.connectors_config: ~
     pim_batch.jobs_config: ~
 

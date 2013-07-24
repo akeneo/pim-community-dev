@@ -1,0 +1,16 @@
+oro_menu_config:
+    items:
+        pim_ie_export:
+            label: 'Exports'
+            route: 'pim_ie_export_index'
+
+    tree:
+        application_menu:
+            children:
+                pim_export_tab:
+                    children:
+                        pim_ie_export: ~
+
+oro_titles:
+    pim_ie_export_index: Export management
+

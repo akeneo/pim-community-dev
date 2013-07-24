@@ -52,6 +52,15 @@ class Job
     protected $serviceId;
 
     /**
+     * Job type export or import
+     *
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     */
+    protected $type = 'export'; // TODO: temporary, must be setuped during creation
+
+    /**
      * @var RawConfiguration $connectorConfiguration
      *
      * @ORM\ManyToOne(targetEntity="RawConfiguration", cascade={"persist", "remove"})
@@ -105,6 +114,30 @@ class Job
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Job
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
