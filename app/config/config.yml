@@ -217,10 +217,11 @@ pim_batch:
     jobs:
         product_export:
             title: "CSV export of products"
+            connector: "Akeneo"
             steps:
                 export:
                     title:      "Product export"
-                    reader:     pim_import_export.reader.orm_cursor
+                    reader:     pim_import_export.reader.product
                     processor:  pim_import_export.processor.serializer
                     writer:     pim_import_export.writer.file
 

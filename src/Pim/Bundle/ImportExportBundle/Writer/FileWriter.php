@@ -3,16 +3,12 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 
-class FileWriter implements ItemWriterInterface
+class FileWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
     protected $path;
     private $handler;
-
-    public function __construct($path)
-    {
-        $this->path = $path;
-    }
 
     public function write(array $data)
     {
@@ -30,5 +26,24 @@ class FileWriter implements ItemWriterInterface
         if ($this->handler) {
             fclose($this->handler);
         }
+    }
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function getConfigurationFields()
+    {
+        return array(
+            'path' => array(
+                'options' => array()
+            )
+        );
     }
 }

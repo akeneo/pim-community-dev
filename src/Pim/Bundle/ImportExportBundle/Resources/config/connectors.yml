@@ -2,20 +2,20 @@ parameters:
     pim_import_export.job.export_product.class:   Pim\Bundle\ImportExportBundle\Job\ExportProductJob
     pim_import_export.job.export_attribute.class: Pim\Bundle\ImportExportBundle\Job\ExportAttributeJob
     pim_import_export.job.export_category.class:  Pim\Bundle\ImportExportBundle\Job\ExportCategoryJob
-    
+
     pim_import_export.configuration.export_product.class: Pim\Bundle\ImportExportBundle\Configuration\ExportProductConfiguration
     pim_import_export.configuration.export_attribute.class: Pim\Bundle\ImportExportBundle\Configuration\ExportAttributeConfiguration
     pim_import_export.configuration.export_category.class: Pim\Bundle\ImportExportBundle\Configuration\ExportCategoryConfiguration
-    
+
     pim_import_export.form.type.export_product.class: Pim\Bundle\ImportExportBundle\Form\Type\ExportProductType
     pim_import_export.form.type.export_attribute.class: Pim\Bundle\ImportExportBundle\Form\Type\ExportAttributeType
     pim_import_export.form.type.export_category.class: Pim\Bundle\ImportExportBundle\Form\Type\ExportCategoryType
-    
+
     pim_import_export.connector.csv.class:        Pim\Bundle\ImportExportBundle\Connector\CsvConnector
     pim_import_export.configuration.csv.class:    Pim\Bundle\ImportExportBundle\Configuration\CsvConfiguration
-    
+
     pim_import_export.form.type.csv_connector.class: Pim\Bundle\ImportExportBundle\Form\Type\CsvConnectorType
-    
+
 services:
     # connectors
     pim_import_export.connector.csv:
@@ -33,13 +33,13 @@ services:
         arguments: ['Export product', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_product.class%]
         tags:
             - { name: pim_batch.job, connector: pim_import_export.connector.csv }
-            
+
     pim_import_export.job.export_attribute.csv:
         class:     %pim_import_export.job.export_attribute.class%
         arguments: ['Export attribute', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_attribute.class%]
         tags:
             - { name: pim_batch.job, connector: pim_import_export.connector.csv }
-            
+
     pim_import_export.job.export_category.csv:
         class:     %pim_import_export.job.export_category.class%
         arguments: ['Export category', %pim_import_export.configuration.csv.class%, %pim_import_export.configuration.export_category.class%]
@@ -60,3 +60,24 @@ services:
       class: %pim_import_export.form.type.export_category.class%
       tags:
           - { name: form.type, alias: pim_configuration_export_category }
+
+
+
+
+
+
+
+
+    pim_import_export.reader.product:
+        class: Pim\Bundle\ImportExportBundle\Reader\ProductReader
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @pim_config.manager.channel
+
+    pim_import_export.processor.serializer:
+        class: Pim\Bundle\ImportExportBundle\Processor\SerializerProcessor
+        arguments:
+            - @pim_serializer
+
+    pim_import_export.writer.file:
+        class: Pim\Bundle\ImportExportBundle\Writer\FileWriter

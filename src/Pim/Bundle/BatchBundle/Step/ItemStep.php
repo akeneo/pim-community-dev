@@ -34,6 +34,11 @@ class ItemStep extends AbstractStep
         $this->reader = $reader;
     }
 
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
     /**
      * Set writer
      * @param ItemWriterInterface $writer
@@ -43,6 +48,11 @@ class ItemStep extends AbstractStep
         $this->writer = $writer;
     }
 
+    public function getWriter()
+    {
+        return $this->writer;
+    }
+
     /**
      * Set processor
      * @param ItemProcessorInterface $processor
@@ -50,6 +60,11 @@ class ItemStep extends AbstractStep
     public function setProcessor(ItemProcessorInterface $processor)
     {
         $this->processor = $processor;
+    }
+
+    public function getProcessor()
+    {
+        return $this->processor;
     }
 
     /**

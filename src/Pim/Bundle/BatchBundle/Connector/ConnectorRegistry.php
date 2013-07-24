@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\BatchBundle\Connector;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -54,14 +54,9 @@ class ConnectorRegistry
      *
      * @return ConnectorRegistry
      */
-    public function addJobToConnector($connectorId, ConnectorInterface $connector, $jobId, JobInterface $job)
+    public function addJobToConnector($connector, $jobAlias, JobInterface $job)
     {
-        $this->connectors[$connectorId] = $connector;
-        $this->jobs[$jobId] = $job;
-        if (!isset($this->connectorToJobs[$connectorId])) {
-            $this->connectorToJobs[$connectorId] = array();
-        }
-        $this->connectorToJobs[$connectorId][] = $jobId;
+        $this->jobs[$connector][$jobAlias] = $job;
 
         return $this;
     }
@@ -94,5 +89,10 @@ class ConnectorRegistry
     public function getConnectorToJobs()
     {
         return $this->connectorToJobs;
+    }
+
+    public function getJob($connector, $jobAlias)
+    {
+        return $this->jobs[$connector][$jobAlias];
     }
 }

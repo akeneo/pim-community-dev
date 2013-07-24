@@ -4,8 +4,9 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
+use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 
-class ORMCursorReader implements ItemReaderInterface
+class ORMCursorReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     protected $query;
     private $cursor;
@@ -22,5 +23,10 @@ class ORMCursorReader implements ItemReaderInterface
         }
 
         return $this->cursor->next() ?: null;
+    }
+
+    public function getConfigurationFields()
+    {
+        return array();
     }
 }

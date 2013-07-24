@@ -24,6 +24,6 @@ class PimBatchBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ConnectorCompilerPass());
+        //$container->addCompilerPass(new ConnectorCompilerPass());
     }
 }
