@@ -1,0 +1,9 @@
+oro:
+    notification:
+        controller:
+            emailnotification:
+                saved.message: "Email notification rule has been saved"
+        event:
+            entity_post_update: "Entity update"
+            entity_post_persist: "Entity create"
+            entity_post_remove: "Entity remove"
