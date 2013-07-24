@@ -1,0 +1,4 @@
+oro_entity_config_bundle:
+    resource:     "@OroEntityExtendBundle/Controller"
+    type:         annotation
+    prefix:       /

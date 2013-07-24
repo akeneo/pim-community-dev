@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType;
@@ -13,7 +14,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Test related class
- *
  */
 abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
 {

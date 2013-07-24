@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Symfony\Component\Form\FormFactoryInterface;
@@ -7,7 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * The attribute type interface
- *
  */
 interface AttributeTypeInterface
 {

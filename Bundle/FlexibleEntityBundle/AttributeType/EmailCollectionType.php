@@ -4,6 +4,9 @@ namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
+/**
+ * attribute type
+ */
 class EmailCollectionType extends AbstractAttributeType
 {
     /**

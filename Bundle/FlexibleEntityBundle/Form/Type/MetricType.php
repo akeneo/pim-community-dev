@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -7,8 +8,6 @@ use Symfony\Component\Form\AbstractType;
 
 /**
  * Form type related to metric entity
- *
- *
  */
 class MetricType extends AbstractType
 {
