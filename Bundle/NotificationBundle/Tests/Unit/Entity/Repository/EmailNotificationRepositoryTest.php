@@ -50,7 +50,7 @@ class EmailNotificationRepositoryTest extends \PHPUnit_Framework_TestCase
         unset($this->entity);
     }
 
-    public function testGetRulesByCriteria()
+    public function testGetRules()
     {
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
@@ -63,19 +63,13 @@ class EmailNotificationRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
             ->disableOriginalConstructor()
-            ->setMethods(array('select', 'from', 'where', 'andWhere', 'setParameter', 'getQuery', 'leftJoin'))
+            ->setMethods(array('select', 'from', 'getQuery', 'leftJoin'))
             ->getMock();
         $queryBuilder->expects($this->exactly(2))->method('select')
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())->method('from')->with(self::ENTITY_NAME, $entityAlias)
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())->method('leftJoin')->with($entityAlias . '.event', 'event')
-            ->will($this->returnSelf());
-        $queryBuilder->expects($this->once())->method('where')->with('emn.entityName = :entityName')
-            ->will($this->returnSelf());
-        $queryBuilder->expects($this->once())->method('andWhere')->with('event.name = :eventName')
-            ->will($this->returnSelf());
-        $queryBuilder->expects($this->exactly(2))->method('setParameter')
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())->method('getQuery')
             ->will($this->returnValue($query));
@@ -84,7 +78,8 @@ class EmailNotificationRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('createQueryBuilder')
             ->will($this->returnValue($queryBuilder));
 
-        $actualResult = $this->repository->getRulesByCriteria(self::TEST_NAME, self::EVENT_NAME);
-        $this->assertEquals($this->testEntities, $actualResult);
+        $actualResult = $this->repository->getRules();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $actualResult);
+        $this->assertCount(1, $actualResult);
     }
 }

@@ -4,6 +4,7 @@ namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Oro\Bundle\NotificationBundle\Event\Handler\EventHandlerInterface;
 
@@ -24,11 +25,18 @@ class NotificationManager
      */
     protected $className;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $notificationRules;
+
     public function __construct(ObjectManager $em, $className)
     {
         $this->handlers = array();
         $this->em = $em;
         $this->className = $className;
+        $this->notificationRules = $this->em->getRepository($this->className)
+            ->getRules();
     }
 
     /**
@@ -52,10 +60,9 @@ class NotificationManager
         $entity = $event->getEntity();
 
         // select rules by entity name and event name
-        $notificationRules = $this->em->getRepository($this->className)
-            ->getRulesByCriteria(get_class($entity), $event->getName());
+        $notificationRules = $this->getRulesByCriteria(get_class($entity), $event->getName());
 
-        if (!empty($notificationRules)) {
+        if (!$notificationRules->isEmpty()) {
             /** @var EventHandlerInterface $handler */
             foreach ($this->handlers as $handler) {
                 $handler->handle($event, $notificationRules);
@@ -77,5 +84,22 @@ class NotificationManager
     public function getHandlers()
     {
         return $this->handlers;
+    }
+
+    /**
+     * Filter rules by criteria
+     *
+     * @param string $entityName
+     * @param string $eventName
+     * @return \Doctrine\Common\Collections\Collection|ArrayCollection
+     */
+    protected function getRulesByCriteria($entityName, $eventName)
+    {
+        return $this->notificationRules->filter(
+            function (EmailNotification $item) use ($entityName, $eventName) {
+                return $item->getEntityName() == $entityName
+                    && $item->getEvent()->getName() == $eventName;
+            }
+        );
     }
 }
