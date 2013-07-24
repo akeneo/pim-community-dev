@@ -99,7 +99,7 @@ class Body
         }
 
         if ($part->getHeaders()->has('Content-Transfer-Encoding')) {
-            $contentTransferEncoding = $this->part->getHeader('Content-Transfer-Encoding')->getFieldValue();
+            $contentTransferEncoding = $part->getHeader('Content-Transfer-Encoding')->getFieldValue();
             switch (strtolower($contentTransferEncoding)) {
                 case 'base64':
                     $content = base64_decode($part->getContent());
