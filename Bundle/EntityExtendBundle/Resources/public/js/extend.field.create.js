@@ -1,17 +1,17 @@
 $(function() {
-//    $(document).on('click', '', function (e) {
-//        new Oro.widget.DialogView({
-//            url: $(this).attr('href'),
-//            dialogOptions: {
-//                allowMaximize: false,
-//                allowMinimize: false,
-//                maximizedHeightDecreaseBy: 'minimize-bar',
-//                width : 1000,
-//                minHeight: 560,
-//                resizable: false,
-//                title: $(this).attr('title')
-//            }
-//        }).render();
-//        return false;
-//    });
+    var select = 'form#oro_entity_extend_field_type select#oro_entity_extend_field_type_type';
+    $(select).change(function() {
+        var selected = $(select + ' option:selected').attr('value');
+        $('div#oro_entity_extend_field_type_options_extend input[data-allowedtype]').each(function(index, el) {
+            if ($(el).data('allowedtype').indexOf(selected) != -1) {
+
+                $(el).removeClass('hide');
+                $(el).parents('.control-group:first').removeClass('hide');
+            }
+            else {
+                $(el).addClass('hide');
+                $(el).parents('.control-group:first').addClass('hide');
+            }
+        })
+    })
 });
