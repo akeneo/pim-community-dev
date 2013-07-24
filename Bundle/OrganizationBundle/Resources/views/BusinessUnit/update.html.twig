@@ -21,7 +21,7 @@
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_business_unit', {'id': form.vars.value.id}),
+            'dataUrl': path('oro_api_delete_businessunit', {'id': form.vars.value.id}),
             'dataRedirect': path('oro_business_unit_index'),
             'aCss': 'no-hash remove-button',
             'dataId': form.vars.value.id,

@@ -13,7 +13,7 @@
     {% endif %}
     {% if resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_business_unit', {'id': entity.id}),
+            'dataUrl': path('oro_api_delete_businessunit', {'id': entity.id}),
             'dataRedirect': path('oro_business_unit_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-business_unit',
@@ -57,10 +57,6 @@
                         UI.attibuteRow('Fax', entity.fax),
                     ]
                 },
-                {
-                    'title': 'Tags',
-                    'data': dataSubBlocks
-                }
             ]
         }]
     %}
