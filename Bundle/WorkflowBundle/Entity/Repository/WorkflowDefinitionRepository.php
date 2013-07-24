@@ -5,13 +5,15 @@ namespace Oro\Bundle\WorkflowBundle\Entity\Repository;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+
 class WorkflowDefinitionRepository extends EntityRepository
 {
     /**
      * Get available workflow definitions for entity.
      *
      * @param object $entity
-     * @return array
+     * @return WorkflowDefinition[]
      */
     public function findWorkflowDefinitionsByEntity($entity)
     {

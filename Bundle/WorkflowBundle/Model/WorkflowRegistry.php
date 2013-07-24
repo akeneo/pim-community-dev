@@ -5,6 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 
@@ -34,21 +35,53 @@ class WorkflowRegistry
     /**
      * Get Workflow by name
      *
-     * @param string $name
+     * @param string $workflowName
      * @return Workflow
      * @throws WorkflowNotFoundException
      */
-    public function getWorkflow($name)
+    public function getWorkflow($workflowName)
     {
-        if (!$this->workflowByName[$name]) {
-            $workflowDefinition = $this->findWorkflowDefinition($name);
+        if (!$this->workflowByName[$workflowName]) {
+            $workflowDefinition = $this->findWorkflowDefinition($workflowName);
             if (!$workflowDefinition) {
-                throw new WorkflowNotFoundException($name);
+                throw new WorkflowNotFoundException($workflowName);
             }
-            $workflow = $this->assembleWorkflow($workflowDefinition);
-            $this->workflowByName[$name] = $workflow;
+            return $this->getAssembledWorkflow($workflowDefinition);
         }
-        return $this->workflowByName[$name];
+        return $this->workflowByName[$workflowName];
+    }
+
+    /**
+     * Get Workflow by WorkflowDefinition
+     *
+     * @param WorkflowDefinition $workflowDefinition
+     * @return Workflow
+     */
+    protected function getAssembledWorkflow(WorkflowDefinition $workflowDefinition)
+    {
+        $workflowName = $workflowDefinition->getName();
+        if (!$this->workflowByName[$workflowName]) {
+            $workflow = $this->assembleWorkflow($workflowDefinition);
+            $this->workflowByName[$workflowName] = $workflow;
+        }
+        return $this->workflowByName[$workflowName];
+    }
+
+    /**
+     * Get list of Workflows that are applicable to entity
+     *
+     * @param object $entity
+     * @return Workflow[]
+     */
+    public function getWorkflowsByEntity($entity)
+    {
+        $result = array();
+        $workflowDefinitions = $this->getWorkflowDefinitionRepository()->findWorkflowDefinitionsByEntity($entity);
+
+        foreach ($workflowDefinitions as $workflowDefinition) {
+            $result[$workflowDefinition->getName()] = $this->getAssembledWorkflow($workflowDefinition);
+        }
+        return $result;
     }
 
     /**
@@ -59,7 +92,7 @@ class WorkflowRegistry
      */
     protected function findWorkflowDefinition($name)
     {
-        return $this->managerRegistry->getRepository('OroWorkflowBundle:WorkflowDefinition')->find($name);
+        return $this->getWorkflowDefinitionRepository()->find($name);
     }
 
     /**
@@ -71,5 +104,13 @@ class WorkflowRegistry
     protected function assembleWorkflow(WorkflowDefinition $workflowDefinition)
     {
         return $this->workflowAssembler->assemble($workflowDefinition);
+    }
+
+    /**
+     * @return WorkflowDefinitionRepository
+     */
+    protected function getWorkflowDefinitionRepository()
+    {
+        return $this->managerRegistry->getRepository('OroWorkflowBundle:WorkflowDefinition');
     }
 }
