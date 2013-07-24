@@ -4,7 +4,6 @@ namespace Pim\Bundle\TranslationBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**

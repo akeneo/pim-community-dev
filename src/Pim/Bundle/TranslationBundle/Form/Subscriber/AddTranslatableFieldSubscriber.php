@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Inflector\Inflector;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 

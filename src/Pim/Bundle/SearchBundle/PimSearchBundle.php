@@ -2,8 +2,6 @@
 namespace Pim\Bundle\SearchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\ProductBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 
 /**
  * Pim Search Bundle

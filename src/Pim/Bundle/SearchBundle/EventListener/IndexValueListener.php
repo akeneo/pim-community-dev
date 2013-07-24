@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\SearchBundle\EventListener;
 
-use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
@@ -35,8 +34,8 @@ class IndexValueListener
      * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
      *
      * @param ContainerInterface $container
-     * @param bool               $realtime  Realtime update flag
-     * @param array              $entities  Entities config array from search.yml
+     * @param bool               $realtime Realtime update flag
+     * @param array              $entities Entities config array from search.yml
      */
     public function __construct(ContainerInterface $container, $realtime, $entities)
     {
@@ -75,6 +74,7 @@ class IndexValueListener
 
     /**
      * @param string $entity
+     *
      * @return bool
      */
     protected function isSupported($entity)
