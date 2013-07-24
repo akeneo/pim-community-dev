@@ -165,7 +165,11 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                         'extra_config' => 'autocomplete'
                     ),
                     'attr' => array(
-                        'data-entity' => json_encode(array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value'))
+                        'data-entities' => json_encode(
+                            array(
+                                array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value')
+                            )
+                        )
                     )
                 )
             ),
@@ -204,7 +208,11 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                         'route_name' => 'custom_route'
                     ),
                     'attr' => array(
-                        'data-entity' => json_encode(array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value'))
+                        'data-entities' => json_encode(
+                            array(
+                                array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value')
+                            )
+                        )
                     )
                 )
             )
