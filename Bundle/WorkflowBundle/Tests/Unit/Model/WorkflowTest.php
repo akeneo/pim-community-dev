@@ -301,7 +301,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
-     * @expectedExceptionMessage Unknown step "unknownStep".
+     * @expectedExceptionMessage Step "unknownStep" of workflow "workflowName" not found
      */
     public function testTransitUnknownStepException()
     {
@@ -314,6 +314,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transition = $this->getTransitionMock('transition');
 
         $obj = $this->createWorkflow();
+        $obj->setName('workflowName');
         $obj->setTransitions(array($transition));
         $obj->transit($workflowItem, $transition);
     }
