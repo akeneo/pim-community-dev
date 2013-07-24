@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Constraint;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
@@ -42,7 +43,7 @@ class RangeValidator extends BaseRangeValidator
             return;
         }
 
-        if ($value instanceof ProductPrice) {
+        if ($value instanceof Metric || $value instanceof ProductPrice) {
             $value = $value->getData();
         }
 
