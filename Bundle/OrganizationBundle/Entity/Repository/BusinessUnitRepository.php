@@ -10,6 +10,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 class BusinessUnitRepository extends EntityRepository
 {
      /**
+     * Build business units tree for user page
+     *
+     * @param User $user
      * @return array
      */
     public function getBusinessUnitsTree(User $user)
@@ -20,17 +23,21 @@ class BusinessUnitRepository extends EntityRepository
                             'businessUnit.id',
                             'businessUnit.name',
                             'IDENTITY(businessUnit.parent) parent',
-                            'CASE WHEN users.id <> 0 THEN 1 ELSE 0 END as hasUser'
                         )
                     );
-
         if ($user->getId()) {
-            $businessUnits->leftJoin('businessUnit.users', 'users', Expr\Join::WITH, 'users.id = :user')
-                ->setParameter('user', $user);
+            $units = $user->getBusinessUnits()->map(
+                function (BusinessUnit $businessUnit) {
+                    return $businessUnit->getId();
+                }
+            );
+            $units = $units->toArray();
+            if ($units) {
+                $businessUnits->addSelect('CASE WHEN businessUnit.id IN (:userUnits) THEN 1 ELSE 0 END as hasUser');
+                $businessUnits->setParameter(':userUnits', $units);
+            }
         }
-        //var_dump($businessUnits->getQuery()->getSQL());die();
         $businessUnits = $businessUnits->getQuery()->getArrayResult();
-        //var_dump($businessUnits);die();
         $children = array();
         foreach ($businessUnits as &$businessUnit) {
             $parent = $businessUnit['parent'] ?: 0;
@@ -53,6 +60,7 @@ class BusinessUnitRepository extends EntityRepository
 
     /**
      * @param array $businessUnits
+     * @return mixed
      */
     public function getBusinessUnits(array $businessUnits)
     {

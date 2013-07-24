@@ -31,6 +31,7 @@ class BusinessUnitDatagridManager extends DatagridManager
 
     /**
      * {@inheritDoc}
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {

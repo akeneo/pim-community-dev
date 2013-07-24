@@ -33,6 +33,7 @@ use DateTime;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
@@ -288,12 +289,11 @@ class User extends AbstractEntityFlexible implements
     /**
      * @var BusinessUnit[]
      *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
      * @ORM\JoinTable(name="oro_user_business_unit",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
      * @Oro\Versioned("getName")
      */

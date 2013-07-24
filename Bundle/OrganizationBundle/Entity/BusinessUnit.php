@@ -54,28 +54,28 @@ class BusinessUnit
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=100)
+     * @ORM\Column(name="phone", type="string", length=100, nullable=true)
      */
     protected $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="website", type="string", length=255)
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
      */
     protected $website;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     protected $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=255)
+     * @ORM\Column(name="fax", type="string", length=255, nullable=true)
      */
     protected $fax;
 
@@ -341,5 +341,52 @@ class BusinessUnit
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        $this->users = $this->users ?: new ArrayCollection();
+
+        return $this->users;
+    }
+
+    /**
+     * @param ArrayCollection $users
+     * @return BusinessUnit
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * @param  User $user
+     * @return BusinessUnit
+     */
+    public function addUser(User $user)
+    {
+        if (!$this->getUsers()->contains($user)) {
+            $this->getUsers()->add($user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  User $user
+     * @return BusinessUnit
+     */
+    public function removeUser(User $user)
+    {
+        if ($this->getUsers()->contains($user)) {
+            $this->getUsers()->removeElement($user);
+        }
+
+        return $this;
     }
 }

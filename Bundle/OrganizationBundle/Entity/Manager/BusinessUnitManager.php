@@ -3,6 +3,7 @@
 namespace Oro\Bundle\OrganizationBundle\Entity\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository;
 
 use Oro\Bundle\UserBundle\Entity\User;
@@ -20,9 +21,10 @@ class BusinessUnitManager
     }
 
     /**
-     * Get user query builder
+     * Get Business Units tree
+     *
      * @param User $entity
-     * @return QueryBuilder
+     * @return array
      */
     public function getBusinessUnitsTree(User $entity)
     {
@@ -35,7 +37,11 @@ class BusinessUnitManager
      */
     public function assignBusinessUnits($entity, array $businessUnits)
     {
-        $businessUnits = $this->getBusinessUnitRepo()->getBusinessUnits($businessUnits);
+        if ($businessUnits) {
+            $businessUnits = $this->getBusinessUnitRepo()->getBusinessUnits($businessUnits);
+        } else {
+            $businessUnits = new ArrayCollection();
+        }
         $entity->setBusinessUnits($businessUnits);
     }
 
@@ -47,4 +53,3 @@ class BusinessUnitManager
         return $this->em->getRepository('OroOrganizationBundle:BusinessUnit');
     }
 }
-

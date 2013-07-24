@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,7 +22,6 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
     public function testId()
     {
         $this->assertNull($this->unit->getId());
-        $this->assertNull($this->unit->getTaggableId());
     }
 
     public function testName()
@@ -100,11 +101,21 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dateCreated, $this->unit->getUpdatedAt()->format('yy'));
     }
 
-    public function testTags()
+    public function testUser()
     {
-        $tags = new ArrayCollection(array('test'));
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->unit->getTags());
-        $this->unit->setTags($tags);
-        $this->assertEquals($tags, $this->unit->getTags());
+        $businessUnit = new BusinessUnit();
+        $user  = new User();
+
+        $businessUnit->setUsers(new ArrayCollection(array($user)));
+
+        $this->assertContains($user, $businessUnit->getUsers());
+
+        $businessUnit->removeUser($user);
+
+        $this->assertNotContains($user, $businessUnit->getUsers());
+
+        $businessUnit->addUser($user);
+
+        $this->assertContains($user, $businessUnit->getUsers());
     }
 }
