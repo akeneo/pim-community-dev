@@ -46,11 +46,13 @@ class ConfigFieldType extends AbstractType
                 $items = $provider->getConfigContainer()->getFieldItems();
 
                 foreach ($provider->getConfigContainer()->getFieldRequiredPropertyValues() as $code => $property) {
-                    list($scope, $fieldName) = explode('.', $property['property_path']);
-                    if ($this->configManager->getProvider($scope)->hasFieldConfig($className, $fieldName)) {
-                        $value = $this->configManager->getProvider($scope)->getFieldConfig($className, $fieldName);
+                    list($scope, $propertyName) = explode('.', $property['property_path']);
 
-                        if ($value != $property['value']) {
+
+                    if ($this->configManager->getProvider($scope)->hasFieldConfig($className, $fieldName)) {
+                        $value = $this->configManager->getProvider($scope)->getFieldConfig($className, $fieldName)->get($propertyName);
+
+                        if ($value !== null && $value != $property['value']) {
                             unset($items[$code]);
                         }
                     }
