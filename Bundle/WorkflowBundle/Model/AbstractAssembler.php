@@ -57,4 +57,18 @@ abstract class AbstractAssembler
             }
         }
     }
+
+    /**
+     * @param array $options
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function getOption(array $options, $key, $default)
+    {
+        if (isset($options[$key])) {
+            return $options[$key];
+        }
+        return $default;
+    }
 }

@@ -31,13 +31,12 @@ class AttributeAssembler extends AbstractAssembler
     protected function assembleAttribute($name, array $options)
     {
         $this->assertOptions($options, array('label', 'form_type'));
-        $attributeOptions = !empty($options['options']) ? $options['options'] : array();
 
         $attribute = new Attribute();
         $attribute->setName($name);
         $attribute->setLabel($options['label']);
         $attribute->setFormTypeName($options['form_type']);
-        $attribute->setOptions($attributeOptions);
+        $attribute->setOptions($this->getOption($options, 'options', array()));
 
         return $attribute;
     }

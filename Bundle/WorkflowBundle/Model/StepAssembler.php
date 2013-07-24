@@ -34,18 +34,20 @@ class StepAssembler extends AbstractAssembler
      */
     protected function assembleStep($name, array $options, $attributes)
     {
-        $allowedTransitions = !empty($options['allowed_transitions']) ? $options['allowed_transitions'] : array();
-        $stepAttributes = !empty($options['attributes'])
-            ? $this->assembleStepAttributes($options['attributes'], $attributes)
-            : array();
+        $this->assertOptions($options, array('label'));
+
+        $stepAttributes = $this->assembleStepAttributes(
+            $this->getOption($options, 'attributes', array()),
+            $attributes
+        );
 
         $step = new Step();
         $step->setName($name);
         $step->setLabel($options['label']);
-        $step->setTemplate($options['template']);
-        $step->setOrder($options['order']);
-        $step->setIsFinal($options['is_final']);
-        $step->setAllowedTransitions($allowedTransitions);
+        $step->setTemplate($this->getOption($options, 'template', null));
+        $step->setOrder($this->getOption($options, 'order', 0));
+        $step->setIsFinal($this->getOption($options, 'is_final', false));
+        $step->setAllowedTransitions($this->getOption($options, 'allowed_transitions', array()));
         $step->setAttributes($stepAttributes);
 
         return $step;

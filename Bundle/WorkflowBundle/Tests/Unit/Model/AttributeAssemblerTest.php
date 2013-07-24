@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\AttributeAssembler;
 
 class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
@@ -42,35 +43,61 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAssemble()
+    /**
+     * @dataProvider configurationDataProvider
+     * @param array $configuration
+     * @param Attribute $expectedAttribute
+     */
+    public function testAssemble($configuration, $expectedAttribute)
     {
-        $configuration = array(
-            'attribute_one' => array(
-                'label' => 'label',
-                'form_type' => 'form_type'
-            ),
-            'attribute_two' => array(
-                'label' => 'label',
-                'form_type' => 'form_type',
-                'options' => array('option_one' => 'value')
-            ),
-        );
-
         $assembler = new AttributeAssembler();
         $attributes = $assembler->assemble($configuration);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
-        $this->assertCount(2, $attributes);
-        $this->assertTrue($attributes->containsKey('attribute_one'));
-        $this->assertTrue($attributes->containsKey('attribute_two'));
+        $this->assertCount(1, $attributes);
+        $this->assertTrue($attributes->containsKey($expectedAttribute->getName()));
 
-        $attributeOne = $attributes->get('attribute_one');
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\Attribute', $attributeOne);
-        $this->assertEquals($configuration['attribute_one']['label'], $attributeOne->getLabel());
-        $this->assertEquals($configuration['attribute_one']['form_type'], $attributeOne->getFormTypeName());
-        $this->assertEquals(array(), $attributeOne->getOptions());
-        $this->assertEquals('attribute_one', $attributeOne->getName());
+        $this->assertEquals($expectedAttribute, $attributes->get($expectedAttribute->getName()));
+    }
 
-        $attributeTwo = $attributes->get('attribute_two');
-        $this->assertEquals($configuration['attribute_two']['options'], $attributeTwo->getOptions());
+    public function configurationDataProvider()
+    {
+        return array(
+            'minimal' => array(
+                array(
+                    'attribute_one' => array(
+                        'label' => 'label',
+                        'form_type' => 'form_type'
+                    )
+                ),
+                $this->getAttribute('attribute_one', 'label', 'form_type', array())
+            ),
+            'full' => array(
+                array(
+                    'attribute_two' => array(
+                        'label' => 'label',
+                        'form_type' => 'form_type',
+                        'options' => array('key' => 'value')
+                    )
+                ),
+                $this->getAttribute('attribute_two', 'label', 'form_type', array('key' => 'value'))
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $label
+     * @param string $formType
+     * @param array $options
+     * @return Attribute
+     */
+    protected function getAttribute($name, $label, $formType, array $options = array())
+    {
+        $attribute = new Attribute();
+        $attribute->setName($name);
+        $attribute->setLabel($label);
+        $attribute->setFormTypeName($formType);
+        $attribute->setOptions($options);
+        return $attribute;
     }
 }
