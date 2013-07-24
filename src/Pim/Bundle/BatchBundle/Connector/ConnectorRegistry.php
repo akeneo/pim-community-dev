@@ -35,7 +35,7 @@ class ConnectorRegistry
         if ($type === AbstractJob::TYPE_IMPORT) {
             $this->importJobs[$connector][$jobAlias] = $job;
         } else {
-               $this->exportJobs[$connector][$jobAlias] = $job;
+            $this->exportJobs[$connector][$jobAlias] = $job;
         }
 
         return $this;
@@ -43,7 +43,11 @@ class ConnectorRegistry
 
     public function getJob($connector, $type, $jobAlias)
     {
-        return $this->jobs[$connector][$jobAlias];
+        if ($type === AbstractJob::TYPE_IMPORT) {
+            return $this->importJobs[$connector][$jobAlias];
+        } else {
+            return $this->exportJobs[$connector][$jobAlias];
+        }
     }
 
     /**
