@@ -5,7 +5,6 @@ namespace Pim\Bundle\ProductBundle\Validator\ConstraintGuesser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Guesser

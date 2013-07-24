@@ -1,14 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Manager;
 
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Attribute type manager

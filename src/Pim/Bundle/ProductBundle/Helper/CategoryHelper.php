@@ -1,10 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Helper;
 
-use \RecursiveArrayIterator;
-
 use Doctrine\Common\Collections\Collection;
-
 use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**

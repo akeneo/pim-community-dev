@@ -3,8 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Model;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category interface
