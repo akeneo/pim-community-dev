@@ -17,8 +17,8 @@ use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
 class ConnectorRegistry
 {
 
-	protected $importJobs = array();
-	protected $exportJobs = array();
+    protected $importJobs = array();
+    protected $exportJobs = array();
 
     /**
      * Add a job to a connector
@@ -32,13 +32,13 @@ class ConnectorRegistry
      */
     public function addJobToConnector($connector, $type, $jobAlias, JobInterface $job)
     {
- 		if ($type === AbstractJob::TYPE_IMPORT) {
-        	$this->importJobs[$connector][$jobAlias] = $job;        
-		} else { 
-   			$this->exportJobs[$connector][$jobAlias] = $job;        
-		}    
+        if ($type === AbstractJob::TYPE_IMPORT) {
+            $this->importJobs[$connector][$jobAlias] = $job;
+        } else {
+               $this->exportJobs[$connector][$jobAlias] = $job;
+        }
 
-	    return $this;
+        return $this;
     }
 
     public function getJob($connector, $type, $jobAlias)
