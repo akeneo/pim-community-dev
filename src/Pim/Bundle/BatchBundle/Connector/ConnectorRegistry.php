@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Connector;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
 use Pim\Bundle\BatchBundle\Job\JobInterface;
-use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
+use Pim\Bundle\BatchBundle\Job\AbstractJob;
 
 /**
  * Aims to register all connectors
@@ -24,7 +22,6 @@ class ConnectorRegistry
      * Add a job to a connector
      *
      * @param string             $connectorId the connector id
-     * @param ConnectorInterface $connector   the connector
      * @param string             $jobId       the job id
      * @param JobInterface       $job         the job
      *
@@ -35,7 +32,7 @@ class ConnectorRegistry
         if ($type === AbstractJob::TYPE_IMPORT) {
             $this->importJobs[$connector][$jobAlias] = $job;
         } else {
-               $this->exportJobs[$connector][$jobAlias] = $job;
+            $this->exportJobs[$connector][$jobAlias] = $job;
         }
 
         return $this;
@@ -43,7 +40,11 @@ class ConnectorRegistry
 
     public function getJob($connector, $type, $jobAlias)
     {
-        return $this->jobs[$connector][$jobAlias];
+        if ($type === AbstractJob::TYPE_IMPORT) {
+            return $this->importJobs[$connector][$jobAlias];
+        } else {
+            return $this->exportJobs[$connector][$jobAlias];
+        }
     }
 
     /**

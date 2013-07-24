@@ -9,6 +9,9 @@ use Pim\Bundle\BatchBundle\Entity\Connector;
 /**
  * Test related class
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
 class JobTest extends \PHPUnit_Framework_TestCase
@@ -20,11 +23,72 @@ class JobTest extends \PHPUnit_Framework_TestCase
     protected $job;
 
     /**
-     * Setup
+     * {@inheritdoc}
      */
-    public function setup()
+    protected function setUp()
     {
         $this->job = new Job();
+    }
+
+    /**
+     * Create connector
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Connector
+     */
+    protected function createConnector()
+    {
+        return new Connector();
+    }
+
+    /**
+     * Create raw configuration
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\RawConfiguration
+     */
+    protected function createRawConfiguration()
+    {
+        return new RawConfiguration();
+    }
+
+    /**
+     * Test related method
+     */
+    public function testConstruct()
+    {
+        $this->assertNull($this->job->getId());
+        $this->assertNull($this->job->getServiceId());
+        $this->assertNull($this->job->getRawConfiguration());
+        $this->assertNull($this->job->getConnector());
+        $this->assertNull($this->job->getDescription());
+    }
+
+    /**
+     * Test getter/setter on service id property
+     */
+    public function testGetSetServiceId()
+    {
+        $expectedServiceId = 'my.job.id';
+        $this->assertEntity($this->job->setServiceId($expectedServiceId));
+        $this->assertEquals($expectedServiceId, $this->job->getServiceId());
+    }
+
+    /**
+     * Test getter/setter on status
+     */
+    public function testGetSetStatus()
+    {
+        $expectedStatus = 1;
+        $this->assertEntity($this->job->setStatus($expectedStatus));
+        $this->assertEquals($expectedStatus);
+    }
+
+    /**
+     * Assert entity
+     * @param Pim\Bundle\BatchBundle\Entity\Job $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\BatchBundle\Entity\Job', $entity);
     }
 
     /**
@@ -32,23 +96,18 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     public function testGettersSetters()
     {
-        $this->assertNull($this->job->getId());
-        $this->assertNull($this->job->getServiceId());
-        $this->assertNull($this->job->getRawConfiguration());
-        $this->assertNull($this->job->getConnector());
-        $this->assertNull($this->job->getDescription());
+        $configuration = $this->createRawConfiguration();
+        $connector = $this->createConnector();
 
-        $configuration = new RawConfiguration();
-        $connector = new Connector();
-        $this->job->setId(1);
-        $this->job->setServiceId('my.job.id');
-        $this->job->setRawConfiguration($configuration);
-        $this->job->setConnector($connector);
-        $this->job->setDescription('my job description');
+//         $expectedServiceId = 'my.job.id';
+//         $this->assertEntity($this->job->setServiceId('my.job.id'));
+        $this->assertEntity($this->job->setRawConfiguration($configuration));
+        $this->assertEntity($this->job->setConnector($connector));
+//         $this->assertEntity($this->job->setDescription('my job description'));
 
-        $this->assertEquals($this->job->getServiceId(), 'my.job.id');
+//         $this->assertEquals($this->job->getServiceId(), 'my.job.id');
         $this->assertEquals($this->job->getRawConfiguration(), $configuration);
         $this->assertEquals($this->job->getConnector(), $connector);
-        $this->assertEquals($this->job->getDescription(), 'my job description');
+//         $this->assertEquals($this->job->getDescription(), 'my job description');
     }
 }

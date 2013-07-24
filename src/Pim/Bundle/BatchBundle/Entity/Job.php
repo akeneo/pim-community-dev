@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
+use Pim\Bundle\BatchBundle\Job\SimpleJob;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,15 +57,6 @@ class Job
     protected $connector;
 
     /**
-     * Job service id
-     *
-     * @var string
-     *
-     * @ORM\Column(name="service_id", type="string", length=255)
-     */
-    protected $serviceId;
-
-    /**
      * Job type export or import
      *
      * @var string
@@ -73,12 +66,16 @@ class Job
     protected $type = 'export'; // TODO: temporary, must be setuped during creation
 
     /**
-     * @var RawConfiguration $connectorConfiguration
+     * @var array $rawConfiguration
      *
-     * @ORM\ManyToOne(targetEntity="RawConfiguration", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="raw_configuration_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\Column(type="array")
      */
     protected $rawConfiguration;
+
+    /**
+     * @var SimpleJob
+     */
+    protected $jobDefinition;
 
     /**
      * Get id
@@ -88,20 +85,6 @@ class Job
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -251,11 +234,11 @@ class Job
     /**
      * Set job configuration
      *
-     * @param RawConfiguration $configuration
+     * @param array $configuration
      *
      * @return \Pim\Bundle\BatchBundle\Entity\Job
      */
-    public function setRawConfiguration(RawConfiguration $configuration)
+    public function setRawConfiguration($configuration)
     {
         $this->rawConfiguration = $configuration;
 
@@ -263,12 +246,39 @@ class Job
     }
 
     /**
-     * Get job configuration
+     * Get raw configuration
      *
-     * @return RawConfiguration
+     * @return array
      */
     public function getRawConfiguration()
     {
-        return $this->rawConfiguration;
+        return $this->jobDefinition->getConfiguration();
+    }
+
+    /**
+     * Set job definition
+     *
+     * @param string $jobDefinition
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setJobDefinition($jobDefinition)
+    {
+        var_dump('set job definition');
+        $this->jobDefinition = $jobDefinition;
+
+        $this->rawConfiguration = $jobDefinition->getConfiguration();
+
+        return $this;
+    }
+
+    /**
+     * Get job definition
+     *
+     * @return string
+     */
+    public function getJobDefinition()
+    {
+        return $this->jobDefinition;
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\BatchBundle\Form\Type\JobType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Entity\RawConfiguration;
@@ -58,15 +58,35 @@ class ExportController extends Controller
      *     "/create",
      *     name="pim_ie_export_create"
      * )
-     * @Template("PimImportExportBundle:Export:edit.html.twig")
+     * @Template("PimImportExportBundle:Export:create.html.twig")
      *
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $job = new Job();
+        // get parameters
+        $connector = $request->query->get('connector');
+        $jobType   = $request->query->get('job_type');
+        $jobAlias  = $request->query->get('job_alias');
 
-        return $this->editAction($job);
+        $registry = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($connector, $jobType, $jobAlias);
+
+        $job = new Job();
+        // TODO : Job setConnector setType, setAlias
+        $job->setJobDefinition($jobDefinition);
+
+        $form = $this->createForm(new JobType(), $job);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            // TODO : don't set it like this
+            $job->setRawConfiguration($jobDefinition->getConfiguration());
+        }
+
+        return array(
+            'form' => $form->createView()
+        );
     }
 
     /**

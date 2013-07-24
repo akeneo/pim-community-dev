@@ -39,7 +39,7 @@ class PimBatchExtension extends Extension
                 $stepDef->addMethodCall('setWriter', array(new Reference($step['writer'])));
                 $jobDef->addMethodCall('addStep', array($stepDef));
             }
-            $registry->addMethodCall('addJobToConnector', array('default', $alias, $jobDef));
+            $registry->addMethodCall('addJobToConnector', array($job['connector'], $job['type'], $alias, $jobDef));
         }
     }
 }
