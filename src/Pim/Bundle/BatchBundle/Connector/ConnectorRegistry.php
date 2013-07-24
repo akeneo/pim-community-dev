@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Connector;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
 use Pim\Bundle\BatchBundle\Job\JobInterface;
-use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
+use Pim\Bundle\BatchBundle\Job\AbstractJob;
 
 /**
  * Aims to register all connectors
@@ -24,7 +22,6 @@ class ConnectorRegistry
      * Add a job to a connector
      *
      * @param string             $connectorId the connector id
-     * @param ConnectorInterface $connector   the connector
      * @param string             $jobId       the job id
      * @param JobInterface       $job         the job
      *

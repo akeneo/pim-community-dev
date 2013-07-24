@@ -218,6 +218,7 @@ pim_batch:
         product_export:
             title: "CSV export of products"
             connector: "Akeneo"
+            type: "export"
             steps:
                 export:
                     title:      "Product export"
