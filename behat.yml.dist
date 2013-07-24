@@ -26,6 +26,9 @@ default:
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 jenkins:
+    context:
+        parameters:
+            base_url: http://behat-pim.ci/app_behat.php/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2

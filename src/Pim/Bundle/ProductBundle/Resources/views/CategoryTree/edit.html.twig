@@ -21,15 +21,11 @@
 
         <div>
             {{ JSFV(form) }}
-            <form action="{{ form.vars.value.id ?
+            <form class="form-horizontal" action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
-                path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">
+                path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
 
-                <div class="form-row">
-                    <h3>{{ title|trans }}
-                        <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-                    </h3>
-                </div>
+                {{ elements.page_header(title|trans, elements.submitBtn) }}
 
                 {% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
                 {{ elements.form_navbar(tabs) }}

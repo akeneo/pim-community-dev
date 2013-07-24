@@ -1,6 +1,9 @@
 parameters:
-    pim_batch.simple_job.class: Pim\Bundle\BatchBundle\Job\Launch\SimpleJobLauncher
+    pim_batch.connectors.class: Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorRegistry
+    pim_batch.connectors_config: ~
+    pim_batch.jobs_config: ~
 
 services:
-    pim_product.exporter:
-        class: %pim_product.exporter%
+    # connectors registry
+    pim_batch.connectors:
+        class: %pim_batch.connectors.class%

@@ -597,7 +597,7 @@ table.ui-sortable, tbody.ui-sortable {
   .select2-container { max-width: 365px;}
   .select2-container { width: 365px!important; } /* important statement come from bap */
 }
-.navbar-extra {padding: 10px;}
+.navbar-extra {padding: 10px 7px 10px 12px;}
 .navbar-content {line-height: 18px;}
 .navbar-content .sub-title {font-size: 17px; color: #999; float: left;}
 .navbar-content .separator {float: left; padding: 0 3px; color: #999; font-size: 18px; }
@@ -988,6 +988,17 @@ table.grid { margin-bottom: 0; }
 /* Icons */
 [class^="fa-icon-"] {
   margin: 0 3px;
+}
+
+a {
+  &.icons-holder,
+  &.icons-holder-text {
+    height: 28px;
+    line-height: 28px;
+  }
+  &.icons-holder [class^="fa-icon-"] {
+    margin: 0 -3px;
+  }
 }
 
 .fa-icon-collapse-alt, .fa-icon-expand-alt {

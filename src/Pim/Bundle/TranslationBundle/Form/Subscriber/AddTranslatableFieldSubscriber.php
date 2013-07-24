@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -79,11 +79,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * On pre set data event
      * Build the custom form based on the provided locales
      *
-     * @param DataEvent $event
+     * @param FormEvent $event
      *
      * @return
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -105,9 +105,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     array(
-                        'label'         => $binded['locale'],
-                        'required'      => in_array($binded['locale'], $this->getOption('required_locale')),
-                        'property_path' => false,
+                        'label'           => $binded['locale'],
+                        'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
+                        'mapped'          => false,
+                        'auto_initialize' => false
                     )
                 )
             );
@@ -120,9 +121,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * On bind event (validation)
      *
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
-    public function bind(DataEvent $event)
+    public function bind(FormEvent $event)
     {
         $form = $event->getForm();
 
@@ -157,9 +158,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * On post bind event (after validation)
      *
-     * @param DataEvent $event
+     * @param FormEvent $event
      */
-    public function postBind(DataEvent $event)
+    public function postBind(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();

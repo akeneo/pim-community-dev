@@ -20,24 +20,10 @@ class PimBatchExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $config = $configs[0];
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-
-        $this->createConnectors($config);
-    }
-
-    private function createConnectors($config)
-    {
-        foreach ($config['jobs'] as $job) {
-           $def = new Definition('Pim\\Bundle\\BatchBundle\\Job\\SimpleJob', array($job['title']));
-
-           foreach ($job['steps'] as $step) {
-               $def->addMethodCall('setReader', $step['reader']);
-               $def->addMethodCall('setProcessor', $step['processor']);
-               $def->addMethodCall('setWriter', $step['writer']);
-           }
-        }
     }
 }

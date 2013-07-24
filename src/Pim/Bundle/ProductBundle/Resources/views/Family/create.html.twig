@@ -1,19 +1,12 @@
 {% extends 'PimProductBundle:Family:index.html.twig' %}
 
-{% set title = 'New family'|trans %}
-
 {% block familyTab %}
 {{ JSFV(form) }}
-<form action="{{ path('pim_product_family_create') }}" method="POST" class="form-horizontal">
+<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_product_family_create') }}" method="POST">
 
-    {{ form_row(form._token) }}
+    {% set title = 'New family'|trans %}
 
-    <div class="form-row">
-        <h3>
-            {{ title }}
-            <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
-        </h3>
-    </div>
+    {{ elements.page_header(title, elements.submitBtn) }}
 
     {{ elements.form_navbar('Properties') }}
 
@@ -54,5 +47,7 @@
             </div>
         </div>
     </div>
+
+    {{ form_row(form._token) }}
 </form>
 {% endblock %}

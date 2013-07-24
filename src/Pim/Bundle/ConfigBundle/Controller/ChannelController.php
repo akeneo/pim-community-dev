@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Channel controller
@@ -122,7 +123,7 @@ class ChannelController extends Controller
      * @param Channel $channel
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
-     *
+     * @Method("DELETE")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction(Channel $channel)

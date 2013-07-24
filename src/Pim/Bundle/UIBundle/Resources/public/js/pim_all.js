@@ -22,5 +22,24 @@ $(function() {
         $('#progressbar').hide();
         $('#page').show();
     }
+
+    $('a[data-dialog]').on('click', function(event) {
+        event.preventDefault();
+        $el = $(this);
+        var message = $el.data('message');
+        var title = $el.data('title');
+        if ($el.data('dialog') ==  'confirm') {
+            var doAction = function() {
+                $el.off('click');
+                var $form = $('<form>', { method: 'POST', action: $el.attr('href')});
+                $('<input>', { type: 'hidden', name: '_method', value: $el.data('method')}).appendTo($form);
+                $form.appendTo('body').submit();
+            };
+
+            PimDialog.confirm(message, title, doAction);
+        } else {
+            PimDialog.alert(message, title);
+        }
+    });
 });
 
