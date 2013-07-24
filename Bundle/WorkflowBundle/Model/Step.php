@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
 class Step
@@ -33,7 +35,7 @@ class Step
     protected $isFinal = false;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $attributes;
 
@@ -117,12 +119,12 @@ class Step
     /**
      * Set attributes.
      *
-     * @param Attribute[]|ArrayCollection $attributes
+     * @param Attribute[]|Collection $attributes
      * @return Step
      */
     public function setAttributes($attributes)
     {
-        if ($attributes instanceof ArrayCollection) {
+        if ($attributes instanceof Collection) {
             $this->attributes = $attributes;
         } else {
             $data = array();
@@ -139,7 +141,7 @@ class Step
     /**
      * Get attributes.
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getAttributes()
     {
