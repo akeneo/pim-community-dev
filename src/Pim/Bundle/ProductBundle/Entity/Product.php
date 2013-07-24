@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 
@@ -377,6 +378,26 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    /**
+     * Check if an attribute can be removed from the product
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function isAttributeRemovable(ProductAttribute $attribute)
+    {
+        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+            return false;
+        }
+
+        if (null === $this->getFamily()) {
+            return true;
+        }
+
+        return !$this->getFamily()->getAttributes()->contains($attribute);
     }
 
     /**
