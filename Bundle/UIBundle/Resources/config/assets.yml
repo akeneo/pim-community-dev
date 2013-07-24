@@ -22,6 +22,9 @@ js:
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap.switch.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-scrollspy.js'
     'common':
+        - '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
+        - '@OroTranslationBundle/Resources/public/js/translator.js'
+
         - '@OroUIBundle/Resources/public/js/layout.js'
         - '@OroUIBundle/Resources/public/js/height_fix.js'
         - '@OroUIBundle/Resources/public/js/csrf.js'
@@ -37,8 +40,6 @@ js:
         - '@OroUIBundle/Resources/public/js/backbone/setup.js'
 
         - '@FOSJsRoutingBundle/Resources/public/js/router.js'
-        - '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
-        - '@OroTranslationBundle/Resources/public/js/translator.js'
     'form_buttons':
         - '@OroUIBundle/Resources/public/js/form_buttons.js'
     'js_routes':
