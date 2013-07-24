@@ -13,7 +13,9 @@
 
     {% set title = 'Exports overview'|trans %}
 
-    {{ elements.page_header(title) }}
+    {% set buttons = elements.createBtn('New export', path('pim_ie_export_create')) %}
+
+    {{ elements.page_header(title, buttons) }}
 
     <div id="export-grid"></div>
 

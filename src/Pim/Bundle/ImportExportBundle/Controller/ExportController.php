@@ -28,10 +28,11 @@ class ExportController extends Controller
      * List exports
      * @param Request $request
      *
-     * @Route("/.{_format}",
-     *      name="pim_ie_export_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
+     * @Route(
+     *     "/.{_format}",
+     *     name="pim_ie_export_index",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format" = "html"}
      * )
      * @return template
      */
@@ -48,5 +49,48 @@ class ExportController extends Controller
         }
 
         return $this->render($view, array('datagrid' => $datagridView));
+    }
+
+    /**
+     * Create export
+     *
+     * @Route(
+     *     "/create",
+     *     name="pim_ie_export_create"
+     * )
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
+     *
+     * @return array
+     */
+    public function createAction()
+    {
+        $job = new Job();
+
+        return $this->editAction($job);
+    }
+
+    /**
+     * Edit job
+     *
+     * @param Job $job
+     *
+     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Template
+     *
+     * @return array
+     */
+    public function editAction(Job $job)
+    {
+        if ($this->get('pim_config.form.handler.locale')->process($locale)) {
+            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
+
+            return $this->redirect(
+                $this->generateUrl('pim_config_locale_index')
+            );
+        }
+
+        return array(
+            'form' => $this->get('pim_config.form.locale')->createView()
+        );
     }
 }
