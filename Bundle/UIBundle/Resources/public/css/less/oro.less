@@ -216,7 +216,6 @@ header{
 
   .logo{
     position: relative;
-    background: url("../img/home-logo.png") no-repeat 100% 0;
     height: 41px;
     padding: 0 14px 0 0;
     margin: 0 15px 0 0;
@@ -667,6 +666,9 @@ footer{
 }
 .layout-content{
   margin: 0 !important;
+  .navbar-inner{
+    z-index:1;
+  }
 }
 .right-panel{
   display: inline;
@@ -1212,7 +1214,7 @@ footer{
 }
 /* pin-bar */
 .pin-bar{
-  padding: 0 30px 2px 0;
+  padding: 0 30px 1px 0;
   #gradient > .vertical(#303944, #323b46);
   background: url("../../img/bg-header.png") repeat-x 0 100%;
   position: relative;
@@ -1292,6 +1294,7 @@ footer{
 .pin-menus .tabs-left > .nav-tabs > li.active > a,
 .pin-menus .tabs-left > .nav-tabs > li > a:hover{
   background-color: #d7e3ef;
+  color: #000;
 }
 .pin-menus .tabs-left > .nav-tabs{
   border: 0;
@@ -1841,7 +1844,7 @@ footer{
 .navigation {
   position: relative;
   .top-action-box{
-    padding: 5px 20px;
+    padding: 1px 0;
     background-color: #fff;
     float:right;
   }
@@ -3113,7 +3116,7 @@ select:focus:invalid:focus {
 }
 .flash-messages-frame{
   position: fixed;
-  top: 138px;
+  top: 70px;
   left: 0;
   z-index: 800;
   .box-sizing(border-box);
@@ -3878,6 +3881,9 @@ disabled look for disabled choices in the results dropdown
       border-bottom: 1px solid #ccc;
     }
   }
+  .top-search .dropdown-search{
+    margin-left: 5px;
+  }
   .top-search .dropdown-search > span{
     background: url("../../img/general-sprite.png") no-repeat 0 -343px;
     float: left;
@@ -3925,6 +3931,9 @@ disabled look for disabled choices in the results dropdown
   }
   #search-div{
     padding: 0 0 10px 12px;
+  }
+  .pull-right .divider-vertical.small-divider{
+    margin-right: 5px;
   }
 }
 .nav-multilevel{
@@ -4024,6 +4033,12 @@ header .nav-multilevel > li.dropdown:hover > a,
   color: #444;
   font-weight: normal;
 }
+
+.nav-multilevel li.dropdown .dropdown-menu li.dropdown a:hover{
+  color: #444;
+  background: #f5f5f5;
+}
+
 .nav-multilevel li:hover > ul{
   display: block;
   padding: 0;
@@ -4050,6 +4065,7 @@ header .nav-multilevel > li.dropdown:hover > a,
 .breadcrumb{
   float: left;
   background: none;
+  margin: 0;
 }
 .breadcrumb > li.active,
 .breadcrumb > li{
@@ -4091,4 +4107,9 @@ button.btn.minimize-button i.icon-minimize{
 }
 button.btn.minimize-button i.icon-minimize-active{
   background-position: 0 -456px;
+}
+#pin-button-div{
+  .container-fluid{
+    padding-right:10px;
+  }
 }
