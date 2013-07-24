@@ -28,7 +28,7 @@ class EmailNotificationController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_user_user_view",
+     *      id="oro_notification_emailnotification_index",
      *      name="View List of notification rules",
      *      description="View list of notification rules",
      *      parent="oro_notification_emailnotification"
