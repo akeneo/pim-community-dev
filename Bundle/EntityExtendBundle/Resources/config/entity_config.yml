@@ -4,8 +4,8 @@ oro_entity_config:
             items:
                 owner:
                     options:
-                        priority:               40
-                        default_value:          'System'
+                        priority:           40
+                        default_value:      'System'
                     grid:
                         type:               string
                         label:              'Type'

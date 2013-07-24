@@ -40,7 +40,6 @@ class FieldType extends AbstractType
             'field_name'  => '',
             'field_type'  => '',
             'block'       => 'options',
-            //'attr'        => array('class' => 'hide')
         ));
     }
 
