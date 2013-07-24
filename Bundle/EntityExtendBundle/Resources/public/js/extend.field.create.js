@@ -1,5 +1,5 @@
 $(function() {
-    $(document).on('click', '', function (e) {
+//    $(document).on('click', '', function (e) {
 //        new Oro.widget.DialogView({
 //            url: $(this).attr('href'),
 //            dialogOptions: {
@@ -12,7 +12,6 @@ $(function() {
 //                title: $(this).attr('title')
 //            }
 //        }).render();
-
-        return false;
-    });
+//        return false;
+//    });
 });
