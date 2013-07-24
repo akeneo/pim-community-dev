@@ -24,18 +24,21 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class SimpleJob extends AbstractJob
 {
-    /* @var ArrayCollection $steps */
-//     protected $steps = null;
+     protected $steps;
 
     /**
-     * Constructor
      * @param string $name
      */
-//     public function __construct($name = "")
-//     {
-//         parent::__construct($name);
-//         $this->steps = new ArrayCollection();
-//     }
+     public function __construct($name = '')
+     {
+         parent::__construct($name);
+         $this->steps = new ArrayCollection();
+     }
+
+     public function getSteps()
+     {
+         return $this->steps;
+     }
 
     /**
      * Public setter for the steps in this job. Overrides any calls to
@@ -127,5 +130,24 @@ class SimpleJob extends AbstractJob
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }
+    }
+
+    public function getConfiguration()
+    {
+        $result = array();
+        foreach ($this->steps as $step) {
+            $result[$step->getName()] = $this->getStepConfiguration($step);
+        }
+
+        return $result;
+    }
+
+    private function getStepConfiguration($step)
+    {
+        return array(
+            'reader' => $step->getReader()->getConfiguration(),
+            'processor' => $step->getProcessor()->getConfiguration(),
+            'writer' => $step->getWriter()->getConfiguration(),
+        );
     }
 }

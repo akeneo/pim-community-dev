@@ -3,9 +3,9 @@
 namespace Pim\Bundle\BatchBundle\Connector;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
-use Pim\Bundle\BatchBundle\Job\AbstractJob;
 
 /**
  * Aims to register all connectors
@@ -16,47 +16,9 @@ use Pim\Bundle\BatchBundle\Job\AbstractJob;
  */
 class ConnectorRegistry
 {
-    /**
-     * Connectors references
-     * @var \ArrayAccess
-     */
-    protected $connectors;
 
-    /**
-     * Jobs references
-     * @var \ArrayAccess
-     */
-    protected $jobs;
-
-    /**
-     * Jobs references
-     * @var \ArrayAccess
-     */
-    protected $importJobs;
-
-    /**
-     * Jobs references
-     * @var \ArrayAccess
-     */
-    protected $exportJobs;
-
-    /**
-     * Connector to jobs aliases
-     * @var \ArrayAccess
-     */
-    protected $connectorToJobs;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->connectors      = array();
-        $this->jobs            = array();
-        $this->connectorToJobs = array();
-        $this->importJobs      = array();
-        $this->exportJobs      = array();
-    }
+	protected $importJobs = array();
+	protected $exportJobs = array();
 
     /**
      * Add a job to a connector
@@ -65,49 +27,23 @@ class ConnectorRegistry
      * @param ConnectorInterface $connector   the connector
      * @param string             $jobId       the job id
      * @param JobInterface       $job         the job
-     * @param string             $type        the type of job
      *
      * @return ConnectorRegistry
      */
-    public function addJobToConnector($connectorId, ConnectorInterface $connector, $jobId, JobInterface $job, $type)
+    public function addJobToConnector($connector, $type, $jobAlias, JobInterface $job)
     {
-        $this->connectors[$connectorId] = $connector;
+ 		if ($type === AbstractJob::TYPE_IMPORT) {
+        	$this->importJobs[$connector][$jobAlias] = $job;        
+		} else { 
+   			$this->exportJobs[$connector][$jobAlias] = $job;        
+		}    
 
-        $this->jobs[$jobId] = $job;
-
-        if (!isset($this->connectorToJobs[$connectorId])) {
-            $this->connectorToJobs[$connectorId] = array();
-        }
-
-        $this->connectorToJobs[$connectorId][] = $jobId;
-
-        if ($type === AbstractJob::TYPE_IMPORT) {
-            $this->importJobs[]= $jobId;
-        } else {
-            $this->exportJobs[]= $jobId;
-        }
-
-        return $this;
+	    return $this;
     }
 
-    /**
-     * Get the list of connectors
-     *
-     * @return multitype:ConnectorInterface
-     */
-    public function getConnectors()
+    public function getJob($connector, $type, $jobAlias)
     {
-        return $this->connectors;
-    }
-
-    /**
-     * Get the list of jobs
-     *
-     * @return multitype:JobInterface
-     */
-    public function getJobs()
-    {
-        return $this->jobs;
+        return $this->jobs[$connector][$jobAlias];
     }
 
     /**
@@ -128,15 +64,5 @@ class ConnectorRegistry
     public function getImportJobs()
     {
         return $this->importJobs;
-    }
-
-    /**
-     * Get the associative array of connectors aliases to jobs aliases
-     *
-     * @return multitype
-     */
-    public function getConnectorToJobs()
-    {
-        return $this->connectorToJobs;
     }
 }

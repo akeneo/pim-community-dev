@@ -212,32 +212,16 @@ pim_import_export:
             delimiter: ';'
             enclosure: '"'
             with_header: true
-    exporters:
-        product_ecommerce:
-            format: csv
-            reader:
-                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
-                options:
-                    em: @pim_product.manager.product
-                    entity: ~
-                    method_name: findByScope
-                    method_params:
-                        - ecommerce
-            writer:
-                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
-                options:
-                    path: "/tmp/export_ecommerce.csv"
-        product_mobile:
-            format: csv
-            reader:
-                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
-                options:
-                    em: @pim_product.manager.product
-                    entity: ~
-                    method_name: findByScope
-                    method_params:
-                        - mobile
-            writer:
-                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
-                options:
-                    path: "/tmp/export_mobile.csv"
+
+pim_batch:
+    jobs:
+        product_export:
+            title: "CSV export of products"
+            connector: "Akeneo"
+            steps:
+                export:
+                    title:      "Product export"
+                    reader:     pim_import_export.reader.product
+                    processor:  pim_import_export.processor.serializer
+                    writer:     pim_import_export.writer.file
+

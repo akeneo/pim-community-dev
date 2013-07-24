@@ -1,6 +1,0 @@
-parameters:
-    pim_import_export.exporter_registry.class: Pim\Bundle\ImportExportBundle\ExporterRegistry
-
-services:
-    pim_import_export.exporter_registry:
-        class: %pim_import_export.exporter_registry.class%

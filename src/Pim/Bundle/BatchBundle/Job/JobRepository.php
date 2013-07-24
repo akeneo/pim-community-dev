@@ -26,6 +26,9 @@ class JobRepository
      */
     public function createJobExecution($jobName, JobParameters $jobParameters)
     {
-        return new JobExecution();
+        $ex = new JobExecution();
+        $ex->setJobParameters($jobParameters);
+
+        return $ex;
     }
 }
