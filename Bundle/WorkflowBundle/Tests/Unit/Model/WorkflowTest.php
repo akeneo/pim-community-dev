@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -67,7 +69,15 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('step2'));
 
         $obj = new Workflow();
+
         $obj->setSteps(array($stepOne, $stepTwo));
+        $steps = $obj->getSteps();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
+        $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
+        $this->assertEquals($expected, $steps->toArray());
+
+        $stepsCollection = new ArrayCollection(array('step1' => $stepOne, 'step2' => $stepTwo));
+        $obj->setSteps($stepsCollection);
         $steps = $obj->getSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
@@ -95,7 +105,17 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('transition2'));
 
         $obj = new Workflow();
+
         $obj->setTransitions(array($transitionOne, $transitionTwo));
+        $transitions = $obj->getTransitions();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
+        $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
+        $this->assertEquals($expected, $transitions->toArray());
+
+        $transitionsCollection = new ArrayCollection(
+            array('transition1' => $transitionOne, 'transition2' => $transitionTwo)
+        );
+        $obj->setTransitions($transitionsCollection);
         $transitions = $obj->getTransitions();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);

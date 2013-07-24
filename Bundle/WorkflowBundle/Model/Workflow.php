@@ -146,17 +146,22 @@ class Workflow
     /**
      * Set steps.
      *
-     * @param Step[] $steps
+     * @param Step[]|ArrayCollection $steps
      * @return Workflow
      */
     public function setSteps($steps)
     {
-        $data = array();
-        foreach ($steps as $step) {
-            $data[$step->getName()] = $step;
+        if ($steps instanceof ArrayCollection) {
+            $this->steps = $steps;
+        } else {
+            $data = array();
+            foreach ($steps as $step) {
+                $data[$step->getName()] = $step;
+            }
+            unset($steps);
+            $this->steps = new ArrayCollection($data);
         }
-        unset($steps);
-        $this->steps = new ArrayCollection($data);
+
         return $this;
     }
 
@@ -192,17 +197,22 @@ class Workflow
     /**
      * Set transitions.
      *
-     * @param Transition[] $transitions
+     * @param Transition[]|ArrayCollection $transitions
      * @return Workflow
      */
     public function setTransitions($transitions)
     {
-        $data = array();
-        foreach ($transitions as $transition) {
-            $data[$transition->getName()] = $transition;
+        if ($transitions instanceof ArrayCollection) {
+            $this->transitions = $transitions;
+        } else {
+            $data = array();
+            foreach ($transitions as $transition) {
+                $data[$transition->getName()] = $transition;
+            }
+            unset($transitions);
+            $this->transitions = new ArrayCollection($data);
         }
-        unset($transitions);
-        $this->transitions = new ArrayCollection($data);
+
         return $this;
     }
 

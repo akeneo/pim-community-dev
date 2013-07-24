@@ -130,8 +130,7 @@ class ConfigurationProvider
                         ->cannotBeEmpty()
                     ->end()
                     ->scalarNode('managed_entity_class')
-                        ->isRequired()
-                        ->cannotBeEmpty()
+                        ->defaultNull()
                     ->end();
 
         foreach ($this->configurationTree->getNodeDefinitions() as $nodeDefinition) {
