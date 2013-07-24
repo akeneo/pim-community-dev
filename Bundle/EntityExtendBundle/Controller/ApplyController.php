@@ -15,6 +15,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
+use Oro\Bundle\EntityExtendBundle\Tools\Schema;
+
 /**
  * EntityExtendBundle controller.
  * @Route("/oro_entityextend")
@@ -42,9 +44,11 @@ class ApplyController extends Controller
         /** @var ConfigEntity $entity */
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
-
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
+        /** @var Schema $schemaTools */
+        $schemaTools = $this->get('oro_entity_extend.tools.schema');
 
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
@@ -55,14 +59,6 @@ class ApplyController extends Controller
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
-//            'entity_count'  => count($this->getDoctrine()->getRepository($entity->getClassName())->findAll()),
-
-
-//            'unique_key'    => $extendConfig->get('unique_key'),
-//            'link'          => $link,
-//            'entity_name'   => $entityName,
-//            'module_name'   => $moduleName,
-//            'button_config' => $datagridManager->getLayoutActions($entity),
         );
     }
 }
