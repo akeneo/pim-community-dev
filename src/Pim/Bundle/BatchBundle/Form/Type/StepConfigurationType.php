@@ -31,7 +31,7 @@ class StepConfigurationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pim\Bundle\BatchBundle\Step\ItemStep',
+            'data_class' => 'Pim\\Bundle\\BatchBundle\\Step\\ItemStep',
         ));
     }
 

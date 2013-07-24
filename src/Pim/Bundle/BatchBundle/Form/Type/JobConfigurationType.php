@@ -24,6 +24,16 @@ class JobConfigurationType extends AbstractType
             ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Pim\\Bundle\\BatchBundle\\Job\\SimpleJob',
+        ));
+    }
+
     public function getName()
     {
         return 'pim_batch_job_configuration';
