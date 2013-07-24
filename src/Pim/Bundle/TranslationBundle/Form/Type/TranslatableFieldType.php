@@ -9,7 +9,6 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
-use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 
 /**
  * Translatable field type for translation entities

@@ -9,7 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 

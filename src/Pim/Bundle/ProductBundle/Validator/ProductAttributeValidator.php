@@ -1,10 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 use Symfony\Component\Validator\ExecutionContext;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**

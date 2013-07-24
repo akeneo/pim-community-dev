@@ -53,6 +53,7 @@ class ExportController extends Controller
 
     /**
      * Create export
+     * @param Request $request
      *
      * @Route(
      *     "/create",
@@ -64,7 +65,6 @@ class ExportController extends Controller
      */
     public function createAction(Request $request)
     {
-        // get parameters
         $connector = $request->query->get('connector');
         $jobType   = $request->query->get('job_type');
         $jobAlias  = $request->query->get('job_alias');
