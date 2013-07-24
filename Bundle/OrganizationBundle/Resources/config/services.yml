@@ -11,6 +11,7 @@ services:
         factory_method:               createNamed
         factory_service:              form.factory
         arguments:                    ["oro_business_unit_form", "oro_business_unit"]
+
     oro_organization.form.handler.business_unit:
         class:                        %oro_organization.handler.business_unit.class%
         scope:                        request
@@ -31,19 +32,19 @@ services:
     oro_organization.form.type.business_unit.api:
         class: %oro_organization.business_unit.form.type.business_unit.api.class%
         tags:
-            - { name: form.type, alias: oro_organization_business_unit }
+            - { name: form.type, alias: business_unit }
 
     oro_organization.form.business_unit.api:
-        class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
-        arguments: ["oro_organization_business_unit_form", "oro_organization_business_unit", null]
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["business_unit", "business_unit", null]
 
     oro_organization.form.handler.api:
-        class: %oro_organization.handler.business_unit.class%
-        scope: request
+        class:                        %oro_organization.handler.business_unit.class%
+        scope:                        request
         arguments:
-            - @oro_organization.form.type.business_unit.api
+            - @oro_organization.form.business_unit.api
             - @request
             - @doctrine.orm.entity_manager
 
