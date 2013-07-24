@@ -1,13 +1,13 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**
  * AttributeGroup controller
@@ -61,7 +61,7 @@ class AttributeGroupController extends Controller
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getAttributeGroupRepository()->getIdToNameOrderedBySortOrder();
+        $groups = $this->getRepository('PimProductBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
@@ -94,11 +94,11 @@ class AttributeGroupController extends Controller
 
         $data = $request->request->all();
 
-        $em = $this->getEntityManager();
+        $em = $this->getManager();
 
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
-                $group = $this->getAttributeGroupRepository()->find((int) $id);
+                $group = $this->getRepository('PimProductBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
                     $em->persist($group);
@@ -124,8 +124,8 @@ class AttributeGroupController extends Controller
      */
     public function removeAction(AttributeGroup $group)
     {
-        $this->getEntityManager()->remove($group);
-        $this->getEntityManager()->flush();
+        $this->getManager()->remove($group);
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Attribute group successfully removed');
 
@@ -151,7 +151,7 @@ class AttributeGroupController extends Controller
      * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
      *
      */
-    public function addProductAttributes($id)
+    public function addProductAttributesAction($id)
     {
         $group               = $this->findOr404('PimProductBundle:AttributeGroup', $id);
         $availableAttributes = new AvailableProductAttributes;
@@ -167,7 +167,7 @@ class AttributeGroupController extends Controller
             $group->addAttribute($attribute);
         }
 
-        $this->getEntityManager()->flush();
+        $this->getManager()->flush();
 
         return $this->redirectToAttributeGroupAttributesTab($group->getId());
     }
@@ -178,12 +178,12 @@ class AttributeGroupController extends Controller
      * @param integer $groupId
      * @param integer $attributeId
      *
-     * @Route("/{groupId}/attribute/{attributeId}")
+     * @Route("/{groupId}/attribute/{attributeId}/remove")
      * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeProductAttribute($groupId, $attributeId)
+    public function removeProductAttributeAction($groupId, $attributeId)
     {
         $group     = $this->findOr404('PimProductBundle:AttributeGroup', $groupId);
         $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
@@ -195,7 +195,7 @@ class AttributeGroupController extends Controller
         }
 
         $group->removeAttribute($attribute);
-        $this->getEntityManager()->flush();
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 
@@ -217,32 +217,12 @@ class AttributeGroupController extends Controller
     }
 
     /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get attribute group repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getAttributeGroupRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
-    }
-
-    /**
      * Get attributes that belong to a group
      *
      * @return array
      */
     protected function getGroupedAttributes()
     {
-        return $this->getProductAttributeRepository()->findAllGrouped();
+        return $this->getRepository('PimProductBundle:ProductAttribute')->findAllGrouped();
     }
 }

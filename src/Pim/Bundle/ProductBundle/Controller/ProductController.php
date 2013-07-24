@@ -4,22 +4,13 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use YsTools\BackUrlBundle\Annotation\BackUrl;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Form\Type\ProductType;
-use Pim\Bundle\ProductBundle\Manager\MediaManager;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 
 /**
@@ -140,7 +131,7 @@ class ProductController extends Controller
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
         }
 
-        $channels = $this->getChannelRepository()->findAll();
+        $channels = $this->getRepository('PimConfigBundle:Channel')->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
 
         $form     = $this->createForm(
@@ -436,50 +427,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Get the AttributeGroup entity repository
-     *
-     * @return Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository
-     */
-    protected function getAttributeGroupRepository()
-    {
-        return $this
-            ->getDoctrine()
-            ->getRepository('PimProductBundle:AttributeGroup');
-    }
-
-    /**
-     * Get the Channel entity repository
-     *
-     * @return Doctrine\ORM\EntityRepository
-     */
-    protected function getChannelRepository()
-    {
-        return $this->getDoctrine()->getRepository('PimConfigBundle:Channel');
-    }
-
-    /**
-     * Get the Product Value repository
-     *
-     * @return Doctrine\ORM\EntityRepository
-     */
-    protected function getProductValueRepository()
-    {
-        return $this->getProductManager()->getFlexibleValueRepository();
-    }
-
-    /**
-     * Get the container parameter value
-     *
-     * @param string $name the container parameter name
-     *
-     * @return string
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
-    }
-
-    /**
      * Find a product by its id or return a 404 response
      *
      * @param int $id the product id
@@ -509,27 +456,5 @@ class ProductController extends Controller
         $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;
-    }
-
-    /**
-     * Check if values can be removed
-     *
-     * @param array $values
-     *
-     * @return boolean
-     */
-    protected function checkValuesRemovability(array $values)
-    {
-        if (0 === count($values)) {
-            return false;
-        }
-
-        foreach ($values as $value) {
-            if (!$value->isRemovable()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

@@ -39,9 +39,19 @@ class Controller extends BaseController
     /**
      * @return ObjectManager
      */
-    protected function getEntityManager()
+    protected function getManager()
     {
         return $this->getDoctrine()->getManager();
+    }
+
+    /**
+     * @param string $repository
+     *
+     * @return Repository
+     */
+    protected function getRepository($repository)
+    {
+        return $this->getManager()->getRepository($repository);
     }
 
     /**
@@ -54,7 +64,7 @@ class Controller extends BaseController
      */
     protected function findOr404($repository, $id)
     {
-        $result = $this->getEntityManager()->getRepository($repository)->find($id);
+        $result = $this->getRepository($repository)->find($id);
 
         if (!$result) {
             throw $this->createNotFoundException(sprintf('%s entity not found', end(explode(':', $repository))));
@@ -113,11 +123,11 @@ class Controller extends BaseController
         }
         $queryFactory = $this->get('pim_product.datagrid.manager.history.default_query_factory');
 
-        // TODO Change query builder to $this->getDataAuditRepository()->getLogEntriesQueryBuilder($product)
+        // TODO Change query builder to $this->getRepository('OroDataAuditBundle:Audit')->getLogEntriesQueryBuilder($product)
         //      when BAP will be up-to-date. This is currently not achievable quickly because of the introduction
         //      of the OroAsseticBundle that breaks the PIM UI.
         $qb = $this
-            ->getDataAuditRepository()
+            ->getRepository('OroDataAuditBundle:Audit')
             ->createQueryBuilder('a')
             ->where('a.objectId = :objectId AND a.objectClass = :objectClass')
             ->orderBy('a.loggedAt', 'DESC')
@@ -138,32 +148,10 @@ class Controller extends BaseController
     }
 
     /**
-     * Get the ProductAttribute entity repository
-     *
-     * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
-     */
-    protected function getProductAttributeRepository()
-    {
-        return $this->getProductManager()->getAttributeRepository();
-    }
-
-    /**
      * @return ProductManager
      */
     protected function getProductManager()
     {
         return $this->get('pim_product.manager.product');
-    }
-
-    /**
-     * Get the data audit doctrine repository
-     *
-     * @return AuditRepository
-     */
-    protected function getDataAuditRepository()
-    {
-        return $this
-            ->getDoctrine()
-            ->getRepository('OroDataAuditBundle:Audit');
     }
 }

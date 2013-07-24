@@ -43,7 +43,7 @@ class FamilyController extends Controller
     public function createAction()
     {
         $family   = new Family;
-        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
+        $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
         if ($this->get('pim_product.form.handler.family')->process($family)) {
             $this->addFlash('success', 'Product family successfully created');
@@ -74,7 +74,7 @@ class FamilyController extends Controller
     public function editAction($id)
     {
         $family   = $this->findOr404('PimProductBundle:Family', $id);
-        $families = $this->getFamilyRepository()->getIdToLabelOrderedByLabel();
+        $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
         $datagrid = $this->getDataAuditDatagrid(
             $family,
             'pim_product_family_edit',
@@ -116,8 +116,8 @@ class FamilyController extends Controller
      */
     public function removeAction(Family $entity)
     {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        $this->getManager()->remove($entity);
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Product family successfully removed');
 
@@ -134,7 +134,7 @@ class FamilyController extends Controller
      * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
      *
      */
-    public function addProductAttributes($id)
+    public function addProductAttributesAction($id)
     {
         $family              = $this->findOr404('PimProductBundle:Family', $id);
         $availableAttributes = new AvailableProductAttributes;
@@ -149,7 +149,7 @@ class FamilyController extends Controller
             $family->addAttribute($attribute);
         }
 
-        $this->getEntityManager()->flush();
+        $this->getManager()->flush();
 
         return $this->redirectToFamilyAttributesTab($family->getId());
     }
@@ -160,12 +160,12 @@ class FamilyController extends Controller
      * @param integer $familyId
      * @param integer $attributeId
      *
-     * @Route("/{familyId}/attribute/{attributeId}")
+     * @Route("/{familyId}/attribute/{attributeId}/remove")
      * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeProductAttribute($familyId, $attributeId)
+    public function removeProductAttributeAction($familyId, $attributeId)
     {
         $family    = $this->findOr404('PimProductBundle:Family', $familyId);
         $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
@@ -183,7 +183,7 @@ class FamilyController extends Controller
         }
 
         $family->removeAttribute($attribute);
-        $this->getEntityManager()->flush();
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'The family is successfully updated.');
 
@@ -202,15 +202,5 @@ class FamilyController extends Controller
         $url = $this->generateUrl('pim_product_family_edit', array('id' => $id));
 
         return $this->redirect(sprintf('%s#attributes', $url));
-    }
-
-    /**
-     * Get product family repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getFamilyRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:Family');
     }
 }
