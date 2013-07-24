@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle;
 
-use Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorCompilerPass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
