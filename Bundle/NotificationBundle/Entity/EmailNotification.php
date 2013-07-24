@@ -38,14 +38,19 @@ class EmailNotification
     protected $event;
 
     /**
-     * @var string
+     * @var EmailTemplate
      *
-     * @ORM\Column(name="template", type="string", length=255)
+     * @ORM\OneToOne(
+     *     targetEntity="Oro\Bundle\NotificationBundle\Entity\EmailTemplate",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
      */
     protected $template;
 
     /**
-     * @var string
+     * @var RecipientList
      *
      * @ORM\OneToOne(
      *     targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList",

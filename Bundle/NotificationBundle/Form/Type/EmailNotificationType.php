@@ -56,13 +56,10 @@ class EmailNotificationType extends AbstractType
         $templatesList = $em->getRepository('Oro\Bundle\NotificationBundle\Entity\EmailTemplate')
             ->findAll();
 
-        $this->templateNameChoices = $templatesList;
-//        $this->templateNameChoices = array_map(
-//            function ($value) {
-//                return isset($value->getName())? $value['name'] : '';
-//            },
-//            $templatesList
-//        );
+        $this->templateNameChoices = array();
+        foreach ($templatesList as $template) {
+            $this->templateNameChoices[$template->getId()] = $template->getName();
+        }
     }
 
     /**

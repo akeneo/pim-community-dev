@@ -1,0 +1,5 @@
+js:
+  'address':
+      - '@OroNotificationBundle/Resources/public/js/views/templates.updater.js'
+      - '@OroNotificationBundle/Resources/public/js/models/templates.updater.js'
+      - '@OroNotificationBundle/Resources/public/js/collections/templates.updater.js'
