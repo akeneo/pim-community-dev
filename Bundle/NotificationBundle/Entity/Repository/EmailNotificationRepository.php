@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NotificationBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * EmailNotificationRepository
@@ -10,20 +11,16 @@ use Doctrine\ORM\EntityRepository;
 class EmailNotificationRepository extends EntityRepository
 {
     /**
-     * @param string $entityName
-     * @param string $eventName
-     * @return array
+     * @return ArrayCollection
      */
-    public function getRulesByCriteria($entityName, $eventName)
+    public function getRules()
     {
-        return $this->createQueryBuilder('emn')
+        $rules = $this->createQueryBuilder('emn')
             ->select(array('emn', 'event'))
             ->leftJoin('emn.event', 'event')
-            ->where('emn.entityName = :entityName')
-            ->andWhere('event.name = :eventName')
-            ->setParameter('entityName', $entityName)
-            ->setParameter('eventName', $eventName)
             ->getQuery()
             ->getResult();
+
+        return new ArrayCollection($rules);
     }
 }

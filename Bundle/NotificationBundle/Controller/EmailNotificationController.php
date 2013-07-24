@@ -28,7 +28,7 @@ class EmailNotificationController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_user_user_view",
+     *      id="oro_notification_emailnotification_index",
      *      name="View List of notification rules",
      *      description="View list of notification rules",
      *      parent="oro_notification_emailnotification"
@@ -66,7 +66,15 @@ class EmailNotificationController extends Controller
                 $this->get('translator')->trans('oro.notification.controller.emailnotification.saved.message')
             );
 
-            return $this->redirect($this->generateUrl('oro_notification_emailnotification_index'));
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_notification_emailnotification_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_notification_emailnotification_index',
+                )
+            );
         }
 
         return array(
