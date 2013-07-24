@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ImapBundle\Connector;
 
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap;
+use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
 use Oro\Bundle\ImapBundle\Connector\Exception\InvalidConfigurationException;
 
 /**

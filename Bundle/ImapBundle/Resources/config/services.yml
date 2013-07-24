@@ -4,8 +4,8 @@ parameters:
     oro_imap.services.factory.class:             Oro\Bundle\ImapBundle\Connector\ImapServicesFactory
     oro_imap.search_string_manager.gmail.class:  Oro\Bundle\ImapBundle\Connector\Search\GmailSearchStringManager
     oro_imap.search_string_manager.other.class:  Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
-    oro_imap.storage.gmail.class:                Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\GmailImap
-    oro_imap.storage.other.class:                Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap
+    oro_imap.storage.gmail.class:                Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
+    oro_imap.storage.other.class:                Oro\Bundle\ImapBundle\Mail\Storage\Imap
 
 services:
     oro_imap.connector.factory:

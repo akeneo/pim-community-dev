@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Tests\Unit\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Tests\Unit\Mail\Storage;
 
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Attachment;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Content;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Value;
+use Oro\Bundle\ImapBundle\Mail\Storage\Attachment;
+use Oro\Bundle\ImapBundle\Mail\Storage\Content;
+use Oro\Bundle\ImapBundle\Mail\Storage\Value;
 
 class AttachmentTest extends \PHPUnit_Framework_TestCase
 {

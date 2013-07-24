@@ -1,13 +1,12 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
 class Imap extends \Zend\Mail\Storage\Imap
 {
     const RFC822_HEADER = 'RFC822.HEADER';
     const FLAGS = 'FLAGS';
     const UID = 'UID';
-
 
     /**
      * UIDVALIDITY of currently selected folder
@@ -43,7 +42,7 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         parent::__construct($params);
-        $this->messageClass = 'Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Message';
+        $this->messageClass = 'Oro\Bundle\ImapBundle\Mail\Storage\Message';
         $this->getMessageItems = array(self::FLAGS, self::RFC822_HEADER, self::UID);
     }
 

@@ -19,7 +19,7 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->storage = $this->getMockBuilder('Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap')
+        $this->storage = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Imap')
             ->disableOriginalConstructor()
             ->getMock();
         $this->storage->expects($this->any())

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
 use \Zend\Mail\Header\HeaderInterface;
 use \Zend\Mail\Storage\Part;
@@ -83,11 +83,9 @@ class Message extends \Zend\Mail\Storage\Message
      */
     protected function getPartContentType($part)
     {
-        if (!$part->getHeaders()->has('Content-Type')) {
-            return null;
-        }
-
-        return $part->getHeader('Content-Type');
+        return $part->getHeaders()->has('Content-Type')
+            ? $part->getHeader('Content-Type')
+            : null;
     }
 
     /**
@@ -99,10 +97,8 @@ class Message extends \Zend\Mail\Storage\Message
      */
     protected function getPartContentDisposition($part, $format = HeaderInterface::FORMAT_RAW)
     {
-        if (!$part->getHeaders()->has('Content-Disposition')) {
-            return null;
-        }
-
-        return (string)$part->getHeader('Content-Disposition')->getFieldValue($format);
+        return $part->getHeaders()->has('Content-Disposition')
+            ? $part->getHeader('Content-Disposition')->getFieldValue($format)
+            : null;
     }
 }

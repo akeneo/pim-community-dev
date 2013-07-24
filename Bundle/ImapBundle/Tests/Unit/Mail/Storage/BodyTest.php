@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Tests\Unit\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Tests\Unit\Mail\Storage;
 
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Body;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Content;
+use Oro\Bundle\ImapBundle\Mail\Storage\Body;
+use Oro\Bundle\ImapBundle\Mail\Storage\Content;
 
 class BodyTest extends \PHPUnit_Framework_TestCase
 {
@@ -174,7 +174,7 @@ class BodyTest extends \PHPUnit_Framework_TestCase
         $contentEncoding = 'testEncoding';
 
         $bodyPartialMock = $this->getMock(
-            'Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Body',
+            'Oro\Bundle\ImapBundle\Mail\Storage\Body',
             array('extractContent'),
             array($this->part)
         );
@@ -195,7 +195,7 @@ class BodyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Exception\InvalidBodyFormatException
+     * @expectedException Oro\Bundle\ImapBundle\Mail\Storage\Exception\InvalidBodyFormatException
      */
     public function testGetContentSinglePartHtml()
     {
@@ -231,7 +231,7 @@ class BodyTest extends \PHPUnit_Framework_TestCase
             );
 
         $bodyPartialMock = $this->getMock(
-            'Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Body',
+            'Oro\Bundle\ImapBundle\Mail\Storage\Body',
             array('extractContent', 'getPartContentType'),
             array($this->part)
         );

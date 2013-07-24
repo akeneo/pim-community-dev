@@ -3,7 +3,7 @@
 namespace Oro\Bundle\ImapBundle\Connector;
 
 use Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap;
+use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
 
 /**
  * Provides an access to IMAP services such as the storage and the query string builder

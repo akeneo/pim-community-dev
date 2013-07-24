@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
 use Zend\Mail\Headers;
 use \Zend\Mail\Storage\Part;

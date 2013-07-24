@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Tests\Unit\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Tests\Unit\Mail\Storage;
 
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Value;
+use Oro\Bundle\ImapBundle\Mail\Storage\Value;
 
 class ValueTest extends \PHPUnit_Framework_TestCase
 {

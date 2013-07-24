@@ -1,10 +1,9 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage;
+namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
 use Zend\Mail\Headers;
 use \Zend\Mail\Storage\Part;
-use \Zend\Mime\Decode;
 
 class Body
 {
@@ -126,10 +125,8 @@ class Body
      */
     protected function getPartContentType($part)
     {
-        if (!$part->getHeaders()->has('Content-Type')) {
-            return null;
-        }
-
-        return $part->getHeader('Content-Type');
+        return $part->getHeaders()->has('Content-Type')
+            ? $part->getHeader('Content-Type')
+            : null;
     }
 }

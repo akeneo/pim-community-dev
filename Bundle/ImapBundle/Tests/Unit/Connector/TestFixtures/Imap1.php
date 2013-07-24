@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ImapBundle\Tests\Unit\Connector\TestFixtures;
 
-class Imap1 extends \Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap
+class Imap1 extends \Oro\Bundle\ImapBundle\Mail\Storage\Imap
 {
     public function __construct($params)
     {

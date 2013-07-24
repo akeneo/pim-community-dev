@@ -5,8 +5,8 @@ namespace Oro\Bundle\ImapBundle\Connector;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Imap;
-use Oro\Bundle\ImapBundle\Extensions\Zend\Mail\Storage\Message;
+use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
+use Oro\Bundle\ImapBundle\Mail\Storage\Message;
 use Zend\Mail\Storage\Folder;
 
 /**
