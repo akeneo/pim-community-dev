@@ -123,7 +123,7 @@ class EmailNotificationDatagridManager extends DatagridManager
                 'field_name'  => 'template',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
-                'sortable'    => true,
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
             )
