@@ -8,6 +8,8 @@ parameters:
     oro_workflow.condition.false.class: Oro\Bundle\WorkflowBundle\Model\Condition\False
     oro_workflow.condition.equal_to.class: Oro\Bundle\WorkflowBundle\Model\Condition\EqualTo
     oro_workflow.condition.not_equal_to.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotEqualTo
+    oro_workflow.condition.blank.class: Oro\Bundle\WorkflowBundle\Model\Condition\Blank
+    oro_workflow.condition.not_blank.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotBlank
     oro_workflow.condition.greater_than.class: Oro\Bundle\WorkflowBundle\Model\Condition\GreaterThan
     oro_workflow.condition.greater_than_or_equal.class: Oro\Bundle\WorkflowBundle\Model\Condition\GreaterThanOrEqual
     oro_workflow.condition.less_than.class: Oro\Bundle\WorkflowBundle\Model\Condition\LessThan
@@ -57,6 +59,18 @@ services:
         arguments: [@oro_workflow.condition.equal_to]
         tags:
             - {name: oro_workflow.condition, alias: neq}
+
+    oro_workflow.condition.blank:
+        class: %oro_workflow.condition.blank.class%
+        args: [@oro_workflow.context_accessor]
+        tags:
+            - {name: oro_workflow.condition, alias: blank}
+
+    oro_workflow.condition.not_blank:
+        class: %oro_workflow.condition.not_blank.class%
+        arguments: [@oro_workflow.condition.blank]
+        tags:
+            - {name: oro_workflow.condition, alias: not_blank}
 
     oro_workflow.condition.greater_than:
         class: %oro_workflow.condition.greater_than.class%

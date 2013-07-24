@@ -2,15 +2,34 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 
 class WorkflowRegistry
 {
     /**
+     * @var ManagerRegistry
+     */
+    protected $managerRegistry;
+
+    /**
+     * @var WorkflowAssembler
+     */
+    protected $workflowAssembler;
+
+    /**
      * @var Workflow[]
      */
     protected $workflowByName;
+
+    public function __construct(ManagerRegistry $managerRegistry, WorkflowAssembler $workflowAssembler)
+    {
+        $this->managerRegistry = $managerRegistry;
+        $this->workflowAssembler = $workflowAssembler;
+    }
 
     /**
      * Get Workflow by name
@@ -33,22 +52,24 @@ class WorkflowRegistry
     }
 
     /**
+     * Find WorkflowDefinition
+     *
      * @param string $name
-     * @return WorkflowDefinition
+     * @return WorkflowDefinition|null
      */
     protected function findWorkflowDefinition($name)
     {
-        // @TODO Find WorkflowDefinition by name from repository
-        return new WorkflowDefinition();
+        return $this->managerRegistry->getRepository('OroWorkflowBundle:WorkflowDefinition')->find($name);
     }
 
     /**
+     * Assembles Workflow by WorkflowDefinition
+     *
      * @param WorkflowDefinition $workflowDefinition
      * @return Workflow
      */
     protected function assembleWorkflow(WorkflowDefinition $workflowDefinition)
     {
-        // @TODO Assemble workflow by name
-        return new Workflow();
+        return $this->workflowAssembler->assemble($workflowDefinition);
     }
 }

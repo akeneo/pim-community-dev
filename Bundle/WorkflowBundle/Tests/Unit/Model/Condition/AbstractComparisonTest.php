@@ -38,16 +38,19 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     {
         $this->condition->initialize($options);
 
+        $right = end($options);
+        $left = reset($options);
+
         $this->contextAccessor->expects($this->at(0))->method('getValue')
-            ->with($context, $options['left'])
-            ->will($this->returnValue($context[$options['left']]));
+            ->with($context, $left)
+            ->will($this->returnValue($context[$left]));
 
         $this->contextAccessor->expects($this->at(1))->method('getValue')
-            ->with($context, $options['right'])
-            ->will($this->returnValue($context[$options['right']]));
+            ->with($context, $right)
+            ->will($this->returnValue($context[$right]));
 
         $this->condition->expects($this->once())->method('doCompare')
-            ->with($context[$options['left']], $context[$options['right']])
+            ->with($context[$left], $context[$right])
             ->will($this->returnValue($expectedValue));
 
         $this->assertEquals($expectedValue, $this->condition->isAllowed($context));
@@ -62,10 +65,20 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
                 true
             ),
             array(
+                array('foo', 'bar'),
+                array('foo' => 'fooValue', 'bar' => 'barValue'),
+                true
+            ),
+            array(
                 array('left' => 'foo', 'right' => 'bar'),
                 array('foo' => 'fooValue', 'bar' => 'barValue'),
                 false
-            )
+            ),
+            array(
+                array('foo', 'bar'),
+                array('foo' => 'fooValue', 'bar' => 'barValue'),
+                false
+            ),
         );
     }
 
@@ -89,6 +102,7 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     {
         $this->condition->initialize(
             array(
+                'foo' => 'bar',
                 'left' => 'foo'
             )
         );
@@ -102,8 +116,18 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     {
         $this->condition->initialize(
             array(
-                'right' => 'foo'
+                'right' => 'foo',
+                'foo' => 'bar',
             )
         );
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedExceptionMessage Options must have 2 elements, but 0 given
+     */
+    public function testInitializeFailsWithInvalidOptionsCount()
+    {
+        $this->condition->initialize(array());
     }
 }
