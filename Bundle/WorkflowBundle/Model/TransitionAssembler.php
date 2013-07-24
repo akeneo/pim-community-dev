@@ -49,6 +49,7 @@ class TransitionAssembler extends AbstractAssembler
 
         $transitions = new ArrayCollection();
         foreach ($configuration as $name => $options) {
+            $this->assertOptions($options, array('transition_definition'));
             $definitionName = $options['transition_definition'];
             if (!isset($definitions[$definitionName])) {
                 throw new UnknownTransitionDefinitionException(
@@ -72,11 +73,9 @@ class TransitionAssembler extends AbstractAssembler
     {
         $definitions = array();
         foreach ($configuration as $name => $options) {
-            $conditions = !empty($options['conditions']) ? $options['conditions'] : array();
-            $postActions = !empty($options['post_actions']) ? $options['post_actions'] : array();
             $definitions[$name] = array(
-                'conditions' => $conditions,
-                'post_actions' => $postActions,
+                'conditions' => $this->getOption($options, 'conditions', array()),
+                'post_actions' => $this->getOption($options, 'post_actions', array()),
             );
         }
 
@@ -93,6 +92,7 @@ class TransitionAssembler extends AbstractAssembler
      */
     protected function assembleTransition($name, array $options, array $definition, $steps)
     {
+        $this->assertOptions($options, array('step_to', 'label'));
         $stepToName = $options['step_to'];
         if (empty($steps[$stepToName])) {
             throw new UnknownStepException(sprintf('Unknown step with name %s', $stepToName));
@@ -102,6 +102,7 @@ class TransitionAssembler extends AbstractAssembler
         $transition = new Transition();
         $transition->setName($name);
         $transition->setStepTo($stepTo);
+        $transition->setLabel($options['label']);
 
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);

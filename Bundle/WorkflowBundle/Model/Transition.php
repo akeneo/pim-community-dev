@@ -20,6 +20,11 @@ class Transition
     protected $stepTo;
 
     /**
+     * @var string
+     */
+    protected $label;
+
+    /**
      * @var ConditionInterface|null
      */
     protected $condition;
@@ -28,6 +33,28 @@ class Transition
      * @var PostActionInterface|null
      */
     protected $postAction;
+
+    /**
+     * Set label.
+     *
+     * @param string $label
+     * @return Transition
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    /**
+     * Get label.
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 
     /**
      * Set condition.

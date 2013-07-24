@@ -27,6 +27,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'name' => array('name', 'test'),
+            'label' => array('label', 'test'),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
             'condition' => array(
                 'condition',
