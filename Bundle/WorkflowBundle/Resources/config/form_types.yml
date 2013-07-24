@@ -1,0 +1,8 @@
+parameters:
+    oro_workflow.form.type.step.class: Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep
+
+services:
+    oro_workflow.form.type.step:
+        class: %oro_workflow.form.type.step.class%
+        tags:
+            - { name: form.type, alias: oro_workflow_step }
