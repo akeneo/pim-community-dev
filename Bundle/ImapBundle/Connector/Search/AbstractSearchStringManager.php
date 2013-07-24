@@ -65,10 +65,8 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
      */
     protected function processItem(SearchQueryExprValueBase $item, $itemName = null)
     {
-        if ($itemName === null) {
-            if ($item instanceof SearchQueryExprNamedItemInterface) {
-                $itemName = $item->getName();
-            }
+        if ($itemName === null && $item instanceof SearchQueryExprNamedItemInterface) {
+            $itemName = $item->getName();
         }
 
         $value = $item->getValue();

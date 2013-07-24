@@ -58,10 +58,8 @@ class SearchQuery
      */
     public function value($value, $match = SearchQueryMatch::DEFAULT_MATCH)
     {
-        if (($value instanceof SearchQuery) && $value->isComplex()) {
-            if ($match != SearchQueryMatch::DEFAULT_MATCH) {
-                throw new \InvalidArgumentException('The match argument can be specified only if the value argument is a string or a simple query.');
-            }
+        if ($value instanceof SearchQuery && $value->isComplex() && $match != SearchQueryMatch::DEFAULT_MATCH) {
+            throw new \InvalidArgumentException('The match argument can be specified only if the value argument is a string or a simple query.');
         }
 
         $this->andOperatorIfNeeded();
@@ -81,10 +79,8 @@ class SearchQuery
      */
     public function item($name, $value, $match = SearchQueryMatch::DEFAULT_MATCH)
     {
-        if (($value instanceof SearchQuery) && $value->isComplex()) {
-            if ($match != SearchQueryMatch::DEFAULT_MATCH) {
-                throw new \InvalidArgumentException('The match argument can be specified only if the value argument is a string or a simple query.');
-            }
+        if ($value instanceof SearchQuery && $value->isComplex() && $match != SearchQueryMatch::DEFAULT_MATCH) {
+            throw new \InvalidArgumentException('The match argument can be specified only if the value argument is a string or a simple query.');
         }
         if (!$this->searchStringManager->isAcceptableItem($name, $value, $match)) {
             throw new \InvalidArgumentException(sprintf(
