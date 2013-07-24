@@ -3,12 +3,12 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product attribute controller
@@ -188,11 +188,11 @@ class ProductAttributeController extends Controller
 
         $data = $request->request->all();
 
-        $em = $this->getEntityManager();
+        $em = $this->getManager();
 
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
-                $attribute = $this->getProductAttributeRepository()->find((int) $id);
+                $attribute = $this->getRepository('PimProductBundle:ProductAttribute')->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
                     $em->persist($attribute);
