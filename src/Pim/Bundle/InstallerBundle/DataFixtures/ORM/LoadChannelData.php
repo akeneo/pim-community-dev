@@ -1,10 +1,9 @@
 <?php
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Config\FileLocator;
 
 /**
  * Load fixtures for channels

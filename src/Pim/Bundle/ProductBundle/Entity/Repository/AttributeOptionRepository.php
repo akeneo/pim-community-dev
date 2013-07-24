@@ -1,9 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as OroAttributeOptionRepository;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**

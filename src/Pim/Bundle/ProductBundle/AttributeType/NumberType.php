@@ -2,9 +2,7 @@
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\NumberType as OroNumberType;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Number attribute type

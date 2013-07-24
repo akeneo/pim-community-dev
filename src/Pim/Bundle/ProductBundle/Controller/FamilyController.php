@@ -5,7 +5,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Form\Type\FamilyType;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**

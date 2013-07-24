@@ -3,7 +3,6 @@ namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 

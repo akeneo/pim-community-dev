@@ -1,11 +1,10 @@
 <?php
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for attribute groups
@@ -21,7 +20,7 @@ class LoadGroupData extends AbstractInstallerFixture
      * count groups created to order them
      * @staticvar integer
      */
-    static protected $order = 0;
+    protected static $order = 0;
 
     /**
      * {@inheritdoc}
