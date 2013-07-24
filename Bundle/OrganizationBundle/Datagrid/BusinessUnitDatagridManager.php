@@ -110,7 +110,7 @@ class BusinessUnitDatagridManager extends DatagridManager
                 'expression'  => 'parent',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
-                'sortable'    => false,
+                'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
                 // entity filter options
@@ -131,7 +131,7 @@ class BusinessUnitDatagridManager extends DatagridManager
                 'expression'  => 'organization',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
-                'sortable'    => false,
+                'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
                 // entity filter options

@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 
-
 class UserHandler extends AbstractUserHandler implements TagHandlerInterface
 {
     /**
