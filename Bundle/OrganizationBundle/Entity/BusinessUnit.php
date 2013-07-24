@@ -92,7 +92,7 @@ class BusinessUnit
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @Soap\ComplexType("string", nillable=true)
+     * @Soap\ComplexType("dateTime", nillable=true)
      */
     protected $createdAt;
 
@@ -100,7 +100,7 @@ class BusinessUnit
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
-     * @Soap\ComplexType("string", nillable=true)
+     * @Soap\ComplexType("dateTime", nillable=true)
      */
     protected $updatedAt;
 
