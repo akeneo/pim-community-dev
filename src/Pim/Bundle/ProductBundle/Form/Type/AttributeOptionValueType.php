@@ -3,8 +3,6 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionValueType as FlexibleAttributeOptionValueType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 
 /**
  * Type for option value attribute form

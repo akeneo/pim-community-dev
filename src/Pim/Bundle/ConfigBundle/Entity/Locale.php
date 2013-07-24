@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ConfigBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ConfigBundle\Validator\Constraints as PimAssert;
 

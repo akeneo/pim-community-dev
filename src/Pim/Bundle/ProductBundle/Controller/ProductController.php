@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 

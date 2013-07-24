@@ -1,9 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
@@ -17,7 +15,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 use Pim\Bundle\ProductBundle\Manager\CategoryManager;
 
 /**

@@ -2,13 +2,11 @@
 namespace Pim\Bundle\ProductBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * Product API controller

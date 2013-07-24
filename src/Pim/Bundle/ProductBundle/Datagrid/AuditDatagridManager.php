@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
