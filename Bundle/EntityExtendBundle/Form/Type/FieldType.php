@@ -11,13 +11,16 @@ class FieldType extends AbstractType
 {
     protected $types = array(
         'string',
-        'text',
         'integer',
-        'float',
-        'decimal',
+        'smallint',
+        'bigint',
         'boolean',
+        'decimal',
+        'date',
+        'time',
         'datetime',
-        'date'
+        'text',
+        'float',
     );
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -25,38 +28,11 @@ class FieldType extends AbstractType
         $builder->add('code', 'text', array(
             'label'    => 'Field Name',
             'block'    => 'type',
-            'subblock' => 'common',
         ));
         $builder->add('type', 'choice', array(
             'choices'     => array_combine(array_values($this->types), $this->types),
             'empty_value' => false,
             'block'       => 'type',
-            'subblock'    => 'common',
-        ));
-        $builder->add('length', 'integer', array(
-            'block'    => 'type',
-            'subblock' => 'custom',
-            'required' => false,
-        ));
-        $builder->add('unique', 'checkbox', array(
-            'block'    => 'type',
-            'subblock' => 'common',
-            'required' => false,
-        ));
-        $builder->add('nullable', 'checkbox', array(
-            'block'    => 'type',
-            'subblock' => 'common',
-            'required' => false,
-        ));
-        $builder->add('precision', 'integer', array(
-            'block'    => 'type',
-            'subblock' => 'custom',
-            'required' => false,
-        ));
-        $builder->add('scale', 'integer', array(
-            'block'    => 'type',
-            'subblock' => 'custom',
-            'required' => false,
         ));
     }
 
@@ -67,17 +43,7 @@ class FieldType extends AbstractType
                 'type' => array(
                     'title'     => 'Doctrine Type',
                     'priority'  => 1,
-                    'subblocks' => array(
-                        'common' => array(
-                            'title'    => 'Common Setting',
-                            'priority' => 2,
-                        ),
-                        'custom' => array(
-                            'title'    => 'Custom Setting',
-                            'priority' => 1,
-                        ),
-                    )
-                ),
+                )
             )
         ));
     }

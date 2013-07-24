@@ -132,7 +132,7 @@ class ConfigFieldGridController extends Controller
         $fieldConfig = $extendManager->getConfigProvider()
             ->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
 
-        if (!$fieldConfig->is('is_extend') || !$schema->checkFieldCanDelete($field)) {
+        if (!$fieldConfig->is('is_extend')) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 

@@ -41,6 +41,7 @@ oro_entity_config:
             layout_action:
                 -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
                 -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
+                -                           {'name':'Apply', 'route':'oro_entityextend_apply', 'entity_id':true, 'aClass':'entity-extend-apply'}
             items:
                 owner:
                     priority:               20

@@ -15,7 +15,8 @@
     {% for button in button_config %}
         {{ UI.button({
             'path'   : path(button.route, button.args|default({})),
-            'iClass' : button.aClass|default(''),
+            'iClass' : button.iClass|default(''),
+            'aClass' : button.aClass|default(''),
             'title'  : button.title|default(button.name),
             'label'  : button.name
         }) }}
