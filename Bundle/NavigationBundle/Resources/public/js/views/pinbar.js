@@ -9,7 +9,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         el: '.pin-bar',
         listBar: '.list-bar',
         minimizeButton: '.top-action-box .minimize-button',
-        closeButton: '.top-action-box .close-button',
         history: [],
         defaultUrl: '/',
         tabId: 'pinbar',
@@ -26,7 +25,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     initialize: function() {
         this.$listBar = this.getBackboneElement(this.options.listBar);
         this.$minimizeButton = Backbone.$(this.options.minimizeButton);
-        this.$closeButton = Backbone.$(this.options.closeButton);
+        this.$icon = this.$minimizeButton.find('i');
 
         this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
         this.listenTo(this.options.collection, 'remove', this.onPageClose);
@@ -49,7 +48,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         );
 
         this.$minimizeButton.click(_.bind(this.minimizePage, this));
-        this.$closeButton.click(_.bind(this.closePage, this));
 
         this.registerTab();
         this.cleanup();
@@ -229,6 +227,14 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         });
     },
 
+    activate: function() {
+        this.$icon.addClass('icon-gold');
+    },
+
+    inactivate: function() {
+        this.$icon.removeClass('icon-gold');
+    },
+
     /**
      * Choose container and add item to it.
      *
@@ -291,6 +297,11 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      * Show/hide tabs section in ... menu on each event
      */
     render: function() {
+        if (this.getItemForCurrentPage().length) {
+            this.activate();
+        } else {
+            this.inactivate();
+        }
         if (!this.massAdd) {
             if (this.options.collection.length == 0) {
                 this.requireCleanup = true;
