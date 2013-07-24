@@ -301,7 +301,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
-     * @expectedExceptionMessage Step "unknownStep" of workflow "workflowName" not found
+     * @expectedExceptionMessage Step "unknownStep" not found
      */
     public function testTransitUnknownStepException()
     {

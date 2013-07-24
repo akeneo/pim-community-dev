@@ -95,7 +95,7 @@ class TransitionAssembler extends AbstractAssembler
         $this->assertOptions($options, array('step_to', 'label'));
         $stepToName = $options['step_to'];
         if (empty($steps[$stepToName])) {
-            throw new UnknownStepException(sprintf('Unknown step with name %s', $stepToName));
+            throw new UnknownStepException($stepToName);
         }
         $stepTo = $steps[$stepToName];
 

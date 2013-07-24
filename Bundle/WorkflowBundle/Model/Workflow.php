@@ -162,7 +162,7 @@ class Workflow
     {
         $result = $this->getSteps()->get($stepName);
         if (!$result) {
-            throw new UnknownStepException($stepName, $this->getName());
+            throw new UnknownStepException($stepName);
         }
         return $result;
     }
@@ -327,7 +327,7 @@ class Workflow
         /** @var Step $currentStep */
         $currentStep = $this->getSteps()->get($workflowItem->getCurrentStepName());
         if (!$currentStep) {
-            throw new UnknownStepException($workflowItem->getCurrentStepName(), $this->getName());
+            throw new UnknownStepException($workflowItem->getCurrentStepName());
         }
         if ($currentStep->isAllowedTransition($transition->getName())) {
             $transition->transit($workflowItem);
