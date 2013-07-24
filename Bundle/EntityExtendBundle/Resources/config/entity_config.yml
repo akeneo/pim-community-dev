@@ -90,6 +90,9 @@ oro_entity_config:
                 length:
                     options:
                         default_value:      255
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custome
                     form:
                         type:               text
                         options:
@@ -101,7 +104,10 @@ oro_entity_config:
 
                 precision:
                     options:
-                        default_value:      0
+                        default_value:      2
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custome
                     form:
                         type:               text
                         options:
@@ -113,7 +119,10 @@ oro_entity_config:
 
                 scale:
                     options:
-                        default_value:      0
+                        default_value:      2
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custome
                     form:
                         type:               text
                         options:

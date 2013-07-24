@@ -43,16 +43,35 @@ class ConfigFieldType extends AbstractType
 
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasFieldForm()) {
+                $items = $provider->getConfigContainer()->getFieldItems();
+
+                foreach ($provider->getConfigContainer()->getFieldRequiredPropertyValues() as $code => $property) {
+                    list($scope, $fieldName) = explode('.', $property['property_path']);
+                    if ($this->configManager->getProvider($scope)->hasFieldConfig($className, $fieldName)) {
+                        $value = $this->configManager->getProvider($scope)->getFieldConfig($className, $fieldName);
+
+                        if ($value != $property['value']) {
+                            unset($items[$code]);
+                        }
+                    }
+                }
+
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigType($provider->getConfigContainer()->getFieldItems(), $fieldType),
+                    new ConfigType($items, $fieldType),
                     array(
                         'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
                     )
                 );
-                $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
+
+                if ($provider->hasFieldConfig($className, $fieldName)) {
+                    $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
+                } else {
+                    $data[$provider->getScope()] = $provider->getConfigContainer()->getFieldDefaultValues();
+                }
             }
         }
+
         $builder->setData($data);
 
         $builder->addEventSubscriber(new ConfigSubscriber($this->configManager));

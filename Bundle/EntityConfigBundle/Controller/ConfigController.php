@@ -204,7 +204,7 @@ class ConfigController extends Controller
             null,
             array(
                 'class_name' => $field->getEntity()->getClassName(),
-                'field_name' => $field->getCode(),
+                'field_name' => $field->getCode() . 'ddd',
                 'field_type' => $field->getType(),
                 'field_id'   => $field->getId(),
             )
