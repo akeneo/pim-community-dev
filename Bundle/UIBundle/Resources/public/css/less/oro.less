@@ -85,6 +85,9 @@ a:focus{
 // style
 .navbar-inner,
 header{
+  .top-search.shortcuts{
+    margin-right: 7px;
+  }
   border-bottom: 1px solid #20252b;
   display: block;
   width: 100%;
@@ -216,6 +219,7 @@ header{
     background: url("../img/home-logo.png") no-repeat 100% 0;
     height: 41px;
     padding: 0 14px 0 0;
+    margin: 0 15px 0 0;
   }
   .logo:after{
     border-bottom: 20px solid transparent;
@@ -241,7 +245,7 @@ header{
     float: left;
     width: 19px;
     height: 20px;
-    margin: 10px 25px 0 0;
+    margin: 10px 11px 0 0;
     background: url("../../img/general-sprite.png") no-repeat 0 -322px;
   }
 }
@@ -258,7 +262,7 @@ header:after{
 }
 .header-search{
   position: relative;
-  width: 334px;
+  margin: 0 12px 0 0;
   .header-search-frame{
     position: relative;
     display: inline-block;
@@ -1208,11 +1212,11 @@ footer{
 }
 /* pin-bar */
 .pin-bar{
-  padding: 0 30px 0 0;
+  padding: 0 30px 2px 0;
   #gradient > .vertical(#303944, #323b46);
-  border-bottom: 1px solid #000;
+  background: url("../../img/bg-header.png") repeat-x 0 100%;
   position: relative;
-  z-index: 100;
+  z-index: 1050;
   .dropdown-menu{
     border-radius: 0;
     margin: 0;
@@ -4041,5 +4045,50 @@ header .nav-multilevel > li.dropdown:hover > a,
 }
 .navbar-responsive-collapse .divider-vertical{
   float: left;
-  margin-right: 25px;
+  margin-right: 0;
+}
+.breadcrumb{
+  float: left;
+  background: none;
+}
+.breadcrumb > li.active,
+.breadcrumb > li{
+  color: #c9c9c9;
+}
+button.btn.favorite-button{
+  background: none;
+  padding: 0 6px 3px;
+  border: 0;
+  margin: 0 -3px 0 0;
+  -webkit-box-shadow:  none;
+  box-shadow:  none;
+}
+button.btn.favorite-button i.icon-star{
+  text-indent: -9999px;
+  font-size: 0;
+  margin: -2px 0 0;
+  line-height: 0;
+  width:16px;
+  height:16px;
+  background: url("../../img/general-sprite.png") no-repeat 0 -423px;
+}
+button.btn.favorite-button i.icon-gold{
+  background-position: 0 -407px;
+}
+button.btn.minimize-button{
+  background: none;
+  padding: 0 6px 3px 7px;
+  border: 0;
+  margin: 0 3px 0 0;
+  -webkit-box-shadow:  none;
+  box-shadow:  none;
+}
+button.btn.minimize-button i.icon-minimize{
+  margin: 0;
+  width:14px;
+  height:17px;
+  background: url("../../img/general-sprite.png") no-repeat 0 -439px;
+}
+button.btn.minimize-button i.icon-minimize-active{
+  background-position: 0 -456px;
 }
