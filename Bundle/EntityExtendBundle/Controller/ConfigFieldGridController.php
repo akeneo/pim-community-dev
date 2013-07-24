@@ -63,12 +63,24 @@ class ConfigFieldGridController extends Controller
         $form    = $this->createForm(new FieldType(), $data, array('class_name' => $entity->getClassName()));
 
         if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
-                $data = $form->getData();
+                $data  = $form->getData();
+                $error = false;
+
+
+                if (!$data['code']) {
+                    $error = true;
+                    $form->get('code')->addError(new FormError(sprintf("Field '%s' should by set", $data['code'])));
+                }
+                if (!$data['type']) {
+                    $error = true;
+                    $form->get('type')->addError(new FormError(sprintf("Field '%s' should by set", $data['code'])));
+                }
 
                 if ($entity->getField($data['code'])) {
+                    $error = true;
                     $form->get('code')->addError(
                         new FormError(
                             sprintf(
@@ -78,12 +90,23 @@ class ConfigFieldGridController extends Controller
                             )
                         )
                     );
-                } else {
-                    $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
+                }
 
+                if (!$error) {
                     /** @var ConfigManager $configManager */
                     $configManager = $this->get('oro_entity_config.config_manager');
                     $configManager->clearCache($entity->getClassName());
+
+                    foreach ($data['options'] as $scope => $values) {
+                        /** TODO:: remove this shit */
+                        if ($scope == 'id') {
+                            continue;
+                        }
+
+                        $configManager->getProvider($scope)->createFieldConfig($entity->getClassName(), $data['code'], $data['type'], $values);
+                    }
+
+                    $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
@@ -96,9 +119,9 @@ class ConfigFieldGridController extends Controller
 
                     return $this->redirect(
                         $this->generateUrl(
-                            'oro_entityconfig_field_update',
+                            'oro_entityconfig_view',
                             array(
-                                'id' => $entity->getField($data['code'])->getId()
+                                'id' => $entity->getId()
                             )
                         )
                     );
@@ -110,8 +133,8 @@ class ConfigFieldGridController extends Controller
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
 
         return array(
-            'form'      => $form->createView(),
-            'entity_id' => $entity->getId(),
+            'form'          => $form->createView(),
+            'entity_id'     => $entity->getId(),
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
         );
     }

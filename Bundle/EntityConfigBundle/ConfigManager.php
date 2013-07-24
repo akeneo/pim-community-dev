@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
@@ -295,6 +296,8 @@ class ConfigManager
     {
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
+        $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+
         if ($config instanceof EntityConfigInterface) {
             foreach ($config->getFields() as $fieldConfig) {
                 $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
@@ -338,6 +341,10 @@ class ConfigManager
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
                     $configEntity->addField($configField);
+                    $this->eventDispatcher->dispatch(
+                        Events::NEW_FIELD,
+                        new NewFieldEvent($className, $config->getCode(), $config->getType(), $this)
+                    );
                 }
 
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getFieldSerializableValues();
@@ -346,6 +353,7 @@ class ConfigManager
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getEntitySerializableValues();
                 $configEntity->fromArray($config->getScope(), $config->getValues(), $serializableValues);
             }
+
 
             if ($this->configCache) {
                 $this->configCache->removeConfigFromCache($className, $config->getScope());
@@ -366,8 +374,12 @@ class ConfigManager
 
         $this->persistConfigs   = array();
         $this->removeConfigs    = array();
+        $this->originalConfigs = array();
         $this->configChangeSets = array();
         $this->updatedConfigs   = array();
+
+
+        $this->eventDispatcher->dispatch(Events::POST_FLUSH, new FlushConfigEvent($this));
     }
 
 

@@ -6,6 +6,7 @@ use Metadata\MetadataFactory;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
@@ -24,6 +25,8 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     protected $metadataFactory;
 
+    protected $postFlushConfig = array();
+
     /**
      * @param ExtendManager   $extendManager
      * @param MetadataFactory $metadataFactory
@@ -40,7 +43,8 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY => 'newEntityConfig'
+            Events::NEW_ENTITY     => 'newEntityConfig',
+            Events::PERSIST_CONFIG => 'persistConfig',
         );
     }
 
@@ -61,9 +65,25 @@ class ConfigSubscriber implements EventSubscriberInterface
                     'is_extend'    => true,
                     'extend_class' => $extendClass,
                     'proxy_class'  => $proxyClass,
-                    'owner'        => 'System'
+                    'owner'        => 'System',
                 )
             );
+        }
+    }
+
+    /**
+     * @param PersistConfigEvent $event
+     */
+    public function persistConfig(PersistConfigEvent $event)
+    {
+        $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+        $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
+
+        if ($event->getConfig()->getScope() == 'extend' && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))) {
+            $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
+            var_dump(2);
+            $event->getConfig()->set('state', 'Updated');
+            $entityConfig->set('state', 'Updated');
         }
     }
 }
