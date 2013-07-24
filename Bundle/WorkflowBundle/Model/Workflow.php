@@ -4,15 +4,19 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
+use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
 
 class Workflow
 {
+    const MANAGED_ENTITY_KEY = 'managed_entity';
+
     /**
      * @var string
      */
@@ -53,8 +57,18 @@ class Workflow
      */
     protected $label;
 
-    public function __construct()
+    /**
+     * @var EntityBinder
+     */
+    protected $entityBinder;
+
+    /**
+     * @param EntityBinder $entityBinder
+     */
+    public function __construct(EntityBinder $entityBinder)
     {
+        $this->entityBinder = $entityBinder;
+
         $this->transitions = new ArrayCollection();
         $this->steps = new ArrayCollection();
         $this->attributes = new ArrayCollection();
@@ -307,13 +321,20 @@ class Workflow
     /**
      * Create workflow item.
      *
+     * @param object|null $entity
      * @return WorkflowItem
      */
-    public function createWorkflowItem()
+    public function createWorkflowItem($entity = null)
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());
         $workflowItem->setCurrentStepName($this->getStartStepName());
+
+        // set managed entity
+        if ($entity) {
+            $this->entityBinder->bind($workflowItem, $entity);
+            $workflowItem->getData()->set(self::MANAGED_ENTITY_KEY, $entity);
+        }
 
         return $workflowItem;
     }

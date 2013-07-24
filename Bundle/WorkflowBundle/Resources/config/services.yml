@@ -11,6 +11,8 @@ parameters:
     oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
     oro_workflow.entity_binder.class: Oro\Bundle\WorkflowBundle\Model\EntityBinder
 
+    oro_workflow.workflow_prototype.class: Oro\Bundle\WorkflowBundle\Model\Workflow
+
 services:
     oro_workflow.configuration_tree:
         class: %oro_workflow.configuration_tree.class%
@@ -31,6 +33,12 @@ services:
 
     oro_workflow.registry:
         class: %oro_workflow.registry.class%
+
+    oro_workflow.workflow_prototype:
+        class: %oro_workflow.workflow_prototype.class%
+        scope: prototype
+        arguments:
+            - @oro_workflow.entity_binder
 
     # Services for WorkflowData serialization
     oro_workflow.data_serialize.serializer:

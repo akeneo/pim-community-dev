@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
@@ -10,6 +11,11 @@ use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowAssembler
 {
+    /**
+     * @var
+     */
+    protected $container;
+
     /**
      * @var ConfigurationTree
      */
@@ -31,17 +37,20 @@ class WorkflowAssembler
     protected $transitionAssembler;
 
     /**
+     * @param ContainerInterface $container
      * @param ConfigurationTree $configurationTreeBuilder
      * @param AttributeAssembler $attributeAssembler
      * @param StepAssembler $stepAssembler
      * @param TransitionAssembler $transitionAssembler
      */
     public function __construct(
+        ContainerInterface $container,
         ConfigurationTree $configurationTreeBuilder,
         AttributeAssembler $attributeAssembler,
         StepAssembler $stepAssembler,
         TransitionAssembler $transitionAssembler
     ) {
+        $this->container = $container;
         $this->configurationTree = $configurationTreeBuilder;
         $this->attributeAssembler = $attributeAssembler;
         $this->stepAssembler = $stepAssembler;
@@ -60,7 +69,7 @@ class WorkflowAssembler
         $steps = $this->assembleSteps($configuration, $attributes);
         $transitions = $this->assembleTransitions($configuration, $steps);
 
-        $workflow = new Workflow();
+        $workflow = $this->createWorkflow();
         $workflow
             ->setName($workflowDefinition->getName())
             ->setLabel($workflowDefinition->getLabel())
@@ -112,5 +121,13 @@ class WorkflowAssembler
             $transitionDefinitionsConfiguration,
             $steps
         );
+    }
+
+    /**
+     * @return Workflow
+     */
+    protected function createWorkflow()
+    {
+        return $this->container->get('oro_workflow.workflow_prototype');
     }
 }
