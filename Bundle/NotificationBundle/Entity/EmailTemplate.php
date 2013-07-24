@@ -46,7 +46,7 @@ class EmailTemplate implements Translatable
     /**
      * @var integer
      *
-     * @ORM\Column(name="parent", type="integer")
+     * @ORM\Column(name="parent", type="integer", nullable=true)
      */
     protected $parent;
 
@@ -69,9 +69,19 @@ class EmailTemplate implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="entityName", type="string", length=255)
+     * @ORM\Column(name="entityName", type="string", length=255, nullable=true)
      */
     protected $entityName;
+
+    /**
+     * Template type:
+     *  - html
+     *  - text
+     *
+     * @ORM\Column(name="type", type="string", length=20)
+     * @var string
+     */
+    protected $type;
 
     /**
      * @Gedmo\Locale
@@ -80,17 +90,24 @@ class EmailTemplate implements Translatable
 
 
     /**
+     * @param $name
      * @param string $content
+     * @param string $type
      * @param bool $isSystem
+     * @internal param $entityName
      */
-    public function __construct($content, $isSystem = true)
+    public function __construct($name, $content = '', $type = 'html', $isSystem = true)
     {
-        if (preg_match('#{% block subject %}(.*){% endblock subject %}#msi', $content, $match)) {
-            var_dump($match);
-            die();
+        foreach (array('subject', 'entityName') as $templateParam) {
+            if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#si', $content, $match)) {
+                $this->$templateParam = trim($match[1]);
+                $content = trim(str_replace($match[0], '', $content));
+            }
         }
 
+        $this->name = $name;
         $this->content = $content;
+        $this->type = $type;
         $this->isSystem = $isSystem;
     }
 
@@ -252,5 +269,24 @@ class EmailTemplate implements Translatable
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

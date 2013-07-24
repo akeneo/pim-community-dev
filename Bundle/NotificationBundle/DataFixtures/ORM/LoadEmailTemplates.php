@@ -17,9 +17,9 @@ class LoadEmailTemplates extends AbstractFixture implements OrderedFixtureInterf
     {
         $emailTemplates = $this->getEmailTemplatesList();
 
-        foreach ($emailTemplates as $file) {
+        foreach ($emailTemplates as $fileName => $file) {
             $template = file_get_contents($file);
-            $emailTemplate = new EmailTemplate($template);
+            $emailTemplate = new EmailTemplate($fileName, $template);
             $manager->persist($emailTemplate);
         }
 
@@ -40,7 +40,11 @@ class LoadEmailTemplates extends AbstractFixture implements OrderedFixtureInterf
         $templates = array();
         /** @var \Symfony\Component\Finder\SplFileInfo $file  */
         foreach ($files as $file) {
-            $templates[] = $dir . DIRECTORY_SEPARATOR . $file->getFilename();
+            $fileName = str_replace(array('.html.twig', '.html', '.txt.twig', '.txt'), '', $file->getFilename());
+            if (preg_match('#/([\w]+Bundle)/#', $file->getPath(), $match)) {
+                $fileName = $match[1] . ':' . $fileName;
+            }
+            $templates[$fileName] = $file->getPath() . DIRECTORY_SEPARATOR . $file->getFilename();
         }
 
         return $templates;

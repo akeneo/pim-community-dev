@@ -13,7 +13,11 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->emailTemplate = new EmailTemplate();
+        $this->emailTemplate = new EmailTemplate('update_entity.html.twig', 'abc');
+
+        $this->assertEquals('abc', $this->emailTemplate->getContent());
+        $this->assertTrue($this->emailTemplate->getIsSystem());
+        $this->assertEquals('html', $this->emailTemplate->getType());
     }
 
     public function tearDown()
@@ -30,5 +34,7 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
             $this->emailTemplate->{'set'.ucfirst($field)}('abc');
             $this->assertEquals('abc', $this->emailTemplate->{'get'.ucfirst($field)}());
         }
+
+        $this->assertEquals('update_entity', $this->emailTemplate->getName());
     }
 }
