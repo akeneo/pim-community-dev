@@ -3,7 +3,22 @@
 namespace Oro\Bundle\TestFrameworkBundle\Pages;
 
 use PHPUnit_Framework_Assert;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Users;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Roles;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Groups;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Accounts;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Contacts;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Navigation;
 
+/**
+ * @method Users openUsers()
+ * @method Roles openRoles()
+ * @method Groups openGroups()
+ * @method Accounts openAccounts()
+ * @method Contacts openContacts()
+ * @method Navigation openNavigation()
+ * @method Navigation tab()
+ */
 class Page
 {
     protected $redirectUrl = null;

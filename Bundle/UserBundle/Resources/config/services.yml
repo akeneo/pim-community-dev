@@ -39,6 +39,7 @@ parameters:
     oro_user.group.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.attribute_type.user.class: Oro\Bundle\UserBundle\AttributeType\UserType
     oro_user.form.type.user_select.class: Oro\Bundle\UserBundle\Form\Type\UserSelectType
+    oro_user.form.type.user_multiselect.class: Oro\Bundle\UserBundle\Form\Type\UserMultiSelectType
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.autocomplete.user.search_handler: Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
 
@@ -294,6 +295,13 @@ services:
         class: %oro_user.form.type.user_select.class%
         tags:
             - { name: form.type, alias: oro_user_select }
+
+    oro_user.form.type.user_multiselect:
+        class: %oro_user.form.type.user_multiselect.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_user_multiselect }
 
     # Flexible attribute
     oro_user.attribute_type.user:

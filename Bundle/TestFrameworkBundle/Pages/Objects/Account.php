@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages\Objects;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\AbstractEntity;
 use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
-use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
-class Account extends Page implements Entity
+class Account extends AbstractEntity implements Entity
 {
     protected $accountname;
     protected $street;
@@ -22,11 +22,16 @@ class Account extends Page implements Entity
     public function init()
     {
         $this->accountname = $this->byId('orocrm_account_form_name');
-        $this->street = $this->byId('orocrm_account_form_values_4_address_street');
-        $this->city = $this->byId('orocrm_account_form_values_4_address_city');
-        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_4_address_country']/a");
-        $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_4_address_state']/a");
-        $this->zipcode = $this->byId('orocrm_account_form_values_4_address_postalCode');
+        $this->street = $this->byId('orocrm_account_form_values_billing_address_address_street');
+        $this->city = $this->byId('orocrm_account_form_values_billing_address_address_city');
+        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_country']/a");
+        $this->zipcode = $this->byId('orocrm_account_form_values_billing_address_address_postalCode');
+
+        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        } else {
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+        }
 
         return $this;
     }
@@ -75,12 +80,19 @@ class Account extends Page implements Entity
         $this->waitForAjax();
         $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$country}')]", "Country's autocoplete doesn't return search value");
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$country}')]")->click();
+        $this->waitForAjax();
 
         return $this;
     }
 
     public function setState($state)
     {
+        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        } else {
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+        }
+
         $this->state->click();
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
@@ -101,19 +113,6 @@ class Account extends Page implements Entity
     public function getZipCode()
     {
         return $this->zipcode->value();
-    }
-
-    public function save()
-    {
-        $this->byXPath("//button[contains(., 'Save')]")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-        return $this;
-    }
-
-    public function close()
-    {
-        return new Accounts($this->test);
     }
 
     public function edit()

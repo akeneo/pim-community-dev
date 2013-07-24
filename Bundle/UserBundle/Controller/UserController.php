@@ -107,7 +107,15 @@ class UserController extends Controller
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
 
-            return $this->redirect($this->generateUrl('oro_user_index'));
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_index',
+                )
+            );
         }
 
         return array(

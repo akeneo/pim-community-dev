@@ -99,6 +99,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     {
         $self = $this;
         $entitiesId1234 = $this->createMockEntityList('id', array(1, 2, 3, 4));
+
         return array(
             'default' => array(
                 '1,2,3,4',
@@ -171,6 +172,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     'queryBuilder' => function ($repository, array $ids) use ($self) {
                         $result = $repository->createQueryBuilder('o');
                         $result->where('o.id IN (:values)')->setParameter('values', $ids);
+
                         return $result;
                     }
                 ),
@@ -190,8 +192,8 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
 
     /**
      * @dataProvider createErrorsDataProvider
-     * @param array $options
-     * @param array $expectedCalls
+     * @param array  $options
+     * @param array  $expectedCalls
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
@@ -306,6 +308,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                             'queryBuilderCallback',
                             $transformer
                         );
+
                         return true;
                     }
                 )
@@ -333,6 +336,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         foreach ($values as $value) {
             $result[] = $this->createMockEntity($property, $value);
         }
+
         return $result;
     }
 
@@ -348,6 +352,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 
@@ -418,6 +423,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();
         }
+
         return $this->entitiesToIdsTransformer;
     }
 }

@@ -22,7 +22,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
             return array();
         }
 
-        if (!is_array($value)) {
+        if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');
         }
 
@@ -40,7 +40,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
      */
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
+        if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');
         }
 

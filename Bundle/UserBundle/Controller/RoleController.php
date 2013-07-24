@@ -60,7 +60,15 @@ class RoleController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
 
-            return $this->redirect($this->generateUrl('oro_user_role_index'));
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_role_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_role_index',
+                )
+            );
         }
 
         return array(

@@ -1,0 +1,18 @@
+oro_menu_config:
+    items:
+        oro_notification_emailnotification_list:
+            label: 'Transaction Emails'
+            route: 'oro_notification_emailnotification_index'
+            extras:
+                routes: ['oro_notification_emailnotification_*']
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_notification_emailnotification_list: ~
+
+oro_titles:
+    oro_notification_emailnotification_index: "Transactional Emails"
+    oro_notification_emailnotification_update: "Edit notification rule #%%id%%"
+    oro_notification_emailnotification_create: "Add notification rule"
