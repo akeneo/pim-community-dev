@@ -57,6 +57,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataWithSerialization()
     {
+        /** @var WorkflowItem $workflowItem */
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->setMethods(null)
@@ -85,6 +86,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDataWithSerializationFails()
     {
+        /** @var WorkflowItem $workflowItem */
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->setMethods(null)
@@ -95,6 +97,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataWithWithEmptySerializedData()
     {
+        /** @var WorkflowItem $workflowItem */
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->setMethods(null)
@@ -105,14 +108,20 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($data->isEmpty());
     }
 
-    public function testSerializedData()
+    public function testSetSerializedData()
     {
         $this->assertAttributeEmpty('serializedData', $this->workflowItem);
-
         $data = 'serialized_data';
-
         $this->workflowItem->setSerializedData($data);
         $this->assertAttributeEquals($data, 'serializedData', $this->workflowItem);
+    }
+
+    public function testGetSerializedData()
+    {
+        $this->assertNull($this->workflowItem->getSerializedData());
+        $data = 'serialized_data';
+        $this->workflowItem->setSerializedData($data);
+        $this->assertEquals($data, $this->workflowItem->getSerializedData());
     }
 
     public function testClosed()

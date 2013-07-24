@@ -97,9 +97,7 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleAttributes(array $configuration)
     {
-        $attributesConfiguration = !empty($configuration[ConfigurationTree::NODE_ATTRIBUTES])
-            ? $configuration[ConfigurationTree::NODE_ATTRIBUTES]
-            : array();
+        $attributesConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_ATTRIBUTES, array());
 
         return $this->attributeAssembler->assemble($attributesConfiguration);
     }
@@ -111,7 +109,7 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleSteps(array $configuration, Collection $attributes)
     {
-        $stepsConfiguration = $configuration[ConfigurationTree::NODE_STEPS];
+        $stepsConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_STEPS, array());
 
         return $this->stepAssembler->assemble($stepsConfiguration, $attributes);
     }
@@ -123,8 +121,12 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleTransitions(array $configuration, Collection $steps)
     {
-        $transitionsConfiguration = $configuration[ConfigurationTree::NODE_TRANSITIONS];
-        $transitionDefinitionsConfiguration = $configuration[ConfigurationTree::NODE_TRANSITION_DEFINITIONS];
+        $transitionsConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_TRANSITIONS, array());
+        $transitionDefinitionsConfiguration = $this->getOption(
+            $configuration,
+            ConfigurationTree::NODE_TRANSITION_DEFINITIONS,
+            array()
+        );
 
         return $this->transitionAssembler->assemble(
             $transitionsConfiguration,
