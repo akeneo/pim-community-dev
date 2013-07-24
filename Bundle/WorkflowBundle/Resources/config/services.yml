@@ -33,6 +33,7 @@ services:
 
     oro_workflow.registry:
         class: %oro_workflow.registry.class%
+        arguments: [@doctrine, @oro_workflow.workflow_assembler]
 
     oro_workflow.workflow_prototype:
         class: %oro_workflow.workflow_prototype.class%

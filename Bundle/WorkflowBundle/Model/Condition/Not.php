@@ -23,7 +23,7 @@ class Not implements ConditionInterface
     }
 
     /**
-     * Nothing to initialize
+     * Initialize condition that will be negated
      *
      * @param array $options
      * @return Not
