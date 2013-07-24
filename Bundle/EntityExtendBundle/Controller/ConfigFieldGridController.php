@@ -53,7 +53,14 @@ class ConfigFieldGridController extends Controller
         }
 
         $request = $this->getRequest();
-        $form    = $this->createForm(new FieldType());
+        $data    = array(
+            'options' => array(
+                'extend' => array(
+                    'owner' => 'Custom',
+                )
+            )
+        );
+        $form    = $this->createForm(new FieldType(), $data, array('class_name' => $entity->getClassName()));
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);

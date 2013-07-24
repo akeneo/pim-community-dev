@@ -31,14 +31,23 @@ class FieldType extends AbstractType
         ));
         $builder->add('type', 'choice', array(
             'choices'     => array_combine(array_values($this->types), $this->types),
-            'empty_value' => false,
+            'empty_value' => 'Please choice type...',
             'block'       => 'type',
+        ));
+        $builder->add('options', 'oro_entity_config_config_field_type', array(
+            'class_name'  => $options['class_name'],
+            'field_id'    => '',
+            'field_name'  => '',
+            'field_type'  => '',
+            'block'       => 'options',
+            //'attr'        => array('class' => 'hide')
         ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'class_name'   => '',
             'block_config' => array(
                 'type' => array(
                     'title'     => 'Doctrine Type',

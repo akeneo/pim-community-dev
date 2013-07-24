@@ -78,14 +78,14 @@ oro_entity_config:
 #                        sortable:           true
 #                        filterable:         false
 #                        show_filter:        false
-                    form:
-                        type:               choice
-                        block:              entity
-                        options:
-                            choices:        ['No', 'Yes']
-                            read_only:      true
-                            required:       false
-                            label:          "Is Extend Field"
+#                    form:
+#                        type:               choice
+#                        block:              entity
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            read_only:      true
+#                            required:       false
+#                            label:          "Is Extend Field"
 
                 length:
                     options:
