@@ -36,9 +36,10 @@ class ConnectorCompilerPass implements CompilerPassInterface
                         sprintf('The connector service definition "%s" does not exist.', $connectorId)
                     );
                 }
+                $type = $attributes['type'];
                 $registryDefinition->addMethodCall(
                     'addJobToConnector',
-                    array($connectorId, new Reference($connectorId), $jobId, new Reference($jobId))
+                    array($connectorId, new Reference($connectorId), $jobId, new Reference($jobId), $type)
                 );
             }
         }

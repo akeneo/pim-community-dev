@@ -16,33 +16,9 @@ use Pim\Bundle\BatchBundle\Connector\ConnectorInterface;
  */
 class ConnectorRegistry
 {
-    /**
-     * Connectors references
-     * @var \ArrayAccess
-     */
-    protected $connectors;
 
-    /**
-     * Jobs references
-     * @var \ArrayAccess
-     */
-    protected $jobs;
-
-    /**
-     * Connector to jobs aliases
-     * @var \ArrayAccess
-     */
-    protected $connectorToJobs;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->connectors      = array();
-        $this->jobs            = array();
-        $this->connectorToJobs = array();
-    }
+	protected $importJobs = array();
+	protected $exportJobs = array();
 
     /**
      * Add a job to a connector
@@ -54,21 +30,20 @@ class ConnectorRegistry
      *
      * @return ConnectorRegistry
      */
-    public function addJobToConnector($connector, $jobAlias, JobInterface $job)
+    public function addJobToConnector($connector, $type, $jobAlias, JobInterface $job)
     {
-        $this->jobs[$connector][$jobAlias] = $job;
+ 		if ($type === AbstractJob::TYPE_IMPORT) {
+        	$this->importJobs[$connector][$jobAlias] = $job;        
+		} else { 
+   			$this->exportJobs[$connector][$jobAlias] = $job;        
+		}    
 
-        return $this;
+	    return $this;
     }
 
-    /**
-     * Get the list of connectors
-     *
-     * @return multitype:ConnectorInterface
-     */
-    public function getConnectors()
+    public function getJob($connector, $type, $jobAlias)
     {
-        return $this->connectors;
+        return $this->jobs[$connector][$jobAlias];
     }
 
     /**
@@ -76,23 +51,18 @@ class ConnectorRegistry
      *
      * @return multitype:JobInterface
      */
-    public function getJobs()
+    public function getExportJobs()
     {
-        return $this->jobs;
+        return $this->exportJobs;
     }
 
     /**
-     * Get the associative array of connectors aliases to jobs aliases
+     * Get the list of jobs
      *
-     * @return multitype
+     * @return multitype:JobInterface
      */
-    public function getConnectorToJobs()
+    public function getImportJobs()
     {
-        return $this->connectorToJobs;
-    }
-
-    public function getJob($connector, $jobAlias)
-    {
-        return $this->jobs[$connector][$jobAlias];
+        return $this->importJobs;
     }
 }

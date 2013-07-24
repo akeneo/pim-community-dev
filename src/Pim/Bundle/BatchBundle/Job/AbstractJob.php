@@ -27,6 +27,15 @@ use Pim\Bundle\BatchBundle\Logger;
  */
 abstract class AbstractJob implements JobInterface
 {
+    /**
+     * @staticvar string
+     */
+    const TYPE_IMPORT = 'import';
+
+    /**
+     * @staticvar string
+     */
+    const TYPE_EXPORT = 'export';
 
     protected $name;
 

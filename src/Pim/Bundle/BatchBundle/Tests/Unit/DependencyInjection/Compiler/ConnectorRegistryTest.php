@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
 
-use Pim\Bundle\BatchBundle\DependencyInjection\Compiler\ConnectorRegistry;
+use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\BatchBundle\Tests\Unit\Connector\Demo\MyConnector;
 use Pim\Bundle\BatchBundle\Tests\Unit\Job\Demo\MyJob;
 

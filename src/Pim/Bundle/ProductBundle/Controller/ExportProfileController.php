@@ -19,7 +19,6 @@ use Pim\Bundle\ProductBundle\Entity\ExportProfile;
  */
 class ExportProfileController extends Controller
 {
-
     /**
      * List export profiles
      *
@@ -30,7 +29,7 @@ class ExportProfileController extends Controller
      */
     public function indexAction()
     {
-        $profiles = $this->getExportProfileRepository()->findAll();
+        $profiles = $this->getRepository('PimProductBundle:ExportProfile')->findAll();
 
         return array('profiles' => $profiles);
     }
@@ -87,31 +86,11 @@ class ExportProfileController extends Controller
      */
     public function removeAction(ExportProfile $profile)
     {
-        $this->getEntityManager()->remove($profile);
-        $this->getEntityManager()->flush();
+        $this->getManager()->remove($profile);
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Export profile successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_exportprofile_index'));
-    }
-
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get export profile repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getExportProfileRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:ExportProfile');
     }
 }

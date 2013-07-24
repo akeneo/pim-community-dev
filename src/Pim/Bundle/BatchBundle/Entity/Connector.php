@@ -197,4 +197,15 @@ class Connector
     {
         return $this->jobs;
     }
+
+    /**
+     * Convert connector to string
+     * Concats the service id with ".label" to automatically translate it using translator
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getServiceId() .'.label';
+    }
 }

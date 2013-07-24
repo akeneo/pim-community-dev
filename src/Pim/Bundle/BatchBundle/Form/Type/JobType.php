@@ -26,7 +26,7 @@ class JobType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('description', 'text', array('required' => true));
-        //$builder->add('connector', 'hidden');
+        // $builder->add('type', 'hidden');
 
         if (isset($options['data'])) {
             $job = $options['data'];
