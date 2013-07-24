@@ -36,7 +36,7 @@ services:
 
     oro_notification.form.type.email_notification:
         class: %oro_notification.form.type.email_notification.class%
-        arguments: [%oro_config.entities%, %oro_notification.emailnotification.templates_list%]
+        arguments: [%oro_config.entities% ]
         tags:
             - { name: form.type, alias: emailnotification }
 

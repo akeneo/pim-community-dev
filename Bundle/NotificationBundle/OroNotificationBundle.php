@@ -38,7 +38,6 @@ class OroNotificationBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new NotificationHandlerPass())
-            ->addCompilerPass(new TemplatesCompilerPass($this->kernel->getBundles()))
             ->addCompilerPass(new EventsCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 }
