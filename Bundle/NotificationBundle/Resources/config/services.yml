@@ -36,7 +36,9 @@ services:
 
     oro_notification.form.type.email_notification:
         class: %oro_notification.form.type.email_notification.class%
-        arguments: [%oro_config.entities% ]
+        arguments:
+            - %oro_config.entities%
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: emailnotification }
 

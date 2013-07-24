@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +26,11 @@ class EmailNotificationType extends AbstractType
      */
     protected $templateNameChoices = array();
 
-    public function __construct($entitiesConfig = array(), $templatesList = array())
+    /**
+     * @param array $entitiesConfig
+     * @param ObjectManager $em
+     */
+    public function __construct($entitiesConfig, ObjectManager $em)
     {
         $this->entityNameChoices = array_map(
             function ($value) {
@@ -33,6 +38,7 @@ class EmailNotificationType extends AbstractType
             },
             $entitiesConfig
         );
+
         $this->entitiesData = $entitiesConfig;
         array_walk(
             $this->entitiesData,
@@ -46,12 +52,17 @@ class EmailNotificationType extends AbstractType
                 $value = array_search('Oro\\Bundle\\TagBundle\\Entity\\ContainAuthorInterface', $interfaces) !== false;
             }
         );
-        $this->templateNameChoices = array_map(
-            function ($value) {
-                return isset($value['name'])? $value['name'] : '';
-            },
-            $templatesList
-        );
+
+        $templatesList = $em->getRepository('Oro\Bundle\NotificationBundle\Entity\EmailTemplate')
+            ->findAll();
+
+        $this->templateNameChoices = $templatesList;
+//        $this->templateNameChoices = array_map(
+//            function ($value) {
+//                return isset($value->getName())? $value['name'] : '';
+//            },
+//            $templatesList
+//        );
     }
 
     /**

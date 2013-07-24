@@ -67,9 +67,10 @@ class EmailNotificationHandler extends EventHandlerAbstract
 
             $template = str_replace(
                 'Bundle:',
-                '/../' . TemplatesCompilerPass::DIR_NAME . DIRECTORY_SEPARATOR,
+                '/../emails/',
                 $notification->getTemplate()
             );
+            return false;
 
             $emailTemplate = $this->twig->loadTemplate($template);
             // TODO: There's a bug with sandbox and forms, to be investigated

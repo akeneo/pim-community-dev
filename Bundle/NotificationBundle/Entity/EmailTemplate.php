@@ -289,4 +289,15 @@ class EmailTemplate implements Translatable
     {
         return $this->type;
     }
+
+    /**
+     * clone template
+     */
+    public function __clone()
+    {
+        // cloned entity will be child
+        $this->parent = $this->id;
+        $this->id = null;
+        $this->isSystem = false;
+    }
 }
