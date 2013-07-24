@@ -115,13 +115,13 @@ class AttributeTypeManager
     public function getAttributeTypes()
     {
         $types = $this->productManager->getAttributeTypes();
-        $choice = array();
+        $choices = array();
         foreach ($types as $type) {
-            $choice[$type]= $type;
+            $choices[$type] = $type;
         }
-        asort($choice);
+        asort($choices);
 
-        return $choice;
+        return $choices;
     }
 
     /**

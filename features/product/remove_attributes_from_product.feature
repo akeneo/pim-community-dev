@@ -44,9 +44,9 @@ Feature: Remove an attribute from a product
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:
-      | product | label | group | family  |
-      |         | Model | Other | vehicle |
-      | kangoo  | Color | Other |         |
+      | product | label | group | family  | scopable |
+      |         | Model | Other | vehicle | no       |
+      | kangoo  | Color | Other |         | yes      |
     And the following product values:
       | product | attribute | scope     | value |
       | kangoo  | Color     | web       | red   |
