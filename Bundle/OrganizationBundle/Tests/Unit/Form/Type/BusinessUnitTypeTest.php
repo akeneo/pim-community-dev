@@ -31,7 +31,7 @@ class BusinessUnitTypeTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $builder->expects($this->exactly(8))
+        $builder->expects($this->any())
             ->method('add')
             ->will($this->returnSelf());
 
