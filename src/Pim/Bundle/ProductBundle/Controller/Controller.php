@@ -45,6 +45,25 @@ class Controller extends BaseController
     }
 
     /**
+     * Find an entity
+     * @param string  $repository Example: 'PimProductBundle:Product'
+     * @param integer $id
+     *
+     * @throws NotFoundHttpException
+     * @return mixed
+     */
+    protected function findOr404($repository, $id)
+    {
+        $result = $this->getEntityManager()->getRepository($repository)->find($id);
+
+        if (!$result) {
+            throw $this->createNotFoundException(sprintf('%s entity not found', end(explode(':', $repository))));
+        }
+
+        return $result;
+    }
+
+    /**
      * Get the AvailbleProductAttributes form
      *
      * @param array                      $attributes          The product attributes
@@ -79,7 +98,9 @@ class Controller extends BaseController
     /**
      * Get the log entries datagrid for the given product
      *
-     * @param Product $product
+     * @param mixed  $entity
+     * @param string $route
+     * @param array  $routeParams
      *
      * @return Oro\Bundle\GridBundle\Datagrid\Datagrid
      */

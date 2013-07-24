@@ -121,6 +121,30 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Deletes values that link an attribute to a product
+     *
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
+    {
+        $values = $this->getFlexibleValueRepository()->findBy(
+            array(
+                'entity'    => $product,
+                'attribute' => $attribute,
+            )
+        );
+
+        foreach ($values as $value) {
+            $this->storageManager->remove($value);
+        }
+
+        $this->storageManager->flush();
+    }
+
+    /**
      * Save a product in two phases :
      *   1) Persist and flush the entity as usual and associate it to the provided categories
      *      associated with the provided tree
@@ -246,11 +270,11 @@ class ProductManager extends FlexibleManager
                 }
             }
 
-            $missingValues = array_filter($requiredValues, function($value) use ($existingValues) {
+            $missingValues = array_filter($requiredValues, function ($value) use ($existingValues) {
                 return !in_array($value, $existingValues);
             });
 
-            $redundantValues = array_filter($existingValues, function($value) use ($requiredValues) {
+            $redundantValues = array_filter($existingValues, function ($value) use ($requiredValues) {
                 return !in_array($value, $requiredValues);
             });
 

@@ -199,7 +199,7 @@ class ProductController extends Controller
      * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
      *
      */
-    public function addProductAttributes($id)
+    public function addProductAttributesAction($id)
     {
         $product             = $this->findProductOr404($id);
         $manager             = $this->getProductManager();
@@ -247,39 +247,31 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove an attribute value
+     * Remove an attribute form a product
      *
      * @param int $productId
      * @param int $attributeId
      *
-     * @Route("/{productId}/attributes/{attributeId}")
+     * @Route("/{productId}/attribute/{attributeId}/remove")
      * @Method("DELETE")
      * @return array
      */
-    public function removeProductValueAction($productId, $attributeId)
+    public function removeProductAttributeAction($productId, $attributeId)
     {
-        $values = $this->getProductValueRepository()->findBy(
-            array(
-                'entity'    => $productId,
-                'attribute' => $attributeId,
-            )
-        );
+        $product   = $this->findOr404('PimProductBundle:Product', $productId);
+        $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
 
-        if (false === $this->checkValuesRemovability($values)) {
+        if (!$product->isAttributeRemovable($attribute)) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'Could not find removable product attribute for product %d with id %d',
-                    $productId,
-                    $attributeId
+                    'Attribute %s can not be removed from the product %s',
+                    $atttribute->getCode(),
+                    $product->getCode()
                 )
             );
         }
 
-        $em = $this->getEntityManager();
-        foreach ($values as $value) {
-            $em->remove($value);
-        }
-        $em->flush();
+        $this->getProductManager()->removeAttributeFromProduct($product, $attribute);
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
