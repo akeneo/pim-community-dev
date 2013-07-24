@@ -163,6 +163,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $obj = $this->createWorkflow(array('entityBinder' => $entityBinder));
         $obj->setStartStepName('startStep');
         $obj->setName('testWorkflow');
+        if ($entity) {
+            $obj->setManagedEntityClass(get_class($entity));
+        }
 
         $workflowItem = $obj->createWorkflowItem($entity);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);
@@ -186,6 +189,28 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
                 'entity' => new \DateTime('now'),
             )
         );
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Managed entity must exist
+     */
+    public function testCreateWorkflowNoEntityException()
+    {
+        $obj = $this->createWorkflow();
+        $obj->setManagedEntityClass('\DateTime');
+        $obj->createWorkflowItem();
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Managed entity must be instance of \DateTime
+     */
+    public function testCreateWorkflowIncorrectEntityException()
+    {
+        $obj = $this->createWorkflow();
+        $obj->setManagedEntityClass('\DateTime');
+        $obj->createWorkflowItem(new \DateTimeZone('UTC'));
     }
 
     /**

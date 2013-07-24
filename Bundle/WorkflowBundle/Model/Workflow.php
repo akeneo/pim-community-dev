@@ -331,7 +331,13 @@ class Workflow
         $workflowItem->setCurrentStepName($this->getStartStepName());
 
         // set managed entity
-        if ($entity) {
+        if ($this->managedEntityClass) {
+            if (!$entity) {
+                throw new \LogicException('Managed entity must exist');
+            } elseif (!($entity instanceof $this->managedEntityClass)) {
+                throw new \LogicException(sprintf('Managed entity must be instance of %s', $this->managedEntityClass));
+            }
+
             $this->entityBinder->bind($workflowItem, $entity);
             $workflowItem->getData()->set(self::MANAGED_ENTITY_KEY, $entity);
         }
