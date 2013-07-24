@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowTest extends \PHPUnit_Framework_TestCase
@@ -289,29 +289,42 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $obj->transit($workflowItem, 'transition');
     }
 
-    public function testGetStepAttributes()
+    public function testSetAttributes()
     {
+        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
+            ->getMock();
+        $attributeOne->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('attr1'));
+
+        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
+            ->getMock();
+        $attributeTwo->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('attr2'));
+
         $obj = new Workflow();
 
-        $attributeFoo = new StepAttribute();
-        $attributeFoo->setName('foo');
-        $step = new Step();
-        $step->setAttributes(array($attributeFoo));
-        $obj->getSteps()->add($step);
-
-        $attributeBar = new StepAttribute();
-        $attributeBar->setName('bar');
-        $step = new Step();
-        $step->setAttributes(array($attributeBar));
-        $obj->getSteps()->add($step);
-
-        $attributes = $obj->getStepAttributes();
-
+        $obj->setAttributes(array($attributeOne, $attributeTwo));
+        $attributes = $obj->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
-        $this->assertEquals(
-            array('foo' => $attributeFoo, 'bar' => $attributeBar),
-            $attributes->toArray()
-        );
+        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
+        $this->assertEquals($expected, $attributes->toArray());
+
+        $attributeCollection = new ArrayCollection(array('attr1' => $attributeOne, 'attr2' => $attributeTwo));
+        $obj->setAttributes($attributeCollection);
+        $attributes = $obj->getAttributes();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
+        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
+        $this->assertEquals($expected, $attributes->toArray());
+    }
+
+    public function testGetStepAttributes()
+    {
+        $attributes = new ArrayCollection();
+        $obj = new Workflow();
+        $obj->setAttributes($attributes);
+        $this->assertEquals($attributes, $obj->getAttributes());
     }
 
     protected function getStepMock($name)

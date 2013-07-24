@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 
 class StepTest extends \PHPUnit_Framework_TestCase
@@ -80,23 +81,31 @@ class StepTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAttributes()
     {
-        $stepAttributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\StepAttribute')
+        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
             ->getMock();
-        $stepAttributeOne->expects($this->once())
+        $attributeOne->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('attr1'));
 
-        $stepAttributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\StepAttribute')
+        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
             ->getMock();
-        $stepAttributeTwo->expects($this->once())
+        $attributeTwo->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('attr2'));
 
         $obj = new Step();
-        $obj->setAttributes(array($stepAttributeOne, $stepAttributeTwo));
+
+        $obj->setAttributes(array($attributeOne, $attributeTwo));
         $attributes = $obj->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
-        $expected = array('attr1' => $stepAttributeOne, 'attr2' => $stepAttributeTwo);
+        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
+        $this->assertEquals($expected, $attributes->toArray());
+
+        $attributeCollection = new ArrayCollection(array('attr1' => $attributeOne, 'attr2' => $attributeTwo));
+        $obj->setAttributes($attributeCollection);
+        $attributes = $obj->getAttributes();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
+        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
         $this->assertEquals($expected, $attributes->toArray());
     }
 }

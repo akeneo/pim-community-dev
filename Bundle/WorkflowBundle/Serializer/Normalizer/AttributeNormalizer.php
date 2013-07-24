@@ -7,13 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class AttributeNormalizer
 {
     /**
-     * Local cache for StepAttributes of Workflow
+     * Local cache for Attributes of Workflow
      *
      * @var Collection[]
      */
@@ -25,7 +25,7 @@ class AttributeNormalizer
     protected $workflow;
 
     /**
-     * @param ManagerRegistry $em
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -43,12 +43,12 @@ class AttributeNormalizer
     public function normalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getStepAttribute($attributeName);
+        $stepAttribute = $this->getAttribute($attributeName);
         if (!$stepAttribute) {
             return $attributeValue;
         }
 
-        $entityManager = $this->getStepAttributeEntityManager($stepAttribute);
+        $entityManager = $this->getAttributeEntityManager($stepAttribute);
         if (null !== $attributeValue && $entityManager) {
             $ids = $this->getEntityIdentifierValues($stepAttribute, $attributeValue, $entityManager);
             if (count($ids) == 1) {
@@ -71,11 +71,11 @@ class AttributeNormalizer
     public function denormalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getStepAttribute($attributeName);
+        $stepAttribute = $this->getAttribute($attributeName);
         if (!$stepAttribute) {
             return $attributeValue;
         }
-        $entityManager = $this->getStepAttributeEntityManager($stepAttribute);
+        $entityManager = $this->getAttributeEntityManager($stepAttribute);
         if (null !== $attributeValue && $entityManager) {
             $attributeValue = $entityManager->getReference(
                 $stepAttribute->getOption('entity_class'),
@@ -86,23 +86,23 @@ class AttributeNormalizer
     }
 
     /**
-     * Returs EntityManager if StepAttribute has option "entity_class", otherwise return null
+     * Returs EntityManager if Attribute has option "entity_class", otherwise return null
      *
-     * @param StepAttribute $stepAttribute
+     * @param Attribute $attribute
      * @return EntityManager|null
      * @throws WorkflowException If option 'entity_class' is not managed Doctrine entity
      */
-    protected function getStepAttributeEntityManager(StepAttribute $stepAttribute)
+    protected function getAttributeEntityManager(Attribute $attribute)
     {
         $result = null;
-        $entityClass = $stepAttribute->getOption('entity_class');
+        $entityClass = $attribute->getOption('entity_class');
         if ($entityClass) {
             $result = $this->registry->getManagerForClass($entityClass);
             if (!$result) {
                 throw new WorkflowException(
                     sprintf(
                         '"%s" attribute of workflow "%s" refers to "%s", but it\'s not managed entity class',
-                        $stepAttribute->getName(),
+                        $attribute->getName(),
                         $this->workflow->getName(),
                         $entityClass
                     )
@@ -115,13 +115,13 @@ class AttributeNormalizer
     /**
      * Returns an array of identifiers of entity.
      *
-     * @param StepAttribute $stepAttribute
+     * @param Attribute $stepAttribute
      * @param object $entity
      * @param EntityManager $entityManager
      * @return array
      * @throws WorkflowException If cannot get entity ID
      */
-    protected function getEntityIdentifierValues(StepAttribute $stepAttribute, $entity, EntityManager $entityManager)
+    protected function getEntityIdentifierValues(Attribute $stepAttribute, $entity, EntityManager $entityManager)
     {
         $metadata = $entityManager->getClassMetadata($stepAttribute->getOption('entity_class'));
         $result = $metadata->getIdentifierValues($entity);
@@ -141,28 +141,28 @@ class AttributeNormalizer
     }
 
     /**
-     * Get StepAttribute by name if it exist in workflow
+     * Get Attribute by name if it exist in workflow
      *
      * @param string $attributeName
-     * @return StepAttribute|null
+     * @return Attribute|null
      */
-    protected function getStepAttribute($attributeName)
+    protected function getAttribute($attributeName)
     {
-        return $this->getStepAttributes()->get($attributeName);
+        return $this->getAttributes()->get($attributeName);
     }
 
     /**
-     * Get collection of StepAttributes for current Workflow.
+     * Get collection of Attributes for current Workflow.
      *
-     * This method caches results of Workflow::getStepAttributes method
+     * This method caches results of Workflow::getAttributes method
      *
      * @return Collection
      */
-    protected function getStepAttributes()
+    protected function getAttributes()
     {
         $workflowName = $this->workflow->getName();
         if (!isset($this->stepAttributesByWorkflow[$workflowName])) {
-            $this->stepAttributesByWorkflow[$workflowName] = $this->workflow->getStepAttributes();
+            $this->stepAttributesByWorkflow[$workflowName] = $this->workflow->getAttributes();
         }
         return $this->stepAttributesByWorkflow[$workflowName];
     }

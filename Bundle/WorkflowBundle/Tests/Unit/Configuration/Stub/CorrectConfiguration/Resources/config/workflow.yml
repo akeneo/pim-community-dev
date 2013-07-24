@@ -13,12 +13,14 @@ workflows:
                 allowed_transitions:
                     - first_transition
                 attributes:
-                    first_attribute:
-                        form_type: text
-                        label: 'First Attribute'
-                        options:
-                            required: true
-                            # ... other attributes
+                    - first_attribute
+        attributes:
+            first_attribute:
+                form_type: text
+                label: 'First Attribute'
+                options:
+                    required: true
+                    # ... other attributes
         transitions:
             first_transition:
                 label: 'First Transition'
@@ -43,6 +45,7 @@ workflows:
                 is_final: false
                 allowed_transitions: []
                 attributes: []
+        attributes: []
         transitions:
             first_transition:
                 label: 'Second Transition'

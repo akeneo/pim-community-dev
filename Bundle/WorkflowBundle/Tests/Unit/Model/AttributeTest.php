@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
-class StepAttributeTest extends \PHPUnit_Framework_TestCase
+class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider propertiesDataProvider
@@ -14,9 +14,9 @@ class StepAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $getter = 'get' . ucfirst($property);
         $setter = 'set' . ucfirst($property);
-        $obj = new StepAttribute();
+        $obj = new Attribute();
         $this->assertInstanceOf(
-            'Oro\Bundle\WorkflowBundle\Model\StepAttribute',
+            'Oro\Bundle\WorkflowBundle\Model\Attribute',
             call_user_func_array(array($obj, $setter), array($value))
         );
         $this->assertEquals($value, call_user_func_array(array($obj, $getter), array()));
@@ -34,7 +34,7 @@ class StepAttributeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetOption()
     {
-        $obj = new StepAttribute();
+        $obj = new Attribute();
         $obj->setOptions(array('key' => 'test'));
         $this->assertEquals('test', $obj->getOption('key'));
         $obj->setOption('key2', 'test2');

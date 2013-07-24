@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-class StepAttribute
+class Attribute
 {
     /**
      * @var string
@@ -28,7 +28,7 @@ class StepAttribute
      * Set form type name.
      *
      * @param string $formType
-     * @return StepAttribute
+     * @return Attribute
      */
     public function setFormTypeName($formType)
     {
@@ -50,7 +50,7 @@ class StepAttribute
      * Set attribute label.
      *
      * @param string $label
-     * @return StepAttribute
+     * @return Attribute
      */
     public function setLabel($label)
     {
@@ -72,7 +72,7 @@ class StepAttribute
      * Set attribute name.
      *
      * @param string $name
-     * @return StepAttribute
+     * @return Attribute
      */
     public function setName($name)
     {
@@ -94,7 +94,7 @@ class StepAttribute
      * Set options.
      *
      * @param array $options
-     * @return StepAttribute
+     * @return Attribute
      */
     public function setOptions(array $options)
     {
@@ -117,7 +117,7 @@ class StepAttribute
      *
      * @param string $key
      * @param mixed $value
-     * @return StepAttribute
+     * @return Attribute
      */
     public function setOption($key, $value)
     {

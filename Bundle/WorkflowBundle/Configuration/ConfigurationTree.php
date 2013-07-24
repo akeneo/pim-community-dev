@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\NodeInterface;
 class ConfigurationTree
 {
     const NODE_STEPS = 'steps';
+    const NODE_ATTRIBUTES = 'attributes';
     const NODE_TRANSITIONS = 'transitions';
     const NODE_TRANSITION_DEFINITIONS = 'transition_definitions';
 
@@ -43,6 +44,7 @@ class ConfigurationTree
         if (null === $this->nodeDefinitions) {
             $this->nodeDefinitions = array(
                 self::NODE_STEPS                  => $this->getStepsNode(),
+                self::NODE_ATTRIBUTES             => $this->getAttributesNode(),
                 self::NODE_TRANSITIONS            => $this->getTransitionsNode(),
                 self::NODE_TRANSITION_DEFINITIONS => $this->getTransitionDefinitionsNode()
             );
@@ -77,25 +79,38 @@ class ConfigurationTree
                         ->defaultFalse()
                     ->end()
                     ->arrayNode('attributes')
-                        ->prototype('array')
-                            ->children()
-                                ->scalarNode('label')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
-                                ->end()
-                                ->scalarNode('form_type')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
-                                ->end()
-                                ->arrayNode('options')
-                                ->end()
-                            ->end()
+                        ->prototype('scalar')
                         ->end()
                     ->end()
                     ->arrayNode('allowed_transitions')
                         ->prototype('scalar')
                         ->end()
                     ->end()
+                ->end()
+            ->end();
+
+        return $rootNode;
+    }
+
+    /**
+     * @return NodeDefinition
+     */
+    protected function getAttributesNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root(self::NODE_ATTRIBUTES);
+        $rootNode
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('label')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->scalarNode('form_type')
+                        ->isRequired()
+                    ->cannotBeEmpty()
+                    ->end()
+                    ->arrayNode('options')
                 ->end()
             ->end();
 

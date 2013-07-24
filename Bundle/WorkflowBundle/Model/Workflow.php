@@ -31,6 +31,11 @@ class Workflow
     /**
      * @var Collection
      */
+    protected $attributes;
+
+    /**
+     * @var Collection
+     */
     protected $transitions;
 
     /**
@@ -52,6 +57,7 @@ class Workflow
     {
         $this->transitions = new ArrayCollection();
         $this->steps = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
         $this->enabled = true;
     }
 
@@ -176,22 +182,35 @@ class Workflow
     }
 
     /**
+     * Set attributes.
+     *
+     * @param Attribute[]|ArrayCollection $attributes
+     * @return Workflow
+     */
+    public function setAttributes($attributes)
+    {
+        if ($attributes instanceof ArrayCollection) {
+            $this->attributes = $attributes;
+        } else {
+            $data = array();
+            foreach ($attributes as $attribute) {
+                $data[$attribute->getName()] = $attribute;
+            }
+            unset($attributes);
+            $this->attributes = new ArrayCollection($data);
+        }
+
+        return $this;
+    }
+
+    /**
      * Get step attributes.
      *
      * @return Collection
      */
-    public function getStepAttributes()
+    public function getAttributes()
     {
-        $result = new ArrayCollection();
-        /** @var $step Step */
-        foreach ($this->steps as $step) {
-            /** @var $attribute StepAttribute */
-            foreach ($step->getAttributes() as $attribute) {
-                $result->set($attribute->getName(), $attribute);
-            }
-        }
-
-        return $result;
+        return $this->attributes;
     }
 
     /**

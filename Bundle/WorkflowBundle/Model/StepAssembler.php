@@ -2,22 +2,25 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Oro\Bundle\WorkflowBundle\Model\Step;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 
 class StepAssembler
 {
     /**
      * @param array $configuration
+     * @param Attribute[]|ArrayCollection $attributes
      * @return ArrayCollection
      */
-    public function assemble(array $configuration)
+    public function assemble(array $configuration, $attributes)
     {
         $steps = new ArrayCollection();
-        foreach ($configuration as $stepName => $stepOptions) {
-            $step = $this->assembleStep($stepName, $stepOptions);
-            $steps->set($stepName, $step);
+        foreach ($configuration as $name => $options) {
+            $step = $this->assembleStep($name, $options, $attributes);
+            $steps->set($name, $step);
         }
 
         return $steps;
@@ -26,12 +29,15 @@ class StepAssembler
     /**
      * @param string $name
      * @param array $options
+     * @param Attribute[]|ArrayCollection $attributes
      * @return Step
      */
-    protected function assembleStep($name, array $options)
+    protected function assembleStep($name, array $options, $attributes)
     {
         $allowedTransitions = !empty($options['allowed_transitions']) ? $options['allowed_transitions'] : array();
-        $attributes = !empty($options['attributes']) ? $this->assembleStepAttributes($options['attributes']) : array();
+        $stepAttributes = !empty($options['attributes'])
+            ? $this->assembleStepAttributes($options['attributes'], $attributes)
+            : array();
 
         $step = new Step();
         $step->setName($name);
@@ -40,40 +46,28 @@ class StepAssembler
         $step->setOrder($options['order']);
         $step->setIsFinal($options['is_final']);
         $step->setAllowedTransitions($allowedTransitions);
-        $step->setAttributes($attributes);
+        $step->setAttributes($stepAttributes);
 
         return $step;
     }
 
     /**
-     * @param array $configuration
-     * @return StepAttribute[]
+     * @param array $stepAttributeNames
+     * @param Attribute[]|ArrayCollection $attributes
+     * @return ArrayCollection
+     * @throws UnknownAttributeException
      */
-    protected function assembleStepAttributes(array $configuration)
+    protected function assembleStepAttributes(array $stepAttributeNames, $attributes)
     {
-        $attributes = array();
-        foreach ($configuration as $attributeName => $attributeOptions) {
-            $attributes[$attributeName] = $this->assembleStepAttribute($attributeName, $attributeOptions);
+        $stepAttributes = new ArrayCollection();
+        foreach ($stepAttributeNames as $stepAttributeName) {
+            if (!isset($attributes[$stepAttributeName])) {
+                throw new UnknownAttributeException(sprintf('Unknown attribute %s', $stepAttributeName));
+            }
+
+            $stepAttributes->set($stepAttributeName, $attributes[$stepAttributeName]);
         }
 
-        return $attributes;
-    }
-
-    /**
-     * @param string $name
-     * @param array $options
-     * @return StepAttribute
-     */
-    protected function assembleStepAttribute($name, array $options)
-    {
-        $attributeOptions = !empty($options['options']) ? $options['options'] : array();
-
-        $stepAttribute = new StepAttribute();
-        $stepAttribute->setName($name);
-        $stepAttribute->setLabel($options['label']);
-        $stepAttribute->setFormTypeName($options['form_type']);
-        $stepAttribute->setOptions($attributeOptions);
-
-        return $stepAttribute;
+        return $stepAttributes;
     }
 }

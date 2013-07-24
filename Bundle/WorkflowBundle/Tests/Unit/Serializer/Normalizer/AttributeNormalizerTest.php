@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Serializer\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -52,7 +52,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->workflow = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Workflow')
-            ->setMethods(array('getStepAttributes', 'getName'))
+            ->setMethods(array('getAttributes', 'getName'))
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -64,9 +64,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeName = 'foo';
         $attributeValue = 'fooValue';
 
-        $stepAttributes = $this->createStepAttributes(array('bar' => array()));
+        $stepAttributes = $this->createAttributes(array('bar' => array()));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->never())->method($this->anything());
@@ -82,9 +82,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeName = 'foo';
         $attributeValue = 'fooValue';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array()));
+        $stepAttributes = $this->createAttributes(array('foo' => array()));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->never())->method($this->anything());
@@ -102,9 +102,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $entityIdentifiers = array('id' => 1);
         $entityClass = 'FooClass';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->once())->method('getManagerForClass')
@@ -132,9 +132,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $entityIdentifiers = array('id1' => 'foo', 'id2' => 'bar');
         $entityClass = 'FooClass';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->once())->method('getManagerForClass')
@@ -167,9 +167,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeValue = $this->getMock('FooClass');
         $entityClass = 'FooClass';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->once())->method('getManagerForClass')
@@ -199,9 +199,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeValue = $this->getMock('FooClass');
         $entityClass = 'FooClass';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->workflow->expects($this->exactly(2))->method('getName')
@@ -219,9 +219,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeName = 'foo';
         $attributeValue = 'fooValue';
 
-        $stepAttributes = $this->createStepAttributes(array('bar' => array()));
+        $stepAttributes = $this->createAttributes(array('bar' => array()));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->never())->method($this->anything());
@@ -237,9 +237,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attributeName = 'foo';
         $attributeValue = 'fooValue';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array()));
+        $stepAttributes = $this->createAttributes(array('foo' => array()));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->never())->method($this->anything());
@@ -257,9 +257,9 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $entity = $this->getMock('FooClass');
         $entityClass = 'FooClass';
 
-        $stepAttributes = $this->createStepAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
 
-        $this->workflow->expects($this->once())->method('getStepAttributes')
+        $this->workflow->expects($this->once())->method('getAttributes')
             ->will($this->returnValue($stepAttributes));
 
         $this->registry->expects($this->once())->method('getManagerForClass')
@@ -276,12 +276,12 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function createStepAttributes(array $attributesOptions)
+    protected function createAttributes(array $attributesOptions)
     {
         $stepAttributes = new ArrayCollection();
 
         foreach ($attributesOptions as $attributeName => $options) {
-            $stepAttribute = new StepAttribute();
+            $stepAttribute = new Attribute();
             $stepAttribute->setName('foo');
             $stepAttribute->setOptions($options);
             $stepAttributes->set($attributeName, $stepAttribute);

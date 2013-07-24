@@ -3,7 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\WorkflowBundle\Model\StepAttribute;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
 class Step
 {
@@ -117,17 +117,22 @@ class Step
     /**
      * Set attributes.
      *
-     * @param StepAttribute[] $attributes
+     * @param Attribute[]|ArrayCollection $attributes
      * @return Step
      */
-    public function setAttributes(array $attributes)
+    public function setAttributes($attributes)
     {
-        $data = array();
-        foreach ($attributes as $attribute) {
-            $data[$attribute->getName()] = $attribute;
+        if ($attributes instanceof ArrayCollection) {
+            $this->attributes = $attributes;
+        } else {
+            $data = array();
+            foreach ($attributes as $attribute) {
+                $data[$attribute->getName()] = $attribute;
+            }
+            unset($attributes);
+            $this->attributes = new ArrayCollection($data);
         }
-        unset($attributes);
-        $this->attributes = new ArrayCollection($data);
+
         return $this;
     }
 
