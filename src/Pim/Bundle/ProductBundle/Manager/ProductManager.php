@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\ProductBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 /**
  * Product manager
@@ -102,6 +103,45 @@ class ProductManager extends FlexibleManager
         }
 
         return $product;
+    }
+
+    /**
+     * Creates required value(s) to add the attribute to the product
+     *
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     */
+    public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
+    {
+        $requiredValues = array();
+
+        if ($attribute->getScopable()) {
+            $channels = $this->getChannels();
+            if ($attribute->getTranslatable()) {
+                foreach ($channels as $channel) {
+                    foreach ($channel->getLocales() as $locale) {
+                        $requiredValues[] = $channel->getCode() . ':' . $locale->getCode();
+                    }
+                }
+            } else {
+                foreach ($channels as $channel) {
+                    $requiredValues[] = $channel->getCode() . ':';
+                }
+            }
+        } elseif ($attribute->getTranslatable()) {
+            foreach ($product->getLocales() as $locale) {
+                $requiredValues[] = ':' . $locale->getCode();
+            }
+        } else {
+            $requiredValues[] = ':';
+        }
+
+        foreach ($requiredValues as $value) {
+            $value = explode(':', $value);
+            $scope  = $value[0] === '' ? null : $value[0];
+            $locale = $value[1] === '' ? null : $value[1];
+            $this->addProductValue($product, $attribute, $locale, $scope);
+        }
     }
 
     /**
@@ -210,8 +250,6 @@ class ProductManager extends FlexibleManager
      */
     protected function ensureRequiredAttributeValues(ProductInterface $product)
     {
-        $channels  = $this->getChannels();
-        $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
         if ($family = $product->getFamily()) {
@@ -219,6 +257,8 @@ class ProductManager extends FlexibleManager
                 $attributes[] = $attribute;
             }
         }
+
+        $attributes = array_unique($attributes);
 
         foreach ($attributes as $attribute) {
             $existingValues = array();
@@ -231,13 +271,20 @@ class ProductManager extends FlexibleManager
             }
 
             if ($attribute->getScopable()) {
-                foreach ($channels as $channel) {
-                    foreach ($locales as $locale) {
-                        $requiredValues[] = $channel->getCode() . ':' . $locale->getCode();
+               $channels = $this->getChannels();
+                if ($attribute->getTranslatable()) {
+                    foreach ($channels as $channel) {
+                        foreach ($channel->getLocales() as $locale) {
+                            $requiredValues[] = $channel->getCode() . ':' . $locale->getCode();
+                        }
+                    }
+                } else {
+                    foreach ($channels as $channel) {
+                        $requiredValues[] = $channel->getCode() . ':';
                     }
                 }
             } elseif ($attribute->getTranslatable()) {
-                foreach ($locales as $locale) {
+                foreach ($product->getLocales() as $locale) {
                     $requiredValues[] = ':' . $locale->getCode();
                 }
             } else {
@@ -249,15 +296,15 @@ class ProductManager extends FlexibleManager
             $redundantValues = array_diff($existingValues, $requiredValues);
 
             foreach ($missingValues as $value) {
-                $value = explode(':', $value);
-                $scope = $value[0] === '' ? null : $value[0];
+                $value  = explode(':', $value);
+                $scope  = $value[0] === '' ? null : $value[0];
                 $locale = $value[1] === '' ? null : $value[1];
                 $this->addProductValue($product, $attribute, $locale, $scope);
             }
 
             foreach ($redundantValues as $value) {
-                $value = explode(':', $value);
-                $scope = $value[0] === '' ? null : $value[0];
+                $value  = explode(':', $value);
+                $scope  = $value[0] === '' ? null : $value[0];
                 $locale = $value[1] === '' ? null : $value[1];
                 $this->removeProductValue($product, $attribute, $locale, $scope);
             }

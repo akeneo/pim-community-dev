@@ -202,6 +202,7 @@ class ProductController extends Controller
     public function addProductAttributes($id)
     {
         $product             = $this->findProductOr404($id);
+        $manager             = $this->getProductManager();
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $product->getAttributes(),
@@ -210,12 +211,10 @@ class ProductController extends Controller
         $attributesForm->bind($this->getRequest());
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attribute);
-            $product->addValue($value);
+            $manager->addAttributeToProduct($product, $attribute);
         }
 
-        $this->getProductManager()->save($product);
+        $manager->save($product);
 
         $this->addFlash('success', 'Attributes are added to the product form.');
         $parameters = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
