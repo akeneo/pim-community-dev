@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  *
  * @ORM\Table(name="oro_flexibleentity_attribute_option")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository")
  */
 class AttributeOption extends AbstractEntityAttributeOption
 {

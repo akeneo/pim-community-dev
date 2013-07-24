@@ -62,7 +62,8 @@ class RequestFix
                 }
             } else {
                 $type = $attr->getBackendType();
-                $default = null;
+                //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
+                $default = '';
             }
 
             $attrCode = $attr->getCode();
