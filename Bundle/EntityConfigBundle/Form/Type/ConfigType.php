@@ -39,7 +39,6 @@ class ConfigType extends AbstractType
                 if ($this->fieldType) {
                     $options['field_type'] = $this->fieldType;
                 }
-
                 $builder->add($code, $config['form']['type'], $options);
             }
         }

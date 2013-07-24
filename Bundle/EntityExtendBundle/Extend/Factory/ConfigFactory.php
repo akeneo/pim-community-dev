@@ -26,7 +26,6 @@ class ConfigFactory
         $values['is_extend'] = true;
         $values['owner']     = 'Custom';
         $values['state']     = 'New';
-        $values['doctrine']  = serialize($data);
 
         $constraint = array(
             'property'   => array(),

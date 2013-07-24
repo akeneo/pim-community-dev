@@ -71,12 +71,6 @@ oro_entity_config:
                         sortable:           true
                         filterable:         false
                         show_filter:        false
-                    form:
-                        type:               text
-                        options:
-                            read_only:      true
-                            required:       false
-                            label:          'Type'
 
                 state:
                     options:

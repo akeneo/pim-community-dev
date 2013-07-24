@@ -296,8 +296,6 @@ class ConfigManager
     {
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
-        $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
-
         if ($config instanceof EntityConfigInterface) {
             foreach ($config->getFields() as $fieldConfig) {
                 $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
@@ -337,6 +335,8 @@ class ConfigManager
 
             $this->calculateConfigChangeSet($config);
 
+            $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
@@ -362,11 +362,11 @@ class ConfigManager
 
         $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new FlushConfigEvent($this));
 
+        $this->auditManager->log();
+
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
         }
-
-        $this->auditManager->log();
 
         $this->em()->flush();
 
@@ -412,11 +412,13 @@ class ConfigManager
             $this->configChangeSets[spl_object_hash($config)] = array();
         }
 
-        if ($diff) {
+        if (count($diff)) {
             $this->configChangeSets[spl_object_hash($config)] = array_merge($this->configChangeSets[spl_object_hash($config)], $diff);
 
-            if (!in_array($config, $this->updatedConfigs, true)) {
-                $this->updatedConfigs[] = $config;
+            //var_dump($config);
+            //var_dump($diff);
+            if (!isset($this->updatedConfigs[spl_object_hash($config)])) {
+                $this->updatedConfigs[spl_object_hash($config)] = $config;
             }
         }
     }
@@ -505,6 +507,11 @@ class ConfigManager
             $metadata = $this->metadataFactory->getMetadataForClass($className);
             $entity   = new ConfigEntity($className);
             $entity->setMode($metadata->viewMode);
+
+            $this->eventDispatcher->dispatch(
+                Events::NEW_ENTITY,
+                new NewEntityEvent($className, $this)
+            );
         }
 
         return $entity;

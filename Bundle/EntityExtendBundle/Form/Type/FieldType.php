@@ -26,21 +26,21 @@ class FieldType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('code', 'text', array(
-            'label'    => 'Field Name',
-            'block'    => 'type',
+            'label' => 'Field Name',
+            'block' => 'type',
         ));
         $builder->add('type', 'choice', array(
             'choices'     => array_combine(array_values($this->types), $this->types),
             'empty_value' => 'Please choice type...',
             'block'       => 'type',
         ));
+
         $builder->add('options', 'oro_entity_config_config_field_type', array(
-            'class_name'  => $options['class_name'],
-            'field_id'    => '',
-            'field_name'  => '',
-            'field_type'  => '',
-            'block'       => 'options',
-            //'attr'        => array('class' => 'hide')
+            'class_name' => $options['class_name'],
+            'field_id'   => '',
+            'field_name' => '',
+            'field_type' => '',
+            'block'      => 'options',
         ));
     }
 
@@ -50,8 +50,8 @@ class FieldType extends AbstractType
             'class_name'   => '',
             'block_config' => array(
                 'type' => array(
-                    'title'     => 'Doctrine Type',
-                    'priority'  => 1,
+                    'title'    => 'Doctrine Type',
+                    'priority' => 1,
                 )
             )
         ));
