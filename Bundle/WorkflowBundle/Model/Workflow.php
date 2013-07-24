@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
+use Oro\Bundle\WorkflowBundle\Exception\StepNotFoundException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Step;
@@ -139,6 +140,32 @@ class Workflow
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get start step
+     *
+     * @return Step
+     */
+    public function getStartStep()
+    {
+        return $this->getStep($this->getStartStepName());
+    }
+
+    /**
+     * Get step by name
+     *
+     * @param string $stepName
+     * @return Step
+     * @throws StepNotFoundException If step is not found
+     */
+    public function getStep($stepName)
+    {
+        $result = $this->getSteps()->get($stepName);
+        if (!$result) {
+            throw new StepNotFoundException($stepName, $this->getName());
+        }
+        return $result;
     }
 
     /**
