@@ -29,6 +29,19 @@ oro_entity_config:
                     options:
                         default_value:      false
                         is_bool:            true
+                state:
+                    options:
+                        priority:           25
+                        default_value:      ''
+                    grid:
+                        type:               string
+                        label:              'Schema State'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            {system: '', new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
 
                 extend_class:               ~
 
@@ -64,6 +77,20 @@ oro_entity_config:
                             read_only:      true
                             required:       false
                             label:          'Type'
+
+                state:
+                    options:
+                        priority:           25
+                        default_value:      ''
+                    grid:
+                        type:               string
+                        label:              'Schema State'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            { new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
 
                 is_extend:
                     options:

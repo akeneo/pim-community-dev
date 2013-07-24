@@ -25,6 +25,7 @@ class ConfigFactory
 
         $values['is_extend'] = true;
         $values['owner']     = 'Custom';
+        $values['state']     = 'New';
         $values['doctrine']  = serialize($data);
 
         $constraint = array(
@@ -32,16 +33,16 @@ class ConfigFactory
             'constraint' => array()
         );
 
-        if ($data['nullable'] == false) {
-            $constraint['property']['Symfony\Component\Validator\Constraints\NotBlank'] = array();
-        }
+//        if ($data['nullable'] == false) {
+//            $constraint['property']['Symfony\Component\Validator\Constraints\NotBlank'] = array();
+//        }
 
-        if ($data['unique'] == true) {
-            $constraint['constraint']['Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity'] = array($data['code']);
-        }
+//        if ($data['unique'] == true) {
+//            $constraint['constraint']['Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity'] = array($data['code']);
+//        }
 
         if ($data['type'] == 'string') {
-            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => $data['length']);
+            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => $data['options']['length']);
         }
 
         if ($data['type'] == 'datetime') {
