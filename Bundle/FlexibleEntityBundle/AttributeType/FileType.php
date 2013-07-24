@@ -1,12 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * File attribute type
- *
- *
  */
 class FileType extends AbstractAttributeType
 {

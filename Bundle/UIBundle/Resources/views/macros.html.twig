@@ -14,13 +14,18 @@
         {% set form = widget %}
         {% set name = widget.vars.full_name %}
     {% endif %}
+
     <div data-content="{{ name }}">
         <div class="row-oro oro-multiselect-holder">
             {{ form_errors(form) }}
-            {% for child in form %}
-                {{ form_errors(child) }}
-                {{ form_widget(child) }}
-            {% endfor %}
+            {% if form.children|length  %}
+                {% for child in form %}
+                    {{ form_errors(child) }}
+                    {{ form_widget(child) }}
+                {% endfor %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
             {{ form_rest(form) }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
         </div>

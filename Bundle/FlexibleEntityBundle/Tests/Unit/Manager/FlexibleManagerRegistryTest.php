@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManager;
@@ -11,7 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 /**
  * Test related class
- *
  */
 class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 {

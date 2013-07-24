@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Reference;
@@ -8,8 +9,6 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * CompilerPass to add attribute type to factory
- *
- *
  */
 class AddAttributeTypeCompilerPass implements CompilerPassInterface
 {

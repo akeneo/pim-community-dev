@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Forms;
@@ -7,8 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Test related class
- *
- *
  */
 class FlexibleTypeTest extends AbstractFlexibleManagerTest
 {

@@ -1,10 +1,9 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 /**
  * Image attribute type
- *
- *
  */
 class ImageType extends FileType
 {

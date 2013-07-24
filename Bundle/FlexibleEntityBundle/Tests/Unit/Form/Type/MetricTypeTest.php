@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
@@ -6,8 +7,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
  * Test related class
- *
- *
  */
 class MetricTypeTest extends TypeTestCase
 {

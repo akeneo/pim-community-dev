@@ -1,10 +1,9 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 /**
  * Flexible entity interface, allow to define a flexible entity without extends abstract class
- *
- *
  */
 interface FlexibleInterface
 {
