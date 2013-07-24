@@ -18,15 +18,15 @@ class FlatProductNormalizer implements NormalizerInterface
     private $results;
 
     /**
-     * Transforms a product into a flat array
+     * Transforms an object into a flat array
      *
-     * @param ProductInterface $object
-     * @param string           $format
-     * @param array            $context
+     * @param object $object
+     * @param string $format
+     * @param array  $context
      *
      * @return array
      */
-    public function normalize(ProductInterface $object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
         $this->results = array();
 
