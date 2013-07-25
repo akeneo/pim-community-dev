@@ -2,11 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\Rest\Util\Codes;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;

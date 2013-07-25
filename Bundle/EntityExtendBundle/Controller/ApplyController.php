@@ -2,15 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityExtendBundle\Command\BackupCommand;
-use Oro\Bundle\EntityExtendBundle\Command\GenerateCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,9 +12,9 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
 use Oro\Bundle\EntityExtendBundle\Tools\Schema;
+use Symfony\Component\Process\Process;
 
 /**
  * EntityExtendBundle controller.
@@ -68,26 +60,32 @@ class ApplyController extends Controller
 
         $fields = $extendConfig->getFields();
         foreach ($fields as $code => $field) {
-            $isSystem = $schemaTools->checkFieldIsSystem($field);
 
+            //$isSystem = $schemaTools->checkFieldIsSystem($field);
+            $isSystem = $field->get('owner') == 'System' ? true : false;
             if ($isSystem) {
                 continue;
             }
 
-            if (in_array($field->get('state'), array('New', 'Applied', 'Updated', 'To be deleted'))) {
-                $isValid = $schemaTools->checkFieldCanDelete($field);
+            if (in_array($field->get('state'), array('New', 'Updated', 'To be deleted'))) {
+                if ($field->get('state') == 'New') {
+                    $isValid = true;
+                } else {
+                    $isValid = $schemaTools->checkFieldCanDelete($field);
+                }
+
                 if ($isValid) {
                     $validation['success'][] = sprintf(
                         "Field '%s(%s)' is valid. State -> %s",
                         $code,
-                        $isSystem ? 'System' : 'Custom',
+                        $field->get('owner'),
                         $field->get('state')
                     );
                 } else {
                     $validation['error'][] = sprintf(
-                        "Field '%s(%s)' has data, any schema changes can broke it. ",
+                        "Warning. Field '%s(%s)' has data.",
                         $code,
-                        $isSystem ? 'System' : 'Custom'
+                        $field->get('owner')
                     );
                 }
             }
@@ -121,40 +119,39 @@ class ApplyController extends Controller
     {
         /** @var ConfigEntity $entity */
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $env = $this->get('kernel')->getEnvironment();
 
-        /** @var BackupCommand $backupCommand */
-        $backupCommand = $this->get('oro_entity_extend.command.backup');
+        $commands = array(
+            'backup'       => new Process('../app/console oro:entity-extend:backup '.$entity->getClassName(). ' --env='.$env),
+            'generator'    => new Process('../app/console oro:entity-extend:generate'. ' --env='.$env),
+            'cacheClear'   => new Process('../app/console cache:clear --no-warmup'. ' --env='.$env),
+            'schemaUpdate' => new Process('../app/console doctrine:schema:update --force'. ' --env='.$env),
+            'cacheWarmup'  => new Process('../app/console cache:warmup'. ' --env='.$env),
+        );
 
-        /**
-         * do Backup
-         */
-        $input = new ArrayInput(array('entity' => $entity->getClassName()));
-        $output = new ConsoleOutput();
-        $backupCommand->run($input, $output);
+        foreach ($commands as $command) {
+            /** @var $command Process */
+            $command->run();
 
-        /**
-         * do Generation
-         */
+            while ($command->isRunning()) {
+                /** wait for previous process  */
+            }
+        }
 
-        /** @var GenerateCommand $generatorCommand */
-        $generatorCommand = $this->get('oro_entity_extend.command.generate');
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
-        $input = new ArgvInput();
-        $output = new ConsoleOutput();
-        $generatorCommand->run($input, $output);
+        $extendConfig->set('state', 'Applied');
 
-        /**
-         * do Schema update
-         */
-        $kernel = $this->get('kernel');
-        $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
-        $application->setAutoExit(false);
-        //Create de Schema
-        $options = array('command' => 'doctrine:schema:update',"--force" => true);
-        $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
-        //Loading Fixtures
-        //$options = array('command' => 'doctrine:fixtures:load',"--append" => true);
-        //$application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+        foreach ($extendConfig->getFields() as $field) {
+            if ($field->get('owner') != 'System') {
+                $field->set('state', 'Applied');
+            }
+        }
+
+        $extendConfigProvider->persist($extendConfig);
+        $extendConfigProvider->flush();
 
         return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $id)));
     }
