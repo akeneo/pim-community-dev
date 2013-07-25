@@ -197,6 +197,7 @@ Oro.Navigation = Backbone.Router.extend({
                         this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                         this.updateDebugToolbar(jqXHR);
                         this.afterRequest();
+                        this.loadingMask.hide();
                     }, this),
 
                     success: _.bind(function (data, textStatus, jqXHR) {
@@ -668,7 +669,6 @@ Oro.Navigation = Backbone.Router.extend({
      *  Triggered after hash navigation ajax request
      */
     afterRequest: function() {
-        this.loadingMask.hide();
         this.formState = '';
         this.initCacheTimer();
     },
@@ -798,9 +798,11 @@ Oro.Navigation = Backbone.Router.extend({
                     if (!options.fromCache) {
                         this.updateMenuTabs(data);
                         this.addMessages(data.flashMessages);
-                        Oro.Events.trigger("hash_navigation_request:refresh", this);
                     }
                     this.hideActiveDropdowns();
+                    Oro.Events.trigger("hash_navigation_request:refresh", this);
+                    this.loadingMask.hide();
+
                 }
             }
         }
@@ -1018,6 +1020,7 @@ Oro.Navigation = Backbone.Router.extend({
                             error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
                                 this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                                 this.afterRequest();
+                                this.loadingMask.hide();
                             }, this),
                             success: _.bind(function (data) {
                                 this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response

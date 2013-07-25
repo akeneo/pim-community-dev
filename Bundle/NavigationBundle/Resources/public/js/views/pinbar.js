@@ -47,6 +47,17 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
             this
         );
 
+        /**
+         * Change pinbar icon state after hash navigation request is completed
+         */
+        Oro.Events.bind(
+            "hash_navigation_request:complete",
+            function() {
+                this.checkPinbarIcon();
+            },
+            this
+        );
+
         this.$minimizeButton.click(_.bind(this.minimizePage, this));
 
         this.registerTab();
@@ -102,6 +113,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                             if (!goBack) {
                                 Oro.hashNavigationInstance.setLocation(url, {useCache: true});
                             }
+                            this.checkPinbarIcon();
                         }, this)
                     }
                 );
@@ -121,11 +133,20 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         });
     },
 
+    checkPinbarIcon: function() {
+        if (this.getItemForCurrentPage().length) {
+            this.activate();
+        } else {
+            this.inactivate();
+        }
+    },
+
     /**
      * Handle page close
      */
     onPageClose: function(item) {
         this.removeFromHistory(item);
+        this.checkPinbarIcon();
         this.reorder();
     },
 
@@ -297,11 +318,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      * Show/hide tabs section in ... menu on each event
      */
     render: function() {
-        if (this.getItemForCurrentPage().length) {
-            this.activate();
-        } else {
-            this.inactivate();
-        }
         if (!this.massAdd) {
             if (this.options.collection.length == 0) {
                 this.requireCleanup = true;
