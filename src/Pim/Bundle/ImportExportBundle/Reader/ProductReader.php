@@ -18,7 +18,8 @@ class ProductReader extends ORMCursorReader
     protected $channel;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager  $em
+     * @param ChannelManager $channelManager
      */
     public function __construct(EntityManager $em, ChannelManager $channelManager)
     {
@@ -32,7 +33,7 @@ class ProductReader extends ORMCursorReader
     public function read()
     {
         if (!$this->query) {
-            $this->query = $em
+            $this->query = $this->em
                 ->getRepository('PimProductBundle:Product')
                 ->buildByScope($this->channel);
         }
@@ -40,16 +41,27 @@ class ProductReader extends ORMCursorReader
         return parent::read();
     }
 
+    /**
+     * Set channel
+     * @param string $channel
+     */
     public function setChannel($channel)
     {
         $this->channel = $channel;
     }
 
+    /**
+     * Get channel
+     * @return string
+     */
     public function getChannel()
     {
         return $this->channel;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigurationFields()
     {
         return array(

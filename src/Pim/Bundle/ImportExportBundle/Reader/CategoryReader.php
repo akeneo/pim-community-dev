@@ -30,9 +30,9 @@ class CategoryReader extends ORMCursorReader
     public function read()
     {
         if (!$this->query) {
-            $this->query = $em
+            $this->query = $this->em
                 ->getRepository('PimProductBundle:Category')
-                ->buildAll();
+                ->createQueryBuilder('c');
         }
 
         return parent::read();
