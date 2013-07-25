@@ -7,15 +7,15 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
-use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 
 /**
  * @RouteResource("emailtemplate")
@@ -51,10 +51,10 @@ class EmailTemplateController extends RestController
      * @param string $entityName
      *
      * @ApiDoc(
-     *  description="Get templates by entity name",
-     *  resource=true
+     *     description="Get templates by entity name",
+     *     resource=true
      * )
-     * @AclAncestor("oro_email_emailtemplate")
+     * @AclAncestor("oro_email_emailtemplate_index")
      * @return Response
      */
     public function getAction($entityName = null)
@@ -81,7 +81,7 @@ class EmailTemplateController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_notification.email_notification.manager.api');
+        return $this->get('oro_email.manager.emailtemplate.api');
     }
 
     /**
@@ -89,7 +89,7 @@ class EmailTemplateController extends RestController
      */
     public function getForm()
     {
-        return $this->get('oro_notification.form.type.email_notification.api');
+        return $this->get('oro_email.form.type.emailtemplate.api');
     }
 
     /**
@@ -97,6 +97,6 @@ class EmailTemplateController extends RestController
      */
     public function getFormHandler()
     {
-        return $this->get('oro_notification.form.handler.email_notification.api');
+        return $this->get('oro_email.form.handler.emailtemplate.api');
     }
 }

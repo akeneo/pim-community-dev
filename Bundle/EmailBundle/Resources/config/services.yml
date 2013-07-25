@@ -4,7 +4,14 @@ parameters:
     # Email template field
     oro_email.form.listener.notification.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener
 
+    # Email template forms
+    oro_email.form.type.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateType
+    oro_email.form.handler.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Handler\EmailTemplateHandler
+
     # Email template API
+    oro_email.manager.emailtemplate.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
+
 services:
     # Email template field
     oro_email.form.listener.notification:
@@ -12,3 +19,51 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @form.factory
+
+    # Email template forms
+    oro_email.form.emailtemplate:
+            class: Symfony\Component\Form\Form
+            factory_method: createNamed
+            factory_service: form.factory
+            arguments: ["oro_email_emailtemplate", "oro_email_emailtemplate", null]
+
+    oro_email.form.type.emailtemplate:
+        class: %oro_email.form.type.emailtemplate.class%
+        arguments: []
+        tags:
+            - { name: form.type, alias: oro_email_emailtemplate }
+
+    oro_email.form.handler.emailtemplate:
+        class: %oro_email.form.handler.emailtemplate.class%
+        scope: request
+        arguments:
+            - @oro_email.form.emailtemplate
+            - @request
+            - @doctrine.orm.entity_manager
+
+    # Email template API
+    oro_email.manager.emailtemplate.api:
+        class: %oro_email.manager.emailtemplate.api.class%
+        arguments:
+            - %oro_email.emailtemplate.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_email.form.type.emailtemplate.api:
+        class: %oro_email.form.type.emailtemplate.api.class%
+        arguments: []
+        tags:
+            - { name: form.type, alias: oro_email_emailtemplate_api }
+
+    oro_email.form.emailtemplate.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_email_emailtemplate_api", "oro_email_emailtemplate_api", null]
+
+    oro_email.form.handler.emailtemplate.api:
+        class: %oro_email.form.handler.emailtemplate.class%
+        scope: request
+        arguments:
+            - @oro_email.form.emailtemplate.api
+            - @request
+            - @doctrine.orm.entity_manager

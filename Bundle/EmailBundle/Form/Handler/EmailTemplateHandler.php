@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Form\Handler;
+namespace Oro\Bundle\EmailBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 
-class EmailNotificationHandler
+class EmailTemplateHandler
 {
     /**
      * @var FormInterface
@@ -41,10 +41,10 @@ class EmailNotificationHandler
     /**
      * Process form
      *
-     * @param  EmailNotification  $entity
+     * @param  EmailTemplate  $entity
      * @return bool True on successfull processing, false otherwise
      */
-    public function process(EmailNotification $entity)
+    public function process(EmailTemplate $entity)
     {
         $this->form->setData($entity);
 
