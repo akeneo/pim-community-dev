@@ -52,7 +52,7 @@ Feature: Expose product data via a REST API
           "en_US":"A very nice car",
           "fr_FR":"Une très belle voiture"
         },
-        "resource":"http://akeneo-pim.local/app_behat.php/api/rest/ecommerce/products/Car"
+        "resource":"{baseUrl}/api/rest/ecommerce/products/Car"
       }
     }
     """

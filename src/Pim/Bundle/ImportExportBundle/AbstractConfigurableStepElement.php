@@ -11,10 +11,22 @@ namespace Pim\Bundle\ImportExportBundle;
  */
 abstract class AbstractConfigurableStepElement
 {
+    /**
+     * Return an array of fields for the configuration form
+     * @return array:array
+     */
     abstract public function getConfigurationFields();
 
+    /**
+     * Return name
+     * @return string
+     */
     abstract public function getName();
 
+    /**
+     * Return configuration
+     * @return array
+     */
     public function getConfiguration()
     {
         $result = array();
