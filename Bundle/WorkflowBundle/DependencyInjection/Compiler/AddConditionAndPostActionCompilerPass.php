@@ -35,8 +35,14 @@ class AddConditionAndPostActionCompilerPass implements CompilerPassInterface
             $container->getDefinition($id)->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
             foreach ($attributes as $eachTag) {
-                $index = !empty($eachTag['alias']) ? $eachTag['alias'] : $id;
-                $types[$index] = $id;
+                if (!empty($eachTag['alias'])) {
+                    $aliases = explode('|', $eachTag['alias']);
+                } else {
+                    $aliases = array($id);
+                }
+                foreach ($aliases as $alias) {
+                    $types[$alias] = $id;
+                }
             }
         }
 

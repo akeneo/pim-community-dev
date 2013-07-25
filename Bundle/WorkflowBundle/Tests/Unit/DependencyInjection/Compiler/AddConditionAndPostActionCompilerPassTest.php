@@ -12,7 +12,7 @@ class AddConditionAndPostActionCompilerPassTest extends \PHPUnit_Framework_TestC
      * @var array
      */
     protected $conditionServices = array(
-        'condition.definition.first'  => array(array('alias' => 'condition_first')),
+        'condition.definition.first'  => array(array('alias' => 'condition_first|condition_first_alias')),
         'condition.definition.second' => array(array()),
     );
 
@@ -21,6 +21,7 @@ class AddConditionAndPostActionCompilerPassTest extends \PHPUnit_Framework_TestC
      */
     protected $conditionTypes = array(
         'condition_first'             => 'condition.definition.first',
+        'condition_first_alias'       => 'condition.definition.first',
         'condition.definition.second' => 'condition.definition.second'
     );
 
@@ -28,7 +29,7 @@ class AddConditionAndPostActionCompilerPassTest extends \PHPUnit_Framework_TestC
      * @var array
      */
     protected $postActionServices = array(
-        'post_action.definition.first' => array(array('alias' => 'post_action_first')),
+        'post_action.definition.first' => array(array('alias' => 'post_action_first|post_action_first_alias')),
         'post_action.definition.second' => array(array())
     );
 
@@ -37,6 +38,7 @@ class AddConditionAndPostActionCompilerPassTest extends \PHPUnit_Framework_TestC
      */
     protected $postActionTypes = array(
         'post_action_first'             => 'post_action.definition.first',
+        'post_action_first_alias'       => 'post_action.definition.first',
         'post_action.definition.second' => 'post_action.definition.second'
     );
 

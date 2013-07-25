@@ -26,79 +26,79 @@ services:
     oro_workflow.condition.andx:
         class: %oro_workflow.condition.andx.class%
         tags:
-            - {name: oro_workflow.condition, alias: and}
+            - { name: oro_workflow.condition, alias: and }
 
     oro_workflow.condition.orx:
         class: %oro_workflow.condition.orx.class%
         tags:
-            - {name: oro_workflow.condition, alias: or}
+            - { name: oro_workflow.condition, alias: or }
 
     oro_workflow.condition.not:
         class: %oro_workflow.condition.not.class%
         tags:
-            - {name: oro_workflow.condition, alias: not}
+            - { name: oro_workflow.condition, alias: not }
 
     oro_workflow.condition.true:
         class: %oro_workflow.condition.true.class%
         tags:
-            - {name: oro_workflow.condition, alias: "true"}
+            - { name: oro_workflow.condition, alias: "true" }
 
     oro_workflow.condition.false:
         class: %oro_workflow.condition.false.class%
         tags:
-            - {name: oro_workflow.condition, alias: "false"}
+            - { name: oro_workflow.condition, alias: "false" }
 
     oro_workflow.condition.equal_to:
         class: %oro_workflow.condition.equal_to.class%
         arguments: [@doctrine, @oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: eq}
+            - { name: oro_workflow.condition, alias: eq|equal }
 
     oro_workflow.condition.not_equal_to:
         class: %oro_workflow.condition.not_equal_to.class%
         arguments: [@oro_workflow.condition.equal_to]
         tags:
-            - {name: oro_workflow.condition, alias: neq}
+            - { name: oro_workflow.condition, alias: neq|not_equal }
 
     oro_workflow.condition.blank:
         class: %oro_workflow.condition.blank.class%
         arguments: [@oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: blank}
+            - { name: oro_workflow.condition, alias: blank|empty }
 
     oro_workflow.condition.not_blank:
         class: %oro_workflow.condition.not_blank.class%
         arguments: [@oro_workflow.condition.blank]
         tags:
-            - {name: oro_workflow.condition, alias: not_blank}
+            - { name: oro_workflow.condition, alias: not_blank|not_empty }
 
     oro_workflow.condition.greater_than:
         class: %oro_workflow.condition.greater_than.class%
         arguments: [@oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: gt}
+            - { name: oro_workflow.condition, alias: gt|greater }
 
     oro_workflow.condition.greater_than_or_equal:
         class: %oro_workflow.condition.greater_than_or_equal.class%
         arguments: [@oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: ge}
+            - { name: oro_workflow.condition, alias: ge|gte|greater_or_equal }
 
     oro_workflow.condition.less_than:
         class: %oro_workflow.condition.less_than.class%
         arguments: [@oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: lt}
+            - { name: oro_workflow.condition, alias: lt|less }
 
     oro_workflow.condition.less_than_or_equal:
         class: %oro_workflow.condition.less_than_or_equal.class%
         arguments: [@oro_workflow.context_accessor]
         tags:
-            - {name: oro_workflow.condition, alias: le}
+            - { name: oro_workflow.condition, alias: le|lte|less_or_equal }
 
     oro_workflow.condition.configurable:
         class: %oro_workflow.condition.configurable.class%
         arguments:
             - @oro_workflow.condition_assembler
         tags:
-            - {name: oro_workflow.condition, alias: configurable}
+            - { name: oro_workflow.condition, alias: configurable }
