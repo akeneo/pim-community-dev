@@ -130,4 +130,9 @@ class ListExecutorTest extends \PHPUnit_Framework_TestCase
 
         return $this->postActionBuilder->getMockForAbstractClass();
     }
+
+    public function testInitialize()
+    {
+        $this->assertEquals($this->listPostAction, $this->listPostAction->initialize(array()));
+    }
 }

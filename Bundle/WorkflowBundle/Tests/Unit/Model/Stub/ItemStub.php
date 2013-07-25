@@ -6,7 +6,7 @@ class ItemStub
 {
     protected $data = array();
 
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         $this->data = $data;
     }
@@ -24,5 +24,10 @@ class ItemStub
     public function __isset($name)
     {
         return isset($this->data[$name]);
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 }

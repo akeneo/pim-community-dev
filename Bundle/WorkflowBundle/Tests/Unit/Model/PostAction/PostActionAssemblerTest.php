@@ -21,7 +21,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
         $listPostAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor')
             ->setMethods(array('addPostAction'))
             ->getMock();
-        $listPostAction->expects($this->exactly(count($source)))
+        $listPostAction->expects($this->exactly(count($expected)))
             ->method('addPostAction')
             ->will(
                 $this->returnCallback(
@@ -30,11 +30,14 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-        for ($i = 0; $i < count($source); $i++) {
+        for ($i = 0; $i < count($expected); $i++) {
             $postActionConfig = array_values($source[$i]);
+            $expectedBreakOnFailure = isset($postActionConfig[0]['break_on_failure'])
+                ? $postActionConfig[0]['break_on_failure']
+                : true;
             $listPostAction->expects($this->at($i))
                 ->method('addPostAction')
-                ->with($this->anything(), !empty($postActionConfig[0]['breakOnFailure']));
+                ->with($this->anything(), $expectedBreakOnFailure);
         }
 
         $factory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory')
@@ -100,14 +103,17 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                     array(
                         '@create_new_entity' => array(
                             'parameters' => array('class_name' => 'TestClass'),
-                        )
+                        ),
                     ),
                     array(
                         '@assign_value' => array(
                             'parameters' => array('from' => 'name', 'to' => 'contact.name'),
-                            'breakOnFailure' => true,
+                            'break_on_failure' => true,
                         )
                     ),
+                    array(
+                        'not_a_service' => array(),
+                    )
                 ),
                 'expected' => array(
                     array(

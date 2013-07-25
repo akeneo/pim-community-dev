@@ -2,13 +2,14 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
+use Oro\Bundle\WorkflowBundle\Exception\PostActionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
-use Symfony\Component\PropertyAccess\PropertyPath;
 
 class CreateEntity extends AbstractPostAction
 {
@@ -37,7 +38,7 @@ class CreateEntity extends AbstractPostAction
      */
     public function execute($context)
     {
-        $entity = $this->createEntity();
+        $entity = $this->createEntity($context);
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
@@ -57,18 +58,26 @@ class CreateEntity extends AbstractPostAction
             throw new InvalidParameterException('Attribute must be valid property definition.');
         }
 
+        if (!empty($options['data']) && !is_array($options['data'])) {
+            throw new InvalidParameterException('Entity data must be an array.');
+        }
+
         $this->options = $options;
 
         return $this;
     }
 
     /**
-     * @return object
+     * @param mixed $context
+     * @return mixed
      * @throws NotManageableEntityException
+     * @throws PostActionException
      */
-    protected function createEntity()
+    protected function createEntity($context)
     {
         $entityClassName = $this->getEntityClassName();
+        $entityData = $this->getEntityData();
+
         /** @var EntityManager $entityManager */
         $entityManager = $this->registry->getManagerForClass($entityClassName);
         if (!$entityManager) {
@@ -76,10 +85,31 @@ class CreateEntity extends AbstractPostAction
         }
 
         $entity = new $entityClassName();
-        $entityManager->persist($entity);
-        $entityManager->flush($entity);
+        $this->assignEntityData($context, $entity, $entityData);
+
+        try {
+            $entityManager->persist($entity);
+            $entityManager->flush($entity);
+        } catch (\Exception $e) {
+            throw new PostActionException(
+                sprintf('Can\'t create entity %s. %s', $entityClassName, $e->getMessage())
+            );
+        }
 
         return $entity;
+    }
+
+    /**
+     * @param mixed $context
+     * @param object $entity
+     * @param array $parameters
+     */
+    protected function assignEntityData($context, $entity, array $parameters)
+    {
+        foreach ($parameters as $parameterName => $valuePath) {
+            $parameterValue = $this->contextAccessor->getValue($context, $valuePath);
+            $this->contextAccessor->setValue($entity, $parameterName, $parameterValue);
+        }
     }
 
     /**
@@ -88,5 +118,13 @@ class CreateEntity extends AbstractPostAction
     protected function getEntityClassName()
     {
         return $this->options['class'];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEntityData()
+    {
+        return !empty($this->options['data']) ? $this->options['data'] : array();
     }
 }
