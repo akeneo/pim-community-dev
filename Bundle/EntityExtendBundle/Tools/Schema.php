@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityExtendBundle\Tools;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
+use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -62,13 +63,13 @@ class Schema
     }
 
     /**
-     * @param $field ConfigField
+     * @param $field FieldConfig
      * @return bool
      */
-    public function checkFieldIsSystem(ConfigField $field)
+    public function checkFieldIsSystem(FieldConfig $field)
     {
         $isSystem = false;
-        $metadata = $this->em->getClassMetadata($field->getEntity()->getClassName());
+        $metadata = $this->em->getClassMetadata($field->getClassName());
         if (in_array($field->getCode(), $metadata->fieldNames)) {
             $isSystem =  true;
         }
@@ -77,13 +78,14 @@ class Schema
     }
 
     /**
-     * @param $field ConfigField
+     * @param $field FieldConfig
      * @return bool
      */
-    public function checkFieldCanDelete(ConfigField $field)
+    public function checkFieldCanDelete(FieldConfig $field)
     {
         $canDelete = false;
-        if ($field->getEntity()->getClassName()
+
+        if ($field->getClassName()
             && $field->getCode()
             && !$this->checkFieldIsSystem($field)
         ) {

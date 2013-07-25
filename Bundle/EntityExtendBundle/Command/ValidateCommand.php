@@ -46,6 +46,6 @@ class ValidateCommand extends ContainerAwareCommand
             };
         }
 
-        $output->writeln('Done.');
+        //$output->writeln('Done.');
     }
 }

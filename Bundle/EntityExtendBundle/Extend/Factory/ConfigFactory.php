@@ -32,14 +32,6 @@ class ConfigFactory
             'constraint' => array()
         );
 
-//        if ($data['nullable'] == false) {
-//            $constraint['property']['Symfony\Component\Validator\Constraints\NotBlank'] = array();
-//        }
-
-//        if ($data['unique'] == true) {
-//            $constraint['constraint']['Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity'] = array($data['code']);
-//        }
-
         if ($data['type'] == 'string') {
             $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => 255);
         }
