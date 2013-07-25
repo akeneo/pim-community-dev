@@ -947,6 +947,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         );
     }
 
+    /**
+     * @Given /^I am on the exports index page$/
+     */
+    public function iAmOnTheExportsIndexPage()
+    {
+        $this->openPage('Export index');
+    }
+
+    /**
+     * @Given /^I create a new "([^"]*)" export$/
+     */
+    public function iCreateANewExport($exportTitle)
+    {
+        $this->getPage('Export index')->clickCreationLink($exportTitle);
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
