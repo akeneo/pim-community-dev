@@ -58,7 +58,7 @@ class LoadProductData extends AbstractDemoFixture
             return;
         }
 
-        $nbProducts = 250;
+        $nbProducts = 50;
         $batchSize = 500;
 
         $generator = \Faker\Factory::create();
