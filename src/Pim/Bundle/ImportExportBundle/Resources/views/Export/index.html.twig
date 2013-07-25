@@ -13,7 +13,19 @@
 
     {% set title = 'Exports overview'|trans %}
 
-    {% set buttons = elements.createBtn('New export', path('pim_ie_export_create')) %}
+    {% set buttons %}
+    <div class="btn-group">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-plus icon-white"></i>{{ 'New export'|trans }}</a>
+        <ul class="dropdown-menu pull-right">
+            {% for connector, jobs in connectors %}
+            <li class="disabled"><a href="#"><b>{{ connector }}</b></a></li>
+                {% for alias, job in jobs %}
+                <li><a href="{{ path('pim_ie_export_create', { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endset %}
 
     {{ elements.page_header(title, buttons) }}
 

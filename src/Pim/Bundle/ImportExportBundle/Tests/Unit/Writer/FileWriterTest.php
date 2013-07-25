@@ -30,4 +30,3 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
     }
 }
-

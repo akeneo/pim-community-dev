@@ -3,7 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle;
 
 /**
- * 
+ * Define a configurable step element
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -11,6 +12,8 @@ namespace Pim\Bundle\ImportExportBundle;
 abstract class AbstractConfigurableStepElement
 {
     abstract public function getConfigurationFields();
+
+    abstract public function getName();
 
     public function getConfiguration()
     {

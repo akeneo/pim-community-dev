@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
 /**
  * CSV Encoder
- * 
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,22 +20,19 @@ class CsvEncoder implements EncoderInterface
     protected $withHeader = false;
 
     /**
-     * @param string  $delimiter  the field delimiter used in the csv
-     * @param string  $enclosure  the field enclosure used in the csv
-     * @param boolean $withHeader wether or not to print the columns name
-     */
-    public function __construct($delimiter = ';', $enclosure = '"', $withHeader = false)
-    {
-        $this->delimiter  = $delimiter ?: ';';
-        $this->enclosure  = $enclosure ?: '"';
-        $this->withHeader = $withHeader;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function encode($data, $format, array $context = array())
     {
+        $context = array_merge(array(
+            'delimiter' => ';',
+            'enclosure' => '"',
+            'withHeader' => false
+        ), $context);
+        $delimiter = is_string($context['delimiter']) ? $context['delimiter'] : ';';
+        $enclosure = is_string($context['enclosure']) ? $context['enclosure'] : '"';
+        $withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;
+
         if (!is_array($data)) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -50,19 +47,19 @@ class CsvEncoder implements EncoderInterface
 
         if (isset($data[0]) && is_array($data[0])) {
             $columns = $this->getColumns($data);
-            if ($this->withHeader) {
-                $this->encodeHeader($columns, $output);
+            if ($withHeader) {
+                $this->encodeHeader($columns, $output, $delimiter, $enclosure);
             }
             foreach ($this->normalizeColumns($data, $columns) as $entry) {
                 $this->checkHasStringKeys($entry);
-                fputcsv($output, $entry, $this->delimiter, $this->enclosure);
+                $this->write($output, $entry, $delimiter, $enclosure);
             }
         } else {
-            if ($this->withHeader) {
-                $this->encodeHeader($data, $output);
+            if ($withHeader) {
+                $this->encodeHeader($data, $output, $delimiter, $enclosure);
             }
             $this->checkHasStringKeys($data);
-            fputcsv($output, $data, $this->delimiter, $this->enclosure);
+            $this->write($output, $data, $delimiter, $enclosure);
         }
 
         return $this->readCsv($output);
@@ -76,9 +73,14 @@ class CsvEncoder implements EncoderInterface
         return self::FORMAT === $format;
     }
 
-    private function encodeHeader($data, $output)
+    private function encodeHeader($data, $output, $delimiter, $enclosure)
     {
-        fputcsv($output, array_keys($data), $this->delimiter, $this->enclosure);
+        $this->write($output, array_keys($data), $delimiter, $enclosure);
+    }
+
+    private function write($output, $entry, $delimiter, $enclosure)
+    {
+        fputcsv($output, $entry, $delimiter, $enclosure);
     }
 
     private function readCsv($csvResource)

@@ -2,16 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Entity\RawConfiguration;
+use Pim\Bundle\BatchBundle\Job\AbstractJob;
+use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
  * Export controller
@@ -41,6 +39,7 @@ class ExportController extends Controller
         /** @var $gridManager ExportDatagridManager */
         $gridManager = $this->get('pim_import_export.datagrid.manager.export');
         $datagridView = $gridManager->getDatagrid()->createView();
+        $registry      = $this->get('pim_batch.connectors');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -48,7 +47,10 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagridView));
+        return $this->render($view, array(
+            'datagrid' => $datagridView,
+            'connectors' => $registry->getExportJobs(),
+        ));
     }
 
     /**
@@ -65,27 +67,35 @@ class ExportController extends Controller
      */
     public function createAction(Request $request)
     {
-        $connector = $request->query->get('connector');
-        $jobType   = $request->query->get('job_type');
-        $jobAlias  = $request->query->get('job_alias');
+        $connector     = $request->query->get('connector');
+        $alias         = $request->query->get('alias');
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($connector, AbstractJob::TYPE_EXPORT, $alias);
+        // TODO Redirect to datagrid with error message if no job definition found
 
-        $registry = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, $jobType, $jobAlias);
-
-        $job = new Job();
-        // TODO : Job setConnector setType, setAlias
-        $job->setJobDefinition($jobDefinition);
+        $job = new Job($connector, AbstractJob::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-            // TODO : don't set it like this
-            $job->setRawConfiguration($jobDefinition->getConfiguration());
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($job);
+                $em->flush();
+
+                $this->addFlash('success', 'The export has been successfully created.');
+
+                return $this->redirect(
+                    $this->generateUrl('pim_ie_export_index')
+                );
+            }
         }
 
         return array(
-            'form' => $form->createView()
+            'form'      => $form->createView(),
+            'connector' => $connector,
+            'alias'     => $alias,
         );
     }
 
