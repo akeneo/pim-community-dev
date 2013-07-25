@@ -1,2 +1,10 @@
 parameters:
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
+    oro_email.form.listener.notification.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener
+
+services:
+    oro_email.form.listener.address:
+        class: %oro_email.form.listener.notification.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory

@@ -38,7 +38,7 @@ services:
         class: %oro_notification.form.type.email_notification.class%
         arguments:
             - %oro_config.entities%
-            - @doctrine.orm.entity_manager
+            - @oro_email.form.listener.address
         tags:
             - { name: form.type, alias: emailnotification }
 
@@ -66,6 +66,9 @@ services:
 
     oro_notification.form.type.email_notification.api:
         class: %oro_notification.form.type.email_notification.api.class%
+        arguments:
+            - %oro_config.entities%
+            - @oro_email.form.listener.address
         tags:
             - { name: form.type, alias: emailnotification_api }
 

@@ -13,20 +13,10 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
      * @param options {Object}
      */
     initialize: function (options) {
-        this.showSelect = options.showSelect;
         this.template = $('#emailtemplate-chooser-template').html();
         this.target = options.target;
 
         this.listenTo(this.collection, 'reset', this.render);
-    },
-
-    /**
-     * Trigger change event
-     */
-    sync: function () {
-        if (this.target.val() == '' && $(this.el).val() != '') {
-            $(this.el).trigger('change');
-        }
     },
 
     /**
@@ -41,8 +31,8 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
     },
 
     render: function() {
-        $(this.target).val('');
-        $(this.target).find('option[value!=""]').remove();
+        $(this.target).val('').trigger('change');
+        $(this.target).find('option:not([disabled])').remove();
         $(this.target).append(_.template(this.template, {entities: this.collection.models}));
     }
 });

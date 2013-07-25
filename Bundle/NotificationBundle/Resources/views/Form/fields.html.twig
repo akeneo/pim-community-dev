@@ -29,11 +29,10 @@
         $(function() {
             var emailTemplates = new Oro.EmailTemplatesUpdater.Collection();
 
-            var emailView = new Oro.EmailTemplatesUpdater.View({
+            new Oro.EmailTemplatesUpdater.View({
                 el: $('#{{ id }}'),
                 target: $('#{{ form.parent.children.template.vars.id }}'),
-                collection: emailTemplates,
-                showSelect: true
+                collection: emailTemplates
             });
         });
     </script>

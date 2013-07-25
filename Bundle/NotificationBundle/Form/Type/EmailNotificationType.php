@@ -5,8 +5,10 @@ namespace Oro\Bundle\NotificationBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 
+use Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmailNotificationType extends AbstractType
@@ -27,9 +29,15 @@ class EmailNotificationType extends AbstractType
     protected $templateNameChoices = array();
 
     /**
-     * @param array $entitiesConfig
+     * @var BuildNotificationFormListener
      */
-    public function __construct($entitiesConfig = array())
+    protected $listener;
+
+    /**
+     * @param array $entitiesConfig
+     * @param BuildNotificationFormListener $listener
+     */
+    public function __construct($entitiesConfig, BuildNotificationFormListener $listener)
     {
         $this->entityNameChoices = array_map(
             function ($value) {
@@ -52,6 +60,7 @@ class EmailNotificationType extends AbstractType
             }
         );
 
+        $this->listener = $listener;
         $this->templateNameChoices = array();
     }
 
@@ -60,6 +69,8 @@ class EmailNotificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber($this->listener);
+
         $builder->add(
             'entityName',
             'choice',
@@ -92,15 +103,24 @@ class EmailNotificationType extends AbstractType
             )
         );
 
+        $choices = function (Options $options) {
+            // show empty list if country is not selected
+            if (empty($options['entityName'])) {
+                return array();
+            }
+
+            return null;
+        };
+
         $builder->add(
             'template',
-            'choice',
+            'entity',
             array(
-                'choices'          => $this->templateNameChoices,
-                'empty_value'      => '',
-                'empty_data'       => null,
-                'multiple'         => false,
-                'required'         => true
+                'class'         => 'OroEmailBundle:EmailTemplate',
+                'property'      => 'name',
+                'choices'       => $choices,
+                'empty_value'   => '',
+                'empty_data'    => ''
             )
         );
 
