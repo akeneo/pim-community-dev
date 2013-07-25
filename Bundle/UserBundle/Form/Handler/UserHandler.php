@@ -35,7 +35,9 @@ class UserHandler extends AbstractUserHandler implements TagHandlerInterface
                 if ($businessUnits) {
                     $businessUnits = array_keys($businessUnits);
                 }
-                $this->businessUnitManager->assignBusinessUnits($user, $businessUnits);
+                if ($this->businessUnitManager) {
+                    $this->businessUnitManager->assignBusinessUnits($user, $businessUnits);
+                }
                 $this->onSuccess($user);
 
                 return true;
