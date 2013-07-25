@@ -160,12 +160,13 @@ class ConfigManager
     }
 
     /**
-     * @param $className
-     * @param $scope
+     * @param      $className
+     * @param      $scope
+     * @param null $fieldName
      * @throws Exception\RuntimeException
-     * @return EntityConfig
+     * @return ConfigInterface
      */
-    public function getConfig($className, $scope)
+    public function getConfig($className, $scope, $fieldName = null)
     {
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
@@ -173,9 +174,14 @@ class ConfigManager
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
+        if (!$this->isSchemaSynced()) {
+            throw new RuntimeException("Doctrine schema is not generated");
+        }
+
+        $configId     = $this->generateConfigId($className, $scope, $fieldName);
         $resultConfig = null;
         if (null !== $this->configCache
-            && $config = $this->configCache->loadConfigFromCache($className, $scope)
+            && $config  = $this->configCache->loadConfigFromCache($configId)
         ) {
             $resultConfig = $config;
         } else {
@@ -184,15 +190,15 @@ class ConfigManager
             /** @var ConfigEntity $entity */
             $entity = $this->isSchemaSynced() ? $entityConfigRepo->findOneBy(array('className' => $className)) : null;
             if ($entity) {
-                $config = $this->entityToConfig($entity, $scope);
+                $config = $this->entityToConfig($entity, $scope, $fieldName);
 
                 if (null !== $this->configCache) {
-                    $this->configCache->putConfigInCache($config);
+                    $this->configCache->putConfigInCache($configId, $config);
                 }
 
                 $resultConfig = $config;
             } else {
-                $resultConfig = new EntityConfig($className, $scope);
+                $resultConfig = $fieldName ? new FieldConfig($className, , $fieldName, $scope) : new EntityConfig($className, $scope);
             }
         }
 
@@ -205,6 +211,15 @@ class ConfigManager
         return $resultConfig;
     }
 
+    public function createConfig($className, $scope, $fieldName = null)
+    {
+
+        if ($fieldName) {
+            $config = new EntityConfig($className, $scope);
+
+        }
+    }
+
     /**
      * @param $className
      * @return bool
@@ -214,7 +229,52 @@ class ConfigManager
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
 
-        return $metadata ? $metadata->configurable : false;
+        switch (true) {
+            case !$metadata:
+                return false;
+            case !$metadata->configurable:
+                return false;
+            case !$this->isSchemaSynced():
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @return string
+     */
+    public function getConfigId(ConfigInterface $config)
+    {
+        $configId = strtr($config->getClassName(), '\\', '-') . '-' . $config->getScope();
+        if ($config instanceof FieldConfigInterface) {
+            $configId = 'field' . $configId . '-' . $config->getCode();
+        }
+
+        if ($config instanceof EntityConfigInterface) {
+            $configId = 'entity' . $configId;
+        }
+
+        return $configId;
+    }
+
+    /**
+     * @param      $className
+     * @param      $scope
+     * @param null $fieldName
+     * @return string
+     */
+    protected function generateConfigId($className, $scope, $fieldName = null)
+    {
+        $configId = strtr($className, '\\', '-') . '-' . $scope;
+        if ($fieldName) {
+            $configId = 'field' . $configId . '-' . $fieldName;
+        } else {
+            $configId = 'entity' . $configId;
+        }
+
+        return $configId;
     }
 
     /**
