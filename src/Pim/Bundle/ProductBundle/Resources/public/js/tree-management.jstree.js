@@ -133,7 +133,7 @@ $(tree_id).jstree({
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
             var url = urlRemove.replace("#ID#", id);
-            PimAjax.ajaxPost(url, '');
+            PimAjax.ajaxDelete(url, '');
             if (PimAjax.isSuccessfull() == true) {
                 var parentNode = data.inst._get_parent();
                 id = parentNode.attr("id").replace('node_', '');
