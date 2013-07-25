@@ -5,6 +5,9 @@ parameters:
     oro_entity_extend.tools.schema.class:                   Oro\Bundle\EntityExtendBundle\Tools\Schema
     oro_entity_extend.extension.extend_entity.class:        Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
 
+    oro_entity_extend.command.backup.class:                 Oro\Bundle\EntityExtendBundle\Command\BackupCommand
+    oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\GenerateCommand
+
 services:
     oro_entity_extend.extend.extend_manager:
         class:                                              %oro_entity_extend.extend.extend_manager.class%
@@ -29,6 +32,16 @@ services:
         arguments:                                          [@oro_entity_extend.extend.extend_manager, @oro_entity_extend.metadata.annotation_metadata_factory]
         tags:
             - { name: kernel.event_subscriber}
+
+    oro_entity_extend.command.backup:
+        class:                                              %oro_entity_extend.command.backup.class%
+        calls:
+            - [setContainer, ["@service_container"]]
+
+    oro_entity_extend.command.generate:
+        class:                                              %oro_entity_extend.command.generate.class%
+        calls:
+            - [setContainer, ["@service_container"]]
 
 #    oro_entity_extend.extension.extend_entity:
 #        class:                                              %oro_entity_extend.extension.extend_entity.class%

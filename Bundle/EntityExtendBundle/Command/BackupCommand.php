@@ -2,29 +2,34 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Command;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
-use Symfony\Component\Config;
-use Symfony\Component\Yaml\Yaml;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Oro\Bundle\EntityExtendBundle\Databases\DatabaseInterface;
-use Oro\Bundle\EntityExtendBundle\Databases\MySQLDatabase;
-use Oro\Bundle\EntityExtendBundle\Databases\PostgresDatabase;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class BackupCommand extends ContainerAwareCommand
 {
     /**
-     * @var DatabaseInterface
+     * @var \Oro\Bundle\EntityExtendBundle\Databases\DatabaseInterface
      */
     protected $database;
 
-    protected $filePath;
+    /** @var  string backup folder path */
+    protected $basePath;
+
+    /** @var  string backup filename */
     protected $fileName;
+
+    /** @var  string backup path + filename */
+    protected $filePath;
+
+    /** @var  string Entity class name */
+    protected $entity;
 
     /**
      * Console command configuration
@@ -34,81 +39,80 @@ class BackupCommand extends ContainerAwareCommand
         $this
             ->setName('oro:entity-extend:backup')
             ->setDescription('Backup database table(s)')
-            ->addArgument('path', InputArgument::OPTIONAL, 'Override the configured backup path');
+            ->addArgument('entity', InputArgument::REQUIRED, 'Entity class name (REQUIRED)')
+            ->addArgument('path', InputArgument::OPTIONAL, 'Override configured backup path');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $basePath = $input->getArgument('path') ?: $this->getContainer()->getParameter('oro_entity_extend.backup');
+        $parameters = $this->getContainer()->getParameterBag();
 
-        /** TODO: retrive DB parameters*/
+        $this->basePath = $input->getArgument('path') ?: $parameters->get('oro_entity_extend.backup');
+        $this->entity   = $input->getArgument('entity');
 
-        $dbms      = 'pdo_mysql';
-        $database  = 'bap_dev';
-        $user      = 'root';
-        $password  = 'gbpltw';
+        if (!$this->entity) {
+            return;
+        }
+
+        $dbms      = $parameters->get('database_driver');
+        $database  = $parameters->get('database_name');
+        $user      = $parameters->get('database_user');
+        $password  = $parameters->get('database_password');
+        $host      = $parameters->get('database_host');
+
         $tables    = array();
-        $host      = 'localhost';
+        //$tables    = array('oro_config_entity', 'oro_config_field');
+
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $this->getContainer()->get('oro_entity_extend.config.extend_config_provider');
+
+        /** @var EntityManager $em */
+        $em = $this->getContainer()->get('doctrine')->getManager('default');
+
+        $tables[] = $em
+            ->getClassMetadata($extendConfigProvider->getConfig($this->entity)->get('extend_class'))
+            ->getTableName();
 
         switch ($dbms) {
             case 'pdo_mysql':
-                $this->database = new MySQLDatabase($database, $user, $password, $tables, $host);
+                $this->database = new \Oro\Bundle\EntityExtendBundle\Databases\MySQLDatabase(
+                    $database,
+                    $user,
+                    $password,
+                    $tables,
+                    $host
+                );
                 break;
             case 'postgresql':
                 //$this->database = new PostgresDatabase();
                 break;
         }
+
+        $this->fileName = date('Y-m-d_H-i-s') . '.' . $this->database->getFileExtension();
+        $this->filePath = $this->basePath . $this->fileName;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start backup');
 
-        /** TODO:
-         *      - check folder
-         *      - check file
-         *      - generate file name
-         *      - generate file path
-         *
-         *      - provide ability to specify tables ????
-         *          - get tables from EntityConfig (Provider)
-         *
-         *      - execute $database->dump
-         * */
+        if (!is_dir($this->basePath)) {
+            mkdir($this->basePath);
+        }
 
-        print_r (get_class_methods($this->database));
+        system($this->database->dump($this->filePath));
+
+        if (file_exists($this->filePath) && filesize($this->filePath) > 0) {
+            $output->writeln(
+                sprintf(
+                    'Database backup was successful. %s was saved in the dumps folder.',
+                    $this->fileName
+                )
+            );
+        } else {
+            $output->writeln('Database backup failed');
+        }
 
         $output->writeln('Done');
-
-//        $this->checkDumpFolder();
-//
-//        $this->fileName = date('Y-m-d_H-i-s') . '.' .$this->database->getFileExtension();
-//        $this->filePath = $this->getDumpsPath() . $this->fileName;
-//
-//        if ($this->database->dump($this->filePath)) {
-//            $this->line(sprintf('Database backup was successful. %s was saved in the dumps folder.', $this->fileName));
-//
-//        } else {
-//            $this->line('Database backup failed');
-//        }
     }
-
-    /*protected function getOptions()
-    {
-        return array(
-        );
-    }*/
-
-    /*protected function getDumpsPath()
-    {
-        return 'entities'.DIRECTORY_SEPARATOR.'Backup'.DIRECTORY_SEPARATOR;
-    }*/
-
-    /*protected function checkDumpFolder()
-    {
-        $dumpsPath = $this->getDumpsPath();
-        if (!is_dir($dumpsPath)) {
-            mkdir($dumpsPath);
-        }
-    }*/
 }

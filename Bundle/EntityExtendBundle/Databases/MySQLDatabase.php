@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Databases;
 
-use Oro\Bundle\EntityExtendBundle\Console;
-
 class MySQLDatabase implements DatabaseInterface
 {
     protected $tables;
@@ -25,6 +23,7 @@ class MySQLDatabase implements DatabaseInterface
         $this->user     = $user;
         $this->password = $password;
         $this->host     = $host;
+        $this->tables   = '"' . implode('" "', $tables) . '"';
     }
 
     /**
@@ -33,11 +32,12 @@ class MySQLDatabase implements DatabaseInterface
     public function dump($destinationFile)
     {
         $command = sprintf(
-            'mysqldump --user="%s" --password="%s" --host="%s" "%s" > "%s"',
+            'mysqldump --user="%s" --password="%s" --host="%s" "%s" %s > "%s"',
             $this->user,
             $this->password,
             $this->host,
             $this->database,
+            $this->tables,
             $destinationFile
         );
 
