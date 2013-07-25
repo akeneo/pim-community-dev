@@ -24,8 +24,8 @@ class ConfigFactory
         $values = array();
 
         $values['is_extend'] = true;
-        $values['owner']     = 'Custom';
-        $values['state']     = 'New';
+        $values['owner']     = ExtendManager::OWNER_SYSTEM;
+        $values['state']     = ExtendManager::STATE_NEW;
 
         $constraint = array(
             'property'   => array(),
@@ -47,6 +47,7 @@ class ConfigFactory
 
         $values['constraint'] = serialize($constraint);
 
+        $this->extendManager->getConfigProvider()->getConfig($className)->set('state', ExtendManager::STATE_NEW);
         $this->extendManager->getConfigProvider()->createFieldConfig(
             $className,
             $data['code'],
