@@ -52,9 +52,19 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeArray($delimiter, $enclosure, $expectedResult)
     {
-        $encoder = new CsvEncoder($delimiter, $enclosure);
+        $encoder = new CsvEncoder();
 
-        $this->assertEquals($expectedResult, $encoder->encode(array('code' => 'foo', 'name' => '"bar"'), 'csv'));
+        $this->assertEquals($expectedResult, $encoder->encode(
+            array(
+                'code' => 'foo',
+                'name' => '"bar"'
+            ),
+            'csv',
+            array(
+                'delimiter' => $delimiter,
+                'enclosure' => $enclosure,
+            )
+        ));
     }
 
     public function testEncodeCollectionOfHashes()
@@ -103,9 +113,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeArrayWithHeader($array, $csv)
     {
-        $encoder = new CsvEncoder(';', '"', true);
+        $encoder = new CsvEncoder();
 
-        $this->assertEquals($csv, $encoder->encode($array, 'csv'));
+        $this->assertEquals($csv, $encoder->encode($array, 'csv', array('withHeader' => true)));
     }
 
     public static function getEncodeArrayWithoutHeader()
@@ -126,7 +136,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeArrayWithoutHeader($array, $csv)
     {
-        $encoder = new CsvEncoder(';', '"');
+        $encoder = new CsvEncoder();
 
         $this->assertEquals($csv, $encoder->encode($array, 'csv'));
     }
