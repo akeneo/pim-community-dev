@@ -89,7 +89,7 @@ class Schema
             && $field->getCode()
             && !$this->checkFieldIsSystem($field)
         ) {
-            $extendClass = $this->extendManager->getExtendClass($field->getEntity()->getClassName());
+            $extendClass = $this->extendManager->getExtendClass($field->getClassName());
 
             /** @var QueryBuilder $builder */
             $builder = $this->em->getRepository($extendClass)->createQueryBuilder('ex');

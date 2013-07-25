@@ -5,25 +5,33 @@
 {% endblock %}
 
 {% block page_container %}
-    <div class="container-fluid" style="height:500px; overflow: scroll;">
+    <div class="container-fluid">
         {% block content %}
+            {#{{ dump(validations) }}#}
+            {#{{ dump(entity.id) }}#}
+            <div>
+                <div>
+                    <div class="flash-messages-holder">
+                    {% if validations.success is defined %}
+                        {% for message in validations.success %}
+                            <div class="alert alert-success">
+                                <div class="message">{{ message }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if validations.error is defined %}
+                        {% for message in validations.error %}
+                            <div class="alert alert-error">
+                                <div class="message">{{ message }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
 
-            {#{% set id = 'apply-view' %}#}
-            {#{% set general_fields = [#}
-                {#UI.attibuteRow('Icon', entity_config.get('icon')),#}
-                {#UI.attibuteRow('Label', entity_config.get('label')),#}
-                {#UI.attibuteRow('Plural Label', entity_config.get('plural_label')),#}
-                {#UI.attibuteRow('Type', entity_extend.get('owner')),#}
-                {#UI.attibuteRow('Description', entity_config.get('description')),#}
-            {#]%}#}
-
-            {#{% set data = {'dataBlocks': [{#}
-                {#'title': 'General',#}
-                {#'class': 'active',#}
-                {#'subblocks': [{'title': 'General Information', 'data': general_fields},]#}
-            {#}]} %}#}
-
-            {#{{ UI.scrollData(id, data) }}#}
+            {{ UI.button({'path' : path('oro_entityconfig_view', {'id':entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+            {{ UI.button({'path' : path('oro_entityextend_update', {'id':entity.id}), 'title' : 'Cancel', 'label' : 'Proceed'}) }}
 
         {% endblock %}
     </div>

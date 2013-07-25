@@ -3,10 +3,12 @@
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
 use Oro\Bundle\EntityExtendBundle\Command\BackupCommand;
+use Oro\Bundle\EntityExtendBundle\Command\GenerateCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -46,22 +48,18 @@ class ApplyController extends Controller
      */
     public function applyAction($id)
     {
-
-
-
         /** @var ConfigEntity $entity */
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
 
-        /** @var Schema $schemaTools */
-        $schemaTools = $this->get('oro_entity_extend.tools.schema');
-
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
+        /** @var Schema $schemaTools */
+        $schemaTools = $this->get('oro_entity_extend.tools.schema');
 
         /**
          * do Validations
@@ -70,16 +68,20 @@ class ApplyController extends Controller
 
         $fields = $extendConfig->getFields();
         foreach ($fields as $code => $field) {
+            $isSystem = $schemaTools->checkFieldIsSystem($field);
+
+            if ($isSystem) {
+                continue;
+            }
+
             if (in_array($field->get('state'), array('New', 'Applied', 'Updated', 'To be deleted'))) {
                 $isValid = $schemaTools->checkFieldCanDelete($field);
-                $isSystem = $schemaTools->checkFieldIsSystem($field);
-
                 if ($isValid) {
-                    $validation['success'][] = $isValid . ' not valid -> ' . $code . $isSystem;
                     $validation['success'][] = sprintf(
-                        "Field '%s' is valid.",
+                        "Field '%s(%s)' is valid. State -> %s",
                         $code,
-                        $isSystem ? 'System' : 'Custom'
+                        $isSystem ? 'System' : 'Custom',
+                        $field->get('state')
                     );
                 } else {
                     $validation['error'][] = sprintf(
@@ -90,7 +92,6 @@ class ApplyController extends Controller
                 }
             }
         }
-
 
         return array(
             'validations'   => $validation,
@@ -118,24 +119,43 @@ class ApplyController extends Controller
      */
     public function updateAction($id)
     {
+        /** @var ConfigEntity $entity */
+        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+
         /** @var BackupCommand $backupCommand */
         $backupCommand = $this->get('oro_entity_extend.command.backup');
 
         /**
          * do Backup
          */
-        $input = new \Symfony\Component\Console\Input\ArrayInput(array('entity' => $entity->getClassName()));
+        $input = new ArrayInput(array('entity' => $entity->getClassName()));
         $output = new ConsoleOutput();
-        //$backupCommand->run($input, $output);
+        $backupCommand->run($input, $output);
 
         /**
          * do Generation
          */
 
+        /** @var GenerateCommand $generatorCommand */
+        $generatorCommand = $this->get('oro_entity_extend.command.generate');
+
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+        $generatorCommand->run($input, $output);
+
         /**
          * do Schema update
          */
+        $kernel = $this->get('kernel');
+        $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+        $application->setAutoExit(false);
+        //Create de Schema
+        $options = array('command' => 'doctrine:schema:update',"--force" => true);
+        $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+        //Loading Fixtures
+        //$options = array('command' => 'doctrine:fixtures:load',"--append" => true);
+        //$application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
 
-
+        return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $id)));
     }
 }
