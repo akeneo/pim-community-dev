@@ -7,6 +7,8 @@ parameters:
     database_password: root
 
     mailer_transport:  smtp
+    mailer_encryption: ssl
+    mailer_auth_mode:  login
     mailer_host:       localhost
     mailer_user:       ~
     mailer_password:   ~
