@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 
 /**
  * EmailTemplateRepository
@@ -12,4 +13,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmailTemplateRepository extends EntityRepository
 {
+    /**
+     * @param $entityName
+     * @return EmailTemplate[]
+     */
+    public function getTemplateByEntityName($entityName)
+    {
+        return $this->findByEntityName($entityName);
+    }
 }

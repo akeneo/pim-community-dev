@@ -69,7 +69,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 '/../emails/',
                 $notification->getTemplate()
             );
-
+return;
             $emailTemplate = $this->twig->loadTemplate($template);
             // TODO: There's a bug with sandbox and forms, to be investigated
             //$emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
