@@ -6,8 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Symfony\Component\Serializer\SerializerInterface;
-
 use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer;
 
 class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
@@ -55,225 +53,233 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getAttributes', 'getName'))
             ->disableOriginalConstructor()
             ->getMock();
+        $this->workflow->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('test_workflow'));
 
         $this->attributeNormalizer = new AttributeNormalizer($this->registry);
     }
 
-    public function testNormalizeWhenNotHasStepAttribute()
+    /**
+     * @dataProvider correctAttributesDataProvider
+     * @param mixed $attributeValue
+     */
+    public function testNormalizeSimple($attributeValue)
     {
-        $attributeName = 'foo';
-        $attributeValue = 'fooValue';
+        $attributeName = 'test';
+        $actual = $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue);
+        $this->assertEquals($attributeValue, $actual);
+    }
 
-        $stepAttributes = $this->createAttributes(array('bar' => array()));
+    /**
+     * @dataProvider correctAttributesDataProvider
+     * @param mixed $attributeValue
+     */
+    public function testDenormalizeSimple($attributeValue)
+    {
+        $attributeName = 'test';
+        $actual = $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue);
+        $this->assertEquals($attributeValue, $actual);
+    }
 
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->never())->method($this->anything());
-
-        $this->assertEquals(
-            $attributeValue,
-            $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue)
+    public function correctAttributesDataProvider()
+    {
+        return array(
+            array('test'),
+            array(new \stdClass()),
+            array(array()),
+            array(1234),
+            array(1234.12),
+            array(true),
+            array(null)
         );
     }
 
-    public function testNormalizeWhenHasStepAttributeWithoutEntity()
-    {
-        $attributeName = 'foo';
-        $attributeValue = 'fooValue';
-
-        $stepAttributes = $this->createAttributes(array('foo' => array()));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->never())->method($this->anything());
-
-        $this->assertEquals(
-            $attributeValue,
-            $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue)
-        );
-    }
-
-    public function testNormalizeWhenHasStepAttributeWithEntity()
-    {
-        $attributeName = 'foo';
-        $attributeValue = $this->getMock('FooClass');
-        $entityIdentifiers = array('id' => 1);
-        $entityClass = 'FooClass';
-
-        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->once())->method('getManagerForClass')
-            ->with($entityClass)
-            ->will($this->returnValue($this->entityManager));
-
-        $this->entityManager->expects($this->once())->method('getClassMetadata')
-            ->with($entityClass)
-            ->will($this->returnValue($this->classMetadata));
-
-        $this->classMetadata->expects($this->once())->method('getIdentifierValues')
-            ->with($attributeValue)
-            ->will($this->returnValue($entityIdentifiers));
-
-        $this->assertEquals(
-            $entityIdentifiers['id'],
-            $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue)
-        );
-    }
-
-    public function testNormalizeWhenHasStepAttributeWithEntityAndMultipleIds()
-    {
-        $attributeName = 'foo';
-        $attributeValue = $this->getMock('FooClass');
-        $entityIdentifiers = array('id1' => 'foo', 'id2' => 'bar');
-        $entityClass = 'FooClass';
-
-        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->once())->method('getManagerForClass')
-            ->with($entityClass)
-            ->will($this->returnValue($this->entityManager));
-
-        $this->entityManager->expects($this->once())->method('getClassMetadata')
-            ->with($entityClass)
-            ->will($this->returnValue($this->classMetadata));
-
-        $this->classMetadata->expects($this->once())->method('getIdentifierValues')
-            ->with($attributeValue)
-            ->will($this->returnValue($entityIdentifiers));
-
-        $this->assertEquals(
-            $entityIdentifiers,
-            $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue)
-        );
-    }
-
-    // @codingStandardsIgnoreStart
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
-     * @expectedExceptionMessage Can't access id of entity in workflow data attribute "foo". You must flush entity explicitly or set ID manually if you want to save it to workflow data.
+     * @expectedExceptionMessage Workflow "test_workflow" contains "stdClass", but it's not managed entity class
      */
-    // @codingStandardsIgnoreEnd
-    public function testNormalizeFailsWhenStepAttributeEntityHasNoId()
+    public function testNormalizeIncorrectEntity()
     {
-        $attributeName = 'foo';
-        $attributeValue = $this->getMock('FooClass');
-        $entityClass = 'FooClass';
+        $attributeName = 'test';
+        $attributeValue = new \stdClass();
 
-        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->once())->method('getManagerForClass')
-            ->with($entityClass)
-            ->will($this->returnValue($this->entityManager));
-
-        $this->entityManager->expects($this->once())->method('getClassMetadata')
-            ->with($entityClass)
-            ->will($this->returnValue($this->classMetadata));
-
-        $this->classMetadata->expects($this->once())->method('getIdentifierValues')
-            ->with($attributeValue)
-            ->will($this->returnValue(null));
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'Foo')
+            )
+        );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
 
         $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue);
     }
 
-    // @codingStandardsIgnoreStart
+    public function testNormalizeEntity()
+    {
+        $attributeName = 'test';
+        $attributeValue = new \stdClass();
+        $entityClass = get_class($attributeValue);
+
+        $em = $this->getEntityManager($entityClass);
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($entityClass)
+            ->will($this->returnValue($em));
+
+        $actual = $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue);
+        $expected = array('entity_class' => $entityClass, 'ids' => array('id' => 1));
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testNormalizeEntityWithStep()
+    {
+        $attributeName = 'test';
+        $attributeValue = new \stdClass();
+        $entityClass = get_class($attributeValue);
+
+        $em = $this->getEntityManager($entityClass);
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($entityClass)
+            ->will($this->returnValue($em));
+
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'stdClass')
+            )
+        );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
+
+        $actual = $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue);
+        $expected = array('entity_class' => $entityClass, 'ids' => array('id' => 1));
+        $this->assertEquals($expected, $actual);
+    }
+
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
-     * @expectedExceptionMessage "foo" attribute of workflow "test_workflow" refers to "FooClass", but it's not managed entity class
+     * @expectedExceptionMessage Attribute "test" defined to use "Foo" but "stdClass" given.
      */
-    // @codingStandardsIgnoreEnd
-    public function testNormalizeFailsWhenStepAttributeEntityNotManaged()
+    public function testNormalizeEntityException()
     {
-        $attributeName = 'foo';
-        $attributeValue = $this->getMock('FooClass');
-        $entityClass = 'FooClass';
+        $attributeName = 'test';
+        $attributeValue = new \stdClass();
+        $entityClass = get_class($attributeValue);
 
-        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'Foo')
+            )
+        );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
 
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->workflow->expects($this->exactly(2))->method('getName')
-            ->will($this->returnValue('test_workflow'));
-
-        $this->registry->expects($this->once())->method('getManagerForClass')
+        $em = $this->getEntityManager($entityClass);
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
             ->with($entityClass)
-            ->will($this->returnValue(null));
+            ->will($this->returnValue($em));
 
         $this->attributeNormalizer->normalize($this->workflow, $attributeName, $attributeValue);
     }
 
-    public function testDenormalizeWhenNotHasStepAttribute()
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
+     * @expectedExceptionMessage Workflow "test_workflow" contains "stdClass", but it's not managed entity class
+     */
+    public function testDenormalizeIncorrectEntity()
     {
-        $attributeName = 'foo';
-        $attributeValue = 'fooValue';
+        $attributeName = 'test';
+        $attributeValue = array('entity_class' => 'stdClass', 'ids' => array('id' => 1));
 
-        $stepAttributes = $this->createAttributes(array('bar' => array()));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->never())->method($this->anything());
-
-        $this->assertEquals(
-            $attributeValue,
-            $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue)
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'stdClass')
+            )
         );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
+
+        $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue);
     }
 
-    public function testDenormalizeWhenHasStepAttributeWithoutEntity()
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
+     * @expectedExceptionMessage Attribute "test" defined to use "Foo" but "\stdClass" given.
+     */
+    public function testDenormalizeEntityException()
     {
-        $attributeName = 'foo';
-        $attributeValue = 'fooValue';
+        $attributeName = 'test';
+        $attributeValue = array('entity_class' => '\stdClass', 'ids' => array('id' => 1));
 
-        $stepAttributes = $this->createAttributes(array('foo' => array()));
-
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
-
-        $this->registry->expects($this->never())->method($this->anything());
-
-        $this->assertEquals(
-            $attributeValue,
-            $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue)
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'Foo')
+            )
         );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
+
+        $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue);
     }
 
-    public function testDenormalizeWhenHasStepAttributeWithEntity()
+    public function testDenormalizeEntity()
     {
-        $attributeName = 'foo';
-        $attributeValue = 1;
-        $entity = $this->getMock('FooClass');
-        $entityClass = 'FooClass';
+        $attributeName = 'test';
+        $attributeValue = array('entity_class' => 'stdClass', 'ids' => array('id' => 1));
 
-        $stepAttributes = $this->createAttributes(array('foo' => array('entity_class' => $entityClass)));
+        $expected = $this->getMockBuilder('Doctrine\ORM\Proxy\Proxy')
+            ->getMock();
+        $em = $this->getEntityManager($attributeValue['entity_class']);
+        $em->expects($this->once())
+            ->method('getReference')
+            ->with($attributeValue['entity_class'], $attributeValue['ids'])
+            ->will($this->returnValue($expected));
 
-        $this->workflow->expects($this->once())->method('getAttributes')
-            ->will($this->returnValue($stepAttributes));
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($attributeValue['entity_class'])
+            ->will($this->returnValue($em));
 
-        $this->registry->expects($this->once())->method('getManagerForClass')
-            ->with($entityClass)
-            ->will($this->returnValue($this->entityManager));
+        $actual = $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue);
+        $this->assertEquals($expected, $actual);
+    }
 
-        $this->entityManager->expects($this->once())->method('getReference')
-            ->with($entityClass, $attributeValue)
-            ->will($this->returnValue($entity));
+    public function testDenormalizeEntityWithStep()
+    {
+        $attributeName = 'test';
+        $attributeValue = array('entity_class' => 'stdClass', 'ids' => array('id' => 1));
 
-        $this->assertEquals(
-            $entity,
-            $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue)
+        $expected = $this->getMockBuilder('Doctrine\ORM\Proxy\Proxy')
+            ->getMock();
+        $em = $this->getEntityManager($attributeValue['entity_class']);
+        $em->expects($this->once())
+            ->method('getReference')
+            ->with($attributeValue['entity_class'], $attributeValue['ids'])
+            ->will($this->returnValue($expected));
+
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($attributeValue['entity_class'])
+            ->will($this->returnValue($em));
+
+        $attributes = $this->createAttributes(
+            array(
+                $attributeName => array('entity_class' => 'stdClass')
+            )
         );
+        $this->workflow->expects($this->once())
+            ->method('getAttributes')
+            ->will($this->returnValue($attributes));
+
+        $actual = $this->attributeNormalizer->denormalize($this->workflow, $attributeName, $attributeValue);
+        $this->assertEquals($expected, $actual);
     }
 
     protected function createAttributes(array $attributesOptions)
@@ -282,11 +288,34 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         foreach ($attributesOptions as $attributeName => $options) {
             $stepAttribute = new Attribute();
-            $stepAttribute->setName('foo');
+            $stepAttribute->setName($attributeName);
             $stepAttribute->setOptions($options);
             $stepAttributes->set($attributeName, $stepAttribute);
         }
 
         return $stepAttributes;
+    }
+
+    protected function getEntityManager($entityClass)
+    {
+        $ids = array('id' => 1);
+        $metadata = $this->getMockBuilder('\Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $metadata->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($entityClass));
+        $metadata->expects($this->any())
+            ->method('getIdentifierValues')
+            ->will($this->returnValue($ids));
+
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $em->expects($this->any())
+            ->method('getClassMetadata')
+            ->with($entityClass)
+            ->will($this->returnValue($metadata));
+        return $em;
     }
 }

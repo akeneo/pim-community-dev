@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Serializer\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -47,7 +48,7 @@ class AttributeNormalizer
         $this->workflow = $workflow;
 
         if (is_object($attributeValue)) {
-            $entityManager = $this->getEntityManager(get_class($attributeValue));
+            $entityManager = $this->getEntityManager(get_class($attributeValue), $attributeName);
             if ($entityManager) {
                 $entityReference = new EntityReference();
                 $entityReference->initByEntity($entityManager, $attributeValue);
@@ -80,7 +81,7 @@ class AttributeNormalizer
                 ->setIds($attributeValue['ids']);
 
             $this->assertAttributeEntity($attributeName, $entityReference->getClassName());
-            $entityManager = $this->getEntityManager($entityReference->getClassName());
+            $entityManager = $this->getEntityManager($entityReference->getClassName(), $attributeName);
             if ($entityManager) {
                 $attributeValue = $entityManager->getReference(
                     $entityReference->getClassName(),
@@ -95,22 +96,26 @@ class AttributeNormalizer
      * Returns EntityManager for entity.
      *
      * @param string $entityClass
+     * @param string $attributeName
      * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
      * @return EntityManager|null
      */
-    protected function getEntityManager($entityClass)
+    protected function getEntityManager($entityClass, $attributeName)
     {
         $result = null;
 
         $result = $this->registry->getManagerForClass($entityClass);
         if (!$result) {
-            throw new WorkflowException(
-                sprintf(
-                    'Workflow "%s" contains "%s", but it\'s not managed entity class',
-                    $this->workflow->getName(),
-                    $entityClass
-                )
-            );
+            $stepAttribute = $this->getAttribute($attributeName);
+            if ($stepAttribute && $stepAttribute->getOption('entity_class')) {
+                throw new WorkflowException(
+                    sprintf(
+                        'Workflow "%s" contains "%s", but it\'s not managed entity class',
+                        $this->workflow->getName(),
+                        $entityClass
+                    )
+                );
+            }
         }
 
         return $result;
@@ -140,7 +145,9 @@ class AttributeNormalizer
         if (!isset($this->stepAttributesByWorkflow[$workflowName])) {
             $this->stepAttributesByWorkflow[$workflowName] = $this->workflow->getAttributes();
         }
-        return $this->stepAttributesByWorkflow[$workflowName];
+        return isset($this->stepAttributesByWorkflow[$workflowName])
+            ? $this->stepAttributesByWorkflow[$workflowName]
+            : new ArrayCollection();
     }
 
     /**
