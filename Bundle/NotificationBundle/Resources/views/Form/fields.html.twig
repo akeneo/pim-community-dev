@@ -31,6 +31,7 @@
 
             var emailView = new Oro.EmailTemplatesUpdater.View({
                 el: $('#{{ id }}'),
+                target: $('#{{ form.parent.children.template.vars.id }}'),
                 collection: emailTemplates,
                 showSelect: true
             });

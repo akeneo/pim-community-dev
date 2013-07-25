@@ -5,6 +5,7 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
     events: {
         'change': 'selectionChanged'
     },
+    target: null,
 
     /**
      * Constructor
@@ -14,6 +15,7 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
     initialize: function (options) {
         this.showSelect = options.showSelect;
         this.template = $('#emailtemplate-chooser-template').html();
+        this.target = options.target;
 
         this.listenTo(this.collection, 'reset', this.render);
     },
@@ -39,8 +41,8 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
     },
 
     render: function() {
-        this.el.val('').trigger('change');
-        this.el.find('option[value!=""]').remove();
-        this.el.append(_.template(this.template, {entities: this.collection.models}));
+        $(this.target).val('');
+        $(this.target).find('option[value!=""]').remove();
+        $(this.target).append(_.template(this.template, {entities: this.collection.models}));
     }
 });

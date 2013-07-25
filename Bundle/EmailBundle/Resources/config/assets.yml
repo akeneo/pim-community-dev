@@ -1,5 +1,5 @@
 js:
-  'address':
+  'email':
       - '@OroEmailBundle/Resources/public/js/views/templates.updater.js'
       - '@OroEmailBundle/Resources/public/js/models/templates.updater.js'
       - '@OroEmailBundle/Resources/public/js/collections/templates.updater.js'

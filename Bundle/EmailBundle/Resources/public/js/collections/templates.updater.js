@@ -2,7 +2,7 @@ Oro = Oro || {};
 Oro.EmailTemplatesUpdater = Oro.EmailTemplatesUpdater || {};
 
 Oro.EmailTemplatesUpdater.Collection = Backbone.Collection.extend({
-    route: 'oro_api_email_get_templates',
+    route: 'oro_api_get_emailtemplate',
     url: null,
     model: Oro.EmailTemplatesUpdater.EmailTemplate,
 
@@ -10,7 +10,7 @@ Oro.EmailTemplatesUpdater.Collection = Backbone.Collection.extend({
      * Constructor
      */
     initialize: function () {
-        this.url = Routing.generate(this.route);
+        this.url = Routing.generate(this.route, {entityName: null});
     },
 
     /**
@@ -19,6 +19,6 @@ Oro.EmailTemplatesUpdater.Collection = Backbone.Collection.extend({
      * @param id {String}
      */
     setEntityId: function (id) {
-        this.url = Routing.generate(this.route, {entity: id});
+        this.url = Routing.generate(this.route, {entityName: id});
     }
 });
