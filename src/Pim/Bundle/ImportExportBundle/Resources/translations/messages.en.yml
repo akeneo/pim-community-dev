@@ -1,3 +1,7 @@
 pim_import_export.jobs.product_export:
     title: 'Product export in CSV'
     export.title: 'Export'
+
+pim_import_export.jobs.category_export:
+    title: 'Category export in CSV'
+    export.title: 'Export'
