@@ -1,0 +1,6 @@
+oro:
+    email:
+        controller:
+            emailtemplate:
+                saved:
+                    message: "Template sucessfully saved"

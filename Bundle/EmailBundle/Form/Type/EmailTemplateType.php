@@ -9,10 +9,71 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class EmailTemplateType extends AbstractType
 {
     /**
+     * @var array
+     */
+    protected $entityNameChoices = array();
+
+    /**
+     * @param array $entitiesConfig
+     */
+    public function __construct($entitiesConfig = array())
+    {
+        $this->entityNameChoices = array_map(
+            function ($value) {
+                return isset($value['name'])? $value['name'] : '';
+            },
+            $entitiesConfig
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add(
+            'name',
+            'text',
+            array(
+                'required' => true
+            )
+        );
+
+        $builder->add(
+            'type',
+            'choice',
+            array(
+                'multiple'           => false,
+                'expanded'           => true,
+                'choices'            => array(
+                    'html' => 'oro.email.datagrid.emailtemplate.filter.type.html',
+                    'txt'  => 'oro.email.datagrid.emailtemplate.filter.type.txt'
+                ),
+                'required'           => true,
+                'translation_domain' => 'datagrid'
+            )
+        );
+
+        $builder->add(
+            'entityName',
+            'choice',
+            array(
+                'choices'            => $this->entityNameChoices,
+                'multiple'           => false,
+                'translation_domain' => 'config',
+                'empty_value'        => '',
+                'empty_data'         => null,
+                'required'           => true
+            )
+        );
+
+        $builder->add(
+            'translation',
+            'oro_email_emailtemplate_translatation',
+            array(
+                'required' => true
+            )
+        );
     }
 
     /**

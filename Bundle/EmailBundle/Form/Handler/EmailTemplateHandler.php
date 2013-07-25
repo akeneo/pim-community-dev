@@ -4,7 +4,9 @@ namespace Oro\Bundle\EmailBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
@@ -27,15 +29,22 @@ class EmailTemplateHandler
     protected $manager;
 
     /**
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param ObjectManager $manager
+     * @var ObjectManager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    protected $translator;
+
+    /**
+     * @param FormInterface $form
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param \Symfony\Component\Translation\Translator $translator
+     */
+    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, Translator $translator)
     {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -49,6 +58,17 @@ class EmailTemplateHandler
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+            if ($entity->getIsSystem()) {
+                $message = $this->translator->trans(
+                    'oro.mail.validators.emailtemplate.attempt_save_system_template',
+                    array(),
+                    'validators'
+                );
+                $this->form->addError(new FormError($message));
+
+                return false;
+            }
+
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {

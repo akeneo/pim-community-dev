@@ -42,7 +42,25 @@ class EmailTemplateController extends RestController
      */
     public function deleteAction($id)
     {
-        return $this->handleDeleteRequest($id);
+        $entity = $this->getManager()->find($id);
+        if (!$entity) {
+            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
+        /**
+         * Deny to remove system templates
+         *
+         * @TODO hide icon in datagrid when it'll be possible
+         */
+        if ($entity->getIsSystem()) {
+            return $this->handleView($this->view(null, Codes::HTTP_FORBIDDEN));
+        }
+
+        $em = $this->getManager()->getObjectManager();
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->handleView($this->view(null, Codes::HTTP_NO_CONTENT));
     }
 
     /**

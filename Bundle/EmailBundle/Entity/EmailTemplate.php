@@ -96,7 +96,7 @@ class EmailTemplate implements Translatable
      * @param bool $isSystem
      * @internal param $entityName
      */
-    public function __construct($name, $content = '', $type = 'html', $isSystem = true)
+    public function __construct($name = '', $content = '', $type = 'html', $isSystem = false)
     {
         foreach (array('subject', 'entityName') as $templateParam) {
             if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#si', $content, $match)) {
@@ -237,6 +237,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Set is template system
+     *
      * @param boolean $isSystem
      * @return EmailTemplate
      */
@@ -248,6 +250,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Get is template system
+     *
      * @return boolean
      */
     public function getIsSystem()
@@ -256,6 +260,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Setter for locale
+     *
      * @param mixed $locale
      * @return EmailTemplate
      */
@@ -267,6 +273,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Getter for locale
+     *
      * @return mixed
      */
     public function getLocale()
@@ -275,6 +283,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Setter for template type
+     *
      * @param string $type
      * @return EmailTemplate
      */
@@ -286,6 +296,8 @@ class EmailTemplate implements Translatable
     }
 
     /**
+     * Getter for template type
+     *
      * @return string
      */
     public function getType()
@@ -294,7 +306,7 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * clone template
+     * Clone template
      */
     public function __clone()
     {
@@ -304,6 +316,11 @@ class EmailTemplate implements Translatable
         $this->isSystem = false;
     }
 
+    /**
+     * Convert entity to string
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->getName();
