@@ -50,7 +50,7 @@ services:
 
     oro_workflow.condition.equal_to:
         class: %oro_workflow.condition.equal_to.class%
-        args: [@doctrine, @oro_workflow.context_accessor]
+        arguments: [@doctrine, @oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: eq}
 
@@ -62,7 +62,7 @@ services:
 
     oro_workflow.condition.blank:
         class: %oro_workflow.condition.blank.class%
-        args: [@oro_workflow.context_accessor]
+        arguments: [@oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: blank}
 
@@ -74,21 +74,25 @@ services:
 
     oro_workflow.condition.greater_than:
         class: %oro_workflow.condition.greater_than.class%
+        arguments: [@oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: gt}
 
     oro_workflow.condition.greater_than_or_equal:
         class: %oro_workflow.condition.greater_than_or_equal.class%
+        arguments: [@oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: ge}
 
     oro_workflow.condition.less_than:
         class: %oro_workflow.condition.less_than.class%
+        arguments: [@oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: lt}
 
     oro_workflow.condition.less_than_or_equal:
         class: %oro_workflow.condition.less_than_or_equal.class%
+        arguments: [@oro_workflow.context_accessor]
         tags:
             - {name: oro_workflow.condition, alias: le}
 

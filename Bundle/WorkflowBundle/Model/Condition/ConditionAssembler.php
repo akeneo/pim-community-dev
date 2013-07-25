@@ -55,6 +55,7 @@ class ConditionAssembler extends AbstractAssembler
 
         $passedOptions = $this->configurationPass->pass($options);
 
-        return $this->factory->create($conditionType, $passedOptions);
+        $serviceName = $this->getServiceName($conditionType);
+        return $this->factory->create($serviceName, $passedOptions);
     }
 }

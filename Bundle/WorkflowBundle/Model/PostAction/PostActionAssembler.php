@@ -49,7 +49,8 @@ class PostActionAssembler extends AbstractAssembler
                 $passedActionParameters = $this->configurationPass->pass($actionParameters);
 
                 $actionType = $this->getEntityType($actionConfiguration);
-                $postAction = $this->factory->create($actionType, $passedActionParameters);
+                $serviceName = $this->getServiceName($actionType);
+                $postAction = $this->factory->create($serviceName, $passedActionParameters);
                 $breakOnFailure = !empty($options[self::BREAK_ON_FAILURE_KEY]);
                 $listPostAction->addPostAction($postAction, $breakOnFailure);
             }

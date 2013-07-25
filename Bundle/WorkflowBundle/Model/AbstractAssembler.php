@@ -45,6 +45,17 @@ abstract class AbstractAssembler
     }
 
     /**
+     * Get name of service referenced to $entityType
+     *
+     * @param string $entityType
+     * @return bool
+     */
+    protected function getServiceName($entityType)
+    {
+        return substr($entityType, 1);
+    }
+
+    /**
      * @param array $options
      * @param array $requiredOptions
      * @throws MissedRequiredOptionException
