@@ -71,7 +71,12 @@ class ExportController extends Controller
         $alias         = $request->query->get('alias');
         $registry      = $this->get('pim_batch.connectors');
         $jobDefinition = $registry->getJob($connector, AbstractJob::TYPE_EXPORT, $alias);
-        // TODO Redirect to datagrid with error message if no job definition found
+
+        if (!$jobDefinition) {
+            $this->addFlash('error', 'Fail to create an export with an unknown job.');
+
+            return $this->redirect($this->generateUrl('pim_ie_export_index'));
+        }
 
         $job = new Job($connector, AbstractJob::TYPE_EXPORT, $alias, $jobDefinition);
 

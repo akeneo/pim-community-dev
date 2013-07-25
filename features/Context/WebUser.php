@@ -474,9 +474,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should be on the (.*) page$/
+     * @Then /^I should be redirected on the (.*) page$/
      */
-    public function iShouldBeOnThePage($page)
+    public function iShouldBeRedirectedOnThePage($page)
     {
         $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
     }
@@ -979,6 +979,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Export index')->clickCreationLink($exportTitle);
         $this->currentPage = 'Export creation';
+    }
+
+    /**
+     * @Given /^I try to create an unknown export$/
+     */
+    public function iTryToCreateAnUnknownExport()
+    {
+        $this->getSession()->visit(
+            rtrim($this->getMinkParameter('base_url'), '/') .
+            $this->getPage('Export creation')->getUrl(array('connector' => 'Unknown'))
+        );
     }
 
     private function openPage($page, array $options = array())

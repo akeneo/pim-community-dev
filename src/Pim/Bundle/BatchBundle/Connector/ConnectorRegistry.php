@@ -40,10 +40,10 @@ class ConnectorRegistry
 
     public function getJob($connector, $type, $jobAlias)
     {
-        if ($type === AbstractJob::TYPE_IMPORT) {
-            return $this->importJobs[$connector][$jobAlias];
-        } else {
-            return $this->exportJobs[$connector][$jobAlias];
+        if ($connector = $this->getConnector($connector, $type)) {
+            if ($job = $this->getConnectorJob($connector, $jobAlias)) {
+                return $job;
+            }
         }
     }
 
@@ -65,5 +65,21 @@ class ConnectorRegistry
     public function getImportJobs()
     {
         return $this->importJobs;
+    }
+
+    private function getConnector($connector, $type)
+    {
+        switch ($type) {
+            case AbstractJob::TYPE_IMPORT:
+                return isset($this->importJobs[$connector]) ? $this->importJobs[$connector] : null;
+
+            case AbstractJob::TYPE_EXPORT:
+                return isset($this->exportJobs[$connector]) ? $this->exportJobs[$connector] : null;
+        }
+    }
+
+    private function getConnectorJob($connector, $jobAlias)
+    {
+        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
     }
 }

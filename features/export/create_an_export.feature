@@ -20,7 +20,13 @@ Feature: Create an export
       | Code       | mobile_product_export |
       | Label      | Mobile product export |
     And I save the export
-    Then I should be on the export index page
+    Then I should be redirected on the export index page
     And I should see "The export has been successfully created."
     And the grid should contain 1 element
 
+  @javascript
+  Scenario: Fail to create an unknown product export
+    Given I am logged in as "admin"
+    And I try to create an unknown export
+    Then I should be redirected on the export index page
+    And I should see "Fail to create an export with an unknown job."
