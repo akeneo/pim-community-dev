@@ -30,6 +30,7 @@ class StepTest extends \PHPUnit_Framework_TestCase
             'order' => array('order', 1),
             'template' => array('template', 'test'),
             'allowedTransitions' => array('allowedTransitions', array('one', 'two')),
+            'label' => array('label', 'Value'),
         );
     }
 
