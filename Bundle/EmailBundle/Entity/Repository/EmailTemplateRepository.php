@@ -21,4 +21,16 @@ class EmailTemplateRepository extends EntityRepository
     {
         return $this->findByEntityName($entityName);
     }
+
+    /**
+     * @param $entityName
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getEntityTemplatesQueryBuilder($entityName)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.entityName = :entityName')
+            ->orderBy('e.name', 'ASC')
+            ->setParameter('entityName', $entityName);
+    }
 }

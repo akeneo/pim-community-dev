@@ -303,4 +303,9 @@ class EmailTemplate implements Translatable
         $this->id = null;
         $this->isSystem = false;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
