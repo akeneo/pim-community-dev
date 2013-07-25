@@ -206,13 +206,6 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
-pim_import_export:
-    encoders:
-        csv:
-            delimiter: ';'
-            enclosure: '"'
-            with_header: true
-
 pim_batch:
     jobs:
         product_export:
@@ -221,8 +214,8 @@ pim_batch:
             type: "export"
             steps:
                 export:
-                    title:      "Product export"
+                    title:      "Product export in CSV"
                     reader:     pim_import_export.reader.product
-                    processor:  pim_import_export.processor.serializer
+                    processor:  pim_import_export.processor.csv_serializer
                     writer:     pim_import_export.writer.file
 

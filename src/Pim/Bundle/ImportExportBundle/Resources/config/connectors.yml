@@ -1,7 +1,7 @@
 parameters:
-    pim_import_export.reader.product.class: Pim\Bundle\ImportExportBundle\Reader\ProductReader
-    pim_import_export.processor.serializer.class: Pim\Bundle\ImportExportBundle\Processor\SerializerProcessor
-    pim_import_export.writer.file.class: Pim\Bundle\ImportExportBundle\Writer\FileWriter
+    pim_import_export.reader.product.class:           Pim\Bundle\ImportExportBundle\Reader\ProductReader
+    pim_import_export.processor.csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor
+    pim_import_export.writer.file.class:              Pim\Bundle\ImportExportBundle\Writer\FileWriter
 
 services:
     pim_import_export.reader.product:
@@ -10,8 +10,8 @@ services:
             - @doctrine.orm.default_entity_manager
             - @pim_config.manager.channel
 
-    pim_import_export.processor.serializer:
-        class: %pim_import_export.processor.serializer.class%
+    pim_import_export.processor.csv_serializer:
+        class: %pim_import_export.processor.csv_serializer.class%
         arguments:
             - @pim_serializer
 
