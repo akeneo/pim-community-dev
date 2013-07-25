@@ -28,7 +28,6 @@ class EmailNotificationType extends AbstractType
 
     /**
      * @param array $entitiesConfig
-     * @param ObjectManager $em
      */
     public function __construct($entitiesConfig = array())
     {
