@@ -4,6 +4,7 @@ Feature: Edit an identifier attribute
   As a user
   I need to edit an identifier attribute
 
+  @select2-regression
   Scenario: Successfully display the identifier related fields
     Given I am logged in as "admin"
     And I am on the "SKU" attribute page

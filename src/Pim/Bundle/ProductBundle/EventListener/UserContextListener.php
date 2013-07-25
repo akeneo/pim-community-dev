@@ -8,7 +8,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 

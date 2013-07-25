@@ -1,11 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Product creation form type

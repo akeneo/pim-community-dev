@@ -18,6 +18,17 @@ class WebApiContext extends BehatWebApiContext
     /** Default Nonce */
     const NONCE = 'd36e316282959a9ed4c89851497a717f';
 
+    protected $url;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($baseUrl, Browser $browser = null)
+    {
+        parent::__construct($baseUrl, $browser);
+        $this->url = rtrim($baseUrl, '/');
+    }
+
     /**
      * Provides WSSE authentication for next request.
      *
@@ -40,6 +51,7 @@ class WebApiContext extends BehatWebApiContext
     {
         $product = $this->getFixturesContext()->getProduct($sku);
         $this->setPlaceHolder('{identifier}', $product->getIdentifier());
+        $this->setPlaceHolder('{baseUrl}', $this->url);
 
         return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{identifier}.json\""));
     }

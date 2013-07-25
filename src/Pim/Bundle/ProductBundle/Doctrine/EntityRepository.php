@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Doctrine;
 
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Util\Inflector;
 
 /**

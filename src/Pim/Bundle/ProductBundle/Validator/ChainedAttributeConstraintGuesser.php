@@ -3,9 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Validator;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Constraint

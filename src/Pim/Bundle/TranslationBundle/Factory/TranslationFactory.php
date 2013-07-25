@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Factory;
 
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
-
 /**
  * Translation factory for entity instanciation
  *

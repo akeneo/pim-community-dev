@@ -1,12 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType;
-
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
