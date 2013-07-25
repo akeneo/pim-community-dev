@@ -12,6 +12,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Entity\RawConfiguration;
+use Pim\Bundle\BatchBundle\Job\AbstractJob;
 
 /**
  * Export controller
@@ -65,23 +66,18 @@ class ExportController extends Controller
      */
     public function createAction(Request $request)
     {
-        $connector = $request->query->get('connector');
-        $jobType   = $request->query->get('job_type');
-        $jobAlias  = $request->query->get('job_alias');
+        $connector     = $request->query->get('connector');
+        $alias         = $request->query->get('alias');
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($connector, AbstractJob::TYPE_EXPORT, $alias);
+        // TODO Redirect to datagrid with error message if no job definition found
 
-        $registry = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, $jobType, $jobAlias);
-
-        $job = new Job();
-        // TODO : Job setConnector setType, setAlias
-        $job->setJobDefinition($jobDefinition);
+        $job = new Job($connector, AbstractJob::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-            // TODO : don't set it like this
-            $job->setRawConfiguration($jobDefinition->getConfiguration());
         }
 
         return array(

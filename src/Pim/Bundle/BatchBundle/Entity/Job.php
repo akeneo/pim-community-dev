@@ -5,6 +5,7 @@ namespace Pim\Bundle\BatchBundle\Entity;
 use Pim\Bundle\BatchBundle\Job\SimpleJob;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\BatchBundle\Job\JobInterface;
 
 /**
  * Entity job is an instance of a configured job for a configured connector
@@ -37,7 +38,7 @@ class Job
     /**
      * @var string $label
      *
-     * @ORM\Column(name="label", type="string", length=255)
+     * @ORM\Column
      */
     protected $label;
 
@@ -51,8 +52,7 @@ class Job
     /**
      * @var Connector $connector
      *
-     * @ORM\ManyToOne(targetEntity="Connector", inversedBy="jobs")
-     * @ORM\JoinColumn(name="connector_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\Column
      */
     protected $connector;
 
@@ -61,9 +61,9 @@ class Job
      *
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column
      */
-    protected $type = 'export'; // TODO: temporary, must be setuped during creation
+    protected $type;
 
     /**
      * @var array $rawConfiguration
@@ -76,6 +76,22 @@ class Job
      * @var SimpleJob
      */
     protected $jobDefinition;
+
+    /**
+     * Constructor
+     *
+     * @param string $connector
+     * @param string $type
+     * @param string $alias
+     * @param string $jobDefinition
+     */
+    public function __construct($connector, $type, $alias, JobInterface $jobDefinition = null)
+    {
+        $this->connector     = $connector;
+        $this->type          = $type;
+        $this->alias         = $alias;
+        $this->jobDefinition = $jobDefinition;
+    }
 
     /**
      * Get id
@@ -184,54 +200,6 @@ class Job
     }
 
     /**
-     * Set connector
-     *
-     * @param Connector $connector
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
-     */
-    public function setConnector(Connector $connector)
-    {
-        $this->connector = $connector;
-
-        return $this;
-    }
-
-    /**
-     * Get connector configuration
-     *
-     * @return Connector
-     */
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-
-    /**
-     * Set job service id
-     *
-     * @param string $serviceId
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
-     */
-    public function setServiceId($serviceId)
-    {
-        $this->serviceId = $serviceId;
-
-        return $this;
-    }
-
-    /**
-     * Get job service id
-     *
-     * @return string
-     */
-    public function getServiceId()
-    {
-        return $this->serviceId;
-    }
-
-    /**
      * Set job configuration
      *
      * @param array $configuration
@@ -252,7 +220,7 @@ class Job
      */
     public function getRawConfiguration()
     {
-        return $this->jobDefinition->getConfiguration();
+        return $this->rawConfiguration;
     }
 
     /**
@@ -264,10 +232,9 @@ class Job
      */
     public function setJobDefinition($jobDefinition)
     {
-        var_dump('set job definition');
         $this->jobDefinition = $jobDefinition;
 
-        $this->rawConfiguration = $jobDefinition->getConfiguration();
+        $this->setRawConfiguration($jobDefinition->getConfiguration());
 
         return $this;
     }

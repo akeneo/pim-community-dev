@@ -25,10 +25,10 @@ class JobType extends AbstractType
         $builder
             ->add('code', 'text')
             ->add('label')
-            ->add(
-                'jobDefinition',
-                new JobConfigurationType()
-            );
+            ->add('jobDefinition', new JobConfigurationType(), array(
+                'required'     => false,
+                'by_reference' => false,
+            ));
     }
 
     /**
