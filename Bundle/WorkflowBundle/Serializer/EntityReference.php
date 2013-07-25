@@ -21,6 +21,10 @@ class EntityReference
     {
         $metadata = $entityManager->getClassMetadata(get_class($entity));
         $this->className = $metadata->getName();
+
+        if ($entity instanceof \Doctrine\ORM\Proxy\Proxy) {
+            $entity->__load(); // Load proxy because $metadata->getIdentifierValues($entity); will return empty array
+        }
         $this->ids = $metadata->getIdentifierValues($entity);
 
         if (!$this->ids) {
