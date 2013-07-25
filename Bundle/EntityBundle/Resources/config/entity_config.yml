@@ -104,7 +104,7 @@ oro_entity_config:
                         is_bool:            true
                     grid:
                         type:               boolean
-                        label:              'Datagrid search'
+                        label:              'Grid'
                         filter_type:        oro_grid_orm_boolean
                         required:           true
                         sortable:           true
@@ -116,4 +116,4 @@ oro_entity_config:
                             choices:        ['No', 'Yes']
                             empty_value:    false
                             block:          datagrid
-                            label:          "Datagrid search"
+                            label:          'Grid'
