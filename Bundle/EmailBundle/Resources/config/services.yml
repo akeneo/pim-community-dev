@@ -1,8 +1,12 @@
 parameters:
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
+
+    # Email template field
     oro_email.form.listener.notification.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener
 
+    # Email template API
 services:
+    # Email template field
     oro_email.form.listener.notification:
         class: %oro_email.form.listener.notification.class%
         arguments:
