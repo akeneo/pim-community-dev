@@ -4,6 +4,7 @@ parameters:
 services:
     oro_email.emailtemplate.datagrid_manager:
         class: %oro_email.emailtemplate.datagrid_manager.class%
+        arguments: [%oro_config.entities%]
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: emailtemplate

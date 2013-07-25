@@ -17,7 +17,6 @@ use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
-
 /**
  * @RouteResource("emailtemplate")
  * @NamePrefix("oro_api_")
