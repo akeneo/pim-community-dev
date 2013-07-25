@@ -3,7 +3,7 @@ imports:
 
 doctrine:
     orm:
-        metadata_cache_driver: apc
+        #metadata_cache_driver: apc @see https://magecore.atlassian.net/browse/BAP-1262
         result_cache_driver:   apc
         query_cache_driver:    apc
 
