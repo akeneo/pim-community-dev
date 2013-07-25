@@ -35,13 +35,13 @@ oro_entity_config:
                         default_value:      ''
                     grid:
                         type:               string
-                        label:              'Schema State'
+                        label:              'Status'
                         filter_type:        oro_grid_orm_choice
-                        choices:            {system: '', new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Updated', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
-                        filterable:         true
-                        show_filter:        true
+                        filterable:         false
+                        show_filter:        false
 
                 extend_class:               ~
 
@@ -78,7 +78,7 @@ oro_entity_config:
                         default_value:      ''
                     grid:
                         type:               string
-                        label:              'Schema State'
+                        label:              'Status'
                         filter_type:        oro_grid_orm_choice
                         choices:            { new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
                         required:           true

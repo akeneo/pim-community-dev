@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
 class ApplyController extends Controller
 {
     /**
-     * View Apply
      * @Route(
      *      "/apply/{id}",
      *      name="oro_entityextend_apply",
@@ -100,7 +99,6 @@ class ApplyController extends Controller
     }
 
     /**
-     * View Apply
      * @Route(
      *      "/update/{id}",
      *      name="oro_entityextend_update",
@@ -134,7 +132,7 @@ class ApplyController extends Controller
             $command->run();
 
             while ($command->isRunning()) {
-                /** wait for previous process  */
+                /** wait for previous process */
             }
         }
 
