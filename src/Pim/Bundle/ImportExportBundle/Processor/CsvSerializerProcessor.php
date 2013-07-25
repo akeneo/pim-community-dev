@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -75,4 +73,3 @@ class CsvSerializerProcessor extends SerializerProcessor
         );
     }
 }
-

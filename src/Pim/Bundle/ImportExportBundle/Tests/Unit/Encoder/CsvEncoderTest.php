@@ -141,4 +141,3 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($csv, $encoder->encode($array, 'csv'));
     }
 }
-
