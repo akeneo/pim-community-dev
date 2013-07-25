@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\NotificationBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-
-use Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener;
 
 class EmailNotificationType extends AbstractType
 {
@@ -22,11 +21,6 @@ class EmailNotificationType extends AbstractType
      * @var array
      */
     protected $entitiesData = array();
-
-    /**
-     * @var array
-     */
-    protected $templateNameChoices = array();
 
     /**
      * @var BuildNotificationFormListener
@@ -61,7 +55,6 @@ class EmailNotificationType extends AbstractType
         );
 
         $this->listener = $listener;
-        $this->templateNameChoices = array();
     }
 
     /**
@@ -103,14 +96,14 @@ class EmailNotificationType extends AbstractType
             )
         );
 
-        $choices = function (Options $options) {
-            // show empty list if country is not selected
-            if (empty($options['entityName'])) {
-                return array();
-            }
-
-            return null;
-        };
+//        $choices = function (Options $options) {
+//            // show empty list if country is not selected
+//            if (empty($options['entityName'])) {
+//                return array();
+//            }
+//
+//            return null;
+//        };
 
         $builder->add(
             'template',
@@ -118,7 +111,7 @@ class EmailNotificationType extends AbstractType
             array(
                 'class'         => 'OroEmailBundle:EmailTemplate',
                 'property'      => 'name',
-                'choices'       => $choices,
+//                'choices'       => $choices,
                 'empty_value'   => '',
                 'empty_data'    => ''
             )

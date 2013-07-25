@@ -76,7 +76,7 @@ class BuildNotificationFormListener implements EventSubscriberInterface
             }
 
             unset($config['em']);
-            unset($config['choice_list']);
+            unset($config['choices']);
             if ($entityName == null) {
                 unset($config['choices']);
             }

@@ -3,7 +3,7 @@ parameters:
     oro_email.form.listener.notification.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener
 
 services:
-    oro_email.form.listener.address:
+    oro_email.form.listener.notification:
         class: %oro_email.form.listener.notification.class%
         arguments:
             - @doctrine.orm.entity_manager

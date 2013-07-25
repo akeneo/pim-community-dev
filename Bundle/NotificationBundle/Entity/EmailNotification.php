@@ -40,7 +40,7 @@ class EmailNotification
     /**
      * @var \Oro\Bundle\EmailBundle\Entity\EmailTemplate
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $template;
