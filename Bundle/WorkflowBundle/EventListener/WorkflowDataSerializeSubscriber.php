@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Symfony\Component\Serializer\SerializerInterface;
+use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 
 /**
  * Performs serialization and deserialization of WorkflowItem data
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class WorkflowDataSerializeSubscriber implements EventSubscriber
 {
     /**
-     * @var SerializerInterface
+     * @var WorkflowAwareSerializer
      */
     protected $serializer;
 
@@ -28,9 +28,9 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     /**
      * Constructor
      *
-     * @param SerializerInterface $serializer
+     * @param WorkflowAwareSerializer $serializer
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(WorkflowAwareSerializer $serializer)
     {
         $this->serializer = $serializer;
     }
@@ -91,6 +91,7 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     protected function serialize(WorkflowItem $workflowItem)
     {
         if ($workflowItem->getData()->isModified()) {
+            $this->serializer->setWorkflowName($workflowItem->getWorkflowName());
             $serializedData = $this->serializer->serialize($workflowItem->getData(), $this->format);
             $workflowItem->setSerializedData($serializedData);
         }
