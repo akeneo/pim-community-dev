@@ -19,6 +19,8 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
  */
 class Job
 {
+    const STATUS_DRAFT = 0;
+
     /**
      * @var integer $id
      *
@@ -43,11 +45,18 @@ class Job
     protected $label;
 
     /**
+     * @var string $label
+     *
+     * @ORM\Column
+     */
+    protected $alias;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="status", type="integer")
      */
-    protected $status;
+    protected $status = self::STATUS_DRAFT;
 
     /**
      * @var Connector $connector

@@ -474,13 +474,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should be on the family creation page$/
+     * @Then /^I should be on the (.*) page$/
      */
-    public function iShouldBeOnTheFamilyCreationPage()
+    public function iShouldBeOnThePage($page)
     {
-        $this->assertSession()->addressEquals(sprintf(
-            '%s%s', rtrim($this->getMinkParameter('base_url'), '/'), $this->getPage('Family creation')->getUri()
-        ));
+        $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
     }
 
     /**
@@ -632,6 +630,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         ;
 
         $this->wait();
+    }
+
+    /**
+     * @Given /^I select the channel "([^"]*)"$/
+     */
+    public function iSelectChannel($channel)
+    {
+        $this
+            ->getPage('Export creation')
+            ->selectChannel($channel)
+        ;
+    }
+
+    /**
+     * @Given /^I check "([^"]*)"$/
+     */
+    public function iCheck($field)
+    {
+        $this->getCurrentPage()->checkField($field);
     }
 
     /**
@@ -961,6 +978,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewExport($exportTitle)
     {
         $this->getPage('Export index')->clickCreationLink($exportTitle);
+        $this->currentPage = 'Export creation';
     }
 
     private function openPage($page, array $options = array())

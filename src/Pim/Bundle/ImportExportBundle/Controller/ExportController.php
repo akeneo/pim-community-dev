@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -10,6 +9,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
+use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
  * Export controller
@@ -79,10 +79,23 @@ class ExportController extends Controller
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($job);
+                $em->flush();
+
+                $this->addFlash('success', 'The export has been successfully created.');
+
+                return $this->redirect(
+                    $this->generateUrl('pim_ie_export_index')
+                );
+            }
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'      => $form->createView(),
+            'connector' => $connector,
+            'alias'     => $alias,
         );
     }
 

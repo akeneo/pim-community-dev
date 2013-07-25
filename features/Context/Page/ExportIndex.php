@@ -17,7 +17,18 @@ class ExportIndex extends Page
 
     public function clickCreationLink($exportLink)
     {
+        $this->openCreationDropdown();
         $this->clickLink($exportLink);
+    }
+
+    public function getUrl()
+    {
+        return $this->getPath();
+    }
+
+    private function openCreationDropdown()
+    {
+        $this->clickLink('New export');
     }
 }
 

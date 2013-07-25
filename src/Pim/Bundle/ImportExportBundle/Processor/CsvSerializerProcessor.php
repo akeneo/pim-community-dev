@@ -35,6 +35,11 @@ class CsvSerializerProcessor extends SerializerProcessor
         return $this->enclosure;
     }
 
+    public function setWithHeader($withHeader)
+    {
+        $this->withHeader = $withHeader;
+    }
+
     public function isWithHeader()
     {
         return $this->withHeader;
