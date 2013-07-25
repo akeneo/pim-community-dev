@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 
@@ -59,13 +60,13 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->serialize($entity);
+                $this->serialize($entity, $uow);
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->serialize($entity);
+                $this->serialize($entity, $uow);
             }
         }
     }
@@ -87,13 +88,18 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
      * Serialize data of WorkflowItem
      *
      * @param WorkflowItem $workflowItem
+     * @param UnitOfWork $uow
      */
-    protected function serialize(WorkflowItem $workflowItem)
+    protected function serialize(WorkflowItem $workflowItem, UnitOfWork $uow)
     {
         if ($workflowItem->getData()->isModified()) {
+            $oldValue = $workflowItem->getSerializedData();
+
             $this->serializer->setWorkflowName($workflowItem->getWorkflowName());
             $serializedData = $this->serializer->serialize($workflowItem->getData(), $this->format);
             $workflowItem->setSerializedData($serializedData);
+
+            $uow->propertyChanged($workflowItem, 'serializedData', $oldValue, $serializedData);
         }
     }
 
