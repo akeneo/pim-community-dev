@@ -25,21 +25,8 @@ use Pim\Bundle\ProductBundle\Entity\ProductPrice;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 *
 */
-class LoadProductData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadProductData extends AbstractDemoFixture
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * Get product manager
      * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
@@ -67,6 +54,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        if ($this->isEnabled() === false) {
+            return;
+        }
+
         $nbProducts = 250;
         $batchSize = 500;
 

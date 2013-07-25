@@ -19,32 +19,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadExportProfileData extends AbstractDemoFixture
 {
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $manager;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
+        if ($this->isEnabled() === false) {
+            return;
+        }
+
         $this->manager = $manager;
 
         // create profiles
