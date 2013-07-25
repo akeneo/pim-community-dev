@@ -63,10 +63,6 @@ class BuildNotificationFormListener implements EventSubscriberInterface
         /** @var $notification \Oro\Bundle\NotificationBundle\Entity\EmailNotification */
         $entityName = $notification->getEntityName();
 
-//        if (null === $entityName) {
-//            return;
-//        }
-
         if ($form->has('template')) {
             $config = $form->get('template')->getConfig()->getOptions();
             $config['query_builder'] = $this->getTemplateClosure($entityName);
@@ -76,7 +72,6 @@ class BuildNotificationFormListener implements EventSubscriberInterface
             }
 
             unset($config['em']);
-            unset($config['choices']);
             if ($entityName == null) {
                 unset($config['choices']);
             }

@@ -96,22 +96,12 @@ class EmailNotificationType extends AbstractType
             )
         );
 
-//        $choices = function (Options $options) {
-//            // show empty list if country is not selected
-//            if (empty($options['entityName'])) {
-//                return array();
-//            }
-//
-//            return null;
-//        };
-
         $builder->add(
             'template',
             'entity',
             array(
                 'class'         => 'OroEmailBundle:EmailTemplate',
                 'property'      => 'name',
-//                'choices'       => $choices,
                 'empty_value'   => '',
                 'empty_data'    => ''
             )
