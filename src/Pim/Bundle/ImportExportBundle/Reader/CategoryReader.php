@@ -37,4 +37,12 @@ class CategoryReader extends ORMCursorReader
 
         return parent::read();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Categories';
+    }
 }

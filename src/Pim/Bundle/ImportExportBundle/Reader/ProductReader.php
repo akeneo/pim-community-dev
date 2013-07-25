@@ -59,6 +59,9 @@ class ProductReader extends ORMCursorReader
         return $this->channel;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'Scoped products';
