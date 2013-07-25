@@ -52,4 +52,3 @@ class SerializerProcessor extends AbstractConfigurableStepElement implements Ite
         );
     }
 }
-
