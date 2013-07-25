@@ -18,7 +18,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         // all actual post actions will be collected in $actualPostActions
         $actualPostActions = array();
-        $listPostAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\ListPostAction')
+        $listPostAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor')
             ->setMethods(array('addPostAction'))
             ->getMock();
         $listPostAction->expects($this->exactly(count($source)))
