@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -93,13 +93,13 @@ $(document).ready(function () {
     };
 
     function SearchInputWidth() {
-        var _generalWidth = searchBarContainer.width();
+        /*  var _generalWidth = searchBarContainer.width();')
         var searchBtnWidth = searchBarContainer.find('.btn-search').outerWidth();
         var searchBarButtonWidth = searchBarButton.outerWidth();
 
-        /* just need a design without border */
+        *//* just need a design without border *//*
         searchBarInput.width(_generalWidth - (searchBtnWidth + searchBarButtonWidth));
-        searchDropdown.width(_generalWidth - searchBarButtonWidth + 8);
+        searchDropdown.width(_generalWidth - searchBarButtonWidth + 8);*/
     }
 
     function SearchByTagClose() {

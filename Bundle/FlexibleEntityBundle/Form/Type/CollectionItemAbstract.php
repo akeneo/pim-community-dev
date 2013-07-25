@@ -5,6 +5,9 @@ namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Collection item
+ */
 abstract class CollectionItemAbstract extends AbstractType
 {
     /**

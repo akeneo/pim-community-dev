@@ -1,8 +1,12 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Phone collection type
+ */
 class PhoneCollectionType extends CollectionAbstract
 {
     /**

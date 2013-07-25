@@ -197,6 +197,7 @@ Oro.Navigation = Backbone.Router.extend({
                         this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                         this.updateDebugToolbar(jqXHR);
                         this.afterRequest();
+                        this.loadingMask.hide();
                     }, this),
 
                     success: _.bind(function (data, textStatus, jqXHR) {
@@ -454,10 +455,6 @@ Oro.Navigation = Backbone.Router.extend({
      */
     init: function() {
         /**
-         * Processing all links
-         */
-        this.processClicks(this.selectorCached.links);
-        /**
          * Processing all links in grid after grid load
          */
         Oro.Events.bind(
@@ -637,6 +634,12 @@ Oro.Navigation = Backbone.Router.extend({
             }, this)
         );
 
+        /**
+         * Processing all links
+         */
+        this.processClicks(this.selectorCached.links);
+        this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
+
         this.processForms(this.selectors.forms);
         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
 
@@ -666,7 +669,6 @@ Oro.Navigation = Backbone.Router.extend({
      *  Triggered after hash navigation ajax request
      */
     afterRequest: function() {
-        this.loadingMask.hide();
         this.formState = '';
         this.initCacheTimer();
     },
@@ -787,6 +789,7 @@ Oro.Navigation = Backbone.Router.extend({
                         $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
                     }
                     this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                    this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                     this.processClicks(this.selectorCached.container.find(this.selectors.links));
                     this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
                     this.processForms(this.selectorCached.container.find(this.selectors.forms));
@@ -795,9 +798,11 @@ Oro.Navigation = Backbone.Router.extend({
                     if (!options.fromCache) {
                         this.updateMenuTabs(data);
                         this.addMessages(data.flashMessages);
-                        Oro.Events.trigger("hash_navigation_request:refresh", this);
                     }
                     this.hideActiveDropdowns();
+                    Oro.Events.trigger("hash_navigation_request:refresh", this);
+                    this.loadingMask.hide();
+
                 }
             }
         }
@@ -812,6 +817,18 @@ Oro.Navigation = Backbone.Router.extend({
             }
         }
         this.triggerCompleteEvent();
+    },
+
+    /**
+     * Disable # links to prevent hash changing
+     *
+     * @param selector
+     */
+    disableEmptyLinks: function(selector) {
+        $(selector).on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        })
     },
 
     processRedirect: function (data) {
@@ -1003,6 +1020,7 @@ Oro.Navigation = Backbone.Router.extend({
                             error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
                                 this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                                 this.afterRequest();
+                                this.loadingMask.hide();
                             }, this),
                             success: _.bind(function (data) {
                                 this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response

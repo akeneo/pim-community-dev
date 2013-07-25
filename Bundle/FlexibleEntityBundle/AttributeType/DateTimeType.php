@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -6,7 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Datetime attribute type
- *
  */
 class DateTimeType extends AbstractAttributeType
 {

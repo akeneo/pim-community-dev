@@ -1,0 +1,23 @@
+{
+    "name": "oro/organization-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Organization Bundle",
+    "keywords": ["BAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/user-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\OrganizationBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/OrganizationBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
