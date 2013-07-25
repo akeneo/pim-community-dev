@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -31,7 +33,7 @@ class UniqueValueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         $entity = $this->getEntity();
-        if (!$entity instanceof ProductValue) {
+        if (!$entity instanceof ProductValueInterface) {
             return;
         }
 
@@ -63,7 +65,7 @@ class UniqueValueValidator extends ConstraintValidator
         }
 
         $product = $this->context->getRoot()->getData();
-        if (!$product instanceof Product) {
+        if (!$product instanceof ProductInterface) {
             return;
         }
 
