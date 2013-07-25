@@ -32,11 +32,6 @@ class Tag extends AbstractEntity implements Entity
         $this->byXPath("//button[contains(., 'Save')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        return new Tags($this->test);
-    }
-
-    public function close()
-    {
-        return new Tags($this->test);
+        return $this;
     }
 }

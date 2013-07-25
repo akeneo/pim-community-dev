@@ -26,6 +26,7 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testCreateTag()
     {
+        $this->markTestSkipped('CRM-272');
         $tagname = 'Tag_'.mt_rand();
 
         $login = new Login($this);
@@ -38,8 +39,8 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setTagname($tagname)
             ->save()
             ->assertMessage('Tag successfully saved')
-            ->close()
-            ->assertTitle('Tags');
+            ->assertTitle('Tags')
+            ->close();
 
         return $tagname;
     }
@@ -108,7 +109,7 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
-            ->openUsers(false)
+            ->openUsers()
             ->add()
             ->setUsername($username)
             ->enable()
