@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue;
@@ -6,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Attribute option values
- *
  *
  * @ORM\Table(name="oro_flexibleentity_attribute_option_value")
  * @ORM\Entity

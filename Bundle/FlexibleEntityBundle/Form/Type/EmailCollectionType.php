@@ -1,8 +1,12 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Email collection type
+ */
 class EmailCollectionType extends CollectionAbstract
 {
     /**

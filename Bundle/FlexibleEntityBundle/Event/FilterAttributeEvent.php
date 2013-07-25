@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Event;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -6,8 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Filter event allows to know the create flexible attribute
- *
- *
  */
 class FilterAttributeEvent extends AbstractFilterEvent
 {

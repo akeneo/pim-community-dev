@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
@@ -9,7 +10,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 
 /**
  * Aims to add timestambable behavior
- *
  */
 class TimestampableListener implements EventSubscriber
 {

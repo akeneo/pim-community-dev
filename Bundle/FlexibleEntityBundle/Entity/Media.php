@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -8,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Media entity
  * File is not save here
- *
  *
  * @ORM\Table(name="oro_flexibleentity_media")
  * @ORM\Entity

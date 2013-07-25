@@ -1,10 +1,9 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 /**
  * File attribute type
- *
- *
  */
 class FileUrlType extends UrlType
 {

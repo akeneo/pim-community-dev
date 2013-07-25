@@ -1,11 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Mail attribute type
- *
  */
 class EmailType extends AbstractAttributeType
 {

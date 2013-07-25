@@ -5,12 +5,21 @@ oro_menu_config:
             route: 'oro_tag_index'
             extras:
                 routes: ['oro_tag_*']
+                description: Tags list
+        shortcut_new_tag:
+            label: Create new tag
+            route: oro_tag_create
+            extras:
+                description: Create new tag
     tree:
         application_menu:
             children:
                 system_tab:
                     children:
                         oro_tag_list: ~
+        shortcuts:
+            children:
+                shortcut_new_tag: ~
 
 oro_titles:
     oro_tag_index:  Tags

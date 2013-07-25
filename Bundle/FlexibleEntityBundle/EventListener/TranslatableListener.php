@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -13,7 +14,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 /**
  * Aims to inject selected locale into loaded translatable container, ie, not store locale code but contains some
  * translated "children" (values for flexible, option value for option) and allow to select relevant child
- *
  */
 class TranslatableListener implements EventSubscriber
 {

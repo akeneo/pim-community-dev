@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -9,8 +10,6 @@ use Symfony\Component\Form\AbstractType;
 
 /**
  * Type for attribute form
- *
- *
  */
 class AttributeType extends AbstractType
 {

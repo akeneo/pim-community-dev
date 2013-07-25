@@ -4,6 +4,9 @@ namespace Oro\Bundle\FlexibleEntityBundle\Form\Validator;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
+/**
+ * Constraint guesser interface
+ */
 interface ConstraintGuesserInterface
 {
     /**
