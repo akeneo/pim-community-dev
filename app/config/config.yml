@@ -211,12 +211,12 @@ knp_gaufrette:
 pim_batch:
     jobs:
         product_export:
-            title: "CSV export of products"
+            title: pim_import_export.jobs.product_export.title
             connector: "Akeneo"
             type: "export"
             steps:
                 export:
-                    title:      "Product export in CSV"
+                    title:      pim_import_export.jobs.product_export.export.title
                     reader:     pim_import_export.reader.product
                     processor:  pim_import_export.processor.csv_serializer
                     writer:     pim_import_export.writer.file

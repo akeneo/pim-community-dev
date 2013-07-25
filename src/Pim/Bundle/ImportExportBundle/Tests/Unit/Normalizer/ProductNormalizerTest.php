@@ -183,7 +183,6 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-
         return $product;
     }
 

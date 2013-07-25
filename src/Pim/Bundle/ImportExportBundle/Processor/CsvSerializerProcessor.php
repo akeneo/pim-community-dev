@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -37,6 +35,11 @@ class CsvSerializerProcessor extends SerializerProcessor
         return $this->enclosure;
     }
 
+    public function setWithHeader($withHeader)
+    {
+        $this->withHeader = $withHeader;
+    }
+
     public function isWithHeader()
     {
         return $this->withHeader;
@@ -49,6 +52,11 @@ class CsvSerializerProcessor extends SerializerProcessor
             'enclosure'  => $this->enclosure,
             'withHeader' => $this->withHeader,
         ));
+    }
+
+    public function getName()
+    {
+        return 'CSV Serializer';
     }
 
     public function getConfigurationFields()
@@ -70,4 +78,3 @@ class CsvSerializerProcessor extends SerializerProcessor
         );
     }
 }
-

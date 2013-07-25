@@ -67,4 +67,3 @@ class Exporter
         return $jobLauncher->run($simpleJob, $jobParameters);
     }
 }
-

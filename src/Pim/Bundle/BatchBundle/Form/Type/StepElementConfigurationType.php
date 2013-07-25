@@ -32,6 +32,7 @@ class StepElementConfigurationType extends AbstractType
                     $type    = isset($config['type']) ? $config['type'] : 'text';
                     $options = array_merge(array(
                         'auto_initialize' => false,
+                        'required'        => false,
                     ), $config['options']);
 
                     $form->add($factory->createNamed($field, $type, null, $options));

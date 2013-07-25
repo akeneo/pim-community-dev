@@ -151,7 +151,6 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getCategoryTitlesAsString')
             ->will($this->returnValue($categories));
 
-
         return $product;
     }
 
@@ -189,7 +188,6 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getAttributeType')
             ->will($this->returnValue($type));
-
 
         return $attribute;
     }

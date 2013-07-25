@@ -43,4 +43,3 @@ class SerializerProcessorTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Symfony\Component\Serializer\Serializer');
     }
 }
-
