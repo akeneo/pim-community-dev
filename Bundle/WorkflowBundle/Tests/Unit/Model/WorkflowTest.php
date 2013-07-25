@@ -409,6 +409,41 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($attributes, $obj->getAttributes());
     }
 
+    public function testGetStep()
+    {
+        $step1 = $this->getStepMock('step1');
+        $step2 = $this->getStepMock('step2');
+
+        $obj = $this->createWorkflow();
+        $obj->setSteps(array($step1, $step2));
+
+        $this->assertEquals($step1, $obj->getStep('step1'));
+        $this->assertEquals($step2, $obj->getStep('step2'));
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
+     * @expectedExceptionMessage Step "unknown_step" not found
+     */
+    public function testGetStepUnknownStep()
+    {
+        $obj = $this->createWorkflow();
+        $obj->setSteps(array());
+        $obj->getStep('unknown_step');
+    }
+
+    public function testGetStartStep()
+    {
+        $startStepName = 'start_step';
+        $startStep = $this->getStepMock($startStepName);
+
+        $obj = $this->createWorkflow();
+        $obj->setStartStepName($startStepName);
+        $obj->setSteps(array($startStep));
+
+        $this->assertEquals($startStep, $obj->getStartStep());
+    }
+
     protected function getStepMock($name)
     {
         $step = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Step')
