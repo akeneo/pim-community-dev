@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Serializer\EntityReference;
 
 class AttributeNormalizer
 {
@@ -38,23 +39,23 @@ class AttributeNormalizer
      * @param Workflow $workflow
      * @param string $attributeName
      * @param mixed $attributeValue
+     * @throws WorkflowException
      * @return mixed
      */
     public function normalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getAttribute($attributeName);
-        if (!$stepAttribute) {
-            return $attributeValue;
-        }
 
-        $entityManager = $this->getAttributeEntityManager($stepAttribute);
-        if (null !== $attributeValue && $entityManager) {
-            $ids = $this->getEntityIdentifierValues($stepAttribute, $attributeValue, $entityManager);
-            if (count($ids) == 1) {
-                $attributeValue = current($ids);
-            } else {
-                $attributeValue = $ids;
+        if (is_object($attributeValue)) {
+            $entityManager = $this->getEntityManager(get_class($attributeValue));
+            if ($entityManager) {
+                $entityReference = new EntityReference();
+                $entityReference->initByEntity($entityManager, $attributeValue);
+                $this->assertAttributeEntity($attributeName, $entityReference->getClassName());
+                $attributeValue = array(
+                    'entity_class' => $entityReference->getClassName(),
+                    'ids' => $entityReference->getIds()
+                );
             }
         }
         return $attributeValue;
@@ -71,68 +72,43 @@ class AttributeNormalizer
     public function denormalize(Workflow $workflow, $attributeName, $attributeValue)
     {
         $this->workflow = $workflow;
-        $stepAttribute = $this->getAttribute($attributeName);
-        if (!$stepAttribute) {
-            return $attributeValue;
-        }
-        $entityManager = $this->getAttributeEntityManager($stepAttribute);
-        if (null !== $attributeValue && $entityManager) {
-            $attributeValue = $entityManager->getReference(
-                $stepAttribute->getOption('entity_class'),
-                $attributeValue
-            );
+
+        if (is_array($attributeValue) && isset($attributeValue['entity_class']) && isset($attributeValue['ids'])) {
+            $entityReference = new EntityReference();
+            $entityReference
+                ->setClassName($attributeValue['entity_class'])
+                ->setIds($attributeValue['ids']);
+
+            $this->assertAttributeEntity($attributeName, $entityReference->getClassName());
+            $entityManager = $this->getEntityManager($entityReference->getClassName());
+            if ($entityManager) {
+                $attributeValue = $entityManager->getReference(
+                    $entityReference->getClassName(),
+                    $entityReference->getIds()
+                );
+            }
         }
         return $attributeValue;
     }
 
     /**
-     * Returs EntityManager if Attribute has option "entity_class", otherwise return null
+     * Returns EntityManager for entity.
      *
-     * @param Attribute $attribute
+     * @param string $entityClass
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
      * @return EntityManager|null
-     * @throws WorkflowException If option 'entity_class' is not managed Doctrine entity
      */
-    protected function getAttributeEntityManager(Attribute $attribute)
+    protected function getEntityManager($entityClass)
     {
         $result = null;
-        $entityClass = $attribute->getOption('entity_class');
-        if ($entityClass) {
-            $result = $this->registry->getManagerForClass($entityClass);
-            if (!$result) {
-                throw new WorkflowException(
-                    sprintf(
-                        '"%s" attribute of workflow "%s" refers to "%s", but it\'s not managed entity class',
-                        $attribute->getName(),
-                        $this->workflow->getName(),
-                        $entityClass
-                    )
-                );
-            }
-        }
-        return $result;
-    }
 
-    /**
-     * Returns an array of identifiers of entity.
-     *
-     * @param Attribute $stepAttribute
-     * @param object $entity
-     * @param EntityManager $entityManager
-     * @return array
-     * @throws WorkflowException If cannot get entity ID
-     */
-    protected function getEntityIdentifierValues(Attribute $stepAttribute, $entity, EntityManager $entityManager)
-    {
-        $metadata = $entityManager->getClassMetadata($stepAttribute->getOption('entity_class'));
-        $result = $metadata->getIdentifierValues($entity);
-
+        $result = $this->registry->getManagerForClass($entityClass);
         if (!$result) {
             throw new WorkflowException(
                 sprintf(
-                    'Can\'t access id of entity in workflow data attribute "%s".'
-                    . ' You must flush entity explicitly or set ID manually if you want to save it to workflow data.',
-                    $stepAttribute->getName(),
-                    $this->workflow->getName()
+                    'Workflow "%s" contains "%s", but it\'s not managed entity class',
+                    $this->workflow->getName(),
+                    $entityClass
                 )
             );
         }
@@ -165,5 +141,28 @@ class AttributeNormalizer
             $this->stepAttributesByWorkflow[$workflowName] = $this->workflow->getAttributes();
         }
         return $this->stepAttributesByWorkflow[$workflowName];
+    }
+
+    /**
+     * @param string $attributeName
+     * @param string $entityClass
+     * @throws WorkflowException
+     */
+    protected function assertAttributeEntity($attributeName, $entityClass)
+    {
+        $stepAttribute = $this->getAttribute($attributeName);
+        if ($stepAttribute
+            && $stepAttribute->getOption('entity_class')
+            && $entityClass != $stepAttribute->getOption('entity_class')
+        ) {
+            throw new WorkflowException(
+                sprintf(
+                    'Attribute "%s" defined to use "%s" but "%s" given.',
+                    $stepAttribute->getName(),
+                    $stepAttribute->getOption('entity_class'),
+                    $entityClass
+                )
+            );
+        }
     }
 }

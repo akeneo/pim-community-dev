@@ -67,15 +67,15 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 array(
-                    '_@or' => array(
+                    '_or' => array(
                         'passed' => array(
                             array(
-                                '_@and' => array(
+                                '_and' => array(
                                     'passed' => array(
-                                        array('_@graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
-                                        array('_@isDevMode' => array('passed' => array(null))),
+                                        array('_graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
+                                        array('_isDevMode' => array('passed' => array(null))),
                                         array(
-                                            '_@inChoiceList' => array(
+                                            '_inChoiceList' => array(
                                                 'passed' => array(
                                                     'type' => '$contact.type',
                                                     array('a' => 1, 'b' => 2)
@@ -86,7 +86,7 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                                 )
                             ),
                             array(
-                                '_@notEmpty' => array('passed' => array('$lead.name'))
+                                '_notEmpty' => array('passed' => array('$lead.name'))
                             )
                         )
                     )

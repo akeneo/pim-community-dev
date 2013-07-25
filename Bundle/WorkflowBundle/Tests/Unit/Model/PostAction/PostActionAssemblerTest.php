@@ -111,11 +111,11 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                 ),
                 'expected' => array(
                     array(
-                        '_type' => '@create_new_entity',
+                        '_type' => 'create_new_entity',
                         'parameters' => array('class_name' => 'TestClass', '_pass' => true)
                     ),
                     array(
-                        '_type' => '@assign_value',
+                        '_type' => 'assign_value',
                         'parameters' => array('from' => 'name', 'to' => 'contact.name', '_pass' => true)
                     ),
                 ),
