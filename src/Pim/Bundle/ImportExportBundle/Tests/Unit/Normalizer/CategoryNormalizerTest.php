@@ -93,7 +93,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getNormalizeData
      */
-    public function testNormalize(array $data = array())
+    public function testNormalize(array $data)
     {
         $category = $this->createCategory($data);
 
@@ -109,7 +109,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return Category
      */
-    private function createCategory(array $data = array())
+    private function createCategory(array $data)
     {
         $category = new Category();
         $category->setCode($data['code']);
