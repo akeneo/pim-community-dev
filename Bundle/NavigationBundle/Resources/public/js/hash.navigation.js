@@ -500,7 +500,7 @@ Oro.Navigation = Backbone.Router.extend({
         Oro.Events.bind(
             "datagrid_filters:rendered",
             function (collection) {
-                if (this.getCachedData()) {
+                if (this.getCachedData() && this.encodedStateData) {
                     collection.trigger('updateState', collection);
                 }
             },
@@ -802,7 +802,6 @@ Oro.Navigation = Backbone.Router.extend({
                     this.hideActiveDropdowns();
                     Oro.Events.trigger("hash_navigation_request:refresh", this);
                     this.loadingMask.hide();
-
                 }
             }
         }

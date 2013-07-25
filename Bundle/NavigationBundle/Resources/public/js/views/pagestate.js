@@ -58,6 +58,7 @@ Oro.PageState.View = Backbone.View.extend({
         Backbone.$.get(
             Routing.generate('oro_api_get_pagestate_checkid') + '?pageId=' + this.filterUrl(),
             function (data) {
+                self.clearTimer();
                 self.model.set({
                     id        : data.id,
                     pagestate : data.pagestate

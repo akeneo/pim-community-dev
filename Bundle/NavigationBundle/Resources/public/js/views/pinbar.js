@@ -110,13 +110,16 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                     {
                         wait: true,
                         success: _.bind(function () {
-                            if (!goBack) {
-                                Oro.hashNavigationInstance.setLocation(url, {useCache: true});
-                            }
                             this.checkPinbarIcon();
+                            if (!Oro.hashNavigationEnabled() && !goBack) {
+                                window.location.href = url;
+                            }
                         }, this)
                     }
                 );
+                if (Oro.hashNavigationEnabled() && !goBack) {
+                    Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+                }
             }
         }
     },
