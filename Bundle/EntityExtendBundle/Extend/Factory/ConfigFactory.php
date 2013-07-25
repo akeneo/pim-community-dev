@@ -41,7 +41,7 @@ class ConfigFactory
 //        }
 
         if ($data['type'] == 'string') {
-            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => $data['options']['extend']['length']);
+            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => 255);
         }
 
 

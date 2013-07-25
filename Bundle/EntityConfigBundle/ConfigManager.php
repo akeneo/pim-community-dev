@@ -76,11 +76,6 @@ class ConfigManager
     /**
      * @var ConfigInterface[]
      */
-    protected $runtimeCacheConfigs = array();
-
-    /**
-     * @var ConfigInterface[]
-     */
     protected $originalConfigs = array();
 
     /**
@@ -176,10 +171,6 @@ class ConfigManager
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
-        if (isset($this->runtimeCacheConfigs[$className . '-' . $scope])) {
-            return $this->runtimeCacheConfigs[$className . '-' . $scope];
-        }
-
         $resultConfig = null;
         if (null !== $this->configCache
             && $config = $this->configCache->loadConfigFromCache($className, $scope)
@@ -208,8 +199,6 @@ class ConfigManager
         foreach ($resultConfig->getFields() as $field) {
             $this->originalConfigs[spl_object_hash($field)] = clone $field;
         }
-
-        $this->runtimeCacheConfigs[$className . '-' . $scope] = $resultConfig;
 
         return $resultConfig;
     }
@@ -305,10 +294,6 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        var_dump('start-------------ddd');
-        var_dump(get_class($config));
-        var_dump($config->getValues());
-        var_dump('end-------------ddd');
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
@@ -356,6 +341,16 @@ class ConfigManager
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
                     $configEntity->addField($configField);
+
+                    foreach ($this->getProviders() as $provider) {
+                        $provider->createFieldConfig(
+                            $className,
+                            $config->getCode(),
+                            $config->getType(),
+                            $provider->getConfigContainer()->getFieldDefaultValues()
+                        );
+                    }
+
                     $this->eventDispatcher->dispatch(
                         Events::NEW_FIELD,
                         new NewFieldEvent($className, $config->getCode(), $config->getType(), $this)
@@ -520,6 +515,13 @@ class ConfigManager
             $metadata = $this->metadataFactory->getMetadataForClass($className);
             $entity   = new ConfigEntity($className);
             $entity->setMode($metadata->viewMode);
+
+            foreach ($this->getProviders() as $provider) {
+                $provider->createEntityConfig(
+                    $className,
+                    $provider->getConfigContainer()->getEntityDefaultValues()
+                );
+            }
 
             $this->eventDispatcher->dispatch(
                 Events::NEW_ENTITY,

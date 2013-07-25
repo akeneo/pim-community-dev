@@ -86,8 +86,6 @@ class ConfigSubscriber implements EventSubscriberInterface
             $event->getConfig()->set('state', 'Updated');
             $entityConfig->set('state', 'Updated');
 
-            var_dump($event->getConfig());
-            die;
             $event->getConfigManager()->persist($entityConfig);
         }
     }

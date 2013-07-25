@@ -129,8 +129,6 @@ class ConfigProvider implements ConfigProviderInterface
 
         $this->configManager->persist($fieldConfig);
 
-        var_dump($fieldConfig);
-        die;
         if ($flush) {
             $this->configManager->flush();
         }
