@@ -43,3 +43,5 @@ jenkins:
         name: pretty,junit
         parameters:
             output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~@select2-regression
