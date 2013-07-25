@@ -12,7 +12,8 @@ git pull
 
 echo ""
 echo "--> Clear cache"
-php app/console cache:clear --env=$SYMFONY_ENV
+rm -rf app/cache/*
+#php app/console cache:clear --env=$SYMFONY_ENV
 
 echo ""
 echo "--> Install vendors"
@@ -25,10 +26,6 @@ php app/console doctrine:database:create
 php app/console doctrine:schema:update --force
 php app/console doctrine:fixtures:load --no-debug --no-interaction
 
-echo "--> Load acl and navigation"
-php app/console oro:acl:load
-php app/console oro:navigation:init
-
 echo ""
 echo "--> Create search index and reindex"
 php app/console oro:search:create-index
@@ -38,8 +35,12 @@ php app/console pim:search:reindex en_US
 
 echo ""
 echo "--> Deploy assets"
+php app/console oro:navigation:init
 php app/console fos:js-routing:dump --target=web/js/routes.js
 php app/console assets:install web
 php app/console assetic:dump
 php app/console oro:assetic:dump
 
+echo "--> Load acl"
+rm -rf app/cache/*
+php app/console oro:acl:load
