@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -64,9 +65,9 @@ class ConfigManager
     protected $auditManager;
 
     /**
-     * @var ConfigInterface[]
+     * @var ConfigInterface[]|ArrayCollection
      */
-    protected $persistConfigs = array();
+    protected $persistConfigs;
 
     /**
      * @var ConfigInterface[]
@@ -101,6 +102,7 @@ class ConfigManager
      */
     public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $security)
     {
+        $this->persistConfigs  = new ArrayCollection();
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
@@ -294,11 +296,11 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        $this->persistConfigs[spl_object_hash($config)] = $config;
+        $this->persistConfigs->add($config);
 
         if ($config instanceof EntityConfigInterface) {
             foreach ($config->getFields() as $fieldConfig) {
-                $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
+                $this->persistConfigs->add($fieldConfig);
             }
         }
     }
@@ -382,7 +384,7 @@ class ConfigManager
 
         $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
 
-        $this->persistConfigs   = array();
+        $this->persistConfigs->clear();
         $this->removeConfigs    = array();
         $this->originalConfigs  = array();
         $this->configChangeSets = array();

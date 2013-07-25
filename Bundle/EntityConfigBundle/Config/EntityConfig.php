@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class EntityConfig extends AbstractConfig implements EntityConfigInterface
 {
     /**
@@ -15,12 +17,13 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
     protected $scope;
 
     /**
-     * @var FieldConfig[]
+     * @var FieldConfig[]|ArrayCollection
      */
-    protected $fields = array();
+    protected $fields;
 
     public function __construct($className, $scope)
     {
+        $this->fields    = new ArrayCollection();
         $this->className = $className;
         $this->scope     = $scope;
     }
@@ -93,11 +96,11 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
 
     /**
      * @param  callable $filter
-     * @return FieldConfig[]
+     * @return FieldConfig[]|ArrayCollection
      */
     public function getFields(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->fields, $filter) : $this->fields;
+        return $filter ? $this->fields->filter($filter) : $this->fields;
     }
 
     /**
@@ -139,7 +142,7 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
             }
         }, $this->values);
 
-        $this->fields = array_map(function ($field) {
+        $this->fields = $this->fields->map(function ($field) {
             return clone $field;
         }, $this->fields);
     }

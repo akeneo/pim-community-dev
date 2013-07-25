@@ -85,7 +85,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
             $event->getConfig()->set('state', 'Updated');
             $entityConfig->set('state', 'Updated');
-
+            $entityConfig->getFields()->clear();
             $event->getConfigManager()->persist($entityConfig);
         }
     }
