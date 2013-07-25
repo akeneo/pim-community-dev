@@ -1,0 +1,4 @@
+oro_email:
+    resource:     "@OroEmailBundle/Controller"
+    type:         annotation
+    prefix:       /email

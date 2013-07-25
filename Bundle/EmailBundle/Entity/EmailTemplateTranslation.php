@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Entity;
+namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;

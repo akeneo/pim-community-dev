@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Datagrid;
+namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 

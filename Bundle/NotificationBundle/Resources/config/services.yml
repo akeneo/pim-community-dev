@@ -3,8 +3,7 @@ parameters:
 
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
-    oro_navigation.emailtemplate.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailTemplate
-    oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+    oro_notification.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
     # Event manager and event handler classes
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
@@ -62,7 +61,7 @@ services:
     oro_notification.email_notification.manager.api:
         class: %oro_notification.email_notification.manager.api.class%
         arguments:
-            - %oro_navigation.emailnotification.entity.class%
+            - %oro_notification.emailnotification.entity.class%
             - @doctrine.orm.entity_manager
 
     oro_notification.form.type.email_notification.api:
@@ -99,7 +98,7 @@ services:
         class: %oro_notification.manager.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - %oro_navigation.emailnotification.entity.class%
+            - %oro_notification.emailnotification.entity.class%
 
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%

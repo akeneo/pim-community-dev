@@ -1,0 +1,2 @@
+parameters:
+    oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate

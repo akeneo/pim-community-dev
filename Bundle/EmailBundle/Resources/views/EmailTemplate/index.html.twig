@@ -3,10 +3,11 @@
 {% set gridId = 'email-template-grid' %}
 {% block content %}
     {% set pageTitle = 'Email Templates' %}
-    {% if resource_granted('oro_notification_emailnotification_create') %}
+    {% if resource_granted('oro_email_emailtemplate_create') %}
         {% set buttons = [
                 UI.addButton(
-                    {'path' : path('oro_notification_emailnotification_create'), 'title' : 'Create notification rule', 'label' : 'Create notification rule'}
+                    {'path' : path('oro_email_emailtemplate_create'), 'title' : 'Create template',
+        'label' : 'Create template'}
                 )
             ]
         %}

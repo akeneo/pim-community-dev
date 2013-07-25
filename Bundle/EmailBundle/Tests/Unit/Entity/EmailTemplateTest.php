@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Tests\Unit\Entity;
+namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\NotificationBundle\Entity\EmailTemplate;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 
 class EmailTemplateTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,11 +30,9 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersGetters()
     {
-        foreach (array('name', 'id', 'isSystem', 'parent', 'subject', 'content', 'locale') as $field) {
+        foreach (array('name', 'isSystem', 'parent', 'subject', 'content', 'locale') as $field) {
             $this->emailTemplate->{'set'.ucfirst($field)}('abc');
             $this->assertEquals('abc', $this->emailTemplate->{'get'.ucfirst($field)}());
         }
-
-        $this->assertEquals('update_entity', $this->emailTemplate->getName());
     }
 }

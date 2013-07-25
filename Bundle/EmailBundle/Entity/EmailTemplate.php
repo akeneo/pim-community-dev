@@ -1,8 +1,9 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Entity;
+namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 
@@ -14,8 +15,8 @@ use Gedmo\Translatable\Translatable;
  *      indexes={@ORM\Index(name="email_name_idx", columns={"name"}),
  *          @ORM\Index(name="email_is_system_idx", columns={"isSystem"}),
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
- * @ORM\Entity(repositoryClass="Oro\Bundle\NotificationBundle\Entity\Repository\EmailTemplateRepository")
- * @Gedmo\TranslationEntity(class="Oro\Bundle\NotificationBundle\Entity\EmailTemplateTranslation")*
+ * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")*
  */
 class EmailTemplate implements Translatable
 {

@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\EventsCompilerPass;
-use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\TemplatesCompilerPass;
 use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationHandlerPass;
 
 class OroNotificationBundle extends Bundle

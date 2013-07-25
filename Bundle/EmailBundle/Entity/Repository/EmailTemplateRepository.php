@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Entity\Repository;
+namespace Oro\Bundle\EmailBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

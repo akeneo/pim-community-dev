@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
-use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\TemplatesCompilerPass;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
@@ -70,7 +69,6 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 '/../emails/',
                 $notification->getTemplate()
             );
-            return false;
 
             $emailTemplate = $this->twig->loadTemplate($template);
             // TODO: There's a bug with sandbox and forms, to be investigated
