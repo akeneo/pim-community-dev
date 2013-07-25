@@ -21,6 +21,11 @@ class SerializerProcessor extends AbstractConfigurableStepElement implements Ite
         $this->serializer = $serializer;
     }
 
+    public function getName()
+    {
+        return 'Serializer';
+    }
+
     public function getFormat()
     {
         return $this->format;

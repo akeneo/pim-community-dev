@@ -50,6 +50,11 @@ class ProductReader extends ORMCursorReader
         return $this->channel;
     }
 
+    public function getName()
+    {
+        return 'Scoped products';
+    }
+
     public function getConfigurationFields()
     {
         return array(

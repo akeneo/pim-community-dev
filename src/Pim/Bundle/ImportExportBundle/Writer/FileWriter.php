@@ -38,6 +38,11 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
         return $this->path;
     }
 
+    public function getName()
+    {
+        return 'File';
+    }
+
     public function getConfigurationFields()
     {
         return array(

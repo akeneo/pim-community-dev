@@ -51,6 +51,11 @@ class CsvSerializerProcessor extends SerializerProcessor
         ));
     }
 
+    public function getName()
+    {
+        return 'CSV Serializer';
+    }
+
     public function getConfigurationFields()
     {
         return array(

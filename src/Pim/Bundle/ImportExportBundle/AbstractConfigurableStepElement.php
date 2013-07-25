@@ -12,6 +12,8 @@ abstract class AbstractConfigurableStepElement
 {
     abstract public function getConfigurationFields();
 
+    abstract public function getName();
+
     public function getConfiguration()
     {
         $result = array();

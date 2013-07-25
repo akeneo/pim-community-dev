@@ -42,6 +42,7 @@ class ExportController extends Controller
         /** @var $gridManager ExportDatagridManager */
         $gridManager = $this->get('pim_import_export.datagrid.manager.export');
         $datagridView = $gridManager->getDatagrid()->createView();
+        $registry      = $this->get('pim_batch.connectors');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -49,7 +50,10 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagridView));
+        return $this->render($view, array(
+            'datagrid' => $datagridView,
+            'connectors' => $registry->getExportJobs(),
+        ));
     }
 
     /**
@@ -81,7 +85,7 @@ class ExportController extends Controller
         }
 
         return array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         );
     }
 

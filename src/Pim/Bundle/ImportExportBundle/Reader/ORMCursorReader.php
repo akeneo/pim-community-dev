@@ -11,6 +11,11 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements ItemRea
     protected $query;
     private $cursor;
 
+    public function getName()
+    {
+        return 'ORM Cursor';
+    }
+
     public function setQuery(AbstractQuery $query)
     {
         $this->query = $query;
