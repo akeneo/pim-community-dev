@@ -226,3 +226,5 @@ pim_batch:
                     processor:  pim_import_export.processor.serializer
                     writer:     pim_import_export.writer.file
 
+pim_demo:
+    load_data: true
