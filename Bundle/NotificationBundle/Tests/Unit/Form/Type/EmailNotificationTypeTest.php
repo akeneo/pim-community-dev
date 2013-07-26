@@ -13,7 +13,7 @@ class EmailNotificationTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $listener = $this->getMockBuilder('Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener')
+        $listener = $this->getMockBuilder('Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -46,7 +46,7 @@ class EmailNotificationTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder->expects($this->once())
             ->method('addEventSubscriber')
-            ->with($this->isInstanceOf('Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener'));
+            ->with($this->isInstanceOf('Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber'));
 
         $this->type->buildForm($builder, array());
     }

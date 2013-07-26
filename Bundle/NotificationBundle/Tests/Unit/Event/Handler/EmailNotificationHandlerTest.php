@@ -95,7 +95,7 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
         $template->expects($this->once())
             ->method('getContent')
             ->will($this->returnValue($templateContent));
-        $template->expects($this->once())
+        $template->expects($this->exactly(2))
             ->method('getType')
             ->will($this->returnValue('html'));
         $template->expects($this->once())
