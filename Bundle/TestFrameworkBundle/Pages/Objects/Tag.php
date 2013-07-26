@@ -12,7 +12,13 @@ class Tag extends AbstractEntity implements Entity
     public function __construct($testCase, $redirect = true)
     {
         parent::__construct($testCase, $redirect);
+    }
+
+    public function init()
+    {
         $this->tagname = $this->byId('oro_tag_tag_form_name');
+
+        return $this;
     }
 
     public function setTagname($accountname)
@@ -32,6 +38,13 @@ class Tag extends AbstractEntity implements Entity
         $this->byXPath("//button[contains(., 'Save')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
+        return $this;
+    }
+
+    public function assertEntity($entitytype, $entitycount)
+    {
+        $this->assertElementPresent("//td[@class='search-entity-types-column']//a[contains(., '{$entitytype} ($entitycount)')]");
+
         return $this;
     }
 }

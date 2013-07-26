@@ -40,6 +40,22 @@ class Search extends Page
         return $result;
     }
 
+    public function openSuggestions($filter)
+    {
+        $this->byXpath("//div[@id='search-dropdown']/ul/li/a[contains(., '{$filter}')]")->click();
+        $this->waitPageToLoad();
+        $this->waitForAjax();
+        if ($this->isElementPresent("//div[@class='container-fluid search-header clearfix'][contains(., 'Search')]")) {
+            return $this;
+        } else {
+            if ($this->isElementPresent("//div[@class='container-fluid search-header clearfix'][contains(., 'Records tagged as')]")) {
+                return new Tag($this->test);
+            } else {
+                throw new \Exception("No search or tag result page opened");
+            }
+        }
+    }
+
     public function result($filter)
     {
         if (!is_null($filter)) {
