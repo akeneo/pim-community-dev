@@ -4,9 +4,9 @@ namespace Oro\Bundle\EntityExtendBundle\Databases;
 
 class MySQLDatabase implements DatabaseInterface
 {
-    protected $tables;
     protected $database;
     protected $user;
+    protected $tables;
     protected $password;
     protected $host;
 

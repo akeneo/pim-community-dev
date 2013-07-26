@@ -2,30 +2,28 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Databases;
 
-use Oro\Bundle\EntityExtendBundle\Console;
-
 class PostgresDatabase implements DatabaseInterface
 {
-    protected $console;
     protected $database;
     protected $user;
+    protected $tables;
     protected $password;
     protected $host;
 
     /**
-     * @param Console $console
      * @param $database
      * @param $user
+     * @param $tables
      * @param $password
      * @param string $host
      */
-    public function __construct(Console $console, $database, $user, $password, $host = 'localhost')
+    public function __construct($database, $user, $password, $tables = array(), $host = 'localhost')
     {
-        $this->console  = $console;
         $this->database = $database;
         $this->user     = $user;
         $this->password = $password;
         $this->host     = $host;
+        $this->tables   = '"' . implode('" "', $tables) . '"';
     }
 
     /**
@@ -42,7 +40,7 @@ class PostgresDatabase implements DatabaseInterface
             $destinationFile
         );
 
-        return $this->console->run($command);
+        return $command;
     }
 
     /**
@@ -59,7 +57,7 @@ class PostgresDatabase implements DatabaseInterface
             $sourceFile
         );
 
-        return $this->console->run($command);
+        return $command;
     }
 
     /**
