@@ -3,6 +3,9 @@
 namespace Oro\Bundle\NotificationBundle\Tests\Unit\Event\Handler;
 
 use Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler;
+use Psr\Log\LoggerInterface;
+use Monolog\Logger;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,6 +29,16 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $handler;
 
+    /**
+     * @var Monolog\Logger
+     */
+    protected $logger;
+
+    /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
     protected function setUp()
     {
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -39,7 +52,20 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->handler = new EmailNotificationHandler($this->twig, $this->mailer, $this->entityManager, 'a@a.com');
+        $this->logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+
+        $this->handler = new EmailNotificationHandler(
+            $this->twig,
+            $this->mailer,
+            $this->entityManager,
+            'a@a.com',
+            $this->logger,
+            $this->securityContext
+        );
         $this->handler->setEnv('prod');
         $this->handler->setMessageLimit(10);
     }
@@ -63,9 +89,21 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntity')
             ->will($this->returnValue($entity));
 
-        $template = '@OroAbcBundle:update_entity.html.twig';
+        $templateContent = "@subject = Test Subj\n@entityName = TestEntity";
+
+        $template = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplate');
+        $template->expects($this->once())
+            ->method('getContent')
+            ->will($this->returnValue($templateContent));
+        $template->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('html'));
+        $template->expects($this->once())
+            ->method('getSubject')
+            ->will($this->returnValue('Test Subj'));
+
         $notification = $this->getMock('Oro\Bundle\NotificationBundle\Entity\EmailNotification');
-        $notification->expects($this->exactly(2))
+        $notification->expects($this->once())
             ->method('getTemplate')
             ->will($this->returnValue($template));
 
@@ -77,25 +115,6 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
         $notifications = array(
             $notification,
         );
-
-
-        $emailTemplate = $this->getMock(
-            '\Twig_Template',
-            array('hasBlock', 'renderBlock', 'render', 'doDisplay', 'getTemplateName'),
-            array(),
-            '',
-            false
-        );
-        $emailTemplate->expects($this->once())
-            ->method('hasBlock')
-            ->with($this->equalTo('subject'))
-            ->will($this->returnValue(false));
-
-        $this->twig->expects($this->once())
-            ->method('loadTemplate')
-            ->with($this->equalTo('@OroAbc/../emails/update_entity.html.twig'))
-            ->will($this->returnValue($emailTemplate));
-
 
         $entity = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
 
@@ -134,9 +153,17 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntity')
             ->will($this->returnValue($entity));
 
-        $template = '@OroAbcBundle:update_entity.html.twig';
+        $templateContent = "@subject = Test Subj\n@entityName = TestEntity";
+        $template = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplate');
+        $template->expects($this->once())
+            ->method('getContent')
+            ->will($this->returnValue($templateContent));
+        $template->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('html'));
+
         $notification = $this->getMock('Oro\Bundle\NotificationBundle\Entity\EmailNotification');
-        $notification->expects($this->exactly(2))
+        $notification->expects($this->once())
             ->method('getTemplate')
             ->will($this->returnValue($template));
 
@@ -149,25 +176,9 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             $notification,
         );
 
-        $emailTemplate = $this->getMock(
-            '\Twig_Template',
-            array('hasBlock', 'renderBlock', 'render', 'doDisplay', 'getTemplateName'),
-            array(),
-            '',
-            false
-        );
-        $emailTemplate->expects($this->once())
-            ->method('hasBlock')
-            ->with($this->equalTo('subject'))
-            ->will($this->returnValue(false));
-        $emailTemplate->expects($this->once())
+        $this->twig->expects($this->once())
             ->method('render')
             ->will($this->throwException(new \Twig_Error('bla bla bla')));
-
-        $this->twig->expects($this->once())
-            ->method('loadTemplate')
-            ->with($this->equalTo('@OroAbc/../emails/update_entity.html.twig'))
-            ->will($this->returnValue($emailTemplate));
 
         $entity = $this->getMock('Oro\Bundle\TagBundle\Entity\ContainAuthorInterface');
 
@@ -184,8 +195,6 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->with('Oro\Bundle\NotificationBundle\Entity\RecipientList')
             ->will($this->returnValue($repo));
-
-        $this->addJob();
 
         $this->handler->handle($event, $notifications);
     }
