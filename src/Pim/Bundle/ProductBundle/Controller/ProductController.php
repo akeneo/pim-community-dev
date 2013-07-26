@@ -271,7 +271,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
-        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
+        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId, 'dataLocale' => $this->getDataLocale())));
     }
 
     /**
