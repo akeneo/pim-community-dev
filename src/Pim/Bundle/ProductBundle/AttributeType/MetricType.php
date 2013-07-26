@@ -44,11 +44,17 @@ class MetricType extends OroMetricType
             ),
             array(
                 'name'      => 'decimalsAllowed',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
+                )
             ),
             array(
                 'name'      => 'negativeAllowed',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
+                )
             ),
             array(
                 'name'    => 'metricFamily',

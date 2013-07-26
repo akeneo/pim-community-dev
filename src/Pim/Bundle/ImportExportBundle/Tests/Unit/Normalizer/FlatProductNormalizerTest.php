@@ -63,8 +63,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name_en_US' => 'Wheelbarrow',
             'name_es_ES' => 'Carretilla',
             'exportedAt' => $now->format('r'),
-            'elements'   => '"roue,poignées,benne"',
-            'categories' => '"cat1, cat2, cat3"',
+            'elements'   => 'roue,poignées,benne',
+            'categories' => 'cat1, cat2, cat3',
         );
 
         $this->assertEquals(
@@ -95,8 +95,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name_en_US' => 'Wheelbarrow',
             'name_es_ES' => 'Carretilla',
             'exportedAt' => $now->format('r'),
-            'elements'   => '"roue,poignées,benne"',
-            'categories' => '"cat1, cat2, cat3"',
+            'elements'   => 'roue,poignées,benne',
+            'categories' => 'cat1, cat2, cat3',
         );
 
         $this->assertEquals(
@@ -130,7 +130,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $product = $this->getMock('Pim\Bundle\ProductBundle\Entity\Product');
         if ($identifier) {
-            $identifierReturn = $this->returnValue($identifier) ;
+            $identifierReturn = $this->returnValue($identifier);
         } else {
             $identifierReturn = $this->throwException(new MissingIdentifierException($product));
         }

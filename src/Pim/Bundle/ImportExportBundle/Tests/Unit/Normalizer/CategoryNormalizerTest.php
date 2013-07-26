@@ -63,8 +63,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'root_category',
-                    'name_en' => 'Root category',
-                    'name_fr' => 'Categorie racine',
+                    'title'   => 'en:Root category,fr:Categorie racine',
                     'parent'  => '',
                     'dynamic' => '0',
                     'left'    => '1',
@@ -75,8 +74,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'child_category',
-                    'name_en' => 'Child category',
-                    'name_fr' => 'Categorie enfante',
+                    'title'   => 'en:Child category,fr:Catégorie enfant',
                     'parent'  => '1',
                     'dynamic' => '0',
                     'left'    => '2',
@@ -114,17 +112,14 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
         $category = new Category();
         $category->setCode($data['code']);
 
-        $titles = array_filter(
-            array_keys($data),
-            function ($item) {
-                return strpos($item, 'name') !== false;
-            }
-        );
+        $titles = explode(',', $data['title']);
 
         foreach ($titles as $title) {
-            $locale = end(explode('_', $title));
+            $title = explode(':', $title);
+            $locale = reset($title);
+            $title = end($title);
             $translation = $category->getTranslation($locale);
-            $translation->setTitle($data[$title]);
+            $translation->setTitle($title);
         }
 
         if ($data['parent']) {
