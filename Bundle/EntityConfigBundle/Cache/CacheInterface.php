@@ -2,26 +2,25 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Cache;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 
 interface CacheInterface
 {
     /**
-     * @param $configId
+     * @param $className
+     * @param $scope
      * @return EntityConfig|null
      */
-    public function loadConfigFromCache($configId);
+    public function loadConfigFromCache($className, $scope);
 
     /**
-     * @param                 $configId
-     * @param ConfigInterface $config
-     * @return
+     * @param EntityConfig $config
      */
-    public function putConfigInCache($configId, ConfigInterface $config);
+    public function putConfigInCache(EntityConfig $config);
 
     /**
-     * @param $configId
+     * @param $className
+     * @param $scope
      */
-    public function removeConfigFromCache($configId);
+    public function removeConfigFromCache($className, $scope);
 }

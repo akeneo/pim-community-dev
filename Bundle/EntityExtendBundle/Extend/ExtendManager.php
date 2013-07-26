@@ -135,9 +135,6 @@ class ExtendManager
         $this->getProxyFactory()->initExtendObject($proxy);
     }
 
-    /**
-     * @param $entity
-     */
     public function persist($entity)
     {
         if ($this->isExtend($entity)) {

@@ -61,6 +61,10 @@ class ConfigFieldGridController extends Controller
                 } else {
                     $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
 
+                    /** @var ConfigManager $configManager */
+                    $configManager = $this->get('oro_entity_config.config_manager');
+                    $configManager->clearCache($entity->getClassName());
+
                     $this->get('session')->getFlashBag()->add('success', sprintf(
                         'field "%s" has been added to entity "%', $data['code'], $entity->getClassName()
                     ));
