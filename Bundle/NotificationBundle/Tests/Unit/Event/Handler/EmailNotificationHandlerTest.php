@@ -199,6 +199,17 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
         $this->handler->handle($event, $notifications);
     }
 
+    public function testNotify()
+    {
+        $params = $this->getMock('Symfony\Component\HttpFoundation\ParameterBag');
+        $params->expects($this->once())
+            ->method('get')
+            ->with('to')
+            ->will($this->returnValue(array()));
+
+        $this->assertFalse($this->handler->notify($params));
+    }
+
     /**
      * add job assertions
      */

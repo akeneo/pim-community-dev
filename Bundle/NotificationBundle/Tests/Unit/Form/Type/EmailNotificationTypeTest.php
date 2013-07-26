@@ -17,7 +17,11 @@ class EmailNotificationTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->type = new EmailNotificationType(array(), $listener);
+        $entitiesConfig = array(
+            'Oro\Bundle\UserBundle\Entity\User' => array('name' => 'bla bla')
+        );
+
+        $this->type = new EmailNotificationType($entitiesConfig, $listener);
     }
 
     public function testSetDefaultOptions()
