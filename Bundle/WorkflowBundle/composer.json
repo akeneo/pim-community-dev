@@ -1,0 +1,26 @@
+{
+    "name": "oro/workflow-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Workflow Bundle",
+    "keywords": ["BAP", "Workflow"],
+    "homepage": "https://github.com/laboro/WorkflowBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.3",
+        "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "doctrine/doctrine-bundle": "1.2.*",
+        "doctrine/data-fixtures": "@dev",
+        "doctrine/doctrine-fixtures-bundle": "@dev"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\WorkflowBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/GridBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
