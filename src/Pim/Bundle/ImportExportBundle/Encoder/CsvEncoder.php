@@ -24,11 +24,14 @@ class CsvEncoder implements EncoderInterface
      */
     public function encode($data, $format, array $context = array())
     {
-        $context = array_merge(array(
-            'delimiter' => ';',
-            'enclosure' => '"',
-            'withHeader' => false
-        ), $context);
+        $context = array_merge(
+            array(
+                'delimiter' => ';',
+                'enclosure' => '"',
+                'withHeader' => false
+            ),
+            $context
+        );
         $delimiter = is_string($context['delimiter']) ? $context['delimiter'] : ';';
         $enclosure = is_string($context['enclosure']) ? $context['enclosure'] : '"';
         $withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;

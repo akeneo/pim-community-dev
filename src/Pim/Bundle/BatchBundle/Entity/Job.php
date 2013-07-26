@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
-use Pim\Bundle\BatchBundle\Job\SimpleJob;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\BatchBundle\Job\SimpleJob;
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 
 /**
- * Entity job is an instance of a configured job for a configured connector
+ * Entity job
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,6 +20,10 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
 class Job
 {
     const STATUS_DRAFT = 0;
+    const STATUS_READY = 1;
+
+    const TYPE_IMPORT = 'import';
+    const TYPE_EXPORT = 'export';
 
     /**
      * @var integer $id
@@ -34,6 +38,7 @@ class Job
      * @var string $code
      *
      * @ORM\Column(name="code", type="string", length=100)
+     * @Assert\NotBlank
      */
     protected $code;
 
@@ -41,6 +46,7 @@ class Job
      * @var string $label
      *
      * @ORM\Column
+     * @Assert\NotBlank
      */
     protected $label;
 
@@ -59,7 +65,7 @@ class Job
     protected $status = self::STATUS_DRAFT;
 
     /**
-     * @var Connector $connector
+     * @var string $connector
      *
      * @ORM\Column
      */
@@ -83,6 +89,7 @@ class Job
 
     /**
      * @var SimpleJob
+     * @Assert\Valid
      */
     protected $jobDefinition;
 
@@ -94,7 +101,7 @@ class Job
      * @param string $alias
      * @param string $jobDefinition
      */
-    public function __construct($connector, $type, $alias, JobInterface $jobDefinition = null)
+    public function __construct($connector, $type, $alias, JobInterface $jobDefinition)
     {
         $this->connector     = $connector;
         $this->type          = $type;

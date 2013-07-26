@@ -6,9 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
-use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
@@ -47,10 +45,7 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array(
-            'datagrid' => $datagridView,
-            'connectors' => $registry->getExportJobs(),
-        ));
+        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getExportJobs()));
     }
 
     /**
@@ -70,10 +65,15 @@ class ExportController extends Controller
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
         $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, AbstractJob::TYPE_EXPORT, $alias);
-        // TODO Redirect to datagrid with error message if no job definition found
+        $jobDefinition = $registry->getJob($connector, Job::TYPE_EXPORT, $alias);
 
-        $job = new Job($connector, AbstractJob::TYPE_EXPORT, $alias, $jobDefinition);
+        if (!$jobDefinition) {
+            $this->addFlash('error', 'Fail to create an export with an unknown job.');
+
+            return $this->redirect($this->generateUrl('pim_ie_export_index'));
+        }
+
+        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
