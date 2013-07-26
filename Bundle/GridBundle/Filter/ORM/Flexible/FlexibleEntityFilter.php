@@ -108,19 +108,19 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
         $attribute = $this->getAttribute($field);
-        /** @var $qb FlexibleQueryBuilder */
-        $qb = $proxyQuery->getQueryBuilder();
+        $qb        = $proxyQuery->getQueryBuilder();
+        $fqb       = $this->getFlexibleManager()->getFlexibleRepository()->getFlexibleQueryBuilder($qb);
 
         // inner join to value
         $joinAlias = 'filter'.$field;
-        $condition = $qb->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $fqb->prepareAttributeJoinCondition($attribute, $joinAlias);
         $rootAlias = $qb->getRootAliases();
         $qb->innerJoin($rootAlias[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
         // then join to linked entity with filter on id
         $joinAliasEntity = 'filterentity'.$field;
         $backendField = sprintf('%s.id', $joinAliasEntity);
-        $condition = $qb->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition = $fqb->prepareCriteriaCondition($backendField, $operator, $value);
         $qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
 
         // filter is active since it's applied to the flexible repository

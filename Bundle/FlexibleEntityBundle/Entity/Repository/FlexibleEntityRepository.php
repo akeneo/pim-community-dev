@@ -159,6 +159,16 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
+     * @param QueryBuilder $qb
+     * @param string       $locale
+     * @param string       $scope
+     */
+    public function getFlexibleQueryBuilder($qb)
+    {
+        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+    }
+
+    /**
      * Find flexible attribute by code
      *
      * @param string $code
@@ -262,13 +272,11 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $fqb = new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
-            $fqb->addAttributeFilter($attribute, $operator, $attributeValue);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
 
         } else {
-            $fqb = new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
             $field = current($qb->getRootAliases()).'.'.$attributeCode;
-            $qb->andWhere($fqb->prepareCriteriaCondition($field, $operator, $attributeValue));
+            $qb->andWhere($this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue));
         }
     }
 
@@ -285,8 +293,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $fqb = new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
-            $fqb->addAttributeOrderBy($attribute, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
         } else {
             $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
         }
