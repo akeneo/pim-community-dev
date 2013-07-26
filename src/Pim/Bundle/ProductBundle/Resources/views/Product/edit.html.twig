@@ -113,8 +113,6 @@
     {% javascripts
         '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
         '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-
-
         filter='?yui_js'
         output='js/pim.multiselect.js'
         %}
@@ -122,4 +120,5 @@
     {% endjavascripts %}
 
     {% include 'PimProductBundle:Product:_js-handler.html.twig' %}
+    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
 {% endblock %}
