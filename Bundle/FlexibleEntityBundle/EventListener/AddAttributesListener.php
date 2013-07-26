@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -8,7 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
  * Aims to inject available attributes into a flexible entity
- *
  */
 class AddAttributesListener implements EventSubscriber
 {

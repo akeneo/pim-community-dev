@@ -5,6 +5,9 @@ namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Test related class
+ */
 class FlexibleValueTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**

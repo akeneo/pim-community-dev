@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Event;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -6,8 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Filter event allows to know the create flexible value
- *
- *
  */
 class FilterFlexibleValueEvent extends AbstractFilterEvent
 {

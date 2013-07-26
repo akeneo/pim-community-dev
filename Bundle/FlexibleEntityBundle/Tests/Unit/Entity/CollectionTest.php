@@ -1,14 +1,21 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Collection;
 
+/**
+ * Test related class
+ */
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider provider
+     * Test related method
+     *
      * @param string $property
-     * @param mixed $value
+     * @param mixed  $value
+     *
+     * @dataProvider provider
      */
     public function testSettersAndGetters($property, $value)
     {
@@ -18,13 +25,16 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
     }
 
+    /**
+     * Test related method
+     */
     public function testToString()
     {
         $obj = new Collection();
         $text = 'sfd';
         $obj->setData($text);
 
-        $this->assertEquals((string)$obj, $text);
+        $this->assertEquals((string) $obj, $text);
     }
 
     /**

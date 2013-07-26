@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
@@ -11,8 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Define required value behavior, throw exception if value related to required attribute is not defined
- *
- *
  */
 class RequiredValueListener implements EventSubscriber
 {

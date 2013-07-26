@@ -54,6 +54,12 @@ Oro.Navigation = Backbone.Router.extend({
     /** @property {String} */
     baseUrl: '',
 
+    /** @property {String} */
+    headerId: '',
+
+    /** @property {Object} */
+    headerObject: '',
+
     /**
      * State data for grids
      *
@@ -99,6 +105,8 @@ Oro.Navigation = Backbone.Router.extend({
     confirmModal: null,
 
     notificationMessage: null,
+
+    outdatedMessage: '',
 
     /**
      * Routing default action
@@ -159,7 +167,11 @@ Oro.Navigation = Backbone.Router.extend({
             throw new TypeError("'baseUrl' is required");
         }
 
-        this.baseUrl = options.baseUrl;
+        this.baseUrl =  options.baseUrl;
+        this.headerId = options.headerId;
+        var header = {};
+        header[this.headerId] = true;
+        this.headerObject = header;
         if (window.location.hash === '') {
             //skip ajax page refresh for the current page
             this.skipAjaxCall = true;
@@ -187,7 +199,7 @@ Oro.Navigation = Backbone.Router.extend({
                 var useCache = this.useCache;
                 $.ajax({
                     url: pageUrl,
-                    headers: { 'x-oro-hash-navigation': true },
+                    headers: this.headerObject,
                     beforeSend: function( xhr ) {
                         //remove standard ajax header because we already have a custom header sent
                         xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
@@ -197,6 +209,7 @@ Oro.Navigation = Backbone.Router.extend({
                         this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                         this.updateDebugToolbar(jqXHR);
                         this.afterRequest();
+                        this.loadingMask.hide();
                     }, this),
 
                     success: _.bind(function (data, textStatus, jqXHR) {
@@ -234,6 +247,7 @@ Oro.Navigation = Backbone.Router.extend({
     },
 
     initCacheTimer: function() {
+        this.clearCacheTimer();
         this.cacheTimer = setInterval(_.bind(function() {
             var cacheData = this.getCachedData();
             if (cacheData) {
@@ -255,9 +269,12 @@ Oro.Navigation = Backbone.Router.extend({
     validateMd5Request: function(cacheData) {
         var pageUrl = this.baseUrl + this.url;
         var url = this.url;
+        var params = {};
+        params[this.headerId] = true;
+        params['hash-navigation-md5'] = true;
         $.ajax({
             url: pageUrl,
-            data:{'hash-navigation-md5' : true, 'x-oro-hash-navigation' : true},
+            data: params,
             error: _.bind(function (jqXHR, textStatus, errorThrown) {
             }, this),
 
@@ -315,9 +332,13 @@ Oro.Navigation = Backbone.Router.extend({
     showOutdatedMessage: function(url) {
         this.clearCacheTimer();
         if (this.useCache && this.url == url) {
-            var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
-            message = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
-            this.notificationMessage = Oro.NotificationMessage('warning', message);
+            if (!this.notificationMessage) {
+                var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
+                this.outdatedMessage = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
+            } else {
+                this.notificationMessage.close();
+            }
+            this.notificationMessage = Oro.NotificationMessage('warning', this.outdatedMessage);
         }
     },
 
@@ -394,7 +415,6 @@ Oro.Navigation = Backbone.Router.extend({
      *
      * @param objectName
      * @param state
-     * @param url
      */
     updateCachedContent: function(objectName, state) {
         if (this.tempCache.states) {
@@ -454,10 +474,6 @@ Oro.Navigation = Backbone.Router.extend({
      */
     init: function() {
         /**
-         * Processing all links
-         */
-        this.processClicks(this.selectorCached.links);
-        /**
          * Processing all links in grid after grid load
          */
         Oro.Events.bind(
@@ -503,7 +519,7 @@ Oro.Navigation = Backbone.Router.extend({
         Oro.Events.bind(
             "datagrid_filters:rendered",
             function (collection) {
-                if (this.getCachedData()) {
+                if (this.getCachedData() && this.encodedStateData) {
                     collection.trigger('updateState', collection);
                 }
             },
@@ -637,6 +653,12 @@ Oro.Navigation = Backbone.Router.extend({
             }, this)
         );
 
+        /**
+         * Processing all links
+         */
+        this.processClicks(this.selectorCached.links);
+        this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
+
         this.processForms(this.selectors.forms);
         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
 
@@ -666,7 +688,6 @@ Oro.Navigation = Backbone.Router.extend({
      *  Triggered after hash navigation ajax request
      */
     afterRequest: function() {
-        this.loadingMask.hide();
         this.formState = '';
         this.initCacheTimer();
     },
@@ -787,6 +808,7 @@ Oro.Navigation = Backbone.Router.extend({
                         $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
                     }
                     this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                    this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                     this.processClicks(this.selectorCached.container.find(this.selectors.links));
                     this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
                     this.processForms(this.selectorCached.container.find(this.selectors.forms));
@@ -795,9 +817,10 @@ Oro.Navigation = Backbone.Router.extend({
                     if (!options.fromCache) {
                         this.updateMenuTabs(data);
                         this.addMessages(data.flashMessages);
-                        Oro.Events.trigger("hash_navigation_request:refresh", this);
                     }
                     this.hideActiveDropdowns();
+                    Oro.Events.trigger("hash_navigation_request:refresh", this);
+                    this.loadingMask.hide();
                 }
             }
         }
@@ -812,6 +835,18 @@ Oro.Navigation = Backbone.Router.extend({
             }
         }
         this.triggerCompleteEvent();
+    },
+
+    /**
+     * Disable # links to prevent hash changing
+     *
+     * @param selector
+     */
+    disableEmptyLinks: function(selector) {
+        $(selector).on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        })
     },
 
     processRedirect: function (data) {
@@ -998,11 +1033,12 @@ Oro.Navigation = Backbone.Router.extend({
                     } else {
                         this.beforeRequest();
                         $(target).ajaxSubmit({
-                            data:{'x-oro-hash-navigation' : true},
-                            headers: { 'x-oro-hash-navigation': true },
+                            data: this.headerObject,
+                            headers: this.headerObject,
                             error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
                                 this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
                                 this.afterRequest();
+                                this.loadingMask.hide();
                             }, this),
                             success: _.bind(function (data) {
                                 this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response
