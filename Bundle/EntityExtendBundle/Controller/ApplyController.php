@@ -140,11 +140,11 @@ class ApplyController extends Controller
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
-        $extendConfig->set('state', 'Applied');
+        $extendConfig->set('state', 'Active');
 
         foreach ($extendConfig->getFields() as $field) {
             if ($field->get('owner') != 'System') {
-                $field->set('state', 'Applied');
+                $field->set('state', 'Active');
             }
         }
 

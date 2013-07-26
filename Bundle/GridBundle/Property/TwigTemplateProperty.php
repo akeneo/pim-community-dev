@@ -28,13 +28,19 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     protected $field;
 
     /**
+     * @var array
+     */
+    protected $properties;
+
+    /**
      * @param FieldDescriptionInterface $field
      * @param string $templateName
      */
-    public function __construct(FieldDescriptionInterface $field, $templateName)
+    public function __construct(FieldDescriptionInterface $field, $templateName, $properties = array())
     {
         $this->field        = $field;
         $this->templateName = $templateName;
+        $this->properties   = $properties;
     }
 
     /**
@@ -74,9 +80,10 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     public function getValue(ResultRecordInterface $record)
     {
         $context = array(
-            'field'  => $this->field,
-            'record' => $record,
-            'value'  => $record->getValue($this->field->getFieldName()),
+            'field'      => $this->field,
+            'record'     => $record,
+            'value'      => $record->getValue($this->field->getFieldName()),
+            'properties' => $this->properties,
         );
 
         return $this->getTemplate()->render($context);

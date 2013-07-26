@@ -140,6 +140,12 @@ class ConfigController extends Controller
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
+        /*
+        var_dump($this->getRequest()->headers->get('referer'));
+        if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
+            $this->get('session')->getFlashBag()->add('success', 'Schema successfully updated.');
+        }*/
+
         return array(
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
