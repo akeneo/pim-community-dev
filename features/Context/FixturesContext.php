@@ -541,9 +541,12 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingExportJob(TableNode $table)
     {
-        $em = $this->getEntityManager();
+        $em       = $this->getEntityManager();
+        $registry = $this->getContainer()->get('pim_batch.connectors');
+
         foreach ($table->getHash() as $data) {
-            $job = new Job($data['connector'], 'export', $data['alias']);
+            $jobDefinition = $registry->getJob($data['connector'], Job::TYPE_EXPORT, $data['alias']);
+            $job = new Job($data['connector'], 'export', $data['alias'], $jobDefinition);
             $job->setCode($data['code']);
             $job->setLabel($data['label']);
 

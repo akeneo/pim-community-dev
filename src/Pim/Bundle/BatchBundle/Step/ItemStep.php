@@ -5,6 +5,7 @@ namespace Pim\Bundle\BatchBundle\Step;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -16,13 +17,19 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
  */
 class ItemStep extends AbstractStep
 {
-    /* @var ItemReaderInterface $reader */
+    /**
+     * @Assert\Valid
+     */
     private $reader = null;
 
-    /* @var ItemWriterInterfacce $writer */
+    /**
+     * @Assert\Valid
+     */
     private $writer = null;
 
-    /* @var ItemProcessorInterface $processor */
+    /**
+     * @Assert\Valid
+     */
     private $processor = null;
 
     /**

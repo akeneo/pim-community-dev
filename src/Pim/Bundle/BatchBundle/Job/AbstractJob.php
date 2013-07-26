@@ -36,12 +36,12 @@ abstract class AbstractJob implements JobInterface
     //private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
 
     /* @var StepHandler $stepHandler */
-    protected $stepHandler = null;
+    protected $stepHandler;
 
     /**
      * @var ArrayCollection $steps
      */
-    protected $steps = null;
+    protected $steps;
 
     /**
      * Convenience constructor to immediately add name (which is mandatory)
@@ -50,7 +50,8 @@ abstract class AbstractJob implements JobInterface
      */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->name  = $name;
+        $this->steps = new ArrayCollection();
     }
 
     /**

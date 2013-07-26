@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
@@ -69,7 +68,7 @@ class ExportController extends Controller
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
         $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, AbstractJob::TYPE_EXPORT, $alias);
+        $jobDefinition = $registry->getJob($connector, Job::TYPE_EXPORT, $alias);
 
         if (!$jobDefinition) {
             $this->addFlash('error', 'Fail to create an export with an unknown job.');
@@ -77,7 +76,7 @@ class ExportController extends Controller
             return $this->redirect($this->generateUrl('pim_ie_export_index'));
         }
 
-        $job = new Job($connector, AbstractJob::TYPE_EXPORT, $alias, $jobDefinition);
+        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
