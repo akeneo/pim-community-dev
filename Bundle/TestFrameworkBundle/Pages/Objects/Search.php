@@ -55,21 +55,12 @@ class Search extends Page
      */
     public function select($filter)
     {
-        $found = current($this->suggestions($filter));
-        $this->test->moveto($found);
+        $found = current($this->result($filter));
         $found->click();
-
-        //$this->byXpath("//div[@id='search-dropdown']/ul/li/a[contains(.,'{$filter}')]")->click();
-        sleep(1);
-        $this->waitForAjax();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        if ($this->isElementPresent("//div[@class='container-fluid search-header clearfix'][contains(., 'Search')]") ||
-            $this->isElementPresent("//div[@class='container-fluid search-header clearfix'][contains(., 'Records tagged as')]")) {
-            return $this;
-        } else {
-            throw new \Exception("No search or tag result page opened");
-        }
+
+        return $this;
     }
 
     /**
@@ -106,5 +97,4 @@ class Search extends Page
 
         return $this;
     }
-
 }
