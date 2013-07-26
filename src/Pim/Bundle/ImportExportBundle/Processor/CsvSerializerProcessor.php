@@ -14,11 +14,13 @@ class CsvSerializerProcessor extends SerializerProcessor
 {
     /**
      * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\Choice(choices={",", ";", "|"}, groups={"Configuration"})
      */
     protected $delimiter = ';';
 
     /**
      * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\Choice(choices={"\"", "'"}, groups={"Configuration"})
      */
     protected $enclosure = '"';
 
