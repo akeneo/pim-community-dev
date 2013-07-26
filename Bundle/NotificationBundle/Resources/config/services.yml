@@ -163,7 +163,6 @@ services:
             -
               Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname, getlastname]
               Oro\Bundle\TagBundle\Entity\Tag: [getcreatedby, getname]
-              Symfony\Bundle\FrameworkBundle\Templating\GlobalVariables: [getUser]
             # properties
             - []
             # functions

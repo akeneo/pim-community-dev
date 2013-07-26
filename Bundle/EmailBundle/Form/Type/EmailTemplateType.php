@@ -71,7 +71,7 @@ class EmailTemplateType extends AbstractType
             'translations',
             'oro_email_emailtemplate_translatation',
             array(
-                'required' => true
+                'required' => false
             )
         );
 

@@ -15,4 +15,7 @@ oro:
                     type:
                         html: "HTML"
                         txt: "Plain text"
+                    isSystem:
+                        yes: "Yes"
+                        no:  "No"
 

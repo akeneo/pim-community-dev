@@ -127,14 +127,18 @@ class EmailTemplateDatagridManager extends DatagridManager
         $fieldIsSystem->setName('isSystem');
         $fieldIsSystem->setOptions(
             array(
-                'type'               => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'type'               => FieldDescriptionInterface::TYPE_OPTIONS,
                 'field_name'         => 'isSystem',
                 'label'              => $this->translate('oro.email.datagrid.emailtemplate.column.isSystem'),
                 'required'           => false,
                 'sortable'           => true,
                 'filterable'         => true,
                 'show_filter'        => true,
-                'filter_type'        => FilterInterface::TYPE_BOOLEAN
+                'filter_type'        => FilterInterface::TYPE_CHOICE,
+                'choices'     => array(
+                    0  => $this->translate('oro.email.datagrid.emailtemplate.filter.isSystem.no'),
+                    1  => $this->translate('oro.email.datagrid.emailtemplate.filter.isSystem.yes'),
+                ),
             )
         );
         $fieldsCollection->add($fieldIsSystem);
