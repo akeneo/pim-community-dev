@@ -4,7 +4,7 @@
             'use strict';
 
             new Oro.EmailTemplatesUpdater.View({
-                el: $('#{{ form.parent.children["depends_on_parent_field"].vars.id }}'),
+                el: $('#{{ form.parent.children[depends_on_parent_field].vars.id }}'),
                 target: $('#{{ id }}'),
                 collection: new Oro.EmailTemplatesUpdater.Collection()
             });
