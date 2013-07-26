@@ -38,20 +38,20 @@ class WorkflowAssembler extends AbstractAssembler
 
     /**
      * @param ContainerInterface $container
-     * @param ConfigurationTree $configurationTreeBuilder
+     * @param ConfigurationTree $configurationTree
      * @param AttributeAssembler $attributeAssembler
      * @param StepAssembler $stepAssembler
      * @param TransitionAssembler $transitionAssembler
      */
     public function __construct(
         ContainerInterface $container,
-        ConfigurationTree $configurationTreeBuilder,
+        ConfigurationTree $configurationTree,
         AttributeAssembler $attributeAssembler,
         StepAssembler $stepAssembler,
         TransitionAssembler $transitionAssembler
     ) {
         $this->container = $container;
-        $this->configurationTree = $configurationTreeBuilder;
+        $this->configurationTree = $configurationTree;
         $this->attributeAssembler = $attributeAssembler;
         $this->stepAssembler = $stepAssembler;
         $this->transitionAssembler = $transitionAssembler;
