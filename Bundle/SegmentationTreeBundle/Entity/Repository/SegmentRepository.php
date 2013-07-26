@@ -135,7 +135,7 @@ class SegmentRepository extends NestedTreeRepository
                 $nodeEntry = $vectorMap[$nodeId];
 
                 if (isset($nodeEntry['item'])) {
-//                    $nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
+                    //$nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
                 } else {
                     $tree =& $vectorMap[$nodeId][$childrenIndex];
                 }
