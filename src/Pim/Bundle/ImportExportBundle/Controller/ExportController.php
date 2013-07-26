@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
-use Pim\Bundle\BatchBundle\Entity\Connector;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\ProductBundle\Controller\Controller;
