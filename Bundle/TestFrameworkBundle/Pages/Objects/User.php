@@ -131,6 +131,38 @@ class User extends AbstractEntity implements Entity
         return $this->email->value();
     }
 
+    public function verifyTag($tag)
+    {
+        if ($this->isElementPresent("//div[@id='s2id_oro_user_user_form_tags']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_oro_user_user_form_tags']//input");
+            $this->tags->click();
+            $this->tags->value(substr($tag, 0, (strlen($tag)-1)));
+            $this->waitForAjax();
+            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+            $this->tags->clear();
+        } else {
+            if ($this->isElementPresent("//div[@id='tags-holder']")) {
+                $this->assertElementPresent("//div[@id='tags-holder'][contains(., '{$tag}')]", 'Tag is not assigned to entity');
+            } else {
+                throw new \Exception("Tag field can't be found");
+            }
+        }
+        return $this;
+    }
+
+    public function setTag($tag)
+    {
+        $this->isElementPresent("//div[@id='s2id_oro_user_user_form_tags']");
+        $this->tags = $this->byXpath("//div[@id='s2id_oro_user_user_form_tags']//input");
+        $this->tags->click();
+        $this->tags->value($tag);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
+
+        return $this;
+    }
+
     public function setRoles($roles = array())
     {
         foreach ($roles as $role) {

@@ -17,4 +17,3 @@ oro_titles:
     oro_business_unit_update: %%business_unit.name%%
     oro_business_unit_create: Create business unit
     oro_business_unit_view: %%business_unit.name%%
-#    oro_business_unit_search: "%%business_unit.name%%"
