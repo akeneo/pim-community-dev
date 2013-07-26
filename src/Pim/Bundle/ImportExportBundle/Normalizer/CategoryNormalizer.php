@@ -34,9 +34,11 @@ class CategoryNormalizer implements NormalizerInterface
         $results['level']   = (string) $object->getLevel();
         $results['right']   = (string) $object->getRight();
 
+        $titles = array();
         foreach ($object->getTranslations() as $translation) {
-            $results['name_'.$translation->getLocale()] = $translation->getTitle();
+            $titles[] = sprintf('%s:%s', $translation->getLocale(), $translation->getTitle());
         }
+        $results['title'] = implode(',', $titles);
 
         return $results;
     }
