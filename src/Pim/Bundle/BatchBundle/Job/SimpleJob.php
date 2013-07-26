@@ -145,9 +145,9 @@ class SimpleJob extends AbstractJob
     private function getStepConfiguration($step)
     {
         return array(
-            'reader' => $step->getReader()->getConfiguration(),
+            'reader'    => $step->getReader()->getConfiguration(),
             'processor' => $step->getProcessor()->getConfiguration(),
-            'writer' => $step->getWriter()->getConfiguration(),
+            'writer'    => $step->getWriter()->getConfiguration(),
         );
     }
 }
