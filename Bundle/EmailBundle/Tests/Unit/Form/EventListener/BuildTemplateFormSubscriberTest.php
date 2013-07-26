@@ -90,7 +90,7 @@ class BuildTemplateFormSubscriberTest extends \PHPUnit_Framework_TestCase
         $configMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
         $configMock->expects($this->once())
             ->method('getOptions')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array('auto_initialize' => true)));
 
         $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
@@ -118,9 +118,23 @@ class BuildTemplateFormSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $phpUnit = $this;
         $this->formBuilder->expects($this->once())
             ->method('createNamed')
-            ->will($this->returnValue($newFieldMock));
+            ->will(
+                $this->returnCallback(
+                    function ($name, $type, $data, $config) use ($phpUnit, $newFieldMock) {
+                        $phpUnit->assertEquals('oro_email_template_list', $type);
+                        $phpUnit->assertEquals('template', $name);
+                        $phpUnit->assertNull($data);
+                        $phpUnit->assertArrayHasKey('selectedEntity', $config);
+                        $phpUnit->assertArrayHasKey('auto_initialize', $config);
+                        $phpUnit->assertArrayHasKey('query_builder', $config);
+
+                        return $newFieldMock;
+                    }
+                )
+            );
 
         $eventMock->expects($this->once())
             ->method('getData')
@@ -180,15 +194,13 @@ class BuildTemplateFormSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $configMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
-        $configMock->expects($this->once())
-            ->method('getOptions')
-            ->will($this->returnValue(array()));
+        $configMock->expects($this->once())->method('getOptions')
+            ->will($this->returnValue(array('auto_initialize' => true)));
 
         $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $fieldMock->expects($this->once())
-            ->method('getConfig')
+        $fieldMock->expects($this->once())->method('getConfig')
             ->will($this->returnValue($configMock));
 
         $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
@@ -205,9 +217,22 @@ class BuildTemplateFormSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->formBuilder->expects($this->once())
-            ->method('createNamed')
-            ->will($this->returnValue($newFieldMock));
+        $phpUnit = $this;
+        $this->formBuilder->expects($this->once())->method('createNamed')
+            ->will(
+                $this->returnCallback(
+                    function ($name, $type, $data, $config) use ($phpUnit, $newFieldMock) {
+                        $phpUnit->assertEquals('template', $name);
+                        $phpUnit->assertEquals('oro_email_template_list', $type);
+                        $phpUnit->assertNull($data);
+                        $phpUnit->assertArrayHasKey('query_builder', $config);
+                        $phpUnit->assertArrayHasKey('selectedEntity', $config);
+                        $phpUnit->assertArrayHasKey('auto_initialize', $config);
+
+                        return $newFieldMock;
+                    }
+                )
+            );
 
         $eventMock->expects($this->once())
             ->method('getData')
