@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\EmailBundle\DataFixtures\ORM;
 
+use Symfony\Component\Finder\Finder;
+
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Finder\Finder;
 
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 

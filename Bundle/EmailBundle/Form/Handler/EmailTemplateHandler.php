@@ -37,7 +37,7 @@ class EmailTemplateHandler
      * @param FormInterface $form
      * @param Request $request
      * @param ObjectManager $manager
-     * @param \Symfony\Component\Translation\Translator $translator
+     * @param Translator $translator
      */
     public function __construct(FormInterface $form, Request $request, ObjectManager $manager, Translator $translator)
     {
@@ -51,13 +51,14 @@ class EmailTemplateHandler
      * Process form
      *
      * @param  EmailTemplate  $entity
-     * @return bool True on successfull processing, false otherwise
+     * @return bool True on successful processing, false otherwise
      */
     public function process(EmailTemplate $entity)
     {
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+            // deny to modify system templates
             if ($entity->getIsSystem()) {
                 $message = $this->translator->trans(
                     'oro.mail.validators.emailtemplate.attempt_save_system_template',

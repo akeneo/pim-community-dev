@@ -94,8 +94,8 @@ class EmailTemplate implements Translatable
     /**
      * @ORM\OneToMany(
      *     targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation",
-     *  mappedBy="object",
-     *  cascade={"persist", "remove"}
+     *     mappedBy="object",
+     *     cascade={"persist", "remove"}
      * )
      * @Assert\Valid(deep = true)
      */
@@ -275,7 +275,7 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Setter for locale
+     * Set locale
      *
      * @param mixed $locale
      * @return EmailTemplate
@@ -288,7 +288,7 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Getter for locale
+     * Get locale
      *
      * @return mixed
      */
@@ -298,7 +298,7 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Setter for template type
+     * Set template type
      *
      * @param string $type
      * @return EmailTemplate
@@ -311,13 +311,40 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Getter for template type
+     * Get template type
      *
      * @return string
      */
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set translations
+     *
+     * @param ArrayCollection $translations
+     * @return EmailTemplate
+     */
+    public function setTranslations($translations)
+    {
+        /** @var EmailTemplateTranslation $translation */
+        foreach ($translations as $translation) {
+            $translation->setObject($this);
+        }
+
+        $this->translations = $translations;
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
     }
 
     /**
@@ -339,31 +366,5 @@ class EmailTemplate implements Translatable
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * Set translations
-     *
-     * @param ArrayCollection $translations
-     * @return EmailTemplate
-     */
-    public function setTranslations($translations)
-    {
-        foreach ($translations as $translation) {
-            $translation->setObject($this);
-        }
-
-        $this->translations = $translations;
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
     }
 }

@@ -74,6 +74,11 @@ class EmailTemplateType extends AbstractType
                 'required' => true
             )
         );
+
+        $builder->add(
+            'parent',
+            'hidden'
+        );
     }
 
     /**
