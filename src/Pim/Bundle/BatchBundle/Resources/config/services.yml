@@ -1,17 +1,9 @@
 parameters:
-    pim_batch.connectors.class:                                  Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.connectors_config:                                 ~
-    pim_batch.jobs_config:                                       ~
-    pim_batch.event_listener.update_job_status_subscriber.class: Pim\Bundle\BatchBundle\EventListener\UpdateJobStatusSubscriber
+    pim_batch.connectors.class:  Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+    pim_batch.connectors_config: ~
+    pim_batch.jobs_config:       ~
 
 services:
     # connectors registry
     pim_batch.connectors:
         class: %pim_batch.connectors.class%
-
-    pim_batch.event_listener.update_job_status_subscriber:
-        class: %pim_batch.event_listener.update_job_status_subscriber.class%
-        arguments:
-            - @validator
-        tags:
-            - { name: doctrine.event_subscriber }
