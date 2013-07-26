@@ -150,12 +150,18 @@ class ProductController extends Controller
 
                 $this->addFlash('success', 'Product successfully saved');
 
+                if ($product->isEnabledForLocale($this->getDataLocale())) {
+                    $dataLocale = $this->getDataLocale();
+                } else {
+                    $dataLocale = $product->getLocales()->first()->getCode();
+                }
+
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
                         array(
                             'id'         => $product->getId(),
-                            'dataLocale' => $this->getDataLocale(),
+                            'dataLocale' => $dataLocale,
                         )
                     )
                 );
