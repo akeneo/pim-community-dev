@@ -3,20 +3,10 @@
 namespace Oro\Bundle\EmailBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmailTemplateTranslationType extends AbstractType
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -24,11 +14,17 @@ class EmailTemplateTranslationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class'           => null,
+                'translatable_class'   => 'Oro\\Bundle\\EmailBundle\\Entity\\EmailTemplate',
                 'intention'            => 'emailtemplate_translation',
                 'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+                'cascade_validation'   => true,
             )
         );
+    }
+
+    public function getParent()
+    {
+        return 'a2lix_translations_gedmo';
     }
 
     /**

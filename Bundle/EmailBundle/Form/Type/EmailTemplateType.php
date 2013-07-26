@@ -32,6 +32,19 @@ class EmailTemplateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
+            'entityName',
+            'choice',
+            array(
+                'choices'            => $this->entityNameChoices,
+                'multiple'           => false,
+                'translation_domain' => 'config',
+                'empty_value'        => '',
+                'empty_data'         => null,
+                'required'           => true
+            )
+        );
+
+        $builder->add(
             'name',
             'text',
             array(
@@ -55,20 +68,7 @@ class EmailTemplateType extends AbstractType
         );
 
         $builder->add(
-            'entityName',
-            'choice',
-            array(
-                'choices'            => $this->entityNameChoices,
-                'multiple'           => false,
-                'translation_domain' => 'config',
-                'empty_value'        => '',
-                'empty_data'         => null,
-                'required'           => true
-            )
-        );
-
-        $builder->add(
-            'translation',
+            'translations',
             'oro_email_emailtemplate_translatation',
             array(
                 'required' => true

@@ -77,13 +77,20 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_row(form.name),
-                    form_row(form.type),
                     form_row(form.entityName),
-                    form_row(form.translation)
+                    form_row(form.type),
+                    form_row(form.name)
                 ]
             }]
-        }]
+        }, {
+            'title': 'Template data',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.translations)
+                ]
+            }]
+    }]
     %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

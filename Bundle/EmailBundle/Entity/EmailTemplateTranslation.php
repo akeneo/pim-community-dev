@@ -3,27 +3,18 @@
 namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * @ORM\Table(name="oro_email_template_translation", indexes={
- *      @ORM\Index(name="email_template_idx", columns={"locale", "object_class", "field", "foreign_key"})
- * })
+ *      @ORM\Index(name="lookup_unique_idx", columns={"locale", "object_id", "field"})})
  * @ORM\Entity(repositoryClass="Gedmo\Translatable\Entity\Repository\TranslationRepository")
  */
-class EmailTemplateTranslation extends AbstractTranslation
+class EmailTemplateTranslation extends AbstractPersonalTranslation
 {
     /**
-     * @var string $foreignKey
-     *
-     * @ORM\Column(name="foreign_key", type="string", length=16)
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate", inversedBy="translations")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $foreignKey;
-
-    /**
-     * @var string $content
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $content;
+    protected $object;
 }
