@@ -5,6 +5,7 @@ oro_entity_config:
                 owner:
                     options:
                         priority:           40
+                        internal:           true
                         default_value:      'System'
                     grid:
                         type:               string
@@ -28,11 +29,12 @@ oro_entity_config:
                 is_extend:
                     options:
                         default_value:      false
-                        is_bool:            true
+                        internal:           true
                 state:
                     options:
                         priority:           25
                         default_value:      ''
+                        internal:           true
                     grid:
                         type:               string
                         label:              'Status'
@@ -42,14 +44,16 @@ oro_entity_config:
                         sortable:           true
                         filterable:         false
                         show_filter:        false
-
-                extend_class:               ~
-
+                extend_class:
+                    options:
+                        internal:           true
                 unique_key:
                     options:
+                        internal:           true
                         serializable:       true
-
-                proxy_class:                ~
+                proxy_class:
+                    options:
+                        internal:           true
 
         field:
             grid_action:

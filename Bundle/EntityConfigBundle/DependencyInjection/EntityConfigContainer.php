@@ -71,6 +71,21 @@ class EntityConfigContainer
     /**
      * @return array
      */
+    public function getEntityInternalValues()
+    {
+        $result = array();
+        foreach ($this->getEntityItems() as $code => $item) {
+            if (isset($item['options']['internal']) && $item['options']['internal']) {
+                $result[$code] = 0;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
     public function getEntitySerializableValues()
     {
         $result = array();
@@ -166,6 +181,22 @@ class EntityConfigContainer
     /**
      * @return array
      */
+    public function getFieldInternalValues()
+    {
+        $result = array();
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['options']['internal']) && $item['options']['internal']) {
+                $result[$code] = true;
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * @return array
+     */
     public function getFieldRequiredPropertyValues()
     {
         $result = array();
@@ -214,6 +245,22 @@ class EntityConfigContainer
         }
 
         return $fieldFormConfig;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldFormBlockConfig()
+    {
+        $entityFormBlockConfig = null;
+        if (isset($this->config['field'])
+            && isset($this->config['field']['form'])
+            && isset($this->config['field']['form']['block_config'])
+        ) {
+            $entityFormBlockConfig = $this->config['field']['form']['block_config'];
+        }
+
+        return $entityFormBlockConfig;
     }
 
     /**
