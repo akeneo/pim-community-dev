@@ -1,4 +1,3 @@
-{% if useDecorators %}
 <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
         <li>
@@ -6,8 +5,3 @@
         </li>
     {% endfor %}
 </ul>
-{% else %}
-    {% for breadcrumb in breadcrumbs %}
-            {{ breadcrumb.label }}{% if not loop.last %}/{% endif %}
-    {% endfor %}
-{% endif %}
