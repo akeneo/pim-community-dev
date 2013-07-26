@@ -38,7 +38,7 @@ services:
         class: %oro_notification.form.type.email_notification.class%
         arguments:
             - %oro_config.entities%
-            - @oro_email.form.listener.notification
+            - @oro_email.form.subscriber.emailtemplate
         tags:
             - { name: form.type, alias: emailnotification }
 
@@ -68,7 +68,7 @@ services:
         class: %oro_notification.form.type.email_notification.api.class%
         arguments:
             - %oro_config.entities%
-            - @oro_email.form.listener.notification
+            - @oro_email.form.subscriber.emailtemplate
         tags:
             - { name: form.type, alias: emailnotification_api }
 

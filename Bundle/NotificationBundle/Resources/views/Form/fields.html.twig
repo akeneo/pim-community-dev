@@ -24,22 +24,4 @@
         });
     </script>
     {{ form_row(form) }}
-
-    <script type="text/javascript">
-        $(function() {
-            var emailTemplates = new Oro.EmailTemplatesUpdater.Collection();
-
-            new Oro.EmailTemplatesUpdater.View({
-                el: $('#{{ id }}'),
-                target: $('#{{ form.parent.children.template.vars.id }}'),
-                collection: emailTemplates
-            });
-        });
-    </script>
-
-    <script type="text/template" id="emailtemplate-chooser-template">
-        <% _.each(entities, function(entity, i) { %>
-        <option value="<%= entity.get('id') %>"><%= entity.get('name') %></option>
-        <% }); %>
-    </script>
 {% endblock %}

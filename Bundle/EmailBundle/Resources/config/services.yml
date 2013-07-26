@@ -2,10 +2,11 @@ parameters:
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
     # Email template field
-    oro_email.form.listener.notification.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener
+    oro_email.form.subscriber.emailtemplate.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber
 
     # Email template forms
     oro_email.form.type.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateType
+    oro_email.form.type.emailtemplate_select.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateSelectType
     oro_email.form.type.emailtemplate_translation.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateTranslationType
     oro_email.form.handler.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Handler\EmailTemplateHandler
 
@@ -15,8 +16,8 @@ parameters:
 
 services:
     # Email template field
-    oro_email.form.listener.notification:
-        class: %oro_email.form.listener.notification.class%
+    oro_email.form.subscriber.emailtemplate:
+        class: %oro_email.form.subscriber.emailtemplate.class%
         arguments:
             - @doctrine.orm.entity_manager
             - @form.factory
@@ -38,6 +39,11 @@ services:
         class: %oro_email.form.type.emailtemplate_translation.class%
         tags:
             - { name: form.type, alias: oro_email_emailtemplate_translatation }
+
+    oro_email.form.type.emailtemplate_select:
+        class: %oro_email.form.type.emailtemplate_select.class%
+        tags:
+            - { name: form.type, alias: oro_email_template_list }
 
     oro_email.form.handler.emailtemplate:
         class: %oro_email.form.handler.emailtemplate.class%

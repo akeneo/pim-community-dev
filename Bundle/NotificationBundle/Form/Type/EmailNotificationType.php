@@ -3,12 +3,12 @@
 namespace Oro\Bundle\NotificationBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener;
+use Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber;
 
 class EmailNotificationType extends AbstractType
 {
@@ -23,16 +23,17 @@ class EmailNotificationType extends AbstractType
     protected $entitiesData = array();
 
     /**
-     * @var BuildNotificationFormListener
+     * @var BuildTemplateFormSubscriber
      */
-    protected $listener;
+    protected $subscriber;
 
     /**
      * @param array $entitiesConfig
-     * @param BuildNotificationFormListener $listener
+     * @param BuildTemplateFormSubscriber $subscriber
      */
-    public function __construct($entitiesConfig, BuildNotificationFormListener $listener)
+    public function __construct($entitiesConfig, BuildTemplateFormSubscriber $subscriber)
     {
+        $this->subscriber = $subscriber;
         $this->entityNameChoices = array_map(
             function ($value) {
                 return isset($value['name'])? $value['name'] : '';
@@ -53,8 +54,6 @@ class EmailNotificationType extends AbstractType
                 $value = array_search('Oro\\Bundle\\TagBundle\\Entity\\ContainAuthorInterface', $interfaces) !== false;
             }
         );
-
-        $this->listener = $listener;
     }
 
     /**
@@ -62,7 +61,7 @@ class EmailNotificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber($this->listener);
+        $builder->addEventSubscriber($this->subscriber);
 
         $builder->add(
             'entityName',
@@ -98,12 +97,9 @@ class EmailNotificationType extends AbstractType
 
         $builder->add(
             'template',
-            'entity',
+            'oro_email_template_list',
             array(
-                'class'         => 'OroEmailBundle:EmailTemplate',
-                'property'      => 'name',
-                'empty_value'   => '',
-                'empty_data'    => ''
+                'required' => true
             )
         );
 
