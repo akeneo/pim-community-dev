@@ -40,11 +40,4 @@ class Tag extends AbstractEntity implements Entity
         $this->waitForAjax();
         return $this;
     }
-
-    public function assertEntity($entitytype, $entitycount)
-    {
-        $this->assertElementPresent("//td[@class='search-entity-types-column']//a[contains(., '{$entitytype} ($entitycount)')]");
-
-        return $this;
-    }
 }

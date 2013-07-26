@@ -132,13 +132,13 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
 
 
     /**
-     * @depends testCreateTag
-     * @depends testAccountTag
-     * @depends testContactTag
-     * @depends testUserTag
+     * depends testCreateTag
+     * depends testAccountTag
+     * depends testContactTag
+     * depends testUserTag
      * @param $tagname
      */
-    public function testTagSearch($tagname)
+    public function testTagSearch($tagname = 'Tag_616396156')
     {
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
@@ -146,7 +146,7 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit();
         $tagsearch = new Search($this);
         $result = $tagsearch->search('New_' . $tagname)
-            ->openSuggestions('New_' . $tagname)
+            ->select('New_' . $tagname)
             ->assertEntity('User', 1)
             ->assertEntity('Contact', 1)
             ->assertEntity('Account', 1);
