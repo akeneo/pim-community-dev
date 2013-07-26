@@ -15,7 +15,7 @@ class EmailTemplateRepository extends EntityRepository
      */
     public function getTemplateByEntityName($entityName)
     {
-        return $this->findByEntityName($entityName);
+        return $this->findBy(array('entityName' => $entityName));
     }
 
     /**
