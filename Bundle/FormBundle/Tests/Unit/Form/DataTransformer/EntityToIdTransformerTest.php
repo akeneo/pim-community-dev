@@ -112,6 +112,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
             $qb->expects($self->once())
                 ->method('getQuery')
                 ->will($self->returnValue($query));
+
             return $qb;
         };
 
@@ -204,7 +205,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
      * @expectedExceptionMessage Expected argument of type "callable", "string" given
      */
     public function testCallbackException()
@@ -239,6 +240,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 }

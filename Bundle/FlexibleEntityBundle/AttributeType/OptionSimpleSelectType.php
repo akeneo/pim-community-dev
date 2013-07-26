@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Doctrine\ORM\EntityRepository;
@@ -6,7 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Simple options (select) attribute type
- *
  */
 class OptionSimpleSelectType extends AbstractOptionType
 {

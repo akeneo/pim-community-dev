@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
+/**
+ * Filter attribute extension
+ */
 class FilterAttributesExtension extends \Twig_Extension
 {
     /**
@@ -26,9 +29,10 @@ class FilterAttributesExtension extends \Twig_Extension
      *
      * If third parameter equals true method will return attributes that not in given array(or string)
      *
-     * @param AbstractEntityFlexible $entity
-     * @param string|array $attributes attribute names
-     * @param bool $skip
+     * @param AbstractEntityFlexible   $entity
+     * @param string|array             $attributes
+     * @param bool                     $skip
+     *
      * @return ArrayCollection
      */
     public function getAttributes(AbstractEntityFlexible $entity, $attributes = array(), $skip = false)
@@ -42,6 +46,7 @@ class FilterAttributesExtension extends \Twig_Extension
 
         if ($values->isEmpty() || empty($attributes)) {
             $values = $skip ? new ArrayCollection() : $values;
+
             return $values;
         }
 

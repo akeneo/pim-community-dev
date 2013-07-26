@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
@@ -7,7 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
 
 /**
  * Test related class
- *
  */
 class SimpleManagerTest extends AbstractOrmTest
 {

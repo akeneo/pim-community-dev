@@ -12,7 +12,9 @@ parameters:
 services:
     oro_dataaudit.loggable.loggable_manager:
         class:                                      %oro_dataaudit.loggable.loggable_manager.class%
-        arguments:                                  [%oro_dataaudit.loggable.entity.class%]
+        arguments:
+            - %oro_dataaudit.loggable.entity.class%
+            - @oro_dataaudit.config.config_provider
 
     oro_dataaudit.metadata.metadata_factory:
         class:                                      %oro_dataaudit.metadata.metadata_factory.class%
@@ -26,7 +28,9 @@ services:
 
     oro_dataaudit.listener.entity_subscriber:
         class:                                      %oro_dataaudit.listener.entity_subscriber.class%
-        arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @oro_dataaudit.metadata.metadata_factory]
+        arguments:
+            - @oro_dataaudit.loggable.loggable_manager
+            - @oro_dataaudit.metadata.metadata_factory
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
@@ -35,3 +39,7 @@ services:
         arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @security.context]
         tags:
             - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}
+
+    oro_dataaudit.config.config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: dataaudit }

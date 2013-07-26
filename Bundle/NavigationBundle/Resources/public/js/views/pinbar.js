@@ -9,7 +9,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         el: '.pin-bar',
         listBar: '.list-bar',
         minimizeButton: '.top-action-box .minimize-button',
-        closeButton: '.top-action-box .close-button',
         history: [],
         defaultUrl: '/',
         tabId: 'pinbar',
@@ -26,7 +25,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     initialize: function() {
         this.$listBar = this.getBackboneElement(this.options.listBar);
         this.$minimizeButton = Backbone.$(this.options.minimizeButton);
-        this.$closeButton = Backbone.$(this.options.closeButton);
+        this.$icon = this.$minimizeButton.find('i');
 
         this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
         this.listenTo(this.options.collection, 'remove', this.onPageClose);
@@ -48,8 +47,18 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
             this
         );
 
+        /**
+         * Change pinbar icon state after hash navigation request is completed
+         */
+        Oro.Events.bind(
+            "hash_navigation_request:complete",
+            function() {
+                this.checkPinbarIcon();
+            },
+            this
+        );
+
         this.$minimizeButton.click(_.bind(this.minimizePage, this));
-        this.$closeButton.click(_.bind(this.closePage, this));
 
         this.registerTab();
         this.cleanup();
@@ -104,6 +113,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                             if (!goBack) {
                                 Oro.hashNavigationInstance.setLocation(url, {useCache: true});
                             }
+                            this.checkPinbarIcon();
                         }, this)
                     }
                 );
@@ -123,11 +133,20 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         });
     },
 
+    checkPinbarIcon: function() {
+        if (this.getItemForCurrentPage().length) {
+            this.activate();
+        } else {
+            this.inactivate();
+        }
+    },
+
     /**
      * Handle page close
      */
     onPageClose: function(item) {
         this.removeFromHistory(item);
+        this.checkPinbarIcon();
         this.reorder();
     },
 
@@ -227,6 +246,14 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.options.collection.each(function(item, position) {
             item.set({position: position});
         });
+    },
+
+    activate: function() {
+        this.$icon.addClass('icon-gold');
+    },
+
+    inactivate: function() {
+        this.$icon.removeClass('icon-gold');
     },
 
     /**

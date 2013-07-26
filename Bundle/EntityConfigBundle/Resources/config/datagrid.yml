@@ -1,0 +1,28 @@
+parameters:
+    oro_entity_config.datagrid.manager.class:               Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
+    oro_entity_config.entityfieldsdatagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager
+
+services:
+    oro_entity_config.datagrid.manager:
+        class:                                  %oro_entity_config.datagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
+              entity_hint:                      entity
+              route_name:                       oro_entityconfig_index
+              query_entity_alias:               ce
+
+    oro_entity_config.entityfieldsdatagrid.manager:
+        class:                                  %oro_entity_config.entityfieldsdatagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    field
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+              entity_hint:                      fields
+              route_name:                       oro_entityconfig_fields
+              query_entity_alias:               cf

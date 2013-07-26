@@ -11,6 +11,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Collection;
 
+/**
+ * Collection type subscriber
+ */
 class CollectionTypeSubscriber implements EventSubscriberInterface
 {
     /**
