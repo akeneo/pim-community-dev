@@ -9,7 +9,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         el: '.pin-bar',
         listBar: '.list-bar',
         minimizeButton: '.top-action-box .minimize-button',
-        history: [],
         defaultUrl: '/',
         tabId: 'pinbar',
         collection: navigation.pinbar.Items
@@ -41,9 +40,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
          */
         Oro.Events.bind(
             "grid_load:complete",
-            function () {
-                this.updatePinbarState();
-            },
+            this.updatePinbarState,
             this
         );
 
@@ -52,9 +49,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
          */
         Oro.Events.bind(
             "hash_navigation_request:complete",
-            function() {
-                this.checkPinbarIcon();
-            },
+            this.checkPinbarIcon,
             this
         );
 
@@ -63,19 +58,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.registerTab();
         this.cleanup();
         this.render();
-    },
-
-    /**
-     * Get previous maximized URL
-     *
-     * @return {*}
-     */
-    getLatestUrl: function() {
-        if (this.options.history.length) {
-            return _.last(this.options.history);
-        } else {
-            return this.options.defaultUrl;
-        }
     },
 
     /**
@@ -96,44 +78,28 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     handleItemStateChange: function(item) {
         if (!this.massAdd) {
             var url = null;
-            var goBack = false;
-            if (item.get('maximized')) {
+            var changeLocation = item.get('maximized');
+            if (changeLocation) {
                 url = item.get('url');
-                this.removeFromHistory(item);
-                this.options.history.push(this.cleanupUrl(url));
-            } else {
-                goBack = true;
             }
             if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
+                if (Oro.hashNavigationEnabled() && changeLocation) {
+                    Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+                }
                 item.save(
                     null,
                     {
                         wait: true,
                         success: _.bind(function () {
                             this.checkPinbarIcon();
-                            if (!Oro.hashNavigationEnabled() && !goBack) {
+                            if (!Oro.hashNavigationEnabled() && changeLocation) {
                                 window.location.href = url;
                             }
                         }, this)
                     }
                 );
-                if (Oro.hashNavigationEnabled() && !goBack) {
-                    Oro.hashNavigationInstance.setLocation(url, {useCache: true});
-                }
             }
         }
-    },
-
-    /**
-     * Remove item from history
-     *
-     * @param item
-     */
-    removeFromHistory: function(item) {
-        var currentItemUrl = this.cleanupUrl(item.get('url'))
-        this.options.history = _.filter(this.options.history, function (url) {
-            return url != currentItemUrl;
-        });
     },
 
     checkPinbarIcon: function() {
@@ -148,7 +114,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      * Handle page close
      */
     onPageClose: function(item) {
-        this.removeFromHistory(item);
         this.checkPinbarIcon();
         this.reorder();
     },
@@ -164,7 +129,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
             _.each(pinnedItem, function(item) {
-                this.removeFromHistory(item);
                 item.set('maximized', false);
             }, this);
         } else {
