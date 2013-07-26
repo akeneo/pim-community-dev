@@ -16,7 +16,7 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
         $this->emailTemplate = new EmailTemplate('update_entity.html.twig', 'abc');
 
         $this->assertEquals('abc', $this->emailTemplate->getContent());
-        $this->assertTrue($this->emailTemplate->getIsSystem());
+        $this->assertFalse($this->emailTemplate->getIsSystem());
         $this->assertEquals('html', $this->emailTemplate->getType());
     }
 
