@@ -5,52 +5,29 @@ namespace Oro\Bundle\EmailBundle\DataFixtures\ORM;
 use Symfony\Component\Finder\Finder;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 
-class LoadEmailTemplates extends AbstractFixture implements OrderedFixtureInterface
+class LoadEmailTemplates extends AbstractEmailFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $emailTemplates = $this->getEmailTemplatesList();
+        $emailTemplates = $this->getEmailTemplatesList(__DIR__ . DIRECTORY_SEPARATOR . '../data/emails');
 
         foreach ($emailTemplates as $fileName => $file) {
-            $template = file_get_contents($file);
-            $emailTemplate = new EmailTemplate($fileName, $template);
+            $template = file_get_contents($file['path']);
+            $emailTemplate = new EmailTemplate($fileName, $template, $file['format']);
             $manager->persist($emailTemplate);
         }
 
         $manager->flush();
     }
 
-    public function getEmailTemplatesList()
-    {
-        $finder = new Finder();
-        $dir = __DIR__ . DIRECTORY_SEPARATOR . '../data/emails';
 
-        if (is_dir($dir)) {
-            $files = $finder->files()->in($dir);
-        } else {
-            $files = array();
-        }
-
-        $templates = array();
-        /** @var \Symfony\Component\Finder\SplFileInfo $file  */
-        foreach ($files as $file) {
-            $fileName = str_replace(array('.html.twig', '.html', '.txt.twig', '.txt'), '', $file->getFilename());
-            if (preg_match('#/([\w]+Bundle)/#', $file->getPath(), $match)) {
-                $fileName = $match[1] . ':' . $fileName;
-            }
-            $templates[$fileName] = $file->getPath() . DIRECTORY_SEPARATOR . $file->getFilename();
-        }
-
-        return $templates;
-    }
 
     /**
      * {@inheritDoc}
