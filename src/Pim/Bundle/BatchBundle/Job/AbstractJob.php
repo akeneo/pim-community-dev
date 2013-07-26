@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 
-use Pim\Bundle\BatchBundle\Logger;
-
 /**
  * Abstract implementation of the {@link Job} interface. Common dependencies
  * such as a {@link JobRepository}, {@link JobExecutionListener}s, and various
@@ -81,26 +79,6 @@ abstract class AbstractJob implements JobInterface
     }
 
     /**
-     * Get the logger
-     *
-     * @return $logger
-     */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
-
-    /**
-     * Set the logger 
-     *
-     * @param $logger
-     */
-    public function setLogger($logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
      * Retrieve the step with the given name. If there is no Step with the given
      * name, then return null.
      *
@@ -127,7 +105,7 @@ abstract class AbstractJob implements JobInterface
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-        $this->stepHandler = new SimpleStepHandler($jobRepository);
+        $this->stepHandler = new SimpleStepHandler($jobRepository, null, $this->logger);
     }
 
     /**
@@ -197,13 +175,13 @@ abstract class AbstractJob implements JobInterface
 
         } catch (JobInterruptedException $e) {
             $this->logger->info("Encountered interruption executing job: " . $e->getMessage());
-            $this->logger->debug("Full exception", $e);
+            $this->logger->debug("Full exception", array('exception', $e));
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
-            $this->logger->error("Encountered fatal error executing job", $e);
+            $this->logger->error("Encountered fatal error executing job", array('exception', $e));
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $execution->addFailureException($e);
@@ -224,10 +202,10 @@ abstract class AbstractJob implements JobInterface
         try {
             //listener.afterJob(execution);
         } catch (Exception $e) {
-            $this->logger->error("Exception encountered in afterStep callback", $e);
+            $this->logger->error("Exception encountered in afterStep callback", array('exception', $e));
         }
 
-        $jobRepository->update(execution);
+        $this->jobRepository->updateJobExecution($execution);
     }
 
 
@@ -295,7 +273,7 @@ abstract class AbstractJob implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-        $jobRepository->update($jobExecution);
+        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**

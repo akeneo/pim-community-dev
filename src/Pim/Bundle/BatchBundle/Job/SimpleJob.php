@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
-use Pim\Bundle\BatchBundle\Logger;
 
 /**
  * Simple implementation of {@link Job} interface providing the ability to run a
@@ -33,9 +32,9 @@ class SimpleJob extends AbstractJob
     /**
      * @param string $name
      */
-     public function __construct($name = '')
+     public function __construct($name = '', $logger)
      {
-         parent::__construct($name);
+         parent::__construct($name, $logger);
 
          $this->steps = new ArrayCollection();
      }
@@ -131,7 +130,7 @@ class SimpleJob extends AbstractJob
         // Update the job status to be the same as the last step
         //
         if ($stepExecution != null) {
-            Logger::debug("Upgrading JobExecution status: " . $stepExecution);
+            $this->logger->debug("Upgrading JobExecution status: " . $stepExecution);
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }

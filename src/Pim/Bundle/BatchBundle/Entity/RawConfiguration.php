@@ -127,7 +127,7 @@ class RawConfiguration
     protected function serialize()
     {
         if (is_null($this->configuration)) {
-            throw new ConfigurationException('concret configuration must be defined before serialize');
+            throw new ConfigurationException('Concrete configuration must be defined before serialize');
         }
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
         $this->data      = $serializer->serialize($this->configuration, $this->format);
