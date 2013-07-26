@@ -24,7 +24,7 @@ class ConfigFactory
         $values = array();
 
         $values['is_extend'] = true;
-        $values['owner']     = ExtendManager::OWNER_SYSTEM;
+        $values['owner']     = ExtendManager::OWNER_CUSTOM;
         $values['state']     = ExtendManager::STATE_NEW;
 
         $constraint = array(

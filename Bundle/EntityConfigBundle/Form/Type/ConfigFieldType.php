@@ -62,15 +62,11 @@ class ConfigFieldType extends AbstractType
                     $provider->getScope(),
                     new ConfigType($items, $fieldType),
                     array(
-                        'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
+                        'block_config' => (array) $provider->getConfigContainer()->getFieldFormBlockConfig()
                     )
                 );
 
-                if ($provider->hasFieldConfig($className, $fieldName)) {
-                    $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
-                } else {
-                    $data[$provider->getScope()] = $provider->getConfigContainer()->getFieldDefaultValues();
-                }
+                $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
             }
         }
 

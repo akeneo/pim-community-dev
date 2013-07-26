@@ -55,6 +55,10 @@ oro_entity_config:
                             block:          entity
                             required:       false
         field:
+            form:
+                block_config:
+                    entity:
+                        priority:           20
             items:
                 label:
                     options:
