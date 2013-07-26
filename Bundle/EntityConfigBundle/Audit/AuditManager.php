@@ -64,6 +64,19 @@ class AuditManager
     {
         $changes = $this->configManager->getConfigChangeSet($config);
 
+        $configContainer = $this->configManager->getProvider($config->getScope())->getConfigContainer();
+        if ($config instanceof FieldConfigInterface) {
+            $internalValues = $configContainer->getFieldInternalValues();
+        } else {
+            $internalValues = $configContainer->getEntityInternalValues();
+        }
+
+        $changes = array_diff_key($changes,$internalValues);
+
+        if (!count($changes)) {
+            return;
+        }
+
         $diff = new ConfigLogDiff();
         $diff->setScope($config->getScope());
         $diff->setDiff($changes);
