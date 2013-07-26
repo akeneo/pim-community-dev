@@ -23,7 +23,7 @@ Oro.PageState.View = Backbone.View.extend({
          * Init page state after hash navigation request is completed
          */
         Oro.Events.bind(
-            "hash_navigation_request:complete",
+            "hash_navigation_request:refresh",
             function() {
                 this.stopCollecting = false;
                 this.init();

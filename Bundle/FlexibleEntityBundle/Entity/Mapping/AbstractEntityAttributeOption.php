@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,8 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 
 /**
  * Base Doctrine ORM entity attribute option
- *
- *
  */
 abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
 {

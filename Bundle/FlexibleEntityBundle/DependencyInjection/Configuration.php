@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -6,7 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Flexible entity configuration
- *
  */
 class Configuration implements ConfigurationInterface
 {

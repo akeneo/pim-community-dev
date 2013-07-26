@@ -1,0 +1,8 @@
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > li {
+    height: auto;
+}
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a,
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a:hover,
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a:focus {
+    background-color: #fff;
+}

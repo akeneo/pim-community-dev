@@ -6,7 +6,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Multi options (checkbox) attribute type
- *
  */
 class OptionMultiCheckboxType extends AbstractOptionType
 {

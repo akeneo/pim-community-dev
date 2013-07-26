@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager;
 
 /**
@@ -58,9 +59,29 @@ class EmailTemplateController extends Controller
      * )
      * @Template()
      */
-    public function updateAction()
+    public function updateAction(EmailTemplate $entity, $isClone = false)
     {
-        return array();
+        if ($this->get('oro_email.form.handler.emailtemplate')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.email.controller.emailtemplate.saved.message')
+            );
+
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_email_emailtemplate_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_email_emailtemplate_index',
+                )
+            );
+        }
+
+        return array(
+            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
+            'isClone' => $isClone
+        );
     }
 
     /**
@@ -75,11 +96,11 @@ class EmailTemplateController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction();
+        return $this->updateAction(new EmailTemplate());
     }
 
     /**
-     * @Route("/clone")
+     * @Route("/clone/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_clone",
      *      name="Clone email template",
@@ -88,8 +109,8 @@ class EmailTemplateController extends Controller
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
-    public function cloneAction()
+    public function cloneAction(EmailTemplate $entity)
     {
-        return $this->updateAction();
+        return $this->updateAction(clone $entity, true);
     }
 }

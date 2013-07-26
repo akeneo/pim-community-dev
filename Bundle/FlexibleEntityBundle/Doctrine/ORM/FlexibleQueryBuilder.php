@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
@@ -10,8 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
  * Extends query builder to add useful shortcuts which allow to easily select, filter or sort a flexible entity values
  *
  * It works exactly as classic QueryBuilder
- *
- *
  */
 class FlexibleQueryBuilder extends QueryBuilder
 {

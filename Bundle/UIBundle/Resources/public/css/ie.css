@@ -113,4 +113,7 @@ div.uploader input{
     background:#262d33 url("../img/general-sprite.png") no-repeat 0 -176px;
     filter: none;
 }
-
+button.btn.favorite-button,
+button.btn.minimize-button{
+    filter: none;
+}

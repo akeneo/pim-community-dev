@@ -60,11 +60,22 @@
         <div id="top-page">
             {% block header %}
                 <header class="navbar">
+                    {% placeholder before_navigation %}
                     <div class="navbar-inner">
                         <div class="container">
                             {% placeholder header_logo %}
                             <div class="navbar-responsive-collapse">
-                                {% placeholder navbar %}
+                                {% block navbar %}
+                                <div class="nav pull-left top-search shortcuts">
+                                    {% placeholder navbar %}
+                                </div>
+                                {% endblock navbar %}
+                                <div class="divider-vertical small-divider"></div>
+                                <div id="main-menu">
+                                    {% block application_menu %}
+                                        {% placeholder application_menu %}
+                                    {% endblock application_menu %}
+                                 </div>
                                 <ul class="nav pull-right">
                                     {% placeholder user_menu %}
                                     {# Disabled notification icon till it will be implemented
@@ -77,6 +88,7 @@
                             </div>
                         </div>
                     </div>
+                    {% placeholder after_navigation %}
                 </header>
             {% endblock header %}
             {% block main %}
@@ -87,15 +99,7 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
-                    {% block pin_bar %}
-                        {% placeholder pinbar %}
-                        {% block application_menu %}
-                            <div id="main-menu">
-                                {% placeholder application_menu %}
-                            </div>
-                        {% endblock application_menu %}
-                        {% placeholder pin_button %}
-                    {% endblock pin_bar %}
+                    {% placeholder pin_button %}
                     <div id="flash-messages">
                         {% block messages %}
                             {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}

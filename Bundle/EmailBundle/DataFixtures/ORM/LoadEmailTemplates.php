@@ -2,11 +2,13 @@
 
 namespace Oro\Bundle\EmailBundle\DataFixtures\ORM;
 
+use Symfony\Component\Finder\Finder;
+
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
-use Symfony\Component\Finder\Finder;
 
 class LoadEmailTemplates extends AbstractFixture implements OrderedFixtureInterface
 {

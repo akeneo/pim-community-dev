@@ -1,0 +1,5 @@
+oro:
+    mail:
+        validators:
+            emailtemplate:
+                attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
