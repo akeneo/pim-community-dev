@@ -13,7 +13,11 @@ class EmailNotificationApiTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->type = new EmailNotificationApiType();
+        $listener = $this->getMockBuilder('Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->type = new EmailNotificationApiType(array(), $listener);
     }
 
     public function testSetDefaultOptions()
@@ -37,7 +41,11 @@ class EmailNotificationApiTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->once())
+        $builder->expects($this->at(0))
+            ->method('addEventSubscriber')
+            ->with($this->isInstanceOf('Oro\Bundle\EmailBundle\Form\EventListener\BuildNotificationFormListener'));
+
+        $builder->expects($this->at(5))
             ->method('addEventSubscriber')
             ->with($this->isInstanceOf('Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber'));
 
