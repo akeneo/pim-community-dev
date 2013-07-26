@@ -110,17 +110,19 @@ class EmailTemplate implements Translatable
      */
     public function __construct($name = '', $content = '', $type = 'html', $isSystem = false)
     {
-        foreach (array('subject', 'entityName') as $templateParam) {
-            if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#si', $content, $match)) {
+        // isSystem can be overridden from email template
+        $this->isSystem = $isSystem;
+
+        foreach (array('subject', 'entityName', 'isSystem') as $templateParam) {
+            if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#i', $content, $match)) {
                 $this->$templateParam = trim($match[1]);
                 $content = trim(str_replace($match[0], '', $content));
             }
         }
 
+        $this->type = $type;
         $this->name = $name;
         $this->content = $content;
-        $this->type = $type;
-        $this->isSystem = $isSystem;
         $this->translations = new ArrayCollection();
     }
 

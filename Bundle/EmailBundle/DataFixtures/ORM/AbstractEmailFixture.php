@@ -2,9 +2,31 @@
 
 namespace Oro\Bundle\EmailBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Finder\Finder;
 
-class AbstractEmailFixture extends AbstractFixture
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+
+abstract class AbstractEmailFixture extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $emailTemplates = $this->getEmailTemplatesList($this->getEmailsDir());
+
+        foreach ($emailTemplates as $fileName => $file) {
+            $template = file_get_contents($file['path']);
+            $emailTemplate = new EmailTemplate($fileName, $template, $file['format']);
+            $manager->persist($emailTemplate);
+        }
+
+        $manager->flush();
+    }
+
     /**
      * @param string $dir
      * @return array
@@ -38,5 +60,20 @@ class AbstractEmailFixture extends AbstractFixture
         }
 
         return $templates;
+    }
+
+    /**
+     * Return path to email templates
+     *
+     * @return string
+     */
+    abstract public function getEmailsDir();
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 120;
     }
 }
