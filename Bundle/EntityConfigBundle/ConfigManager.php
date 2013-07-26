@@ -335,9 +335,17 @@ class ConfigManager
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
             }
 
+            $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+
             $this->calculateConfigChangeSet($config);
 
-            $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+            $changes = $this->getConfigChangeSet($config);
+
+            if (!count($changes)) {
+                continue;
+            }
+
+            $values = array_intersect_key($config->getValues(), $changes);
 
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
@@ -360,10 +368,10 @@ class ConfigManager
                 }
 
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getFieldSerializableValues();
-                $configField->fromArray($config->getScope(), $config->getValues(), $serializableValues);
+                $configField->fromArray($config->getScope(), $values, $serializableValues);
             } else {
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getEntitySerializableValues();
-                $configEntity->fromArray($config->getScope(), $config->getValues(), $serializableValues);
+                $configEntity->fromArray($config->getScope(), $values, $serializableValues);
             }
 
 
@@ -406,6 +414,12 @@ class ConfigManager
             $originConfigValue = $originConfig->getValues();
         }
 
+        foreach ($config->getValues() as $key => $value) {
+            if (!isset($originConfigValue[$key])) {
+                $originConfigValue[$key] = null;
+            }
+        }
+
         $diffNew = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
             return ($a == $b) ? 0 : 1;
         });
@@ -419,6 +433,7 @@ class ConfigManager
             $oldValue   = isset($diffOld[$key]) ? $diffOld[$key] : null;
             $diff[$key] = array($oldValue, $value);
         }
+
 
         if (!isset($this->configChangeSets[spl_object_hash($config)])) {
             $this->configChangeSets[spl_object_hash($config)] = array();
