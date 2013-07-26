@@ -317,8 +317,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
         $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
-        $this->decimalsAllowed     = true;
-        $this->negativeAllowed     = true;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
     }
