@@ -69,11 +69,14 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnFlush()
     {
         $entity1 = new WorkflowItem();
+        $entity1->setWorkflowName('workflow_1');
+        $entity1->setSerializedData('_old_serialized_data');
         $data1 = new WorkflowData();
         $data1->foo = 'foo';
         $entity1->setData($data1);
 
         $entity2 = new WorkflowItem();
+        $entity2->setWorkflowName('workflow_2');
         $data2 = new WorkflowData();
         $data2->bar = 'bar';
         $entity2->setData($data2);
@@ -81,6 +84,7 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
         $entity3 = new \stdClass();
 
         $entity4 = new WorkflowItem();
+        $entity4->setWorkflowName('workflow_4');
         $data4 = new WorkflowData();
         $data4->foo = 'baz';
         $entity4->setData($data4);
@@ -97,18 +101,48 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer->expects($this->never())->method('deserialize');
 
-        $this->serializer->expects($this->at(0))->method('serialize')
-            ->with($data1, 'json')->will($this->returnValue($expectedSerializedData1));
+        $this->serializer->expects($this->at(0))->method('setWorkflowName')
+            ->with($entity1->getWorkflowName());
         $this->serializer->expects($this->at(1))->method('serialize')
+            ->with($data1, 'json')->will($this->returnValue($expectedSerializedData1));
+
+        $this->serializer->expects($this->at(2))->method('setWorkflowName')
+            ->with($entity2->getWorkflowName());
+        $this->serializer->expects($this->at(3))->method('serialize')
             ->with($data2, 'json')->will($this->returnValue($expectedSerializedData2));
-        $this->serializer->expects($this->at(2))->method('serialize')
+
+        $this->serializer->expects($this->at(4))->method('setWorkflowName')
+            ->with($entity4->getWorkflowName());
+        $this->serializer->expects($this->at(5))->method('serialize')
             ->with($data4, 'json')->will($this->returnValue($expectedSerializedData4));
 
         $this->subscriber->onFlush(
             new OnFlushEventArgs(
                 $this->getOnFlushEntityManagerMock(
-                    array($entity1, $entity2, $entity3),
-                    array($entity4, $entity5, $entity6)
+                    array(
+                        array(
+                            'getScheduledEntityInsertions',
+                            array(),
+                            $this->returnValue(array($entity1, $entity2, $entity3))
+                        ),
+                        array(
+                            'propertyChanged',
+                            array($entity1, 'serializedData', $entity1->getSerializedData(), $expectedSerializedData1)
+                        ),
+                        array(
+                            'propertyChanged',
+                            array($entity2, 'serializedData', $entity2->getSerializedData(), $expectedSerializedData2)
+                        ),
+                        array(
+                            'getScheduledEntityUpdates',
+                            array(),
+                            $this->returnValue(array($entity4, $entity5, $entity6))
+                        ),
+                        array(
+                            'propertyChanged',
+                            array($entity4, 'serializedData', $entity4->getSerializedData(), $expectedSerializedData4)
+                        ),
+                    )
                 )
             )
         );
@@ -120,11 +154,10 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $insertEntities
-     * @param array $updateEntities
+     * @param array $uowExpectedCalls
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getOnFlushEntityManagerMock(array $insertEntities, array $updateEntities)
+    protected function getOnFlushEntityManagerMock(array $uowExpectedCalls)
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->setMethods(array('getUnitOfWork'))
@@ -132,13 +165,22 @@ class WorkflowDataSerializeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $uow = $this->getMockBuilder('Doctrine\ORM\UnitOfWork')
-            ->setMethods(array('getScheduledEntityInsertions', 'getScheduledEntityUpdates'))
+            ->setMethods(array('getScheduledEntityInsertions', 'getScheduledEntityUpdates', 'propertyChanged'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $em->expects($this->once())->method('getUnitOfWork')->will($this->returnValue($uow));
-        $uow->expects($this->once())->method('getScheduledEntityInsertions')->will($this->returnValue($insertEntities));
-        $uow->expects($this->once())->method('getScheduledEntityUpdates')->will($this->returnValue($updateEntities));
+
+        $index = 0;
+        foreach ($uowExpectedCalls as $expectedCall) {
+            $expectedCall = array_pad($expectedCall, 3, null);
+            list($method, $with, $stub) = $expectedCall;
+            $methodExpectation = $uow->expects($this->at($index++))->method($method);
+            $methodExpectation = call_user_func_array(array($methodExpectation, 'with'), $with);
+            if ($stub) {
+                $methodExpectation->will($stub);
+            }
+        }
 
         return $em;
     }
