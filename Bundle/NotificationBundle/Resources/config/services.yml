@@ -111,6 +111,7 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
             - @logger
+            - @security.context
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
@@ -155,15 +156,15 @@ services:
         class: Twig_Sandbox_SecurityPolicy
         arguments:
             # tags
-            - [ 'if' ]
+            - [ 'if', 'app' ]
             # filters
             - [ 'upper', 'escape' ]
             # methods
             -
-              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname]
+              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname, getlastname]
+              Symfony\Bundle\FrameworkBundle\Templating\GlobalVariables: [getUser]
             # properties
-            -
-              Oro\Bundle\UserBundle\Entity\User: [username, firstname]
+            - []
             # functions
             - []
 

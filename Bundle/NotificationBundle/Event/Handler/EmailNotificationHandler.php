@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
@@ -48,14 +49,16 @@ class EmailNotificationHandler extends EventHandlerAbstract
         \Swift_Mailer $mailer,
         ObjectManager $em,
         $sendFrom,
-        Logger $logger
-    )
-    {
+        Logger $logger,
+        SecurityContextInterface $securityContext
+    ) {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->em = $em;
         $this->sendFrom = $sendFrom;
         $this->logger = $logger;
+
+        $this->user = $securityContext->getToken() ? $securityContext->getToken()->getUser() : false;
     }
 
     /**
@@ -76,13 +79,19 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 'notification' => $notification,
                 'entity'       => $entity,
                 'templateName' => $emailTemplate,
+                'user'         => $this->user,
             );
 
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
                 ->getRecipientEmails($notification->getRecipientList(), $entity);
 
+            $content = $emailTemplate->getContent();
+            // ensure we have no html tags in txt template
+            $content = $emailTemplate->getType() == 'txt' ? strip_tags($content) : $content;
+
             try {
-                $templateRendered = $this->twig->render($emailTemplate->getContent(), $templateParams);
+                $templateRendered = $this->twig->render($content, $templateParams);
+                $subjectRendered = $this->twig->render($emailTemplate->getSubject(), $templateParams);
             } catch (\Twig_Error $e) {
                 $templateRendered = false;
 
@@ -103,7 +112,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
             // TODO: use locale for subject and body
             $params = new ParameterBag(
                 array(
-                    'subject' => $emailTemplate->getSubject(),
+                    'subject' => $subjectRendered,
                     'body'    => $templateRendered,
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
