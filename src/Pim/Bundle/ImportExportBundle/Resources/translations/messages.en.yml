@@ -5,3 +5,7 @@ pim_import_export.jobs.product_export:
 pim_import_export.jobs.category_export:
     title: 'Category export in CSV'
     export.title: 'Export'
+
+pim_import_export.status:
+    0: 'Draft'
+    1: 'Ready'
