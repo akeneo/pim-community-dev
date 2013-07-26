@@ -2,12 +2,17 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 
 class FileWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
+    /**
+     * @Assert\NotBlank(groups={"Configuration"})
+     */
     protected $path;
+
     private $handler;
 
     public function write(array $data)

@@ -15,11 +15,6 @@ pim_config:
     type:     annotation
     prefix:   /configuration/
 
-pim_batch:
-    resource: "@PimBatchBundle/Controller/"
-    type:     annotation
-    prefix:   /batch/
-
 pim_importexport:
     resource: "@PimImportExportBundle/Controller/"
     type:     annotation

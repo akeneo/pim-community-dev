@@ -39,5 +39,10 @@ class ExportCreation extends Page
     {
         $this->pressButton('Save');
     }
+
+    public function getUrl(array $options)
+    {
+        return sprintf('%s?%s', $this->getPath(), http_build_query($options));
+    }
 }
 

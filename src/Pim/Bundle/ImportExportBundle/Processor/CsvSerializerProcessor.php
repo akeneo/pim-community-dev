@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -11,8 +12,18 @@ use Symfony\Component\Serializer\Serializer;
  */
 class CsvSerializerProcessor extends SerializerProcessor
 {
+    /**
+     * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\Choice(choices={",", ";", "|"}, groups={"Configuration"})
+     */
     protected $delimiter = ';';
+
+    /**
+     * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\Choice(choices={"\"", "'"}, groups={"Configuration"})
+     */
     protected $enclosure = '"';
+
     protected $withHeader = false;
 
     public function setDelimiter($delimiter)
