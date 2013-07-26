@@ -1,0 +1,13 @@
+{% if useDecorators %}
+<ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+        <li>
+            {{ breadcrumb.label }}{% if not loop.last %}<span class="divider">/</span>{% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    {% for breadcrumb in breadcrumbs %}
+            {{ breadcrumb.label }}{% if not loop.last %}/{% endif %}
+    {% endfor %}
+{% endif %}

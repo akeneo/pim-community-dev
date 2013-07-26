@@ -26,6 +26,7 @@ Oro.Navigation = Backbone.Router.extend({
      * mostViwedTab - Selector for most viewed 3 dots menu tab
      * flashMessages - Selector for system messages block
      * menu - Selector for system main menu
+     * breadcrumb - Selector for breadcrumb block
      * pinButton - Selector for pin, close and favorite buttons div
      *
      * @property
@@ -44,6 +45,7 @@ Oro.Navigation = Backbone.Router.extend({
         mostViewedTab:  '#mostviewed-content',
         flashMessages:  '#flash-messages',
         menu:           '#main-menu',
+        breadcrumb:     '#breadcrumb',
         pinButton:      '#pin-button-div'
     },
     selectorCached: {},
@@ -770,6 +772,7 @@ Oro.Navigation = Backbone.Router.extend({
                     var content = data.content;
                     this.selectorCached.container.html(content);
                     this.selectorCached.menu.html(data.mainMenu);
+                    this.selectorCached.breadcrumb.html(data.breadcrumb);
                     /**
                      * Collecting javascript from head and append them to content
                      */

@@ -42,6 +42,10 @@ placeholders:
         items:
             pin_button:
                 order: 100
+    breadcrumb:
+        label: Breadcrumbs
+        items:
+            breadcrumbs:
 
 items:
    hashNavigation:
@@ -60,3 +64,5 @@ items:
         template: OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig
    pin_button:
         template: OroNavigationBundle:ApplicationMenu:pinButton.html.twig
+   breadcrumbs:
+        template: OroNavigationBundle:ApplicationMenu:breabcrumbs.html.twig

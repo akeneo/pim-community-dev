@@ -19,7 +19,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oro_menu_config', 'array', new MenuTreeBuilder());
 
-        $node = $rootNode->children();
+        $node = $rootNode->children()
+            ->scalarNode('header_delimiter')
+                ->defaultValue('-')
+            ->end()
+            ->scalarNode('header_suffix')
+                ->defaultValue('ORO')
+            ->end()
+            ->scalarNode('breadcrumb_menu')
+                ->defaultValue('application_menu')
+            ->end();
         $this->setChildren($node);
         $node->end();
 
