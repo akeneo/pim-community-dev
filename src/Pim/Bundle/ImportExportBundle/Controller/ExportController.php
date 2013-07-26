@@ -101,29 +101,4 @@ class ExportController extends Controller
             'alias'     => $alias,
         );
     }
-
-    /**
-     * Edit job
-     *
-     * @param Job $job
-     *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
-     *
-     * @return array
-     */
-    public function editAction(Job $job)
-    {
-        if ($this->get('pim_config.form.handler.locale')->process($locale)) {
-            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
-
-            return $this->redirect(
-                $this->generateUrl('pim_config_locale_index')
-            );
-        }
-
-        return array(
-            'form' => $this->get('pim_config.form.locale')->createView()
-        );
-    }
 }
