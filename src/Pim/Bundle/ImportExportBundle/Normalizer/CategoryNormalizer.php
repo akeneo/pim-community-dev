@@ -14,6 +14,13 @@ use Pim\Bundle\ProductBundle\Model\CategoryInterface;
  */
 class CategoryNormalizer implements NormalizerInterface
 {
+    const LOCALIZABLE_PATTERN = '{locale}:{value}';
+    const ITEM_SEPARATOR      = ',';
+
+    protected $supportedFormats = array('csv');
+
+    private $results;
+
     /**
      * Transforms an object into a flat array
      *
@@ -25,20 +32,18 @@ class CategoryNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $results = array();
+        $this->results = array(
+            'code'    => $object->getCode(),
+            'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
+            'dynamic' => (string) $object->isDynamic(),
+            'left'    => (string) $object->getLeft(),
+            'level'   => (string) $object->getLevel(),
+            'right'   => (string) $object->getRight(),
+        );
 
-        $results['code']    = $object->getCode();
-        $results['parent']  = $object->getParent() ? $object->getParent()->getCode() : '';
-        $results['dynamic'] = (string) $object->isDynamic();
-        $results['left']    = (string) $object->getLeft();
-        $results['level']   = (string) $object->getLevel();
-        $results['right']   = (string) $object->getRight();
+        $this->normalizeTitle($object);
 
-        foreach ($object->getTranslations() as $translation) {
-            $results['name_'.$translation->getLocale()] = $translation->getTitle();
-        }
-
-        return $results;
+        return $this->results;
     }
 
     /**
@@ -51,6 +56,26 @@ class CategoryNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof CategoryInterface && 'csv' === $format;
+        return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Normalize the title
+     *
+     * @param object $object
+     *
+     * @return void
+     */
+    protected function normalizeTitle($object)
+    {
+        $titles = $object->getTranslations()->map(
+            function($translation) {
+                $title = str_replace('{locale}', $translation->getLocale(), self::LOCALIZABLE_PATTERN);
+                $title = str_replace('{value}', $translation->getTitle(), $title);
+                return $title;
+            }
+        )->toArray();
+
+        $this->results['title'] = implode(self::ITEM_SEPARATOR, $titles);
     }
 }
