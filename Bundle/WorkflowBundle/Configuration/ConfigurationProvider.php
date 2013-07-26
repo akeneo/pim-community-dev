@@ -31,18 +31,18 @@ class ConfigurationProvider
     protected $kernelBundles = array();
 
     /**
-     * @var
+     * @var ConfigurationTree
      */
     protected $configurationTree;
 
     /**
      * @param array $kernelBundles
-     * @param ConfigurationTree $configurationTreeBuilder
+     * @param ConfigurationTree $configurationTree
      */
-    public function __construct(array $kernelBundles, ConfigurationTree $configurationTreeBuilder)
+    public function __construct(array $kernelBundles, ConfigurationTree $configurationTree)
     {
         $this->kernelBundles = $kernelBundles;
-        $this->configurationTree = $configurationTreeBuilder;
+        $this->configurationTree = $configurationTree;
     }
 
     /**
