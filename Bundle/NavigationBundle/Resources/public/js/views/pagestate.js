@@ -48,8 +48,6 @@ Oro.PageState.View = Backbone.View.extend({
     },
 
     init: function() {
-        var self = this;
-
         this.clearTimer();
         if (!this.hasForm()) {
             return;
@@ -57,20 +55,21 @@ Oro.PageState.View = Backbone.View.extend({
 
         Backbone.$.get(
             Routing.generate('oro_api_get_pagestate_checkid') + '?pageId=' + this.filterUrl(),
-            function (data) {
-                self.model.set({
+            _.bind(function (data) {
+                this.clearTimer();
+                this.model.set({
                     id        : data.id,
                     pagestate : data.pagestate
                 });
 
-                if (parseInt(data.id) > 0  && self.model.get('restore') && self.needServerRestore) {
-                    self.restore();
+                if (parseInt(data.id) > 0  && this.model.get('restore') && this.needServerRestore) {
+                    this.restore();
                 }
 
-                Oro.PageStateTimer = setInterval(function() {
-                    self.collect();
-                }, 2000);
-            }
+                Oro.PageStateTimer = setInterval(_.bind(function() {
+                    this.collect();
+                }, this), 2000);
+            }, this)
         )
     },
 
