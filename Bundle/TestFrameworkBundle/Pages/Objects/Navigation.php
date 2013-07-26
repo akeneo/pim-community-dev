@@ -22,7 +22,7 @@ class Navigation extends Page
     public function tab($tab)
     {
         $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[contains(., '{$tab}')]")));
-        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));;
+        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));
         return $this;
     }
 

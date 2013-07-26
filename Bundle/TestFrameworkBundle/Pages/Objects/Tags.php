@@ -22,7 +22,7 @@ class Tags extends PageFilteredGrid
         $this->waitPageToLoad();
         $this->waitForAjax();
         $tag = new Tag($this->test);
-        return $tag;
+        return $tag->init();
     }
 
     public function open($entityData = array())
@@ -42,8 +42,9 @@ class Tags extends PageFilteredGrid
         $this->byXpath("//td[@class='action-cell']//a[@title= 'Update']")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
+        $tag = new Tag($this->test);
 
-        return new Tag($this->test);
+        return $tag->init();
     }
 
     public function delete()

@@ -20,7 +20,7 @@ Oro.Filter.MultiSelectFilter = Oro.Filter.SelectFilter.extend({
                 '<% _.each(options, function (hint, value) { %><option value="<%= value %>"><%= hint %></option><% }); %>' +
             '</select>' +
         '</div>' +
-        '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text">Close</i></a>'
+        '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'
     ),
 
     /**
