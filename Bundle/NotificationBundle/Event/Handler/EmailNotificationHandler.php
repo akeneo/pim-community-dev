@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -33,16 +34,28 @@ class EmailNotificationHandler extends EventHandlerAbstract
     protected $messageLimit = 100;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * @var string
      */
     protected $env = 'prod';
 
-    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em, $sendFrom)
+    public function __construct(
+        \Twig_Environment $twig,
+        \Swift_Mailer $mailer,
+        ObjectManager $em,
+        $sendFrom,
+        Logger $logger
+    )
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->em = $em;
         $this->sendFrom = $sendFrom;
+        $this->logger = $logger;
     }
 
     /**
@@ -57,39 +70,40 @@ class EmailNotificationHandler extends EventHandlerAbstract
         $entity = $event->getEntity();
 
         foreach ($matchedNotifications as $notification) {
+            $emailTemplate = $notification->getTemplate();
             $templateParams = array(
-                'event' => $event,
+                'event'        => $event,
                 'notification' => $notification,
-                'entity' => $entity,
-                'templateName' => $notification->getTemplate(),
+                'entity'       => $entity,
+                'templateName' => $emailTemplate,
             );
-
-            $template = str_replace(
-                'Bundle:',
-                '/../emails/',
-                $notification->getTemplate()
-            );
-return;
-            $emailTemplate = $this->twig->loadTemplate($template);
-            // TODO: There's a bug with sandbox and forms, to be investigated
-            //$emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
-
-            $subject = ($emailTemplate->hasBlock("subject")
-                ? trim($emailTemplate->renderBlock("subject", $templateParams))
-                : "oro_notification.default_notification_subject");
 
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
                 ->getRecipientEmails($notification->getRecipientList(), $entity);
 
             try {
-                $templateRendered = $emailTemplate->render($templateParams);
+                $templateRendered = $this->twig->render($emailTemplate->getContent(), $templateParams);
             } catch (\Twig_Error $e) {
-                $templateRendered = '';
+                $templateRendered = false;
+
+                $this->logger->log(
+                    Logger::ERROR,
+                    sprintf(
+                        'Error rendering email template (id: %d), %s',
+                        $emailTemplate->getId(),
+                        $e->getMessage()
+                    )
+                );
             }
 
+            if ($templateRendered === false) {
+                break;
+            }
+
+            // TODO: use locale for subject and body
             $params = new ParameterBag(
                 array(
-                    'subject' => $subject,
+                    'subject' => $emailTemplate->getSubject(),
                     'body'    => $templateRendered,
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
