@@ -48,12 +48,13 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition', $workflowDefinition);
             $this->assertEquals($workflowName, $workflowDefinition->getName());
             $this->assertEquals($workflowConfiguration['label'], $workflowDefinition->getLabel());
-            $this->assertEquals($workflowConfiguration['enabled'], $workflowDefinition->isEnabled());
+            $expectedEnabled = isset($workflowConfiguration['enabled']) ? $workflowConfiguration['enabled'] : true;
+            $this->assertEquals($expectedEnabled, $workflowDefinition->isEnabled());
             $this->assertEquals($workflowConfiguration['start_step'], $workflowDefinition->getStartStep());
-            $this->assertEquals(
-                $workflowConfiguration['managed_entity_class'],
-                $workflowDefinition->getManagedEntityClass()
-            );
+            $expectedManagedEntityClass = isset($workflowConfiguration['managed_entity_class'])
+                ? $workflowConfiguration['managed_entity_class']
+                : null;
+            $this->assertEquals($expectedManagedEntityClass, $workflowDefinition->getManagedEntityClass());
             $this->assertEquals($workflowConfiguration, $workflowDefinition->getConfiguration());
         }
     }
