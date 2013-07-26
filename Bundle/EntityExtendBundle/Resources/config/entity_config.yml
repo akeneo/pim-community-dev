@@ -66,6 +66,7 @@ oro_entity_config:
                     options:
                         priority:           20
                         default_value:      'System'
+                        internal:           true
                     grid:
                         type:               string
                         label:              'Type'
@@ -75,10 +76,15 @@ oro_entity_config:
                         filterable:         false
                         show_filter:        false
 
+                constraint:
+                    options:
+                        internal:           true
+
                 state:
                     options:
                         priority:           25
-                        default_value:      ''
+                        default_value:      'Active'
+                        label:              'Status'
                     grid:
                         type:               string
                         label:              'Status'
@@ -94,6 +100,7 @@ oro_entity_config:
                         priority:           40
                         default_value:      false
                         is_bool:            true
+                        internal:           true
 #                    grid:
 #                        type:               boolean
 #                        label:              'Is Extend Field'

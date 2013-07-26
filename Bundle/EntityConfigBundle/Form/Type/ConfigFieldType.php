@@ -45,13 +45,30 @@ class ConfigFieldType extends AbstractType
             if ($provider->getConfigContainer()->hasFieldForm()) {
                 $items = $provider->getConfigContainer()->getFieldItems();
 
+                $defaultValues = $provider->getConfigContainer()->getFieldDefaultValues();
+
+                $allowedTypes = array_map(
+                    function ($item) use ($fieldType) {
+                        if (isset($item['form']['options']['allowed_type'])) {
+                            return array_map('trim', explode(',', $item['form']['options']['allowed_type']));
+                        }
+
+                        return false;
+                    },
+                    $items
+                );
+
+                foreach ($allowedTypes as $key => $allowedType) {
+                    if (isset($defaultValues[$key]) && is_array($allowedType) && !in_array($fieldType, $allowedType)) {
+                        unset($defaultValues[$key]);
+                    }
+                }
+
                 foreach ($provider->getConfigContainer()->getFieldRequiredPropertyValues() as $code => $property) {
                     list($scope, $propertyName) = explode('.', $property['property_path']);
 
-
                     if ($this->configManager->getProvider($scope)->hasFieldConfig($className, $fieldName)) {
                         $value = $this->configManager->getProvider($scope)->getFieldConfig($className, $fieldName)->get($propertyName);
-
                         if ($value !== null && $value != $property['value']) {
                             unset($items[$code]);
                         }
@@ -61,12 +78,12 @@ class ConfigFieldType extends AbstractType
                 $builder->add(
                     $provider->getScope(),
                     new ConfigType($items, $fieldType),
-                    array(
-                        'block_config' => (array) $provider->getConfigContainer()->getFieldFormBlockConfig()
-                    )
+                    array('block_config' => (array) $provider->getConfigContainer()->getFieldFormBlockConfig())
                 );
 
-                $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
+                $values = $provider->getFieldConfig($className, $fieldName)->getValues();
+
+                $data[$provider->getScope()] = array_merge($defaultValues, $values);
             }
         }
 

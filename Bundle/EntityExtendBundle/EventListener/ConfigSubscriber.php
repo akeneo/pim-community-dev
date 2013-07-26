@@ -76,6 +76,7 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function persistConfig(PersistConfigEvent $event)
     {
+        $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
         if ($event->getConfig()->getScope() == 'extend'
@@ -86,7 +87,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
             $event->getConfig()->set('state', 'Updated');
             $entityConfig->set('state', 'Updated');
-            $entityConfig->getFields()->clear();
+
             $event->getConfigManager()->persist($entityConfig);
         }
     }

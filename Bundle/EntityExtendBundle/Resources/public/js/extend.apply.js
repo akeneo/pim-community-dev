@@ -22,7 +22,7 @@ $(function() {
 
         if (!_.isUndefined(Oro.BootstrapModal)) {
             var confirmUpdate = new Oro.BootstrapModal({
-                allowCancel: false,
+                //allowCancel: false,
                 title: 'Schema update confirmation',
                 content: '<p>Your config changes will be applied to schema.</p></p>It may take approximately 1..2 minutes.</p>',
                 okText: 'Yes, Proceed'

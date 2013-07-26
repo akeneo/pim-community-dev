@@ -65,7 +65,7 @@ class ConfigManager
     protected $auditManager;
 
     /**
-     * @var ConfigInterface[]|ArrayCollection
+     * @var ConfigInterface[]|\SplQueue
      */
     protected $persistConfigs;
 
@@ -102,7 +102,7 @@ class ConfigManager
      */
     public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $security)
     {
-        $this->persistConfigs  = new ArrayCollection();
+        $this->persistConfigs  = new \SplQueue();
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
@@ -296,11 +296,11 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        $this->persistConfigs->add($config);
+        $this->persistConfigs->push($config);
 
         if ($config instanceof EntityConfigInterface) {
             foreach ($config->getFields() as $fieldConfig) {
-                $this->persistConfigs->add($fieldConfig);
+                $this->persistConfigs->push($fieldConfig);
             }
         }
     }
@@ -351,20 +351,6 @@ class ConfigManager
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
                     $configEntity->addField($configField);
-
-                    foreach ($this->getProviders() as $provider) {
-                        $provider->createFieldConfig(
-                            $className,
-                            $config->getCode(),
-                            $config->getType(),
-                            $provider->getConfigContainer()->getFieldDefaultValues()
-                        );
-                    }
-
-                    $this->eventDispatcher->dispatch(
-                        Events::NEW_FIELD,
-                        new NewFieldEvent($className, $config->getCode(), $config->getType(), $this)
-                    );
                 }
 
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getFieldSerializableValues();
@@ -392,7 +378,6 @@ class ConfigManager
 
         $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
 
-        $this->persistConfigs->clear();
         $this->removeConfigs    = array();
         $this->originalConfigs  = array();
         $this->configChangeSets = array();
