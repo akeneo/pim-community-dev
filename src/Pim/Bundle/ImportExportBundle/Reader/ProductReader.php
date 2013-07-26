@@ -18,7 +18,7 @@ class ProductReader extends ORMCursorReader
     protected $em;
 
     /**
-     * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\NotBlank
      */
     protected $channel;
 

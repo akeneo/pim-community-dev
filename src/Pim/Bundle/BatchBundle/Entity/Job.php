@@ -19,8 +19,7 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
  */
 class Job
 {
-    const STATUS_DRAFT = 0;
-    const STATUS_READY = 1;
+    const STATUS_READY = 0;
 
     const TYPE_IMPORT = 'import';
     const TYPE_EXPORT = 'export';
@@ -62,7 +61,7 @@ class Job
      *
      * @ORM\Column(name="status", type="integer")
      */
-    protected $status = self::STATUS_DRAFT;
+    protected $status = self::STATUS_READY;
 
     /**
      * @var string
