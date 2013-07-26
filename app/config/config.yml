@@ -230,6 +230,16 @@ pim_batch:
                     reader:     pim_import_export.reader.category
                     processor:  pim_import_export.processor.csv_serializer
                     writer:     pim_import_export.writer.file
+        attribute_export:
+            title:     pim_import_export.jobs.attribute_export.title
+            connector: "Akeneo"
+            type:      "export"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.attribute_export.export.title
+                    reader:     pim_import_export.reader.attribute
+                    processor:  pim_import_export.processor.csv_serializer
+                    writer:     pim_import_export.writer.file
 
 pim_demo:
     load_data: true
