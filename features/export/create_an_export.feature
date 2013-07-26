@@ -30,3 +30,12 @@ Feature: Create an export
     And I try to create an unknown export
     Then I should be redirected on the export index page
     And I should see "Fail to create an export with an unknown job."
+
+  @javascript
+  Scenario: Successfully display the Draft status for not configured jobs
+    Given the following export job:
+      | code           | label   | connector | alias          |
+      | export_product | product | Akeneo    | product_export |
+    And I am logged in as "admin"
+    When I am on the exports index page
+    Then the status of the export "export_product" should be "Draft"

@@ -19,6 +19,7 @@ use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -532,6 +533,22 @@ class FixturesContext extends RawMinkContext
             $em->persist($audit);
         }
 
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following export job:$/
+     */
+    public function theFollowingExportJob(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $job = new Job($data['connector'], 'export', $data['alias']);
+            $job->setCode($data['code']);
+            $job->setLabel($data['label']);
+
+            $em->persist($job);
+        }
         $em->flush();
     }
 

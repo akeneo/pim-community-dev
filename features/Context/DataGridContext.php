@@ -37,6 +37,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Given /^Value of column "([^"]*)" of the row which contain "([^"]*)" should be "([^"]*)"$/
+     */
+    public function valueOfColumnOfTheRowWhichContainShouldBe($column, $row, $expectation)
+    {
+        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting column "%s" to contain "%s", got "%s".',
+                $column, $expectation, $actual
+            ));
+        }
+    }
+
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);

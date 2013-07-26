@@ -32,7 +32,7 @@ class Datagrid extends Page
     public function getGridRow($value)
     {
         $gridRow = $this->getElement('grid')
-                        ->find('css', sprintf('tr:contains("%s")', $value));
+                        ->find('css', sprintf('tbody tr:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
@@ -63,6 +63,43 @@ class Datagrid extends Page
     public function countRows()
     {
         return count($this->getElement('grid')->findAll('css', 'tbody tr'));
+    }
+
+    public function getColumnValue($column, $row, $expectation)
+    {
+        return $this
+            ->getRowCell(
+                $this->getGridRow($row),
+                $this->getColumnPosition($column)
+            )
+            ->getText();
+    }
+
+    protected function getColumnPosition($column)
+    {
+        $headers = $this->getElement('grid')->findAll('css', 'thead th');
+        foreach ($headers as $position => $header) {
+            if ($column === $header->getText()) {
+                return $position;
+            }
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf('Couldn\'t find a column "%s"', $column)
+        );
+    }
+
+    protected function getRowCell($row, $position)
+    {
+        $cell = $row->findAll('css', 'td');
+        if (!isset($cell[$position])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Trying to access cell %d of a row which has %d cell(s).',
+                $position, count($cell)
+            ));
+        }
+
+        return $cell[$position];
     }
 
     /**
