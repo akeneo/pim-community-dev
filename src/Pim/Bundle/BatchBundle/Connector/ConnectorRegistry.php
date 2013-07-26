@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Connector;
 
 use Pim\Bundle\BatchBundle\Job\JobInterface;
-use Pim\Bundle\BatchBundle\Job\AbstractJob;
+use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
  * Aims to register all connectors
@@ -29,7 +29,7 @@ class ConnectorRegistry
      */
     public function addJobToConnector($connector, $type, $jobAlias, JobInterface $job)
     {
-        if ($type === AbstractJob::TYPE_IMPORT) {
+        if ($type === Job::TYPE_IMPORT) {
             $this->importJobs[$connector][$jobAlias] = $job;
         } else {
             $this->exportJobs[$connector][$jobAlias] = $job;
@@ -40,10 +40,10 @@ class ConnectorRegistry
 
     public function getJob($connector, $type, $jobAlias)
     {
-        if ($type === AbstractJob::TYPE_IMPORT) {
-            return $this->importJobs[$connector][$jobAlias];
-        } else {
-            return $this->exportJobs[$connector][$jobAlias];
+        if ($connector = $this->getConnector($connector, $type)) {
+            if ($job = $this->getConnectorJob($connector, $jobAlias)) {
+                return $job;
+            }
         }
     }
 
@@ -65,5 +65,21 @@ class ConnectorRegistry
     public function getImportJobs()
     {
         return $this->importJobs;
+    }
+
+    private function getConnector($connector, $type)
+    {
+        switch ($type) {
+            case Job::TYPE_IMPORT:
+                return isset($this->importJobs[$connector]) ? $this->importJobs[$connector] : null;
+
+            case Job::TYPE_EXPORT:
+                return isset($this->exportJobs[$connector]) ? $this->exportJobs[$connector] : null;
+        }
+    }
+
+    private function getConnectorJob($connector, $jobAlias)
+    {
+        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
     }
 }

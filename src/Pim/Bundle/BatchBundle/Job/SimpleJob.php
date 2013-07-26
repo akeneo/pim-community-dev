@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Logger;
-
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Simple implementation of {@link Job} interface providing the ability to run a
@@ -24,6 +25,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class SimpleJob extends AbstractJob
 {
+    /**
+     * @Assert\Valid
+     */
      protected $steps;
 
     /**
@@ -32,6 +36,7 @@ class SimpleJob extends AbstractJob
      public function __construct($name = '')
      {
          parent::__construct($name);
+
          $this->steps = new ArrayCollection();
      }
 
@@ -145,9 +150,9 @@ class SimpleJob extends AbstractJob
     private function getStepConfiguration($step)
     {
         return array(
-            'reader' => $step->getReader()->getConfiguration(),
+            'reader'    => $step->getReader()->getConfiguration(),
             'processor' => $step->getProcessor()->getConfiguration(),
-            'writer' => $step->getWriter()->getConfiguration(),
+            'writer'    => $step->getWriter()->getConfiguration(),
         );
     }
 }

@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product reader
@@ -15,6 +16,10 @@ use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 class ProductReader extends ORMCursorReader
 {
     protected $em;
+
+    /**
+     * @Assert\NotBlank(groups={"Configuration"})
+     */
     protected $channel;
 
     /**

@@ -8,6 +8,7 @@ use Behat\Behat\Exception\PendingException;
 
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Behat\Behat\Context\Step;
 
 /**
  * Context of the website
@@ -474,9 +475,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should be on the (.*) page$/
+     * @Then /^I should be redirected on the (.*) page$/
      */
-    public function iShouldBeOnThePage($page)
+    public function iShouldBeRedirectedOnThePage($page)
     {
         $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
     }
@@ -970,6 +971,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheExportsIndexPage()
     {
         $this->openPage('Export index');
+        $this->wait();
     }
 
     /**
@@ -979,6 +981,27 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Export index')->clickCreationLink($exportTitle);
         $this->currentPage = 'Export creation';
+    }
+
+    /**
+     * @Given /^I try to create an unknown export$/
+     */
+    public function iTryToCreateAnUnknownExport()
+    {
+        $this->getSession()->visit(
+            rtrim($this->getMinkParameter('base_url'), '/') .
+            $this->getPage('Export creation')->getUrl(array('connector' => 'Unknown'))
+        );
+    }
+
+    /**
+     * @Then /^the status of the export "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theStatusOfTheExportShouldBe($exportCode, $status)
+    {
+        return new Step\Given(sprintf(
+            'Value of column "STATUS" of the row which contain "%s" should be "%s"', $exportCode, $status
+        ));
     }
 
     private function openPage($page, array $options = array())
