@@ -1,13 +1,33 @@
-{{ dump(properties|keys) }}
+{#{{ dump(properties|keys) }}#}
+{#{{ dump(properties.is_entity) }}#}
 <ul>
 {% for val in value %}
-    {{ dump(val.scope) }}
-    {% for key, data in val.diff %}
 
-        {{ dump(data) }}
-        <li>
-            <b>{{ key|capitalize|replace('_',' ') }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}
-        </li>
-    {% endfor %}
+    {% if properties.is_entity %}
+        {% set internal_values = properties.config_manager.getProvider(val.scope).getConfigContainer().getEntityInternalValues()|keys %}
+
+
+
+        {% for key, data in val.diff if not val.fieldName and key not in internal_values %}
+            <li>
+                <b>{{ key|capitalize|replace('_',' ') }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}
+            </li>
+        {% endfor %}
+
+    {% else %}
+        {% set internal_values = properties.config_manager.getProvider(val.scope).getConfigContainer().getFieldInternalValues()|keys %}
+
+        {% for key, data in val.diff if val.fieldName %}
+            <li>
+                <b>{{ key|capitalize|replace('_',' ') }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}
+            </li>
+        {% endfor %}
+    {% endif %}
+
+    {#{% for key, data in val.diff %}#}
+        {#<li>#}
+            {#<b>{{ key|capitalize|replace('_',' ') }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}#}
+        {#</li>#}
+    {#{% endfor %}#}
 {% endfor %}
 </ul>

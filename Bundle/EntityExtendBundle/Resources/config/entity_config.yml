@@ -34,7 +34,6 @@ oro_entity_config:
                     options:
                         priority:           25
                         default_value:      ''
-                        internal:           true
                     grid:
                         type:               string
                         label:              'Status'

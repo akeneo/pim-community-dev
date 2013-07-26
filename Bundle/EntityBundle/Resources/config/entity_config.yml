@@ -58,6 +58,7 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
+                        title:              'Field Information'
                         priority:           20
             items:
                 label:
@@ -95,12 +96,12 @@ oro_entity_config:
 
     datagrid:
         field:
-            form:
-                block_config:
-                    datagrid:
-                        title:              'Datagrid Config'
-                        subblocks:
-                            base:           ~
+#            form:
+#                block_config:
+#                    datagrid:
+#                        title:              'Datagrid Config'
+#                        subblocks:
+#                            base:           ~
             items:
                 is_searchable:
                     options:
@@ -119,5 +120,5 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          datagrid
+                            block:          other
                             label:          'Grid'

@@ -19,7 +19,7 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          auditable
+                            block:          other
                             label:          'Auditable'
         field:
             items:
@@ -40,5 +40,5 @@ oro_entity_config:
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          auditable
+                            block:          other
                             label:          'Auditable'

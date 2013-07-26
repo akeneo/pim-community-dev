@@ -99,7 +99,10 @@ class AuditDatagrid extends DatagridManager
         $templateDiffProperty = new TwigTemplateProperty(
             $logDiffs,
             'OroEntityConfigBundle:Audit:data.html.twig',
-            array('config_manager' => $this->configManager)
+            array(
+                'config_manager' => $this->configManager,
+                'is_entity'      => $this instanceof AuditDatagridManager
+            )
         );
         $logDiffs->setProperty($templateDiffProperty);
         $fieldsCollection->add($logDiffs);
