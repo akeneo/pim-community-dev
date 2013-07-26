@@ -3,12 +3,14 @@
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
-use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
+use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+
+use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
+use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
@@ -58,7 +60,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
         $this->sendFrom = $sendFrom;
         $this->logger = $logger;
 
-        $this->user = $securityContext->getToken() ? $securityContext->getToken()->getUser() : false;
+        $this->user = $this->getUser($securityContext);
     }
 
     /**
@@ -94,6 +96,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 $subjectRendered = $this->twig->render($emailTemplate->getSubject(), $templateParams);
             } catch (\Twig_Error $e) {
                 $templateRendered = false;
+                $subjectRendered = false;
 
                 $this->logger->log(
                     Logger::ERROR,
@@ -105,7 +108,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 );
             }
 
-            if ($templateRendered === false) {
+            if ($templateRendered === false || $subjectRendered === false) {
                 break;
             }
 
@@ -116,6 +119,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                     'body'    => $templateRendered,
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
+                    'type'    => $emailTemplate->getType() == 'txt' ? 'text/plain' : 'text/html'
                 )
             );
 
@@ -139,7 +143,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 ->setSubject($params->get('subject'))
                 ->setFrom($params->get('from'))
                 ->setTo($email)
-                ->setBody($params->get('body'));
+                ->setBody($params->get('body'), $params->get('type'));
             $this->mailer->send($message);
         }
 
@@ -148,6 +152,10 @@ class EmailNotificationHandler extends EventHandlerAbstract
 
     /**
      * Add swiftmailer spool send task to job queue if it has not been added earlier
+     *
+     * @param string $command
+     * @param array $commandArgs
+     * @return boolean|integer
      */
     public function addJob($command, $commandArgs = array())
     {
@@ -167,7 +175,9 @@ class EmailNotificationHandler extends EventHandlerAbstract
     }
 
     /**
-     * @param $messageLimit
+     * Set message limit
+     *
+     * @param int $messageLimit
      */
     public function setMessageLimit($messageLimit)
     {
@@ -175,10 +185,24 @@ class EmailNotificationHandler extends EventHandlerAbstract
     }
 
     /**
+     * Set environment
+     *
      * @param string $env
      */
     public function setEnv($env)
     {
         $this->env = $env;
+    }
+
+    /**
+     * Return current user
+     *
+     * @param  SecurityContextInterface $securityContext
+     * @return User|bool
+     */
+    private function getUser(SecurityContextInterface $securityContext)
+    {
+        return $securityContext->getToken() && !is_string($securityContext->getToken()->getUser())
+            ? $securityContext->getToken()->getUser() : false;
     }
 }

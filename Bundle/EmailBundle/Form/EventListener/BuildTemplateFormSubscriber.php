@@ -1,19 +1,22 @@
 <?php
 namespace Oro\Bundle\EmailBundle\Form\EventListener;
 
-use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
-use Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler;
+use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
+use Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler;
 
-class BuildNotificationFormListener implements EventSubscriberInterface
+class BuildTemplateFormSubscriber implements EventSubscriberInterface
 {
-    private $om;
+    /**
+     * @var EntityManager
+     */
+    private $em;
 
     /**
      * Form factory.
@@ -25,12 +28,12 @@ class BuildNotificationFormListener implements EventSubscriberInterface
     /**
      * Constructor.
      *
-     * @param ObjectManager $om
+     * @param EntityManager $em
      * @param FormFactoryInterface $factory
      */
-    public function __construct(ObjectManager $om, FormFactoryInterface $factory)
+    public function __construct(EntityManager $em, FormFactoryInterface $factory)
     {
-        $this->om = $om;
+        $this->em = $em;
         $this->factory = $factory;
     }
 
@@ -46,7 +49,7 @@ class BuildNotificationFormListener implements EventSubscriberInterface
     }
 
     /**
-     * Removes or adds a state field based on the country set.
+     * Removes or adds a template field based on the entity set.
      *
      * @param FormEvent $event
      */
@@ -59,25 +62,28 @@ class BuildNotificationFormListener implements EventSubscriberInterface
             return;
         }
 
-        /** @var $notification \Oro\Bundle\NotificationBundle\Entity\EmailNotification */
         $entityName = $notification->getEntityName();
 
-        if ($form->has('template')) {
-            $config = $form->get('template')->getConfig()->getOptions();
+        if ($entityName) {
+            if ($form->has('template')) {
+                $config = $form->get('template')->getConfig()->getOptions();
+                unset($config['choice_list']);
+                unset($config['choices']);
+            } else {
+                $config = array();
+            }
+
+            $config['selectedEntity'] = $entityName;
             $config['query_builder'] = $this->getTemplateClosure($entityName);
 
             if (array_key_exists('auto_initialize', $config)) {
                 $config['auto_initialize'] = false;
             }
 
-            unset($config['em']);
-            if ($entityName == null) {
-                unset($config['choices']);
-            }
             $form->add(
                 $this->factory->createNamed(
                     'template',
-                    'entity',
+                    'oro_email_template_list',
                     $notification->getTemplate(),
                     $config
                 )
@@ -86,7 +92,7 @@ class BuildNotificationFormListener implements EventSubscriberInterface
     }
 
     /**
-     * Removes or adds a state field based on the country set on submitted form.
+     * Removes or adds a template field based on the entity set on submitted form.
      *
      * @param FormEvent $event
      */
@@ -94,22 +100,28 @@ class BuildNotificationFormListener implements EventSubscriberInterface
     {
         $data = $event->getData();
         $form = $event->getForm();
+
         $entityName = isset($data['entityName']) ? $data['entityName'] : false;
 
-        if ($entityName !== false) {
+        if ($entityName) {
             $config = $form->get('template')->getConfig()->getOptions();
+            unset($config['choice_list']);
+            unset($config['choices']);
 
+            $config['selectedEntity'] = $entityName;
             $config['query_builder'] = $this->getTemplateClosure($entityName);
-            unset($config['em']);
 
             if (array_key_exists('auto_initialize', $config)) {
                 $config['auto_initialize'] = false;
             }
 
             $form->add(
-                'template',
-                'entity',
-                $config
+                $this->factory->createNamed(
+                    'template',
+                    'oro_email_template_list',
+                    null,
+                    $config
+                )
             );
         }
     }
@@ -121,9 +133,6 @@ class BuildNotificationFormListener implements EventSubscriberInterface
     protected function getTemplateClosure($entityName)
     {
         return function (EmailTemplateRepository $templateRepository) use ($entityName) {
-            if (is_null($entityName)) {
-                return null;
-            }
             return $templateRepository->getEntityTemplatesQueryBuilder($entityName);
         };
     }

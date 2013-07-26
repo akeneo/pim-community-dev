@@ -33,8 +33,10 @@ class RequestTitleListener
         $request = $event->getRequest();
         if (HttpKernel::MASTER_REQUEST != $event->getRequestType()
             || $request->getRequestFormat() != 'html'
-            || ($request->getMethod() != 'GET' && !$request->headers->get('x-oro-hash-navigation'))
-            || ($request->isXmlHttpRequest() && !$request->headers->get('x-oro-hash-navigation'))
+            || ($request->getMethod() != 'GET'
+                && !$request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER))
+            || ($request->isXmlHttpRequest()
+                && !$request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER))
         ) {
             // don't do anything
             return;
