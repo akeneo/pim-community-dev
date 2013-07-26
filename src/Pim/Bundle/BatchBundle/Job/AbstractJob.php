@@ -41,7 +41,10 @@ abstract class AbstractJob implements JobInterface
 
     //private boolean restartable = true;
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-    //private JobRepository jobRepository;
+
+    /* @var JobRepository $jobRepository */
+    private $jobRepository;
+
     //private JobParametersIncrementer jobParametersIncrementer;
     //private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
 
@@ -79,6 +82,8 @@ abstract class AbstractJob implements JobInterface
      */
     protected $steps = null;
 
+    protected $logger = null;
+
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
@@ -86,12 +91,13 @@ abstract class AbstractJob implements JobInterface
      * @param string $configurationConnectorClassName
      * @param string $configurationClassName
      */
-    public function __construct($name, $configurationConnectorClassName = null, $configurationClassName = null)
+    public function __construct($name, $configurationConnectorClassName = null, $configurationClassName = null, $logger)
     {
-        $this->name = $name;
+        $this->name                       = $name;
         $this->connectorConfigurationName = $configurationConnectorClassName;
         $this->configurationName          = $configurationClassName;
         $this->steps                      = new ArrayCollection();
+        $this->logger                     = $logger; 
     }
 
     /**
@@ -116,7 +122,9 @@ abstract class AbstractJob implements JobInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get the job's name
+     *
+     * @return name
      */
     public function getName()
     {
@@ -131,6 +139,26 @@ abstract class AbstractJob implements JobInterface
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Get the logger
+     *
+     * @return $logger
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * Set the logger 
+     *
+     * @param $logger
+     */
+    public function setLogger($logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -199,7 +227,7 @@ abstract class AbstractJob implements JobInterface
      */
     final public function execute(JobExecution $execution)
     {
-        Logger::debug("Job execution starting: " . $execution);
+        $this->logger->debug("Job execution starting: " . $execution);
 
         try {
             //jobParametersValidator.validate(execution.getJobParameters());
@@ -211,35 +239,35 @@ abstract class AbstractJob implements JobInterface
 
                 //listener.beforeJob(execution);
 
-                //try {
+                try {
                     $this->doExecute($execution);
-                    Logger::debug("Job execution complete: ". $execution);
-                //} catch (RepeatException e) {
-                //    throw e.getCause();
-                //}
+                    $this->logger && $this->logger->debug("Job execution complete: ". $execution);
+                } catch (RepeatException $e) {
+                    throw $e->getPrevious();
+                }
             } else {
 
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $execution->setStatus(new BatchStatus(BatchStatus::STOPPED));
                 $execution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                Logger::debug("Job execution was stopped: ". $execution);
+                $this->logger->debug("Job execution was stopped: ". $execution);
 
             }
 
 
         } catch (JobInterruptedException $e) {
-            Logger::info("Encountered interruption executing job: " . $e->getMessage());
-            Logger::debug("Full exception", $e);
+            $this->logger->info("Encountered interruption executing job: " . $e->getMessage());
+            $this->logger->debug("Full exception", $e);
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            //$execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
+            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
-            Logger::error("Encountered fatal error executing job", $e);
+            $this->logger->error("Encountered fatal error executing job", $e);
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
-            //$execution->addFailureException($e);
+            $execution->addFailureException($e);
         }
 
         if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
@@ -257,10 +285,10 @@ abstract class AbstractJob implements JobInterface
         try {
             //listener.afterJob(execution);
         } catch (Exception $e) {
-            Logger::error("Exception encountered in afterStep callback", $e);
+            $this->logger->error("Exception encountered in afterStep callback", $e);
         }
 
-        //jobRepository.update(execution);
+        $jobRepository->update(execution);
     }
 
 
@@ -328,7 +356,7 @@ abstract class AbstractJob implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-        //$jobRepository->update($jobExecution);
+        $jobRepository->update($jobExecution);
     }
 
     /**
