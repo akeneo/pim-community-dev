@@ -1,4 +1,7 @@
-(function(Translator, _, Oro) {
+/* jshint browser:true, devel:true */
+/* global Translator, Oro, _ */
+(function (Translator, _, Oro) {
+    "use strict";
     var dict = {},
         debug = false,
         add = Translator.add,
@@ -10,7 +13,7 @@
      * translation id in protected dictionary
      * @param {string} id
      */
-    Translator.add = function(id) {
+    Translator.add = function (id) {
         dict[id] = 1;
         add.apply(Translator, arguments);
     };
@@ -21,7 +24,7 @@
      * @param {string} id
      * @returns {string}
      */
-    Translator.get = function(id) {
+    Translator.get = function (id) {
         checkTranslation(id);
         return get.apply(Translator, arguments);
     };
@@ -32,7 +35,7 @@
      * @param {Object} data
      * @returns {Object} Translator
      */
-    Translator.fromJSON = function(data) {
+    Translator.fromJSON = function (data) {
         if (typeof data === "string") {
             data = JSON.parse(data);
         }
@@ -50,7 +53,7 @@
             return;
         }
         var domains = Translator.defaultDomains,
-            checker = function (domain){
+            checker = function (domain) {
                 return dict.hasOwnProperty(domain ? domain + ':' + id : id);
             };
         domains = _.union([undefined], _.isArray(domains) ? domains : [domains]);
@@ -67,4 +70,4 @@
          */
         __: _.bind(Translator.get, Translator)
     });
-}) (Translator, _, Oro);
+}(Translator, _, Oro));
