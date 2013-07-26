@@ -45,10 +45,7 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array(
-            'datagrid' => $datagridView,
-            'connectors' => $registry->getExportJobs(),
-        ));
+        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getExportJobs()));
     }
 
     /**
