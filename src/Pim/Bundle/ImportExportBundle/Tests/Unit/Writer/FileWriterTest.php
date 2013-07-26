@@ -23,7 +23,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     public function testWrite()
     {
         file_put_contents(self::EXPECT_PATH, 'foo');
-        $writer = new FileWriter(self::EXPORT_PATH);
+
+        $writer = new FileWriter();
+        $writer->setPath(self::EXPORT_PATH);
         $writer->write(array('foo'));
 
         $this->assertFileExists(self::EXPORT_PATH);

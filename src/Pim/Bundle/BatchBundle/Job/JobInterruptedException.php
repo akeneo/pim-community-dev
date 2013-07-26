@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Item;
+namespace Pim\Bundle\BatchBundle\Job;
 
 /**
  * Exception to indicate the the job has been interrupted. The exception state

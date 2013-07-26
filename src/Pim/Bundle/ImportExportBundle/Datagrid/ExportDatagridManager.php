@@ -12,6 +12,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 /**
  * Export datagrid manager
@@ -22,27 +23,6 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
  */
 class ExportDatagridManager extends DatagridManager
 {
-    /**
-     * get properties
-     * @return array
-     */
-    protected function getProperties()
-    {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
-        return array(
-            new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_batch_job_edit', array('id'))
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -102,7 +82,7 @@ class ExportDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Job'),
-                'field_name'  => 'job',
+                'field_name'  => 'alias',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -126,6 +106,8 @@ class ExportDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
+        $templateProperty = new TwigTemplateProperty($field, 'PimImportExportBundle:Export:_field-status.html.twig');
+        $field->setProperty($templateProperty);
         $fieldsCollection->add($field);
     }
 

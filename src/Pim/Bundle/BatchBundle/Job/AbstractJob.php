@@ -27,16 +27,6 @@ use Pim\Bundle\BatchBundle\Logger;
  */
 abstract class AbstractJob implements JobInterface
 {
-    /**
-     * @staticvar string
-     */
-    const TYPE_IMPORT = 'import';
-
-    /**
-     * @staticvar string
-     */
-    const TYPE_EXPORT = 'export';
-
     protected $name;
 
     //private boolean restartable = true;
@@ -49,38 +39,12 @@ abstract class AbstractJob implements JobInterface
     //private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
 
     /* @var StepHandler $stepHandler */
-    protected $stepHandler = null;
-
-    /**
-     * Connector configuration
-     *
-     * @var ConfigurationInterface
-     */
-    protected $connectorConfiguration;
-
-    /**
-     * Connector configuration FQCN
-     * @var string
-     */
-    protected $connectorConfigurationName;
-
-    /**
-     * Job configuration
-     *
-     * @var ConfigurationInterface
-     */
-    protected $configuration;
-
-    /**
-     * Job configuration FQCN
-     * @var string
-     */
-    protected $configurationName;
+    protected $stepHandler;
 
     /**
      * @var ArrayCollection $steps
      */
-    protected $steps = null;
+    protected $steps;
 
     protected $logger = null;
 
@@ -88,37 +52,12 @@ abstract class AbstractJob implements JobInterface
      * Convenience constructor to immediately add name (which is mandatory)
      *
      * @param string $name
-     * @param string $configurationConnectorClassName
-     * @param string $configurationClassName
      */
-    public function __construct($name, $configurationConnectorClassName = null, $configurationClassName = null, $logger)
+    public function __construct($name, $logger)
     {
-        $this->name                       = $name;
-        $this->connectorConfigurationName = $configurationConnectorClassName;
-        $this->configurationName          = $configurationClassName;
-        $this->steps                      = new ArrayCollection();
-        $this->logger                     = $logger; 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function configure(ConfigurationInterface $connectorConfig, ConfigurationInterface $jobConfig)
-    {
-        if (! $connectorConfig instanceof $this->connectorConfigurationName) {
-            throw new ConfigurationException(
-                'Connector configuration expected must be an instance of '.$this->connectorConfigurationName
-            );
-        }
-        if (! $jobConfig instanceof $this->configurationName) {
-            throw new ConfigurationException(
-                'Job Configuration expected must be an instance of '.$this->configurationName
-            );
-        }
-        $this->connectorConfiguration = $connectorConfig;
-        $this->configuration          = $jobConfig;
-
-        return $this;
+        $this->name   = $name;
+        $this->logger = $logger; 
+        $this->steps  = new ArrayCollection();
     }
 
     /**
@@ -367,37 +306,5 @@ abstract class AbstractJob implements JobInterface
     public function __toString()
     {
         return get_class($this) . ': [name=' . $this->name . ']';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigurationName()
-    {
-        return $this->configurationName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConnectorConfiguration()
-    {
-        return $this->connectorConfiguration;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConnectorConfigurationName()
-    {
-        return $this->connectorConfigurationName;
     }
 }
