@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Search;
 
 class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
 {
@@ -26,7 +27,6 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testCreateTag()
     {
-        $this->markTestSkipped('CRM-272');
         $tagname = 'Tag_'.mt_rand();
 
         $login = new Login($this);
@@ -127,5 +127,29 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Username', $username)
             ->open(array($username))
             ->verifyTag($tagname);
+    }
+
+
+    /**
+     * @depends testCreateTag
+     * @depends testAccountTag
+     * @depends testContactTag
+     * @depends testUserTag
+     * @param $tagname
+     */
+    public function testTagSearch($tagname)
+    {
+        $login = new Login($this);
+        $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
+            ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
+            ->submit();
+        $tagsearch = new Search($this);
+        $result = $tagsearch->search('New_' . $tagname)
+            ->submit()
+            ->select('New_' . $tagname)
+            ->assertEntity('User', 1)
+            ->assertEntity('Contact', 1)
+            ->assertEntity('Account', 1);
+        $this->assertNotEmpty($result);
     }
 }

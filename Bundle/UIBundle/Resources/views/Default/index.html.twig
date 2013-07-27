@@ -15,9 +15,7 @@
             {% block script %}
                 {% placeholder scripts_before %}
 
-                {# Add translations, include only common domains translations until BAP-768 is not implemented #}
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'messages' }) }}"></script>
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'validators' }) }}"></script>
+                <script type="text/javascript" src="{{ url('oro_translation_jstranslation') }}"></script>
 
                 <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
                 <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>

@@ -834,7 +834,7 @@ Oro.Navigation = Backbone.Router.extend({
             if (Oro.debug) {
                 document.body.innerHTML = rawData;
             } else {
-                this.showError('', Translator.get("Sorry, page was not loaded correctly"));
+                this.showError('', _.__('Sorry, page was not loaded correctly'));
             }
         }
         this.triggerCompleteEvent();

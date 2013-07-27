@@ -24,17 +24,17 @@ var Oro = Oro || {};
                 <% if (allowCancel) { %>\
                   <a class="close">×</a>\
                 <% } %>\
-                <h3><%= title %></h3>\
+                <h3><%- title %></h3>\
               </div>\
             <% } %>\
             <div class="modal-body"><%= content %></div>\
             <div class="modal-footer">\
               <% if (allowCancel) { %>\
                 <% if (cancelText) { %>\
-                  <a href="#" class="btn cancel"><%= cancelText %></a>\
+                  <a href="#" class="btn cancel"><%- cancelText %></a>\
                 <% } %>\
               <% } %>\
-              <a href="#" class="btn ok <%= okButtonClass %>"><%= okText %></a>\
+              <a href="#" class="btn ok <%= okButtonClass %>"><%- okText %></a>\
             </div>\
         '),
 
