@@ -35,12 +35,12 @@ class AttributeGroupControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const GROUP_SAVED_MSG = 'Group successfully saved';
+    const GROUP_SAVED_MSG = 'Attribute group successfully saved';
 
     /**
      * @staticvar string
      */
-    const GROUP_REMOVED_MSG = 'Group successfully removed';
+    const GROUP_REMOVED_MSG = 'Attribute group successfully removed';
 
     /**
      * Test related action
