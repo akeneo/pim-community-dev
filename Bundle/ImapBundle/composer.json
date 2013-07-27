@@ -1,0 +1,23 @@
+{
+    "name": "oro/google-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Google Apps Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/GoogleBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "zendframework/zend-mail": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\GoogleBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/GoogleBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

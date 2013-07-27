@@ -8,16 +8,21 @@ class Search extends Page
 {
     protected $simpleSearch;
     protected $searchButton;
+    protected $pane;
 
     public function __construct($testCase)
     {
         parent::__construct($testCase);
+        $this->pane = $this->byXPath('//span[@title="Search"]');
         $this->simpleSearch = $this->byId('search-bar-search');
-        $this->searchButton = $this->byXPath("//form[@id='top-search-form']//div/button[contains(.,'Search')]");
+        $this->searchButton = $this->byXPath("//form[@id='top-search-form']//div/button[contains(.,'Go')]");
     }
 
     public function search($value)
     {
+        if (!$this->simpleSearch->displayed()) {
+            $this->pane->click();
+        }
         $this->simpleSearch->clear();
         $this->simpleSearch->value($value);
         $this->waitForAjax();
