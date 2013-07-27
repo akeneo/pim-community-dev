@@ -76,7 +76,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->byId('prependedInput2')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS);
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
-        $this->assertEquals('Dashboard', $this->title());
+        $this->assertEquals('Dashboard - ORO', $this->title());
 
         $this->byXPath("//*[@id='top-page']//div/div/div/ul[2]/li[1]/a")->click();
         $this->byXPath("//*[@id='top-page']//div/ul//li/a[contains(.,'Logout')]")->click();
@@ -134,7 +134,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitPageToLoad();
         $this->byXPath("//*[@id='top-page']//fieldset//a[contains(.,'Forgot your password?')]")->click();
         $this->waitPageToLoad();
-        $this->assertEquals('Forgot Password', $this->title());
+        $this->assertEquals('Forgot Password - Users - System - ORO', $this->title());
 
         $this->byId('prependedInput')->value('123test123');
         $this->byXPath("//button[contains(.,'Request')]")->click();

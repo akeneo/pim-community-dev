@@ -46,8 +46,8 @@ class MenuExtension extends \Twig_Extension
         Helper $helper,
         MenuProviderInterface $provider,
         BreadcrumbManager $breadcrumbManager,
-        ContainerInterface $container)
-    {
+        ContainerInterface $container
+    ) {
         $this->helper = $helper;
         $this->provider = $provider;
         $this->breadcrumbManager = $breadcrumbManager;

@@ -278,7 +278,9 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('render')
             ->with(
                array(
-                   'breadcrumbs' => array('test-breadcrumb'),
+                   'breadcrumbs' => array(
+                       'test-breadcrumb'
+                   ),
                    'useDecorators' => true
                )
             );
