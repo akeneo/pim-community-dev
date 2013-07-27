@@ -27,19 +27,20 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @var string
      */
-    const BACKEND_TYPE_DATE          = 'date';
-    const BACKEND_TYPE_DATETIME      = 'datetime';
-    const BACKEND_TYPE_DECIMAL       = 'decimal';
-    const BACKEND_TYPE_BOOLEAN       = 'boolean';
-    const BACKEND_TYPE_INTEGER       = 'integer';
-    const BACKEND_TYPE_OPTIONS       = 'options';
-    const BACKEND_TYPE_OPTION        = 'option';
-    const BACKEND_TYPE_TEXT          = 'text';
-    const BACKEND_TYPE_VARCHAR       = 'varchar';
-    const BACKEND_TYPE_MEDIA         = 'media';
-    const BACKEND_TYPE_METRIC        = 'metric';
-    const BACKEND_TYPE_PRICE         = 'price';
-    const BACKEND_TYPE_COLLECTION    = 'collections';
+    const BACKEND_TYPE_DATE       = 'date';
+    const BACKEND_TYPE_DATETIME   = 'datetime';
+    const BACKEND_TYPE_DECIMAL    = 'decimal';
+    const BACKEND_TYPE_BOOLEAN    = 'boolean';
+    const BACKEND_TYPE_INTEGER    = 'integer';
+    const BACKEND_TYPE_OPTIONS    = 'options';
+    const BACKEND_TYPE_OPTION     = 'option';
+    const BACKEND_TYPE_TEXT       = 'text';
+    const BACKEND_TYPE_VARCHAR    = 'varchar';
+    const BACKEND_TYPE_MEDIA      = 'media';
+    const BACKEND_TYPE_METRIC     = 'metric';
+    const BACKEND_TYPE_PRICE      = 'price';
+    const BACKEND_TYPE_COLLECTION = 'collections';
+    const BACKEND_TYPE_ENTITY     = 'entity';
 
     /**
      * Field backend type, "varchar" by default, the doctrine mapping field, getter / setter to use for binding

@@ -290,6 +290,19 @@ class FlexibleQueryBuilder
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
 
+        } else if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_ENTITY) {
+
+            // inner join to value
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $rootAlias = $this->qb->getRootAliases();
+            $this->qb->innerJoin($rootAlias[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+
+            // then join to linked entity with filter on id
+            $joinAliasOpt = 'filterentity'.$attribute->getCode().$this->aliasCounter;
+            $backendField = sprintf('%s.id', $joinAliasEntity);
+            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+            $this->qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
+
         } else {
 
             // inner join with condition on backend value
