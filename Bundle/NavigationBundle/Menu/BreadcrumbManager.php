@@ -31,9 +31,27 @@ class BreadcrumbManager
      */
     public function __construct(MenuProviderInterface $provider, Matcher $matcher, Router $router)
     {
-        $this->provider = $provider;
         $this->matcher = $matcher;
+        $this->provider = $provider;
         $this->router = $router;
+    }
+
+    /**
+     * Get breadcrumbs for current menu item
+     *
+     * @param $menuName
+     * @param bool $isInverse
+     * @return array
+     */
+    public function getBreadcrumbs($menuName, $isInverse = true)
+    {
+        $menu = $this->getMenu($menuName);
+        $currentItem = $this->getCurrentMenuItem($menu);
+
+        if ($currentItem) {
+
+            return $this->getBreadcrumbArray($menuName, $currentItem, $isInverse);
+        }
     }
 
     /**
@@ -107,24 +125,7 @@ class BreadcrumbManager
         }
     }
 
-    /**
-     * Get breadcrumbs for current menu item
-     *
-     * @param $menuName
-     * @param bool $isInverse
-     * @return array
-     */
-    public function getBreadcrumbs($menuName, $isInverse = true)
-    {
-        $menu = $this->getMenu($menuName);
 
-        $currentItem = $this->getCurrentMenuItem($menu);
-
-        if ($currentItem) {
-
-            return $this->getBreadcrumbArray($menuName, $currentItem, $isInverse);
-        }
-    }
 
     /**
      * Return breadcrumb array
