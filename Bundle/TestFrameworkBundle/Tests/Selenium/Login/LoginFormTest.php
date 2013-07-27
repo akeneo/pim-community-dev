@@ -164,9 +164,9 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitPageToLoad();
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
-        $this->assertEquals('Dashboard', $this->title());
+        $this->assertEquals('Dashboard - ORO', $this->title());
 
         $this->url(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL);
-        $this->assertEquals('Dashboard', $this->title());
+        $this->assertEquals('Dashboard - ORO', $this->title());
     }
 }

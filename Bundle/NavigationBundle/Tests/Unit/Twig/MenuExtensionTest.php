@@ -277,12 +277,12 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
         $template->expects($this->once())
             ->method('render')
             ->with(
-               array(
-                   'breadcrumbs' => array(
-                       'test-breadcrumb'
-                   ),
-                   'useDecorators' => true
-               )
+                array(
+                    'breadcrumbs' => array(
+                        'test-breadcrumb'
+                    ),
+                    'useDecorators' => true
+                )
             );
         ;
         $this->menuExtension->renderBreadCrumbs($environment, 'test_menu');
