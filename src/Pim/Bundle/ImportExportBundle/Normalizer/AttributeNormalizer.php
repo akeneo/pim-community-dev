@@ -99,9 +99,10 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
+        $pattern = self::LOCALIZABLE_PATTERN;
         $labels = $attribute->getTranslations()->map(
-            function($translation) {
-                $label = str_replace('{locale}', $translation->getLocale(), self::LOCALIZABLE_PATTERN);
+            function ($translation) use ($pattern) {
+                $label = str_replace('{locale}', $translation->getLocale(), $pattern);
                 $label = str_replace('{value}', $translation->getLabel(), $label);
                 return $label;
             }

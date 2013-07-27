@@ -68,9 +68,10 @@ class CategoryNormalizer implements NormalizerInterface
      */
     protected function normalizeTitle($object)
     {
+        $pattern = self::LOCALIZABLE_PATTERN;
         $titles = $object->getTranslations()->map(
-            function($translation) {
-                $title = str_replace('{locale}', $translation->getLocale(), self::LOCALIZABLE_PATTERN);
+            function ($translation) use ($pattern) {
+                $title = str_replace('{locale}', $translation->getLocale(), $pattern);
                 $title = str_replace('{value}', $translation->getTitle(), $title);
                 return $title;
             }
