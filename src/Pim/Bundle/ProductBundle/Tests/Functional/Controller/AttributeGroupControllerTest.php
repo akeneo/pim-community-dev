@@ -79,8 +79,7 @@ class AttributeGroupControllerTest extends ControllerTest
         // assert attribute group form well works
         $form = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/attribute-group\/create$#', $action)) {
                         return true;
                     }
@@ -129,8 +128,7 @@ class AttributeGroupControllerTest extends ControllerTest
         // assert attribute group form well works
         $form = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/attribute-group\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
