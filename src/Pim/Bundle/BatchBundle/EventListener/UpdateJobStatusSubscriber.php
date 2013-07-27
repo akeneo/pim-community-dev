@@ -18,11 +18,19 @@ class UpdateJobStatusSubscriber implements EventSubscriber
 {
     protected $validator;
 
+    /**
+     * Constructor
+     *
+     * @param ValidatorInterface $validator
+     */
     public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return array('prePersist', 'preUpdate');
@@ -53,4 +61,3 @@ class UpdateJobStatusSubscriber implements EventSubscriber
         }
     }
 }
-
