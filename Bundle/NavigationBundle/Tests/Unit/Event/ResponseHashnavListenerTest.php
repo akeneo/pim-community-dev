@@ -33,7 +33,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->response = new Response();
         $this->request  = Request::create(self::TEST_URL);
-        $this->request->headers->add(array('x-oro-hash-navigation' => true));
+        $this->request->headers->add(array(ResponseHashnavListener::HASH_NAVIGATION_HEADER => true));
         $this->event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\FilterResponseEvent')
             ->disableOriginalConstructor()
             ->getMock();

@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ResponseHashnavListener
 {
+
+    const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
+
     /**
      * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
@@ -33,7 +36,7 @@ class ResponseHashnavListener
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
-        if ($request->get('x-oro-hash-navigation') || $request->headers->get('x-oro-hash-navigation')) {
+        if ($request->get(self::HASH_NAVIGATION_HEADER) || $request->headers->get(self::HASH_NAVIGATION_HEADER)) {
             $location = '';
             $isFullRedirect = false;
             if ($response->isRedirect()) {
