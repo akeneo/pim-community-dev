@@ -18,9 +18,9 @@ class FamilyCreation extends Page
         return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
     }
 
-    public function getUri()
+    public function getUrl()
     {
-        return $this->path;
+        return $this->getPath();
     }
 
     public function save()
