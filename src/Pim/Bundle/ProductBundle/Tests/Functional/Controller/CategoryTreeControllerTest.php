@@ -11,6 +11,13 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  */
 class CategoryTreeControllerTest extends ControllerTest
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        $this->markTestSkipped('To replace by behat scenario ... in progress ...');
+    }
 
     /**
      * @staticvar string
