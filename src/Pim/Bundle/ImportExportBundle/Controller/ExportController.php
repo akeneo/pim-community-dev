@@ -37,7 +37,7 @@ class ExportController extends Controller
         /** @var $gridManager ExportDatagridManager */
         $gridManager = $this->get('pim_import_export.datagrid.manager.export');
         $datagridView = $gridManager->getDatagrid()->createView();
-        $registry      = $this->get('pim_batch.connectors');
+        $registry      = $this->getConnectorRegistry();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -67,16 +67,16 @@ class ExportController extends Controller
     {
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
-        $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, Job::TYPE_EXPORT, $alias);
+        $registry      = $this->getConnectorRegistry();
+
+        $job = new Job($connector, Job::TYPE_EXPORT, $alias);
+        $jobDefinition = $registry->getJob($job);
 
         if (!$jobDefinition) {
             $this->addFlash('error', 'Fail to create an export with an unknown job.');
 
             return $this->redirect($this->generateUrl('pim_ie_export_index'));
         }
-
-        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
@@ -117,13 +117,30 @@ class ExportController extends Controller
     public function showAction($id)
     {
         $job           = $this->findOr404('PimBatchBundle:Job', $id);
-        $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
-        $jobDefinition->setConfiguration($job->getRawConfiguration());
+        $registry      = $this->getConnectorRegistry();
+        $jobDefinition = $registry->getJob($job);
+        if (!$jobDefinition) {
+            $this->addFlash('error', sprintf(
+                'The following job does not exist anymore. Please check configuration:<br />' .
+                'Connector: %s<br />' .
+                'Type: %s<br />' .
+                'Alias: %s',
+                $job->getConnector(), $job->getType(), $job->getAlias()
+            ));
+
+            return $this->redirect($this->generateUrl('pim_ie_export_index'));
+        }
+        $job->setJobDefinition($jobDefinition);
+        $validator = $this->getValidator();
 
         return array(
-            'job'           => $job,
-            'jobDefinition' => $jobDefinition,
+            'job'        => $job,
+            'violations' => $validator->validate($job),
         );
+    }
+
+    protected function getConnectorRegistry()
+    {
+        return $this->get('pim_batch.connectors');
     }
 }

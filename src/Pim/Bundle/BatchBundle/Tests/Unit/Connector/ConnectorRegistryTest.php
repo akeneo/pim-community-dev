@@ -36,19 +36,18 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $job = $this->getJobMock();
         $this->registry->addJobToConnector('Akeneo', Job::TYPE_EXPORT, 'export_stuff', $job);
 
-        $this->assertEquals($job, $this->registry->getJob('Akeneo', Job::TYPE_EXPORT, 'export_stuff'));
+        $this->assertEquals($job, $this->registry->getJob(new Job('Akeneo', Job::TYPE_EXPORT, 'export_stuff')));
     }
 
     public function testGetUnknownJob()
     {
-        $this->assertNull($this->registry->getJob('Akeneo', Job::TYPE_EXPORT, 'export_stuff'));
+        $this->assertNull($this->registry->getJob(new Job('Akeneo', Job::TYPE_EXPORT, 'export_stuff')));
     }
 
     private function getJobMock()
     {
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
-
-        return $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\Job', array(), array('TestJob', $logger));
+        return $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\SimpleJob', array(), array('TestJob', $logger));
     }
 }

@@ -19,5 +19,18 @@ class ExportDetail extends Page
     {
         return str_replace('{id}', $job->getId(), $this->getPath());
     }
+
+    public function getPropertyErrorMessage($property)
+    {
+        $error = $this->find('css', sprintf('li:contains("%s") span.alert-error', ucfirst($property)));
+
+        if (!$error) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find the %s property', $property
+            ));
+        }
+
+        return $error->getText();
+    }
 }
 

@@ -62,4 +62,43 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
             array('withHeader', 'With header'),
         );
     }
+
+    public function testGetViolationsFunction()
+    {
+        $violations = array(
+            $this->getViolationMock('jobDefinition.steps[0].reader.foo', 'The reader foo of step 0 is somehow wrong.'),
+            $this->getViolationMock('jobDefinition.steps[1].writer.bar', 'The writer bar of step 1 is somehow wrong.'),
+            $this->getViolationMock('jobDefinition.steps[1].writer.bar', 'The writer bar of step 1 is elsehow wrong.'),
+        );
+
+        $this->assertEquals(
+            'The reader foo of step 0 is somehow wrong.',
+            $this->extension->getViolationsFunction($violations, 0, 'Reader', 'foo')
+        );
+        $this->assertEquals(
+            'The writer bar of step 1 is somehow wrong. The writer bar of step 1 is elsehow wrong.',
+            $this->extension->getViolationsFunction($violations, 1, 'Writer', 'bar')
+        );
+        $this->assertEmpty(
+            $this->extension->getViolationsFunction($violations, 2, 'Writer', 'bar')
+        );
+    }
+
+    protected function getViolationMock($propertyPath, $message)
+    {
+        $constraint = $this
+            ->getMockBuilder('Symfony\Component\Validator\ConstraintViolation')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $constraint->expects($this->any())
+            ->method('getPropertyPath')
+            ->will($this->returnValue($propertyPath));
+
+        $constraint->expects($this->any())
+            ->method('getMessage')
+            ->will($this->returnValue($message));
+
+        return $constraint;
+    }
 }

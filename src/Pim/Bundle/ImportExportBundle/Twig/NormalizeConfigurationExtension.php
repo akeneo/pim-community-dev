@@ -22,6 +22,16 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('getViolations', array($this, 'getViolationsFunction')),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFilters()
     {
         return array(
@@ -60,5 +70,19 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     public function normalizeKeyFilter($key)
     {
         return ucfirst(strtolower(preg_replace('/([A-Z])/', ' ${1}', $key)));
+    }
+
+    public function getViolationsFunction($violations, $step, $element, $field)
+    {
+        $currentPropertyPath = sprintf('jobDefinition.steps[%d].%s.%s', $step, strtolower($element), $field);
+        $messages            = array();
+
+        foreach ($violations as $violation) {
+            if ($currentPropertyPath === $violation->getPropertyPath()) {
+                $messages[] = $violation->getMessage();
+            }
+        }
+
+        return join(' ', $messages);
     }
 }
