@@ -181,10 +181,8 @@ services:
           - @translator.default
           - @doctrine.orm.entity_manager
           - @serializer
-          - %oro_navigation.header_delimiter%
-          - %oro_navigation.header_suffix%
+          - @oro_config.user
           - @oro_navigation.breadcrumb_manager
-          - %oro_navigation.breadcrumb_menu%
         calls:
           - [ setTitles, [ %oro_titles% ] ]
 

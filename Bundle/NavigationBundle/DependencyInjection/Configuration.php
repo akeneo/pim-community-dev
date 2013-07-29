@@ -19,16 +19,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oro_menu_config', 'array', new MenuTreeBuilder());
 
-        $node = $rootNode->children()
-            ->scalarNode('header_delimiter')
-                ->defaultValue('-')
-            ->end()
-            ->scalarNode('header_suffix')
-                ->defaultValue('ORO')
-            ->end()
-            ->scalarNode('breadcrumb_menu')
-                ->defaultValue('application_menu')
-            ->end();
+        $node = $rootNode->children();
         $this->setChildren($node);
         $node->end();
 
@@ -37,6 +28,18 @@ class Configuration implements ConfigurationInterface
             array(
                 'maxItems' => array(
                     'value' => 20, // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
+                'title_suffix' => array(
+                    'value' => 'Oro', // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
+                'title_delimiter' => array(
+                    'value' => '-', // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
+                'breadcrumb_menu' => array(
+                    'value' => 'application_menu', // default value, can be overridden in config.yml
                     'type'  => 'scalar',
                 ),
             )
