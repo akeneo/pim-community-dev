@@ -35,11 +35,11 @@ class TagsAssignTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openTags()
             ->add()
-            ->assertTitle('Create tag')
+            ->assertTitle('Create tag - Tags - System - ORO')
             ->setTagname($tagname)
             ->save()
             ->assertMessage('Tag successfully saved')
-            ->assertTitle('Tags')
+            ->assertTitle('Tags - System - ORO')
             ->close();
 
         return $tagname;

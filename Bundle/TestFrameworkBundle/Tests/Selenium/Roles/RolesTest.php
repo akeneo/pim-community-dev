@@ -39,7 +39,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openRoles()
-            ->assertTitle('Roles');
+            ->assertTitle('Roles - System - ORO');
     }
 
     public function testRolesGridDefaultContent()

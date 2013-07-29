@@ -22,7 +22,7 @@ oro_menu_config:
                 shortcut_new_tag: ~
 
 oro_titles:
-    oro_tag_index:  Tags
+    oro_tag_index:  ~
     oro_tag_update: Edit "%%tag.name%%" tag
     oro_tag_create: Create tag
     oro_tag_search: Records tagged as "%%tag.name%%"

@@ -54,5 +54,9 @@ class OroNavigationExtension extends Extension
         $loader->load('services.yml');
         $container->setParameter('oro_menu_config', $config);
         $container->setParameter('oro_titles', $titlesConfig);
+
+        $container->setParameter('oro_navigation.header_delimiter', trim($config['header_delimiter']));
+        $container->setParameter('oro_navigation.header_suffix', $config['header_suffix']);
+        $container->setParameter('oro_navigation.breadcrumb_menu', $config['breadcrumb_menu']);
     }
 }
