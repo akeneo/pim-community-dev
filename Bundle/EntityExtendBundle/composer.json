@@ -1,0 +1,30 @@
+{
+    "name": "oro/entity-extend-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Entity Extend Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/EntityExtendBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/grid-bundle": "dev-master",
+        "oro/navigation-bundle": "dev-master",
+        "oro/data-audit-bundle": "dev-master",
+        "oro/form-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
+        "oro/entity-bundle": "dev-master",
+        "oro/entity-config-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\EntityExtendBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/EntityExtendBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
