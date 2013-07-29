@@ -37,7 +37,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->menu('Users')
             ->openUsers(false)
             ->add()
-            ->assertTitle('Create User - Users - System - Oro')
+            ->assertTitle('Create User - Users - System')
             ->setUsername($username)
             ->enable()
             ->setFirstpassword('123123q')
@@ -49,7 +49,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->save()
             ->assertMessage('User successfully saved')
             ->close()
-            ->assertTitle('Users - System - Oro');
+            ->assertTitle('Users - System');
 
         return $username;
     }
@@ -74,12 +74,12 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Username', $username)
             ->open(array($username))
             ->edit()
-            ->assertTitle('Last_' . $username . ', First_' . $username . ' - Users - System - Oro')
+            ->assertTitle('Last_' . $username . ', First_' . $username . ' - Users - System')
             ->setUsername($newUsername)
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)
             ->save()
-            ->assertTitle('Users - System - Oro')
+            ->assertTitle('Users - System')
             ->assertMessage('User successfully saved')
             ->close();
 
@@ -101,7 +101,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Username', $username)
             ->open(array($username))
             ->delete()
-            ->assertTitle('Users - System - Oro')
+            ->assertTitle('Users - System')
             ->assertMessage('Item was deleted');
 
         $login->openUsers()->filterBy('Username', $username)->assertNoDataMessage('No users were found to match your search');

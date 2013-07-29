@@ -38,7 +38,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openGroups()
-            ->assertTitle('Groups - System - Oro');
+            ->assertTitle('Groups - System');
     }
 
     public function testGroupsGridDefaultContent()
