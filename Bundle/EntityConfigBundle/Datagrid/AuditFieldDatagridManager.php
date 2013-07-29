@@ -37,5 +37,4 @@ class AuditFieldDatagridManager extends AuditDatagrid
             'field_name' => $this->fieldName
         );
     }
-
 }

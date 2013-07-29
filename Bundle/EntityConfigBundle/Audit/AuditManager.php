@@ -71,7 +71,7 @@ class AuditManager
             $internalValues = $configContainer->getEntityInternalValues();
         }
 
-        $changes = array_diff_key($changes,$internalValues);
+        $changes = array_diff_key($changes, $internalValues);
 
         if (!count($changes)) {
             return;
