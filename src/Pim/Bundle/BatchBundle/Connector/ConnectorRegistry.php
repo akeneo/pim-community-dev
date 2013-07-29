@@ -51,7 +51,7 @@ class ConnectorRegistry
      * @param Pim\Bundle\BatchBundle\Entity\Job $job
      *
      * @return Pim\Bundle\BatchBundle\Job\JobInterface
-	 */
+     */
     public function getJob(Job $job)
     {
         if ($connector = $this->getConnector($job->getConnector(), $job->getType())) {
