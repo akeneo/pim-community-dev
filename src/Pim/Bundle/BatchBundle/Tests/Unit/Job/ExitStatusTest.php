@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -54,7 +54,7 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test equality of exit statuses.
-     * 
+     *
      * @throws Exception
      */
     public function testEqualsWithSameProperties()
@@ -76,7 +76,7 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test equality of exit statuses.
-     * 
+     *
      * @throws Exception
      */
     public function testEqualsWithNull()
@@ -154,7 +154,7 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
 
         $completed2 = new ExitStatus(ExitStatus::COMPLETED);
         $failed2 = new ExitStatus(ExitStatus::FAILED);
-        
+
         $this->assertEquals("FAILED", $completed1->logicalAnd($failed1)->getExitCode());
         $this->assertEquals("FAILED", $failed2->logicalAnd($completed2)->getExitCode());
     }
@@ -197,7 +197,7 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
         $executing1 = new ExitStatus(ExitStatus::EXECUTING);
         $executing2 = new ExitStatus(ExitStatus::EXECUTING);
         $executing3 = new ExitStatus(ExitStatus::EXECUTING);
-    
+
         $status = $executing1->setExitCode($executing2->getExitCode());
         $this->assertTrue($executing3 !== $status);
         $this->assertEquals($executing3->getExitCode(), $status->getExitCode());

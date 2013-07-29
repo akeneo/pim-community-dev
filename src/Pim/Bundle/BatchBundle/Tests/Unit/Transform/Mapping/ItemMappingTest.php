@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
 
-use Pim\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
 use Pim\Bundle\BatchBundle\Transform\Mapping\ItemMapping;
 
 /**

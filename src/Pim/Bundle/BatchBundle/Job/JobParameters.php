@@ -15,7 +15,7 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class JobParameters
 {
-    function __toString()
+    public function __toString()
     {
         return "<dummy parameters>";
     }

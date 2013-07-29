@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Monolog\Logger;
@@ -8,7 +8,6 @@ use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
 use Pim\Bundle\BatchBundle\Job\JobRepository;
 use Pim\Bundle\BatchBundle\Job\JobParameters;
-use Pim\Bundle\BatchBundle\Job\RepeatException;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -73,7 +72,6 @@ class AbstractJobTest extends \PHPUnit_Framework_TestCase
             ->method('doExecute')
             ->will($this->throwException($exception));
 
-
         $job->setJobRepository($jobRepository);
         $job->execute($jobExecution);
 
@@ -127,7 +125,7 @@ class AbstractJobTest extends \PHPUnit_Framework_TestCase
             $jobExecution->getExitStatus()->getExitDescription(),
             'Exit description'
         );
-        
+
     }
 
     public function testToString()
@@ -140,11 +138,10 @@ class AbstractJobTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     private function getAbstractJobMock($jobName)
     {
         $logger = $this->getLogger();
+
         return $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Job\\AbstractJob', array($jobName, $logger));
     }
 
@@ -156,4 +153,3 @@ class AbstractJobTest extends \PHPUnit_Framework_TestCase
         return $logger;
     }
 }
-

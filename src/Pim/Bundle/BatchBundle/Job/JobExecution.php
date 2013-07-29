@@ -307,7 +307,6 @@ class JobExecution
         return $allExceptions;
     }
 
-
     /**
      * To string
      * @return string

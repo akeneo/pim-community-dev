@@ -30,14 +30,22 @@ abstract class AbstractStep implements StepInterface
     /* @var JobRepository $jobRepository */
     private $jobRepository;
 
-
     /**
      * Constructor
      * @param string $name
      */
-    public function __construct($name, $logger)
+    public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Set the logger
+     *
+     * @param $logger The logger
+     */
+    public function setLogger($logger)
+    {
         $this->logger = $logger;
     }
 
@@ -46,7 +54,8 @@ abstract class AbstractStep implements StepInterface
      *
      * @param jobRepository is a mandatory dependence (no default).
      */
-    public function setJobRepository(JobRepository $jobRepository) {
+    public function setJobRepository(JobRepository $jobRepository)
+    {
         $this->jobRepository = $jobRepository;
     }
 
@@ -54,7 +63,8 @@ abstract class AbstractStep implements StepInterface
      *
      * @return JobRepositoru
      */
-    protected function getJobRepository() {                                                                                                               
+    protected function getJobRepository()
+    {
         return $this->jobRepository;
     }
 
@@ -96,6 +106,20 @@ abstract class AbstractStep implements StepInterface
     protected function open(ExecutionContext $ctx)
     {
     }
+
+    /**
+     * Provide the configuration of the step
+     *
+     * @return array
+     */
+    abstract public function getConfiguration();
+
+    /**
+     * Set the configuration for the step
+     *
+     * @param array $config
+     */
+    abstract public function setConfiguration(array $config);
 
     /**
      * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
@@ -204,7 +228,7 @@ abstract class AbstractStep implements StepInterface
             $this->close($stepExecution->getExecutionContext());
         } catch (Exception $e) {
             $this->logger->error("Exception while closing step execution resources", array('exception' => $e));
-            $stepExecution->addFailureException(e);
+            $stepExecution->addFailureException($e);
         }
 
         //StepSynchronizationManager.release();
@@ -242,7 +266,7 @@ abstract class AbstractStep implements StepInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-            /*} else if (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
+            /*} elseif (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
                 exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());*/
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);

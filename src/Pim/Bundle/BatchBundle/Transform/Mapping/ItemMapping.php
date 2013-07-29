@@ -44,7 +44,6 @@ class ItemMapping
     public function remove(FieldMapping $field)
     {
         // TODO ?
-
         return $this;
     }
 
