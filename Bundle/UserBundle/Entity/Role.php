@@ -10,10 +10,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\UserBundle\Entity\Acl;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
-
 use JMS\Serializer\Annotation\Type;
-
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
