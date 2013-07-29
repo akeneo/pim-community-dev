@@ -25,7 +25,7 @@ class Job
     const TYPE_EXPORT = 'export';
 
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -34,7 +34,7 @@ class Job
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      *
      * @ORM\Column(name="code", type="string", length=100, nullable=true)
      * @Assert\NotBlank
@@ -42,7 +42,7 @@ class Job
     protected $code;
 
     /**
-     * @var string $label
+     * @var string
      *
      * @ORM\Column(nullable=true)
      * @Assert\NotBlank
@@ -50,7 +50,7 @@ class Job
     protected $label;
 
     /**
-     * @var string $label
+     * @var string
      *
      * @ORM\Column(name="alias", type="string", length=50)
      */
@@ -64,7 +64,7 @@ class Job
     protected $status = self::STATUS_READY;
 
     /**
-     * @var string $connector
+     * @var string
      *
      * @ORM\Column(name="connector", type="string")
      */
@@ -80,7 +80,7 @@ class Job
     protected $type;
 
     /**
-     * @var array $rawConfiguration
+     * @var array
      *
      * @ORM\Column(type="array")
      */
@@ -95,10 +95,9 @@ class Job
     /**
      * Constructor
      *
-     * @param string       $connector
-     * @param string       $type
-     * @param string       $alias
-     * @param JobInterface $jobDefinition
+     * @param string $connector
+     * @param string $type
+     * @param string $alias
      */
     public function __construct($connector, $type, $alias)
     {
@@ -268,7 +267,9 @@ class Job
     {
         $this->jobDefinition = $jobDefinition;
 
-        $this->setRawConfiguration($jobDefinition ? $jobDefinition->getConfiguration() : null);
+        if ($jobDefinition) {
+            $this->setRawConfiguration($jobDefinition->getConfiguration());
+        }
 
         return $this;
     }
