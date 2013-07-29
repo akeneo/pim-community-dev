@@ -310,7 +310,7 @@ class ProductController extends Controller
      *
      * @return string
      */
-    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
+    protected function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocale();
