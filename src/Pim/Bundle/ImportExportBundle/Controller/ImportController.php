@@ -35,7 +35,7 @@ class ImportController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $gridManager ExportDatagridManager */
-        $gridManager = $this->get('pim_import_export.datagrid.manager.export');
+        $gridManager = $this->get('pim_import_export.datagrid.manager.import');
         $datagridView = $gridManager->getDatagrid()->createView();
         $registry      = $this->get('pim_batch.connectors');
 

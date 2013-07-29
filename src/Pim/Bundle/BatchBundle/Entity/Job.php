@@ -66,7 +66,7 @@ class Job
     /**
      * @var string $connector
      *
-     * @ORM\Column
+     * @ORM\Column(name="connector", type="string")
      */
     protected $connector;
 
@@ -262,5 +262,29 @@ class Job
     public function getJobDefinition()
     {
         return $this->jobDefinition;
+    }
+
+    /**
+     * Get connector
+     *
+     * @return string
+     */
+    public function getConnector()
+    {
+        return $this->connector;
+    }
+
+    /**
+     * Set connector
+     *
+     * @param string $connector
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setConnector($connector)
+    {
+        $this->connector = $connector;
+
+        return $this;
     }
 }
