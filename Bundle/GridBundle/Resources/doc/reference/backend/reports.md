@@ -10,29 +10,28 @@ supported as a storage.
 -   *distinct* - boolean, indicates that query should use DISTINCT keyword (false by default)
 -   *select* - string representing column list to select
 -   *from* - array of table/alias declarations. Each element is an array with the following keys:
-        *table* - entity declaration, for example "OroUserBundle:User"
-        *alias* - [optional] alias for the entity/table name
+    - *table* - entity declaration, for example "OroUserBundle:User"
+    - *alias* - [optional] alias for the entity/table name
 -   *join* - array of join declarations. May contain two children:
-    *inner* - adds inner join. Format:
-        *join* - entity relation name, for example "u.articles"
-        *alias* - [optional] alias for a relation
-    *left* - adds left join. Format:
-        *join* - entity relation name, for example "u.articles"
-        *alias* - [optional] alias for a relation
+    - *inner* - adds inner join. Format:
+        - *join* - entity relation name, for example "u.articles"
+        - *alias* - [optional] alias for a relation
+    - *left* - adds left join. Format:
+        - *join* - entity relation name, for example "u.articles"
+        - *alias* - [optional] alias for a relation
 -   *where* - array of where declarations. May contain two children:
-        *and* - adds "AND" where clause. You can use multiple declarations as array elements.
-        *or* - adds "OR" where clause. You can use multiple declarations as array elements.
+    - *and* - adds "AND" where clause. You can use multiple declarations as array elements.
+    - *or* - adds "OR" where clause. You can use multiple declarations as array elements.
 -   *groupBy* - group definition as a string
 -   *having* - "HAVING" clause definition as a string
 -   *orderBy* - array of order declarations. Format:
-        *column* - order column
-        *dir* - [optional] sort direction, "asc" by default
+    - *column* - order column
+    - *dir* - [optional] sort direction, "asc" by default
 
 
 #### Example of usage
 
 **YAML definition**
-
 ``` yaml
 reports:
     -
@@ -56,10 +55,6 @@ reports:
             - { column: "u.firstName", dir: "asc" }
 ```
 
-``` php
-
-```
-
 **Configuration**
 
 services.yml
@@ -78,7 +73,6 @@ acme_demo_grid.report_grid.manager:
 ```
 
 **Datagrid declaration**
-
 ``` php
 <?php
 
@@ -136,7 +130,6 @@ class ReportDatagridManager extends DatagridManager
 ```
 
 **Controller**
-
 ``` php
 <?php
 
