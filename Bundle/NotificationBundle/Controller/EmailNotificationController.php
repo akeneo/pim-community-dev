@@ -38,7 +38,7 @@ class EmailNotificationController extends Controller
     public function indexAction()
     {
         /** @var EmailNotificationDatagridManager $gridManager */
-        $gridManager = $this->get('oro_navigation.emailnotification.datagrid_manager');
+        $gridManager = $this->get('oro_notification.emailnotification.datagrid_manager');
         $datagridView = $gridManager->getDatagrid()->createView();
 
         if ('json' == $this->getRequest()->getRequestFormat()) {
