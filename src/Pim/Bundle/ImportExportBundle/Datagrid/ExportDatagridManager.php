@@ -29,7 +29,7 @@ class ExportDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_ie_export_edit', array('id'))
+            new UrlProperty('show_link', $this->router, 'pim_ie_export_show', array('id'))
         );
     }
 
@@ -131,9 +131,9 @@ class ExportDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translate('Edit'),
+                'label'         => $this->translate('Show'),
                 'icon'          => 'edit',
-                'link'          => 'edit_link',
+                'link'          => 'show_link',
                 'runOnRowClick' => true,
                 'backUrl'       => true
             )

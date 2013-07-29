@@ -167,6 +167,26 @@ class Job
     }
 
     /**
+     * Get connector
+     *
+     * @return string
+     */
+    public function getConnector()
+    {
+        return $this->connector;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
      * Get status
      *
      * @return integer

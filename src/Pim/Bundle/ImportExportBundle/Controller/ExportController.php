@@ -103,27 +103,27 @@ class ExportController extends Controller
     }
 
     /**
-     * Edit job
+     * Show export
+     * @param integer $id
      *
-     * @param Job $job
-     *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
+     * @Route(
+     *     "/{id}",
+     *     name="pim_ie_export_show"
+     * )
+     * @Template("PimImportExportBundle:Export:show.html.twig")
      *
      * @return array
      */
-    public function editAction(Job $job)
+    public function showAction($id)
     {
-        if ($this->get('pim_config.form.handler.locale')->process($locale)) {
-            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
-
-            return $this->redirect(
-                $this->generateUrl('pim_config_locale_index')
-            );
-        }
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
+        $jobDefinition->setConfiguration($job->getRawConfiguration());
 
         return array(
-            'form' => $this->get('pim_config.form.locale')->createView()
+            'job'           => $job,
+            'jobDefinition' => $jobDefinition,
         );
     }
 }
