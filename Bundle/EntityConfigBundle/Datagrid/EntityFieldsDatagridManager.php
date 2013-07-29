@@ -219,8 +219,7 @@ class EntityFieldsDatagridManager extends DatagridManager
                     'options'      => array(
                         'label' => ucfirst($config['name']),
                         'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']) . '_link',
-                        //'confirmModal' => 'alert("aaa");'
+                        'link'  => strtolower($config['name']) . '_link'
                     )
                 );
 
