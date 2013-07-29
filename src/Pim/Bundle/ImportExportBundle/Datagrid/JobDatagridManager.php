@@ -105,7 +105,7 @@ class JobDatagridManager extends DatagridManager
             'acl_resource' => 'root',
             'options'      => array(
                 'label'   => $this->translate('Show'),
-                'icon'    => 'show',
+                'icon'    => 'picture',
                 'link'    => 'show_link',
                 'backUrl' => true
             )
@@ -117,7 +117,7 @@ class JobDatagridManager extends DatagridManager
             'acl_resource' => 'root',
             'options'      => array(
                 'label'   => $this->translate('Launch'),
-                'icon'    => 'launch',
+                'icon'    => 'play',
                 'link'    => 'launch_link',
                 'backUrl' => true
             )
