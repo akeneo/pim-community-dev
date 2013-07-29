@@ -13,6 +13,21 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  */
 class ExitStatusTest extends \PHPUnit_Framework_TestCase
 {
+
+    public function testSetExitCode()
+    {
+        $status = new ExitStatus(ExitStatus::COMPLETED);
+        $status->setExitCode(ExitStatus::STOPPED);
+        $this->assertEquals(ExitStatus::STOPPED, $status->getExitCode());
+    }
+
+    public function testSetExitCodeUnknown()
+    {
+        $status = new ExitStatus(ExitStatus::COMPLETED);
+        $status->setExitCode(10);
+        $this->assertEquals(ExitStatus::UNKNOWN, $status->getExitCode());
+    }
+
     public function testExitStatusNullDescription()
     {
         $status = new ExitStatus("10", null);
@@ -199,7 +214,7 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("Foo", $status->getExitDescription());
     }
 
-    public function testAddExitDescriptionWIthStacktrace()
+    public function testAddExitDescriptionWithStacktrace()
     {
         $executing1 = new ExitStatus(ExitStatus::EXECUTING);
         $executing2 = new ExitStatus(ExitStatus::EXECUTING);
@@ -244,9 +259,26 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("Bar", $status->getExitDescription());
     }
 
+    public function testAddExitDescriptionToExistingDescription()
+    {
+        $status = new ExitStatus(ExitStatus::EXECUTING);
+
+        $status->addExitDescription("Foo");
+        $status->addExitDescription("Bar");
+
+        $this->assertEquals("Foo;Bar", $status->getExitDescription());
+    }
+
     public function testUnkownIsRunning()
     {
         $unknown = new ExitStatus(ExitStatus::UNKNOWN);
         $this->assertTrue($unknown->isRunning());
+    }
+
+    public function testToString()
+    {
+        $status = new ExitStatus(ExitStatus::COMPLETED, "My test description for completed status");
+
+        $this->assertEquals('[COMPLETED] My test description for completed status', (string) $status);
     }
 }

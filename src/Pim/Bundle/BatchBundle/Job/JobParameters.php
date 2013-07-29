@@ -4,7 +4,7 @@ namespace Pim\Bundle\BatchBundle\Job;
 
 /**
  * Dummy class for job parameter.
- * TODO Implement job parameter
+ * TODO Implement job parameter: in fact, it's jobConfiguration
  *
  * Inspired by Spring Batch org.springframework.batch.core.job.SimpleJob
  *
@@ -15,4 +15,8 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class JobParameters
 {
+    function __toString()
+    {
+        return "<dummy parameters>";
+    }
 }

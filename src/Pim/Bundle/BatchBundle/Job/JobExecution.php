@@ -42,7 +42,7 @@ class JobExecution
 
     //private volatile ExecutionContext executionContext = new ExecutionContext();
 
-    //private transient volatile List<Throwable> failureExceptions = new CopyOnWriteArrayList<Throwable>();
+    private $failureExceptions = array();
 
     /**
      * Constructor
@@ -99,7 +99,7 @@ class JobExecution
      */
     public function getStartTime()
     {
-        return $startTime;
+        return $this->startTime;
     }
 
     /**
@@ -148,6 +148,8 @@ class JobExecution
     public function setExitStatus(ExitStatus $exitStatus)
     {
         $this->exitStatus = $exitStatus;
+
+        return $this;
     }
 
     /**
@@ -250,22 +252,61 @@ class JobExecution
      *
      * @return Date representing the last time this JobExecution was updated.
      */
-    /*
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public function getLastUpdated()
+    {
+        return $this->lastUpdated;
     }
-    */
 
     /**
      * Set the last time this JobExecution was updated.
      *
      * @param lastUpdated
      */
-    /*
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public function setLastUpdated($lastUpdated)
+    {
+        $this->lastUpdated = $lastUpdated;
+
+        return $this;
     }
-    */
+
+    /**
+     * Retrieve array of exceptions that fail the execution
+     *
+     * @return array failureExceptions
+     */
+    public function getFailureExceptions()
+    {
+        return $this->failureExceptions;
+    }
+
+    /**
+     * Add the provided Exception to the failure exception list.
+     *
+     * @param Exception $e
+     */
+    public function addFailureException(\Exception $e)
+    {
+        $this->failureExceptions[] = $e;
+    }
+
+    /**
+     * Return all failure causing exceptions for this JobExecution, including
+     * step executions.
+     *
+     * @return array containing all exceptions causing failure for
+     * this JobExecution.
+     */
+    public function getAllFailureExceptions()
+    {
+        $allExceptions = $this->failureExceptions;
+
+        foreach ($this->stepExecutions as $stepExecution) {
+            $allExceptions = array_merge($stepExecution->getFailureExceptions());
+        }
+
+        return $allExceptions;
+    }
+
 
     /**
      * To string
