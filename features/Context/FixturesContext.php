@@ -545,8 +545,9 @@ class FixturesContext extends RawMinkContext
         $registry = $this->getContainer()->get('pim_batch.connectors');
 
         foreach ($table->getHash() as $data) {
-            $jobDefinition = $registry->getJob($data['connector'], Job::TYPE_EXPORT, $data['alias']);
-            $job = new Job($data['connector'], 'export', $data['alias'], $jobDefinition);
+            $job = new Job($data['connector'], Job::TYPE_EXPORT, $data['alias']);
+            $jobDefinition = $registry->getJob($job);
+            $job->setJobDefinition($jobDefinition);
             $job->setCode($data['code']);
             $job->setLabel($data['label']);
 

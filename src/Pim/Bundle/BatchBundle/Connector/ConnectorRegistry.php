@@ -46,13 +46,20 @@ class ConnectorRegistry
     }
 
     /**
-     * TODO : Comments !!!
-     */
-    public function getJob($connector, $type, $jobAlias)
+     * Get a registered job definition
+     *
+     * @param Pim\Bundle\BatchBundle\Entity\Job $job
+     *
+     * @return Pim\Bundle\BatchBundle\Job\JobInterface
+	 */
+    public function getJob(Job $job)
     {
-        if ($connector = $this->getConnector($connector, $type)) {
-            if ($job = $this->getConnectorJob($connector, $jobAlias)) {
-                return $job;
+        if ($connector = $this->getConnector($job->getConnector(), $job->getType())) {
+            if ($jobDefinition = $this->getConnectorJob($connector, $job->getAlias())) {
+                $jobDefinition->setConfiguration($job->getRawConfiguration());
+                $job->setJobDefinition($jobDefinition);
+
+                return $jobDefinition;
             }
         }
     }
@@ -77,9 +84,6 @@ class ConnectorRegistry
         return $this->importJobs;
     }
 
-    /**
-     * TODO : Comments !!!
-     */
     private function getConnector($connector, $type)
     {
         switch ($type) {
@@ -90,9 +94,6 @@ class ConnectorRegistry
         }
     }
 
-    /**
-     * TODO : Comments !!!
-     */
     private function getConnectorJob($connector, $jobAlias)
     {
         return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;

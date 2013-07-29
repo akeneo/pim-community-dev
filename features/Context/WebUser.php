@@ -1001,6 +1001,30 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
+    /**
+     * @Given /^I am on the "([^"]*)" export job page$/
+     */
+    public function iAmOnTheExportJobPage($job)
+    {
+        $this->openPage('Export detail', array(
+            'id' => $this->getJob($job)->getId()
+        ));
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)" next to the (\w+)$/
+     */
+    public function iShouldSeeNextToThe($message, $property)
+    {
+        if ($message !== $error = $this->getPage('Export detail')->getPropertyErrorMessage($property)) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting to see "%s" next to the %s property, but saw "%s"',
+                $message, $property, $error
+            ));
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
