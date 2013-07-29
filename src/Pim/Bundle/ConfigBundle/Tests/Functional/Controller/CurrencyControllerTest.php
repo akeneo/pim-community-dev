@@ -12,14 +12,6 @@ namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
 class CurrencyControllerTest extends ControllerTest
 {
     /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        $this->markTestSkipped('To replace by behat scenario ... in progress ...');
-    }
-
-    /**
      * Test related action
      */
     public function testIndex()
