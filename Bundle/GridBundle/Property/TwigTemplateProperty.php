@@ -33,6 +33,15 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     protected $context;
 
     /**
+     * @var array
+     */
+    protected $reservedKeys = array(
+        'field',
+        'record',
+        'value',
+    );
+
+    /**
      * @param FieldDescriptionInterface $field
      * @param string                    $templateName
      * @param array                     $context
@@ -44,15 +53,7 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
         $this->templateName = $templateName;
         $this->context      = $context;
 
-        $checkInvalidArgument = array_intersect_key(
-            $context,
-            array(
-                'field'  => null,
-                'record' => null,
-                'value'  => null,
-            )
-        );
-
+        $checkInvalidArgument = array_intersect_key($context, array_flip($this->reservedKeys));
         if (count($checkInvalidArgument)) {
             throw new \InvalidArgumentException(
                 sprintf(

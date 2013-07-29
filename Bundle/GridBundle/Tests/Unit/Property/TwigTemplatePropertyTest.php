@@ -51,13 +51,12 @@ class TwigTemplatePropertyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::TEST_FIELD_NAME, $this->property->getName());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Context of template "test_template_name" includes reserved key(s) - (field, value)
+     */
     public function testInvalidContext()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Context of template "test_template_name" includes reserved key(s) - (field, value)'
-        );
-
         $this->property = new TwigTemplateProperty(
             $this->fieldDescription,
             self::TEST_TEMPLATE_NAME,
