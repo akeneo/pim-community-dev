@@ -25,7 +25,7 @@ class Job
     const TYPE_EXPORT = 'export';
 
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -34,23 +34,23 @@ class Job
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      *
-     * @ORM\Column(name="code", type="string", length=100)
+     * @ORM\Column(length=100, nullable=true)
      * @Assert\NotBlank
      */
     protected $code;
 
     /**
-     * @var string $label
+     * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      * @Assert\NotBlank
      */
     protected $label;
 
     /**
-     * @var string $label
+     * @var string
      *
      * @ORM\Column
      */
@@ -64,7 +64,7 @@ class Job
     protected $status = self::STATUS_READY;
 
     /**
-     * @var string $connector
+     * @var string
      *
      * @ORM\Column
      */
@@ -80,11 +80,11 @@ class Job
     protected $type;
 
     /**
-     * @var array $rawConfiguration
+     * @var array
      *
      * @ORM\Column(type="array")
      */
-    protected $rawConfiguration;
+    protected $rawConfiguration = array();
 
     /**
      * @var SimpleJob
@@ -164,6 +164,26 @@ class Job
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Get connector
+     *
+     * @return string
+     */
+    public function getConnector()
+    {
+        return $this->connector;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**
