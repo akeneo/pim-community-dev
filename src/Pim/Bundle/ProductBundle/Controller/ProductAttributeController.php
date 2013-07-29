@@ -36,7 +36,6 @@ class ProductAttributeController extends Controller
         /** @var $gridManager AttributeDatagridManager */
         $gridManager  = $this->get('pim_product.datagrid.manager.productattribute');
         $datagrid     = $gridManager->getDatagrid();
-        $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';

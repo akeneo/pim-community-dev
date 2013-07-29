@@ -45,7 +45,6 @@ class CsvEncoder implements EncoderInterface
             );
         }
 
-        $result = '';
         $output = fopen('php://temp', 'r+');
 
         if (isset($data[0]) && is_array($data[0])) {
