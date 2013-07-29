@@ -15,7 +15,11 @@ class SimpleJobTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->job = new SimpleJob();
+        $logger = $this
+            ->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->job = new SimpleJob('job_test', $logger);
     }
 
     public function testGetConfiguration()

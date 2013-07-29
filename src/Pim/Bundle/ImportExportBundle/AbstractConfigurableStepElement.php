@@ -46,7 +46,7 @@ abstract class AbstractConfigurableStepElement
     public function setConfiguration(array $config)
     {
         foreach ($config as $key => $value) {
-            if (!in_array($key, array_keys($this->getConfigurationFields()))) {
+            if (!array_key_exists($key, $this->getConfigurationFields())) {
                 throw new \InvalidArgumentException(sprintf(
                     'Unknown configuration field "%s" in class "%", available fields are "%s"',
                     $field, get_class($this), join('", "', $this->getConfigurationFields())
