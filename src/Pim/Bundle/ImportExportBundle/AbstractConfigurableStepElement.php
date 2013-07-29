@@ -24,7 +24,8 @@ abstract class AbstractConfigurableStepElement
     abstract public function getName();
 
     /**
-     * Return configuration
+     * Get the step element configuration (based on its properties)
+     *
      * @return array
      */
     public function getConfiguration()
@@ -35,5 +36,23 @@ abstract class AbstractConfigurableStepElement
         }
 
         return $result;
+    }
+
+    /**
+     * Set the step element configuration
+     *
+     * @param array $config
+     */
+    public function setConfiguration(array $config)
+    {
+        foreach ($config as $key => $value) {
+            if (!in_array($key, array_keys($this->getConfigurationFields()))) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unknown configuration field "%s" in class "%", available fields are "%s"',
+                    $field, get_class($this), join('", "', $this->getConfigurationFields())
+                ));
+            }
+            $this->$key = $value;
+        }
     }
 }

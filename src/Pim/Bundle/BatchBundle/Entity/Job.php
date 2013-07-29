@@ -36,7 +36,7 @@ class Job
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=100)
+     * @ORM\Column(name="code", type="string", length=100, nullable=true)
      * @Assert\NotBlank
      */
     protected $code;
@@ -44,7 +44,7 @@ class Job
     /**
      * @var string $label
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      * @Assert\NotBlank
      */
     protected $label;
@@ -84,7 +84,7 @@ class Job
      *
      * @ORM\Column(type="array")
      */
-    protected $rawConfiguration;
+    protected $rawConfiguration = array();
 
     /**
      * @var SimpleJob
@@ -167,17 +167,13 @@ class Job
     }
 
     /**
-     * Set alias
+     * Get connector
      *
-     * @param string $alias
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return string
      */
-    public function setAlias($alias)
+    public function getConnector()
     {
-        $this->alias = $alias;
-
-        return $this;
+        return $this->connector;
     }
 
     /**
@@ -286,29 +282,5 @@ class Job
     public function getJobDefinition()
     {
         return $this->jobDefinition;
-    }
-
-    /**
-     * Get connector
-     *
-     * @return string
-     */
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-
-    /**
-     * Set connector
-     *
-     * @param string $connector
-     *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
-     */
-    public function setConnector($connector)
-    {
-        $this->connector = $connector;
-
-        return $this;
     }
 }

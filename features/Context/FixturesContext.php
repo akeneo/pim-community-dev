@@ -537,7 +537,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the following export job:$/
+     * @Given /^the following export jobs?:$/
      */
     public function theFollowingExportJob(TableNode $table)
     {
@@ -804,6 +804,13 @@ class FixturesContext extends RawMinkContext
     {
         return $this->getEntityOrException('PimProductBundle:Category', array(
             'code' => $code,
+        ));
+    }
+
+    public function getJob($code)
+    {
+        return $this->getEntityOrException('PimBatchBundle:Job', array(
+            'code' => $code
         ));
     }
 

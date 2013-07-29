@@ -46,7 +46,10 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getExportJobs()));
+        return $this->render($view, array(
+            'datagrid' => $datagridView,
+            'connectors' => $registry->getExportJobs(),
+        ));
     }
 
     /**
@@ -101,42 +104,27 @@ class ExportController extends Controller
     }
 
     /**
-     * Edit job
-     *
-     * @param Job $job
+     * Show export
+     * @param integer $id
      *
      * @Route(
-     *     "/edit/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_export_edit"
+     *     "/{id}",
+     *     name="pim_ie_export_show"
      * )
-     * @Template
+     * @Template("PimImportExportBundle:Export:show.html.twig")
      *
      * @return array
      */
-    public function editAction(Job $job)
+    public function showAction($id)
     {
-        $request = $this->getRequest();
-        $form = $this->createForm(new JobType(), $job);
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
-
-                $this->addFlash('success', 'The export has been successfully updated.');
-
-                return $this->redirect(
-                    $this->generateUrl('pim_ie_export_index')
-                );
-            }
-        }
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
+        $jobDefinition->setConfiguration($job->getRawConfiguration());
 
         return array(
-            'form' => $form->createView()
+            'job'           => $job,
+            'jobDefinition' => $jobDefinition,
         );
     }
 
