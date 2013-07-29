@@ -63,4 +63,3 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
-

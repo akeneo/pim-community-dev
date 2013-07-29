@@ -62,4 +62,3 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         return ucfirst(strtolower(preg_replace('/([A-Z])/', ' ${1}', $key)));
     }
 }
-

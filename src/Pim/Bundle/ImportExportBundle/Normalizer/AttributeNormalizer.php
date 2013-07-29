@@ -104,6 +104,7 @@ class AttributeNormalizer implements NormalizerInterface
             function ($translation) use ($pattern) {
                 $label = str_replace('{locale}', $translation->getLocale(), $pattern);
                 $label = str_replace('{value}', $translation->getLabel(), $label);
+
                 return $label;
             }
         )->toArray();
