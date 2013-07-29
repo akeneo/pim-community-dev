@@ -95,9 +95,9 @@ class Job
     /**
      * Constructor
      *
-     * @param string $connector
-     * @param string $type
-     * @param string $alias
+     * @param string       $connector
+     * @param string       $type
+     * @param string       $alias
      * @param JobInterface $jobDefinition
      */
     public function __construct($connector, $type, $alias)
@@ -268,7 +268,7 @@ class Job
     {
         $this->jobDefinition = $jobDefinition;
 
-        $this->setRawConfiguration($jobDefinition->getConfiguration());
+        $this->setRawConfiguration($jobDefinition ? $jobDefinition->getConfiguration() : null);
 
         return $this;
     }
