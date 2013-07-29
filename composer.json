@@ -71,8 +71,7 @@
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
-            "dist-file": "app/config/parameters.dist.yml"
+            "file": "app/config/parameters.yml"
         }
     }
 }
