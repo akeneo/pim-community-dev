@@ -120,7 +120,7 @@ class ApplyController extends Controller
         $env = $this->get('kernel')->getEnvironment();
 
         $commands = array(
-            'backup'       => new Process('../app/console oro:entity-extend:backup '. $entity->getClassName(). ' --env='.$env),
+            'backup'       => new Process('../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env='.$env),
             'generator'    => new Process('../app/console oro:entity-extend:generate'. ' --env='.$env),
             'cacheClear'   => new Process('../app/console cache:clear --no-warmup'. ' --env='.$env),
             'schemaUpdate' => new Process('../app/console doctrine:schema:update --force'. ' --env='.$env),
