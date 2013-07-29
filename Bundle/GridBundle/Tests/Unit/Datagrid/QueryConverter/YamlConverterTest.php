@@ -50,6 +50,7 @@ class YamlConverterTest extends \PHPUnit_Framework_TestCase
     public function testParse()
     {
         $value = array(
+            'name'     => 'Test Report',
             'from'     => array(
                 array(
                     'table' => 'Doctrine\Tests\Models\CMS\CmsUser',
@@ -60,12 +61,16 @@ class YamlConverterTest extends \PHPUnit_Framework_TestCase
             'distinct' => true,
             'join'     => array(
                 'inner' => array(
-                    'join'  => 'u.articles',
-                    'alias' => 'a'
+                    array(
+                        'join'  => 'u.articles',
+                        'alias' => 'a'
+                    ),
                 ),
                 'left' => array(
-                    'join'  => 'email',
-                    'alias' => 'e'
+                    array(
+                        'join'  => 'email',
+                        'alias' => 'e'
+                    )
                 )
             ),
             'groupBy'  => 'u.id',
@@ -95,6 +100,7 @@ class YamlConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($qb->getDQLPart('distinct'));
 
         $value = '
+name:   "Test Report"
 select: "u"
 from:
     - { table: Doctrine\Tests\Models\CMS\CmsUser, alias: u }';
