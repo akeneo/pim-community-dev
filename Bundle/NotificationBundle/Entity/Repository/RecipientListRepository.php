@@ -28,22 +28,25 @@ class RecipientListRepository extends EntityRepository
                 return $group->getId();
             }
         )->toArray();
-        $groupUsers = $this->_em->createQueryBuilder()
-            ->select('u.email')
-            ->from('OroUserBundle:User', 'u')
-            ->leftJoin('u.groups', 'groups')
-            ->where('groups.id IN (:groupIds)')
-            ->setParameter('groupIds', $groupIds)
-            ->getQuery()
-            ->getResult();
 
-        // add group users emails
-        array_map(
-            function ($groupEmail) use ($emails) {
-                $emails[] = $groupEmail['email'];
-            },
-            $groupUsers
-        );
+        if ($groupIds) {
+            $groupUsers = $this->_em->createQueryBuilder()
+                ->select('u.email')
+                ->from('OroUserBundle:User', 'u')
+                ->leftJoin('u.groups', 'groups')
+                ->where('groups.id IN (:groupIds)')
+                ->setParameter('groupIds', $groupIds)
+                ->getQuery()
+                ->getResult();
+
+            // add group users emails
+            array_map(
+                function ($groupEmail) use ($emails) {
+                    $emails[] = $groupEmail['email'];
+                },
+                $groupUsers
+            );
+        }
 
         // add owner email
         if ($recipientList->getOwner() && $entity instanceof ContainAuthorInterface) {

@@ -12,6 +12,7 @@ use Oro\Bundle\NavigationBundle\Entity\Title;
 use Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader;
 use Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader;
 use Oro\Bundle\NavigationBundle\Title\StoredTitle;
+use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -70,18 +71,46 @@ class TitleService implements TitleServiceInterface
     /** @var array */
     protected $titles = null;
 
+    /**
+     * @var string
+     */
+    protected $delimiter;
+
+    /**
+     * @var string
+     */
+    protected $applicationSuffix;
+
+    /**
+     * @var BreadcrumbManager
+     */
+    protected $breadcrumbManager;
+
+    /**
+     * @var string
+     */
+    protected $titleMenuName;
+
     public function __construct(
         AnnotationsReader $reader,
         ConfigReader $configReader,
         Translator $translator,
         ObjectManager $em,
-        Serializer $serializer
+        Serializer $serializer,
+        $delimiter,
+        $applicationSuffix,
+        BreadcrumbManager $breadcrumbManager,
+        $titleMenuName
     ) {
         $this->readers = array($reader, $configReader);
 
         $this->translator = $translator;
         $this->em = $em;
         $this->serializer = $serializer;
+        $this->delimiter = $delimiter;
+        $this->applicationSuffix = $applicationSuffix;
+        $this->breadcrumbManager = $breadcrumbManager;
+        $this->titleMenuName = $titleMenuName;
     }
 
     /**
@@ -299,6 +328,10 @@ class TitleService implements TitleServiceInterface
 
             // update existing system titles
             if ($entity->getIsSystem()) {
+                $title = $this->createTile($route, $title);
+                if (!$title) {
+                    $title = '';
+                }
                 $entity->setTitle($title);
                 $this->em->persist($entity);
             }
@@ -308,15 +341,41 @@ class TitleService implements TitleServiceInterface
 
         // create title items for new routes
         foreach ($data as $route => $title) {
-            $entity = new Title();
-            $entity->setTitle($title instanceof Route ? '' : $title);
-            $entity->setRoute($route);
-            $entity->setIsSystem(true);
+            if ($title = $this->createTile($route, $title)) {
+                $entity = new Title();
+                $entity->setTitle($title);
+                $entity->setRoute($route);
+                $entity->setIsSystem(true);
 
-            $this->em->persist($entity);
+                $this->em->persist($entity);
+            }
         }
 
         $this->em->flush();
+    }
+
+    protected function createTile($route, $title)
+    {
+        if (!($title instanceof Route)) {
+            $titleData = array();
+
+            if ($title) {
+                $titleData[] = $title;
+            }
+
+            $breadcrumbLabels = $this->breadcrumbManager->getBreadcrumbLabels($this->titleMenuName, $route);
+            if (count($breadcrumbLabels)) {
+                $titleData = array_merge($titleData, $breadcrumbLabels);
+            }
+
+            if ($this->applicationSuffix) {
+                $titleData[] = $this->applicationSuffix;
+            }
+
+            return implode(' ' . $this->delimiter . ' ', $titleData);
+        }
+
+        return false;
     }
 
     /**

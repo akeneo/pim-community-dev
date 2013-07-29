@@ -2,7 +2,8 @@
 {% form_theme form with [
     'OroUIBundle:Form:fields.html.twig',
     'OroUserBundle:Form:fields.html.twig',
-    'OroNotificationBundle:Form:fields.html.twig'
+    'OroNotificationBundle:Form:fields.html.twig',
+    'OroEmailBundle:Form:fields.html.twig'
 ]%}
 {% set title = form.vars.value.id ? 'Edit notification rule #%id%'|trans({'%id%': form.vars.value.id}) : 'Add notification rule'|trans %}
 {% if form.vars.value.id %}

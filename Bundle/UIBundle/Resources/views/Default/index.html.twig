@@ -97,7 +97,14 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
-                    {% placeholder pin_button %}
+                    <div class="container-fluid breadcrumb-pin">
+                        <div id="breadcrumb">
+                            {% block breadcrumb %}
+                                {% placeholder breadcrumb %}
+                            {% endblock breadcrumb %}
+                        </div>
+                        {% placeholder pin_button %}
+                    </div>
                     <div id="flash-messages">
                         {% block messages %}
                             {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}
@@ -180,7 +187,8 @@
     with {
         'script': block('head_script'),
         'content': block('page_container'),
-        'menu': block('application_menu')
+        'menu': block('application_menu'),
+        'breadcrumb': block('breadcrumb')
     }
     %}
 {% endif %}

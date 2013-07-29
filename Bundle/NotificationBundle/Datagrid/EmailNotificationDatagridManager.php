@@ -118,14 +118,16 @@ class EmailNotificationDatagridManager extends DatagridManager
         $fieldTemplate->setName('template');
         $fieldTemplate->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('oro.notification.datagrid.template'),
-                'field_name'  => 'template',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('oro.notification.datagrid.template'),
+                'filter_type'     => FilterInterface::TYPE_STRING,
+                'expression'      => 'template.name',
+                'field_name'      => 'template',
+                'filter_by_where' => true,
+                'required'        => false,
+                'sortable'        => false,
+                'filterable'      => true,
+                'show_filter'     => true,
             )
         );
         $fieldsCollection->add($fieldTemplate);
@@ -278,6 +280,7 @@ class EmailNotificationDatagridManager extends DatagridManager
 
         /** @var $query QueryBuilder */
         $query->leftJoin($entityAlias . '.event', 'event');
+        $query->leftJoin($entityAlias . '.template', 'template');
         $query->leftJoin($entityAlias . '.recipientList', 'recipientList');
         $query->leftJoin('recipientList.users', 'recipientUsersList');
         $query->leftJoin('recipientList.groups', 'recipientGroupsList');

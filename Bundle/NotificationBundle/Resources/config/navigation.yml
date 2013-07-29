@@ -13,6 +13,6 @@ oro_menu_config:
                         oro_notification_emailnotification_list: ~
 
 oro_titles:
-    oro_notification_emailnotification_index: "Transactional Emails"
+    oro_notification_emailnotification_index: ~
     oro_notification_emailnotification_update: "Edit notification rule #%%id%%"
     oro_notification_emailnotification_create: "Add notification rule"

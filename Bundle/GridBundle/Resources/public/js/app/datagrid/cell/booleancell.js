@@ -75,9 +75,10 @@ Oro.Datagrid.Cell.BooleanCell = Backgrid.BooleanCell.extend({
 
     /**
      * @param {Backgrid.Row} row
+     * @param {Event} e
      */
-    onRowClicked: function(row) {
-        if (this.editable) {
+    onRowClicked: function(row, e) {
+        if (this.editable && e.target !== this.currentEditor.get(0)) {
             this.currentEditor.click();
         }
     }
