@@ -8,9 +8,7 @@
 
 {% endblock %}
 
-{% block page_container %}
-<div class="container-fluid category">
-    {% block content %}
+{% block content %}
     <div id="category-tree-container" class="row-fluid">
         <div id="tree"></div>
 
@@ -25,6 +23,4 @@
     </div>
 
     {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
-{% endblock %}
-</div>
 {% endblock %}

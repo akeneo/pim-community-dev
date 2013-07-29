@@ -3,9 +3,9 @@
 namespace Pim\Bundle\ConfigBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\ConfigBundle\Controller\Controller;
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
@@ -36,7 +36,7 @@ class CurrencyController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
             ->select('c')
             ->from('PimConfigBundle:Currency', 'c');
@@ -68,23 +68,13 @@ class CurrencyController extends Controller
     {
         try {
             $currency->toggleActivation();
-            $this->getEntityManager()->flush();
+            $this->getManager()->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Currency is successfully updated.');
+            $this->addFlash('success', 'Currency is successfully updated.');
         } catch (\Exception $e) {
-            $this->get('session')->getFlashbag()->add('error', 'Action failed. Please retry.');
+            $this->addFlash('error', 'Action failed. Please retry.');
         }
 
         return $this->redirect($this->generateUrl('pim_config_currency_index'));
-    }
-
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
     }
 }

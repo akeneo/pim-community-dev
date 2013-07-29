@@ -302,7 +302,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function setTitle($title)
     {
-        $translation = $this->getTranslation()->setTitle($title);
+        $this->getTranslation()->setTitle($title);
 
         return $this;
     }

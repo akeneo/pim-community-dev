@@ -24,6 +24,38 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
 class SimpleJob extends AbstractJob
 {
     /**
+     * Get the steps configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $result = array();
+        foreach ($this->steps as $step) {
+            $result[$step->getName()] = $this->getStepConfiguration($step);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Set the steps configuration
+     *
+     * @param array $steps
+     */
+    public function setConfiguration(array $steps)
+    {
+        foreach ($steps as $title => $config) {
+            $step = $this->getStep($title);
+            if (!$step) {
+                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $title));
+            }
+
+            $this->setStepConfiguration($step, $config);
+        }
+    }
+
+    /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
      * successfully processed if it exists, and null if none were processed.
@@ -60,16 +92,6 @@ class SimpleJob extends AbstractJob
         }
     }
 
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            $result[$step->getName()] = $this->getStepConfiguration($step);
-        }
-
-        return $result;
-    }
-
     private function getStepConfiguration($step)
     {
         return array(
@@ -77,5 +99,12 @@ class SimpleJob extends AbstractJob
             'processor' => $step->getProcessor()->getConfiguration(),
             'writer'    => $step->getWriter()->getConfiguration(),
         );
+    }
+
+    private function setStepConfiguration($step, array $config)
+    {
+        $step->getReader()->setConfiguration($config['reader']);
+        $step->getProcessor()->setConfiguration($config['processor']);
+        $step->getWriter()->setConfiguration($config['writer']);
     }
 }

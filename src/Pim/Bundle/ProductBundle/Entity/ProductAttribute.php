@@ -317,8 +317,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
         $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
-        $this->decimalsAllowed     = true;
-        $this->negativeAllowed     = true;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
     }
@@ -506,6 +504,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
 
         $group = new AttributeGroup;
         $group->setId(0);
+        $group->setCode('other');
         $group->setName('Other');
         $group->setSortOrder(-1);
 
@@ -1156,7 +1155,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function setLabel($label)
     {
-        $translation = $this->getTranslation()->setLabel($label);
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }

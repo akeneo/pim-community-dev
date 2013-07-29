@@ -9,7 +9,7 @@ use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 class FileWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
     /**
-     * @Assert\NotBlank(groups={"Configuration"})
+     * @Assert\NotBlank
      */
     protected $path;
 

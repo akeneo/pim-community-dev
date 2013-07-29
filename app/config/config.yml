@@ -230,6 +230,46 @@ pim_batch:
                     reader:     pim_import_export.reader.category
                     processor:  pim_import_export.processor.csv_serializer
                     writer:     pim_import_export.writer.file
+        attribute_export:
+            title:     pim_import_export.jobs.attribute_export.title
+            connector: "Akeneo"
+            type:      "export"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.attribute_export.export.title
+                    reader:     pim_import_export.reader.attribute
+                    processor:  pim_import_export.processor.csv_serializer
+                    writer:     pim_import_export.writer.file
+        product_import:
+            title:     pim_import_export.jobs.product_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.product_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+        category_import:
+            title:     pim_import_export.jobs.category_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.category_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+        attribute_import:
+            title:     pim_import_export.jobs.attribute_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.attribute_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
 
 pim_demo:
     load_data: true

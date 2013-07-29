@@ -77,15 +77,19 @@ class ProductAttributeControllerTest extends ControllerTest
         $uri = '/enrich/product-attribute/remove/'. $productAttribute->getId();
 
         // assert without authentication
-        $this->client->request('GET', $uri);
+        $this->client->request('DELETE', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
-        // assert with authentication
+        // assert with another request method
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert with authentication
+        $crawler = $this->client->request('DELETE', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown product attribute id (last removed) and authentication
-        $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->client->request('DELETE', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 

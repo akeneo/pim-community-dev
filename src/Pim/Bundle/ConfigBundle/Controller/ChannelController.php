@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
-use Pim\Bundle\ConfigBundle\Entity\Channel;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Pim\Bundle\ConfigBundle\Controller\Controller;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
 
 /**
  * Channel controller
@@ -38,7 +38,7 @@ class ChannelController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
             ->select('c')
             ->from('PimConfigBundle:Channel', 'c');
@@ -55,26 +55,6 @@ class ChannelController extends Controller
             'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Channel:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
-    }
-
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get channel repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getChannelRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Channel');
     }
 
     /**
@@ -105,7 +85,7 @@ class ChannelController extends Controller
     public function editAction(Channel $channel)
     {
         if ($this->get('pim_config.form.handler.channel')->process($channel)) {
-            $this->get('session')->getFlashBag()->add('success', 'Channel successfully saved');
+            $this->addFlash('success', 'Channel successfully saved');
 
             return $this->redirect(
                 $this->generateUrl('pim_config_channel_index')
@@ -128,13 +108,13 @@ class ChannelController extends Controller
      */
     public function removeAction(Channel $channel)
     {
-        $this->getEntityManager()->remove($channel);
-        $this->getEntityManager()->flush();
+        $this->getManager()->remove($channel);
+        $this->getManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->get('session')->getFlashBag()->add('success', 'Channel successfully removed');
+            $this->addFlash('success', 'Channel successfully removed');
 
             return $this->redirect($this->generateUrl('pim_config_channel_index'));
         }

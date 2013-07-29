@@ -4,9 +4,9 @@ namespace Pim\Bundle\ConfigBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\ConfigBundle\Controller\Controller;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
@@ -37,7 +37,7 @@ class LocaleController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
             ->select('l')
             ->from('PimConfigBundle:Locale', 'l');
@@ -54,26 +54,6 @@ class LocaleController extends Controller
             'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Locale:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
-    }
-
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get locale repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getLocaleRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Locale');
     }
 
     /**
@@ -104,7 +84,7 @@ class LocaleController extends Controller
     public function editAction(Locale $locale)
     {
         if ($this->get('pim_config.form.handler.locale')->process($locale)) {
-            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
+            $this->addFlash('success', 'Locale successfully saved');
 
             return $this->redirect(
                 $this->generateUrl('pim_config_locale_index')
@@ -128,8 +108,8 @@ class LocaleController extends Controller
     public function disableAction(Locale $locale)
     {
         $locale->setActivated(false);
-        $this->getEntityManager()->persist($locale);
-        $this->getEntityManager()->flush();
+        $this->getManager()->persist($locale);
+        $this->getManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -150,8 +130,8 @@ class LocaleController extends Controller
     public function enableAction(Locale $locale)
     {
         $locale->setActivated(true);
-        $this->getEntityManager()->persist($locale);
-        $this->getEntityManager()->flush();
+        $this->getManager()->persist($locale);
+        $this->getManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

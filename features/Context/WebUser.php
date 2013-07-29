@@ -23,6 +23,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $currentPage = null;
 
+    /* -------------------- Page-related methods -------------------- */
+
     /**
      * @BeforeScenario
      */
@@ -52,6 +54,179 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->pageFactory = $pageFactory;
     }
+
+    /**
+     * @Given /^I am logged in as "([^"]*)"$/
+     */
+    public function iAmLoggedInAs($username)
+    {
+        $password = $username.'pass';
+        $this->getFixturesContext()->getOrCreateUser($username, $password);
+
+        $this
+            ->openPage('Login')
+            ->login($username, $password)
+        ;
+    }
+
+    /**
+     * @When /^I am on the products page$/
+     */
+    public function iAmOnTheProductsPage()
+    {
+        $this->openPage('Product index');
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" product page$/
+     */
+    public function iAmOnTheProductPage($product)
+    {
+        $product = $this->getProduct($product);
+        $this->openPage('Product edit', array(
+            'id' => $product->getId(),
+        ));
+    }
+
+    /**
+     * @Given /^I create a new product$/
+     */
+    public function iCreateANewProduct()
+    {
+        $this->getPage('Product index')->clickNewProductLink();
+        $this->currentPage = 'Product creation';
+        $this->wait();
+    }
+
+    /**
+     * @When /^I am on the "([^"]*)" attribute page$/
+     */
+    public function iAmOnTheAttributePage($label)
+    {
+        $attribute = $this->getAttribute($label);
+
+        $this->openPage('Attribute Edit', array(
+            'id' => $attribute->getId(),
+        ));
+    }
+
+    /**
+     * @Given /^I am on the attribute creation page$/
+     */
+    public function iAmOnTheAttributeCreationPage()
+    {
+        $this->openPage('Attribute creation');
+    }
+
+    /**
+     * @Given /^I am on the currencies page$/
+     */
+    public function iAmOnTheCurrenciesPage()
+    {
+        $this->openPage('Currency index');
+        $this->wait();
+    }
+
+    /**
+     * @When /^I am on the families page$/
+     */
+    public function iAmOnTheFamiliesPage()
+    {
+        $this->openPage('Family index');
+    }
+
+    /**
+     * @When /^I am on the family creation page$/
+     */
+    public function iAmOnTheFamilyCreationPage()
+    {
+        $this->openPage('Family creation');
+    }
+
+    /**
+     * @Given /^I edit the "([^"]*)" family$/
+     * @Given /^I am on the "([^"]*)" family page$/
+     */
+    public function iAmOnTheFamilyPage($family)
+    {
+        $this->openPage('Family edit', array(
+            'family_id' => $this->getFamily($family)->getId()
+        ));
+    }
+
+    /**
+     * @Given /^I am on the channels page$/
+     */
+    public function iAmOnTheChannelsPage()
+    {
+        $this->openPage('Channel index');
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I am on the channel creation page$/
+     */
+    public function iAmOnTheChannelCreationPage()
+    {
+        $this->openPage('Channel creation');
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" category page$/
+     */
+    public function iAmOnTheCategoryPage($code)
+    {
+        $this->openPage('Category edit', array(
+            'id' => $this->getCategory($code)->getId(),
+        ));
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I am on the category tree creation page$/
+     */
+    public function iAmOnTheCategoryTreeCreationPage()
+    {
+        $this->openPage('Category tree creation');
+    }
+
+    /**
+     * @Given /^I am on the category "([^"]*)" node creation page$/
+     */
+    public function iAmOnTheCategoryNodeCreationPage($code)
+    {
+        $this->openPage('Category node creation', array(
+            'id' => $this->getCategory($code)->getId()
+        ));
+    }
+
+    /**
+     * @Given /^I am on the exports index page$/
+     */
+    public function iAmOnTheExportsIndexPage()
+    {
+        $this->openPage('Export index');
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should be redirected on the (.*) page$/
+     */
+    public function iShouldBeRedirectedOnThePage($page)
+    {
+        $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
+    }
+
+    /**
+     * @Given /^I visit the "([^"]*)" tab$/
+     */
+    public function iVisitTheTab($tab)
+    {
+        $this->getCurrentPage()->visitTab($tab);
+    }
+
+    /* -------------------- Other methods -------------------- */
 
     /**
      * @Then /^I should see activated currency (.*)$/
@@ -128,41 +303,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am logged in as "([^"]*)"$/
-     */
-    public function iAmLoggedInAs($username)
-    {
-        $password = $username.'pass';
-        $this->getFixturesContext()->getOrCreateUser($username, $password);
-
-        $this
-            ->openPage('Login')
-            ->login($username, $password)
-        ;
-    }
-
-    /**
-     * @Given /^I am on the "([^"]*)" product page$/
-     */
-    public function iAmOnTheProductPage($product)
-    {
-        $product = $this->getProduct($product);
-        $this->openPage('Product edit', array(
-            'id' => $product->getId(),
-        ));
-    }
-
-    /**
-     * @Given /^I create a new product$/
-     */
-    public function iCreateANewProduct()
-    {
-        $this->getPage('Product index')->clickNewProductLink();
-        $this->currentPage = 'Product creation';
-        $this->wait();
-    }
-
-    /**
      * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
      */
     public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
@@ -196,35 +336,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getCurrentPage()->$action();
 
         $this->wait();
-    }
-
-    /**
-     * @When /^I am on the "([^"]*)" attribute page$/
-     */
-    public function iAmOnTheAttributePage($label)
-    {
-        $attribute = $this->getAttribute($label);
-
-        $this->openPage('Attribute Edit', array(
-            'id' => $attribute->getId(),
-        ));
-    }
-
-    /**
-     * @Given /^I am on the currencies page$/
-     */
-    public function iAmOnTheCurrenciesPage()
-    {
-        $this->openPage('Currency index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I visit the "([^"]*)" tab$/
-     */
-    public function iVisitTheTab($tab)
-    {
-        $this->getCurrentPage()->visitTab($tab);
     }
 
     /**
@@ -450,49 +561,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I am on the products page$/
-     */
-    public function iAmOnTheProductsPage()
-    {
-        $this->openPage('Product index');
-        $this->wait();
-    }
-
-    /**
-     * @When /^I am on the families page$/
-     */
-    public function iAmOnTheFamiliesPage()
-    {
-        $this->openPage('Family index');
-    }
-
-    /**
-     * @When /^I am on the family creation page$/
-     */
-    public function iAmOnTheFamilyCreationPage()
-    {
-        $this->openPage('Family creation');
-    }
-
-    /**
-     * @Then /^I should be redirected on the (.*) page$/
-     */
-    public function iShouldBeRedirectedOnThePage($page)
-    {
-        $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
-    }
-
-    /**
-     * @Given /^I am on the "([^"]*)" family page$/
-     */
-    public function iAmOnTheFamilyPage($family)
-    {
-        $this->openPage('Family edit', array(
-            'family_id' => $this->getFamily($family)->getId()
-        ));
-    }
-
-    /**
      * @Then /^I should see the families (.*)$/
      */
     public function iShouldSeeTheFamilies($families)
@@ -506,23 +574,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 print_r($families, true)
             ));
         }
-    }
-
-    /**
-     * @Given /^I edit the "([^"]*)" family$/
-     */
-    public function iEditTheFamily($family)
-    {
-        $this->currentPage = 'Family edit';
-        $link = $this->getPage('Family index')->getFamilyLink($family);
-
-        if (!$link) {
-            throw $this->createExpectationException(sprintf(
-                'Couldn\'t find a "%s" link', $family
-            ));
-        }
-
-        $link->click();
     }
 
     /**
@@ -650,42 +701,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCheck($field)
     {
         $this->getCurrentPage()->checkField($field);
-    }
-
-    /**
-     * @Given /^I am on the attribute creation page$/
-     */
-    public function iAmOnTheAttributeCreationPage()
-    {
-        $this->openPage('Attribute creation');
-    }
-
-    /**
-     * @Given /^I am on the channels page$/
-     */
-    public function iAmOnTheChannelsPage()
-    {
-        $this->openPage('Channel index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the channel creation page$/
-     */
-    public function iAmOnTheChannelCreationPage()
-    {
-        $this->openPage('Channel creation');
-    }
-
-    /**
-     * @Given /^I am on the "([^"]*)" category page$/
-     */
-    public function iAmOnTheCategoryPage($code)
-    {
-        $this->openPage('Category edit', array(
-            'id' => $this->getCategory($code)->getId(),
-        ));
-        $this->wait();
     }
 
     /**
@@ -936,24 +951,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the category tree creation page$/
-     */
-    public function iAmOnTheCategoryTreeCreationPage()
-    {
-        $this->openPage('Category tree creation');
-    }
-
-    /**
-     * @Given /^I am on the category "([^"]*)" node creation page$/
-     */
-    public function iAmOnTheCategoryNodeCreationPage($code)
-    {
-        $this->openPage('Category node creation', array(
-            'id' => $this->getCategory($code)->getId()
-        ));
-    }
-
-    /**
      * @Then /^I should be on the category "([^"]*)" edit page$/
      */
     public function iShouldBeOnTheCategoryEditPage($code)
@@ -963,15 +960,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 $this->getCategory($code)
             )
         );
-    }
-
-    /**
-     * @Given /^I am on the exports index page$/
-     */
-    public function iAmOnTheExportsIndexPage()
-    {
-        $this->openPage('Export index');
-        $this->wait();
     }
 
     /**
@@ -1002,6 +990,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return new Step\Given(sprintf(
             'Value of column "STATUS" of the row which contain "%s" should be "%s"', $exportCode, $status
         ));
+    }
+
+    /**
+     * @Then /^I should be on the "([^"]*)" export job page$/
+     */
+    public function iShouldBeOnTheExportJobPage($job)
+    {
+        $expectedAddress = $this->getPage('Export detail')->getUrl($this->getJob($job));
+        $this->assertSession()->addressEquals($expectedAddress);
     }
 
     private function openPage($page, array $options = array())
@@ -1067,6 +1064,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
+    }
+
+    private function getJob($job)
+    {
+        return $this->getFixturesContext()->getJob($job);
     }
 
     private function createExpectationException($message)

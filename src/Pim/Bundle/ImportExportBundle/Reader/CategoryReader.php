@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 
 /**
  * Category reader

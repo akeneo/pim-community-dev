@@ -13,14 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CsvSerializerProcessor extends SerializerProcessor
 {
     /**
-     * @Assert\NotBlank(groups={"Configuration"})
-     * @Assert\Choice(choices={",", ";", "|"}, groups={"Configuration"})
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={",", ";", "|"})
      */
     protected $delimiter = ';';
 
     /**
-     * @Assert\NotBlank(groups={"Configuration"})
-     * @Assert\Choice(choices={"\"", "'"}, groups={"Configuration"})
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={"""", "'"})
      */
     protected $enclosure = '"';
 
