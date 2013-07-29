@@ -141,7 +141,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->byXPath("//div[@class='top-action-box']//button[@class='btn minimize-button']")->click();
         $login->waitForAjax();
         $login->assertElementPresent(
-            "//div[@class='list-bar']//a[text() = 'Users']",
+            "//div[@class='list-bar']//a[text() = 'Users - System - ORO']",
             'Element does not minimised to pinbar tab'
         );
     }
