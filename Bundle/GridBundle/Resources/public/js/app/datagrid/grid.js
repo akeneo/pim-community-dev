@@ -324,9 +324,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * Renders grid toolbar.
      */
     renderToolbar: function() {
-        if (this.body.rows.length > 0) {
-            this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
-        }
+        this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
     },
 
     /**
@@ -384,10 +382,12 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _updateNoDataBlock: function() {
         if (this.collection.models.length > 0) {
+            this.$(this.selectors.toolbar).show();
             this.$(this.selectors.grid).show();
             this.$(this.selectors.noDataBlock).hide();
         } else {
             this.$(this.selectors.grid).hide();
+            this.$(this.selectors.toolbar).hide();
             this.$(this.selectors.noDataBlock).show();
         }
     },
