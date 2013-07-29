@@ -38,18 +38,35 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the grid should not contains the element "([^"]*)"$/
-     * @param string $notExpectedValue
+     * @Given /^the grid should contains the elements? (.*)$/
+     * @param string $expectedElements
      */
-    public function theGridShouldNotContainsTheElement($notExpectedValue)
+    public function theGridShouldContainsTheElements($expectedElements)
     {
-        try {
-            $expectedValue = $this->datagrid->getGridRow($notExpectedValue);
-            throw new \InvalidArgumentException(
-                sprintf('The grid should not contains the element %s', $notExpectedValue)
-            );
-        } catch (\InvalidArgumentException $e) {
-            // nothing to do
+        $expectedElements = $this->getMainContext()->listToArray($expectedElements);
+
+        foreach ($expectedElements as $expectedElement) {
+            $this->datagrid->getGridRow($expectedElement);
+        }
+    }
+
+    /**
+     * @Given /^the grid should not contains the elements? (.*)$/
+     * @param string $notExpectedElements
+     */
+    public function theGridShouldNotContainsTheElement($notExpectedElements)
+    {
+        $notExpectedElements = $this->getMainContext()->listToArray($notExpectedElements);
+
+        foreach ($notExpectedElements as $notExpectedElement) {
+            try {
+                $expectedValue = $this->datagrid->getGridRow($notExpectedElement);
+                throw new \InvalidArgumentException(
+                    sprintf('The grid should not contains the element %s', $notExpectedElement)
+                );
+            } catch (\InvalidArgumentException $e) {
+                // nothing to do
+            }
         }
     }
 
@@ -58,6 +75,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function valueOfColumnOfTheRowWhichContainShouldBe($column, $row, $expectation)
     {
+        $column = strtoupper($column);
         if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {
             throw $this->createExpectationException(sprintf(
                 'Expecting column "%s" to contain "%s", got "%s".',
