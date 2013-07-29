@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets"/>
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-no-coverage"/>
+
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
 
@@ -137,6 +140,14 @@
         <exec executable="phpunit">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
+            <arg value="--testsuite=Jenkins_PIM_Test" />
+        </exec>
+    </target>
+
+    <target name="phpunit-no-coverage" description="Run unit tests with PHPUnit without coverage">
+        <exec executable="phpunit">
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.jenkins-no-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
