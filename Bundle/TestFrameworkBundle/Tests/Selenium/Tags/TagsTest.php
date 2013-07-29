@@ -34,7 +34,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openTags()
             ->add()
-            ->assertTitle('Create tag - Tags - System - Oro')
+            ->assertTitle('Create Tag - Tags - System - Oro')
             ->setTagname($tagname)
             ->save()
             ->assertMessage('Tag successfully saved')
