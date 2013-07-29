@@ -100,7 +100,6 @@ class RawConfiguration
         return $this->configuration;
     }
 
-
     /**
      * Serialize on pre flush (persist and update)
      * @ORM\PreFlush

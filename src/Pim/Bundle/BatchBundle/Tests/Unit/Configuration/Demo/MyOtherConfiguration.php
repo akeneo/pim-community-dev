@@ -2,7 +2,6 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Configuration\Demo;
 
 use Pim\Bundle\BatchBundle\Configuration\AbstractConfiguration;
-use JMS\Serializer\Annotation\Type;
 
 /**
  * Demo configuration

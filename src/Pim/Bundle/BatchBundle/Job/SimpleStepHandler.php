@@ -29,15 +29,23 @@ class SimpleStepHandler implements StepHandlerInterface
      * @param JobRepository    $jobRepository    Job repository
      * @param ExecutionContext $executionContext Execution context
      */
-    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null, $logger)
+    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null)
     {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
             $executionContext = new ExecutionContext();
         }
         $this->executionContext = $executionContext;
+    }
 
-        $this->logger = $logger;
+    /**
+     * Set the logger
+     *
+     * @param $logger The logger
+     */
+    public function setLogger($logger)
+    {
+        $this->setLogger($logger);
     }
 
     /**
@@ -78,7 +86,6 @@ class SimpleStepHandler implements StepHandlerInterface
         }
 
         $currentStepExecution = $execution->createStepExecution($step->getName());
-
 
         /*
         JobInstance jobInstance = execution.getJobInstance();
@@ -184,6 +191,7 @@ class SimpleStepHandler implements StepHandlerInterface
             // step is complete, false should be returned, indicating that the
             // step should not be started
             logger.info("Step already complete or not restartable, so no action to execute: " + lastStepExecution);
+
             return false;
         }
 

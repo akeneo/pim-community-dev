@@ -28,7 +28,7 @@ interface StepHandlerInterface
      * @return an execution of the step
      *
      * @throws JobInterruptedException if there is an interruption
-     * @throws JobRestartException if there is a problem restarting a failed
+     * @throws JobRestartException     if there is a problem restarting a failed
      * step
      * @throws StartLimitExceededException if the step exceeds its start limit
      *

@@ -4,7 +4,7 @@ namespace Pim\Bundle\BatchBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\BatchBundle\Job\SimpleJob;
+use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 
 /**
@@ -87,7 +87,7 @@ class Job
     protected $rawConfiguration = array();
 
     /**
-     * @var SimpleJob
+     * @var BatchJob
      * @Assert\Valid
      */
     protected $jobDefinition;

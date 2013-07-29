@@ -73,7 +73,6 @@ class FieldMapping extends FieldMappingModel
         return $this->id;
     }
 
-
     /**
      * Set source
      *

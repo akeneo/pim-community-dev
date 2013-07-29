@@ -3,12 +3,10 @@ namespace Pim\Bundle\BatchBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pim\Bundle\BatchBundle\Job\SimpleJob;
+use Pim\Bundle\BatchBundle\Job\Job;
 use Pim\Bundle\BatchBundle\Job\JobParameters;
 use Pim\Bundle\BatchBundle\Job\JobRepository;
 use Pim\Bundle\BatchBundle\Job\Launch\SimpleJobLauncher;
@@ -52,13 +50,15 @@ class BatchCommand extends ContainerAwareCommand
         $itemProcessor = new UcfirstProcessor();
         $itemWriter = new EchoWriter();
 
-        $step1 = new ItemStep("Sample export", $logger);
+        $step1 = new ItemStep("Sample export");
+        $step1->setLogger($logger);
         $step1->setJobRepository($dummyJobRepository);
         $step1->setReader($itemReader);
         $step1->setProcessor($itemProcessor);
         $step1->setWriter($itemWriter);
 
-        $simpleJob = new SimpleJob("My super job", $logger);
+        $simpleJob = new Job("My super job");
+        $simpleJob->setLogger($logger);
         $simpleJob->setJobRepository($dummyJobRepository);
         $simpleJob->addStep($step1);
 

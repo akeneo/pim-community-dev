@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Pim\Bundle\BatchBundle\Step\StepInterface;
+
 /**
- * Abstract implementation of the {@link Job} interface. Common dependencies
- * such as a {@link JobRepository}, {@link JobExecutionListener}s, and various
- * configuration parameters are set here. Therefore, common error handling and
- * listener calling activities are abstracted away from implementations.
+ * Implementation of the {@link Job} interface.
  *
  * Inspired by Spring Batch org.springframework.batch.core.job.AbstractJob;
  *
@@ -15,20 +14,20 @@ namespace Pim\Bundle\BatchBundle\Job;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class AbstractJob implements JobInterface
+class Job implements JobInterface
 {
     protected $name;
 
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
 
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepository */
     protected $jobRepository;
 
-    /* @var StepHandler $stepHandler */
+    /* @var StepHandler */
     protected $stepHandler;
 
     /**
-     * @var ArrayCollection $steps
+     * @var array
      */
     protected $steps;
 
@@ -39,11 +38,18 @@ abstract class AbstractJob implements JobInterface
      *
      * @param string $name
      */
-    public function __construct($name, $logger)
+    public function __construct($name)
     {
         $this->name   = $name;
-        $this->logger = $logger; 
         $this->steps  = array();
+    }
+
+    /**
+     * Set the logger
+     */
+    public function setLogger($logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -64,6 +70,32 @@ abstract class AbstractJob implements JobInterface
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+
+    /**
+     * Return all the steps
+     *
+     * @return array steps
+     */
+    public function getSteps()
+    {
+        return $this->steps;
+    }
+
+    /**
+     * Public setter for the steps in this job. Overrides any calls to
+     * addStep(Step).
+     *
+     * @param array $steps the steps to execute
+     */
+    public function setSteps(array $steps)
+    {
+        $this->steps = $steps;
+
+        return $this;
     }
 
     /**
@@ -74,14 +106,43 @@ abstract class AbstractJob implements JobInterface
      *
      * @return Step the Step
      */
-    abstract public function getStep($stepName);
+    public function getStep($stepName)
+    {
+        foreach ($this->steps as $step) {
+            if ($step->getName() == $stepName) {
+                return $step;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Retrieve the step names.
      *
      * @return array the step names
      */
-    abstract public function getStepNames();
+    public function getStepNames()
+    {
+        $names = array();
+        foreach ($this->steps as $step) {
+            $names[] = $step->getName();
+        }
+
+        return $names;
+    }
+
+
+    /**
+     * Convenience method for adding a single step to the job.
+     *
+     * @param StepInterface $step a {@link Step} to add
+     */
+    public function addStep(StepInterface $step)
+    {
+        $this->steps[] = $step;
+    }
+
 
     /**
      * Public setter for the {@link JobRepository} that is needed to manage the
@@ -95,20 +156,6 @@ abstract class AbstractJob implements JobInterface
         $this->jobRepository = $jobRepository;
         $this->stepHandler = new SimpleStepHandler($jobRepository, null, $this->logger);
     }
-
-    /**
-     * Extension point for subclasses allowing them to concentrate on processing
-     * logic and ignore listeners and repository calls. Implementations usually
-     * are concerned with the ordering of steps, and delegate actual step
-     * processing to {@link #handleStep(Step, JobExecution)}.
-     *
-     * @param JobExecution $execution the current {@link JobExecution}
-     *
-     * @throws JobExecutionException
-     *             to signal a fatal batch framework error (not a business or
-     *             validation exception)
-     */
-    abstract protected function doExecute(JobExecution $execution);
 
     /**
      * Run the specified job, handling all listener and repository calls, and
@@ -161,7 +208,7 @@ abstract class AbstractJob implements JobInterface
         if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
         ) {
-            /* @var ExitStatus $exitStatus */
+            /* @var ExitStatus */
             $exitStatus = $execution->getExitStatus();
             $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
             $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
@@ -227,5 +274,74 @@ abstract class AbstractJob implements JobInterface
     public function __toString()
     {
         return get_class($this) . ': [name=' . $this->name . ']';
+    }
+
+    /**
+     * Get the steps configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $result = array();
+        foreach ($this->steps as $step) {
+            $result[$step->getName()] = $step->getConfiguration();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Set the steps configuration
+     *
+     * @param array $steps
+     */
+    public function setConfiguration(array $steps)
+    {
+        foreach ($steps as $title => $config) {
+            $step = $this->getStep($title);
+            if (!$step) {
+                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $title));
+            }
+
+            $step->setConfiguration($config);
+        }
+    }
+
+    /**
+     * Handler of steps sequentially as provided, checking each one for success
+     * before moving to the next. Returns the last {@link StepExecution}
+     * successfully processed if it exists, and null if none were processed.
+     *
+     * @param JobExecution $execution the current {@link JobExecution}
+     *
+     * @see AbstractJob#handleStep(Step, JobExecution)
+     * @throws JobInterruptedException
+     * @throws JobRestartException
+     * @throws StartLimitExceededException
+     */
+    protected function doExecute(JobExecution $execution)
+    {
+        /* @var StepExecution $stepExecution */
+        $stepExecution = null;
+
+        foreach ($this->steps as $step) {
+            $stepExecution = $this->handleStep($step, $execution);
+            if ($stepExecution->getStatus()->getValue() != BatchStatus::COMPLETED) {
+                //
+                // Terminate the job if a step fails
+                //
+                break;
+            }
+        }
+
+        //
+        // Update the job status to be the same as the last step
+        //
+        if ($stepExecution != null) {
+            $this->logger->debug("Upgrading JobExecution status: " . $stepExecution);
+            $execution->upgradeStatus($stepExecution->getStatus()->getValue());
+            $execution->setExitStatus($stepExecution->getExitStatus());
+        }
     }
 }

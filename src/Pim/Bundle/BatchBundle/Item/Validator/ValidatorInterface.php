@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Validator;
+namespace Pim\Bundle\BatchBundle\Item\Validator;
 
 /**
  * Interface to validate objects

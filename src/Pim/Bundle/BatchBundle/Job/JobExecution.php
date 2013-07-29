@@ -17,17 +17,17 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class JobExecution
 {
-    /* @var JobParameters $jobParameters */
+    /* @var JobParameters */
     private $jobParameters;
 
-    /* @var JobInstance $jobInstance */
+    /* @var JobInstance */
     private $jobInstance;
 
     // Collection of StepExecution
-    /* @var ArrayCollection $stepExecutions */
+    /* @var array */
     private $stepExecutions;
 
-    /* @var BatchStatus $status */
+    /* @var BatchStatus */
     private $status;
 
     private $startTime = null;
@@ -306,7 +306,6 @@ class JobExecution
 
         return $allExceptions;
     }
-
 
     /**
      * To string

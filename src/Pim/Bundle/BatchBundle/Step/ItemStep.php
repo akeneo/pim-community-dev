@@ -75,6 +75,28 @@ class ItemStep extends AbstractStep
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getConfiguration()
+    {
+        return array(
+            'reader'    => $this->getReader()->getConfiguration(),
+            'processor' => $this->getProcessor()->getConfiguration(),
+            'writer'    => $this->getWriter()->getConfiguration(),
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setConfiguration(array $config)
+    {
+        $this->getReader()->setConfiguration($config['reader']);
+        $this->getProcessor()->setConfiguration($config['processor']);
+        $this->getWriter()->setConfiguration($config['writer']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function doExecute(StepExecution $execution)

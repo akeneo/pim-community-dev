@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Pim\Bundle\BatchBundle\Job\StepExecution;;
@@ -25,7 +25,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     public function __construct()
     {
         parent::__construct();
-       /* 
+       /*
         $this->execution = :newStepExecution(new StepSupport("stepName"), new Long(23));
         $this->blankExecution = newStepExecution(new StepSupport("blank"), null);
         $this->foobarEc = new ExecutionContext();
