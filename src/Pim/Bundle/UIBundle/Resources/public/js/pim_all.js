@@ -12,9 +12,17 @@ $(function() {
     $('input.multiselect').select2({ tags: $(this).val() });
 
     // Toogle accordion icon
-    $(document).delegate('.accordion', 'show hide', function(e) {
+    $('.accordion').on('show hide', function(e) {
         $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
     });
+
+    // Activate the form tab specified in the url
+    if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
+        var activeTab = $('[href=' + location.hash + ']');
+        if (activeTab) {
+            activeTab.tab('show');
+        }
+    }
 
     // Remove bap 'Loading Application' progressbar and partially fix page title regression issue
     document.title = $('#page-title').text();

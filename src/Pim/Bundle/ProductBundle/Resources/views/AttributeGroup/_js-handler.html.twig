@@ -2,11 +2,6 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + location.hash + ']');
-    if (activeTab) {
-        activeTab.tab('show');
-    }
-
     function updateSortOrder() {
         var num = 0;
         $('#entities-sortable').find('li').each(function() {
