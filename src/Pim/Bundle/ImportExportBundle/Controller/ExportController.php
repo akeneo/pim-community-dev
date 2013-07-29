@@ -3,8 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\ProductBundle\Controller\Controller;
@@ -34,7 +36,7 @@ class ExportController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $gridManager ExportDatagridManager */
+        /** @var $gridManager JobDatagridManager */
         $gridManager = $this->get('pim_import_export.datagrid.manager.export');
         $datagridView = $gridManager->getDatagrid()->createView();
         $registry      = $this->getConnectorRegistry();
@@ -77,6 +79,8 @@ class ExportController extends Controller
 
             return $this->redirect($this->generateUrl('pim_ie_export_index'));
         }
+
+        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
@@ -134,11 +138,81 @@ class ExportController extends Controller
         $validator = $this->getValidator();
 
         return array(
-            'job'        => $job,
-            'violations' => $validator->validate($job),
+            'job'           => $job,
+            'jobDefinition' => $jobDefinition,
         );
     }
 
+    /**
+     * Delete a job
+     *
+     * @param Job $job
+     *
+     * @Route("/remove/{id}", requirements={"id"="\d+"}, name="pim_ie_export_remove")
+     * @Method("DELETE")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeAction(Job $job)
+    {
+        $this->getManager()->remove($job);
+        $this->getManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            $this->addFlashMessage('success', 'Job successfully removed');
+
+            return $this->redirectIndex();
+        }
+    }
+
+    /**
+     * Redirect to index
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectIndex()
+    {
+        return $this->redirect($this->generateUrl('pim_ie_export_index'));
+    }
+
+    /**
+     * View report for a job
+     *
+     * @param Job $job
+     *
+     * @Route(
+     *     "/show/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_import_report"
+     * )
+     * @Template
+     *
+     * @return array
+     */
+    public function reportAction(Job $job)
+    {
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param Job $job
+     *
+     * @Route("/launch/{id}", requirements={"id"="\d+"}, defaults={"id"=0}, name="pim_ie_export_launch")
+     * @Template()
+     *
+     * @return array
+     */
+    public function launchAction(Job $job)
+    {
+    }
+
+    /**
+     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
     protected function getConnectorRegistry()
     {
         return $this->get('pim_batch.connectors');

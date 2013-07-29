@@ -1,93 +1,71 @@
-<h3 class="scrollspy-title">{{ "Parameters"|trans }}</h3>
-<div id="accordion1" class="accordion">
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                <i class="fa-icon-collapse-alt"></i>
-                {{ "General parameters"|trans }}
-            </a>
-        </div>
-        <div id="collapseOne" class="accordion-body in">
-            <div class="accordion-inner">
-                {{ form_row(form.code, { 'label': 'Name'|trans }) }}
-                {{ form_row(form.attributeType) }}
+{% set generalParameters %}
+    {{ form_row(form.code, { 'label': 'Name'|trans }) }}
+    {{ form_row(form.attributeType) }}
 
-                {% if form.scopable is defined %}
-                    {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
-                {% endif %}
+    {% if form.scopable is defined %}
+        {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+    {% endif %}
 
-                {% if form.translatable is defined %}
-                    {{ form_row(form.translatable, { 'label': 'Localizable'|trans }) }}
-                {% endif %}
+    {% if form.translatable is defined %}
+        {{ form_row(form.translatable, { 'label': 'Localizable'|trans }) }}
+    {% endif %}
 
-                {% if form.unique is defined %}
-                    {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
-                {% endif %}
+    {% if form.unique is defined %}
+        {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+    {% endif %}
 
-                {# {{ form_row(form.required) }} #}
+    {# {{ form_row(form.required) }} #}
 
-                {% if form.availableLocales is defined %}
-                    <div class="control-group">
-                        <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
-                        <div class="controls">
-                            <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
-                                <input type="checkbox" name="limitLocales">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group" style="display: none;">
-                        {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
-                        <div class="controls">
-                            {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
-                'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
-                'valueCreationAllowed', 'maxCharacters', 'wysiwygEnabled',
-                'metricFamily', 'defaultMetricUnit', 'allowedFileSources',
-                'maxFileSize', 'allowedFileExtensions', 'validationRule',
-                'validationRegexp', 'defaultValue', 'sortOrder'] %}
-
-                {% for field in optionalFields %}
-                    {% if form[field] is defined %}
-                        {{ form_row(form[field]) }}
-                    {% endif %}
-                {% endfor %}
-
-            </div>
-        </div>
-    </div>
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
-                <i class="fa-icon-collapse-alt"></i>
-                {{ "Backend parameters"|trans }}
-            </a>
-        </div>
-        <div id="collapseTwo" class="accordion-body in">
-            <div class="accordion-inner">
-                <div class="control-group">
-                    {{ form_label(form.group, 'Attribute group'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                    <div class="controls">
-                        {{ form_widget(form.group, { 'attr': { 'class': 'input-large', 'data-placeholder': 'Choose a group'|trans }}) }}
-                    </div>
+    {% if form.availableLocales is defined %}
+        <div class="control-group">
+            <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
+            <div class="controls">
+                <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
+                    <input type="checkbox" name="limitLocales">
                 </div>
-
-                {# form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) #}
-                {# form_row(form.smart) #}
-
-                {% if form.searchable is defined %}
-                    {{ form_row(form.searchable) }}
-                {% endif %}
-
-                {{ form_row(form.useableAsGridColumn) }}
-
-                {{ form_row(form.useableAsGridFilter) }}
-
             </div>
         </div>
+
+        <div class="control-group" style="display: none;">
+            {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
+            <div class="controls">
+                {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
+    'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
+    'valueCreationAllowed', 'maxCharacters', 'wysiwygEnabled',
+    'metricFamily', 'defaultMetricUnit', 'allowedFileSources',
+    'maxFileSize', 'allowedFileExtensions', 'validationRule',
+    'validationRegexp', 'defaultValue', 'sortOrder'] %}
+
+    {% for field in optionalFields %}
+        {% if form[field] is defined %}
+            {{ form_row(form[field]) }}
+        {% endif %}
+    {% endfor %}
+{% endset %}
+
+{% set backendParameters %}
+    <div class="control-group">
+        {{ form_label(form.group, 'Attribute group'|trans, { 'label_attr': {'class': 'control-label'} }) }}
+        <div class="controls">
+            {{ form_widget(form.group, { 'attr': { 'class': 'input-large', 'data-placeholder': 'Choose a group'|trans }}) }}
+        </div>
     </div>
-</div>
+
+    {# form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) #}
+    {# form_row(form.smart) #}
+
+    {% if form.searchable is defined %}
+        {{ form_row(form.searchable) }}
+    {% endif %}
+
+    {{ form_row(form.useableAsGridColumn) }}
+
+    {{ form_row(form.useableAsGridFilter) }}
+{% endset %}
+
+{{ elements.accordion({ 'General parameters': generalParameters, 'Backend parameters': backendParameters }) }}

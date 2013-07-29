@@ -126,7 +126,7 @@ class Datagrid extends Page
      * @throws \InvalidArgumentException
      * @return NodeElement
      */
-    protected function getFilter($filterName)
+    public function getFilter($filterName)
     {
         $filter = $this->getElement('grid-filter')
                         ->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
