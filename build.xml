@@ -4,7 +4,7 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-code-quality" depends="lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
