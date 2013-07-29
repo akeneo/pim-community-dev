@@ -163,4 +163,14 @@ class Controller extends BaseController
     {
         return $this->get('pim_product.manager.product');
     }
+
+    /**
+     * Get the validator
+     *
+     * @return Symfony\Component\Validator\ValidatorInterface
+     */
+    protected function getValidator()
+    {
+        return $this->get('validator');
+    }
 }

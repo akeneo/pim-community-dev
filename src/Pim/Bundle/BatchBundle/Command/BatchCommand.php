@@ -41,7 +41,6 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
         $logger = $this->getContainer()->get('logger');
 
         $dummyJobRepository = new JobRepository();

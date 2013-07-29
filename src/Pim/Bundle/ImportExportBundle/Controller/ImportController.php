@@ -232,4 +232,12 @@ class ImportController extends Controller
     public function launchAction(Job $job)
     {
     }
+
+    /**
+     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
+    protected function getConnectorRegistry()
+    {
+        return $this->get('pim_batch.connectors');
+    }
 }

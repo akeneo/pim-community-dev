@@ -110,14 +110,7 @@
     <script type="text/javascript">
         $(function() {
             'use strict';
-
-            var activeTab = $('[href=' + location.hash + ']');
-            if (activeTab) {
-                activeTab.tab('show');
-            }
-
-            $('.group').click(function(event) {
-                event.preventDefault();
+            $('.group').click(function() {
                 $(this).parent().find('tr:not(.group)').toggle();
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
             });

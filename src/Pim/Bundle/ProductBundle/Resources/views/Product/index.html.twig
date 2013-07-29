@@ -19,8 +19,6 @@
         var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
         var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
         var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
-        var filterInType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_CONTAINS') }};
-        var filterUnclassifiedType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_UNCLASSIFIED') }};
     </script>
     <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}

@@ -45,7 +45,7 @@ class SimpleStepHandler implements StepHandlerInterface
      */
     public function setLogger($logger)
     {
-        $this->setLogger($logger);
+        $this->logger = $logger;
     }
 
     /**

@@ -21,9 +21,6 @@ class SimpleJobLauncher implements JobLauncherInterface
     /* @var JobRepository */
     private $jobRepository = null;
 
-    /* @var TaskExecutor */
-    private $taskExecutor;
-
     /**
      * Set the JobRepsitory.
      *
@@ -39,28 +36,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     public function run(JobInterface $job, JobParameters $jobParameters)
     {
-        //assert.notNull(job, "The Job must not be null.");
-        //assert.notNull(jobParameters, "The JobParameters must not be null.");
-
         /* @var JobExecution */
-        $jobExecution = null;
-        /*JobExecution lastExecution = jobRepository.getLastJobExecution(job.getName(), jobParameters);
-        if (lastExecution != null) {
-            if (!job.isRestartable()) {
-                throw new JobRestartException("JobInstance already exists and is not restartable");
-            }
-            for (StepExecution execution : lastExecution.getStepExecutions()) {
-                if (execution.getStatus() == BatchStatus.UNKNOWN) {
-                    //throw
-                    throw new JobRestartException("Step [" + execution.getStepName() + "] is of status UNKNOWN");
-                }//end if
-            }//end for
-        }*/
-
-        // Check the validity of the parameters before doing creating anything
-        // in the repository...
-        //job.getJobParametersValidator().validate(jobParameters);
-
         $jobExecution = $this->jobRepository->createJobExecution($job->getName(), $jobParameters);
 
         $job->execute($jobExecution);

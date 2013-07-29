@@ -49,7 +49,6 @@ class JobDatagridManager extends DatagridManager
         return array(
             new FieldProperty($fieldId),
             new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
-            new UrlProperty('edit_link', $this->router, sprintf('pim_ie_%s_edit', $this->jobType), array('id')),
             new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
             new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
             new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
@@ -73,14 +72,14 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        $editAction = array(
-            'name'         => 'edit',
+        $showAction = array(
+            'name'         => 'show',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
+                'label'   => $this->translate('Show'),
                 'icon'    => 'edit',
-                'link'    => 'edit_link',
+                'link'    => 'show_link',
                 'backUrl' => true
             )
         );
@@ -120,7 +119,7 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $editAction, $deleteAction, $reportAction, $launchAction);
+        return array($clickAction, $showAction, $deleteAction, $reportAction, $launchAction);
     }
 
     /**

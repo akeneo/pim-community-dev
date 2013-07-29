@@ -100,12 +100,11 @@ class Job
      * @param string $alias
      * @param JobInterface $jobDefinition
      */
-    public function __construct($connector, $type, $alias, JobInterface $jobDefinition)
+    public function __construct($connector, $type, $alias)
     {
         $this->connector     = $connector;
         $this->type          = $type;
         $this->alias         = $alias;
-        $this->jobDefinition = $jobDefinition;
     }
 
     /**
