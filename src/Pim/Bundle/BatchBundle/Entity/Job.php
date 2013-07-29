@@ -268,7 +268,9 @@ class Job
     {
         $this->jobDefinition = $jobDefinition;
 
-        $this->setRawConfiguration($jobDefinition->getConfiguration());
+        if ($jobDefinition) {
+            $this->setRawConfiguration($jobDefinition->getConfiguration());
+        }
 
         return $this;
     }
