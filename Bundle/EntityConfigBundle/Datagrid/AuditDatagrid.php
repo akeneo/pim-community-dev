@@ -14,7 +14,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
-class AuditDatagrid extends DatagridManager
+abstract class AuditDatagrid extends DatagridManager
 {
     protected $configManager;
 
@@ -99,9 +99,9 @@ class AuditDatagrid extends DatagridManager
         $templateDiffProperty = new TwigTemplateProperty(
             $logDiffs,
             'OroEntityConfigBundle:Audit:data.html.twig',
-            array(
-                'config_manager' => $this->configManager,
-                'is_entity'      => $this instanceof AuditDatagridManager
+            array_merge(
+                $this->getOptions(),
+                array('config_manager' => $this->configManager)
             )
         );
         $logDiffs->setProperty($templateDiffProperty);
@@ -124,6 +124,8 @@ class AuditDatagrid extends DatagridManager
         $fieldsCollection->add($fieldCreated);
     }
 
+    abstract protected function getOptions();
+
     /**
      * {@inheritDoc}
      */
@@ -141,9 +143,7 @@ class AuditDatagrid extends DatagridManager
     protected function prepareQuery(ProxyQueryInterface $query)
     {
         $query->addSelect($this->authorExpression . ' AS author', true);
-
         $query->leftJoin('log.user', 'user');
-        $query->leftJoin('log.diffs', 'diff');
 
         return $query;
     }

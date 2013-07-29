@@ -19,7 +19,7 @@ class AuditFieldDatagridManager extends AuditDatagrid
     {
         parent::prepareQuery($query);
 
-        $query->where('diff.className = :className AND diff.fieldName = :fieldName');
+        $query->innerJoin('log.diffs', 'diff', 'WITH', 'diff.className = :className AND diff.fieldName = :fieldName');
         $query->setParameters(
             array(
                 'className' => $this->entityClass,
@@ -29,4 +29,13 @@ class AuditFieldDatagridManager extends AuditDatagrid
 
         return $query;
     }
+
+    protected function getOptions()
+    {
+        return array(
+            'is_entity'  => false,
+            'field_name' => $this->fieldName
+        );
+    }
+
 }

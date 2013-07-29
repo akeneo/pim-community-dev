@@ -12,18 +12,20 @@ $(function() {
                 .css({'display':'block', 'margin': '0 auto'})
                 .find('h3').remove();
 
-            confirmUpdate.$content.parent().find('a.btn-danger').replaceWith(progressbar);
+            confirmUpdate.$content.parent().find('a.cancel').hide();
             confirmUpdate.$content.parent().find('a.close').hide();
-            $('#confirmUpdateLoading').show();
+            confirmUpdate.$content.parent().find('a.btn-danger').replaceWith(progressbar);
 
+            $('#confirmUpdateLoading').show();
             window.location.href = url;
         };
 
         if (!_.isUndefined(Oro.BootstrapModal)) {
             var confirmUpdate = new Oro.BootstrapModal({
                 allowCancel: true,
+                cancelText: 'Cancel',
                 title: 'Schema update confirmation',
-                content: '<p>Your config changes will be applied to schema.</p></p>It may take few minutes.</p>',
+                content: '<p>Your config changes will be applied to schema.</p></p>It may take few minutes...</p>',
                 okText: 'Yes, Proceed'
             });
             confirmUpdate.on('ok', doAction);

@@ -7,11 +7,6 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 class AuditDatagridManager extends AuditDatagrid
 {
     /**
-     * @var int
-     */
-    public $entityClassId;
-
-    /**
      * @param ProxyQueryInterface $query
      * @return ProxyQueryInterface|void
      */
@@ -19,9 +14,16 @@ class AuditDatagridManager extends AuditDatagrid
     {
         parent::prepareQuery($query);
 
-        $query->where('diff.className = :className AND diff.fieldName IS NULL');
+        $query->innerJoin('log.diffs', 'diff', 'WITH', 'diff.className = :className AND diff.fieldName IS NULL');
         $query->setParameter('className', $this->entityClass);
 
         return $query;
+    }
+
+    protected function getOptions()
+    {
+        return array(
+            'is_entity' => true
+        );
     }
 }
