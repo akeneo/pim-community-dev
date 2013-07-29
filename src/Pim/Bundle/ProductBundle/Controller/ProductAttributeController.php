@@ -114,7 +114,7 @@ class ProductAttributeController extends Controller
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config'),
-            'datagrid'       => $datagrid->createView(),
+            'datagrid'        => $datagrid->createView(),
         );
     }
 
