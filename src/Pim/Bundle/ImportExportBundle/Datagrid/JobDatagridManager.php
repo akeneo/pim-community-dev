@@ -2,17 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\UrlProperty;
-
-use Oro\Bundle\GridBundle\Property\FieldProperty;
-
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 
@@ -51,9 +48,10 @@ class JobDatagridManager extends DatagridManager
 
         return array(
             new FieldProperty($fieldId),
+            new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
             new UrlProperty('edit_link', $this->router, sprintf('pim_ie_%s_edit', $this->jobType), array('id')),
             new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
-            new UrlProperty('view_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
+            new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
             new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
         );
     }
@@ -68,9 +66,8 @@ class JobDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translate('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
+                'label'         => $this->translate('Show'),
+                'link'          => 'show_link',
                 'backUrl'       => true,
                 'runOnRowClick' => true
             )
@@ -99,14 +96,14 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        $showAction = array(
-            'name'         => 'show',
+        $reportAction = array(
+            'name'         => 'report',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Show'),
+                'label'   => $this->translate('View report'),
                 'icon'    => 'picture',
-                'link'    => 'show_link',
+                'link'    => 'report_link',
                 'backUrl' => true
             )
         );
@@ -123,7 +120,7 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $editAction, $deleteAction, $showAction, $launchAction);
+        return array($clickAction, $editAction, $deleteAction, $reportAction, $launchAction);
     }
 
     /**

@@ -175,7 +175,7 @@ class ExportController extends Controller
     }
 
     /**
-     * Show a job
+     * View report for a job
      *
      * @param Job $job
      *
@@ -183,13 +183,13 @@ class ExportController extends Controller
      *     "/show/{id}",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
-     *     name="pim_ie_export_show"
+     *     name="pim_ie_export_report"
      * )
      * @Template
      *
      * @return array
      */
-    public function showAction(Job $job)
+    public function reportAction(Job $job)
     {
     }
 
