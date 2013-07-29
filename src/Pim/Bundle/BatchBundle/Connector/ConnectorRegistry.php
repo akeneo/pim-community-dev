@@ -15,7 +15,13 @@ use Pim\Bundle\BatchBundle\Entity\Job;
 class ConnectorRegistry
 {
 
+    /**
+     * TODO : Comments !!!
+     */
     protected $importJobs = array();
+    /**
+     * TODO : Comments !!!
+     */
     protected $exportJobs = array();
 
     /**
@@ -39,6 +45,9 @@ class ConnectorRegistry
         return $this;
     }
 
+    /**
+     * TODO : Comments !!!
+     */
     public function getJob($connector, $type, $jobAlias)
     {
         if ($connector = $this->getConnector($connector, $type)) {
