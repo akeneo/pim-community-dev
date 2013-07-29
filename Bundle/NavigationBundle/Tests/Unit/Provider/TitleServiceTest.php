@@ -36,6 +36,11 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $breadcrumbManager;
+
+    /**
      * @var TitleService
      */
     private $titleService;
@@ -66,12 +71,20 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->breadcrumbManager = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->titleService = new TitleService(
             $this->annotationsReader,
             $this->configReader,
             $this->translator,
             $this->em,
-            $this->serializer
+            $this->serializer,
+            '-',
+            'test-suffix',
+            $this->breadcrumbManager,
+            'test-menu'
         );
     }
 
@@ -270,7 +283,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $entityMock->expects($this->once())
             ->method('setTitle')
-            ->with($this->equalTo('Title'));
+            ->with($this->equalTo('Title - test-breadcrumb - test-suffix'));
 
         $this->repository->expects($this->once())
             ->method('findAll')
@@ -281,6 +294,10 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->em->expects($this->once())
             ->method('flush');
+
+        $this->breadcrumbManager->expects($this->once())
+            ->method('getBreadcrumbLabels')
+            ->will($this->returnValue(array('test-breadcrumb')));
 
         $this->titleService->update($testData);
     }

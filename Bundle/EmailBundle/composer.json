@@ -3,7 +3,6 @@
     "type": "symfony-bundle",
     "description": "BAP Email Bundle",
     "keywords": ["BAP"],
-    "homepage": "https://github.com/laboro/EmailBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",

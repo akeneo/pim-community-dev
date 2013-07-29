@@ -28,13 +28,41 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     protected $field;
 
     /**
-     * @param FieldDescriptionInterface $field
-     * @param string $templateName
+     * @var array
      */
-    public function __construct(FieldDescriptionInterface $field, $templateName)
+    protected $context;
+
+    /**
+     * @var array
+     */
+    protected $reservedKeys = array(
+        'field',
+        'record',
+        'value',
+    );
+
+    /**
+     * @param FieldDescriptionInterface $field
+     * @param string                    $templateName
+     * @param array                     $context
+     * @throws \InvalidArgumentException
+     */
+    public function __construct(FieldDescriptionInterface $field, $templateName, $context = array())
     {
         $this->field        = $field;
         $this->templateName = $templateName;
+        $this->context      = $context;
+
+        $checkInvalidArgument = array_intersect_key($context, array_flip($this->reservedKeys));
+        if (count($checkInvalidArgument)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Context of template "%s" includes reserved key(s) - (%s)',
+                    $this->templateName,
+                    implode(', ', array_keys($checkInvalidArgument))
+                )
+            );
+        }
     }
 
     /**
@@ -67,16 +95,18 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
 
     /**
      * Render field template
-     *
      * @param ResultRecordInterface $record
      * @return string
      */
     public function getValue(ResultRecordInterface $record)
     {
-        $context = array(
-            'field'  => $this->field,
-            'record' => $record,
-            'value'  => $record->getValue($this->field->getFieldName()),
+        $context = array_merge(
+            $this->context,
+            array(
+                'field'  => $this->field,
+                'record' => $record,
+                'value'  => $record->getValue($this->field->getFieldName()),
+            )
         );
 
         return $this->getTemplate()->render($context);

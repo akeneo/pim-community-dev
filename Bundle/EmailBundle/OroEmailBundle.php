@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImapBundle;
+namespace Oro\Bundle\EmailBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

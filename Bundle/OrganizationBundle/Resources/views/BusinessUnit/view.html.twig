@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% oro_title_set({params : {"%business_unitname%": entity.name|default('N/A') }}) %}
+{% oro_title_set({params : {"%business_unit.name%": entity.name|default('N/A') }}) %}
 {% set gridId = 'users-grid' %}
 {% block head_script %}
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}

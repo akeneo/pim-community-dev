@@ -4,6 +4,7 @@ namespace Oro\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -38,14 +39,15 @@ class EmailNotification
     protected $event;
 
     /**
-     * @var string
+     * @var EmailTemplate
      *
-     * @ORM\Column(name="template", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $template;
 
     /**
-     * @var string
+     * @var RecipientList
      *
      * @ORM\OneToOne(
      *     targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList",
@@ -115,10 +117,10 @@ class EmailNotification
     /**
      * Set template
      *
-     * @param string $template
+     * @param EmailTemplate $template
      * @return EmailNotification
      */
-    public function setTemplate($template)
+    public function setTemplate(EmailTemplate $template)
     {
         $this->template = $template;
     
@@ -128,7 +130,7 @@ class EmailNotification
     /**
      * Get template
      *
-     * @return string 
+     * @return EmailTemplate
      */
     public function getTemplate()
     {

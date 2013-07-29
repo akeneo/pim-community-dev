@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber;
+
 class EmailNotificationType extends AbstractType
 {
     /**
@@ -21,18 +23,24 @@ class EmailNotificationType extends AbstractType
     protected $entitiesData = array();
 
     /**
-     * @var array
+     * @var BuildTemplateFormSubscriber
      */
-    protected $templateNameChoices = array();
+    protected $subscriber;
 
-    public function __construct($entitiesConfig = array(), $templatesList = array())
+    /**
+     * @param array $entitiesConfig
+     * @param BuildTemplateFormSubscriber $subscriber
+     */
+    public function __construct($entitiesConfig, BuildTemplateFormSubscriber $subscriber)
     {
+        $this->subscriber = $subscriber;
         $this->entityNameChoices = array_map(
             function ($value) {
                 return isset($value['name'])? $value['name'] : '';
             },
             $entitiesConfig
         );
+
         $this->entitiesData = $entitiesConfig;
         array_walk(
             $this->entitiesData,
@@ -46,12 +54,6 @@ class EmailNotificationType extends AbstractType
                 $value = array_search('Oro\\Bundle\\TagBundle\\Entity\\ContainAuthorInterface', $interfaces) !== false;
             }
         );
-        $this->templateNameChoices = array_map(
-            function ($value) {
-                return isset($value['name'])? $value['name'] : '';
-            },
-            $templatesList
-        );
     }
 
     /**
@@ -59,6 +61,8 @@ class EmailNotificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber($this->subscriber);
+
         $builder->add(
             'entityName',
             'choice',
@@ -93,13 +97,9 @@ class EmailNotificationType extends AbstractType
 
         $builder->add(
             'template',
-            'choice',
+            'oro_email_template_list',
             array(
-                'choices'          => $this->templateNameChoices,
-                'empty_value'      => '',
-                'empty_data'       => null,
-                'multiple'         => false,
-                'required'         => true
+                'required' => true
             )
         );
 

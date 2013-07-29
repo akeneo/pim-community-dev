@@ -34,9 +34,10 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetterSetterForTemplate()
     {
+        $emailTemplate = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplate');
         $this->assertNull($this->entity->getTemplate());
-        $this->entity->setTemplate('testTemplate');
-        $this->assertEquals('testTemplate', $this->entity->getTemplate());
+        $this->entity->setTemplate($emailTemplate);
+        $this->assertEquals($emailTemplate, $this->entity->getTemplate());
     }
 
     public function testGetterSetterForEvent()

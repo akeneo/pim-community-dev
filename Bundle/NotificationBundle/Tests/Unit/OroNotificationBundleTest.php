@@ -15,12 +15,8 @@ class OroNavigationBundleTest extends \PHPUnit_Framework_TestCase
             ->method('addCompilerPass')
             ->with($this->isInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface'))
             ->will($this->returnSelf());
-        $container->expects($this->at(1))
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface'))
-            ->will($this->returnSelf());
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
             ->method('addCompilerPass')
             ->with(
                 $this->isInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface'),

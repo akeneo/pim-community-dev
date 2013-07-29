@@ -12,7 +12,13 @@ class Tag extends AbstractEntity implements Entity
     public function __construct($testCase, $redirect = true)
     {
         parent::__construct($testCase, $redirect);
+    }
+
+    public function init()
+    {
         $this->tagname = $this->byId('oro_tag_tag_form_name');
+
+        return $this;
     }
 
     public function setTagname($accountname)

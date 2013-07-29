@@ -4,13 +4,13 @@ $(function () {
     $(".update-status a").click(function () {
         $.get($(this).attr('href'), function(data) {
             dialogBlock = $(data).dialog({
-                title: "Update status",
+                title: _.__('Update status'),
                 width: 300,
                 height: 180,
                 modal: false,
                 resizable: false
             });
-        })
+        });
 
         return false;
     });

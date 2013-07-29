@@ -1,0 +1,8 @@
+oro:
+    email:
+        controller:
+            emailtemplate:
+                saved:
+                    message: "Template sucessfully saved"
+        form:
+            choose_template: "Choose a template..."

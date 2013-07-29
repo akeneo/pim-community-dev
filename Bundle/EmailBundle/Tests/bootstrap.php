@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Point to application autoload to resolve dependency
+ * Point to application autoload to resolve dependency on OroEmailBundle
  * Change to __DIR__ . '/../vendor/autoload.php' after custom composer repository
  * will be configured.
  */
