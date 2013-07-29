@@ -7,9 +7,7 @@
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block page_container %}
-<div class="container-fluid">
-    {% block content %}
+{% block content %}
 
     {% set title = 'Import overview'|trans %}
 
@@ -31,6 +29,4 @@
 
     <div id="import-grid"></div>
 
-    {% endblock %}
-</div>
 {% endblock %}

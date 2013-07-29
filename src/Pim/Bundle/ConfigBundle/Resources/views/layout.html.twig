@@ -1,2 +1,8 @@
 {% extends bap.layout %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% block page_container %}
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}
