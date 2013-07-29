@@ -47,10 +47,13 @@ class ExportController extends Controller
             $view = 'PimImportExportBundle:Export:index.html.twig';
         }
 
-        return $this->render($view, array(
-            'datagrid' => $datagridView,
-            'connectors' => $registry->getExportJobs(),
-        ));
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagridView,
+                'connectors' => $registry->getExportJobs(),
+            )
+        );
     }
 
     /**
@@ -124,13 +127,18 @@ class ExportController extends Controller
         $registry      = $this->getConnectorRegistry();
         $jobDefinition = $registry->getJob($job);
         if (!$jobDefinition) {
-            $this->addFlash('error', sprintf(
-                'The following job does not exist anymore. Please check configuration:<br />' .
-                'Connector: %s<br />' .
-                'Type: %s<br />' .
-                'Alias: %s',
-                $job->getConnector(), $job->getType(), $job->getAlias()
-            ));
+            $this->addFlash(
+                'error',
+                sprintf(
+                    'The following job does not exist anymore. Please check configuration:<br />' .
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
+                    $job->getConnector(),
+                    $job->getType(),
+                    $job->getAlias()
+                )
+            );
 
             return $this->redirect($this->generateUrl('pim_ie_export_index'));
         }
