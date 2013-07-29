@@ -49,6 +49,14 @@ class SimpleStepHandler implements StepHandlerInterface
     }
 
     /**
+     * Get the logger for internal use
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
      * @param jobRepository the jobRepository to set
      */
     public function setJobRepository(JobRepository $jobRepository)
@@ -115,7 +123,7 @@ class SimpleStepHandler implements StepHandlerInterface
 
             jobRepository.add(currentStepExecution);
             */
-        $this->logger->info("Executing step: [" . $step->getName() . "]");
+        $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
         try {
             $step->execute($currentStepExecution);
         } catch (JobInterruptedException $e) {

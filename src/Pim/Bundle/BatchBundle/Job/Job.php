@@ -56,6 +56,14 @@ class Job implements JobInterface
     }
 
     /**
+     * Get the logger for internal use
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
      * Get the job's name
      *
      * @return name
@@ -158,7 +166,7 @@ class Job implements JobInterface
     {
         $this->jobRepository = $jobRepository;
         $this->stepHandler = new SimpleStepHandler($jobRepository, null);
-        $this->stepHandler->setLogger($this->logger);
+        $this->stepHandler->setLogger($this->getLogger());
     }
 
     /**
@@ -172,7 +180,7 @@ class Job implements JobInterface
      */
     final public function execute(JobExecution $execution)
     {
-        $this->logger->debug("Job execution starting: " . $execution);
+        $this->getLogger()->debug("Job execution starting: " . $execution);
 
         try {
             //jobParametersValidator.validate(execution.getJobParameters());
@@ -190,20 +198,20 @@ class Job implements JobInterface
                 // with it in the same way as any other interruption.
                 $execution->setStatus(new BatchStatus(BatchStatus::STOPPED));
                 $execution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                $this->logger->debug("Job execution was stopped: ". $execution);
+                $this->getLogger()->debug("Job execution was stopped: ". $execution);
 
             }
 
 
         } catch (JobInterruptedException $e) {
-            $this->logger->info("Encountered interruption executing job: " . $e->getMessage());
-            $this->logger->debug("Full exception", array('exception', $e));
+            $this->getLogger()->info("Encountered interruption executing job: " . $e->getMessage());
+            $this->getLogger()->debug("Full exception", array('exception', $e));
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
-            $this->logger->error("Encountered fatal error executing job", array('exception', $e));
+            $this->getLogger()->error("Encountered fatal error executing job", array('exception', $e));
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $execution->addFailureException($e);
@@ -343,7 +351,7 @@ class Job implements JobInterface
         // Update the job status to be the same as the last step
         //
         if ($stepExecution != null) {
-            $this->logger->debug("Upgrading JobExecution status: " . $stepExecution);
+            $this->getLogger()->debug("Upgrading JobExecution status: " . $stepExecution);
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }
