@@ -21,14 +21,14 @@ abstract class AbstractJob implements JobInterface
 
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
 
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepository */
     protected $jobRepository;
 
-    /* @var StepHandler $stepHandler */
+    /* @var StepHandler */
     protected $stepHandler;
 
     /**
-     * @var ArrayCollection $steps
+     * @var array
      */
     protected $steps;
 
@@ -64,6 +64,32 @@ abstract class AbstractJob implements JobInterface
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+
+    /**
+     * Return all the steps
+     *
+     * @return array steps
+     */
+    public function getSteps()
+    {
+        return $this->steps;
+    }
+
+    /**
+     * Public setter for the steps in this job. Overrides any calls to
+     * addStep(Step).
+     *
+     * @param array $steps the steps to execute
+     */
+    public function setSteps(array $steps)
+    {
+        $this->steps = $steps;
+
+        return $this;
     }
 
     /**
@@ -74,14 +100,43 @@ abstract class AbstractJob implements JobInterface
      *
      * @return Step the Step
      */
-    abstract public function getStep($stepName);
+    public function getStep($stepName)
+    {
+        foreach ($this->steps as $step) {
+            if ($step->getName() == $stepName) {
+                return $step;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Retrieve the step names.
      *
      * @return array the step names
      */
-    abstract public function getStepNames();
+    public function getStepNames()
+    {
+        $names = array();
+        foreach ($this->steps as $step) {
+            $names[] = $step->getName();
+        }
+
+        return $names;
+    }
+
+
+    /**
+     * Convenience method for adding a single step to the job.
+     *
+     * @param StepInterface $step a {@link Step} to add
+     */
+    public function addStep(StepInterface $step)                                                                                                                         
+    {
+        $this->steps->add($step);
+    }
+
 
     /**
      * Public setter for the {@link JobRepository} that is needed to manage the
@@ -161,7 +216,7 @@ abstract class AbstractJob implements JobInterface
         if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
         ) {
-            /* @var ExitStatus $exitStatus */
+            /* @var ExitStatus */
             $exitStatus = $execution->getExitStatus();
             $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
             $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");

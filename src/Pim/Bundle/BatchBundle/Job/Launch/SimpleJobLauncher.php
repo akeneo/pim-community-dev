@@ -18,10 +18,10 @@ use Pim\Bundle\BatchBundle\Job\JobRepository;
  */
 class SimpleJobLauncher implements JobLauncherInterface
 {
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepository */
     private $jobRepository = null;
 
-    /* @var TaskExecutor $taskExecutor */
+    /* @var TaskExecutor */
     private $taskExecutor;
 
     /**
@@ -42,7 +42,7 @@ class SimpleJobLauncher implements JobLauncherInterface
         //assert.notNull(job, "The Job must not be null.");
         //assert.notNull(jobParameters, "The JobParameters must not be null.");
 
-        /* @var JobExecution $jobExecution */
+        /* @var JobExecution */
         $jobExecution = null;
         /*JobExecution lastExecution = jobRepository.getLastJobExecution(job.getName(), jobParameters);
         if (lastExecution != null) {

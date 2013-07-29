@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
 
 use Pim\Bundle\BatchBundle\Job\AbstractJob;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
@@ -24,81 +23,6 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
  */
 class SimpleJob extends AbstractJob
 {
-    /**
-     * @Assert\Valid
-     */
-     protected $steps;
-
-    /**
-     * @param string $name
-     */
-     public function __construct($name = '', $logger)
-     {
-         parent::__construct($name, $logger);
-
-         $this->steps = new ArrayCollection();
-     }
-
-     public function getSteps()
-     {
-         return $this->steps;
-     }
-
-    /**
-     * Public setter for the steps in this job. Overrides any calls to
-     * addStep(Step).
-     *
-     * @param Collection $steps the steps to execute
-     */
-    public function setSteps(Collection $steps)
-    {
-        $this->steps->clear();
-        $this->steps->addAll($steps);
-    }
-
-    /**
-     * Convenience method for clients to inspect the steps for this job.
-     *
-     * @return An array with the step names for this job
-     */
-    public function getStepNames()
-    {
-        $names = array();
-        foreach ($this->steps as $step) {
-            $names[] = $step->getName();
-        }
-
-        return $names;
-    }
-
-    /**
-     * Convenience method for adding a single step to the job.
-     *
-     * @param StepInterface $step a {@link Step} to add
-     */
-    public function addStep(StepInterface $step)
-    {
-        $this->steps->add($step);
-    }
-
-    /**
-     * Convenience method for adding a single step to the job.
-     *
-     * @param string $stepName Name of the step to get
-     *
-     * @return mixed
-     */
-    public function getStep($stepName)
-    {
-        foreach ($this->steps as $step) {
-            if ($step->getName() == $stepName) {
-                return $step;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
