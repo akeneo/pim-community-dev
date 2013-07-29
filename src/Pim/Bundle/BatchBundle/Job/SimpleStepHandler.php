@@ -139,7 +139,7 @@ class SimpleStepHandler implements StepHandlerInterface
         if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
                 || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
             // Ensure that the job gets the message that it is stopping
-            $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw new JobInterruptedException("Job interrupted by step execution");
         }
             /*

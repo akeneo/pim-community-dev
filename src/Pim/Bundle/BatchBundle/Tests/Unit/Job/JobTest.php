@@ -118,7 +118,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteInterrupted()
     {
-        $this->markTestSkipped('Not implemented yet');
         $exception = new \Exception('My test exception');
 
         $jobRepository = new JobRepository();
@@ -128,7 +127,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $step = new InterruptedStep('my_interrupted_step');
         $step->setLogger($this->logger);
         $step->setJobRepository($jobRepository);
-
 
         $this->job->setJobRepository($jobRepository);
         $this->job->addStep($step);
@@ -241,6 +239,37 @@ class JobTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
+    public function testAddStep()
+    {
+        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
+        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+
+        $this->job->addStep($mockStep1);
+        $this->job->addStep($mockStep2);
+
+        $this->assertEquals(array($mockStep1, $mockStep2), $this->job->getSteps());
+    }
+
+    public function testSetSteps()
+    {
+        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
+        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+
+        $this->job->setSteps(array($mockStep1, $mockStep2));
+
+        $this->assertEquals(array($mockStep1, $mockStep2), $this->job->getSteps());
+    }
+
+    public function testGetStepNames()
+    {
+        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
+        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+
+        $this->job->setSteps(array($mockStep1, $mockStep2));
+
+        $this->assertEquals(array('my_mock_step1','my_mock_step2'), $this->job->getStepNames());
+    }
+
     public function getItemStep($name, $reader, $processor, $writer)
     {
         $itemStep = new ItemStep($name);
@@ -302,4 +331,5 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         return $writer;
     }
+
 }

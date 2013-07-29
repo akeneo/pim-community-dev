@@ -174,7 +174,6 @@ abstract class AbstractStep implements StepInterface
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
-
             // Check if someone is trying to stop us
             if ($stepExecution->isTerminateOnly()) {
                 throw new JobInterruptedException("JobExecution interrupted.");
