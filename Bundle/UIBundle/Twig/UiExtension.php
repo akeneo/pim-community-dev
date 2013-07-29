@@ -33,11 +33,4 @@ class UiExtension extends \Twig_Extension
     {
         return 'oro_ui';
     }
-
-    public function getFilters()
-    {
-        return array(
-            new \Twig_SimpleFilter('unserialize', 'unserialize')
-        );
-    }
 }
