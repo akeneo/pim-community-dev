@@ -1,7 +1,7 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
 {% block page_container %}
-<div class="container-fluid product-edit">
+<div class="container-fluid">
 
     {% block content %}
 
@@ -11,12 +11,8 @@
         {% set title = 'Export creation'|trans %}
 
         {% set buttons %}
-            <div class="btn-group icons-holder">
-                <a class="btn" href="{{ path('pim_ie_export_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-            </div>
+            {{ elements.backLink(path('pim_ie_export_index')) }}
+            {{ elements.submitBtn }}
         {% endset %}
 
         {{ elements.page_header(title, buttons) }}

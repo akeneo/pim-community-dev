@@ -29,8 +29,7 @@ class ExportDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_importexport_export_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_product_exportprofile_remove', array('id'))
+            new UrlProperty('edit_link', $this->router, 'pim_ie_export_edit', array('id'))
         );
     }
 
