@@ -52,6 +52,7 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
                 'value'  => null,
             )
         );
+
         if (count($checkInvalidArgument)) {
             throw new \InvalidArgumentException(
                 sprintf(
