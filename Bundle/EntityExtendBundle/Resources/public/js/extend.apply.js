@@ -5,7 +5,8 @@ $(function() {
         var doAction = function() {
             confirmUpdate.preventClose(function(){});
 
-            var url = el.attr('href');
+            //var url = el.attr('rel');
+            var url = el.data('uri');
             var progressbar = $('#progressbar').clone();
             progressbar
                 .attr('id', 'confirmUpdateLoading')

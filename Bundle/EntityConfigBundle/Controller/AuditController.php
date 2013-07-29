@@ -51,13 +51,11 @@ class AuditController extends Controller
             )
         );
 
-        $datagrid = $datagridManager->getDatagrid();
+        $view = $datagridManager->getDatagrid()->createView();
 
-        $view = 'json' == $this->getRequest()->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityConfigBundle:Audit:audit.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
     }
 
     /**
@@ -98,12 +96,10 @@ class AuditController extends Controller
             )
         );
 
-        $datagrid = $datagridManager->getDatagrid();
+        $view = $datagridManager->getDatagrid()->createView();
 
-        $view = 'json' == $this->getRequest()->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityConfigBundle:Audit:audit.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
     }
 }
