@@ -73,6 +73,7 @@ class CategoryNormalizer implements NormalizerInterface
             function ($translation) use ($pattern) {
                 $title = str_replace('{locale}', $translation->getLocale(), $pattern);
                 $title = str_replace('{value}', $translation->getTitle(), $title);
+
                 return $title;
             }
         )->toArray();

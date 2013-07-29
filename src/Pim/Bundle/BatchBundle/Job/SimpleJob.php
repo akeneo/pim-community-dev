@@ -99,6 +99,11 @@ class SimpleJob extends AbstractJob
         return null;
     }
 
+    /**
+     * Get the steps configuration
+     *
+     * @return array
+     */
     public function getConfiguration()
     {
         $result = array();
@@ -107,6 +112,23 @@ class SimpleJob extends AbstractJob
         }
 
         return $result;
+    }
+
+    /**
+     * Set the steps configuration
+     *
+     * @param array $steps
+     */
+    public function setConfiguration(array $steps)
+    {
+        foreach ($steps as $title => $config) {
+            $step = $this->getStep($title);
+            if (!$step) {
+                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $title));
+            }
+
+            $this->setStepConfiguration($step, $config);
+        }
     }
 
     /**
@@ -153,5 +175,12 @@ class SimpleJob extends AbstractJob
             'processor' => $step->getProcessor()->getConfiguration(),
             'writer'    => $step->getWriter()->getConfiguration(),
         );
+    }
+
+    private function setStepConfiguration($step, array $config)
+    {
+        $step->getReader()->setConfiguration($config['reader']);
+        $step->getProcessor()->setConfiguration($config['processor']);
+        $step->getWriter()->setConfiguration($config['writer']);
     }
 }

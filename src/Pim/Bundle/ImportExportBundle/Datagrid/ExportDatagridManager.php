@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\FieldProperty;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -29,7 +27,7 @@ class ExportDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_ie_export_edit', array('id'))
+            new UrlProperty('show_link', $this->router, 'pim_ie_export_show', array('id'))
         );
     }
 
@@ -131,9 +129,9 @@ class ExportDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translate('Edit'),
+                'label'         => $this->translate('Show'),
                 'icon'          => 'edit',
-                'link'          => 'edit_link',
+                'link'          => 'show_link',
                 'runOnRowClick' => true,
                 'backUrl'       => true
             )

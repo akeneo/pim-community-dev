@@ -992,6 +992,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         ));
     }
 
+    /**
+     * @Then /^I should be on the "([^"]*)" export job page$/
+     */
+    public function iShouldBeOnTheExportJobPage($job)
+    {
+        $expectedAddress = $this->getPage('Export detail')->getUrl($this->getJob($job));
+        $this->assertSession()->addressEquals($expectedAddress);
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -1055,6 +1064,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
+    }
+
+    private function getJob($job)
+    {
+        return $this->getFixturesContext()->getJob($job);
     }
 
     private function createExpectationException($message)
