@@ -23,5 +23,4 @@ pim_import_export.jobs.attribute_import:
     export.title: 'Import'
 
 pim_import_export.status:
-    0: 'Draft'
-    1: 'Ready'
+    0: 'Ready'

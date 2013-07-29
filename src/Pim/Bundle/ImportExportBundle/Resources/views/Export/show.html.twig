@@ -1,0 +1,65 @@
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% import _self as export %}
+
+{% macro configuration(title, name, config) %}
+    <li>{{ title|trans ~ ' - ' ~ name|trans }}
+        <ul>
+        {% for field, value in config %}
+            <li><b>{{ field|normalizeKey }}</b> {{ value|normalizeValue }}</li>
+        {% else %}
+            <li><i>{{ 'No configuration' | trans }}</i></li>
+        {% endfor %}
+        </ul>
+    </li>
+{% endmacro %}
+
+
+{% block page_container %}
+<div class="container-fluid product-edit">
+
+    {% block content %}
+
+        {% set title = job.label  %}
+
+        {% set left %}
+            <ul class="inline">
+               <li>{{ 'Code'|trans }}: {{ job.code|upper }}</li>
+           </ul>
+        {% endset %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_ie_export_index')) }}
+            {{ elements.link('Execute', '#', {icon: 'cogs', class: 'btn-primary'}) }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, left) }}
+
+        <h1>{{ jobDefinition.name | trans }}</h1>
+
+        {% for stepTitle, stepConfig in jobDefinition.configuration %}
+        <div id="accordion1" class="accordion">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+                        <i class="fa-icon-collapse-alt"></i>
+                        {{ 'Step #%stepIndex%' | trans({ '%stepIndex%': loop.index }) }} - {{ stepTitle | trans }}
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        <ul>
+                            {{ export.configuration('Reader', jobDefinition.step(stepTitle).reader.name, stepConfig.reader) }}
+                            {{ export.configuration('Processor', jobDefinition.step(stepTitle).processor.name, stepConfig.processor) }}
+                            {{ export.configuration('Writer', jobDefinition.step(stepTitle).writer.name, stepConfig.writer) }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% endblock %}
+
+</div>
+{% endblock %}

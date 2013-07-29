@@ -43,7 +43,7 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
-    # Serializers
+    # Encoders
     pim_serializer.encoder.xml:
         public: false
         class: %pim_serializer.encoder.xml.class%
