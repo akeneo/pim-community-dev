@@ -154,7 +154,8 @@ class Job implements JobInterface
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-        $this->stepHandler = new SimpleStepHandler($jobRepository, null, $this->logger);
+        $this->stepHandler = new SimpleStepHandler($jobRepository, null);
+        $this->stepHandler->setLogger($this->logger);
     }
 
     /**
@@ -326,7 +327,7 @@ class Job implements JobInterface
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $execution);
+            $stepExecution = $this->stepHandler->handleStep($step, $execution);
             if ($stepExecution->getStatus()->getValue() != BatchStatus::COMPLETED) {
                 //
                 // Terminate the job if a step fails
