@@ -25,7 +25,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the grid should contain (\d+) element$/
+     * @Given /^the grid should contain (\d+) elements?$/
      */
     public function theGridShouldContainElement($count)
     {
@@ -34,6 +34,22 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 'Expecting to see %d row(s) in the datagrid, actually saw %d.',
                 $count, $actualCount
             ));
+        }
+    }
+
+    /**
+     * @Given /^the grid should not contains the element "([^"]*)"$/
+     * @param string $notExpectedValue
+     */
+    public function theGridShouldNotContainsTheElement($notExpectedValue)
+    {
+        try {
+            $expectedValue = $this->datagrid->getGridRow($notExpectedValue);
+            throw new \InvalidArgumentException(
+                sprintf('The grid should not contains the element %s', $notExpectedValue)
+            );
+        } catch (\InvalidArgumentException $e) {
+            // nothing to do
         }
     }
 
@@ -47,6 +63,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 'Expecting column "%s" to contain "%s", got "%s".',
                 $column, $expectation, $actual
             ));
+        }
+    }
+
+    /**
+     * @Given /^I should see the filters (.*)$/
+     *
+     * @param string $filters
+     */
+    public function iShouldSeeTheFilters($filters)
+    {
+        $filters = $this->getMainContext()->listToArray($filters);
+        foreach ($filters as $filter) {
+            $this->datagrid->getFilter($filter);
         }
     }
 

@@ -7,8 +7,6 @@ use Pim\Bundle\BatchBundle\Entity\FieldMapping;
 
 /**
  * Test related class
- *
- *
  */
 class FieldMappingTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,9 +17,9 @@ class FieldMappingTest extends \PHPUnit_Framework_TestCase
     protected $field;
 
     /**
-     * Setup
+     * {@inheritdoc}
      */
-    public function setup()
+    protected function setUp()
     {
         $this->field = new FieldMapping();
     }

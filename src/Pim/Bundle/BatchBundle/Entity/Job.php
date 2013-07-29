@@ -98,7 +98,7 @@ class Job
      * @param string $connector
      * @param string $type
      * @param string $alias
-     * @param string $jobDefinition
+     * @param JobInterface $jobDefinition
      */
     public function __construct($connector, $type, $alias, JobInterface $jobDefinition)
     {
