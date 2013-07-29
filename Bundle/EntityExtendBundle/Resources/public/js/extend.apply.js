@@ -5,8 +5,7 @@ $(function() {
         var doAction = function() {
             confirmUpdate.preventClose(function(){});
 
-            //var url = el.attr('rel');
-            var url = el.data('uri');
+            var url = $(el).attr('href').substr(21);
             var progressbar = $('#progressbar').clone();
             progressbar
                 .attr('id', 'confirmUpdateLoading')
@@ -24,9 +23,9 @@ $(function() {
         if (!_.isUndefined(Oro.BootstrapModal)) {
             var confirmUpdate = new Oro.BootstrapModal({
                 allowCancel: true,
-                cancelText: 'Cancel',
+                cancelText: _.__('Cancel'),
                 title: 'Schema update confirmation',
-                content: '<p>Your config changes will be applied to schema.</p></p>It may take few minutes...</p>',
+                content: '<p>'+ _.__('Your config changes will be applied to schema.')+'</p></p>'+ _.__('It may take few minutes...')+'</p>',
                 okText: 'Yes, Proceed'
             });
             confirmUpdate.on('ok', doAction);
