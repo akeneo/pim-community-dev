@@ -12,16 +12,23 @@
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_create') }}' });
+        $(document).dialogForm({ trigger: '#create-product', url: '{{ path("pim_product_product_create") }}' });
+
+        var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+        var tree_id = "#tree";
+        var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
+        var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
+        var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
+        var filterInType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_CONTAINS') }};
+        var filterUnclassifiedType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_UNCLASSIFIED') }};
     </script>
+    <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
 
-{% block page_container %}
-<div class="container-fluid product-list">
-    {% block content %}
+{% block content %}
 
     {% set buttons %}
-        <a id="create-product" class="btn btn-primary pull-right" href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
+        {{ elements.createBtn('New product', null, 'create-product') }}
     {% endset %}
 
     {% set subtitle %}
@@ -54,17 +61,4 @@
         <div id="product-grid"></div>
     </div>
 
-    {% endblock %}
-</div>
-
-<script type="text/javascript">
-    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-    var tree_id = "#tree";
-    var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-    var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
-    var filterInType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_CONTAINS') }};
-    var filterUnclassifiedType = {{ constant('Pim\\Bundle\\FilterBundle\\Form\\Type\\Filter\\CategoryFilterType::TYPE_UNCLASSIFIED') }};
-</script>
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
