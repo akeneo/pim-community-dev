@@ -53,10 +53,15 @@ class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
     {
         $formData = array(
             'datagrid' => array('enabled' => true),
+            'id'       => null,
         );
 
         $type = new ConfigEntityType($this->configManager);
-        $form = $this->factory->create($type, null, array('class_name' => ConfigManagerTest::DEMO_ENTITY));
+        $form = $this->factory->create($type, null, array(
+            'class_name' => ConfigManagerTest::DEMO_ENTITY,
+            'entity_id'  => 1
+        ));
+
         $form->bind($formData);
 
         $this->assertTrue($form->isSynchronized());

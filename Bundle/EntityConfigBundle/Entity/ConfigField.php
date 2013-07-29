@@ -57,6 +57,7 @@ class ConfigField extends AbstractConfig
         $this->code   = $code;
         $this->type   = $type;
         $this->values = new ArrayCollection;
+        $this->mode   = self::MODE_VIEW_DEFAULT;
     }
 
     /**

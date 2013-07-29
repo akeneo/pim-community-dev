@@ -80,7 +80,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
 
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']//li/a[contains(.,'Logout')]")->click();
-        $this->assertEquals('Login', $this->title());
+        $this->assertEquals('Login - ORO', $this->title());
     }
 
     /**
@@ -101,7 +101,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
 
         $actualResult = $this->byXPath("//div[contains(@class,'alert')]/div")->text();
 
-        $this->assertContains('Login', $this->title());
+        $this->assertEquals('Login - ORO', $this->title());
         $this->assertEquals("Bad credentials", $actualResult);
     }
 

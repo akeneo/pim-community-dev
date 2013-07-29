@@ -71,6 +71,7 @@ class LoggableManager
 
     /**
      * Stack of logged flexible entities
+     *
      * @var array
      */
     protected $loggedObjects = array();
@@ -161,7 +162,7 @@ class LoggableManager
     }
 
     /**
-     * @param $entity
+     * @param               $entity
      * @param EntityManager $em
      */
     public function handlePostPersist($entity, EntityManager $em)
@@ -381,7 +382,6 @@ class LoggableManager
 
     /**
      * Get the LogEntry class
-     *
      * @return string
      */
     protected function getLogEntityClass()
@@ -391,7 +391,6 @@ class LoggableManager
 
     /**
      * Add flexible attribute log to a parent entity's log entry
-     *
      * @param  AbstractEntityFlexibleValue $entity
      * @return boolean                     True if value has been saved, false otherwise
      */

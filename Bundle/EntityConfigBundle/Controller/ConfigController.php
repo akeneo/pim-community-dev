@@ -59,7 +59,10 @@ class ConfigController extends Controller
         $form = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,
-            array('class_name' => $entity->getClassName())
+            array(
+                'class_name' => $entity->getClassName(),
+                'entity_id'  => $entity->getId()
+            )
         );
 
         if ($request->getMethod() == 'POST') {
@@ -69,7 +72,15 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+                return $this->get('oro_ui.router')->actionRedirect(
+                    array(
+                        'route' => 'oro_entityconfig_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_index'
+                    )
+                );
             }
         }
 
@@ -128,6 +139,12 @@ class ConfigController extends Controller
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+
+        /*
+        var_dump($this->getRequest()->headers->get('referer'));
+        if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
+            $this->get('session')->getFlashBag()->add('success', 'Schema successfully updated.');
+        }*/
 
         return array(
             'entity'        => $entity,
@@ -188,10 +205,16 @@ class ConfigController extends Controller
     {
         $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
 
-        $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
-            'class_name' => $field->getEntity()->getClassName(),
-            'field_name' => $field->getCode(),
-        ));
+        $form  = $this->createForm(
+            'oro_entity_config_config_field_type',
+            null,
+            array(
+                'class_name' => $field->getEntity()->getClassName(),
+                'field_name' => $field->getCode(),
+                'field_type' => $field->getType(),
+                'field_id'   => $field->getId(),
+            )
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
@@ -201,11 +224,16 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_view',
+                return $this->get('oro_ui.router')->actionRedirect(
                     array(
-                        'id' => $field->getEntity()->getId()
+                        'route' => 'oro_entityconfig_field_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $field->getEntity()->getId())
                     )
-                ));
+                );
             }
         }
 

@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
@@ -81,9 +82,8 @@ class ConfigDatagridManager extends DatagridManager
         $options = array('name'=> array(), 'module'=> array());
 
         $query = $this->createQuery()->getQueryBuilder()
-            ->add('select', 'a.className')
-            ->add('from', 'Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity a')
-            ->distinct('a.className');
+            ->add('select', 'ce.className')
+            ->distinct('ce.className');
 
         $result = $query->getQuery()->getArrayResult();
 
@@ -126,8 +126,8 @@ class ConfigDatagridManager extends DatagridManager
                         )
                     );
 
-                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
-                        $fields[$item['priority']] = $fieldObjectProvider;
+                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                        $fields[$item['options']['priority']] = $fieldObjectProvider;
                     } else {
                         $fields[] = $fieldObjectProvider;
                     }
@@ -307,12 +307,13 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
+     * @param ProxyQueryInterface $query
      * @return ProxyQueryInterface
      */
-    protected function createQuery()
+    protected function prepareQuery(ProxyQueryInterface $query)
     {
-        /** @var ProxyQueryInterface|Query $query */
-        $query = parent::createQuery();
+        $query->where('ce.mode <> :mode');
+        $query->setParameter('mode', AbstractConfig::MODE_VIEW_HIDDEN);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {

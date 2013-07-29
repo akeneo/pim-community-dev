@@ -20,11 +20,6 @@ class ConfigProvider implements ConfigProviderInterface
     protected $configManager;
 
     /**
-     * @var EntityConfig[]
-     */
-    protected $entityConfigCache = array();
-
-    /**
      * @var EntityConfigContainer
      */
     protected $configContainer;
@@ -59,13 +54,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfig($className)
     {
-        $className = $this->getClassName($className);
-
-        if (isset($this->entityConfigCache[$className])) {
-            return $this->entityConfigCache[$className];
-        } else {
-            return $this->entityConfigCache[$className] = $this->configManager->getConfig($className, $this->scope);
-        }
+        return $this->configManager->getConfig($this->getClassName($className), $this->scope);
     }
 
     /**
@@ -74,9 +63,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function hasConfig($className)
     {
-        $className = $this->getClassName($className);
-
-        return isset($this->entityConfigCache[$className]) ? true : $this->configManager->hasConfig($className);
+        return $this->configManager->hasConfig($this->getClassName($className));
     }
 
     /**

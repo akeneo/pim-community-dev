@@ -2,23 +2,26 @@
 
 namespace Oro\Bundle\EntityConfigBundle;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
@@ -57,9 +60,14 @@ class ConfigManager
     protected $configCache;
 
     /**
-     * @var ConfigInterface[]
+     * @var AuditManager
      */
-    protected $persistConfigs = array();
+    protected $auditManager;
+
+    /**
+     * @var ConfigInterface[]|\SplQueue
+     */
+    protected $persistConfigs;
 
     /**
      * @var ConfigInterface[]
@@ -90,12 +98,16 @@ class ConfigManager
      * @param MetadataFactory $metadataFactory
      * @param EventDispatcher $eventDispatcher
      * @param ServiceProxy    $proxyEm
+     * @param ServiceProxy    $security
      */
-    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
+    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $security)
     {
+        $this->persistConfigs  = new \SplQueue();
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
+
+        $this->auditManager = new AuditManager($this, $security);
     }
 
     /**
@@ -284,11 +296,11 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        $this->persistConfigs[spl_object_hash($config)] = $config;
+        $this->persistConfigs->push($config);
 
         if ($config instanceof EntityConfigInterface) {
             foreach ($config->getFields() as $fieldConfig) {
-                $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
+                $this->persistConfigs->push($fieldConfig);
             }
         }
     }
@@ -323,7 +335,17 @@ class ConfigManager
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
             }
 
+            $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+
             $this->calculateConfigChangeSet($config);
+
+            $changes = $this->getConfigChangeSet($config);
+
+            if (!count($changes)) {
+                continue;
+            }
+
+            $values = array_intersect_key($config->getValues(), $changes);
 
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
@@ -332,11 +354,12 @@ class ConfigManager
                 }
 
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getFieldSerializableValues();
-                $configField->fromArray($config->getScope(), $config->getValues(), $serializableValues);
+                $configField->fromArray($config->getScope(), $values, $serializableValues);
             } else {
                 $serializableValues = $this->getProvider($config->getScope())->getConfigContainer()->getEntitySerializableValues();
-                $configEntity->fromArray($config->getScope(), $config->getValues(), $serializableValues);
+                $configEntity->fromArray($config->getScope(), $values, $serializableValues);
             }
+
 
             if ($this->configCache) {
                 $this->configCache->removeConfigFromCache($className, $config->getScope());
@@ -344,6 +367,8 @@ class ConfigManager
         }
 
         $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new FlushConfigEvent($this));
+
+        $this->auditManager->log();
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
@@ -353,10 +378,13 @@ class ConfigManager
 
         $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
 
-        $this->persistConfigs   = array();
         $this->removeConfigs    = array();
+        $this->originalConfigs  = array();
         $this->configChangeSets = array();
         $this->updatedConfigs   = array();
+
+
+        $this->eventDispatcher->dispatch(Events::POST_FLUSH, new FlushConfigEvent($this));
     }
 
 
@@ -369,6 +397,12 @@ class ConfigManager
         if (isset($this->originalConfigs[spl_object_hash($config)])) {
             $originConfig      = $this->originalConfigs[spl_object_hash($config)];
             $originConfigValue = $originConfig->getValues();
+        }
+
+        foreach ($config->getValues() as $key => $value) {
+            if (!isset($originConfigValue[$key])) {
+                $originConfigValue[$key] = null;
+            }
         }
 
         $diffNew = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
@@ -385,15 +419,16 @@ class ConfigManager
             $diff[$key] = array($oldValue, $value);
         }
 
+
         if (!isset($this->configChangeSets[spl_object_hash($config)])) {
             $this->configChangeSets[spl_object_hash($config)] = array();
         }
 
-        if ($diff) {
+        if (count($diff)) {
             $this->configChangeSets[spl_object_hash($config)] = array_merge($this->configChangeSets[spl_object_hash($config)], $diff);
 
-            if (!in_array($config, $this->updatedConfigs, true)) {
-                $this->updatedConfigs[] = $config;
+            if (!isset($this->updatedConfigs[spl_object_hash($config)])) {
+                $this->updatedConfigs[spl_object_hash($config)] = $config;
             }
         }
     }
@@ -479,7 +514,21 @@ class ConfigManager
         /** @var ConfigEntity $entity */
         $entity = $entityConfigRepo->findOneBy(array('className' => $className));
         if (!$entity) {
-            $entity = new ConfigEntity($className);
+            $metadata = $this->metadataFactory->getMetadataForClass($className);
+            $entity   = new ConfigEntity($className);
+            $entity->setMode($metadata->viewMode);
+
+            foreach ($this->getProviders() as $provider) {
+                $provider->createEntityConfig(
+                    $className,
+                    $provider->getConfigContainer()->getEntityDefaultValues()
+                );
+            }
+
+            $this->eventDispatcher->dispatch(
+                Events::NEW_ENTITY,
+                new NewEntityEvent($className, $this)
+            );
         }
 
         return $entity;

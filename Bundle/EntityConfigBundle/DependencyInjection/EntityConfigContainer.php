@@ -60,8 +60,23 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['default_value'])) {
-                $result[$code] = $item['default_value'];
+            if (isset($item['options']['default_value'])) {
+                $result[$code] = $item['options']['default_value'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntityInternalValues()
+    {
+        $result = array();
+        foreach ($this->getEntityItems() as $code => $item) {
+            if (isset($item['options']['internal']) && $item['options']['internal']) {
+                $result[$code] = 0;
             }
         }
 
@@ -75,8 +90,8 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['serializable'])) {
-                $result[$code] = (bool) $item['serializable'];
+            if (isset($item['options']['serializable'])) {
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -136,20 +151,13 @@ class EntityConfigContainer
     }
 
     /**
-     * @param  bool  $checkEntityGrid
      * @return array
      */
-    public function getFieldItems($checkEntityGrid = false)
+    public function getFieldItems()
     {
         $fieldItems = array();
         if (isset($this->config['field']) && isset($this->config['field']['items'])) {
-            if ($checkEntityGrid) {
-                $fieldItems = array_filter($this->config['field']['items'], function ($item) {
-                    return isset($item['entity_grid']) ? (bool) $item['entity_grid'] : true;
-                });
-            } else {
-                $fieldItems = $this->config['field']['items'];
-            }
+            $fieldItems = $this->config['field']['items'];
         }
 
         return $fieldItems;
@@ -162,8 +170,39 @@ class EntityConfigContainer
     {
         $result = array();
         foreach ($this->getFieldItems() as $code => $item) {
-            if (isset($item['default_value'])) {
-                $result[$code] = $item['default_value'];
+            if (isset($item['options']['default_value'])) {
+                $result[$code] = $item['options']['default_value'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldInternalValues()
+    {
+        $result = array();
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['options']['internal']) && $item['options']['internal']) {
+                $result[$code] = true;
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getFieldRequiredPropertyValues()
+    {
+        $result = array();
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['options']['required_property'])) {
+                $result[$code] = $item['options']['required_property'];
             }
         }
 
@@ -176,9 +215,9 @@ class EntityConfigContainer
     public function getFieldSerializableValues()
     {
         $result = array();
-        foreach ($this->getEntityItems() as $code => $item) {
-            if (isset($item['serializable'])) {
-                $result[$code] = (bool) $item['serializable'];
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['options']['serializable'])) {
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -206,6 +245,22 @@ class EntityConfigContainer
         }
 
         return $fieldFormConfig;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldFormBlockConfig()
+    {
+        $entityFormBlockConfig = null;
+        if (isset($this->config['field'])
+            && isset($this->config['field']['form'])
+            && isset($this->config['field']['form']['block_config'])
+        ) {
+            $entityFormBlockConfig = $this->config['field']['form']['block_config'];
+        }
+
+        return $entityFormBlockConfig;
     }
 
     /**
