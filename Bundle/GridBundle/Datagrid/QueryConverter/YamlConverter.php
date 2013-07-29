@@ -3,11 +3,13 @@
 namespace Oro\Bundle\GridBundle\Datagrid\QueryConverter;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Config\Definition\Processor;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\GridBundle\Datagrid\QueryConverterInterface;
+use Oro\Bundle\GridBundle\DependencyInjection\ReportConfiguration;
 
 class YamlConverter implements QueryConverterInterface
 {
@@ -20,7 +22,10 @@ class YamlConverter implements QueryConverterInterface
             $value = Yaml::parse($value);
         }
 
-        $qb = $em->createQueryBuilder();
+        $processor = new Processor();
+
+        $value = $processor->processConfiguration(new ReportConfiguration(), array('report' => $value));
+        $qb    = $em->createQueryBuilder();
 
         if (!isset($value['from'])) {
             throw new \RuntimeException('Missing mandatory "from" section');
@@ -90,6 +95,6 @@ class YamlConverter implements QueryConverterInterface
      */
     public function dump(QueryBuilder $input)
     {
-        ;
+        return '';
     }
 }
