@@ -19,9 +19,9 @@ class RawConfigurationTest extends \PHPUnit_Framework_TestCase
     protected $configuration;
 
     /**
-     * Setup
+     * {@inheritdoc}
      */
-    public function setup()
+    protected function setUp()
     {
         $this->configuration = new MyConfiguration();
         $this->configuration->setDelimiter('~');

@@ -25,7 +25,7 @@ class Job
     const TYPE_EXPORT = 'export';
 
     /**
-     * @var integer
+     * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -34,15 +34,15 @@ class Job
     protected $id;
 
     /**
-     * @var string
+     * @var string $code
      *
-     * @ORM\Column(length=100, nullable=true)
+     * @ORM\Column(name="code", type="string", length=100, nullable=true)
      * @Assert\NotBlank
      */
     protected $code;
 
     /**
-     * @var string
+     * @var string $label
      *
      * @ORM\Column(nullable=true)
      * @Assert\NotBlank
@@ -50,9 +50,9 @@ class Job
     protected $label;
 
     /**
-     * @var string
+     * @var string $label
      *
-     * @ORM\Column
+     * @ORM\Column(name="alias", type="string", length=50)
      */
     protected $alias;
 
@@ -64,9 +64,9 @@ class Job
     protected $status = self::STATUS_READY;
 
     /**
-     * @var string
+     * @var string $connector
      *
-     * @ORM\Column
+     * @ORM\Column(name="connector", type="string")
      */
     protected $connector;
 
@@ -80,7 +80,7 @@ class Job
     protected $type;
 
     /**
-     * @var array
+     * @var array $rawConfiguration
      *
      * @ORM\Column(type="array")
      */
@@ -98,7 +98,7 @@ class Job
      * @param string $connector
      * @param string $type
      * @param string $alias
-     * @param string $jobDefinition
+     * @param JobInterface $jobDefinition
      */
     public function __construct($connector, $type, $alias)
     {
