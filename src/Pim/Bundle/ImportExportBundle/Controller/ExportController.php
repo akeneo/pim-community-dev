@@ -104,23 +104,38 @@ class ExportController extends Controller
      *
      * @param Job $job
      *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route(
+     *     "/edit/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_export_edit"
+     * )
      * @Template
      *
      * @return array
      */
     public function editAction(Job $job)
     {
-        if ($this->get('pim_config.form.handler.locale')->process($locale)) {
-            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
+        $request = $this->getRequest();
+        $form = $this->createForm(new JobType(), $job);
 
-            return $this->redirect(
-                $this->generateUrl('pim_config_locale_index')
-            );
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($job);
+                $em->flush();
+
+                $this->addFlash('success', 'The export has been successfully updated.');
+
+                return $this->redirect(
+                    $this->generateUrl('pim_ie_export_index')
+                );
+            }
         }
 
         return array(
-            'form' => $this->get('pim_config.form.locale')->createView()
+            'form' => $form->createView()
         );
     }
 }
