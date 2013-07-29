@@ -90,9 +90,9 @@ class CategoryTreeControllerTest extends ControllerTest
 
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
-            function ($node, $i) {
+            function ($node, $i) use ($uri) {
                 if ($action = $node->attr('action')) {
-                    if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
+                    if (strpos($action, $uri) !== false) {
                         return true;
                     }
                 }
