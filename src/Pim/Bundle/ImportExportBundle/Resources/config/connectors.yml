@@ -4,8 +4,14 @@ parameters:
     pim_import_export.reader.attribute.class:         Pim\Bundle\ImportExportBundle\Reader\AttributeReader
     pim_import_export.processor.csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor
     pim_import_export.writer.file.class:              Pim\Bundle\ImportExportBundle\Writer\FileWriter
+    # TODO : fake implementations to replace by concret one when we'll work on launch an import
+    pim_import_export.reader.dummy.class:             Pim\Bundle\ImportExportBundle\Reader\DummyReader
+    pim_import_export.processor.dummy.class:          Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
+    pim_import_export.writer.dummy.class:             Pim\Bundle\ImportExportBundle\Writer\DummyWriter
 
 services:
+
+    # readers
     pim_import_export.reader.product:
         class: %pim_import_export.reader.product.class%
         arguments:
@@ -22,10 +28,22 @@ services:
         arguments:
             - @doctrine.orm.default_entity_manager
 
+    pim_import_export.reader.dummy:
+        class: %pim_import_export.reader.dummy.class%
+
+    # processors
     pim_import_export.processor.csv_serializer:
         class: %pim_import_export.processor.csv_serializer.class%
         arguments:
             - @pim_serializer
 
+    pim_import_export.processor.dummy:
+        class: %pim_import_export.processor.dummy.class%
+
+    # writers
     pim_import_export.writer.file:
         class: %pim_import_export.writer.file.class%
+
+    pim_import_export.writer.dummy:
+        class: %pim_import_export.writer.dummy.class%
+

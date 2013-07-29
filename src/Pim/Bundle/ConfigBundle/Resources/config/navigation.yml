@@ -1,19 +1,24 @@
 oro_menu_config:
     items:
+        pim_import_tab:
+            label: 'Import'
+            uri: '#'
+            extras:
+                position: 10
         pim_export_tab:
             label: 'Export'
             uri: '#'
             extras:
-                position: 10
+                position: 30
         pim_configuration_tab:
             label: 'Configuration'
             uri: '#'
             extras:
-                position: 20
+                position: 40
         system_tab:
             label: 'Administration'
             extras:
-                position: 30
+                position: 50
         pim_config_locale:
             label: 'Locales'
             route: 'pim_config_locale_index'
