@@ -15,36 +15,7 @@
         {{ elements.form_errors(form) }}
 
         <div class="tab-pane active" id="properties">
-            <div id="accordion1" class="accordion">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                            <i class="fa-icon-collapse-alt"></i>
-                            {{ "General Properties"|trans }}
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="accordion-body in">
-                        <div class="accordion-inner">
-                            {{ form_row(form.code) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="accordion2" class="accordion">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                            <i class="fa-icon-collapse-alt"></i>
-                            {{ "Locale values"|trans }}
-                        </a>
-                    </div>
-                    <div id="collapseTwo" class="accordion-body in">
-                        <div class="accordion-inner">
-                            {{ form_row(form.label) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Locale values': form_row(form.label) }) }}
         </div>
     </div>
 
