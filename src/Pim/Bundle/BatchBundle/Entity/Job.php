@@ -52,7 +52,7 @@ class Job
     /**
      * @var string $label
      *
-     * @ORM\Column
+     * @ORM\Column(name="alias", type="string", length=50)
      */
     protected $alias;
 
@@ -164,6 +164,30 @@ class Job
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     *
+     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

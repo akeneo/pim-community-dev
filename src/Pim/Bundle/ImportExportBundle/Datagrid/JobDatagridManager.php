@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+
+use Oro\Bundle\GridBundle\Action\ActionInterface;
+
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -32,12 +38,106 @@ class JobDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    public function configureFields(FieldDescriptionCollection $fieldsCollection)
+    protected function getProperties()
+    {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
+            )
+        );
+
+        return array(
+            new FieldProperty($fieldId),
+            new UrlProperty('edit_link', $this->router, sprintf('pim_ie_%s_edit', $this->jobType), array('id')),
+            new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
+            new UrlProperty('view_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
+            new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRowActions()
+    {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translate('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => true,
+                'runOnRowClick' => true
+            )
+        );
+
+        $editAction = array(
+            'name'         => 'edit',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('Edit'),
+                'icon'    => 'edit',
+                'link'    => 'edit_link',
+                'backUrl' => true
+            )
+        );
+
+        $deleteAction = array(
+            'name'         => 'delete',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => $this->translate('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
+            )
+        );
+
+        $showAction = array(
+            'name'         => 'show',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('Show'),
+                'icon'    => 'show',
+                'link'    => 'show_link',
+                'backUrl' => true
+            )
+        );
+
+        $launchAction = array(
+            'name'        => 'launch',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('Launch'),
+                'icon'    => 'launch',
+                'link'    => 'launch_link',
+                'backUrl' => true
+            )
+        );
+
+        return array($clickAction, $editAction, $deleteAction, $showAction, $launchAction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = $this->createTextField('code', 'Code');
         $fieldsCollection->add($field);
 
         $field = $this->createTextField('label', 'Label');
+        $fieldsCollection->add($field);
+
+        $field = $this->createTextField('alias', 'Job');
         $fieldsCollection->add($field);
 
         $field = $this->createTextField('connector', 'Connector');
