@@ -187,6 +187,7 @@ class BreadcrumbManager
 
             return true;
         }
+
         return false;
     }
 
