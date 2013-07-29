@@ -166,7 +166,8 @@ class JobDatagridManager extends DatagridManager
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
-                'filterable'  => true
+                'filterable'  => true,
+                'show_filter' => true
             )
         );
 

@@ -104,6 +104,46 @@ class ExportController extends Controller
     }
 
     /**
+     * Edit job
+     *
+     * @param Job $job
+     *
+     * @Route(
+     *     "/edit/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_export_edit"
+     * )
+     * @Template
+     *
+     * @return array
+     */
+    public function editAction(Job $job)
+    {
+        $request = $this->getRequest();
+        $form = $this->createForm(new JobType(), $job);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($job);
+                $em->flush();
+
+                $this->addFlash('success', 'The export has been successfully updated.');
+
+                return $this->redirect(
+                    $this->generateUrl('pim_ie_export_index')
+                );
+            }
+        }
+
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
+    /**
      * Show export
      * @param integer $id
      *
@@ -171,7 +211,7 @@ class ExportController extends Controller
      *     "/show/{id}",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
-     *     name="pim_ie_export_report"
+     *     name="pim_ie_import_report"
      * )
      * @Template
      *

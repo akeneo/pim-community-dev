@@ -141,6 +141,31 @@ class ImportController extends Controller
     }
 
     /**
+     * Show import
+     * @param integer $id
+     *
+     * @Route(
+     *     "/{id}",
+     *     name="pim_ie_import_show"
+     * )
+     * @Template("PimImportExportBundle:Import:show.html.twig")
+     *
+     * @return array
+     */
+    public function showAction($id)
+    {
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
+        $jobDefinition->setConfiguration($job->getRawConfiguration());
+
+        return array(
+            'job'           => $job,
+            'jobDefinition' => $jobDefinition,
+        );
+    }
+
+    /**
      * Delete a job
      *
      * @param Job $job
@@ -175,16 +200,21 @@ class ImportController extends Controller
     }
 
     /**
-     * Show a job
+     * View report for a job
      *
      * @param Job $job
      *
-     * @Route("/show/{id}", requirements={"id"="\d+"}, defaults={"id"=0}, name="pim_ie_import_show")
+     * @Route(
+     *     "/show/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_export_report"
+     * )
      * @Template
      *
      * @return array
      */
-    public function showAction(Job $job)
+    public function reportAction(Job $job)
     {
     }
 
