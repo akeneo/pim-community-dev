@@ -15,33 +15,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  */
 class ProductRepository extends FlexibleEntityRepository
 {
-    /**
-     * Add join to values tables
-     *
-     * @param QueryBuilder $qb
-     */
-    protected function addJoinToValueTables(QueryBuilder $qb)
-    {
-        parent::addJoinToValueTables($qb);
-
-        $qb->addSelect('ValueMetric')
-           ->leftJoin('Value.metric', 'ValueMetric')
-           ->addSelect('ValuePrices')
-           ->leftJoin('Value.prices', 'ValuePrices')
-           ->addSelect('ValueMedia')
-           ->leftJoin('Value.media', 'ValueMedia')
-           ->addSelect('AttributeTranslation')
-           ->leftJoin('Attribute.translations', 'AttributeTranslation')
-           ->addSelect('Family')
-           ->leftJoin($this->entityAlias.'.family', 'Family')
-           ->addSelect('FamilyTranslation')
-           ->leftJoin('Family.translations', 'FamilyTranslation')
-           ->addSelect('AttributeGroup')
-           ->leftJoin('Attribute.group', 'AttributeGroup')
-           ->addSelect('AttributeGroupTranslation')
-           ->leftJoin('AttributeGroup.translations', 'AttributeGroupTranslation');
-    }
-
     public function buildByScope($scope)
     {
         $qb = $this->findByWithAttributesQB();

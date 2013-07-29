@@ -9,19 +9,15 @@
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block page_container %}
-<div class="container-fluid">
-    {% block content %}
+{% block content %}
     <div>
 
         {% set buttons %}
-            <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_create') }}">{{ 'New attribute'|trans }}</a>
+            {{ elements.createBtn('New attribute', path('pim_product_productattribute_create')) }}
         {% endset %}
 
         {{ elements.page_header(title, buttons) }}
 
         <div id="attribute-grid"></div>
     </div>
-    {% endblock %}
-</div>
 {% endblock %}

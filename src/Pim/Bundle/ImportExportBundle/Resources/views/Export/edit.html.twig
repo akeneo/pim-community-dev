@@ -3,9 +3,9 @@
 {% block content %}
 
     {{ JSFV(form) }}
-    <form method="POST" class="form-horizontal" action="{{ path('pim_ie_export_create', { 'connector': connector, 'alias': alias }) }}" {{ form_enctype(form) }}>
+    <form method="POST" class="form-horizontal" action="{{ path('pim_ie_export_edit', { 'id': form.vars.value.id }) }}" {{ form_enctype(form) }}>
 
-        {% set title = 'Create export'|trans %}
+        {% set title = 'Edit export'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_ie_export_index')) }}

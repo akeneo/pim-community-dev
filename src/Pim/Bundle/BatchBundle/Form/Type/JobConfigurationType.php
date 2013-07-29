@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
+ * Form type for job configuration
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,9 +21,13 @@ class JobConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('steps', 'collection', array(
-                'type' => new StepConfigurationType()
-            ));
+            ->add(
+                'steps',
+                'collection',
+                array(
+                    'type' => new StepConfigurationType()
+                )
+            );
     }
 
     /**
@@ -30,14 +35,18 @@ class JobConfigurationType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Pim\\Bundle\\BatchBundle\\Job\\SimpleJob',
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Pim\\Bundle\\BatchBundle\\Job\\SimpleJob',
+            )
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_batch_job_configuration';
     }
 }
-

@@ -3,22 +3,22 @@
 {% block head_script %}
     {{ parent() }}
 
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#export-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#import-grid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
 {% block content %}
 
-    {% set title = 'Exports overview'|trans %}
+    {% set title = 'Import overview'|trans %}
 
     {% set buttons %}
     <div class="btn-group">
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-plus icon-white"></i>{{ 'New export'|trans }}</a>
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-plus icon-white"></i>{{ 'New import'|trans }}</a>
         <ul class="dropdown-menu pull-right">
             {% for connector, jobs in connectors %}
             <li class="disabled"><a href="#"><b>{{ connector }}</b></a></li>
                 {% for alias, job in jobs %}
-                <li><a href="{{ path('pim_ie_export_create', { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
+                <li><a href="{{ path('pim_ie_import_create', { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
                 {% endfor %}
             {% endfor %}
         </ul>
@@ -27,6 +27,6 @@
 
     {{ elements.page_header(title, buttons) }}
 
-    <div id="export-grid"></div>
+    <div id="import-grid"></div>
 
 {% endblock %}

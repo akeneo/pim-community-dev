@@ -1,5 +1,8 @@
 oro_menu_config:
     items:
+        pim_ie_import:
+            label: 'Imports'
+            route: 'pim_ie_import_index'
         pim_ie_export:
             label: 'Exports'
             route: 'pim_ie_export_index'
@@ -7,9 +10,13 @@ oro_menu_config:
     tree:
         application_menu:
             children:
+                pim_import_tab:
+                    children:
+                        pim_ie_import: ~
                 pim_export_tab:
                     children:
                         pim_ie_export: ~
 
 oro_titles:
+    pim_ie_import_index: Import management
     pim_ie_export_index: Export management

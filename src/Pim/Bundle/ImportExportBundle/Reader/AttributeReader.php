@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryReader extends ORMCursorReader
+class AttributeReader extends ORMCursorReader
 {
     protected $em;
 
@@ -42,6 +42,6 @@ class CategoryReader extends ORMCursorReader
      */
     public function getName()
     {
-        return 'Categories';
+        return 'Attributes';
     }
 }

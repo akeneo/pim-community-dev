@@ -21,9 +21,10 @@ class ConnectorRegistry
     /**
      * Add a job to a connector
      *
-     * @param string             $connectorId the connector id
-     * @param string             $jobId       the job id
-     * @param JobInterface       $job         the job
+     * @param string       $connector the connector id
+     * @param string       $type      the job type
+     * @param string       $jobAlias  the job alias
+     * @param JobInterface $job       the job
      *
      * @return ConnectorRegistry
      */
@@ -72,7 +73,6 @@ class ConnectorRegistry
         switch ($type) {
             case Job::TYPE_IMPORT:
                 return isset($this->importJobs[$connector]) ? $this->importJobs[$connector] : null;
-
             case Job::TYPE_EXPORT:
                 return isset($this->exportJobs[$connector]) ? $this->exportJobs[$connector] : null;
         }

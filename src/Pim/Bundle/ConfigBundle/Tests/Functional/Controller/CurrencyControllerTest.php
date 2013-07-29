@@ -11,7 +11,6 @@ namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
  */
 class CurrencyControllerTest extends ControllerTest
 {
-
     /**
      * Test related action
      */

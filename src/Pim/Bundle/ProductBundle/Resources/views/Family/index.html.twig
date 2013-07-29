@@ -1,33 +1,29 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% block page_container %}
-<div class="container-fluid">
-    {% block content %}
-        {% set currentFamily = family is defined ? family.id : null %}
-        <div id="family-container" class="row-fluid">
-            <div class="sidebar-list">
-                <ul>
-                    {% for familyId, familyLabel in families %}
-                    <li class="{{ familyId == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_family_edit', {'id': familyId}) }}">{{ familyLabel }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div id="form-tab">
-                {% block familyTab %}
-                {% endblock familyTab %}
-            </div>
+{% block content %}
+    {% set currentFamily = family is defined ? family.id : null %}
+    <div id="family-container" class="row-fluid">
+        <div class="sidebar-list">
+            <ul>
+                {% for familyId, familyLabel in families %}
+                <li class="{{ familyId == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_family_edit', {'id': familyId}) }}">{{ familyLabel }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
-    {% endblock %}
-</div>
+        <div id="form-tab">
+            {% block familyTab %}
+            {% endblock familyTab %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block head_script_component %}
     {{ parent() }}
-    
+
     {% javascripts
         '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
         '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-    
+
         filter='?yui_js'
         output='js/pim.multiselect.js'
         %}

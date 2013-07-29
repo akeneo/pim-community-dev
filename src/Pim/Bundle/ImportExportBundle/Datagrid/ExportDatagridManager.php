@@ -26,6 +26,16 @@ class ExportDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
+    protected function getProperties()
+    {
+        return array(
+            new UrlProperty('edit_link', $this->router, 'pim_ie_export_edit', array('id'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();

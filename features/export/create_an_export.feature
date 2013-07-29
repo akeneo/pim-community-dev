@@ -17,8 +17,11 @@ Feature: Create an export
     And I am on the exports index page
     And I create a new "Product export in CSV" export
     When I fill in the following informations:
-      | Code       | mobile_product_export |
-      | Label      | Mobile product export |
+      | Code  | mobile_product_export |
+      | Label | Mobile product export |
+      | Path  | /tmp/export.csv       |
+    And I select the channel "Mobile"
+    And I check "With header"
     And I save the export
     Then I should be redirected on the export index page
     And I should see "The export has been successfully created."
@@ -29,24 +32,3 @@ Feature: Create an export
     And I try to create an unknown export
     Then I should be redirected on the export index page
     And I should see "Fail to create an export with an unknown job."
-
-  Scenario: Successfully display the Draft status for not configured jobs
-    Given the following export job:
-      | code           | label   | connector | alias          |
-      | export_product | product | Akeneo    | product_export |
-    And I am logged in as "admin"
-    When I am on the exports index page
-    Then the status of the export "export_product" should be "Draft"
-
-  Scenario: Successfully display the Ready status for configured jobs
-    Given I am logged in as "admin"
-    And I am on the exports index page
-    And I create a new "Product export in CSV" export
-    When I fill in the following informations:
-      | Code  | mobile_product_export |
-      | Label | Mobile product export |
-      | Path  | /tmp/export.csv       |
-    And I select the channel "Mobile"
-    And I check "With header"
-    And I save the export
-    Then the status of the export "mobile_product_export" should be "Ready"

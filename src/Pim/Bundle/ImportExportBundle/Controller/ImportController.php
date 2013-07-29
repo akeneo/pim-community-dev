@@ -10,23 +10,23 @@ use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
- * Export controller
+ * Import controller
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/export")
+ * @Route("/import")
  */
-class ExportController extends Controller
+class ImportController extends Controller
 {
     /**
-     * List exports
+     * List imports
      * @param Request $request
      *
      * @Route(
      *     "/.{_format}",
-     *     name="pim_ie_export_index",
+     *     name="pim_ie_import_index",
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
@@ -42,19 +42,19 @@ class ExportController extends Controller
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = 'PimImportExportBundle:Export:index.html.twig';
+            $view = 'PimImportExportBundle:Import:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getExportJobs()));
+        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getImportJobs()));
     }
 
     /**
-     * Create export
+     * Create import
      * @param Request $request
      *
      * @Route(
      *     "/create",
-     *     name="pim_ie_export_create"
+     *     name="pim_ie_import_create"
      * )
      * @Template("PimImportExportBundle:Export:create.html.twig")
      *
@@ -65,15 +65,15 @@ class ExportController extends Controller
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
         $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, Job::TYPE_EXPORT, $alias);
+        $jobDefinition = $registry->getJob($connector, Job::TYPE_IMPORT, $alias);
 
         if (!$jobDefinition) {
-            $this->addFlash('error', 'Fail to create an export with an unknown job.');
+            $this->addFlash('error', 'Fail to create an import with an unknown job.');
 
-            return $this->redirect($this->generateUrl('pim_ie_export_index'));
+            return $this->redirect($this->generateUrl('pim_ie_import_index'));
         }
 
-        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
+        $job = new Job($connector, Job::TYPE_IMPORT, $alias, $jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
@@ -84,10 +84,10 @@ class ExportController extends Controller
                 $em->persist($job);
                 $em->flush();
 
-                $this->addFlash('success', 'The export has been successfully created.');
+                $this->addFlash('success', 'The import has been successfully created.');
 
                 return $this->redirect(
-                    $this->generateUrl('pim_ie_export_index')
+                    $this->generateUrl('pim_ie_import_index')
                 );
             }
         }
@@ -108,7 +108,7 @@ class ExportController extends Controller
      *     "/edit/{id}",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
-     *     name="pim_ie_export_edit"
+     *     name="pim_ie_import_edit"
      * )
      * @Template
      *
@@ -126,10 +126,10 @@ class ExportController extends Controller
                 $em->persist($job);
                 $em->flush();
 
-                $this->addFlash('success', 'The export has been successfully updated.');
+                $this->addFlash('success', 'The import has been successfully updated.');
 
                 return $this->redirect(
-                    $this->generateUrl('pim_ie_export_index')
+                    $this->generateUrl('pim_ie_import_index')
                 );
             }
         }

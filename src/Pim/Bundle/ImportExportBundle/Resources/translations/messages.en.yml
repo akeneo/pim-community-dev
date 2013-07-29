@@ -6,6 +6,22 @@ pim_import_export.jobs.category_export:
     title: 'Category export in CSV'
     export.title: 'Export'
 
+pim_import_export.jobs.attribute_export:
+    title: 'Attribute export in CSV'
+    export.title: 'Export'
+
+pim_import_export.jobs.product_import:
+    title: 'Product import in CSV'
+    export.title: 'Import'
+
+pim_import_export.jobs.category_import:
+    title: 'Category import in CSV'
+    export.title: 'Import'
+
+pim_import_export.jobs.attribute_import:
+    title: 'Attribute import in CSV'
+    export.title: 'Import'
+
 pim_import_export.status:
     0: 'Draft'
     1: 'Ready'
