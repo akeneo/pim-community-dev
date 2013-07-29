@@ -1025,6 +1025,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^I should not see the "([^"]*)" link$/
+     */
+    public function iShouldNotSeeTheLink($link)
+    {
+        if ($this->getCurrentPage()->findLink($link)) {
+            throw $this->createExpectationException(sprintf(
+                'Link %s should not be displayed', $link
+            ));
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
