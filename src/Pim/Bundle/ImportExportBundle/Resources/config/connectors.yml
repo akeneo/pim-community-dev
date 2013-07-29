@@ -1,6 +1,7 @@
 parameters:
     pim_import_export.reader.product.class:           Pim\Bundle\ImportExportBundle\Reader\ProductReader
     pim_import_export.reader.category.class:          Pim\Bundle\ImportExportBundle\Reader\CategoryReader
+    pim_import_export.reader.attribute.class:         Pim\Bundle\ImportExportBundle\Reader\AttributeReader
     pim_import_export.processor.csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor
     pim_import_export.writer.file.class:              Pim\Bundle\ImportExportBundle\Writer\FileWriter
 
@@ -13,6 +14,11 @@ services:
 
     pim_import_export.reader.category:
         class: %pim_import_export.reader.category.class%
+        arguments:
+            - @doctrine.orm.default_entity_manager
+
+    pim_import_export.reader.attribute:
+        class: %pim_import_export.reader.attribute.class%
         arguments:
             - @doctrine.orm.default_entity_manager
 

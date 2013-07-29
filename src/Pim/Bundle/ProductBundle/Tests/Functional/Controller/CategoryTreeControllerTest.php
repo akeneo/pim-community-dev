@@ -11,7 +11,6 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  */
 class CategoryTreeControllerTest extends ControllerTest
 {
-
     /**
      * @staticvar string
      */
@@ -92,8 +91,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
                         return true;
                     }
@@ -145,8 +143,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert node form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/create/[0-9]*#', $action)) {
                         return true;
                     }
@@ -198,8 +195,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
@@ -256,8 +252,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }

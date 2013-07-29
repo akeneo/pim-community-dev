@@ -11,7 +11,6 @@ namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
  */
 class LocaleControllerTest extends ControllerTest
 {
-
     /**
      * Test related action
      */

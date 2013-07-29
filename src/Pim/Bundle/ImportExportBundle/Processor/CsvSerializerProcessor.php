@@ -58,11 +58,15 @@ class CsvSerializerProcessor extends SerializerProcessor
 
     public function process($item)
     {
-        return $this->serializer->serialize($item, 'csv', array(
-            'delimiter'  => $this->delimiter,
-            'enclosure'  => $this->enclosure,
-            'withHeader' => $this->withHeader,
-        ));
+        return $this->serializer->serialize(
+            $item,
+            'csv',
+            array(
+                'delimiter'  => $this->delimiter,
+                'enclosure'  => $this->enclosure,
+                'withHeader' => $this->withHeader,
+            )
+        );
     }
 
     public function getName()

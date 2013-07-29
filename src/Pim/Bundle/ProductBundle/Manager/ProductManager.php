@@ -269,13 +269,19 @@ class ProductManager extends FlexibleManager
                 }
             }
 
-            $missingValues = array_filter($requiredValues, function ($value) use ($existingValues) {
-                return !in_array($value, $existingValues);
-            });
+            $missingValues = array_filter(
+                $requiredValues,
+                function ($value) use ($existingValues) {
+                    return !in_array($value, $existingValues);
+                }
+            );
 
-            $redundantValues = array_filter($existingValues, function ($value) use ($requiredValues) {
-                return !in_array($value, $requiredValues);
-            });
+            $redundantValues = array_filter(
+                $existingValues,
+                function ($value) use ($requiredValues) {
+                    return !in_array($value, $requiredValues);
+                }
+            );
 
             foreach ($missingValues as $value) {
                 $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -301,7 +307,7 @@ class ProductManager extends FlexibleManager
         $requiredValues = array();
 
         if ($attribute->getScopable()) {
-           $channels = $this->getChannels();
+            $channels = $this->getChannels();
             if ($attribute->getTranslatable()) {
                 foreach ($channels as $channel) {
                     foreach ($channel->getLocales() as $locale) {

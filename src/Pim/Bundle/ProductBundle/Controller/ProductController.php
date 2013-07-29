@@ -157,13 +157,7 @@ class ProductController extends Controller
                 }
 
                 return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_product_edit',
-                        array(
-                            'id'         => $product->getId(),
-                            'dataLocale' => $dataLocale,
-                        )
-                    )
+                    $this->generateUrl('pim_product_product_edit', array('id' => $product->getId()))
                 );
             } else {
                 $this->addFlash('error', 'Please check your entry and try again.');
@@ -213,9 +207,8 @@ class ProductController extends Controller
         $manager->save($product);
 
         $this->addFlash('success', 'Attributes are added to the product form.');
-        $parameters = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
-        return $this->redirect($this->generateUrl('pim_product_product_edit', $parameters));
+        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $product->getId())));
     }
 
     /**
@@ -271,7 +264,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
-        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId, 'dataLocale' => $this->getDataLocale())));
+        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
     }
 
     /**
@@ -306,6 +299,24 @@ class ProductController extends Controller
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
         return array('trees' => $treesData);
+    }
+
+    /**
+     * Custom method to always generate an url with a datalocale paramater
+     * @param string  $route      The name of the route
+     * @param mixed   $parameters An array of parameters
+     * @param Boolean $absolute   Whether to generate an absolute URL
+     * @param string  $hash       The hash to prepend to the URL
+     *
+     * @return string
+     */
+    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
+    {
+        if (!isset($parameters['dataLocale'])) {
+            $parameters['dataLocale'] = $this->getDataLocale();
+        }
+
+        return parent::generateUrl($route, $parameters, $absolute);
     }
 
     /**

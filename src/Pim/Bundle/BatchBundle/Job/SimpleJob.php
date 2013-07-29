@@ -28,22 +28,22 @@ class SimpleJob extends AbstractJob
     /**
      * @Assert\Valid
      */
-     protected $steps;
+    protected $steps;
 
     /**
      * @param string $name
      */
-     public function __construct($name = '')
-     {
-         parent::__construct($name);
+    public function __construct($name = '')
+    {
+        parent::__construct($name);
 
-         $this->steps = new ArrayCollection();
-     }
+        $this->steps = new ArrayCollection();
+    }
 
-     public function getSteps()
-     {
-         return $this->steps;
-     }
+    public function getSteps()
+    {
+        return $this->steps;
+    }
 
     /**
      * Public setter for the steps in this job. Overrides any calls to
@@ -100,6 +100,16 @@ class SimpleJob extends AbstractJob
         return null;
     }
 
+    public function getConfiguration()
+    {
+        $result = array();
+        foreach ($this->steps as $step) {
+            $result[$step->getName()] = $this->getStepConfiguration($step);
+        }
+
+        return $result;
+    }
+
     /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
@@ -135,16 +145,6 @@ class SimpleJob extends AbstractJob
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }
-    }
-
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            $result[$step->getName()] = $this->getStepConfiguration($step);
-        }
-
-        return $result;
     }
 
     private function getStepConfiguration($step)

@@ -15,6 +15,10 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
+    const ITEM_SEPARATOR = ',';
+
+    protected $supportedFormats = array('csv');
+
     private $results;
 
     /**
@@ -56,7 +60,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'csv' === $format;
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -75,7 +79,7 @@ class FlatProductNormalizer implements NormalizerInterface
         if ($data instanceof \DateTime) {
             $data = $data->format('r');
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $data = '"' . join(',', $data->toArray()) . '"';
+            $data = join(self::ITEM_SEPARATOR, $data->toArray());
         }
 
         $this->results[$value->getAttribute()->getCode().$suffix] = (string) $data;
@@ -98,6 +102,6 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     private function normalizeCategories($categories = '')
     {
-        $this->results['categories'] = sprintf('"%s"', $categories);
+        $this->results['categories'] = $categories;
     }
 }

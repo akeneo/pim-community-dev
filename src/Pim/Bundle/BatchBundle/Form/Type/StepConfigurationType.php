@@ -9,7 +9,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
 /**
- * 
+ * Form type for step configuration
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,8 +24,9 @@ class StepConfigurationType extends AbstractType
     {
         $factory = $builder->getFormFactory();
 
-        $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($factory) {
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($factory) {
                 $form      = $event->getForm();
                 $step      = $event->getData();
                 $reader    = $step->getReader();
@@ -32,26 +34,42 @@ class StepConfigurationType extends AbstractType
                 $writer    = $step->getWriter();
 
                 $form->add(
-                    $factory->createNamed('reader', new StepElementConfigurationType(), $reader, array(
-                        'label' => sprintf('Reader - %s', $reader->getName()),
-                        'auto_initialize' => false,
-                    ))
+                    $factory->createNamed(
+                        'reader',
+                        new StepElementConfigurationType(),
+                        $reader,
+                        array(
+                            'label' => sprintf('Reader - %s', $reader->getName()),
+                            'auto_initialize' => false,
+                        )
+                    )
                 );
 
                 $form->add(
-                    $factory->createNamed('processor', new StepElementConfigurationType(), $processor, array(
-                        'label' => sprintf('Processor - %s', $processor->getName()),
-                        'auto_initialize' => false,
-                    ))
+                    $factory->createNamed(
+                        'processor',
+                        new StepElementConfigurationType(),
+                        $processor,
+                        array(
+                            'label' => sprintf('Processor - %s', $processor->getName()),
+                            'auto_initialize' => false,
+                        )
+                    )
                 );
 
                 $form->add(
-                    $factory->createNamed('writer', new StepElementConfigurationType(), $writer, array(
-                        'label' => sprintf('Writer - %s', $writer->getName()),
-                        'auto_initialize' => false,
-                    ))
+                    $factory->createNamed(
+                        'writer',
+                        new StepElementConfigurationType(),
+                        $writer,
+                        array(
+                            'label' => sprintf('Writer - %s', $writer->getName()),
+                            'auto_initialize' => false,
+                        )
+                    )
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -59,12 +77,16 @@ class StepConfigurationType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Pim\\Bundle\\BatchBundle\\Step\\ItemStep',
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Pim\\Bundle\\BatchBundle\\Step\\ItemStep',
+            )
+        );
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_batch_step_configuration';
