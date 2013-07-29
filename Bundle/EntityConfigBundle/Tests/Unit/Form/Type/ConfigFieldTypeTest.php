@@ -58,6 +58,7 @@ class ConfigFieldTypeTest extends \PHPUnit_Framework_TestCase
     public function testBindValidData()
     {
         $formData = array(
+            'id'       => null,
             'datagrid' => array(
                 'enabled'         => true,
                 'is_searchable'   => true,
@@ -67,24 +68,27 @@ class ConfigFieldTypeTest extends \PHPUnit_Framework_TestCase
 
         $type = new ConfigFieldType($this->configManager);
 
+        $form = $this->factory->create(
+            $type,
+            null,
+            array(
+                'class_name' => ConfigManagerTest::DEMO_ENTITY,
+                'field_name' => 'testField',
+                'field_type' => 'string',
+                'field_id'   => 1,
+            )
+        );
 
-        $form = $this->factory->create($type, null, array(
-            'class_name' => ConfigManagerTest::DEMO_ENTITY,
-            'field_name' => 'testField',
-            'field_type' => 'string',
-            'field_id'   => 1,
-        ));
+        $form->bind($formData);
 
-        //$form->bind($formData);
+        $this->assertTrue($form->isSynchronized());
+        $this->assertEquals($formData, $form->getData());
 
-        //$this->assertTrue($form->isSynchronized());
-        //$this->assertEquals($formData, $form->getData());
+        $view     = $form->createView();
+        $children = $view->children;
 
-//        $view     = $form->createView();
-//        $children = $view->children;
-//
-//        foreach (array_keys($formData) as $key) {
-//            $this->assertArrayHasKey($key, $children);
-//        }
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
     }
 }

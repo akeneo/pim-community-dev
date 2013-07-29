@@ -31,8 +31,8 @@ class EntitySubscriber implements EventSubscriber
      */
     public function __construct(LoggableManager $loggableManager, ExtendMetadataFactory $metadataFactory)
     {
-        $this->metadataFactory     = $metadataFactory;
-        $this->loggableManager     = $loggableManager;
+        $this->metadataFactory = $metadataFactory;
+        $this->loggableManager = $loggableManager;
     }
 
     /**

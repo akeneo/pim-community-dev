@@ -2,7 +2,7 @@ parameters:
     oro_entity_config.extension.config.class:            Oro\Bundle\EntityConfigBundle\Form\Extension\ConfigFormExtension
 
 services:
-    oro_entity_config.extension.data_block:
+    oro_entity_config.extension.config:
         class: %oro_entity_config.extension.config.class%
         tags:
             - { name: form.type_extension, alias: form }
