@@ -32,7 +32,9 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
 
     render: function() {
         $(this.target).val('').trigger('change');
-        $(this.target).find('option:not([disabled])').remove();
-        $(this.target).append(_.template(this.template, {entities: this.collection.models}));
+        $(this.target).find('option[value!=""]').remove();
+        if (this.collection.models.length > 0) {
+            $(this.target).append(_.template(this.template, {entities: this.collection.models}));
+        }
     }
 });
