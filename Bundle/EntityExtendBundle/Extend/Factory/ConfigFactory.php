@@ -48,7 +48,7 @@ class ConfigFactory
         $values['constraint'] = serialize($constraint);
 
         $entityConfig = $this->extendManager->getConfigProvider()->getConfig($className);
-        $entityConfig->set('state', ExtendManager::STATE_NEW);
+        $entityConfig->set('state', ExtendManager::STATE_UPDATED);
         $this->extendManager->getConfigProvider()->persist($entityConfig);
 
         $this->extendManager->getConfigProvider()->createFieldConfig(
