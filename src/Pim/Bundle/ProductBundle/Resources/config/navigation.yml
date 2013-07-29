@@ -8,7 +8,7 @@ oro_menu_config:
             label: 'Enrich'
             uri: '#'
             extras:
-                position: 10
+                position: 20
         pim_enrich_product:
             label: 'Products'
             route: 'pim_product_product_index'
@@ -38,10 +38,6 @@ oro_menu_config:
                         pim_enrich_attributegroup: ~
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
-
-                pim_export_tab:
-                    children:
-                        pim_enrich_exportprofile: ~
 
 oro_titles:
     oro_default:                             Dashboard
