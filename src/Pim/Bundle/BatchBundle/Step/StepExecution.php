@@ -53,8 +53,6 @@ class StepExecution
 
     private $endTime;
 
-    private $lastUpdated;
-
     /* @var ExecutionContext $executionContext */
     private $executionContext;
 
