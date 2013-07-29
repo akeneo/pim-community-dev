@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Connector;
 
+use Monolog\Logger;
+use Monolog\Handler\TestHandler;
+
 use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
@@ -43,6 +46,8 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 
     private function getJobMock()
     {
-        return $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\SimpleJob');
+        $logger = new Logger('JobLogger');
+        $logger->pushHandler(new TestHandler());
+        return $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\SimpleJob', array(), array('TestJob', $logger));
     }
 }

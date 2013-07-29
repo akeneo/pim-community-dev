@@ -99,7 +99,7 @@ class JobExecution
      */
     public function getStartTime()
     {
-        return $startTime;
+        return $this->startTime;
     }
 
     /**

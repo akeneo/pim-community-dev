@@ -18,6 +18,14 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("ABANDONED", new BatchStatus(BatchStatus::ABANDONED));
     }
 
+    public function testSetValue()
+    {
+        $batchStatus = new BatchStatus(BatchStatus::UNKNOWN);
+        $batchStatus->setValue(BatchStatus::FAILED);
+
+        $this->assertEquals(BatchStatus::FAILED, $batchStatus->getValue());
+    }
+
     public function testMaxStatus()
     {
         $this->assertEquals(
