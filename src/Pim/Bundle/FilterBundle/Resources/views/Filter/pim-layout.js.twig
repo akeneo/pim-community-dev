@@ -32,10 +32,6 @@
     {{ parent() }}
 {% endblock %}
 
-{% block pim_type_category_filter_js %}
-    {{ block('oro_type_choice_filter_js') }}
-{% endblock %}
-
 {% block pim_type_scope_filter_js %}
     Oro.createInstanceFromConstructor(Pim.Filter.ScopeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
