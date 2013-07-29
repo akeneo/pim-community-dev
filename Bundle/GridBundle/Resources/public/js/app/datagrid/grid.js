@@ -324,7 +324,9 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * Renders grid toolbar.
      */
     renderToolbar: function() {
-        this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
+        if (this.body.rows.length > 0) {
+            this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
+        }
     },
 
     /**
