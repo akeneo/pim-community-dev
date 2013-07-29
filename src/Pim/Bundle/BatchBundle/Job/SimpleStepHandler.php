@@ -4,8 +4,6 @@ namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 
-use Pim\Bundle\BatchBundle\Logger;
-
 /**
  * Implementation of {@link StepHandler} that manages repository and restart
  * concerns.
@@ -25,28 +23,30 @@ class SimpleStepHandler implements StepHandlerInterface
     /* @var ExecutionContext $executionContext */
     private $executionContext = null;
 
+    private $logger = null;
+
     /**
      * @param JobRepository    $jobRepository    Job repository
      * @param ExecutionContext $executionContext Execution context
      */
-    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null)
+    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null, $logger)
     {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
             $executionContext = new ExecutionContext();
         }
         $this->executionContext = $executionContext;
+
+        $this->logger = $logger;
     }
 
     /**
      * @param jobRepository the jobRepository to set
      */
-    /*
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
     }
-    */
 
     /**
      * A context containing values to be added to the step execution before it
@@ -108,7 +108,7 @@ class SimpleStepHandler implements StepHandlerInterface
 
             jobRepository.add(currentStepExecution);
             */
-        Logger::info("Executing step: [" . $step->getName() . "]");
+        $this->logger->info("Executing step: [" . $step->getName() . "]");
         try {
             $step->execute($currentStepExecution);
         } catch (JobInterruptedException $e) {

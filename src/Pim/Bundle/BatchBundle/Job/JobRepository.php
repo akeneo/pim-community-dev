@@ -31,4 +31,22 @@ class JobRepository
 
         return $ex;
     }
+
+    /**
+     * Update a JobExecution object
+     *
+     * @param JobExecution
+     */
+    public function updateJobExecution($jobExecution)
+    {
+    }
+
+    /**
+     * Update a StepExecution object
+     *
+     * @return StepExecution
+     */
+    public function updateStepExecution($stepExecution)
+    {
+    }
 }

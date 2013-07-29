@@ -70,7 +70,7 @@ class RawConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
-     * @expectedException \Pim\Bundle\BatchBundle\Exception\ConfigurationException
+     * @expectedException \Pim\Bundle\BatchBundle\Configuration\ConfigurationException
      */
     public function testPostLoadException()
     {
@@ -90,7 +90,7 @@ class RawConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
-     * @expectedException \Pim\Bundle\BatchBundle\Exception\ConfigurationException
+     * @expectedException \Pim\Bundle\BatchBundle\Configuration\ConfigurationException
      */
     public function testPreFlushException()
     {

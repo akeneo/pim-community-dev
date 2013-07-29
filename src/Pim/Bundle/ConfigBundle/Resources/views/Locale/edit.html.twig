@@ -1,9 +1,6 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% block page_container %}
-<div class="container-fluid">
-
-    {% block content %}
+{% block content %}
 
     {{ JSFV(form) }}
     <form class="form-horizontal" action="{{ form.vars.value.id ?
@@ -46,8 +43,6 @@
             {{ form_row(form._token) }}
         </div>
     </form>
-    {% endblock %}
-</div>
 {% endblock %}
 
 {% block head_script_component %}

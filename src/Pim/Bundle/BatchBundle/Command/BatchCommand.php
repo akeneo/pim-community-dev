@@ -18,9 +18,6 @@ use Pim\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
 use Pim\Bundle\BatchBundle\Item\Support\EchoWriter;
 
 use Pim\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BatchBundle\Item\Support\SerializerProcessor;
-use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
-use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
 
 /**
  * Batch command
@@ -47,29 +44,21 @@ class BatchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
+        $logger = $this->getContainer()->get('logger');
+
         $dummyJobRepository = new JobRepository();
+        $itemReader = new ArrayReader();
+        $itemReader->setItems(array('hello', 'world', 'akeneo', 'is', 'great'));
+        $itemProcessor = new UcfirstProcessor();
+        $itemWriter = new EchoWriter();
 
-        $productReader = new ORMCursorReader();
-        $productReader->setQuery(
-            $container
-                ->get('doctrine.orm.default_entity_manager')
-                ->getRepository('PimProductBundle:Product')
-                ->createQueryBuilder('p')
-                ->getQuery()
-        );
+        $step1 = new ItemStep("Sample export", $logger);
+        $step1->setJobRepository($dummyJobRepository);
+        $step1->setReader($itemReader);
+        $step1->setProcessor($itemProcessor);
+        $step1->setWriter($itemWriter);
 
-        $productProcessor = new SerializerProcessor($container->get('pim_serializer'));
-        $productProcessor->setFormat('csv');
-
-        $productWriter = new FileWriter();
-        $productWriter->setPath('/tmp/export'.uniqid().'.csv');
-
-        $step1 = new ItemStep("Product export");
-        $step1->setReader($productReader);
-        $step1->setProcessor($productProcessor);
-        $step1->setWriter($productWriter);
-
-        $simpleJob = new SimpleJob("My super job");
+        $simpleJob = new SimpleJob("My super job", $logger);
         $simpleJob->setJobRepository($dummyJobRepository);
         $simpleJob->addStep($step1);
 

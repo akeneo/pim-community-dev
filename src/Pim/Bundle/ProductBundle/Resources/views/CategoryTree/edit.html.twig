@@ -1,9 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
-
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'category' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
@@ -13,9 +9,7 @@
     {% set title = title ~ ' - ' ~ form.vars.value.title %}
 {% endif %}
 
-{% block page_container %}
-<div class="container-fluid category">
-    {% block content %}
+{% block content %}
     <div id="category-tree-container" class="row-fluid">
         <div id="tree"></div>
 
@@ -81,8 +75,6 @@
     </div>
 
     {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
-    {% endblock %}
-</div>
 {% endblock %}
 
 {% block head_script %}

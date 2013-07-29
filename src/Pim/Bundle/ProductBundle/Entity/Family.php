@@ -306,7 +306,7 @@ class Family implements TranslatableInterface
      */
     public function setLabel($label)
     {
-        $translation = $this->getTranslation()->setLabel($label);
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }

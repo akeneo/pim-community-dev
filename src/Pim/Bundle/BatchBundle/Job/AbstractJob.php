@@ -2,16 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
-use Pim\Bundle\BatchBundle\Exception\ConfigurationException;
-
-use Pim\Bundle\BatchBundle\Configuration\ConfigurationInterface;
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Pim\Bundle\BatchBundle\Step\StepInterface;
-
-use Pim\Bundle\BatchBundle\Logger;
-
 /**
  * Abstract implementation of the {@link Job} interface. Common dependencies
  * such as a {@link JobRepository}, {@link JobExecutionListener}s, and various
@@ -29,11 +19,10 @@ abstract class AbstractJob implements JobInterface
 {
     protected $name;
 
-    //private boolean restartable = true;
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-    //private JobRepository jobRepository;
-    //private JobParametersIncrementer jobParametersIncrementer;
-    //private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
+
+    /* @var JobRepository $jobRepository */
+    protected $jobRepository;
 
     /* @var StepHandler $stepHandler */
     protected $stepHandler;
@@ -43,19 +32,24 @@ abstract class AbstractJob implements JobInterface
      */
     protected $steps;
 
+    protected $logger = null;
+
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($name, $logger)
     {
-        $this->name  = $name;
-        $this->steps = new ArrayCollection();
+        $this->name   = $name;
+        $this->logger = $logger; 
+        $this->steps  = array();
     }
 
     /**
-     * {@inheritdoc}
+     * Get the job's name
+     *
+     * @return name
      */
     public function getName()
     {
@@ -99,19 +93,8 @@ abstract class AbstractJob implements JobInterface
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-        $this->stepHandler = new SimpleStepHandler($jobRepository);
+        $this->stepHandler = new SimpleStepHandler($jobRepository, null, $this->logger);
     }
-
-    /**
-     * Convenience method for subclasses to access the job repository.
-     *
-     * @return the jobRepository
-     */
-    protected function getJobRepository()
-    {
-        return $this->jobRepository;
-    }
-
 
     /**
      * Extension point for subclasses allowing them to concentrate on processing
@@ -138,7 +121,7 @@ abstract class AbstractJob implements JobInterface
      */
     final public function execute(JobExecution $execution)
     {
-        Logger::debug("Job execution starting: " . $execution);
+        $this->logger->debug("Job execution starting: " . $execution);
 
         try {
             //jobParametersValidator.validate(execution.getJobParameters());
@@ -149,36 +132,30 @@ abstract class AbstractJob implements JobInterface
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
                 //listener.beforeJob(execution);
-
-                //try {
-                    $this->doExecute($execution);
-                    Logger::debug("Job execution complete: ". $execution);
-                //} catch (RepeatException e) {
-                //    throw e.getCause();
-                //}
+                 $this->doExecute($execution);
             } else {
 
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $execution->setStatus(new BatchStatus(BatchStatus::STOPPED));
                 $execution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                Logger::debug("Job execution was stopped: ". $execution);
+                $this->logger->debug("Job execution was stopped: ". $execution);
 
             }
 
 
         } catch (JobInterruptedException $e) {
-            Logger::info("Encountered interruption executing job: " . $e->getMessage());
-            Logger::debug("Full exception", $e);
+            $this->logger->info("Encountered interruption executing job: " . $e->getMessage());
+            $this->logger->debug("Full exception", array('exception', $e));
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            //$execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
+            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
-            Logger::error("Encountered fatal error executing job", $e);
+            $this->logger->error("Encountered fatal error executing job", array('exception', $e));
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
-            //$execution->addFailureException($e);
+            $execution->addFailureException($e);
         }
 
         if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
@@ -193,41 +170,15 @@ abstract class AbstractJob implements JobInterface
 
         $execution->setEndTime(time());
 
+        /*
         try {
-            //listener.afterJob(execution);
+            $listener->afterJob($execution);
         } catch (Exception $e) {
-            Logger::error("Exception encountered in afterStep callback", $e);
+            $this->logger->error("Exception encountered in afterStep callback", array('exception', $e));
         }
+        */
 
-        //jobRepository.update(execution);
-    }
-
-
-    /**
-     * Convenience method for subclasses to delegate the handling of a specific
-     * step in the context of the current {@link JobExecution}. Clients of this
-     * method do not need access to the {@link JobRepository}, nor do they need
-     * to worry about populating the execution context on a restart, nor
-     * detecting the interrupted state (in job or step execution).
-     *
-     * @param StepInterface $step      the {@link Step} to execute
-     * @param JobExecution  $execution the current {@link JobExecution}
-     *
-     * @return the {@link StepExecution} corresponding to this step
-     *
-     * @throws JobInterruptedException
-     *             if the {@link JobExecution} has been interrupted, and in
-     *             particular if {@link BatchStatus#ABANDONED} or
-     *             {@link BatchStatus#STOPPING} is detected
-     * @throws StartLimitExceededException
-     *             if the start limit has been exceeded for this step
-     * @throws JobRestartException
-     *             if the job is in an inconsistent state from an earlier
-     *             failure
-     */
-    protected function handleStep(StepInterface $step, JobExecution $execution)
-    {
-        return $this->stepHandler->handleStep($step, $execution);
+        $this->jobRepository->updateJobExecution($execution);
     }
 
     /**
@@ -245,8 +196,6 @@ abstract class AbstractJob implements JobInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-        } elseif ($e instanceof NoSuchJobException || $e->getPrevious() instanceof NoSuchJobException) {
-            //exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
@@ -267,7 +216,7 @@ abstract class AbstractJob implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-        //$jobRepository->update($jobExecution);
+        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**
