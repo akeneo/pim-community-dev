@@ -68,6 +68,9 @@ class ConnectorRegistry
         return $this->importJobs;
     }
 
+    /**
+     * TODO : Comments !!!
+     */
     private function getConnector($connector, $type)
     {
         switch ($type) {
@@ -78,6 +81,9 @@ class ConnectorRegistry
         }
     }
 
+    /**
+     * TODO : Comments !!!
+     */
     private function getConnectorJob($connector, $jobAlias)
     {
         return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
