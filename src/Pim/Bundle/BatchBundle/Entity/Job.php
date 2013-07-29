@@ -84,7 +84,7 @@ class Job
      *
      * @ORM\Column(type="array")
      */
-    protected $rawConfiguration;
+    protected $rawConfiguration = array();
 
     /**
      * @var SimpleJob
