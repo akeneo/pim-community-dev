@@ -1,0 +1,23 @@
+{
+    "name": "oro/email-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Email Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/EmailBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "oro/user-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\EmailBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/EmailBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
