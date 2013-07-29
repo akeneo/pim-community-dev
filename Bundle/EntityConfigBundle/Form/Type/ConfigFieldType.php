@@ -98,12 +98,7 @@ class ConfigFieldType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(
-            array(
-                'class_name',
-                'field_name',
-                'field_type',
-                'field_id',
-            )
+            array('class_name', 'field_type', 'field_name', 'field_id')
         );
     }
 
