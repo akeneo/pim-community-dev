@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -28,6 +29,8 @@ class Job implements JobInterface
 
     /**
      * @var array
+     *
+     * @Assert\Valid
      */
     protected $steps;
 
