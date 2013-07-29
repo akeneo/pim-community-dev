@@ -34,7 +34,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openTags()
             ->add()
-            ->assertTitle('Create tag')
+            ->assertTitle('Create tag - Tags - System - Oro')
             ->setTagname($tagname)
             ->save()
             ->assertMessage('Tag successfully saved')
@@ -61,7 +61,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->edit()
             ->setTagname($newtagname)
             ->save()
-            ->assertTitle('Tags')
+            ->assertTitle('Tags - System - Oro')
             ->assertMessage('Tag successfully saved');
 
         return $newtagname;
@@ -80,7 +80,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openTags()
             ->filterBy('Tag', $tagname)
             ->delete()
-            ->assertTitle('Tags')
+            ->assertTitle('Tags - System - Oro')
             ->assertMessage('Item was deleted');
     }
 }
