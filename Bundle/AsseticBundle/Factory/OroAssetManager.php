@@ -5,8 +5,6 @@ namespace Oro\Bundle\AsseticBundle\Factory;
 use Assetic\Factory\Resource\IteratorResourceInterface;
 use Assetic\Asset\AssetInterface;
 use Assetic\Factory\LazyAssetManager;
-use Assetic\Asset\AssetCollectionInterface;
-use Assetic\Filter\DependencyExtractorInterface;
 
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
