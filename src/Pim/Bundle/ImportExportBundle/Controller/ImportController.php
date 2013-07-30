@@ -184,7 +184,7 @@ class ImportController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlashMessage('success', 'Job successfully removed');
+            $this->addFlash('success', 'Job successfully removed');
 
             return $this->redirectIndex();
         }

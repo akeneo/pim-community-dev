@@ -51,7 +51,7 @@ class JobDatagridManager extends DatagridManager
             new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
             new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
             new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
-            new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
+            // new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
         );
     }
 

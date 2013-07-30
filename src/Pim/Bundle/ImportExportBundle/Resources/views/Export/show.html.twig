@@ -32,8 +32,11 @@
 
     {% set buttons %}
         {{ elements.backLink(path('pim_ie_export_index')) }}
+        {{ elements.link('Edit', path('pim_ie_export_edit', {'id': job.id}), { icon: 'edit' }) }}
         {% if violations|length == 0 %}
+            {#
             {{ elements.link('Execute', path('pim_ie_export_launch', {'id': job.id}), {icon: 'cogs', class: 'btn-primary'}) }}
+            #}
         {% endif %}
     {% endset %}
 
