@@ -38,7 +38,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setTagname($tagname)
             ->save()
             ->assertMessage('Tag successfully saved')
-            ->assertTitle('Tags')
+            ->assertTitle('Tags - System')
             ->close();
 
         return $tagname;
