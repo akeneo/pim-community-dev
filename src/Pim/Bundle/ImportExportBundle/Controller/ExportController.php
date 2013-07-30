@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
  * Export controller
@@ -20,11 +18,10 @@ use Pim\Bundle\ProductBundle\Controller\Controller;
  *
  * @Route("/export")
  */
-class ExportController extends Controller
+class ExportController extends JobController
 {
     /**
-     * List exports
-     * @param Request $request
+     * {@inheritdoc}
      *
      * @Route(
      *     "/.{_format}",
@@ -32,152 +29,54 @@ class ExportController extends Controller
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
-     * @return template
      */
     public function indexAction(Request $request)
     {
-        /** @var $gridManager JobDatagridManager */
-        $gridManager = $this->get('pim_import_export.datagrid.manager.export');
-        $datagridView = $gridManager->getDatagrid()->createView();
-        $registry      = $this->getConnectorRegistry();
-
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimImportExportBundle:Export:index.html.twig';
-        }
-
-        return $this->render(
-            $view,
-            array(
-                'datagrid' => $datagridView,
-                'connectors' => $registry->getExportJobs(),
-            )
-        );
+        return parent::indexAction($request);
     }
 
     /**
-     * Create export
-     * @param Request $request
+     * {@inheritdoc}
      *
-     * @Route(
-     *     "/create",
-     *     name="pim_ie_export_create"
-     * )
+     * @Route("/create", name="pim_ie_export_create")
      * @Template("PimImportExportBundle:Export:edit.html.twig")
-     *
-     * @return array
      */
     public function createAction(Request $request)
     {
-        $connector     = $request->query->get('connector');
-        $alias         = $request->query->get('alias');
-        $registry      = $this->getConnectorRegistry();
-
-        $job = new Job($connector, Job::TYPE_EXPORT, $alias);
-
-        if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', 'Fail to create an export with an unknown job.');
-
-            return $this->redirectToRoute('pim_ie_export_index');
-        }
-        $job->setJobDefinition($jobDefinition);
-
-        $form = $this->createForm(new JobType(), $job);
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->persist($job);
-
-                $this->addFlash('success', 'The export has been successfully created.');
-
-                return $this->redirectToRoute('pim_ie_export_show', array('id' => $job->getId()));
-            }
-        }
-
-        return array(
-            'form'      => $form->createView(),
-            'connector' => $connector,
-            'alias'     => $alias,
-        );
+        return parent::createAction($request);
     }
 
     /**
-     * Show export
-     * @param integer $id
+     * {@inheritdoc}
      *
-     * @Route(
-     *     "/{id}",
-     *     name="pim_ie_export_show"
-     * )
+     * @Route("/{id}", name="pim_ie_export_show")
      * @Template("PimImportExportBundle:Export:show.html.twig")
-     *
-     * @return array
      */
     public function showAction($id)
     {
-        $job = $this->getJob($id);
-
-        return array(
-            'job'        => $job,
-            'violations' => $this->getValidator()->validate($job),
-        );
+        return parent::showAction($id);
     }
 
     /**
-     * Edit an export
-     * @param integer $id
+     * {@inheritdoc}
      *
-     * @Route(
-     *     "/edit/{id}",
-     *     name="pim_ie_export_edit"
-     * )
+     * @Route("/edit/{id}", name="pim_ie_export_edit")
      * @Template("PimImportExportBundle:Export:edit.html.twig")
-     *
-     * @return array
      */
     public function editAction($id)
     {
-        $job  = $this->getJob($id);
-        $form = $this->createForm(new JobType(), $job);
-
-        $request = $this->getRequest();
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->persist($job);
-
-                $this->addFlash('success', 'The export has been successfully updated.');
-
-                return $this->redirect($this->generateUrl('pim_ie_export_show', array('id' => $job->getId())));
-            }
-        }
-
-        return array('form' => $form->createView());
+        return parent::editAction($id);
     }
 
     /**
-     * Delete a job
-     *
-     * @param Job $job
+     * {@inheritdoc}
      *
      * @Route("/{id}/remove", requirements={"id"="\d+"}, name="pim_ie_export_remove")
      * @Method("DELETE")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Job $job)
+    public function removeAction($id)
     {
-        $this->remove($job);
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            $this->addFlash('success', 'Job successfully removed');
-
-            return $this->redirectToRoute('pim_ie_export_index');
-        }
+        return parent::removeAction($id);
     }
 
     /**
@@ -189,7 +88,7 @@ class ExportController extends Controller
      *     "/show/{id}",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
-     *     name="pim_ie_import_report"
+     *     name="pim_ie_export_report"
      * )
      * @Template
      *
@@ -200,45 +99,44 @@ class ExportController extends Controller
     }
 
     /**
-     * Get a job
-     *
-     * @param integer $id
-     *
-     * @return Job|RedirectResponse
-     *
-     * @throw NotFoundHttpException
+     * {@inheritdoc}
      */
-    protected function getJob($id)
+    protected function getJobType()
     {
-        $job           = $this->findOr404('PimBatchBundle:Job', $id);
-        $registry      = $this->getConnectorRegistry();
-        $jobDefinition = $registry->getJob($job);
-        if (!$jobDefinition) {
-            $this->addFlash(
-                'error',
-                sprintf(
-                    'The following job does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
-                    $job->getConnector(),
-                    $job->getType(),
-                    $job->getAlias()
-                )
-            );
-
-            return $this->redirectToRoute('pim_ie_export_index');
-        }
-        $job->setJobDefinition($jobDefinition);
-
-        return $job;
+        return Job::TYPE_EXPORT;
     }
 
     /**
-     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * {@inheritdoc}
      */
-    protected function getConnectorRegistry()
+    protected function redirectToShowView($jobId)
     {
-        return $this->get('pim_batch.connectors');
+        return $this->redirect(
+            $this->generateUrl('pim_ie_export_show', array('id' => $jobId))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getIndexLogicName()
+    {
+        return 'PimImportExportBundle:Export:index.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getJobs()
+    {
+        return $this->getConnectorRegistry()->getExportJobs();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDatagridManager()
+    {
+        return $this->get('pim_import_export.datagrid.manager.export');
     }
 }
