@@ -50,10 +50,9 @@
 {% block unique_collection_widget %}
     {% spaceless %}
         <div class="row-oro">
-            <div class="oro-address-collection collection-fields-list" id="unique_key_collection" data-prototype="{{ _self.unique_collection_prototype(form.keys)|escape }}">
+            <div class="oro-address-collection collection-fields-list" id="entity_extend_unique_key_collection" data-prototype="{{ _self.unique_collection_prototype(form.keys)|escape }}">
                 {% for field in form.keys.children %}
                     {{ _self.unique_collection_prototype(field) }}
-                    {#{{ UI.collection_prototype(field) }}#}
                 {% endfor %}
             </div>
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
