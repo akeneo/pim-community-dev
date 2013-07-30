@@ -178,7 +178,7 @@ class ConfigManager
     {
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
-        if (!$metadata || !$metadata->configurable) {
+        if (!$metadata ||  $metadata->name != $className || !$metadata->configurable) {
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
@@ -223,7 +223,7 @@ class ConfigManager
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
 
-        return $metadata ? $metadata->configurable : false;
+        return $metadata ? ($metadata->configurable && $metadata->name == $className) : false;
     }
 
     /**
@@ -234,6 +234,7 @@ class ConfigManager
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
         if ($metadata
+            && $metadata->name == $doctrineMetadata->getName()
             && $metadata->configurable
             && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
                 'className' => $doctrineMetadata->getName()))
