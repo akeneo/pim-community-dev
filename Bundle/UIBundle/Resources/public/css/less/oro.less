@@ -1845,7 +1845,7 @@ footer{
 .navigation {
   position: relative;
   .top-action-box{
-    padding: 1px 0;
+    padding: 1px 0 0;
     background-color: #fff;
     float:right;
   }
@@ -3119,7 +3119,7 @@ select:focus:invalid:focus {
   position: fixed;
   top: 70px;
   left: 0;
-  z-index: 800;
+  z-index: 500;
   .box-sizing(border-box);
   padding: 0 10px;
   width: 100%;
@@ -4072,10 +4072,16 @@ header .nav-multilevel > li.dropdown:hover > a,
   float: left;
   background: none;
   margin: 0;
+  padding: 6px 15px 0;
 }
 .breadcrumb > li.active,
 .breadcrumb > li{
-  color: #c9c9c9;
+  color: #777;
+  font: 11px/14px Arial, Helvetica, sans-serif;
+}
+.breadcrumb > li > .divider{
+  color: #777;
+  padding: 0 1px 0 4px;
 }
 button.btn.favorite-button{
   background: none;
@@ -4084,6 +4090,7 @@ button.btn.favorite-button{
   margin: 0 -3px 0 0;
   -webkit-box-shadow:  none;
   box-shadow:  none;
+  height: 28px;
 }
 button.btn.favorite-button i.icon-star{
   text-indent: -9999px;
@@ -4104,6 +4111,7 @@ button.btn.minimize-button{
   margin: 0 3px 0 0;
   -webkit-box-shadow:  none;
   box-shadow:  none;
+  height: 28px;
 }
 button.btn.minimize-button i.icon-minimize{
   margin: 0;
