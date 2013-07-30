@@ -125,42 +125,7 @@ class OroAssetManager
      */
     public function getLastModified(AssetInterface $asset)
     {
-        $mtime = 0;
-        foreach ($asset instanceof AssetCollectionInterface ? $asset : array($asset) as $leaf) {
-            $mtime = max($mtime, $leaf->getLastModified());
-
-            if (!$filters = $leaf->getFilters()) {
-                continue;
-            }
-
-            // prepare load path
-            $sourceRoot = $leaf->getSourceRoot();
-            $sourcePath = $leaf->getSourcePath();
-            $loadPath = $sourceRoot && $sourcePath ? dirname($sourceRoot . '/' . $sourcePath) : null;
-
-            $prevFilters = array();
-            foreach ($filters as $filter) {
-                $prevFilters[] = $filter;
-
-                if (!$filter instanceof DependencyExtractorInterface) {
-                    continue;
-                }
-
-                // extract children from leaf after running all preceeding filters
-                $clone = clone $leaf;
-                $clone->clearFilters();
-                foreach (array_slice($prevFilters, 0, -1) as $prevFilter) {
-                    $clone->ensureFilter($prevFilter);
-                }
-                $clone->load();
-
-                foreach ($filter->getChildren($this->factory, $clone->getContent(), $loadPath) as $child) {
-                    $mtime = max($mtime, $this->getLastModified($child));
-                }
-            }
-        }
-
-        return $mtime;
+        return $this->am->getLastModified($asset);
     }
 
     /**

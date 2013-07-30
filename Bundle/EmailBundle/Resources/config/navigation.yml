@@ -14,6 +14,6 @@ oro_menu_config:
 
 oro_titles:
     oro_email_emailtemplate_index: ~
-    oro_email_emailtemplate_update: "Edit template %%name%%"
-    oro_email_emailtemplate_create: "Create email template"
-    oro_email_emailtemplate_clone: "Clone email template"
+    oro_email_emailtemplate_update: "Edit Template %%name%%"
+    oro_email_emailtemplate_create: "Create Email Template"
+    oro_email_emailtemplate_clone: "Clone Email Template"

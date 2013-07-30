@@ -76,11 +76,11 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->byId('prependedInput2')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS);
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
-        $this->assertEquals('Dashboard - ORO', $this->title());
+        $this->assertEquals('Dashboard', $this->title());
 
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']//li/a[contains(.,'Logout')]")->click();
-        $this->assertEquals('Login - ORO', $this->title());
+        $this->assertEquals('Login', $this->title());
     }
 
     /**
@@ -101,7 +101,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
 
         $actualResult = $this->byXPath("//div[contains(@class,'alert')]/div")->text();
 
-        $this->assertEquals('Login - ORO', $this->title());
+        $this->assertEquals('Login', $this->title());
         $this->assertEquals("Bad credentials", $actualResult);
     }
 
@@ -134,7 +134,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitPageToLoad();
         $this->byXPath("//*[@id='top-page']//fieldset//a[contains(.,'Forgot your password?')]")->click();
         $this->waitPageToLoad();
-        $this->assertEquals('Forgot Password - ORO', $this->title());
+        $this->assertEquals('Forgot Password', $this->title());
 
         $this->byId('prependedInput')->value('123test123');
         $this->byXPath("//button[contains(.,'Request')]")->click();
@@ -164,9 +164,9 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitPageToLoad();
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
-        $this->assertEquals('Dashboard - ORO', $this->title());
+        $this->assertEquals('Dashboard', $this->title());
 
         $this->url(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL);
-        $this->assertEquals('Dashboard - ORO', $this->title());
+        $this->assertEquals('Dashboard', $this->title());
     }
 }
