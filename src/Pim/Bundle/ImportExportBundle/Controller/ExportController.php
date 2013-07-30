@@ -80,10 +80,8 @@ class ExportController extends Controller
         if (!$jobDefinition) {
             $this->addFlash('error', 'Fail to create an export with an unknown job.');
 
-            return $this->redirect($this->generateUrl('pim_ie_export_index'));
+            return $this->redirectToRoute('pim_ie_export_index');
         }
-
-        $job = new Job($connector, Job::TYPE_EXPORT, $alias);
         $job->setJobDefinition($jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
@@ -97,7 +95,7 @@ class ExportController extends Controller
 
                 $this->addFlash('success', 'The export has been successfully created.');
 
-                return $this->redirect($this->generateUrl('pim_ie_export_show', array('id' => $job->getId())));
+                return $this->redirectToRoute('pim_ie_export_index');
             }
         }
 
@@ -122,31 +120,11 @@ class ExportController extends Controller
      */
     public function showAction($id)
     {
-        $job           = $this->findOr404('PimBatchBundle:Job', $id);
-        $registry      = $this->getConnectorRegistry();
-        $jobDefinition = $registry->getJob($job);
-        if (!$jobDefinition) {
-            $this->addFlash(
-                'error',
-                sprintf(
-                    'The following job does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
-                    $job->getConnector(),
-                    $job->getType(),
-                    $job->getAlias()
-                )
-            );
-
-            return $this->redirect($this->generateUrl('pim_ie_export_index'));
-        }
-        $job->setJobDefinition($jobDefinition);
-        $validator = $this->getValidator();
+        $job = $this->getJob($id);
 
         return array(
-            'job'           => $job,
-            'jobDefinition' => $jobDefinition,
+            'job'        => $job,
+            'violations' => $this->getValidator()->validate($job),
         );
     }
 
@@ -168,20 +146,10 @@ class ExportController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlashMessage('success', 'Job successfully removed');
+            $this->addFlash('success', 'Job successfully removed');
 
             return $this->redirectIndex();
         }
-    }
-
-    /**
-     * Redirect to index
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectIndex()
-    {
-        return $this->redirect($this->generateUrl('pim_ie_export_index'));
     }
 
     /**
@@ -213,8 +181,30 @@ class ExportController extends Controller
      *
      * @return array
      */
-    public function launchAction(Job $job)
+    protected function getJob($id)
     {
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $registry      = $this->getConnectorRegistry();
+        $jobDefinition = $registry->getJob($job);
+        if (!$jobDefinition) {
+            $this->addFlash(
+                'error',
+                sprintf(
+                    'The following job does not exist anymore. Please check configuration:<br />' .
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
+                    $job->getConnector(),
+                    $job->getType(),
+                    $job->getAlias()
+                )
+            );
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
+        $job->setJobDefinition($jobDefinition);
+
+        return $job;
     }
 
     /**

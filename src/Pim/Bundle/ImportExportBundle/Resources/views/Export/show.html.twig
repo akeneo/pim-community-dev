@@ -9,9 +9,7 @@
             <li>
                 <b>{{ field|normalizeKey }}:</b>
                 <span class="label">{{ value|normalizeValue }}</span>
-                {% if violations %}
-                    <span class="alert-error">{{ getViolations(violations, stepIndex, title, field) }}</span>
-                {% endif %}
+                <span class="label label-important">{{ getViolations(violations, stepIndex, title, field) }}</span>
             </li>
         {% else %}
             <li><i>{{ 'No configuration'|trans }}</i></li>
@@ -35,7 +33,7 @@
     {% set buttons %}
         {{ elements.backLink(path('pim_ie_export_index')) }}
         {% if violations|length == 0 %}
-            {{ elements.link('Execute', '#', {icon: 'cogs', class: 'btn-primary'}) }}
+            {{ elements.link('Execute', path('pim_ie_export_launch', {'id': job.id}), {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
@@ -50,9 +48,9 @@
             <ul>
                 {% set step = job.jobDefinition.step(stepTitle) %}
                 {% set stepIndex = loop.index - 1 %}
-                {{ export.configuration('Reader', step.reader.name, stepConfig.reader, stepIndex) }}
-                {{ export.configuration('Processor', step.processor.name, stepConfig.processor, stepIndex) }}
-                {{ export.configuration('Writer', step.writer.name, stepConfig.writer, stepIndex) }}
+                {{ export.configuration('Reader', step.reader.name, stepConfig.reader, stepIndex, violations) }}
+                {{ export.configuration('Processor', step.processor.name, stepConfig.processor, stepIndex, violations) }}
+                {{ export.configuration('Writer', step.writer.name, stepConfig.writer, stepIndex, violations) }}
             </ul>
         {% endset %}
 
