@@ -1,3 +1,8 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
 {% set generalParameters %}
     {{ form_row(form.code, { 'label': 'Name'|trans }) }}
     {{ form_row(form.attributeType) }}
