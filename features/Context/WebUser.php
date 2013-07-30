@@ -744,6 +744,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the following attribute types should have the following fields$/
+     */
+    public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $type => $fields) {
+            $this->iSelectTheAttributeType($type);
+            $this->iShouldSeeTheFields($fields);
+        }
+    }
+
+    /**
      * @Given /^I create the following attribute options:$/
      */
     public function iCreateTheFollowingAttributeOptions(TableNode $table)

@@ -77,7 +77,7 @@ class ExportController extends Controller
         $job = new Job($connector, Job::TYPE_EXPORT, $alias);
 
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', 'Fail to create an export with an unknown job.');
+            $this->addFlash('error', 'Failed to create an export with an unknown job.');
 
             return $this->redirectToRoute('pim_ie_export_index');
         }
