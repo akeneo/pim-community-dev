@@ -1,3 +1,6 @@
+Getting Started
+===============
+
 Table of Contents
 -----------------
  - [What is Workflow?](#what-is-workflow)

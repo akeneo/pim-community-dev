@@ -1,3 +1,6 @@
+Workflow Entities
+=================
+
 Table of Contents
 -----------------
  - [Main Entities](#main-entities)
