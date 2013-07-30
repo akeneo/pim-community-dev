@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
@@ -8,12 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Attribute options
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  * @ORM\Table(name="oro_flexibleentity_attribute_option")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository")
  */
 class AttributeOption extends AbstractEntityAttributeOption
 {

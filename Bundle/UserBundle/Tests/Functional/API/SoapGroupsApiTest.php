@@ -15,12 +15,25 @@ class SoapGroupsApiTest extends WebTestCase
     /** Default value for role label */
     const DEFAULT_VALUE = 'GROUP_LABEL';
 
-    /** @var \SoapClient */
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+
+            $this->client->soap(
+                "http://localhost/api/soap",
+                array(
+                    'location' => 'http://localhost/api/soap',
+                    'soap_version' => SOAP_1_2
+                )
+            );
+
+        } else {
+            $this->client->restart();
+        }
 
         $this->client->soap(
             "http://localhost/api/soap",

@@ -1,0 +1,22 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\TagBundle\Entity\Tag
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+{% import 'OroUserBundle::macros.html.twig' as macros %}
+
+{% set entity_output = oro_config_entity('Oro\\Bundle\\TagBundle\\Entity\\Tag') %}
+{% set showImage = false %}
+
+{% if entity %}
+    {% set recordUrl = indexer_item.recordUrl %}
+{% endif %}
+
+{% set title = entity.name|default('N/A') %}
+{% set entityType = entity_output.name|trans({}, 'config') %}
+
+{% set entityInfo = [
+    {'title': 'Created', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
+    {'title': 'Updated', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
+] %}

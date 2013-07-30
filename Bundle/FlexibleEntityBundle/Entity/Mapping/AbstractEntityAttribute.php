@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -8,11 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Base Doctrine ORM entity attribute
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT  MIT
- *
  */
 abstract class AbstractEntityAttribute extends AbstractAttribute
 {
@@ -31,13 +27,6 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
      * @ORM\Column(name="code", type="string", length=255)
      */
     protected $code;
-
-    /**
-     * @var string $label
-     *
-     * @ORM\Column(name="label", type="string", length=255)
-     */
-    protected $label;
 
     /**
      * @var string $entityType

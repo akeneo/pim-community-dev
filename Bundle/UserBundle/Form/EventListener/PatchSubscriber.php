@@ -5,9 +5,10 @@ namespace Oro\Bundle\UserBundle\Form\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
 
 /**
- * Changes Form->bind() behavior so that it treats not set values as if they
+ * Changes Form->submit() behavior so that it treats not set values as if they
  * were sent unchanged.
  *
  * Use when you don't want fields to be set to NULL when they are not displayed
@@ -30,20 +31,23 @@ class PatchSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Returns the form's data like $form->bind() expects it
+     * Returns the form's data like $form->submit() expects it
+     *
+     * @param FormInterface $form
+     * @return array
      */
     protected function unbind($form)
     {
-        if ($form->hasChildren()) {
+        if ($form->count() > 0) {
             $ary = array();
 
-            foreach ($form->getChildren() as $name => $child) {
+            foreach ($form->all() as $name => $child) {
                 $ary[$name] = $this->unbind($child);
             }
 
             return $ary;
         } else {
-            return $form->getClientData();
+            return $form->getViewData();
         }
     }
 }

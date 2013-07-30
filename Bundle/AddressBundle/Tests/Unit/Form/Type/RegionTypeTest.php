@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\FormView;
 
@@ -45,7 +45,7 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildForm()
     {
-        $builderMock = $this->getMock('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $builderMock = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
         $options = array(RegionType::COUNTRY_OPTION_KEY => 'test');
 
         $builderMock->expects($this->once())
@@ -60,10 +60,7 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
     {
         $optionKey = 'countryFieldName';
 
-        $formConfigMock = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getAttribute'))
-            ->getMockForAbstractClass();
+        $formConfigMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
         $formConfigMock->expects($this->once())
             ->method('getAttribute')
             ->with($this->equalTo(RegionType::COUNTRY_OPTION_KEY))

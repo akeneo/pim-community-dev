@@ -2,10 +2,12 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
+use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
+use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 
 class EntityResultListener
 {
@@ -20,13 +22,20 @@ class EntityResultListener
     protected $resultFormatter;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * @param ResultFormatter $resultFormatter
      * @param string $datagridName
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      */
-    public function __construct(ResultFormatter $resultFormatter, $datagridName)
+    public function __construct(ResultFormatter $resultFormatter, $datagridName, EventDispatcher $dispatcher)
     {
         $this->resultFormatter = $resultFormatter;
         $this->datagridName    = $datagridName;
+        $this->dispatcher      = $dispatcher;
     }
 
     /**
@@ -51,6 +60,8 @@ class EntityResultListener
             if (isset($entities[$entityName][$entityId])) {
                 $entity = $entities[$entityName][$entityId];
             }
+
+            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($row, $entity));
 
             $resultRows[] = array(
                 'indexer_item' => $row,

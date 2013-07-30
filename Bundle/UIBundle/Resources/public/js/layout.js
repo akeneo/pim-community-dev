@@ -1,6 +1,16 @@
 $(document).ready(function () {
     initLayout();
 
+    /* hide progress bar on page ready in case we don't need hash navigation request*/
+    if ((typeof Oro.hashNavigationEnabled == "undefined") ||
+        !Oro.hashNavigationEnabled() ||
+        !Oro.Navigation.prototype.checkHashForUrl()) {
+            if ($('#page-title').size()) {
+                document.title = $('#page-title').text();
+            }
+            hideProgressBar();
+    }
+
     /* side bar functionality */
     $('div.side-nav').each(function () {
         var myParent = $(this);
@@ -115,15 +125,27 @@ $(document).ready(function () {
         $('.open:not(._currently_clicked)').removeClass('open')
         clickingTarget.removeClass('_currently_clicked');
     });
+
+    $('#main-menu').mouseover(function() {
+        $('.open').removeClass('open');
+    })
  });
+
+function hideProgressBar() {
+    if ($('#progressbar').is(':visible')) {
+        $('#progressbar').hide();
+        $('#page').show();
+    }
+}
 
 if (typeof Oro !== "undefined") {
     /**
-     * Init page layout js after hash navigation request is completed
+     * Init page layout js and hide progress bar after hash navigation request is completed
      */
     Oro.Events.bind(
         "hash_navigation_request:complete",
         function () {
+            hideProgressBar();
             initLayout();
         },
         this

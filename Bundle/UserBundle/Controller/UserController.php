@@ -16,6 +16,8 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
+use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+
 /**
  * @Acl(
  *      id="oro_user_user",
@@ -107,11 +109,20 @@ class UserController extends Controller
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
 
-            return $this->redirect($this->generateUrl('oro_user_index'));
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_index',
+                )
+            );
         }
 
         return array(
             'form' => $this->get('oro_user.form.user')->createView(),
+            'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree($entity)
         );
     }
 
@@ -136,5 +147,13 @@ class UserController extends Controller
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
+    }
+
+    /**
+     * @return BusinessUnitManager
+     */
+    protected function getBusinessUnitManager()
+    {
+        return $this->get('oro_organization.business_unit_manager');
     }
 }

@@ -20,16 +20,21 @@ class RestApiUsersACLTest extends WebTestCase
     /**
      * @var Client
      */
-    protected $client = null;
+    protected $client;
 
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->client = static::createClient(
-            array(),
-            ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
-        );
+        if (!isset($this->client)) {
+            $this->client = static::createClient(
+                array(),
+                ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
+            );
+        } else {
+            $this->client->restart();
+        }
+
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
@@ -49,7 +54,8 @@ class RestApiUsersACLTest extends WebTestCase
                 "rolesCollection" => array("1")
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/user', $request);
+
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }
@@ -57,7 +63,7 @@ class RestApiUsersACLTest extends WebTestCase
     public function testApiGetUsers()
     {
         //get user id
-        $this->client->request('GET', 'http://localhost/api/rest/latest/users?limit=100');
+        $this->client->request('GET', $this->client->generate('oro_api_get_users'), array('limit' => 100));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }
@@ -65,7 +71,7 @@ class RestApiUsersACLTest extends WebTestCase
     public function testApiGetUser()
     {
         //open user by id
-        $this->client->request('GET', 'http://localhost/api/rest/latest/users' . '/' . self::DEFAULT_USER_ID);
+        $this->client->request('GET', $this->client->generate('oro_api_get_user', array('id' => self::DEFAULT_USER_ID)));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }
@@ -85,7 +91,7 @@ class RestApiUsersACLTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            'http://localhost/api/rest/latest/users' . '/' . self::DEFAULT_USER_ID,
+            $this->client->generate('oro_api_put_user', array('id' => self::DEFAULT_USER_ID)),
             $request
         );
         $result = $this->client->getResponse();
@@ -94,7 +100,7 @@ class RestApiUsersACLTest extends WebTestCase
 
     public function testApiDeleteUser()
     {
-        $this->client->request('DELETE', 'http://localhost/api/rest/latest/users' . '/' . self::DEFAULT_USER_ID);
+        $this->client->request('DELETE', $this->client->generate('oro_api_delete_user', array('id' => self::DEFAULT_USER_ID)));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }

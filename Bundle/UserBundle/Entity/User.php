@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use Oro\Bundle\TagBundle\Entity\Tag;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -19,14 +20,20 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
+use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 use DateTime;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
@@ -35,7 +42,8 @@ use DateTime;
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
-    EntityUploadedImageInterface
+    EntityUploadedImageInterface,
+    Taggable
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -272,15 +280,35 @@ class User extends AbstractEntityFlexible implements
      */
     protected $emails;
 
+    /**
+     * @var Tag[]
+     *
+     */
+    protected $tags;
+
+    /**
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
+     * @ORM\JoinTable(name="oro_user_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @Exclude
+     * @Oro\Versioned("getName")
+     */
+    protected $businessUnits;
+
     public function __construct()
     {
         parent::__construct();
 
-        $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles    = new ArrayCollection();
-        $this->groups    = new ArrayCollection();
-        $this->statuses = new ArrayCollection();
-        $this->emails   = new ArrayCollection();
+        $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles           = new ArrayCollection();
+        $this->groups          = new ArrayCollection();
+        $this->statuses        = new ArrayCollection();
+        $this->emails          = new ArrayCollection();
+        $this->businessUnits   = new ArrayCollection();
     }
 
     /**
@@ -1110,5 +1138,80 @@ class User extends AbstractEntityFlexible implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaggableId()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTags()
+    {
+        $this->tags = $this->tags ?: new ArrayCollection();
+
+        return $this->tags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getBusinessUnits()
+    {
+        $this->businessUnits = $this->businessUnits ?: new ArrayCollection();
+
+        return $this->businessUnits;
+    }
+
+    /**
+     * @param ArrayCollection $businessUnits
+     * @return User
+     */
+    public function setBusinessUnits($businessUnits)
+    {
+        $this->businessUnits = $businessUnits;
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function addBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if (!$this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->add($businessUnit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function removeBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if ($this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->removeElement($businessUnit);
+        }
+
+        return $this;
     }
 }

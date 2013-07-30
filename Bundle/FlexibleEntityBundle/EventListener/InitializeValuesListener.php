@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
@@ -11,11 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
  * Aims to add all values / required values when create or load a new flexible :
  * - required : an empty (or default value) for each required attribute
  * - all : an empty (or default value) for each attribute
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class InitializeValuesListener implements EventSubscriberInterface
 {

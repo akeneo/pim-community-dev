@@ -8,13 +8,19 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 class RoleUserDatagridManager extends UserRelationDatagridManager
 {
     /**
      * @var Role
      */
-    private $role;
+    protected $role;
+
+    /**
+     * @var string
+     */
+    protected $hasRoleExpression;
 
     /**
      * @param Role $role
@@ -46,16 +52,17 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
         $fieldHasRole->setName('has_role');
         $fieldHasRole->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => 'Has role',
-                'field_name'  => 'hasCurrentRole',
-                'expression'  => 'hasCurrentRole',
-                'nullable'    => false,
-                'editable'    => true,
-                'sortable'    => true,
-                'filter_type' => FilterInterface::TYPE_BOOLEAN,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => 'Has role',
+                'field_name'      => 'hasCurrentRole',
+                'expression'      => $this->getHasRoleExpression(),
+                'nullable'        => false,
+                'editable'        => true,
+                'sortable'        => true,
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'filter_by_where' => true
             )
         );
 
@@ -67,26 +74,36 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $entityAlias = $query->getRootAlias();
-
-        if ($this->getRole()->getId()) {
-            $query->addSelect(
-                "CASE WHEN " .
-                "(:role MEMBER OF $entityAlias.roles OR $entityAlias.id IN (:data_in)) AND " .
-                "$entityAlias.id NOT IN (:data_not_in) ".
-                "THEN 1 ELSE 0 END AS hasCurrentRole",
-                true
-            );
-        } else {
-            $query->addSelect(
-                "CASE WHEN " .
-                "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) ".
-                "THEN 1 ELSE 0 END AS hasCurrentRole",
-                true
-            );
-        }
+        $query->addSelect($this->getHasRoleExpression() . ' AS hasCurrentRole', true);
 
         return $query;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHasRoleExpression()
+    {
+        if (null === $this->hasRoleExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias = $queryFactory->getAlias();
+
+            if ($this->getRole()->getId()) {
+                $this->hasRoleExpression =
+                    "CASE WHEN " .
+                    "(:role MEMBER OF $entityAlias.roles OR $entityAlias.id IN (:data_in)) AND " .
+                    "$entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            } else {
+                $this->hasRoleExpression =
+                    "CASE WHEN " .
+                    "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) " .
+                    "THEN true ELSE false END";
+            }
+        }
+
+        return $this->hasRoleExpression;
     }
 
     /**

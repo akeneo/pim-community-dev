@@ -11,9 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
@@ -66,7 +63,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->repository->setLocale($code);
         $this->assertEquals($this->repository->getLocale(), $code);
     }

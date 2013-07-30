@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
@@ -18,15 +19,21 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
         $translator = $this->createMockTranslator();
-        $this->type = new EntityFilterType($translator);
-        $this->factory->addType(new FilterType($translator));
-        $this->factory->addType(new ChoiceFilterType($translator));
 
         $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry', array(), '', false);
-        $this->factory->addType(new EntityType($registry));
+
+        $types = array(
+            new FilterType($translator),
+            new ChoiceFilterType($translator),
+            new EntityType($registry)
+        );
+
+        $this->formExtensions[] = new CustomFormExtension($types);
+
+        parent::setUp();
+
+        $this->type = new EntityFilterType($translator);
     }
 
     /**

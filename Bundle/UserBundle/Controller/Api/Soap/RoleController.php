@@ -175,7 +175,7 @@ class RoleController extends SoapController
      */
     public function deleteAclsAction($id, $resources)
     {
-        $this->getAclManager()->modifyAclForRole($id, $resources, false);
+        $this->getAclManager()->modifyAclsForRole($id, $resources, false);
 
         return '';
     }

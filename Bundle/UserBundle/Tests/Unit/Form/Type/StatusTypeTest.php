@@ -20,7 +20,7 @@ class StatusTypeTest extends FormIntegrationTestCase
         $status = new Status();
         $status->setStatus($formData['status']);
 
-        $form->bind($formData);
+        $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($status, $form->getData());

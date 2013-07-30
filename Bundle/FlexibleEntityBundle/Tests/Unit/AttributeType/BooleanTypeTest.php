@@ -32,9 +32,10 @@ class BooleanTypeTest extends AttributeTypeTest
                 'email',
                 'bar',
                 array(
-                    'constraints' => array('constraints'),
-                    'label'       => null,
-                    'required'    => null,
+                    'constraints'     => array('constraints'),
+                    'label'           => null,
+                    'required'        => null,
+                    'auto_initialize' => null
                 )
             );
 

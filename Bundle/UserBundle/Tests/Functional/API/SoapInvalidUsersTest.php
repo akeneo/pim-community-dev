@@ -15,7 +15,13 @@ class SoapInvalidUsersTest extends WebTestCase
     const USER_NAME = 'user_wo_permissions';
     const USER_PASSWORD = 'no_key';
 
-    protected $client = null;
+    /** @var Client */
+    protected $client;
+
+    public function tearDown()
+    {
+        unset($this->client);
+    }
 
     public function testInvalidKey()
     {

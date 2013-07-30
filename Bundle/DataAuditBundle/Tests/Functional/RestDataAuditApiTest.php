@@ -13,11 +13,16 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class RestDataAuditApiTest extends WebTestCase
 {
 
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        } else {
+            $this->client->restart();
+        }
     }
 
     /**
@@ -25,6 +30,17 @@ class RestDataAuditApiTest extends WebTestCase
      */
     public function testPreconditions()
     {
+        //clear Audits
+        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        foreach ($result as $audit) {
+            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 204);
+        }
+
         //create users
         $request = array(
             "user" => array (
@@ -38,7 +54,7 @@ class RestDataAuditApiTest extends WebTestCase
             )
         );
 
-        $this->client->request('POST', 'http://localhost/api/rest/latest/user', $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 201);
 
@@ -52,40 +68,55 @@ class RestDataAuditApiTest extends WebTestCase
      */
     public function testGetAudits($response)
     {
-        $this->client->request('GET', 'http://localhost/api/rest/latest/audits');
+        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
+        $resultActual = reset($result);
+        $this->assertEquals('create', $resultActual['action']);
+        $this->assertEquals('Oro\Bundle\UserBundle\Entity\User', $resultActual['object_class']);
+        $this->assertEquals($response['user']['username'], $resultActual['object_name']);
+        $this->assertEquals('admin', $resultActual['user']);
+        $this->assertEquals($response['user']['username'], $resultActual['data']['username']['new']);
+        $this->assertEquals($response['user']['email'], $resultActual['data']['email']['new']);
+        $this->assertEquals($response['user']['enabled'], $resultActual['data']['enabled']['new']);
+        $this->assertEquals('User', $resultActual['data']['roles']['new']);
 
         return $result;
     }
 
     /**
      * @param  array $response
-     * @return array
      * @depends testGetAudits
      */
     public function testGetAudit($response)
     {
-        $this->client->request('GET', 'http://localhost/api/rest/latest/audits/' . $response[0]['id']);
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-
-        return $result;
+        foreach ($response as $audit) {
+            $this->client->request('GET', $this->client->generate('oro_api_get_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200);
+            $result = ToolsAPI::jsonToArray($result->getContent());
+            unset($result['loggedAt']);
+            unset($audit['loggedAt']);
+            $this->assertEquals($audit, $result);
+        }
     }
 
     /**
      * @param array $response
-     * @depends testGetAudit
+     * @depends testGetAudits
      */
     public function testDeleteAudit($response)
     {
-        $this->client->request('DELETE', 'http://localhost/api/rest/latest/audits/' . $response['id']);
+        foreach ($response as $audit) {
+            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 204);
+        }
+        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 204);
-        $this->client->request('GET', 'http://localhost/api/rest/latest/audits/' . $response['id']);
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 404);
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $this->assertEmpty($result);
     }
 }

@@ -1,5 +1,6 @@
 parameters:
-    oro_menu.factory.class:                                    Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory
+    oro_menu.factory.acl_extension.class:                      Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension
+    oro_menu.factory.class:                                    Knp\Menu\MenuFactory
     oro_menu.builder_chain.class:                              Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider
     oro_menu.configuration_builder.class:                      Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder
     oro_menu.twig.extension.class:                             Oro\Bundle\NavigationBundle\Twig\MenuExtension
@@ -28,20 +29,26 @@ parameters:
 
     oro_navigation.translation.extractor.class:                Oro\Bundle\NavigationBundle\Title\TranslationExtractor
 
-    oro_navigation.twig_assets_extension.class:                Oro\Bundle\NavigationBundle\Twig\AssetsConfigExtension
     oro_navigation.twig_hash_nav_extension.class:              Oro\Bundle\NavigationBundle\Twig\HashNavExtension
 
     oro_navigation.form.type.pagestate.class:                  Oro\Bundle\NavigationBundle\Form\Type\PageStateType
     oro_navigation.form.handler.pagestate.class:               Oro\Bundle\NavigationBundle\Form\Handler\PageStateHandler
 
+    oro_navigation.breadcrumbs_manager.class:                  Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager
+
 services:
-    oro_menu.factory:
-        class: %oro_menu.factory.class%
+    oro_menu_acl_extension:
+        class: %oro_menu.factory.acl_extension.class%
         arguments:
             - @router
             - @oro_user.acl_manager
         calls:
             - [ setCache, [ @cache ] ]
+
+    oro_menu.factory:
+        class: %oro_menu.factory.class%
+        calls:
+            - [ addExtension, [ @oro_menu_acl_extension ] ]
 
     oro_menu.builder_chain:
         class: %oro_menu.builder_chain.class%
@@ -63,6 +70,7 @@ services:
         arguments:
             - @knp_menu.helper
             - @oro_menu.builder_chain
+            - @oro_navigation.breadcrumb_manager
             - @service_container
         tags:
             - { name: twig.extension }
@@ -173,6 +181,8 @@ services:
           - @translator.default
           - @doctrine.orm.entity_manager
           - @serializer
+          - @oro_config.user
+          - @oro_navigation.breadcrumb_manager
         calls:
           - [ setTitles, [ %oro_titles% ] ]
 
@@ -206,16 +216,6 @@ services:
         tags:
             - { name: translation.extractor, alias: navigation_translation_extractor }
 
-    oro_navigation.twig.assets_extension:
-        class:        %oro_navigation.twig_assets_extension.class%
-        arguments:
-            - @assetic.asset_factory
-            - %oro_navigation.assets_config%
-            - @templating.name_parser
-            - %assetic.bundles%
-        tags:
-            - { name: twig.extension }
-
     oro_navigation.form.pagestate:
         class:                        Symfony\Component\Form\Form
         factory_method:               createNamed
@@ -243,3 +243,10 @@ services:
         tags:
             - { name: twig.extension }
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    oro_navigation.breadcrumb_manager:
+        class: %oro_navigation.breadcrumbs_manager.class%
+        arguments:
+            - @oro_menu.builder_chain
+            - @knp_menu.matcher
+            - @router

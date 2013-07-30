@@ -33,6 +33,17 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
 
         this.listenTo(this.datagrid.getRefreshAction(), 'preExecute', this._onExecuteRefreshAction);
         this.listenTo(this.datagrid.getResetAction(), 'preExecute', this._onExecuteResetAction);
+
+        /**
+         * Restore include/exclude state from pagestate
+         */
+        Oro.Events.bind(
+            "pagestate_restored",
+            function() {
+                this._restoreState();
+            },
+            this
+        );
     },
 
     /**
@@ -109,6 +120,51 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
     },
 
     /**
+     * Explode string into int array
+     *
+     * @param string
+     * @return {Array}
+     * @private
+     */
+    _explode: function(string) {
+        if (!string) {
+            return [];
+        }
+        return _.map(string.split(','), function(val) {return val ? parseInt(val, 10) : null});
+    },
+
+    /**
+      * Restore values of include and exclude properties
+      *
+      * @private
+      */
+     _restoreState: function () {
+        var included = '';
+        var excluded = '';
+        if (this.selectors.included && $(this.selectors.included).length) {
+            included = this._explode($(this.selectors.included).val());
+            this.set('included', included);
+        }
+        if (this.selectors.excluded && $(this.selectors.excluded).length) {
+            excluded = this._explode($(this.selectors.excluded).val());
+            this.set('excluded', excluded)
+        }
+        if (included || excluded) {
+            this.datagrid.setAdditionalParameter('data_in', included);
+            this.datagrid.setAdditionalParameter('data_not_in', excluded);
+            var columnName = this.columnName;
+            this.datagrid.collection.each(function(model) {
+                if (_.indexOf(included, model.get('id')) !== -1) {
+                    model.set(columnName, true);
+                }
+                if (_.indexOf(excluded, model.get('id')) !== -1) {
+                    model.set(columnName, false);
+                }
+            });
+        }
+     },
+
+    /**
      * Confirms refresh action that before it will be executed
      *
      * @param {Oro.Datagrid.Action.AbstractAction} action
@@ -117,8 +173,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
      */
     _onExecuteRefreshAction: function(action, options) {
         this._confirmAction(action, options, 'refresh', {
-            title: 'Refresh Confirmation',
-            content: 'Your local changes will be lost. Are you sure you want to refresh grid?'
+            title: _.__('Refresh Confirmation'),
+            content: _.__('Your local changes will be lost. Are you sure you want to refresh grid?')
         });
     },
 
@@ -131,8 +187,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
      */
     _onExecuteResetAction: function(action, options) {
         this._confirmAction(action, options, 'reset', {
-            title: 'Reset Confirmation',
-            content: 'Your local changes will be lost. Are you sure you want to reset grid?'
+            title: _.__('Reset Confirmation'),
+            content: _.__('Your local changes will be lost. Are you sure you want to reset grid?')
         });
     },
 
@@ -177,8 +233,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
         this.confirmModal = this.confirmModal || {};
         if (!this.confirmModal[type]) {
             this.confirmModal[type] = new Oro.BootstrapModal(_.extend({
-                title: 'Confirmation',
-                okText: 'Ok, got it.',
+                title: _.__('Confirmation'),
+                okText: _.__('Ok, got it.'),
                 className: 'modal modal-primary',
                 okButtonClass: 'btn-primary btn-large'
             }, options));

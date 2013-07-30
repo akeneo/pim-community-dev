@@ -14,7 +14,9 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 /**
  * Region
  *
- * @ORM\Table("oro_dictionary_region")
+ * @ORM\Table("oro_dictionary_region", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionTranslation")
  */
@@ -27,17 +29,17 @@ class Region implements Translatable
      * @ORM\Column(name="combined_code", type="string", length=16)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $combinedCode;
+    protected $combinedCode;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions", cascade={"persist"})
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Type("string")
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
@@ -45,7 +47,7 @@ class Region implements Translatable
      * @ORM\Column(name="code", type="string", length=32)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
@@ -54,12 +56,12 @@ class Region implements Translatable
      * @Soap\ComplexType("string", nillable=true)
      * @Gedmo\Translatable
      */
-    private $name;
+    protected $name;
 
     /**
      * @Gedmo\Locale
      */
-    private $locale;
+    protected $locale;
 
     /**
      * @param string $combinedCode
@@ -164,7 +166,7 @@ class Region implements Translatable
     /**
      * Returns locale code
      *
-     * @return mixed
+     * @return string
      */
     public function getLocale()
     {

@@ -12,9 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleQueryBuilderTest extends AbstractOrmTest
@@ -38,7 +35,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->queryBuilder->setLocale($code);
         $this->assertEquals($this->queryBuilder->getLocale(), $code);
     }
@@ -76,7 +73,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
      */
     public function testPrepareAttributeJoinCondition()
     {
-        $this->queryBuilder->setLocale('fr_FR');
+        $this->queryBuilder->setLocale('fr');
         $this->queryBuilder->setScope('eco');
 
         $attribute = new Attribute();
@@ -86,11 +83,11 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
 
         $attribute->setTranslatable(true);
         $condition = $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
-        $this->assertEquals($condition, "alias.attribute = 12 AND alias.locale = 'fr_FR'");
+        $this->assertEquals($condition, "alias.attribute = 12 AND alias.locale = 'fr'");
 
         $attribute->setScopable(true);
         $condition = $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
-        $this->assertEquals($condition, "alias.attribute = 12 AND alias.locale = 'fr_FR' AND alias.scope = 'eco'");
+        $this->assertEquals($condition, "alias.attribute = 12 AND alias.locale = 'fr' AND alias.scope = 'eco'");
     }
 
     /**

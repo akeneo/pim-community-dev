@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
@@ -18,13 +19,19 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        parent::setUp();
         $translator = $this->createMockTranslator();
+
+        $types = array(
+            new FilterType($translator),
+            new DateRangeType($translator),
+            new DateTimeRangeType($translator),
+            new DateRangeFilterType($translator)
+        );
+
+        $this->formExtensions[] = new CustomFormExtension($types);
+
+        parent::setUp();
         $this->type = new DateTimeRangeFilterType($translator);
-        $this->factory->addType(new FilterType($translator));
-        $this->factory->addType(new DateRangeType($translator));
-        $this->factory->addType(new DateTimeRangeType($translator));
-        $this->factory->addType(new DateRangeFilterType($translator));
     }
 
     /**

@@ -3,7 +3,22 @@
 namespace Oro\Bundle\TestFrameworkBundle\Pages;
 
 use PHPUnit_Framework_Assert;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Users;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Roles;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Groups;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Accounts;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Contacts;
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Navigation;
 
+/**
+ * @method Users openUsers()
+ * @method Roles openRoles()
+ * @method Groups openGroups()
+ * @method Accounts openAccounts()
+ * @method Contacts openContacts()
+ * @method Navigation openNavigation()
+ * @method Navigation tab()
+ */
 class Page
 {
     protected $redirectUrl = null;
@@ -18,7 +33,9 @@ class Page
     public function __construct($testCase, $redirect = true)
     {
         $this->test = $testCase;
+        // @codingStandardsIgnoreStart
         $this->currentWindow()->size(array('width' => intval(viewportWIDTH), 'height' => intval(viewportHEIGHT)));
+        // @codingStandardsIgnoreУтв
         if (!is_null($this->redirectUrl) && $redirect) {
             $this->test->url($this->redirectUrl);
             $this->waitPageToLoad();
@@ -147,6 +164,7 @@ class Page
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementPresent($xpath, $message = '')
     {
@@ -154,11 +172,13 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementNotPresent($xpath, $message = '')
     {
@@ -166,6 +186,7 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**

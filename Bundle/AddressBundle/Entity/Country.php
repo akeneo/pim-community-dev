@@ -14,7 +14,9 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 /**
  * Country
  *
- * @ORM\Table("oro_dictionary_country")
+ * @ORM\Table("oro_dictionary_country", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\CountryTranslation")
  */
@@ -27,7 +29,7 @@ class Country implements Translatable
      * @ORM\Column(name="iso2_code", type="string", length=2)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso2Code;
+    protected $iso2Code;
 
     /**
      * @var string
@@ -35,7 +37,7 @@ class Country implements Translatable
      * @ORM\Column(name="iso3_code", type="string", length=3)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso3Code;
+    protected $iso3Code;
 
     /**
      * @var string
@@ -44,7 +46,7 @@ class Country implements Translatable
      * @Soap\ComplexType("string", nillable=true)
      * @Gedmo\Translatable
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ArrayCollection
@@ -57,12 +59,12 @@ class Country implements Translatable
      * )
      * @Exclude
      */
-    private $regions;
+    protected $regions;
 
     /**
      * @Gedmo\Locale
      */
-    private $locale;
+    protected $locale;
 
     /**
      * @param string $iso2Code ISO2 country code
@@ -203,7 +205,7 @@ class Country implements Translatable
     /**
      * Returns locale code
      *
-     * @return mixed
+     * @return string
      */
     public function getLocale()
     {

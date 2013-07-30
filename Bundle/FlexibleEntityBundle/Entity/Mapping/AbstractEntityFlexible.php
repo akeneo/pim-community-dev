@@ -1,7 +1,9 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
@@ -9,11 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 
 /**
  * Base Doctrine ORM entity
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 abstract class AbstractEntityFlexible extends AbstractFlexible
 {
@@ -41,18 +38,71 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected $updated;
 
     /**
-     * @var Value
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AbstractEntityFlexibleValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
 
     /**
+     * Associative array of defined attributes
+     *
+     * @var array
+     */
+    protected $allAttributes;
+
+    /**
+     * Value class used to create new value
+     *
+     * @var string
+     */
+    protected $valueClass;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->values = new ArrayCollection();
+        $this->allAttributes = array();
+        $this->values        = new ArrayCollection();
+    }
+
+    /**
+     * Get attributes
+     *
+     * @return array
+     */
+    public function getAllAttributes()
+    {
+        return $this->allAttributes;
+    }
+
+    /**
+     * Set attributes
+     *
+     * @param array $attributes
+     *
+     * @return AbstractEntityFlexible
+     */
+    public function setAllAttributes($attributes)
+    {
+        $this->allAttributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Set value class
+     *
+     * @param string $valueClass
+     *
+     * @return AbstractEntityFlexible
+     */
+    public function setValueClass($valueClass)
+    {
+        $this->valueClass = $valueClass;
+
+        return $this;
     }
 
     /**
@@ -87,20 +137,32 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValues()
     {
-        return $this->values;
+        if (!isset($this->values) || !$this->values->count()) {
+            return $this->values;
+        }
+
+        $collection = new ArrayCollection();
+        foreach ($this->values as $value) {
+            $collection[$value->getAttribute()->getCode()] = $value;
+        }
+
+        return $collection;
     }
 
     /**
      * Get value related to attribute code
      *
      * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
      *
      * @return FlexibleValueInterface
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function getValue($attributeCode)
+    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $locale = $this->getLocale();
-        $scope  = $this->getScope();
+        $locale = ($localeCode) ? $localeCode : $this->getLocale();
+        $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
         $values = $this->getValues();
 
         if (empty($values)) {
@@ -109,18 +171,14 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
 
         $values = $values->filter(
             function ($value) use ($attributeCode, $locale, $scope) {
-                // related value to asked attribute
                 if ($value->getAttribute()->getCode() == $attributeCode) {
-                    // return relevant translated value if translatable
                     if ($value->getAttribute()->getTranslatable() and $value->getLocale() == $locale) {
-                        // check also scope if scopable
                         if ($value->getAttribute()->getScopable() and $value->getScope() == $scope) {
                             return true;
                         } elseif (!$value->getAttribute()->getScopable()) {
                             return true;
                         }
                     } elseif (!$value->getAttribute()->getTranslatable()) {
-                        // return the value if not translatable
                         return true;
                     }
                 }
@@ -129,6 +187,36 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             }
         );
         $value = (count($values) == 1) ? $values->first() : false;
+
+        return $value;
+    }
+
+    /**
+     * Create a new value
+     *
+     * @param string $attributeCode
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws \Exception
+     *
+     * @return AbstractFlexibleValue
+     */
+    public function createValue($attributeCode, $locale = null, $scope = null)
+    {
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+        }
+
+        $attribute = $this->allAttributes[$attributeCode];
+        $value = new $this->valueClass();
+        $value->setAttribute($attribute);
+        if ($attribute->getTranslatable()) {
+            $value->setLocale($locale);
+        }
+        if ($attribute->getScopable()) {
+            $value->setScope($scope);
+        }
 
         return $value;
     }
@@ -144,8 +232,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         // to authorize call to dynamic __get by twig, should be filter on existing attributes
         // cf http://twig.sensiolabs.org/doc/recipes.html#using-dynamic-object-properties
-        //return true;
-
         $values = $this->getValues();
 
         if (empty($values)) {
@@ -154,13 +240,56 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
 
         $values = $values->filter(
             function ($value) use ($name) {
-                // related value to asked attribute
                 if ($value->getAttribute()->getCode() == $name) {
                     return true;
                 }
             }
         );
+
         return (count($values) >= 1);
+    }
+
+    /**
+     * Add support of magic method getAttributeCode, setAttributeCode, addAttributeCode
+     *
+     * @param string $method
+     * @param string $arguments
+     *
+     * @throws \Exception
+     *
+     * @return Ambigous <mixed, multitype:>
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function __call($method, $arguments)
+    {
+        if (preg_match('/get(.*)/', $method, $matches)) {
+            $attributeCode = Inflector::tableize($matches[1]);
+
+            return $this->getValue($attributeCode);
+        }
+
+        $attributeCode = null;
+        if (preg_match('/set(.*)/', $method, $matches)) {
+            $attributeCode = Inflector::tableize($matches[1]);
+            $method        = 'setData';
+        } elseif (preg_match('/add(.*)/', $method, $matches)) {
+            $attributeCode = Inflector::tableize($matches[1]);
+            $method        = 'addData';
+        }
+
+        if ($attributeCode !== null) {
+            $data   = $arguments[0];
+            $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
+            $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
+            $value  = $this->getValue($attributeCode, $locale, $scope);
+            if ($value === false) {
+                $value = $this->createValue($attributeCode, $locale, $scope);
+                $this->addValue($value);
+            }
+            $value->$method($data);
+
+            return $this;
+        }
     }
 
     /**

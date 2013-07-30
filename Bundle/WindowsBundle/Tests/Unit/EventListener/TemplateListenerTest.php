@@ -2,20 +2,20 @@
 
 namespace Oro\Bundle\WindowsBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\WindowsBundle\EventListener\TemplateListener;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+
+use Oro\Bundle\WindowsBundle\EventListener\TemplateListener;
 
 class TemplateListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|GetResponseForControllerResultEvent
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $event;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $container;
 
@@ -68,14 +68,20 @@ class TemplateListenerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider templateDataProvider
      * @param bool $containerExists
      * @param bool $widgetExists
+     * @param mixed $inputTemplate
      * @param string $expectedTemplate
      * @param string $requestAttribute
      */
-    public function testOnKernelViewWidgetTemplateExists($containerExists, $widgetExists, $expectedTemplate, $requestAttribute)
-    {
+    public function testOnKernelViewWidgetTemplateExists(
+        $containerExists,
+        $widgetExists,
+        $inputTemplate,
+        $expectedTemplate,
+        $requestAttribute
+    ) {
         $request = Request::create('/test/url');
         $request->$requestAttribute->set('_widgetContainer', 'container');
-        $request->attributes->set('_template', 'TestBundle:Default:test.html.twig');
+        $request->attributes->set('_template', $inputTemplate);
 
         $this->event->expects($this->any())
             ->method('getRequest')
@@ -90,8 +96,8 @@ class TemplateListenerTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('TestBundle:Default:container.test.html.twig', $containerExists),
-                        array('TestBundle:Default:widget.test.html.twig', $widgetExists)
+                        array($this->getTemplateLogicalName('container'), $containerExists),
+                        array($this->getTemplateLogicalName('widget'), $widgetExists)
                     )
                 )
             );
@@ -110,15 +116,52 @@ class TemplateListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function templateDataProvider()
     {
+        $inputTemplate     = $this->getTemplateLogicalName();
+        $containerTemplate = $this->getTemplateLogicalName('container');
+        $widgetTemplate    = $this->getTemplateLogicalName('widget');
+
+        $templateReference = $this->getTemplateReference($inputTemplate);
+
         return array(
-            'container yes, widget yes' => array(true, true, 'TestBundle:Default:container.test.html.twig', 'query'),
-            'container yes, widget no' => array(true, false, 'TestBundle:Default:container.test.html.twig', 'query'),
-            'container no, widget yes' => array(false, true, 'TestBundle:Default:widget.test.html.twig', 'query'),
-            'container no, widget no' => array(false, false, 'TestBundle:Default:test.html.twig', 'query'),
-            'post container yes, widget yes' => array(true, true, 'TestBundle:Default:container.test.html.twig', 'request'),
-            'post container yes, widget no' => array(true, false, 'TestBundle:Default:container.test.html.twig', 'request'),
-            'post container no, widget yes' => array(false, true, 'TestBundle:Default:widget.test.html.twig', 'request'),
-            'post container no, widget no' => array(false, false, 'TestBundle:Default:test.html.twig', 'request')
+            'container yes, widget yes' => array(true, true, $inputTemplate, $containerTemplate, 'query'),
+            'container yes, widget no' => array(true, false, $inputTemplate, $containerTemplate, 'query'),
+            'container no, widget yes' => array(false, true, $inputTemplate, $widgetTemplate, 'query'),
+            'container no, widget no' => array(false, false, $inputTemplate, $inputTemplate, 'query'),
+            'post container yes, widget yes' => array(true, true, $inputTemplate, $containerTemplate, 'request'),
+            'post container yes, widget no' => array(true, false, $inputTemplate, $containerTemplate, 'request'),
+            'post container no, widget yes' => array(false, true, $inputTemplate, $widgetTemplate, 'request'),
+            'post container no, widget no' => array(false, false, $inputTemplate, $inputTemplate, 'request'),
+            'template reference' => array(true, false, $templateReference, $containerTemplate, 'query'),
         );
+    }
+
+    /**
+     * @param string|null $container
+     * @return string
+     */
+    protected function getTemplateLogicalName($container = null)
+    {
+        if ($container) {
+            $container .= '.';
+        }
+
+        return 'TestBundle:Default:' . $container . 'test.html.twig';
+    }
+
+    /**
+     * @param string $templateLogicalName
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getTemplateReference($templateLogicalName)
+    {
+        $templateReference = $this->getMockBuilder('Symfony\Component\Templating\TemplateReferenceInterface')
+            ->disableOriginalConstructor()
+            ->setMethods('getLogicalName')
+            ->getMockForAbstractClass();
+        $templateReference->expects($this->any())
+            ->method('getLogicalName')
+            ->will($this->returnValue($templateLogicalName));
+
+        return $templateReference;
     }
 }

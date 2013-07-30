@@ -20,7 +20,7 @@ class EmailTypeTest extends FormIntegrationTestCase
         $email = new Email();
         $email->setEmail($formData['email']);
 
-        $form->bind($formData);
+        $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($email, $form->getData());

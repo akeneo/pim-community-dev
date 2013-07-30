@@ -95,12 +95,12 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $configMock->expects($this->once())
             ->method('getOptions')
             ->will($this->returnValue(array()));
-        
-        $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+
+        $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $formMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $formMock->expects($this->once())
@@ -118,7 +118,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($configMock));
 
-        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -154,7 +154,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $addressMock->expects($this->once())
             ->method('getState');
 
-        $formMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $formMock->expects($this->once())
@@ -166,7 +166,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $formMock->expects($this->once())
             ->method('add');
 
-        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -211,14 +211,14 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOptions')
             ->will($this->returnValue(array()));
 
-        $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $fieldMock->expects($this->once())
             ->method('getConfig')
             ->will($this->returnValue($configMock));
 
-        $formMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $formMock->expects($this->once())
@@ -228,7 +228,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $formMock->expects($this->once())
             ->method('add');
 
-        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Tests\FormInterface')
+        $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

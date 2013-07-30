@@ -1,39 +1,35 @@
 {% import 'OroUserBundle::macros.html.twig' as macros %}
-
 <div class="customer-info well-small">
-        {% if showImage %}
-            <div class="visual">
-                {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
-                    <img src="{{ imagePath ? imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ title }}" />
-                {% if recordUrl is defined %}</a>{% endif %}
-            </div>
-        {% endif %}
-        <div class="clearfix">
-            <div class="pull-right">
-                <div class="sub-title">{{ entityType }}</div>
-            </div>
-            <div class="{% if showImage %}customer-content{% else %}customer-simplу{% endif %} pull-left">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <h1 class="user-name">
-                            {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
-                                {{ title }}
-                            {% if recordUrl is defined %}</a>{% endif %}
-                        </h1>
-                    </div>
-                    {% block additional_info %}
-                    {% endblock %}
-                </div>
-                {% if entityInfo is defined and entityInfo|length %}
-                <div class="clearfix">
-                    <ul class="inline">
-                        {% for info in entityInfo %}
-                        <li>{{ info.title|trans }}: {{ info.value }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-            </div>
+    <div class="visual">
+        {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
+            <img src="{{ showImage and imagePath ? imagePath|imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ title }}" />
+        {% if recordUrl is defined %}</a>{% endif %}
+    </div>
+    <div class="clearfix">
+        <div class="pull-right">
+            <div class="sub-title">{{ entityType }}</div>
         </div>
+        <div class="{% if showImage %}customer-content{% else %}customer-simplу{% endif %} pull-left">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1 class="user-name">
+                        {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
+                            {{ title }}
+                        {% if recordUrl is defined %}</a>{% endif %}
+                    </h1>
+                </div>
+                {% block additional_info %}
+                {% endblock %}
+            </div>
+            {% if entityInfo is defined and entityInfo|length %}
+            <div class="clearfix">
+                <ul class="inline">
+                    {% for info in entityInfo %}
+                    <li>{{ info.title|trans }}: {{ info.value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
-

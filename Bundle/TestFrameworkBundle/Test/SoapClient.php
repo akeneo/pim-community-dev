@@ -5,7 +5,8 @@ use \SoapClient as BasicSoapClient;
 
 class SoapClient extends BasicSoapClient
 {
-    public $kernel;
+    /** @var \Symfony\Bundle\FrameworkBundle\Client */
+    protected $kernel;
 
     /**
      * Overridden constructor

@@ -8,9 +8,6 @@ use Oro\Bundle\DataFlowBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
 /**
  * Entity ItemMapping
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="oro_dataflow_mapping_item")
  * @ORM\Entity

@@ -3,8 +3,6 @@
 // @codingStandardsIgnoreStart
 class TestListener implements \PHPUnit_Framework_TestListener
 {
-    private $pid = null;
-    private $pipes;
     private $directory;
 
 
@@ -25,7 +23,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
 
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
-        $this->storeAScreenshot($test);
+        //$this->storeAScreenshot($test);
     }
 
     private function storeAScreenshot(\PHPUnit_Framework_Test $test)
@@ -38,7 +36,6 @@ class TestListener implements \PHPUnit_Framework_TestListener
                 $file .= '__' . $test->getName() . '__ ' . date('Y-m-d\TH-i-s') . '.png';
                 file_put_contents($file, $test->currentScreenshot());
             } catch (\Exception $e) {
-
                 $file = getcwd() . DIRECTORY_SEPARATOR . $this->directory . DIRECTORY_SEPARATOR . end($className);
                 $file .= '__' . $test->getName() . '__ ' . date('Y-m-d\TH-i-s') . '.txt';
                 file_put_contents(

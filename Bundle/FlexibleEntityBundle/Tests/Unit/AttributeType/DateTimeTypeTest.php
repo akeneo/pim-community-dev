@@ -4,11 +4,6 @@ namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\DateTimeType;
 
-/**
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class DateTimeTypeTest extends AttributeTypeTest
 {
     protected $name  = 'oro_flexibleentity_datetime';
@@ -36,12 +31,12 @@ class DateTimeTypeTest extends AttributeTypeTest
                 'foo',
                 'date',
                 'bar',
-                array(
-                    'constraints' => array('constraints'),
-                    'label'       => null,
-                    'required'    => null,
-                    'widget'      => 'single_text',
-                    'input'       => 'datetime',
+                array_merge(
+                    $this->defaultCreateNamedOptions,
+                    array(
+                        'widget' => 'single_text',
+                        'input'  => 'datetime',
+                    )
                 )
             );
 

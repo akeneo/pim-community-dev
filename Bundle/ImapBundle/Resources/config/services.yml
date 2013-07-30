@@ -1,0 +1,22 @@
+parameters:
+    oro_imap.connector.factory.class:            Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory
+    oro_imap.connector.class:                    Oro\Bundle\ImapBundle\Connector\ImapConnector
+    oro_imap.services.factory.class:             Oro\Bundle\ImapBundle\Connector\ImapServicesFactory
+    oro_imap.search_string_manager.gmail.class:  Oro\Bundle\ImapBundle\Connector\Search\GmailSearchStringManager
+    oro_imap.search_string_manager.other.class:  Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
+    oro_imap.storage.gmail.class:                Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
+    oro_imap.storage.other.class:                Oro\Bundle\ImapBundle\Mail\Storage\Imap
+
+services:
+    oro_imap.connector.factory:
+        class: %oro_imap.connector.factory.class%
+        arguments:
+            - @oro_imap.services.factory
+            - %oro_imap.connector.class%
+    oro_imap.services.factory:
+        public: false
+        class: %oro_imap.services.factory.class%
+        arguments:
+            - # The configuration of IMAP services. The empty key is used to configure IMAP servers which have not any special preferences
+                "": [%oro_imap.storage.other.class%, %oro_imap.search_string_manager.other.class%]
+                X-GM-EXT-1: [%oro_imap.storage.gmail.class%, %oro_imap.search_string_manager.gmail.class%]

@@ -1,9 +1,13 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
+/**
+ * Test related class
+ */
 class PhoneCollectionTypeTest extends TypeTestCase
 {
 

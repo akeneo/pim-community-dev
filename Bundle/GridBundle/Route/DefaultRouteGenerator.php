@@ -16,7 +16,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * @var string
      */
-    private $routeName;
+    protected $routeName;
 
     /**
      * @var array

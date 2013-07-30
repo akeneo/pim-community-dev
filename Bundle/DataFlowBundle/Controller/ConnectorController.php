@@ -13,9 +13,6 @@ use Oro\Bundle\DataFlowBundle\Entity\RawConfiguration;
 /**
  * Connector controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  * @Route("/connector")
  *
@@ -71,7 +68,7 @@ class ConnectorController extends Controller
 
         // process form
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+            $form->submit($this->getRequest());
             if ($form->isValid()) {
 
                 if (is_null($entity->getRawConfiguration())) {

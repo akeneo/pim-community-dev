@@ -22,6 +22,7 @@ class OrmTest extends \PHPUnit_Framework_TestCase
     private $om;
     private $container;
     private $mapper;
+    private $dispatcher;
 
     public function setUp()
     {
@@ -38,6 +39,10 @@ class OrmTest extends \PHPUnit_Framework_TestCase
 
         $this->container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->product = new Product();
         $this->product->setName('test product')
             ->setCount(10)
@@ -46,7 +51,7 @@ class OrmTest extends \PHPUnit_Framework_TestCase
             ->setDescription('description')
             ->setCreateDate(new \DateTime());
 
-        $this->orm = new Orm($this->om, $this->container, $this->mapper, true);
+        $this->orm = new Orm($this->om, $this->dispatcher, $this->container, $this->mapper, true);
     }
 
     public function testDoSearch()

@@ -2,33 +2,19 @@
 
 namespace Oro\Bundle\AddressBundle\DataFixtures\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Finder\Finder;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
+use Oro\Bundle\TranslationBundle\DataFixtures\AbstractTranslatableEntityFixture;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 
-class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
+class LoadCountryData extends AbstractTranslatableEntityFixture
 {
-    const COUNTRY_DOMAIN      = 'countries';
-    const COUNTRY_FILE_REGEXP = '/^countries\.(.*?)\./';
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    const COUNTRY_PREFIX = 'country';
+    const REGION_PREFIX  = 'region';
 
     /**
      * @var EntityRepository
@@ -43,23 +29,16 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @var string
      */
-    protected $translationDirectory = '/Resources/translations/';
+    protected $structureFileName = '/../data/countries.yml';
 
     /**
-     * @param ObjectManager $manager
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    protected function loadEntities(ObjectManager $manager)
     {
-        $this->translator = $this->container->get('translator');
-
         $fileName = $this->getFileName();
         $countries = $this->getDataFromFile($fileName);
-        $this->saveCountryData($manager, $countries);
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
+        $this->loadCountriesAndRegions($manager, $countries);
     }
 
     /**
@@ -67,7 +46,10 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
      */
     protected function getFileName()
     {
-        return __DIR__ . '/../data/countries.yml';
+        $fileName = __DIR__ . $this->structureFileName;
+        $fileName = str_replace('/', DIRECTORY_SEPARATOR, $fileName);
+
+        return $fileName;
     }
 
     /**
@@ -96,37 +78,6 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * @return array
-     */
-    protected function getAvailableCountryLocales()
-    {
-        $translationDirectory = str_replace('/', DIRECTORY_SEPARATOR, $this->translationDirectory);
-        $translationDirectories = array();
-
-        foreach ($this->container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            $bundleTranslationDirectory = dirname($reflection->getFilename()) . $translationDirectory;
-            if (is_dir($bundleTranslationDirectory) && is_readable($bundleTranslationDirectory)) {
-                $translationDirectories[] = realpath($bundleTranslationDirectory);
-            }
-        }
-
-        $finder = new Finder();
-        $finder->in($translationDirectories)->name(self::COUNTRY_FILE_REGEXP);
-
-        $countryLocales = array();
-        /** @var $file \SplFileInfo */
-        foreach ($finder as $file) {
-            preg_match(self::COUNTRY_FILE_REGEXP, $file->getFilename(), $matches);
-            if ($matches) {
-                $countryLocales[] = $matches[1];
-            }
-        }
-
-        return $countryLocales;
-    }
-
-    /**
      * @param string $locale
      * @param array $countryData
      * @return null|Country
@@ -144,12 +95,7 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
             $country->setIso3Code($countryData['iso3Code']);
         }
 
-        $countryName = $this->translator->trans(
-            $countryData['iso2Code'],
-            array(),
-            self::COUNTRY_DOMAIN,
-            $locale
-        );
+        $countryName = $this->translate($countryData['iso2Code'], static::COUNTRY_PREFIX, $locale);
 
         $country->setLocale($locale)
             ->setName($countryName);
@@ -177,12 +123,7 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
                 ->setCountry($country);
         }
 
-        $regionName = $this->translator->trans(
-            $regionData['combinedCode'],
-            array(),
-            self::COUNTRY_DOMAIN,
-            $locale
-        );
+        $regionName = $this->translate($regionData['combinedCode'], static::REGION_PREFIX, $locale);
 
         $region->setLocale($locale)
             ->setName($regionName);
@@ -191,19 +132,19 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Save countries and regions to DB
+     * Load countries and regions to DB
      *
      * @param ObjectManager $manager
      * @param array $countries
      */
-    protected function saveCountryData(ObjectManager $manager, array $countries)
+    protected function loadCountriesAndRegions(ObjectManager $manager, array $countries)
     {
         $this->countryRepository = $manager->getRepository('OroAddressBundle:Country');
         $this->regionRepository  = $manager->getRepository('OroAddressBundle:Region');
 
-        $countryLocales = $this->getAvailableCountryLocales();
+        $translationLocales = $this->getTranslationLocales();
 
-        foreach ($countryLocales as $locale) {
+        foreach ($translationLocales as $locale) {
             foreach ($countries as $countryData) {
                 $country = $this->getCountry($locale, $countryData);
                 if (!$country) {

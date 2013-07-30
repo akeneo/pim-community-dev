@@ -3,9 +3,11 @@
 namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\FormException;
+
+use Oro\Bundle\FormBundle\Form\Exception\FormException;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -56,6 +58,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             $property = $this->getIdPropertyPathFromEntityManager($em, $className);
         }
         $this->property = $property;
+        $this->propertyAccessor = PropertyAccess::getPropertyAccessor();
         $this->propertyPath = new PropertyPath($this->property);
         if (null !== $queryBuilderCallback && !is_callable($queryBuilderCallback)) {
             throw new UnexpectedTypeException($queryBuilderCallback, 'callable');
@@ -96,7 +99,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($value, 'object');
         }
 
-        return $this->propertyPath->getValue($value);
+        return $this->propertyAccessor->getValue($value, $this->propertyPath);
     }
 
     /**

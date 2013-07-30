@@ -8,7 +8,7 @@ $(function() {
                 type: 'DELETE',
                 success: function (data) {
                     if (Oro.hashNavigationEnabled()) {
-                        Oro.Navigation.prototype.setLocation(el.data('redirect'))
+                        Oro.hashNavigationInstance.setLocation(el.data('redirect'))
                     } else {
                         window.location.href = el.data('redirect');
                     }
@@ -18,9 +18,9 @@ $(function() {
 
         if (!_.isUndefined(Oro.BootstrapModal)) {
             var confirm = new Oro.BootstrapModal({
-                title: 'Delete Confirmation',
+                title: _.__('Delete Confirmation'),
                 content: message,
-                okText: 'Yes, Delete'
+                okText: _.__('Yes, Delete')
             });
             confirm.on('ok', doAction);
             confirm.open();

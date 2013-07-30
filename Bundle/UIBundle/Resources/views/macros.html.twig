@@ -7,20 +7,25 @@
 {%- endmacro %}
 
 {% macro collection_prototype(widget) %}
-    {% if widget.get('prototype') %}
-        {% set form = widget.get('prototype') %}
-        {% set name = widget.get('prototype').get('name') %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
     {% else %}
         {% set form = widget %}
-        {% set name = widget.get('full_name') %}
+        {% set name = widget.vars.full_name %}
     {% endif %}
+
     <div data-content="{{ name }}">
         <div class="row-oro oro-multiselect-holder">
             {{ form_errors(form) }}
-            {% for child in form %}
-                {{ form_errors(child) }}
-                {{ form_widget(child) }}
-            {% endfor %}
+            {% if form.children|length  %}
+                {% for child in form %}
+                    {{ form_errors(child) }}
+                    {{ form_widget(child) }}
+                {% endfor %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
             {{ form_rest(form) }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
         </div>
@@ -165,10 +170,19 @@
 #}
 {% macro buttonType(parameters) %}
     <div class="btn-group">
-        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}">
+        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+                {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
             {{ parameters.label|trans }}
         </button>
     </div>
+{% endmacro %}
+
+{% macro saveAndCloseButton(label = 'Save and Close') %}
+    {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
+{% endmacro %}
+
+{% macro saveAndStayButton(label = 'Save') %}
+    {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
 {% endmacro %}
 
 {#
@@ -245,7 +259,7 @@
     Parameters:
         dataTarget - id of scroll block
         data - array with scroll data blocks
-        isForm - flag what scroll block mut contain the form
+        isForm - flag that scroll block must contain the form
     data parameter structure:
         [
             'dataBlocks' - array of blocks. each block consist of:

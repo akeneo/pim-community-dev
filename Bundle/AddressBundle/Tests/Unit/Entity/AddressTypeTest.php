@@ -12,13 +12,13 @@ class AddressTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property)
     {
-        $obj = new AddressType();
-        $value = 'testValue';
+        $name = 'testName';
+        $obj = new AddressType($name);
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($name));
+        $this->assertEquals($name, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
 
-        $this->assertNull($obj->getId());
+        $this->assertEquals($name, $obj->getName());
     }
 
     /**
@@ -29,7 +29,8 @@ class AddressTypeTest extends \PHPUnit_Framework_TestCase
     public function provider()
     {
         return array(
-            array('type'),
+            array('label'),
+            array('locale')
         );
     }
 }

@@ -9,15 +9,21 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 /**
  * @outputBuffering enabled
  * @db_isolation
+ * @db_reindex
  */
 class RestAdvancedSearchApiTest extends WebTestCase
 {
-    protected $client = null;
+    /** @var Client */
+    protected $client;
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        if (!isset($this->client)) {
+            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        } else {
+            $this->client->restart();
+        }
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
@@ -33,7 +39,7 @@ class RestAdvancedSearchApiTest extends WebTestCase
     public function testApi($request, $response)
     {
         $requestUrl = $request['query'];
-        $this->client->request('GET', "http://localhost/api/rest/latest/search/advanced?query={$requestUrl}");
+        $this->client->request('GET', $this->client->generate('oro_api_get_search_advanced'), array('query' => $requestUrl));
 
         $result = $this->client->getResponse();
 

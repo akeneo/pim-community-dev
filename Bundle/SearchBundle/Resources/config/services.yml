@@ -5,6 +5,7 @@ parameters:
     oro_search.mapper.class:                              Oro\Bundle\SearchBundle\Engine\ObjectMapper
     oro_search.provider.result_statistics_provider.class: Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider
     oro_search.formatter.result_formatter.class:          Oro\Bundle\SearchBundle\Formatter\ResultFormatter
+    oro_search.prepare_result_item.listener.class:        Oro\Bundle\SearchBundle\EventListener\PrepareResultItemListener
 
 services:
     oro_search.index:
@@ -34,3 +35,12 @@ services:
     oro_search.formatter.result_formatter:
         class:                        %oro_search.formatter.result_formatter.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
+
+    oro_search.prepare_result_item.listener:
+        class:                        %oro_search.prepare_result_item.listener.class%
+        arguments:
+            - @router
+            - @oro_search.mapper
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: kernel.event_listener, event: oro_search.prepare_result_item, method: process }

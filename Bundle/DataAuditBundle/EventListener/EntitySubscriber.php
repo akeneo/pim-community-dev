@@ -10,6 +10,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 
 use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 use Oro\Bundle\DataAuditBundle\Metadata\ExtendMetadataFactory;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class EntitySubscriber implements EventSubscriber
 {
@@ -26,6 +27,7 @@ class EntitySubscriber implements EventSubscriber
     /**
      * @param LoggableManager       $loggableManager
      * @param ExtendMetadataFactory $metadataFactory
+     * @param ConfigProvider        $auditConfigProvider
      */
     public function __construct(LoggableManager $loggableManager, ExtendMetadataFactory $metadataFactory)
     {

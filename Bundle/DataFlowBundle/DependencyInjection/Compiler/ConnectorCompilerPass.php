@@ -9,9 +9,6 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 /**
  * CompilerPass Connector
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class ConnectorCompilerPass implements CompilerPassInterface

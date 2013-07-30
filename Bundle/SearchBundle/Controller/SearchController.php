@@ -15,7 +15,7 @@ use Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider;
 class SearchController extends Controller
 {
     /**
-     * @Route("advanced-search", name="oro_search_advanced")
+     * @Route("/advanced-search", name="oro_search_advanced")
      */
     public function ajaxAdvancedSearchAction()
     {
@@ -31,6 +31,7 @@ class SearchController extends Controller
     /**
      * Show search block
      *
+     * @Route("/search-bar", name="oro_search_bar")
      * @Template("OroSearchBundle:Search:searchBar.html.twig")
      */
     public function searchBarAction()

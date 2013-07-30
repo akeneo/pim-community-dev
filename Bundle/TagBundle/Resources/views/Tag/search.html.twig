@@ -1,0 +1,63 @@
+{% extends bap.layout %}
+
+{% oro_title_set({ params: { '%tag.name%': tag.name } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with { datagridView: datagrid, selector: '#tag-search-results-grid' } %}
+    <script type="text/javascript">
+        $(function() {
+            // hide header
+            var searchDatagrid = Oro.Registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
+            searchDatagrid.header.$el.remove();
+        });
+    </script>
+{% endblock %}
+
+{% block page_container %}
+    {% block content %}
+    <div class="container-fluid search-header clearfix">
+        <h2 style="width: auto">
+            {% trans with {'%name%': tag.name} %}Records tagged as "%name%"{% endtrans %}
+        </h2>
+    </div>
+
+        {% if '' in groupedResults|keys and groupedResults[''].count > 0 or groupedResults|length > 1 %}
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="search-entity-types-column">
+                    {% for alias, type in groupedResults %}
+                        {% set config = oro_config_entity(type.class) %}
+                        {% set selected, label, iconClass = alias == from, config.name|trans({}, 'config'), config.icon_class %}
+
+                        {% if alias == '' %}
+                            {% set label, iconClass = 'All', 'icon-search' %}
+                        {% endif %}
+
+                        <div class="entity-type{% if selected %} selected{% endif %}">
+                            <i class="{{ iconClass }}"></i>
+                            {% if selected %}
+                            {{ label|trans }} ({{ type.count }})
+                            <div class="arrow"><i class="icon-chevron-right"></i></div>
+                            {% else %}
+                            <a href="{{ path('oro_tag_search', { from: alias, id: tag.id }) }}">
+                                {{ label|trans }} ({{ type.count }})
+                            </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </td>
+                <td class="tag-search-results-column">
+                    <div id="tag-search-results-grid"></div>
+                </td>
+            </tr>
+        </table>
+        {% else %}
+        <div class="search-no-results">
+            {% trans %}No results were found.{% endtrans %}
+            <br />
+            {% trans %}Try modifying your search criteria{% endtrans %}
+        </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

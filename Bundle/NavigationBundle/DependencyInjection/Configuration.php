@@ -30,6 +30,18 @@ class Configuration implements ConfigurationInterface
                     'value' => 20, // default value, can be overridden in config.yml
                     'type'  => 'scalar',
                 ),
+                'title_suffix' => array(
+                    'value' => '', // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
+                'title_delimiter' => array(
+                    'value' => '-', // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
+                'breadcrumb_menu' => array(
+                    'value' => 'application_menu', // default value, can be overridden in config.yml
+                    'type'  => 'scalar',
+                ),
             )
         );
 

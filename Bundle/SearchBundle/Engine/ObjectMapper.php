@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Engine;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;

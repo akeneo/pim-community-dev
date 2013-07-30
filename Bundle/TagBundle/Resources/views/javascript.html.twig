@@ -1,0 +1,15 @@
+{% block oro_tag_view_js %}
+    <script type="text/html" id="tag-view-template">
+        <ul id="tag-list" class="inline">
+            <% _.each(collection.models, function(tag, i) { %>
+                <li>
+                    <a href="<%= tag.get("url") %>">
+                        <span class="label label-info">
+                            <%= tag.get("name") %>
+                        </span>
+                    </a>
+                </li>
+            <%}) %>
+        </ul>
+    </script>
+{% endblock oro_tag_view_js %}

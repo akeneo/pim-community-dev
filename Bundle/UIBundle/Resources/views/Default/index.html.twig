@@ -3,38 +3,19 @@
     <html>
     <head>
         {% block head %}
-            <title>{{ oro_title_render() }}</title>
+            <title>{% trans %}Loading...{% endtrans %}</title>
+            <script id="page-title" type="text/html">{{ oro_title_render() }}</script>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-                {% if env is defined  and env == 'devjs' %}
-                    <script type="text/javascript">localStorage.clear();</script>
-                    <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
-                    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
-                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
-                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
-                {% else %}
-                    {% stylesheets
-                    'bundles/oroui/css/all.css'
-                    'bundles/oroui/css/less/main.less'
-
-                    debug=false
-                    filter='cssrewrite, lessphp, yui_css'
-                    output='css/oro.all.css'
-                    %}
-                    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-                    {% endstylesheets %}
-                {% endif %}
+                <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
                 {% placeholder head_style %}
             {% endblock %}
 
             {% block script %}
                 {% placeholder scripts_before %}
 
-                {# Add translations, include only common domains translations until BAP-768 is not implemented #}
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'messages' }) }}"></script>
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'validators' }) }}"></script>
+                <script type="text/javascript" src="{{ url('oro_translation_jstranslation') }}"></script>
 
                 <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
                 <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
@@ -69,15 +50,30 @@
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
-    <div id="page">
+    <div id="progressbar" style="display:block;margin-top:200px;margin-right:auto;margin-left:auto;text-align:center;">
+        <h3>{% trans %}Loading Application{% endtrans %}</h3>
+        <img src="{{ asset('bundles/oroui/img/progressbar.gif') }}" alt="{% trans %}Loading...{% endtrans %}" />
+    </div>
+    <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
                 <header class="navbar">
+                    {% placeholder before_navigation %}
                     <div class="navbar-inner">
                         <div class="container">
                             {% placeholder header_logo %}
                             <div class="navbar-responsive-collapse">
-                                {% placeholder navbar %}
+                                {% block navbar %}
+                                <div class="nav pull-left top-search shortcuts">
+                                    {% placeholder navbar %}
+                                </div>
+                                {% endblock navbar %}
+                                <div class="divider-vertical small-divider"></div>
+                                <div id="main-menu">
+                                    {% block application_menu %}
+                                        {% placeholder application_menu %}
+                                    {% endblock application_menu %}
+                                 </div>
                                 <ul class="nav pull-right">
                                     {% placeholder user_menu %}
                                     {# Disabled notification icon till it will be implemented
@@ -90,6 +86,7 @@
                             </div>
                         </div>
                     </div>
+                    {% placeholder after_navigation %}
                 </header>
             {% endblock header %}
             {% block main %}
@@ -100,15 +97,14 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
-                    {% block pin_bar %}
-                        {% placeholder pinbar %}
-                        {% block application_menu %}
-                            <div id="main-menu">
-                                {% placeholder application_menu %}
-                            </div>
-                        {% endblock application_menu %}
+                    <div class="container-fluid breadcrumb-pin">
+                        <div id="breadcrumb">
+                            {% block breadcrumb %}
+                                {% placeholder breadcrumb %}
+                            {% endblock breadcrumb %}
+                        </div>
                         {% placeholder pin_button %}
-                    {% endblock pin_bar %}
+                    </div>
                     <div id="flash-messages">
                         {% block messages %}
                             {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}
@@ -191,7 +187,8 @@
     with {
         'script': block('head_script'),
         'content': block('page_container'),
-        'menu': block('application_menu')
+        'menu': block('application_menu'),
+        'breadcrumb': block('breadcrumb')
     }
     %}
 {% endif %}

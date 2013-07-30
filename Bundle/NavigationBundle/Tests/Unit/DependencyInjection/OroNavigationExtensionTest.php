@@ -32,26 +32,4 @@ class OroNavigationExtensionTest extends \PHPUnit_Framework_TestCase
         $extension->load($configs, $container);
         $this->assertTrue($isCalled);
     }
-
-    public function testGetAssets()
-    {
-        $extension = new OroNavigationExtension();
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-
-        $container->expects($this->once())
-            ->method('getParameter')
-            ->will(
-                $this->returnValue(
-                    array(
-                        'Oro\Bundle\NavigationBundle\Tests\Unit\Fixtures\TestBundle'
-                    )
-                )
-            );
-
-        $assets = $extension->getAssets($container);
-
-        $this->assertEquals('second.css', $assets['css'][1]);
-        $this->assertEquals('first.js', $assets['js'][0]);
-    }
 }

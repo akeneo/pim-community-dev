@@ -9,7 +9,7 @@ If you want to use another one, you can define it with optional parameter as fol
 services:
     customer_manager:
         class:     "%customer_manager_class%"
-        arguments: [@service_container, %customer_entity_class%, @doctrine.orm.non_default_entity_manager]
+        arguments: [%customer_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.non_default_entity_manager, @event_dispatcher]
 ```
 
 Extend flexible manager
@@ -31,7 +31,7 @@ parameters:
 services:
     customer_manager:
         class:     "%customer_manager_class%"
-        arguments: [@service_container, %customer_entity_class%]
+        arguments: [%customer_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.non_default_entity_manager, @event_dispatcher]
 ```
 
 Extend flexible repository

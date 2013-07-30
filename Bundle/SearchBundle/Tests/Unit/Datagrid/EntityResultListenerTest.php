@@ -13,6 +13,21 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
     const TEST_ENTITY_NAME   = 'test_entity_name';
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dispatcher;
+
+    /**
+     * Set up test environment
+     */
+    public function setUp()
+    {
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
      * @param $datagridName
      * @return DatagridInterface
      */
@@ -50,7 +65,7 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new ResultDatagridEvent($datagrid);
 
-        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->dispatcher);
         $eventListener->processResult($event);
     }
 
@@ -66,7 +81,7 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
         );
 
         $firstItem = new Item($objectManager, self::TEST_ENTITY_NAME, 1);
-        $secondItem = new Item($objectManager, self::TEST_ENTITY_NAME, 2);
+        $secondItem = new Item($objectManager, self::TEST_ENTITY_NAME, 2, 'title', 'url');
         $providerItems = array($firstItem, $secondItem);
 
         $firstEntity = new \stdClass();
@@ -94,7 +109,7 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
         $event->setRows($providerItems);
 
         // test
-        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->dispatcher);
         $eventListener->processResult($event);
 
         $expectedRows = array(

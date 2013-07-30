@@ -4,9 +4,12 @@ namespace Oro\Bundle\SearchBundle\Engine;
 
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Entity\Query as QueryLog;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 
 /**
  * Connector abstract class
@@ -24,14 +27,21 @@ abstract class AbstractEngine
     protected $logQueries;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * Init entity manager
      *
      * @param \Doctrine\ORM\EntityManager $em
-     * @param bool                        $logQueries
+     * @param EventDispatcher $dispatcher
+     * @param bool $logQueries
      */
-    public function __construct(EntityManager $em, $logQueries)
+    public function __construct(EntityManager $em, EventDispatcher $dispatcher, $logQueries)
     {
         $this->em = $em;
+        $this->dispatcher = $dispatcher;
         $this->logQueries = $logQueries;
     }
 
@@ -87,6 +97,9 @@ abstract class AbstractEngine
     public function search(Query $query)
     {
         $searchResult = $this->doSearch($query);
+        foreach ($searchResult['results'] as $resultRecord) {
+            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($resultRecord));
+        }
         $result = new Result($query, $searchResult['results'], $searchResult['records_count']);
 
         if ($this->logQueries) {

@@ -20,7 +20,7 @@ class BooleanFilter extends AbstractFilter
 
         $fieldExpression   = $this->createFieldExpression($field, $alias);
         $expressionFactory = $this->getExpressionFactory();
-        $compareExpression = $expressionFactory->neq($fieldExpression, $expressionFactory->literal(''));
+        $compareExpression = $expressionFactory->neq($fieldExpression, 'false');
 
         if ($this->isNullable()) {
             $summaryExpression = $expressionFactory->andX(

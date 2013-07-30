@@ -1,27 +1,22 @@
 <?php
-
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
+use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
-
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\UserBundle\Entity\User;
-
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata;
-
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * TODO: This class should be refactored  (BAP-978)
-*/
+ */
 class LoggableManager
 {
     /**
@@ -82,11 +77,18 @@ class LoggableManager
     protected $loggedObjects = array();
 
     /**
-     * @param $logEntityClass
+     * @var ConfigProvider
      */
-    public function __construct($logEntityClass)
+    protected $auditConfigProvider;
+
+    /**
+     * @param                $logEntityClass
+     * @param ConfigProvider $auditConfigProvider
+     */
+    public function __construct($logEntityClass, ConfigProvider $auditConfigProvider)
     {
-        $this->logEntityClass = $logEntityClass;
+        $this->auditConfigProvider = $auditConfigProvider;
+        $this->logEntityClass      = $logEntityClass;
     }
 
     /**
@@ -160,7 +162,7 @@ class LoggableManager
     }
 
     /**
-     * @param $entity
+     * @param               $entity
      * @param EntityManager $em
      */
     public function handlePostPersist($entity, EntityManager $em)
@@ -217,15 +219,18 @@ class LoggableManager
             if (isset($meta->propertyMetadata[$collectionMapping['fieldName']])) {
                 $method = $meta->propertyMetadata[$collectionMapping['fieldName']]->method;
 
+                $newCollection = $collection->toArray();
+                $oldCollection = $collection->getSnapshot();
+
                 $oldData = array_reduce(
-                    $collection->getSnapshot(),
+                    $oldCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
                 );
 
                 $newData = array_reduce(
-                    $collection->toArray(),
+                    $newCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
@@ -240,14 +245,19 @@ class LoggableManager
     }
 
     /**
-     * @param $action
-     * @param $entity
+     * @param string $action
+     * @param mixed  $entity
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function createLogEntity($action, $entity)
     {
         if (!$this->username) {
             return;
         }
+
+        $this->checkAuditable(get_class($entity));
 
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
@@ -300,20 +310,22 @@ class LoggableManager
 
             if ($action !== self::ACTION_REMOVE && count($meta->propertyMetadata)) {
                 foreach ($uow->getEntityChangeSet($entity) as $field => $changes) {
+
                     if (!isset($meta->propertyMetadata[$field])) {
                         continue;
                     }
 
+                    $old = $changes[0];
+                    $new = $changes[1];
+
                     // fix issues with DateTime
-                    if ($changes[0] == $changes[1]) {
+                    if ($old == $new) {
                         continue;
                     }
 
-                    $value = $changes[1];
-
-                    if ($entityMeta->isSingleValuedAssociation($field) && $value) {
-                        $oid   = spl_object_hash($value);
-                        $value = $this->getIdentifier($value);
+                    if ($entityMeta->isSingleValuedAssociation($field) && $new) {
+                        $oid   = spl_object_hash($new);
+                        $value = $this->getIdentifier($new);
 
                         if (!is_array($value) && !$value) {
                             $this->pendingRelatedEntities[$oid][] = array(
@@ -321,17 +333,21 @@ class LoggableManager
                                 'field' => $field
                             );
                         }
+
+                        $method = $meta->propertyMetadata[$field]->method;
+                        $old    = ($old !== null) ? $old->$method() : $old;
+                        $new    = ($new !== null) ? $new->$method() : $new;
                     }
 
                     $newValues[$field] = array(
-                        'old' => $changes[0],
-                        'new' => $value,
+                        'old' => $old,
+                        'new' => $new,
                     );
                 }
 
-                $logEntry->setData(array_merge($newValues, $this->collectionLogData));
+                $newValues = array_merge($newValues, $this->collectionLogData);
+                $logEntry->setData($newValues);
             }
-
 
             if ($action === self::ACTION_UPDATE && 0 === count($newValues) && !($entity instanceof AbstractEntityFlexible)) {
                 return;
@@ -366,7 +382,6 @@ class LoggableManager
 
     /**
      * Get the LogEntry class
-     *
      * @return string
      */
     protected function getLogEntityClass()
@@ -376,7 +391,6 @@ class LoggableManager
 
     /**
      * Add flexible attribute log to a parent entity's log entry
-     *
      * @param  AbstractEntityFlexibleValue $entity
      * @return boolean                     True if value has been saved, false otherwise
      */
@@ -391,29 +405,38 @@ class LoggableManager
                 $oldData  = $changes[0];
                 $newData  = $entity->getData();
 
-                if ($oldData instanceof AbstractEntityAttributeOption) {
-                    $oldData = $oldData->getOptionValue()->getValue();
-                }
+                if ($newData instanceof Collection) {
 
-                if ($newData instanceof AbstractEntityAttributeOption) {
-                    $newData = $newData->getOptionValue()->getValue();
-                } elseif ($newData instanceof Collection) {
-                    $oldData = implode(
-                        ', ',
-                        array_map(
-                            function (AbstractEntityAttributeOption $item) {
-                                return $item->getOptionValue()->getValue();
-                            },
-                            $newData->getSnapshot()
-                        )
-                    );
+                    $newDataArray = $newData->toArray();
+                    $oldDataArray = $newData->getSnapshot();
 
                     $newData = implode(
                         ', ',
-                        $newData->map(function (AbstractEntityAttributeOption $item) {
-                            return $item->getOptionValue()->getValue();
-                        })->toArray()
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $newDataArray
+                        )
                     );
+
+                    $oldData = implode(
+                        ', ',
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $oldDataArray
+                        )
+                    );
+
+                } elseif ($newData instanceof \DateTime) {
+                    $oldData = $oldData->format(\DateTime::ISO8601);
+                    $newData = $newData->format(\DateTime::ISO8601);
+
+                } elseif (is_object($newData)) {
+                    $oldData = (string) $oldData;
+                    $newData = (string) $newData;
                 }
 
                 // special case for, as an example, decimal values
@@ -478,5 +501,35 @@ class LoggableManager
         $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
 
         return $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
+    }
+
+    protected function checkAuditable($entityClassName)
+    {
+        if ($this->hasConfig($entityClassName)) {
+            return;
+        }
+
+        if ($this->auditConfigProvider->hasConfig($entityClassName)
+            && $this->auditConfigProvider->getConfig($entityClassName)->is('auditable')
+        ) {
+            $reflection    = new \ReflectionClass($entityClassName);
+            $classMetadata = new ClassMetadata($reflection->getName());
+
+            foreach ($reflection->getProperties() as $reflectionProperty) {
+                if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $reflectionProperty->getName())
+                    && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $reflectionProperty->getName()))
+                    && $fieldConfig->is('auditable')
+                ) {
+                    $propertyMetadata = new PropertyMetadata($entityClassName, $reflectionProperty->getName());
+                    $propertyMetadata->method = '__toString';
+
+                    $classMetadata->addPropertyMetadata($propertyMetadata);
+                }
+            }
+
+            if (count($classMetadata->propertyMetadata)) {
+                $this->addConfig($classMetadata);
+            }
+        }
     }
 }

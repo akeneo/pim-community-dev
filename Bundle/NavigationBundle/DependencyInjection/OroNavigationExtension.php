@@ -54,38 +54,5 @@ class OroNavigationExtension extends Extension
         $loader->load('services.yml');
         $container->setParameter('oro_menu_config', $config);
         $container->setParameter('oro_titles', $titlesConfig);
-
-        $container->setParameter('oro_navigation.assets_config', $this->getAssets($container));
-    }
-
-    /**
-     * Get array with assets from config files
-     *
-     * @param ContainerBuilder $container
-     *
-     * @return array
-     */
-    public function getAssets(ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-        $assets = array(
-            'css' => array(),
-            'js'  => array()
-        );
-
-        foreach ($bundles as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/assets.yml')) {
-                $bundleConfig = Yaml::parse(realpath($file));
-                if (isset($bundleConfig['css'])) {
-                    $assets['css'] = array_merge($assets['css'], $bundleConfig['css']);
-                }
-                if (isset($bundleConfig['js'])) {
-                    $assets['js'] = array_merge($assets['js'], $bundleConfig['js']);
-                }
-            }
-        }
-
-        return $assets;
     }
 }

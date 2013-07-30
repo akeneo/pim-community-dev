@@ -1,5 +1,6 @@
 <?php
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\AddressBundle\Form\Type\AddressApiType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -40,7 +41,7 @@ class AddressApiTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->exactly(10))
+        $builder->expects($this->exactly(11))
             ->method('add')
             ->will($this->returnSelf());
 

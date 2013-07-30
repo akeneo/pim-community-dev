@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
@@ -7,11 +8,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Aims to add  default value data from attribute if defined
- *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class DefaultValueListener implements EventSubscriber
 {

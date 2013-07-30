@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
@@ -10,11 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
  * Extends query builder to add useful shortcuts which allow to easily select, filter or sort a flexible entity values
  *
  * It works exactly as classic QueryBuilder
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class FlexibleQueryBuilder extends QueryBuilder
 {
@@ -155,7 +151,8 @@ class FlexibleQueryBuilder extends QueryBuilder
      * @return string
      * @throws FlexibleQueryException
      *
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * TODO: This method should be refactored (BAP-974).
      */
     public function prepareCriteriaCondition($field, $operator, $value)

@@ -8,9 +8,6 @@ use Oro\Bundle\DataFlowBundle\Tests\Unit\Job\Demo\MyJob;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase

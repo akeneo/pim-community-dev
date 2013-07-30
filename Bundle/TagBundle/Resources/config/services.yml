@@ -1,0 +1,125 @@
+parameters:
+    oro_tag.tag.entity.class: Oro\Bundle\TagBundle\Entity\Tag
+    oro_tag.tagging.entity.class: Oro\Bundle\TagBundle\Entity\Tagging
+    oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
+    oro_tag.owner_listener.class: Oro\Bundle\TagBundle\EventListener\OwnerListener
+
+    oro_tag.tag.form.type.tag.class: Oro\Bundle\TagBundle\Form\Type\TagType
+    oro_tag.tag.form.type.tag.api.class: Oro\Bundle\TagBundle\Form\Type\TagApiType
+    oro_tag.tag.form.handler.tag.class: Oro\Bundle\TagBundle\Form\Handler\TagHandler
+
+    oro_tag.tag.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_tag.tag.manager.class:  Oro\Bundle\TagBundle\Entity\TagManager
+
+    oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
+    oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
+
+    oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
+
+    oro_tag.twig.tag.extension.class: Oro\Bundle\TagBundle\Twig\TagExtension
+
+services:
+    oro_tag.tag.manager:
+        class: %oro_tag.tag.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_tag.tag.entity.class%
+            - %oro_tag.tagging.entity.class%
+            - @oro_search.mapper
+            - @security.context
+
+    oro_tag.docrine.event.listener:
+        class: %oro_tag.tag_listener.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+
+    oro_tag.docrine.event.owner_listener:
+        class: %oro_tag.owner_listener.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: process }
+            - { name: doctrine.event_listener, event: preUpdate, method: process }
+
+    oro_tag.form.tag:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_tag_tag_form", "oro_tag_tag"]
+
+    oro_tag.form.handler.tag:
+        class: %oro_tag.tag.form.handler.tag.class%
+        scope: request
+        arguments:
+            - @oro_tag.form.tag
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_tag.form.type.tag:
+        class: %oro_tag.tag.form.type.tag.class%
+        tags:
+            - { name: form.type, alias: oro_tag_tag }
+
+    oro_tag.provider.search_provider:
+        class: %oro_tag.provider.search_provider.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_search.mapper
+
+    # Tag API
+    oro_tag.tag.manager.api:
+        class: %oro_tag.tag.manager.api.class%
+        arguments:
+            - %oro_tag.tag.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_tag.form.type.tag.api:
+        class: %oro_tag.tag.form.type.tag.api.class%
+        tags:
+            - { name: form.type, alias: oro_tag_tag }
+
+    oro_tag.form.tag.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_tag_tag_form", "oro_tag_tag", null]
+
+    oro_tag.form.handler.api:
+        class: %oro_tag.tag.form.handler.tag.class%
+        scope: request
+        arguments:
+            - @oro_tag.form.type.tag.api
+            - @request
+            - @doctrine.orm.entity_manager
+
+    # Autocomplete search handler
+    oro_tag.autocomplete.tag.search_handler:
+        class: %oro_tag.autocomplete.tag.search_handler.class%
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %oro_tag.tag.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign_unassign }
+
+    # Autocomplete form type
+    oro_tag.form.type.tag_select:
+        class: %oro_tag.form.type.tag_select.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_tag.tag.manager
+        tags:
+            - { name: form.type, alias: oro_tag_select }
+
+    # Twig extension
+    oro_tag.twig.tag.extension:
+        class: %oro_tag.twig.tag.extension.class%
+        arguments:
+            - @oro_tag.tag.manager
+            - @router
+            - @security.context
+            - @oro_user.acl_manager
+        tags:
+            - { name: twig.extension }

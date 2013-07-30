@@ -24,7 +24,10 @@ abstract class UserRelationDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldsCollection->add($this->createUserRelationColumn());
+        $relationColumn = $this->createUserRelationColumn();
+        if ($relationColumn) {
+            $fieldsCollection->add($relationColumn);
+        }
 
         $fieldId = new FieldDescription();
         $fieldId->setName('id');
@@ -39,7 +42,6 @@ abstract class UserRelationDatagridManager extends DatagridManager
                 'filterable'  => false,
                 'show_column' => false,
                 'show_filter' => false,
-                'show_column' => false,
             )
         );
         $fieldsCollection->add($fieldId);

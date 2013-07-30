@@ -1,0 +1,21 @@
+oro:
+    email:
+        datagrid:
+            emailtemplate:
+                action:
+                    update: "Update"
+                    clone: "Clone"
+                    delete: "Delete"
+                column:
+                    entity_name: "Entity name"
+                    name: "Template name"
+                    isSystem: "Is system"
+                    type: "Type"
+                filter:
+                    type:
+                        html: "HTML"
+                        txt: "Plain text"
+                    isSystem:
+                        yes: "Yes"
+                        no:  "No"
+

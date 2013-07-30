@@ -1,0 +1,10 @@
+parameters:
+
+services:
+    oro_entity.config.entity_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: entity }
+
+    oro_entity.config.datagrid_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: datagrid }

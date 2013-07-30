@@ -76,3 +76,10 @@ services:
         arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.choice"]
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_options }
+
+    oro_grid.orm.filter.type.flexible_entity:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter
+        arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.entity"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_entity }
+            

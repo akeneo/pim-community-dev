@@ -134,12 +134,15 @@ abstract class RestController extends FOSRestController implements
         /** @var UnitOfWork $uow */
         $uow = $this->getDoctrine()->getManager()->getUnitOfWork();
         foreach ($uow->getOriginalEntityData($entity) as $field => $value) {
-            $getter = 'get' . ucfirst($field);
-            if (method_exists($entity, $getter)) {
-                $value = $entity->$getter();
+            $accessors = array('get' . ucfirst($field), 'is' . ucfirst($field), 'has' . ucfirst($field));
+            foreach ($accessors as $accessor) {
+                if (method_exists($entity, $accessor)) {
+                    $value = $entity->$accessor();
 
-                $this->transformEntityField($field, $value);
-                $result[$field] = $value;
+                    $this->transformEntityField($field, $value);
+                    $result[$field] = $value;
+                    break;
+                }
             }
         }
         return $result;

@@ -2,9 +2,18 @@ var Oro = Oro || {};
 
 Oro.PageState = Oro.PageState || {};
 
+// Unset timer in case if script is double loaded and previous timer has been started
+if (typeof Oro.PageStateTimer !== undefined && Oro.PageStateTimer) {
+    clearInterval(Oro.PageStateTimer);
+}
+Oro.PageStateTimer = false;
 Oro.PageState.View = Backbone.View.extend({
+    /**
+     * A flag whether we need to restore data from server
+     */
+    needServerRestore: true,
 
-    timer: '',
+    stopCollecting: false,
 
     initialize: function () {
         this.init();
@@ -14,8 +23,9 @@ Oro.PageState.View = Backbone.View.extend({
          * Init page state after hash navigation request is completed
          */
         Oro.Events.bind(
-            "hash_navigation_content:refresh",
+            "hash_navigation_request:refresh",
             function() {
+                this.stopCollecting = false;
                 this.init();
             },
             this
@@ -26,40 +36,47 @@ Oro.PageState.View = Backbone.View.extend({
         Oro.Events.bind(
             "hash_navigation_request:start",
             function() {
+                this.stopCollecting = true;
                 this.clearTimer();
             },
             this
         );
     },
 
-    init: function() {
-        var self = this;
+    hasForm: function() {
+        return Backbone.$('form[data-collect=true]').length;
+    },
 
-        if (Backbone.$('form[data-collect=true]').length == 0) {
+    init: function() {
+        this.clearTimer();
+        if (!this.hasForm()) {
             return;
         }
 
         Backbone.$.get(
             Routing.generate('oro_api_get_pagestate_checkid') + '?pageId=' + this.filterUrl(),
-            function (data) {
-                self.model.set({
+            _.bind(function (data) {
+                this.clearTimer();
+                this.model.set({
                     id        : data.id,
                     pagestate : data.pagestate
                 });
 
-                if ( parseInt(data.id) > 0  && self.model.get('restore')) {
-                    self.restore();
+                if (parseInt(data.id) > 0  && this.model.get('restore') && this.needServerRestore) {
+                    this.restore();
                 }
 
-                self.timer = setInterval(function() {
-                    self.collect();
-                }, 2000);
-            }
+                Oro.PageStateTimer = setInterval(_.bind(function() {
+                    this.collect();
+                }, this), 2000);
+            }, this)
         )
     },
 
     clearTimer: function() {
-        clearInterval(this.timer);
+        if (Oro.PageStateTimer) {
+            clearInterval(Oro.PageStateTimer);
+        }
         this.model.set('restore', false);
     },
 
@@ -70,6 +87,10 @@ Oro.PageState.View = Backbone.View.extend({
     },
 
     collect: function() {
+        if (!this.hasForm() || this.stopCollecting) {
+            this.clearTimer();
+            return;
+        }
         var filterUrl = this.filterUrl();
         if (!filterUrl) {
             return;
@@ -79,7 +100,7 @@ Oro.PageState.View = Backbone.View.extend({
         Backbone.$('form[data-collect=true]').each(function(index, el){
             data[index] = Backbone.$(el)
                 .find('input, textarea, select')
-                .not(':input[type=button], :input[type=submit], :input[type=reset], :input[type=password], :input[type=file]')
+                .not(':input[type=button], :input[type=submit], :input[type=reset], :input[type=password], :input[type=file], :input[name$="[_token]"]')
                 .serializeArray();
         });
 
@@ -87,6 +108,16 @@ Oro.PageState.View = Backbone.View.extend({
             pagestate: {
                 pageId : filterUrl,
                 data   : JSON.stringify(data)
+            }
+        });
+        Oro.Events.trigger("pagestate_collected", this.model);
+    },
+
+    updateState: function(data) {
+        this.model.set({
+            pagestate: {
+                pageId : '',
+                data   : data
             }
         });
     },
@@ -110,13 +141,14 @@ Oro.PageState.View = Backbone.View.extend({
                 }
             });
         });
+        Oro.Events.trigger("pagestate_restored");
     },
 
     filterUrl: function() {
         var self = this;
         var url = window.location;
-        if (Oro.hashNavigationEnabled()) {
-            url = new Url( Oro.Navigation.prototype.getHashUrl());
+        if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance) {
+            url = new Url(Oro.hashNavigationInstance.getHashUrl());
             url.search = url.query.toString();
             url.pathname = url.path;
         }
@@ -143,4 +175,4 @@ Oro.PageState.View = Backbone.View.extend({
 
 $(function() {
     Oro.pagestate = new Oro.PageState.View({ model: new Oro.PageState.Model });
-})
+});

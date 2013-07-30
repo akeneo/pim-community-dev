@@ -7,6 +7,15 @@ oro_address_api:
     defaults:
         version: latest
 
+oro_address_type_api:
+    resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\AddressTypeController
+    type: rest
+    prefix: api/rest/{version}/
+    requirements:
+        version: latest|v1
+    defaults:
+        version: latest
+
 oro_countries_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\CountryController
     type: rest

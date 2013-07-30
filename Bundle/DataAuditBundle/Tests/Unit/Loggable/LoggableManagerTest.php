@@ -40,7 +40,16 @@ class LoggableManagerTest extends AbstractMetadataTest
             $this->em->getClassMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass')
         );
 
-        $this->loggableManager = new LoggableManager('Oro\Bundle\DataAuditBundle\Entity\Audit');
+        $provider = $this->getMockBuilder('\Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $provider
+            ->expects($this->any())
+            ->method('hasConfig')
+            ->will($this->returnValue(false));
+
+        $this->loggableManager = new LoggableManager('Oro\Bundle\DataAuditBundle\Entity\Audit', $provider);
         $this->loggableManager->addConfig($this->config);
 
         $this->loggableClass = new LoggableClass();

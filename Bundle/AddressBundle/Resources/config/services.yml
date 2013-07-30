@@ -1,38 +1,19 @@
 parameters:
-    oro_address.address.base.class: Oro\Bundle\AddressBundle\Entity\AddressBase
     oro_address.address.entity.class: Oro\Bundle\AddressBundle\Entity\Address
-    oro_address.typed_address.entity.class: Oro\Bundle\AddressBundle\Entity\TypedAddress
     oro_address.address.type.entity.class: Oro\Bundle\AddressBundle\Entity\AddressType
 
     oro_address.address.manager.class: Oro\Bundle\AddressBundle\Entity\Manager\AddressManager
     oro_address.address.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager
     oro_address.address.manager.flexible.class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-    oro_address.typed_address.manager.flexible.class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-    oro_address.address.type.manager.class: Oro\Bundle\AddressBundle\Entity\Manager\AddressTypeManager
 
     oro_address.address.entity.value.class: Oro\Bundle\AddressBundle\Entity\Value\AddressValue
-
-    oro_address.type.address.class: Oro\Bundle\AddressBundle\Form\Type\AddressType
-    oro_address.type.address_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressValueType
-    oro_address.type.address_typed.class: Oro\Bundle\AddressBundle\Form\Type\AddressTypedType
-    oro_address.type.address_collection.class: Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType
-    oro_address.type.address_api.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiType
-    oro_address.type.address_api_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiValueType
-    oro_address.handler.address.class: Oro\Bundle\AddressBundle\Form\Handler\AddressHandler
 
     oro_address.provider.address.class: Oro\Bundle\AddressBundle\Provider\AddressProvider
     oro_address.entity.value.class: Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue
 
-    oro_address.type.country.class: Oro\Bundle\AddressBundle\Form\Type\CountryType
-    oro_address.type.region.class: Oro\Bundle\AddressBundle\Form\Type\RegionType
-
-    oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener
-
     oro_address.attribute.address.class: Oro\Bundle\AddressBundle\AttributeType\AddressType
 
     oro_address.twig.hasAddress.extension.class: Oro\Bundle\AddressBundle\Twig\HasAddressExtension
-
-    oro_address.typed.transformer.class: Oro\Bundle\AddressBundle\Form\DataTransformer\AddressTypeToTypeTransformer
 
 services:
     oro_address.address.provider:
@@ -49,19 +30,6 @@ services:
             - @oro_flexibleentity.attributetype.factory
         tags:
             - { name: oro_flexibleentity_manager, entity: %oro_address.address.entity.class%}
-        calls:
-            - [ addAttributeType, ['oro_flexibleentity_text'] ]
-
-    oro_address.typed_address.manager.flexible:
-        class: %oro_address.typed_address.manager.flexible.class%
-        arguments:
-            - %oro_address.typed_address.entity.class%
-            - %oro_flexibleentity.flexible_config%
-            - @doctrine.orm.entity_manager
-            - @event_dispatcher
-            - @oro_flexibleentity.attributetype.factory
-        tags:
-            - { name: oro_flexibleentity_manager, entity: %oro_address.typed_address.entity.class%}
         calls:
             - [ addAttributeType, ['oro_flexibleentity_text'] ]
 
@@ -82,112 +50,6 @@ services:
             - @oro_address.address.manager.flexible
     #####   END OF STORAGE DEFINITION      ######
 
-    oro_address.address.type.manager:
-        class: %oro_address.address.type.manager.class%
-        arguments:
-            - %oro_address.address.type.entity.class%
-            - @doctrine.orm.entity_manager
-
-    # address form definitions
-    oro_address.form.address:
-        class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
-        arguments: ["oro_address_form", "oro_address", null]
-
-    oro_address.form.address.api:
-        class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
-        arguments:                    ["address", "address", null]
-
-    # address form type definitions
-    oro_address.form.type.address:
-        class: %oro_address.type.address.class%
-        arguments:
-            - @oro_address.address.manager.flexible
-            - "oro_address_value"
-            - @oro_address.form.listener.address
-        tags:
-             - { name: form.type, alias: oro_address }
-
-    oro_address.form.type.address_value:
-        class: %oro_address.type.address_value.class%
-        arguments:
-            - @oro_address.address.manager.flexible
-            - @oro_flexibleentity.value_form.value_subscriber
-        tags:
-            - { name: form.type, alias: oro_address_value }
-
-    oro_address.type.address_typed:
-        class: %oro_address.type.address_typed.class%
-        arguments:
-            - @oro_address.typed_address.manager.flexible
-            - "oro_address_value"
-            - @oro_address.form.listener.address
-        tags:
-             - { name: form.type, alias: oro_address_typed }
-
-    oro_address.type.address_collection:
-        class: %oro_address.type.address_collection.class%
-        tags:
-             - { name: form.type, alias: oro_address_collection }
-
-    oro_address.form.type.address.api:
-        class: %oro_address.type.address_api.class%
-        arguments:
-            - @oro_address.address.manager.flexible
-            - "oro_address_value"
-            - @oro_address.form.listener.address
-        tags:
-            - { name: form.type, alias: address }
-
-    oro_address.form.type.address_api_value:
-        class: %oro_address.type.address_api_value.class%
-        arguments:
-            - @oro_address.address.manager.flexible
-            - @oro_flexibleentity.value_form.value_subscriber
-        tags:
-            - { name: form.type, alias: oro_address_api_value }
-
-    # address form handlers
-    oro_address.form.handler.address:
-        class: %oro_address.handler.address.class%
-        scope: request
-        arguments:
-            - @oro_address.form.address
-            - @request
-            - @doctrine.orm.entity_manager
-
-    oro_address.form.handler.address.api:
-        class: %oro_address.handler.address.class%
-        scope: request
-        arguments:
-            - @oro_address.form.address.api
-            - @request
-            - @doctrine.orm.entity_manager
-
-    oro_address.form.type.country:
-        class: %oro_address.type.country.class%
-        tags:
-            - { name: form.type, alias: oro_country }
-
-    oro_address.form.type.region:
-        class: %oro_address.type.region.class%
-        tags:
-            - { name: form.type, alias: oro_region }
-
-    oro_address.form.type.region:
-        class: %oro_address.type.region.class%
-        tags:
-            - { name: form.type, alias: oro_region }
-
-    oro_address.form.listener.address:
-        class: %oro_address.form.listener.address.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @form.factory
-
     # Flexible attribute
     oro_address.attribute_type.address:
         class: %oro_address.attribute.address.class%
@@ -203,7 +65,3 @@ services:
         tags:
             - { name: twig.extension }
 
-    oro_address.typed.transformer:
-        class: %oro_address.typed.transformer.class%
-        arguments:
-            - @doctrine.orm.entity_manager

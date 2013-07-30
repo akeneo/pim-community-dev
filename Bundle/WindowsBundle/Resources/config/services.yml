@@ -11,10 +11,9 @@ services:
         tags:
             - { name: twig.extension }
 
-    sensio_framework_extra.view.listener:
+    oro_windows.view.listener:
         class: %oro.view.listener.class%
         arguments:
             - @service_container
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView }

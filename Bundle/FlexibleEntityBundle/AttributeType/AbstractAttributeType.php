@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Symfony\Component\Validator\Constraints;
@@ -10,11 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
@@ -61,8 +57,9 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string $backendType the backend type
-     * @param string $formType    the form type
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the form type
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
@@ -141,13 +138,18 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         return array(
-            'label'    => $value->getAttribute()->getLabel(),
-            'required' => $value->getAttribute()->getRequired(),
+            'label'           => $value->getAttribute()->getLabel(),
+            'required'        => $value->getAttribute()->getRequired(),
+            'auto_initialize' => false
         );
     }
 
     /**
      * Guess the constraints to apply on the form
+     *
+     * @param FlexibleValueInterface $value
+     *
+     * @return multitype:NULL |multitype:
      */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {
@@ -197,6 +199,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             if (!isset($options['required'])) {
                 $options['required'] = false;
             }
+            $options['auto_initialize']= false;
 
             $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
         }

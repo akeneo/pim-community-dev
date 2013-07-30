@@ -10,8 +10,7 @@ Oro.Datagrid = Oro.Datagrid || {};
 Oro.Datagrid.Router = Backbone.Router.extend({
     /** @property */
     routes: {
-        "g/*encodedStateData": "changeState",
-        "": "init"
+        "g/*encodedStateData": "changeState"
     },
 
     /**
@@ -45,8 +44,6 @@ Oro.Datagrid.Router = Backbone.Router.extend({
 
         this.collection.on('beforeReset', this._handleStateChange, this);
 
-        //this.init();
-
         Backbone.Router.prototype.initialize.apply(this, arguments);
         /**
          * Backbone event. Fired when grid route is initialized
@@ -70,7 +67,7 @@ Oro.Datagrid.Router = Backbone.Router.extend({
         var encodedStateData = collection.encodeStateData(collection.state);
         var url = '';
         if (Oro.hashNavigationEnabled()) {
-            url = 'url=' + Oro.Navigation.prototype.getHashUrl() + '|g/' + encodedStateData;
+            url = 'url=' + Oro.hashNavigationInstance.getHashUrl() + '|g/' + encodedStateData;
         } else {
             url = 'g/' + encodedStateData;
         }
@@ -93,14 +90,5 @@ Oro.Datagrid.Router = Backbone.Router.extend({
         this.collection.fetch({
             ignoreSaveStateInUrl: true
         });
-    },
-
-    /**
-     * Init function to change collection state if page is loaded without hash navigation
-     */
-    init: function() {
-        if (Backbone.history.fragment === '') {
-            this.changeState('');
-        }
     }
 });

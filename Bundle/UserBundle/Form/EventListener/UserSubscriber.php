@@ -110,12 +110,13 @@ class UserSubscriber implements EventSubscriberInterface
                 'choice',
                 $entity->getId() ? $entity->isEnabled() : '',
                 array(
-                    'label'       => 'Status',
-                    'required'    => true,
-                    'disabled'    => $this->isCurrentUser($entity),
-                    'choices'     => array('Inactive', 'Active'),
-                    'empty_value' => 'Please select',
-                    'empty_data'  => '',
+                    'label'           => 'Status',
+                    'required'        => true,
+                    'disabled'        => $this->isCurrentUser($entity),
+                    'choices'         => array('Inactive', 'Active'),
+                    'empty_value'     => 'Please select',
+                    'empty_data'      => '',
+                    'auto_initialize' => false
                 )
             )
         );

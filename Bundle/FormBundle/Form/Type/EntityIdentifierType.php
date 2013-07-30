@@ -5,7 +5,6 @@ namespace Oro\Bundle\FormBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -14,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Oro\Bundle\FormBundle\Form\EventListener\FixArrayToStringListener;
+use Oro\Bundle\FormBundle\Form\Exception\FormException;
 
 class EntityIdentifierType extends AbstractType
 {

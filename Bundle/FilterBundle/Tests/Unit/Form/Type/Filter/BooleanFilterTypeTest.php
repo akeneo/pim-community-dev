@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
@@ -24,11 +25,17 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        parent::setUp();
         $translator = $this->createMockTranslator();
+
+        $types = array(
+            new FilterType($translator),
+            new ChoiceFilterType($translator)
+        );
+
+        $this->formExtensions[] = new CustomFormExtension($types);
+
+        parent::setUp();
         $this->type = new BooleanFilterType($translator);
-        $this->factory->addType(new FilterType($translator));
-        $this->factory->addType(new ChoiceFilterType($translator));
     }
 
     /**
@@ -53,6 +60,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
             array(
                 'defaultOptions' => array(
                     'field_options' => array('choices' => $this->booleanChoices),
+                    'translation_domain' => 'OroFilterBundle'
                 )
             )
         );

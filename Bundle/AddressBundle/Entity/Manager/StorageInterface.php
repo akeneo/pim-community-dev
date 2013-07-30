@@ -2,47 +2,47 @@
 
 namespace Oro\Bundle\AddressBundle\Entity\Manager;
 
-use Oro\Bundle\AddressBundle\Entity\AddressBase;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 interface StorageInterface
 {
     /**
      * Returns an empty address instance
      *
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function createAddress();
 
     /**
      * Updates an address
      *
-     * @param  AddressBase       $address
-     * @param  bool              $flush   Whether to flush the changes (default true)
+     * @param AbstractAddress $address
+     * @param bool $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateAddress(AddressBase $address, $flush = true);
+    public function updateAddress(AbstractAddress $address, $flush = true);
 
     /**
      * Deletes an address
      *
-     * @param AddressBase $address
+     * @param AbstractAddress $address
      */
-    public function deleteAddress(AddressBase $address);
+    public function deleteAddress(AbstractAddress $address);
 
     /**
      * Finds one address by the given criteria
      *
-     * @param  array       $criteria
-     * @return AddressBase
+     * @param array $criteria
+     * @return AbstractAddress
      */
     public function findAddressBy(array $criteria);
 
     /**
      * Reloads an address
      *
-     * @param AddressBase $address
+     * @param AbstractAddress $address
      */
-    public function reloadAddress(AddressBase $address);
+    public function reloadAddress(AbstractAddress $address);
 
     /**
      * Returns the address's fully qualified class name.

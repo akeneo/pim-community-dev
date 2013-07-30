@@ -1,0 +1,11 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridId = 'business-unit-grid' %}
+{% block content %}
+    {% set pageTitle = 'Business Units' %}
+    {% set buttons = [] %}
+    {% if resource_granted('oro_business_unit_create') %}
+        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_business_unit_create'), 'title' : 'Create business unit', 'label' : 'Create business unit'})]) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

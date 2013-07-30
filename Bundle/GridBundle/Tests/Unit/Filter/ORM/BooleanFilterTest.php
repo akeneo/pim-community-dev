@@ -22,7 +22,7 @@ class BooleanFilterTest extends FilterTestCase
     {
         $fieldExpression   = self::TEST_ALIAS . '.' . self::TEST_FIELD;
         $expressionFactory = $this->getExpressionFactory();
-        $compareExpression = $expressionFactory->neq($fieldExpression, $expressionFactory->literal(''));
+        $compareExpression = $expressionFactory->neq($fieldExpression, 'false');
 
         $summaryExpression = $expressionFactory->andX(
             $expressionFactory->isNotNull($fieldExpression),
