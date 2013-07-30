@@ -133,7 +133,7 @@ class ExportController extends Controller
      *
      * @param Job $job
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"}, name="pim_ie_export_remove")
+     * @Route("/{id}/remove", requirements={"id"="\d+"}, name="pim_ie_export_remove")
      * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\Response
