@@ -3,7 +3,7 @@
 namespace Context;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureContext extends RawMinkContext implements KernelAwareInterface
+class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
 
@@ -69,22 +69,6 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     public function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * Opens last response content in browser.
-     *
-     * @Then /^show last response$/
-     */
-    public function showLastResponse()
-    {
-        if (null === $this->getMinkParameter('show_cmd')) {
-            throw new \RuntimeException('Set "show_cmd" parameter in behat.yml to be able to open page in browser (ex.: "show_cmd: firefox %s")');
-        }
-
-        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
-        file_put_contents($filename, $this->getSession()->getPage()->getContent());
-        system(sprintf($this->getMinkParameter('show_cmd'), escapeshellarg($filename)));
     }
 
     public function listToArray($list)
