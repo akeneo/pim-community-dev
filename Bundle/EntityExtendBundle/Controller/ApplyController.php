@@ -19,6 +19,11 @@ use Symfony\Component\Process\Process;
 /**
  * EntityExtendBundle controller.
  * @Route("/oro_entityextend")
+ * @Acl(
+ *      id="oro_entityextend",
+ *      name="Entity extend manipulation",
+ *      description="Entity extend manipulation"
+ * )
  */
 class ApplyController extends Controller
 {
@@ -29,10 +34,10 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @ Acl(
+     * @Acl(
      *      id="oro_entityextend_apply",
-     *      name="Apply changes",
-     *      description="Apply entityconfig changes",
+     *      name="Validate changes",
+     *      description="Validate entityconfig changes",
      *      parent="oro_entityextend"
      * )
      * @Template()
@@ -105,7 +110,7 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @ Acl(
+     * @Acl(
      *      id="oro_entityextend_update",
      *      name="Apply changes",
      *      description="Apply entityconfig changes",
