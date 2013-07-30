@@ -94,8 +94,8 @@ otherwise logs error using standard logger. This Post Action can be used to crea
 and then referencing to it in configuration as to single Post Action.
 
 **Code example**
-```
-/** @var PostActionInterface $postAction */
+```php
+/** @var PostActionInterface $customPostAction */
 $customPostAction = $postActionFactory->create('custom_post_action', $postActionParameters);
 
 /** @var ListExecutor $listPostAction */
@@ -120,7 +120,7 @@ but it can be used to create Post Actions based on configuration in runtime.
 **Parameters:** Receives configuration array as source data.
 
 **Code Example**
-```
+```php
 $configuration = array(
     array(
         '@create_entity' => array(
