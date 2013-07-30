@@ -1,3 +1,26 @@
+Table of Contents
+-----------------
+ - [Overview](#overview)
+ - [Configuration File](#configuration-file)
+ - [Configuration Loading](#configuration-loading)
+ - [Defining a Workflow](#defining-a-workflow)
+   - [Example](#example)
+ - [Attributes Configuration](#attributes-configuration)
+   - [Example](#example-1)
+ - [Steps configuration](#steps-configuration)
+   - [Example](#example-2)
+ - [Transitions Configuration](#transitions-configuration)
+   - [Example](#example-3)
+ - [Transition Definition Configuration](#transition-definition-configuration)
+   - [Example](#example-4)
+ - [Conditions Configuration](#conditions-configuration)
+   - [Example](#example-5)
+ - [Post Actions](#post-actions)
+   - [Example](#example-6)
+ - [Example Workflow Configuration](#example-workflow-configuration)
+   - [Configuration](#configuration)
+   - [Flow Diagram](#flow-diagram)
+
 Overview
 ========
 
