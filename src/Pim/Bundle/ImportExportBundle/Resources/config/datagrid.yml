@@ -14,6 +14,7 @@ services:
               route_name: pim_ie_export_index
         calls:
             - [ setJobType, ['export'] ]
+            - [ setConnectorRegistry, [@pim_batch.connectors] ]
 
     pim_import_export.datagrid.manager.import:
         class: %pim_import_export.datagrid.manager.job.class%
@@ -26,3 +27,4 @@ services:
               route_name: pim_ie_import_index
         calls:
             - [ setJobType, ['import'] ]
+            - [ setConnectorRegistry, [@pim_batch.connectors] ]
