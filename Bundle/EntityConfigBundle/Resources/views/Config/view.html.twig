@@ -43,7 +43,11 @@
 {% block stats %}
     <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
     <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
+    {% if link %}
     <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>
+    {% else %}
+    <li>{{ ['<span>', 'Number of records'|trans, ': ', entity_count|default(0) , '</span>']|join|raw }}</li>
+    {% endif %}
 {% endblock stats%}
 
 {% block content_data %}

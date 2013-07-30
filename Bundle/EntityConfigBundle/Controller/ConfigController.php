@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -152,9 +153,16 @@ class ConfigController extends Controller
         /**
          * generate link for Entity grid
          */
-        $link = $this->get('router')->match('/' . strtolower($entityName));
-        if (is_array($link)) {
-            $link = $this->generateUrl($link['_route']);
+
+        /** @var \Oro\Bundle\EntityConfigBundle\ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        /** @var ConfigClassMetadata $metadata */
+        $metadata = $configManager->getClassMetadata($entity->getClassName());
+
+        $link = '';
+        if ($metadata->routeName) {
+            $link = $this->generateUrl($metadata->routeName);
         }
 
         /** @var ConfigProvider $entityConfigProvider */
