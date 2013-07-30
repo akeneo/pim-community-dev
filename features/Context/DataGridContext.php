@@ -39,7 +39,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Given /^the grid should contains the elements? (.*)$/
-     * @param string $expectedElements
      */
     public function theGridShouldContainsTheElements($expectedElements)
     {
@@ -52,7 +51,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Given /^the grid should not contains the elements? (.*)$/
-     * @param string $notExpectedElements
      */
     public function theGridShouldNotContainsTheElement($notExpectedElements)
     {
@@ -86,8 +84,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Given /^I should see the filters (.*)$/
-     *
-     * @param string $filters
      */
     public function iShouldSeeTheFilters($filters)
     {
@@ -98,12 +94,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I click on the "([^"]*)" row$/
+     * @Given /^I click on the "([^"]*)" action of the row which contains "([^"]*)"$/
      */
-    public function iClickOnTheRow($row)
+    public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        $this->datagrid->getGridRow($row)->click();
-        $this->wait(5000, null);
+        $this->datagrid->clickOnTheAction($element, $actionName);
     }
 
     private function createExpectationException($message)
@@ -116,4 +111,3 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         return $this->getMainContext()->wait($time, $condition);
     }
 }
-
