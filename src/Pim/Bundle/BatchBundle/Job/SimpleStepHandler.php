@@ -49,6 +49,14 @@ class SimpleStepHandler implements StepHandlerInterface
     }
 
     /**
+     * Get the logger for internal use
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
      * @param jobRepository the jobRepository to set
      */
     public function setJobRepository(JobRepository $jobRepository)
@@ -115,7 +123,7 @@ class SimpleStepHandler implements StepHandlerInterface
 
             jobRepository.add(currentStepExecution);
             */
-        $this->logger->info("Executing step: [" . $step->getName() . "]");
+        $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
         try {
             $step->execute($currentStepExecution);
         } catch (JobInterruptedException $e) {
@@ -131,7 +139,7 @@ class SimpleStepHandler implements StepHandlerInterface
         if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
                 || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
             // Ensure that the job gets the message that it is stopping
-            $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw new JobInterruptedException("Job interrupted by step execution");
         }
             /*

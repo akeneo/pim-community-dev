@@ -74,13 +74,7 @@ class FamilyController extends Controller
     {
         $family   = $this->findOr404('PimProductBundle:Family', $id);
         $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
-        $datagrid = $this->getDataAuditDatagrid(
-            $family,
-            'pim_product_family_edit',
-            array(
-                'id' => $family->getId()
-            )
-        );
+        $datagrid = $this->getDataAuditDatagrid($family, 'pim_product_family_edit', array('id' => $family->getId()));
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
@@ -175,16 +169,14 @@ class FamilyController extends Controller
             );
         }
 
-        if ($attribute === $family->getAttributeAsLabel()) {
+        if ($attribute !== $family->getAttributeAsLabel()) {
+            $family->removeAttribute($attribute);
+            $this->getManager()->flush();
+
+            $this->addFlash('success', 'The family is successfully updated.');
+        } else {
             $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
-
-            return $this->redirectToFamilyAttributesTab($family->getId());
         }
-
-        $family->removeAttribute($attribute);
-        $this->getManager()->flush();
-
-        $this->addFlash('success', 'The family is successfully updated.');
 
         return $this->redirectToFamilyAttributesTab($family->getId());
     }
@@ -198,8 +190,6 @@ class FamilyController extends Controller
      */
     protected function redirectToFamilyAttributesTab($id)
     {
-        $url = $this->generateUrl('pim_product_family_edit', array('id' => $id));
-
-        return $this->redirect(sprintf('%s#attributes', $url));
+        return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id), false, 'attributes'));
     }
 }

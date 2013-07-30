@@ -5,6 +5,7 @@ namespace Pim\Bundle\BatchBundle\Step;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\JobRepository;
+use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
 
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 
@@ -47,6 +48,14 @@ abstract class AbstractStep implements StepInterface
     public function setLogger($logger)
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * Get the logger for internal use
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
     }
 
     /**
@@ -145,7 +154,7 @@ abstract class AbstractStep implements StepInterface
      */
     final public function execute(StepExecution $stepExecution)
     {
-        $this->logger->debug("Executing: id=" . $stepExecution->getId());
+        $this->getLogger()->debug("Executing: id=" . $stepExecution->getId());
 
         $stepExecution->setStartTime(time());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
@@ -165,7 +174,6 @@ abstract class AbstractStep implements StepInterface
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
-
             // Check if someone is trying to stop us
             if ($stepExecution->isTerminateOnly()) {
                 throw new JobInterruptedException("JobExecution interrupted.");
@@ -173,7 +181,7 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->logger->debug("Step execution success: id=" . $stepExecution->getId());
+            $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
         } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
@@ -182,10 +190,10 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->logger->info("Encountered interruption executing step: " . $e->getMessage());
-                $this->logger->debug("Full exception", array('exception', $e));
+                $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
+                $this->getLogger()->debug("Full exception", array('exception', $e));
             } else {
-                $this->logger->error("Encountered an error executing the step", array('exception' => $e));
+                $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
             }
         }
 
@@ -196,7 +204,7 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->setExitStatus($exitStatus);
             //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
         } catch (Exception $e) {
-            $this->logger->error("Exception in afterStep callback", array('exception' => $e));
+            $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
         }
 
         try {
@@ -207,7 +215,7 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
             $errorMsg =  "Encountered an error saving batch meta data."
                 ."This job is now in an unknown state and should not be restarted.";
-            $this->logger->error($errorMsg, array('exception' => $e));
+            $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
         $stepExecution->setEndTime(time());
@@ -221,19 +229,19 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
             $errorMsg = "Encountered an error saving batch meta data. "
                 . "This job is now in an unknown state and should not be restarted.";
-            $this->logger->error($errorMsg, array('exception' => $e));
+            $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
         try {
             $this->close($stepExecution->getExecutionContext());
         } catch (Exception $e) {
-            $this->logger->error("Exception while closing step execution resources", array('exception' => $e));
+            $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
             $stepExecution->addFailureException($e);
         }
 
         //StepSynchronizationManager.release();
 
-        $this->logger->debug("Step execution complete: " . $stepExecution->getSummary());
+        $this->getLogger()->debug("Step execution complete: " . $stepExecution->getSummary());
     }
 
     /**

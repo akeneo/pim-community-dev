@@ -36,7 +36,7 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column(length=100, nullable=true)
+     * @ORM\Column(name="code", type="string", length=100, nullable=true)
      * @Assert\NotBlank
      */
     protected $code;
@@ -52,7 +52,7 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(name="alias", type="string", length=50)
      */
     protected $alias;
 
@@ -66,7 +66,7 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(name="connector", type="string")
      */
     protected $connector;
 
@@ -98,7 +98,6 @@ class Job
      * @param string $connector
      * @param string $type
      * @param string $alias
-     * @param string $jobDefinition
      */
     public function __construct($connector, $type, $alias)
     {

@@ -1,11 +1,10 @@
 parameters:
     pim_import_export.entity.job.class:                       Pim\Bundle\BatchBundle\Entity\Job
-    pim_import_export.datagrid.manager.export_datagrid.class: Pim\Bundle\ImportExportBundle\Datagrid\ExportDatagridManager
+    pim_import_export.datagrid.manager.job.class: Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
 
 services:
-
     pim_import_export.datagrid.manager.export:
-        class: %pim_import_export.datagrid.manager.export_datagrid.class%
+        class: %pim_import_export.datagrid.manager.job.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: jobs
@@ -13,3 +12,17 @@ services:
               query_entity_alias: job
               entity_hint: jobs
               route_name: pim_ie_export_index
+        calls:
+            - [ setJobType, ['export'] ]
+
+    pim_import_export.datagrid.manager.import:
+        class: %pim_import_export.datagrid.manager.job.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: jobs
+              entity_name: %pim_import_export.entity.job.class%
+              query_entity_alias: job
+              entity_hint: jobs
+              route_name: pim_ie_import_index
+        calls:
+            - [ setJobType, ['import'] ]

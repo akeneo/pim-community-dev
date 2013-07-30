@@ -138,11 +138,11 @@ class Family implements TranslatableInterface
     /**
      * Add attribute
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return Family
      */
-    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
+    public function addAttribute(ProductAttribute $attribute)
     {
         $this->attributes[] = $attribute;
 
@@ -150,19 +150,19 @@ class Family implements TranslatableInterface
     }
 
     /**
-     * Remove attributes
+     * Remove attribute
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param ProductAttribute $attribute
      */
-    public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function removeAttribute(ProductAttribute $attribute)
     {
-        $this->attributes->removeElement($attributes);
+        $this->attributes->removeElement($attribute);
     }
 
     /**
      * Get attributes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getAttributes()
     {
@@ -172,11 +172,11 @@ class Family implements TranslatableInterface
     /**
      * Check if family has an attribute
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
+    public function hasAttribute(ProductAttribute $attribute)
     {
         return $this->attributes->contains($attribute);
     }

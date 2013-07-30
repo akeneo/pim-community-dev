@@ -97,3 +97,23 @@
         </div>
     {% endif %}
 {% endmacro %}
+
+{% macro accordion(items = {}, counter = 1) %}
+    <div class="accordion">
+        {% for title, content in items %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" href="#collapse-{{ counter }}-{{ loop.index }}">
+                        <i class="fa-icon-collapse-alt"></i>
+                        {{ title|trans }}
+                    </a>
+                </div>
+                <div id="collapse-{{ counter }}-{{ loop.index }}" class="accordion-body in">
+                    <div class="accordion-inner">
+                        {{ content|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

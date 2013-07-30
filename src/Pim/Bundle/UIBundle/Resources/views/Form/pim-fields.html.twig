@@ -1,7 +1,8 @@
 {% extends 'OroUIBundle:Form:fields.html.twig' %}
 
 {% block form_label %}
-    {% spaceless %}
+{% spaceless %}
+    {% if label is not sameas(false) %}
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
         {% endif %}
@@ -13,7 +14,8 @@
         {% endif %}
         {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}</label>
-    {% endspaceless %}
+    {% endif %}
+{% endspaceless %}
 {% endblock form_label %}
 
 {% block pim_wysiwyg_widget %}

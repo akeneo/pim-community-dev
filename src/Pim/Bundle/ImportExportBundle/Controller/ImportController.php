@@ -3,8 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\ProductBundle\Controller\Controller;
@@ -34,8 +36,8 @@ class ImportController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $gridManager ExportDatagridManager */
-        $gridManager = $this->get('pim_import_export.datagrid.manager.export');
+        /** @var $gridManager ImportDatagridManager */
+        $gridManager = $this->get('pim_import_export.datagrid.manager.import');
         $datagridView = $gridManager->getDatagrid()->createView();
         $registry      = $this->get('pim_batch.connectors');
 
@@ -56,7 +58,7 @@ class ImportController extends Controller
      *     "/create",
      *     name="pim_ie_import_create"
      * )
-     * @Template("PimImportExportBundle:Export:create.html.twig")
+     * @Template("PimImportExportBundle:Import:create.html.twig")
      *
      * @return array
      */
@@ -137,5 +139,105 @@ class ImportController extends Controller
         return array(
             'form' => $form->createView()
         );
+    }
+
+    /**
+     * Show import
+     * @param integer $id
+     *
+     * @Route(
+     *     "/{id}",
+     *     name="pim_ie_import_show"
+     * )
+     * @Template("PimImportExportBundle:Import:show.html.twig")
+     *
+     * @return array
+     */
+    public function showAction($id)
+    {
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $registry      = $this->get('pim_batch.connectors');
+        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
+        $jobDefinition->setConfiguration($job->getRawConfiguration());
+
+        return array(
+            'job'           => $job,
+            'jobDefinition' => $jobDefinition,
+        );
+    }
+
+    /**
+     * Delete a job
+     *
+     * @param Job $job
+     *
+     * @Route("/remove/{id}", requirements={"id"="\d+"}, name="pim_ie_import_remove")
+     * @Method("DELETE")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeAction(Job $job)
+    {
+        $this->getManager()->remove($job);
+        $this->getManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            $this->addFlashMessage('success', 'Job successfully removed');
+
+            return $this->redirectIndex();
+        }
+    }
+
+    /**
+     * Redirect to index
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectIndex()
+    {
+        return $this->redirect($this->generateUrl('pim_ie_import_index'));
+    }
+
+    /**
+     * View report for a job
+     *
+     * @param Job $job
+     *
+     * @Route(
+     *     "/show/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_export_report"
+     * )
+     * @Template
+     *
+     * @return array
+     */
+    public function reportAction(Job $job)
+    {
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param Job $job
+     *
+     * @Route("/launch/{id}", requirements={"id"="\d+"}, defaults={"id"=0}, name="pim_ie_import_launch")
+     * @Template()
+     *
+     * @return array
+     */
+    public function launchAction(Job $job)
+    {
+    }
+
+    /**
+     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
+    protected function getConnectorRegistry()
+    {
+        return $this->get('pim_batch.connectors');
     }
 }

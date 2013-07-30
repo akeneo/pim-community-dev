@@ -211,6 +211,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I am on the imports index page$/
+     */
+    public function iAmOnTheImportsIndexPage()
+    {
+        $this->openPage('Import index');
+        $this->wait();
+    }
+
+    /**
      * @Then /^I should be redirected on the (.*) page$/
      */
     public function iShouldBeRedirectedOnThePage($page)
@@ -983,13 +992,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^the status of the export "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contains the value "([^"]*)"$/
      */
-    public function theStatusOfTheExportShouldBe($exportCode, $status)
+    public function theColumnOfTheRowShouldContainsTheValue($column, $exportCode, $status)
     {
-        return new Step\Given(sprintf(
-            'Value of column "STATUS" of the row which contain "%s" should be "%s"', $exportCode, $status
-        ));
+        return new Step\Given(
+            sprintf(
+                'Value of column "%s" of the row which contain "%s" should be "%s"',
+                $column,
+                $exportCode,
+                $status
+            )
+        );
     }
 
     /**

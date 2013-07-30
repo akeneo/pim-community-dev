@@ -5,18 +5,18 @@ Feature: View an export detail page
   I need to have access to a show export page which will present me its status
 
   Scenario: Successfully display the export information
-    Given the following export job:
-      | connector | alias          | code                | label                       |
-      | Akeneo    | product_export | acme_product_export | Product export for Acme.com |
+    Given the following job:
+      | connector | alias          | code                | label                       | type   |
+      | Akeneo    | product_export | acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     And I am on the exports index page
     When I click on the "acme_product_export" row
     Then I should be on the "acme_product_export" export job page
 
   Scenario: Successfully display the validation errors
-    Given the following export job:
-      | connector | alias          | code                | label                       |
-      | Akeneo    | product_export | acme_product_export | Product export for Acme.com |
+    Given the following job:
+      | connector | alias          | code                | label                       | type   |
+      | Akeneo    | product_export | acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     And I am on the "acme_product_export" export job page
     Then I should see "This value should not be blank." next to the channel
