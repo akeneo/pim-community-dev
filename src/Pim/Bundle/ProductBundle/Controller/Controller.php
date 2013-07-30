@@ -131,9 +131,7 @@ class Controller extends BaseController
         }
         $queryFactory = $this->get('pim_product.datagrid.manager.history.default_query_factory');
         $queryFactory->setQueryBuilder(
-            $this
-                ->getRepository('OroDataAuditBundle:Audit')
-                ->getLogEntriesQueryBuilder($entity)
+            $this->getRepository('OroDataAuditBundle:Audit')->getLogEntriesQueryBuilder($entity)
         );
 
         $datagridManager = $this->get('pim_product.datagrid.manager.history');
@@ -173,5 +171,45 @@ class Controller extends BaseController
     protected function getValidator()
     {
         return $this->get('validator');
+    }
+
+    /**
+     * Persist an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    protected function persist($entity, $flush = true)
+    {
+        $this->getManager()->persist($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * Remove an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    protected function remove($entity, $flush = true)
+    {
+        $this->getManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * Flush
+     *
+     * @param object|null $entity
+     */
+    protected function flush($entity = null)
+    {
+        $this->getManager()->flush($entity);
     }
 }

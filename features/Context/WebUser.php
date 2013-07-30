@@ -735,12 +735,23 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following informations?:$/
+     * @Given /^I fill in the following information:$/
      */
     public function iFillInTheFollowingInformation(TableNode $table)
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @Given /^the following attribute types should have the following fields$/
+     */
+    public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $type => $fields) {
+            $this->iSelectTheAttributeType($type);
+            $this->iShouldSeeTheFields($fields);
         }
     }
 
@@ -977,13 +988,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contains the value "([^"]*)"$/
+     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
      */
-    public function theColumnOfTheRowShouldContainsTheValue($column, $exportCode, $status)
+    public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
     {
         return new Step\Given(
             sprintf(
-                'Value of column "%s" of the row which contain "%s" should be "%s"',
+                'Value of column "%s" of the row which contains "%s" should be "%s"',
                 $column,
                 $exportCode,
                 $status

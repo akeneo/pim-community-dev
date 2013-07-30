@@ -228,10 +228,7 @@ class ProductController extends Controller
     public function removeAction($id)
     {
         $product = $this->findProductOr404($id);
-
-        $em = $this->getProductManager()->getStorageManager();
-        $em->remove($product);
-        $em->flush();
+        $this->remove($product);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

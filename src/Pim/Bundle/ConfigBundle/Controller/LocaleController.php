@@ -108,8 +108,7 @@ class LocaleController extends Controller
     public function disableAction(Locale $locale)
     {
         $locale->setActivated(false);
-        $this->getManager()->persist($locale);
-        $this->getManager()->flush();
+        $this->persist($locale);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -130,8 +129,7 @@ class LocaleController extends Controller
     public function enableAction(Locale $locale)
     {
         $locale->setActivated(true);
-        $this->getManager()->persist($locale);
-        $this->getManager()->flush();
+        $this->persist($locale);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
+use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
+
+use Pim\Bundle\BatchBundle\Entity\Job;
+
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
@@ -16,7 +20,6 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 /**
  * Job datagrid manager
  * A "job type" property is passed to the service to define if the grid must show import or export jobs
- * It allow to redefine other job type
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -31,6 +34,13 @@ class JobDatagridManager extends DatagridManager
      * @var string
      */
     protected $jobType;
+
+    /**
+     * Define the connector registry
+     *
+     * @var ConnectorRegistry
+     */
+    protected $connectorRegistry;
 
     /**
      * {@inheritdoc}
@@ -51,7 +61,7 @@ class JobDatagridManager extends DatagridManager
             new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
             new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
             new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
-            new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
+            // new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
         );
     }
 
@@ -133,15 +143,14 @@ class JobDatagridManager extends DatagridManager
         $field = $this->createTextField('label', 'Label');
         $fieldsCollection->add($field);
 
-        $field = $this->createTextField('alias', 'Job');
+        $field = $this->createJobField('alias', 'Job');
         $fieldsCollection->add($field);
 
-        $field = $this->createTextField('connector', 'Connector');
+        $field = $this->createConnectorField();
         $fieldsCollection->add($field);
 
-        $field = $this->createTextField('status', 'Status');
-        $templateProperty = new TwigTemplateProperty($field, 'PimImportExportBundle:Export:_field-status.html.twig');
-        $field->setProperty($templateProperty);
+        // define the status field
+        $field = $this->createStatusField();
         $fieldsCollection->add($field);
     }
 
@@ -174,6 +183,132 @@ class JobDatagridManager extends DatagridManager
     }
 
     /**
+     * Create job field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createJobField()
+    {
+        // create choices
+        $jobs = array();
+        $registryJobs = $this->getRegistryJobs();
+        foreach ($registryJobs as $registryJob) {
+            $jobs = array_merge($jobs, array_keys($registryJob));
+        }
+        $choices = array_unique($jobs);
+        $choices = array_combine($jobs, $jobs);
+
+        // create field description
+        $field = new FieldDescription();
+        $field->setName('alias');
+        $field->setOptions(
+            array(
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Job'),
+                'field_name'    => 'alias',
+                'filter_type'   => FilterInterface::TYPE_CHOICE,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                'field_options' => array(
+                    'choices'  => $choices,
+                    'multiple' => true
+                )
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Get registry jobs
+     *
+     * @return \Pim\Bundle\BatchBundle\Connector\multitype:JobInterface
+     */
+    protected function getRegistryJobs()
+    {
+        if ($this->jobType === Job::TYPE_EXPORT) {
+            return $this->connectorRegistry->getExportJobs();
+        } else {
+            return $this->connectorRegistry->getImportJobs();
+        }
+    }
+
+    /**
+     * Create connector field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createConnectorField()
+    {
+        // create choices
+        $connectors = array_keys($this->getRegistryJobs());
+        $choices = array_combine($connectors, $connectors);
+
+        // create field description
+        $field = new FieldDescription();
+        $field->setName('connector');
+        $field->setOptions(
+            array(
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Connector'),
+                'field_name'    => 'connector',
+                'filter_type'   => FilterInterface::TYPE_CHOICE,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                'field_options' => array(
+                    'choices'  => $choices,
+                    'multiple' => true
+                )
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Create the status field
+     *
+     * @return FieldDescriptionInterface
+     */
+    protected function createStatusField()
+    {
+        // create choices
+        $choices = array(
+            Job::STATUS_READY => $this->translate('pim_import_export.status.'. Job::STATUS_READY)
+        );
+
+        // create field description
+        $field = new FieldDescription();
+        $field->setName('status');
+        $field->setOptions(
+            array(
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Status'),
+                'field_name'    => 'status',
+                'filter_type'   => FilterInterface::TYPE_CHOICE,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                'field_options' => array(
+                    'choices'  => $choices,
+                    'multiple' => true
+                )
+            )
+        );
+
+        // add specific rendering
+        $templateProperty = new TwigTemplateProperty($field, 'PimImportExportBundle:Job:_field-status.html.twig');
+        $field->setProperty($templateProperty);
+
+        return $field;
+    }
+
+    /**
      * Set job type to show grid
      *
      * @param string $jobType
@@ -183,6 +318,20 @@ class JobDatagridManager extends DatagridManager
     public function setJobType($jobType)
     {
         $this->jobType = $jobType;
+
+        return $this;
+    }
+
+    /**
+     * Set connector registry
+     *
+     * @param ConnectorRegistry $connectorRegistry
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
+     */
+    public function setConnectorRegistry(ConnectorRegistry $connectorRegistry)
+    {
+        $this->connectorRegistry = $connectorRegistry;
 
         return $this;
     }

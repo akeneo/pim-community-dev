@@ -68,7 +68,7 @@ class CurrencyController extends Controller
     {
         try {
             $currency->toggleActivation();
-            $this->getManager()->flush();
+            $this->flush();
 
             $this->addFlash('success', 'Currency is successfully updated.');
         } catch (\Exception $e) {

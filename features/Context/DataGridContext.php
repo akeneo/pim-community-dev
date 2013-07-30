@@ -38,9 +38,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the grid should contains the elements? (.*)$/
+     * @Given /^the grid should contain the elements? (.*)$/
      */
-    public function theGridShouldContainsTheElements($expectedElements)
+    public function theGridShouldContainTheElements($expectedElements)
     {
         $expectedElements = $this->getMainContext()->listToArray($expectedElements);
 
@@ -50,9 +50,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the grid should not contains the elements? (.*)$/
+     * @Given /^the grid should not contain the elements? (.*)$/
      */
-    public function theGridShouldNotContainsTheElement($notExpectedElements)
+    public function theGridShouldNotContainTheElement($notExpectedElements)
     {
         $notExpectedElements = $this->getMainContext()->listToArray($notExpectedElements);
 
@@ -60,7 +60,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             try {
                 $expectedValue = $this->datagrid->getGridRow($notExpectedElement);
                 throw new \InvalidArgumentException(
-                    sprintf('The grid should not contains the element %s', $notExpectedElement)
+                    sprintf('The grid should not contain the element %s', $notExpectedElement)
                 );
             } catch (\InvalidArgumentException $e) {
                 // nothing to do
@@ -69,9 +69,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^Value of column "([^"]*)" of the row which contain "([^"]*)" should be "([^"]*)"$/
+     * @Given /^Value of column "([^"]*)" of the row which contains "([^"]*)" should be "([^"]*)"$/
      */
-    public function valueOfColumnOfTheRowWhichContainShouldBe($column, $row, $expectation)
+    public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
     {
         $column = strtoupper($column);
         if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {

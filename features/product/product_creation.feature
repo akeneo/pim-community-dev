@@ -1,7 +1,7 @@
 @javascript
 Feature: Product creation
   In order to add a non-imported product
-  As an user
+  As a user
   I need to be able to manually create a product
 
   Background:

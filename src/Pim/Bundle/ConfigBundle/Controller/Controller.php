@@ -69,4 +69,44 @@ class Controller extends BaseController
     {
         $this->get('session')->getFlashBag()->add($type, $message);
     }
+
+    /**
+     * Persist an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    protected function persist($entity, $flush = true)
+    {
+        $this->getManager()->persist($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * Remove an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    protected function remove($entity, $flush = true)
+    {
+        $this->getManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * Flush
+     *
+     * @param object|null $entity
+     */
+    protected function flush($entity = null)
+    {
+        $this->getManager()->flush($entity);
+    }
 }

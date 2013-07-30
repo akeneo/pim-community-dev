@@ -1,6 +1,6 @@
 Feature: Set the attribute used as label
   In order to let the user which attribute is the most accurate as the product title
-  As an user
+  As a user
   I need to be able to set the attribute used as the label
 
   Background:

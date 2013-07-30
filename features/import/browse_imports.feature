@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse imports
   In order to view the list of import jobs that have been created
-  As an user
+  As a user
   I need to be able to view a list of them
 
   Background:
@@ -16,7 +16,7 @@ Feature: Browse imports
   Scenario: Successfully display all the import jobs
     And I am on the imports index page
     And the grid should contain 1 element
-    And the grid should not contains the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
-    And the grid should contains the elements "acme_product_import"
-    And the column "connector" of the row "acme_product_import" should contains the value "Akeneo"
+    And the grid should not contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
+    And the grid should contain the elements "acme_product_import"
+    And the column "connector" of the row "acme_product_import" should contain the value "Akeneo"
     And I should see the filters "Code", "Label", "Job", "Connector" and "Status"

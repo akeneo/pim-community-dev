@@ -58,7 +58,7 @@ class ImportController extends Controller
      *     "/create",
      *     name="pim_ie_import_create"
      * )
-     * @Template("PimImportExportBundle:Import:create.html.twig")
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
      *
      * @return array
      */
@@ -66,31 +66,27 @@ class ImportController extends Controller
     {
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
-        $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, Job::TYPE_IMPORT, $alias);
+        $registry      = $this->getConnectorRegistry();
 
-        if (!$jobDefinition) {
+        $job = new Job($connector, Job::TYPE_IMPORT, $alias);
+
+        if (!$jobDefinition = $registry->getJob($job)) {
             $this->addFlash('error', 'Fail to create an import with an unknown job.');
 
-            return $this->redirect($this->generateUrl('pim_ie_import_index'));
+            return $this->redirectToRoute('pim_ie_import_index');
         }
-
-        $job = new Job($connector, Job::TYPE_IMPORT, $alias, $jobDefinition);
+        $job->setJobDefinition($jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
+                $this->persist($job);
 
                 $this->addFlash('success', 'The import has been successfully created.');
 
-                return $this->redirect(
-                    $this->generateUrl('pim_ie_import_index')
-                );
+                return $this->redirectToRoute('pim_ie_import_show', array('id' => $job->getId()));
             }
         }
 
@@ -124,9 +120,7 @@ class ImportController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
+                $this->persist($job);
 
                 $this->addFlash('success', 'The import has been successfully updated.');
 
@@ -178,13 +172,12 @@ class ImportController extends Controller
      */
     public function removeAction(Job $job)
     {
-        $this->getManager()->remove($job);
-        $this->getManager()->flush();
+        $this->remove($job);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlashMessage('success', 'Job successfully removed');
+            $this->addFlash('success', 'Job successfully removed');
 
             return $this->redirectIndex();
         }

@@ -1,6 +1,6 @@
 Feature: Execute a job
   In order to launch an export
-  As an user
+  As a user
   I need to be able to execute a valid export
 
   Scenario: Fail to see the execute button of a job with validation errors

@@ -1,6 +1,6 @@
 Feature: Remove attribute from a product family
   In order to correct myself when I have wrongly added an attribute into a family
-  As an user
+  As a user
   I need to be able to remove an attribute from a family
 
   @javascript

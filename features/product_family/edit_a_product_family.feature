@@ -1,6 +1,6 @@
 Feature: Edit a product family
   In order to provide accurate information about a product family
-  As an user
+  As a user
   I need to be able to edit its code and the translations of its name
 
   Background:

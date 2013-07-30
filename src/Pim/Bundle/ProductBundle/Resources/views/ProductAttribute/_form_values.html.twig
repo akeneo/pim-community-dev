@@ -1,3 +1,8 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
 {% set accordionContent = { 'Label translations': form_row(form.label), 'Description': form_row(form.description) } %}
 
 {% if form.options is defined %}

@@ -84,8 +84,7 @@ class ExportProfileController extends Controller
      */
     public function removeAction(ExportProfile $profile)
     {
-        $this->getManager()->remove($profile);
-        $this->getManager()->flush();
+        $this->remove($profile);
 
         $this->addFlash('success', 'Export profile successfully removed');
 

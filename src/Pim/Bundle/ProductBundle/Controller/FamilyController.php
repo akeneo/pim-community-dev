@@ -109,8 +109,7 @@ class FamilyController extends Controller
      */
     public function removeAction(Family $entity)
     {
-        $this->getManager()->remove($entity);
-        $this->getManager()->flush();
+        $this->remove($entity);
 
         $this->addFlash('success', 'Product family successfully removed');
 
@@ -142,7 +141,7 @@ class FamilyController extends Controller
             $family->addAttribute($attribute);
         }
 
-        $this->getManager()->flush();
+        $this->flush();
 
         return $this->redirectToFamilyAttributesTab($family->getId());
     }
@@ -171,7 +170,7 @@ class FamilyController extends Controller
 
         if ($attribute !== $family->getAttributeAsLabel()) {
             $family->removeAttribute($attribute);
-            $this->getManager()->flush();
+            $this->flush();
 
             $this->addFlash('success', 'The family is successfully updated.');
         } else {

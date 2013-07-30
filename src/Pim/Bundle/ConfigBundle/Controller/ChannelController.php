@@ -108,8 +108,7 @@ class ChannelController extends Controller
      */
     public function removeAction(Channel $channel)
     {
-        $this->getManager()->remove($channel);
-        $this->getManager()->flush();
+        $this->remove($channel);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

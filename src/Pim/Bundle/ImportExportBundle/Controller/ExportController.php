@@ -66,7 +66,7 @@ class ExportController extends Controller
      *     "/create",
      *     name="pim_ie_export_create"
      * )
-     * @Template("PimImportExportBundle:Export:create.html.twig")
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
      *
      * @return array
      */
@@ -77,10 +77,9 @@ class ExportController extends Controller
         $registry      = $this->getConnectorRegistry();
 
         $job = new Job($connector, Job::TYPE_EXPORT, $alias);
-        $jobDefinition = $registry->getJob($job);
 
-        if (!$jobDefinition) {
-            $this->addFlash('error', 'Fail to create an export with an unknown job.');
+        if (!$jobDefinition = $registry->getJob($job)) {
+            $this->addFlash('error', 'Failed to create an export with an unknown job.');
 
             return $this->redirectToRoute('pim_ie_export_index');
         }
@@ -91,13 +90,11 @@ class ExportController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
+                $this->persist($job);
 
                 $this->addFlash('success', 'The export has been successfully created.');
 
-                return $this->redirectToRoute('pim_ie_export_index');
+                return $this->redirectToRoute('pim_ie_export_show', array('id' => $job->getId()));
             }
         }
 
@@ -131,6 +128,38 @@ class ExportController extends Controller
     }
 
     /**
+     * Edit an export
+     * @param integer $id
+     *
+     * @Route(
+     *     "/edit/{id}",
+     *     name="pim_ie_export_edit"
+     * )
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
+     *
+     * @return array
+     */
+    public function editAction($id)
+    {
+        $job  = $this->getJob($id);
+        $form = $this->createForm(new JobType(), $job);
+
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->persist($job);
+
+                $this->addFlash('success', 'The export has been successfully updated.');
+
+                return $this->redirect($this->generateUrl('pim_ie_export_show', array('id' => $job->getId())));
+            }
+        }
+
+        return array('form' => $form->createView());
+    }
+
+    /**
      * Delete a job
      *
      * @param Job $job
@@ -142,15 +171,14 @@ class ExportController extends Controller
      */
     public function removeAction(Job $job)
     {
-        $this->getManager()->remove($job);
-        $this->getManager()->flush();
+        $this->remove($job);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             $this->addFlash('success', 'Job successfully removed');
 
-            return $this->redirectIndex();
+            return $this->redirectToRoute('pim_ie_export_index');
         }
     }
 
