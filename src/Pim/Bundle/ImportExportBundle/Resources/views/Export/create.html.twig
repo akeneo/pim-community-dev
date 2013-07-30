@@ -14,6 +14,7 @@
 
         {{ elements.page_header(title, buttons) }}
 
+        {{ elements.form_errors(form) }}
         <div class="layout-content">
             {{ form_row(form.code) }}
             {{ form_row(form.label) }}
@@ -22,5 +23,6 @@
                 {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index) }}
             {% endfor %}
         </div>
+        {{ form_rest(form) }}
     </form>
 {% endblock %}

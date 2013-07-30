@@ -97,9 +97,7 @@ class ExportController extends Controller
 
                 $this->addFlash('success', 'The export has been successfully created.');
 
-                return $this->redirect(
-                    $this->generateUrl('pim_ie_export_index')
-                );
+                return $this->redirect($this->generateUrl('pim_ie_export_show', array('id' => $job->getId())));
             }
         }
 
