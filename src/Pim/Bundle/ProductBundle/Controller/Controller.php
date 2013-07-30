@@ -152,6 +152,20 @@ class Controller extends BaseController
     }
 
     /**
+     * Create a redirection to a given route
+     *
+     * @param string  $route
+     * @param mixed   $parameters
+     * @param integer $status
+     *
+     * @return RedirectResponse
+     */
+    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    {
+        return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+
+    /**
      * Get the validator
      *
      * @return Symfony\Component\Validator\ValidatorInterface
