@@ -63,7 +63,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     /**
      * Normalize key to print intelligible data to user
      *
-     * @param string $value
+     * @param string $key
      *
      * @return string
      */

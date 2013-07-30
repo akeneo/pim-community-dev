@@ -83,7 +83,8 @@ class ExportController extends Controller
             return $this->redirect($this->generateUrl('pim_ie_export_index'));
         }
 
-        $job = new Job($connector, Job::TYPE_EXPORT, $alias, $jobDefinition);
+        $job = new Job($connector, Job::TYPE_EXPORT, $alias);
+        $job->setJobDefinition($jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
