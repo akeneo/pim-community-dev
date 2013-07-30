@@ -4,7 +4,6 @@ Table of Contents
  - [Main Entities](#main-entities)
  - [How it works?](#how-it-works)
  - [Configuration](#configuration)
- - [Configuration](#configuration)
 
 What is Workflow?
 =================
