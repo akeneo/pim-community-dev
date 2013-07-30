@@ -44,7 +44,7 @@
     {% set accordionContent = {} %}
     {% for stepTitle, stepConfig in job.jobDefinition.configuration %}
 
-        {% set heading = 'Step #%stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
+        {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
 
         {% set content %}
             <ul>
