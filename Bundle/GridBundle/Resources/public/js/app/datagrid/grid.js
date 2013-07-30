@@ -382,10 +382,12 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _updateNoDataBlock: function() {
         if (this.collection.models.length > 0) {
+            this.$(this.selectors.toolbar).show();
             this.$(this.selectors.grid).show();
             this.$(this.selectors.noDataBlock).hide();
         } else {
             this.$(this.selectors.grid).hide();
+            this.$(this.selectors.toolbar).hide();
             this.$(this.selectors.noDataBlock).show();
         }
     },
