@@ -44,6 +44,20 @@ class Datagrid extends Page
     }
 
     /**
+     *
+     * @param unknown_type $element
+     * @param unknown_type $actionName
+     */
+    public function clickOnTheAction($element, $actionName)
+    {
+        $rowElement = $this->getGridRow($element);
+        $rowElement->find('css', 'a.dropdown-toggle')
+                   ->click();
+        $rowElement->find('css', sprintf('a.action[title=%s]', $actionName))
+                   ->click();
+    }
+
+    /**
      * Filter the filter name by the value
      * @param string $filterName
      * @param string $value
