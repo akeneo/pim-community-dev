@@ -22,7 +22,7 @@ class ExportDetail extends Page
 
     public function getPropertyErrorMessage($property)
     {
-        $error = $this->find('css', sprintf('li:contains("%s") span.alert-error', ucfirst($property)));
+        $error = $this->find('css', sprintf('li:contains("%s") span.label-important', ucfirst($property)));
 
         if (!$error) {
             throw new \InvalidArgumentException(sprintf(
@@ -33,4 +33,3 @@ class ExportDetail extends Page
         return $error->getText();
     }
 }
-
