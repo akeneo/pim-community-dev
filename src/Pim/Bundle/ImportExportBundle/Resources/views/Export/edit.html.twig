@@ -19,12 +19,7 @@
 
         {{ elements.form_errors(form) }}
 
-        {% set generalProperties %}
-            {{ form_row(form.code) }}
-            {{ form_row(form.label) }}
-        {% endset %}
-
-        {{ elements.accordion({ 'General Properties': generalProperties }, 1) }}
+        {{ elements.accordion({ 'General Properties': form_row(form.code) ~ form_row(form.label) }, 1) }}
 
         {% for step in form.jobDefinition.steps %}
             {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index + 1) }}
