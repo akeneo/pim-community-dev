@@ -398,14 +398,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should see "([^"]*)"$/
-     */
-    public function iShouldSee($text)
-    {
-        $this->assertSession()->pageTextContains($text);
-    }
-
-    /**
      * @Then /^I should see the "([^"]*)" section$/
      */
     public function iShouldSeeTheSection($title)
@@ -702,14 +694,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->getPage('Export creation')
             ->selectChannel($channel)
         ;
-    }
-
-    /**
-     * @Given /^I check "([^"]*)"$/
-     */
-    public function iCheck($field)
-    {
-        $this->getCurrentPage()->checkField($field);
     }
 
     /**
