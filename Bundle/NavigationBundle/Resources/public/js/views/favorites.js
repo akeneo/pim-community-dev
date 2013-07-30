@@ -45,9 +45,22 @@ navigation.favorites.MainView = navigation.MainViewAbstract.extend({
     },
 
     toggleItem: function(e) {
+        var self = this;
         var current = this.getItemForCurrentPage();
         if (current.length) {
-            _.each(current, function(item) {item.destroy({wait: true});});
+            _.each(current, function(item) {
+                item.destroy({
+                    wait: false,
+                    error: function(model, xhr, options) {
+                        if (xhr.status == 404 && !Oro.debug) {
+                            // Suppress error if it's 404 response and not debug mode
+                            self.inactivate();
+                        } else {
+                            Oro.BackboneError.Dispatch(model, xhr, options);
+                        }
+                    }
+                });
+            });
         } else {
             var itemData = this.getNewItemData(Backbone.$(e.currentTarget));
             itemData['type'] = 'favorite';
