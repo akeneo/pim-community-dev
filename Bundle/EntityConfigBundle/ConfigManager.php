@@ -178,7 +178,7 @@ class ConfigManager
     {
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
-        if (!$metadata ||  $metadata->name != $className || !$metadata->configurable) {
+        if (!$metadata || $metadata->name != $className || !$metadata->configurable) {
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
@@ -240,10 +240,12 @@ class ConfigManager
                 'className' => $doctrineMetadata->getName()))
         ) {
             foreach ($this->getProviders() as $provider) {
-                $provider->createEntityConfig(
-                    $doctrineMetadata->getName(),
-                    $provider->getConfigContainer()->getEntityDefaultValues()
-                );
+                $defaultValues = $provider->getConfigContainer()->getEntityDefaultValues();
+                if (isset($metadata->defaultValues[$provider->getScope()])) {
+                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
+                }
+
+                $provider->createEntityConfig($doctrineMetadata->getName(), $defaultValues);
             }
 
             $this->eventDispatcher->dispatch(

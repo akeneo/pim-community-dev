@@ -17,7 +17,7 @@ use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
- * @Configurable(routeName="oro_user_group_index")
+ * @Configurable(routeName="oro_user_group_index", defaultValues={"entity"={"label"="Group", "plural_label"="Groups"}})
  * @Extend
  */
 class Group
