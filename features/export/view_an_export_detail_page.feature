@@ -1,7 +1,7 @@
 @javascript
 Feature: View an export detail page
   In order to know if an export is ready to be executed
-  As an user
+  As a user
   I need to have access to a show export page which will present me its status
 
   Scenario: Successfully display the export information

@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse exports
   In order to view the list of export jobs that have been created
-  As an user
+  As a user
   I need to be able to view a list of them
 
   Background:
@@ -16,7 +16,7 @@ Feature: Browse exports
   Scenario: Successfully display all the export jobs
     Given I am on the exports index page
     And the grid should contain 3 elements
-    And the grid should contains the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
-    And the grid should not contains the elements "acme_product_import"
-    And the column "connector" of the row "acme_product_export" should contains the value "Akeneo"
+    And the grid should contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
+    And the grid should not contain the elements "acme_product_import"
+    And the column "connector" of the row "acme_product_export" should contain the value "Akeneo"
     And I should see the filters "Code", "Label", "Job", "Connector" and "Status"

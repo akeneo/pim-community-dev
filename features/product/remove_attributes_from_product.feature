@@ -1,6 +1,6 @@
 Feature: Remove an attribute from a product
   In order to reduce undesired amount of attributes on a product
-  As an user
+  As a user
   I need to be able to remove an attribute
 
   Scenario: Fail to remove an attribute belonging to the family of the product

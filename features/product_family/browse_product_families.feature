@@ -1,6 +1,6 @@
 Feature: Browse product families
   In order to view the families that have been created
-  As an user
+  As a user
   I need to be able to view a list of them
 
   Scenario: Successfully display all the families
