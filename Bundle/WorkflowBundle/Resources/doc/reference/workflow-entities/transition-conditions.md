@@ -304,7 +304,7 @@ But it can be used to create condition based on configuration in runtime.
 **Code Example**
 
 Is value of attribute "call_timeout" not blank AND equal to 20.
-```
+```php
 $configuration = array(
     '@and' => array(
         '@not_blank' => array('$call_timeout'),
