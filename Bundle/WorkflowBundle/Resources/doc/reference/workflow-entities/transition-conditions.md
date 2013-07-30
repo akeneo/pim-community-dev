@@ -23,7 +23,9 @@ And Condition
 -------------
 
 **Alias:** and
+
 **Description:** Composite that uses logical AND operator to calculate result of all child conditions.
+
 **Options:**
  - Requires at least one option
  - Each option must refer to some condition
@@ -41,7 +43,9 @@ Or Condition
 ------------
 
 **Alias:** or
+
 **Description:** Composite that uses logical OR operator to calculate result of all child conditions.
+
 **Options:**
  - Requires at least one option
  - Each option must refer to some condition
@@ -59,7 +63,9 @@ Not Condition
 -------------
 
 **Alias:** not
+
 **Description:** Negates condition that is passed in option.
+
 **Options:**
  - Requires only one option
  - Option must be an instance of condition
@@ -76,7 +82,9 @@ Equal To Condition
 ------------------
 
 **Aliases:** equal, eq
+
 **Description:** Compares two values for equality.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -98,7 +106,9 @@ Not Equal To Condition
 ----------------------
 
 **Aliases:** not_equal, neq
+
 **Description:** Compares two values for inequality.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -120,7 +130,9 @@ Blank Condition
 ---------------
 
 **Aliases:** blank, empty
+
 **Description:** Checks if value is blank. Check performed using expression ``'' === $value || null === $value``
+
 **Options:**
  - Requires one option
  - Option can be a property path or scalar value
@@ -137,8 +149,10 @@ Not Blank Condition
 -------------------
 
 **Aliases:** not_blank, not_empty
+
 **Description:** Checks if value is not blank. Check performed using negation of Blank condition
 and is can be expressed with next code: ``'' !== $value && null !== $value``
+
 **Options:**
  - Requires one option
  - Option can be a property path or scalar value
@@ -155,7 +169,9 @@ Greater Than Condition
 ----------------------
 
 **Aliases:** greater, gt
+
 **Description:** Checks if value is greater than value.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -177,7 +193,9 @@ Greater Than Or Equal Condition
 -------------------------------
 
 **Aliases:** greater_or_equal, gte, ge
+
 **Description:** Checks if value is greater or equal than value.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -199,7 +217,9 @@ Less Than Condition
 -------------------
 
 **Aliases:** less, lt
+
 **Description:** Checks if value is less than value.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -221,7 +241,9 @@ Less Than Or Equal Condition
 ----------------------------
 
 **Aliases:** less_or_equal, lte, le
+
 **Description:** Checks if value is less or equal than value.
+
 **Options:**
  - Requires exactly 2 options
  - Option can be a property path or scalar value
@@ -243,7 +265,9 @@ True Condition
 --------------
 
 **Alias:** true
+
 **Description:** Always return TRUE. Can be useful for testing purposes.
+
 **Options:** prohibited
 
 **Configuration Example**
@@ -269,9 +293,11 @@ Configurable Condition
 ----------------------
 
 **Alias:** configurable
+
 **Description:** Uses Condition Assembler to assemble conditions from passed configuration.
 This condition is NOT intended to be used in configuration of Workflow.
 But it can be used to create condition based on configuration in runtime.
+
 **Options:**
  - Valid configuration of conditions.
 
