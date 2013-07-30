@@ -64,7 +64,7 @@ class ExportController extends Controller
      *     "/create",
      *     name="pim_ie_export_create"
      * )
-     * @Template("PimImportExportBundle:Export:create.html.twig")
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
      *
      * @return array
      */
