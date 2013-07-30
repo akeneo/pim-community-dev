@@ -58,7 +58,7 @@ class ImportController extends Controller
      *     "/create",
      *     name="pim_ie_import_create"
      * )
-     * @Template("PimImportExportBundle:Import:create.html.twig")
+     * @Template("PimImportExportBundle:Export:edit.html.twig")
      *
      * @return array
      */
@@ -66,16 +66,16 @@ class ImportController extends Controller
     {
         $connector     = $request->query->get('connector');
         $alias         = $request->query->get('alias');
-        $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($connector, Job::TYPE_IMPORT, $alias);
+        $registry      = $this->getConnectorRegistry();
 
-        if (!$jobDefinition) {
+        $job = new Job($connector, Job::TYPE_IMPORT, $alias);
+
+        if (!$jobDefinition = $registry->getJob($job)) {
             $this->addFlash('error', 'Fail to create an import with an unknown job.');
 
-            return $this->redirect($this->generateUrl('pim_ie_import_index'));
+            return $this->redirectToRoute('pim_ie_import_index');
         }
-
-        $job = new Job($connector, Job::TYPE_IMPORT, $alias, $jobDefinition);
+        $job->setJobDefinition($jobDefinition);
 
         $form = $this->createForm(new JobType(), $job);
 
@@ -86,9 +86,7 @@ class ImportController extends Controller
 
                 $this->addFlash('success', 'The import has been successfully created.');
 
-                return $this->redirect(
-                    $this->generateUrl('pim_ie_import_index')
-                );
+                return $this->redirectToRoute('pim_ie_import_show', array('id' => $job->getId()));
             }
         }
 
