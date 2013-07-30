@@ -2,6 +2,11 @@
 
 namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
+ */
 class EntityConfigContainer
 {
     /**
