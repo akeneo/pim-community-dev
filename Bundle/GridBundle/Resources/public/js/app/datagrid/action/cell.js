@@ -77,9 +77,18 @@ Oro.Datagrid.Action.Cell = Backgrid.Cell.extend({
      */
     createActions: function() {
         var result = [];
+
         var actions = this.column.get('actions');
-        _.each(actions, function(action) {
-            result.push(this.createAction(action));
+        var actionConfiguration = this.model.get('action_configuration');
+        _.each(actions, function(action, name) {
+            // filter available actions for current row
+            if (
+                _.isUndefined(actionConfiguration)
+                || _.isUndefined(actionConfiguration[name])
+                || actionConfiguration[name]
+                ) {
+                result.push(this.createAction(action));
+            }
         }, this);
 
         return result;
@@ -123,6 +132,12 @@ Oro.Datagrid.Action.Cell = Backgrid.Cell.extend({
      * Render cell with actions
      */
     render: function () {
+        // don't render anything if list of launchers is empty
+        if (_.isEmpty(this.launchers)) {
+            this.$el.empty();
+
+            return this;
+        }
         this.$el.empty().append(this.template());
 
         var launchers = this.getLaunchersByIcons();
