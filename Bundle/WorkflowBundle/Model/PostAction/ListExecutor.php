@@ -34,7 +34,7 @@ class ListExecutor implements PostActionInterface
      * @param bool $breakOnFailure
      * @return ListExecutor
      */
-    public function addPostAction(PostActionInterface $postAction, $breakOnFailure = false)
+    public function addPostAction(PostActionInterface $postAction, $breakOnFailure = true)
     {
         $this->postActions[] = array(
             'instance' => $postAction,
