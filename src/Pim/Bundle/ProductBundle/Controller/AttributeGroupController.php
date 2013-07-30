@@ -94,17 +94,15 @@ class AttributeGroupController extends Controller
 
         $data = $request->request->all();
 
-        $em = $this->getManager();
-
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
                 $group = $this->getRepository('PimProductBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
-                    $em->persist($group);
+                    $this->persist($group, false);
                 }
             }
-            $em->flush();
+            $this->flush();
 
             return new Response(1);
         }
@@ -124,8 +122,7 @@ class AttributeGroupController extends Controller
      */
     public function removeAction(AttributeGroup $group)
     {
-        $this->getManager()->remove($group);
-        $this->getManager()->flush();
+        $this->remove($group);
 
         $this->addFlash('success', 'Attribute group successfully removed');
 
@@ -167,7 +164,7 @@ class AttributeGroupController extends Controller
             $group->addAttribute($attribute);
         }
 
-        $this->getManager()->flush();
+        $this->flush();
 
         return $this->redirectToAttributeGroupAttributesTab($group->getId());
     }
@@ -195,7 +192,7 @@ class AttributeGroupController extends Controller
         }
 
         $group->removeAttribute($attribute);
-        $this->getManager()->flush();
+        $this->flush();
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 

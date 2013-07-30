@@ -186,17 +186,15 @@ class ProductAttributeController extends Controller
 
         $data = $request->request->all();
 
-        $em = $this->getManager();
-
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
                 $attribute = $this->getRepository('PimProductBundle:ProductAttribute')->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $em->persist($attribute);
+                    $this->persist($attribute, false);
                 }
             }
-            $em->flush();
+            $this->flush();
 
             return new Response(1);
         }
@@ -224,9 +222,7 @@ class ProductAttributeController extends Controller
             }
         }
 
-        $em = $this->getProductManager()->getStorageManager();
-        $em->remove($entity);
-        $em->flush();
+        $this->remove($entity);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

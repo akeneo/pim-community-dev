@@ -88,9 +88,7 @@ class ExportController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
+                $this->persist($job);
 
                 $this->addFlash('success', 'The export has been successfully created.');
 
@@ -148,9 +146,7 @@ class ExportController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($job);
-                $em->flush();
+                $this->persist($job);
 
                 $this->addFlash('success', 'The export has been successfully updated.');
 
@@ -173,8 +169,7 @@ class ExportController extends Controller
      */
     public function removeAction(Job $job)
     {
-        $this->getManager()->remove($job);
-        $this->getManager()->flush();
+        $this->remove($job);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
