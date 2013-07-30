@@ -1027,6 +1027,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I delete the "([^"]*)" job$/
+     * @param string $jobCode
+     */
+    public function iDeleteTheJob($jobCode)
+    {
+        return new Step\Given(
+            sprintf(
+                'I click on the "Delete" action of the row which contains "%s"',
+                $jobCode
+            )
+        );
+    }
+
+    /**
      * @Then /^I should see "([^"]*)" next to the (\w+)$/
      */
     public function iShouldSeeNextToThe($message, $property)
