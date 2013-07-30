@@ -118,9 +118,8 @@ Oro.widget.DialogView = Backbone.View.extend({
     closeHandler: function() {
         this.model.destroy({
             error: _.bind(function(model, xhr, options) {
-                if (xhr.status == 404 && !Oro.debug) {
-                    // Suppress error if it's 404 response and not debug mode
-                } else {
+                // Suppress error if it's 404 response and not debug mode
+                if (xhr.status != 404 || Oro.debug) {
                     Oro.BackboneError.Dispatch(model, xhr, options);
                 }
             }, this)

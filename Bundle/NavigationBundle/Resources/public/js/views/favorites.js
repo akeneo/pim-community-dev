@@ -50,7 +50,7 @@ navigation.favorites.MainView = navigation.MainViewAbstract.extend({
         if (current.length) {
             _.each(current, function(item) {
                 item.destroy({
-                    wait: false,
+                    wait: false, // This option affects correct disabling of favorites icon
                     error: function(model, xhr, options) {
                         if (xhr.status == 404 && !Oro.debug) {
                             // Suppress error if it's 404 response and not debug mode
