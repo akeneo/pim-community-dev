@@ -5,6 +5,8 @@
 
     <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-no-coverage"/>
 
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
+
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
