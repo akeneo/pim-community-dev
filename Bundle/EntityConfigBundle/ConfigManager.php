@@ -161,6 +161,15 @@ class ConfigManager
 
     /**
      * @param $className
+     * @return \Metadata\ClassMetaData
+     */
+    public function getClassMetadata($className)
+    {
+        return $this->metadataFactory->getMetadataForClass($className);
+    }
+
+    /**
+     * @param $className
      * @param $scope
      * @throws Exception\RuntimeException
      * @return EntityConfig

@@ -11,6 +11,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
      * @var bool
      */
     public $configurable = false;
+    public $routeName;
 
     /**
      * @var string
@@ -26,6 +27,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
 
         if ($object instanceof ConfigClassMetadata) {
             $this->configurable = $object->configurable;
+            $this->routeName    = $object->routeName;
             $this->viewMode     = $object->viewMode;
         }
     }
@@ -37,6 +39,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
     {
         return serialize(array(
             $this->configurable,
+            $this->routeName,
             $this->viewMode,
             parent::serialize(),
         ));
@@ -49,6 +52,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
     {
         list(
             $this->configurable,
+            $this->routeName,
             $this->viewMode,
             $parentStr
             ) = unserialize($str);
