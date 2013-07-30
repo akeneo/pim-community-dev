@@ -538,7 +538,6 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @Given /^the following jobs?:$/
-     * @param TableNode $table
      */
     public function theFollowingJobs(TableNode $table)
     {
@@ -555,6 +554,31 @@ class FixturesContext extends RawMinkContext
 
             $em->persist($job);
         }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following job "([^"]*)" configuration:$/
+     */
+    public function theFollowingJobConfiguration($code, TableNode $table)
+    {
+        $em            = $this->getEntityManager();
+        $registry      = $this->getContainer()->get('pim_batch.connectors');
+        $job           = $this->getJob($code);
+        $jobDefinition = $registry->getJob($job);
+        $steps         = $jobDefinition->getSteps();
+
+        foreach ($table->getHash() as $data) {
+            $config[$data['element']][$data['property']] = $data['value'];
+        }
+        $config = array_merge(array(
+            'reader' => array(),
+            'processor' => array(),
+            'writer' => array()
+        ), $config);
+        $steps[0]->setConfiguration($config);
+        $job->setJobDefinition($jobDefinition);
+
         $em->flush();
     }
 

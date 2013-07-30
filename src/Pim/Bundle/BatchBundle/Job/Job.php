@@ -165,8 +165,11 @@ class Job implements JobInterface
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-        $this->stepHandler = new SimpleStepHandler($jobRepository, null);
-        $this->stepHandler->setLogger($this->getLogger());
+    }
+
+    public function setStepHandler(SimpleStepHandler $stepHandler)
+    {
+        $this->stepHandler = $stepHandler;
     }
 
     /**
@@ -185,7 +188,7 @@ class Job implements JobInterface
         try {
             //jobParametersValidator.validate(execution.getJobParameters());
 
-            if ($execution->getStatus()->getValue() != BatchStatus::STOPPING) {
+            if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
                 $execution->setStartTime(time());
                 $this->updateStatus($execution, BatchStatus::STARTED);

@@ -5,6 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 use Symfony\Component\Validator\Constraints as Assert;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
 
 /**
  * Product reader
@@ -13,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
   * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   */
-class ProductReader extends ORMCursorReader
+class ProductReader extends ORMReader
 {
     protected $em;
 
@@ -23,12 +25,12 @@ class ProductReader extends ORMCursorReader
     protected $channel;
 
     /**
-     * @param EntityManager  $em
+     * @param ProductManager $productManager
      * @param ChannelManager $channelManager
      */
-    public function __construct(EntityManager $em, ChannelManager $channelManager)
+    public function __construct(ProductManager $productManager, ChannelManager $channelManager)
     {
-        $this->em = $em;
+        $this->repository     = $productManager->getFlexibleRepository();
         $this->channelManager = $channelManager;
     }
 
@@ -38,9 +40,9 @@ class ProductReader extends ORMCursorReader
     public function read()
     {
         if (!$this->query) {
-            $this->query = $this->em
-                ->getRepository('PimProductBundle:Product')
-                ->buildByScope($this->channel);
+            $this->query = $this->repository
+                ->buildByScope($this->channel)
+                ->getQuery();
         }
 
         return parent::read();

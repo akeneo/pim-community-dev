@@ -9,6 +9,7 @@ use Behat\Behat\Exception\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Behat\Behat\Context\Step;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Context of the website
@@ -398,14 +399,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should see "([^"]*)"$/
-     */
-    public function iShouldSee($text)
-    {
-        $this->assertSession()->pageTextContains($text);
-    }
-
-    /**
      * @Then /^I should see the "([^"]*)" section$/
      */
     public function iShouldSeeTheSection($title)
@@ -702,14 +695,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->getPage('Export creation')
             ->selectChannel($channel)
         ;
-    }
-
-    /**
-     * @Given /^I check "([^"]*)"$/
-     */
-    public function iCheck($field)
-    {
-        $this->getCurrentPage()->checkField($field);
     }
 
     /**
@@ -1075,6 +1060,28 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return new Step\Given(sprintf('I go to "%s"', $launchPageUrl));
     }
 
+    /**
+     * @When /^I launch the export job$/
+     */
+    public function iExecuteTheExportJob()
+    {
+        $this->getPage('Export detail')->execute();
+    }
+
+    /**
+     * @Given /^file "([^"]*)" should exist$/
+     */
+    public function fileShouldExist($file)
+    {
+        if (!file_exists($file)) {
+            throw $this->createExpectationException(sprintf(
+                'File %s does not exist.', $file
+            ));
+        }
+
+        unlink($file);
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -1097,7 +1104,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
-        return $this->getMainContext()->wait($time, $condition);
+        try {
+            return $this->getMainContext()->wait($time, $condition);
+        } catch (UnsupportedDriverActionException $e) {
+        }
     }
 
     private function getProduct($sku)

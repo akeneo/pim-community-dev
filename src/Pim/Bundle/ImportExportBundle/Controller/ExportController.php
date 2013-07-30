@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Job\JobRepository;
 
 /**
  * Export controller
@@ -51,7 +53,7 @@ class ExportController extends Controller
             $view,
             array(
                 'datagrid' => $datagridView,
-                'connectors' => $registry->getExportJobs(),
+                'connectors' => $registry->getJobs(Job::TYPE_EXPORT),
             )
         );
     }
@@ -158,7 +160,7 @@ class ExportController extends Controller
      * @param Job $job
      *
      * @Route(
-     *     "/show/{id}",
+     *     "/{id}/reports",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
      *     name="pim_ie_import_report"
@@ -169,6 +171,32 @@ class ExportController extends Controller
      */
     public function reportAction(Job $job)
     {
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param integer $id
+     *
+     * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
+     *
+     * @return RedirectResponse
+     */
+    public function launchAction($id)
+    {
+        $job = $this->getJob($id);
+
+        if (count($this->getValidator()->validate($job)) > 0) {
+            throw $this->createNotFoundException();
+        }
+        $jobExecution = new JobExecution;
+        $definition = $job->getJobDefinition();
+        $definition->execute($jobExecution);
+
+        //TODO Analyse $jobExecution to define wether or not it was ok
+        $this->addFlash('success', 'Job has been successfully executed.');
+
+        return $this->redirectToRoute('pim_ie_export_show', array('id' => $job->getId()));
     }
 
     /**
