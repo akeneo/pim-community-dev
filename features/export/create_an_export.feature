@@ -1,9 +1,9 @@
-@javascript
 Feature: Create an export
   In order to use my PIM data into my front applications
   As a user
   I need to be able to create export jobs
 
+  @javascript
   Scenario: Successfully display the product export into csv configuration form
     Given I am logged in as "admin"
     And I am on the exports index page
@@ -12,6 +12,7 @@ Feature: Create an export
     And I should see "Processor - CSV Serializer"
     And I should see "Writer - File"
 
+  @javascript
   Scenario: Successfully create a product export into csv
     Given I am logged in as "admin"
     And I am on the exports index page
