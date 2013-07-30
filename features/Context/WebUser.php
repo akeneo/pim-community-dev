@@ -77,7 +77,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
-        $this->wait();
     }
 
     /**
@@ -127,7 +126,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
-        $this->wait();
     }
 
     /**
@@ -163,7 +161,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheChannelsPage()
     {
         $this->openPage('Channel index');
-        $this->wait();
     }
 
     /**
@@ -182,7 +179,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category edit', array(
             'id' => $this->getCategory($code)->getId(),
         ));
-        $this->wait();
     }
 
     /**
@@ -209,7 +205,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheExportsIndexPage()
     {
         $this->openPage('Export index');
-        $this->wait();
     }
 
     /**
@@ -218,7 +213,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheImportsIndexPage()
     {
         $this->openPage('Import index');
-        $this->wait();
     }
 
     /**
@@ -982,10 +976,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iTryToCreateAnUnknownExport()
     {
-        $this->getSession()->visit(
-            rtrim($this->getMinkParameter('base_url'), '/') .
-            $this->getPage('Export creation')->getUrl(array('connector' => 'Unknown'))
-        );
+        $this->openPage('Export creation');
     }
 
     /**
@@ -1020,7 +1011,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Export detail', array(
             'id' => $this->getJob($job)->getId()
         ));
-        $this->wait();
     }
 
     /**
