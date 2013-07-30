@@ -105,4 +105,4 @@ To perform transition "create_user" several conditions must be satisfied (transi
 
 Following diagram shows this schema in graphical representation.
 
-![Workflow Diagram](../images/img/OroWorkflowBundle_GettingStarted_WorkflowDiagram.png)
+![Workflow Diagram](../images/getting-started_workflow-diagram.png)
