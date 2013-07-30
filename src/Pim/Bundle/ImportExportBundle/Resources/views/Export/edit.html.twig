@@ -18,11 +18,16 @@
         {{ elements.page_header(title, buttons) }}
 
         {{ elements.form_errors(form) }}
-        {{ form_row(form.code) }}
-        {{ form_row(form.label) }}
+
+        {% set generalProperties %}
+            {{ form_row(form.code) }}
+            {{ form_row(form.label) }}
+        {% endset %}
+
+        {{ elements.accordion({ 'General Properties': generalProperties }, 1) }}
 
         {% for step in form.jobDefinition.steps %}
-            {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index) }}
+            {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index + 1) }}
         {% endfor %}
 
         {{ form_rest(form) }}
