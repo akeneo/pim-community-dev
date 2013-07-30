@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\Rest\Util\Codes;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
@@ -23,11 +24,22 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entityextend/field")
+ * @Acl(
+ *      id="oro_entityextend",
+ *      name="Entity extend manipulation",
+ *      description="Entity extend manipulation"
+ * )
  */
 class ConfigFieldGridController extends Controller
 {
     /**
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Acl(
+     *      id="oro_entityextend_field_create",
+     *      name="Create custom field",
+     *      description="Update entity create custom field",
+     *      parent="oro_entityextend"
+     * )
      * @Template
      */
     public function createAction(ConfigEntity $entity)
@@ -89,7 +101,18 @@ class ConfigFieldGridController extends Controller
     }
 
     /**
-     * @Route("/remove/{id}", name="oro_entityextend_field_remove", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route(
+     *      "/remove/{id}",
+     *      name="oro_entityextend_field_remove",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entityextend_field_remove",
+     *      name="Remove custom field",
+     *      description="Update entity remove custom field",
+     *      parent="oro_entityextend"
+     * )
      */
     public function removeAction(ConfigField $field)
     {
