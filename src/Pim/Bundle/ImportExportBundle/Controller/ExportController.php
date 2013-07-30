@@ -172,14 +172,13 @@ class ExportController extends Controller
     }
 
     /**
-     * Launch a job
+     * Get a job
      *
-     * @param Job $job
+     * @param integer $id
      *
-     * @Route("/launch/{id}", requirements={"id"="\d+"}, defaults={"id"=0}, name="pim_ie_export_launch")
-     * @Template()
+     * @return Job|RedirectResponse
      *
-     * @return array
+     * @throw NotFoundHttpException
      */
     protected function getJob($id)
     {
