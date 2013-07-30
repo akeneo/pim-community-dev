@@ -8,7 +8,6 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Pages;
 class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
-    protected $newRole = array('LABEL' => 'NEW_LABEL_', 'ROLE_NAME' => 'NEW_ROLE_');
 
     protected function setUp()
     {
@@ -196,7 +195,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
                     ->open(array($username))
                     ->edit()
                     ->assertElementNotpresent
-                        ("//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]/a[@class='select2-search-choice-close']");
+                    ("//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]/a[@class='select2-search-choice-close']");
                 break;
             case 'assign/unassign':
                 $login->openRoles()
