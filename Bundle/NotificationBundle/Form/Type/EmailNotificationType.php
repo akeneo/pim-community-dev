@@ -36,7 +36,7 @@ class EmailNotificationType extends AbstractType
         $this->subscriber = $subscriber;
         $this->entityNameChoices = array_map(
             function ($value) {
-                return isset($value['name'])? $value['name'] : '';
+                return isset($value['name']) ? $value['name'] : '';
             },
             $entitiesConfig
         );
