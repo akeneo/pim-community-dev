@@ -3,9 +3,7 @@
 namespace Context;
 
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-
 use Behat\MinkExtension\Context\RawMinkContext;
 
 /**
