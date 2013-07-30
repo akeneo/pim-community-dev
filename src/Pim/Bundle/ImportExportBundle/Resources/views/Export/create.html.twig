@@ -15,7 +15,12 @@
         {{ elements.page_header(title, buttons) }}
 
         <div class="layout-content">
-            {{ form_row(form) }}
+            {{ form_row(form.code) }}
+            {{ form_row(form.label) }}
+
+            {% for step in form.jobDefinition.steps %}
+                {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index) }}
+            {% endfor %}
         </div>
     </form>
 {% endblock %}

@@ -7,8 +7,8 @@
         <ul>
         {% for field, value in config %}
             <li>
-                <b>{{ field|normalizeKey }}</b>
-                {{ value|normalizeValue }}
+                <b>{{ field|normalizeKey }}:</b>
+                <span class="label">{{ value|normalizeValue }}</span>
                 {% if violations %}
                     <span class="alert-error">{{ getViolations(violations, stepIndex, title, field) }}</span>
                 {% endif %}
