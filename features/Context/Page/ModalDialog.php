@@ -2,8 +2,6 @@
 
 namespace Context\Page;
 
-use Gaufrette\Adapter\file_put_contents;
-
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
