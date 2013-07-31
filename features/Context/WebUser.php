@@ -5,11 +5,10 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
-
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Behat\Behat\Context\Step;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Context of the website
@@ -23,6 +22,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $pageFactory = null;
 
     private $currentPage = null;
+
+    private $username = null;
+
+    private $password = null;
 
     /* -------------------- Page-related methods -------------------- */
 
@@ -64,10 +67,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $password = $username.'pass';
         $this->getFixturesContext()->getOrCreateUser($username, $password);
 
-        $this
-            ->openPage('Login')
-            ->login($username, $password)
-        ;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -981,10 +982,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iTryToCreateAnUnknownExport()
     {
-        $this->getSession()->visit(
-            rtrim($this->getMinkParameter('base_url'), '/') .
-            $this->getPage('Export creation')->getUrl(array('connector' => 'Unknown'))
-        );
+        $this->openPage('Export creation');
     }
 
     /**
@@ -1097,12 +1095,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->currentPage = $page;
 
-        return $this->getCurrentPage()->open($options);
+        $page = $this->getCurrentPage()->open($options);
+        $this->loginIfRequired();
+        $this->wait();
+
+        return $page;
     }
 
     private function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
+    }
+
+    private function loginIfRequired()
+    {
+        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
+        if ($loginForm) {
+            $loginForm->fillField('_username', $this->username);
+            $loginForm->fillField('_password', $this->password);
+            $loginForm->pressButton('Log in');
+        }
     }
 
     private function getInvalidValueFor($field)
