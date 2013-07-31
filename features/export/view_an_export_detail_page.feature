@@ -22,9 +22,9 @@ Feature: View an export detail page
     Then I should see "This value should not be blank." next to the channel
 
   Scenario: Fail to show a job for which job definition does not exist anymore
-    Given the following export job:
-      | connector | alias          | code                        | label                       |
-      | Akeneo    | removed_export | removed_acme_product_export | Product export for Acme.com |
+    Given the following job:
+      | connector | alias          | code                        | label                       | type   |
+      | Akeneo    | removed_export | removed_acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     And I am on the "removed_acme_product_export" export job page
     Then I should see "The following job does not exist anymore."

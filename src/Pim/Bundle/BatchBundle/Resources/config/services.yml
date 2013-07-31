@@ -1,9 +1,38 @@
 parameters:
-    pim_batch.connectors.class:  Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.connectors_config: ~
-    pim_batch.jobs_config:       ~
+    pim_batch.connectors.class:     Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\JobRepository
+    pim_batch.step_handler.class:   Pim\Bundle\BatchBundle\Job\SimpleStepHandler
+    pim_batch.job_factory.class:    Pim\Bundle\BatchBundle\Job\JobFactory
+    pim_batch.step_factory.class:   Pim\Bundle\BatchBundle\Step\StepFactory
+    pim_batch.connectors_config:    ~
+    pim_batch.jobs_config:          ~
 
 services:
     # connectors registry
     pim_batch.connectors:
         class: %pim_batch.connectors.class%
+        arguments:
+            - @pim_batch.job_factory
+            - @pim_batch.step_factory
+
+    pim_batch.job_repository:
+        class: %pim_batch.job_repository.class%
+
+    pim_batch.step_handler:
+        class: %pim_batch.step_handler.class%
+        arguments:
+            - @logger
+            - @pim_batch.job_repository
+
+    pim_batch.job_factory:
+        class: %pim_batch.job_factory.class%
+        arguments:
+            - @logger
+            - @pim_batch.job_repository
+            - @pim_batch.step_handler
+
+    pim_batch.step_factory:
+        class: %pim_batch.step_factory.class%
+        arguments:
+            - @logger
+            - @pim_batch.job_repository
