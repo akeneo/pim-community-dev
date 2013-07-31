@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Job\JobRepository;
 
 /**
  * Import controller
