@@ -66,7 +66,7 @@ abstract class JobControllerAbstract extends Controller
         if (!$jobDefinition = $registry->getJob($job)) {
             $this->addFlash('error', 'Fail to create an job definition with an unknown job.');
 
-            return $this->redirectIndex();
+            return $this->redirectToIndexView();
         }
         $job->setJobDefinition($jobDefinition);
 
