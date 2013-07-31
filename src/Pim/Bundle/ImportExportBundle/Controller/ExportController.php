@@ -119,7 +119,13 @@ class ExportController extends Controller
      */
     public function showAction($id)
     {
-        $job = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
 
         return array(
             'job'        => $job,
@@ -141,7 +147,13 @@ class ExportController extends Controller
      */
     public function editAction($id)
     {
-        $job  = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
         $form = $this->createForm(new JobType(), $job);
 
         $request = $this->getRequest();
@@ -212,7 +224,13 @@ class ExportController extends Controller
      */
     public function launchAction($id)
     {
-        $job = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
 
         if (count($this->getValidator()->validate($job)) > 0) {
             throw $this->createNotFoundException();
@@ -235,6 +253,7 @@ class ExportController extends Controller
      * @return Job|RedirectResponse
      *
      * @throw NotFoundHttpException
+     * @throw InvalidArgumentException
      */
     protected function getJob($id)
     {
@@ -242,8 +261,7 @@ class ExportController extends Controller
         $registry      = $this->getConnectorRegistry();
         $jobDefinition = $registry->getJob($job);
         if (!$jobDefinition) {
-            $this->addFlash(
-                'error',
+            throw new \InvalidArgumentException(
                 sprintf(
                     'The following job does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
@@ -254,8 +272,6 @@ class ExportController extends Controller
                     $job->getAlias()
                 )
             );
-
-            return $this->redirectToRoute('pim_ie_export_index');
         }
         $job->setJobDefinition($jobDefinition);
 
