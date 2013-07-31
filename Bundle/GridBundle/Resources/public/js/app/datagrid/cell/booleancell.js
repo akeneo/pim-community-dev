@@ -21,7 +21,13 @@ Oro.Datagrid.Cell.BooleanCell = Backgrid.BooleanCell.extend({
     listenRowClick: true,
 
     /** @property {Object} */
-    editor: _.template("<input type='checkbox' <%= checked ? checked='checked' : '' %> <%= editable ? '' : 'disabled' %> />'"),
+    editor: _.template(
+        "<input data-identifier='<%= dataIdentifier %>' type='checkbox' " +
+        "<%= checked ? checked='checked' : '' %> <%= editable ? '' : 'disabled' %> />'"
+    ),
+
+    /** @property {String} */
+    dataIdentifier: null,
 
     /**
      * @inheritDoc
@@ -29,6 +35,7 @@ Oro.Datagrid.Cell.BooleanCell = Backgrid.BooleanCell.extend({
     initialize: function(options) {
         Backgrid.BooleanCell.prototype.initialize.apply(this, arguments);
         this.editable = this.column.get("editable");
+        this.dataIdentifier = this._generateUniqueIdentifier();
     },
 
     /**
@@ -37,8 +44,9 @@ Oro.Datagrid.Cell.BooleanCell = Backgrid.BooleanCell.extend({
     render: function () {
         this.$el.empty();
         this.currentEditor = $(this.editor({
-            checked:  this.formatter.fromRaw(this.model.get(this.column.get("name"))),
-            editable: this.editable
+            checked:        this.formatter.fromRaw(this.model.get(this.column.get("name"))),
+            editable:       this.editable,
+            dataIdentifier: this.dataIdentifier
         }));
         this.$el.append(this.currentEditor);
         return this;
@@ -78,8 +86,16 @@ Oro.Datagrid.Cell.BooleanCell = Backgrid.BooleanCell.extend({
      * @param {Event} e
      */
     onRowClicked: function(row, e) {
-        if (this.editable && e.target !== this.currentEditor.get(0)) {
+        if (this.editable && $(e.target).data('identifier') !== this.dataIdentifier) {
             this.currentEditor.click();
         }
+    },
+
+    /**
+     * @return {String}
+     */
+    _generateUniqueIdentifier: function() {
+        var randomString = Math.random().toString(36).slice(-8);
+        return 'checkbox_' + this.cid + '_' + randomString;
     }
 });

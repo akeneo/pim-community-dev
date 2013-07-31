@@ -11,9 +11,17 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
+
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
+ * @Configurable(
+ *      routeName="oro_user_group_index",
+ *      defaultValues={"entity"={"icon"="group","label"="Group", "plural_label"="Groups"}}
+ * )
+ * @Extend
  */
 class Group
 {

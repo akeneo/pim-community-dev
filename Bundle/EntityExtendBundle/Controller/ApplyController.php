@@ -19,6 +19,11 @@ use Symfony\Component\Process\Process;
 /**
  * EntityExtendBundle controller.
  * @Route("/oro_entityextend")
+ * @Acl(
+ *      id="oro_entityextend",
+ *      name="Entity extend manipulation",
+ *      description="Entity extend manipulation"
+ * )
  */
 class ApplyController extends Controller
 {
@@ -29,10 +34,10 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @ Acl(
+     * @Acl(
      *      id="oro_entityextend_apply",
-     *      name="Apply changes",
-     *      description="Apply entityconfig changes",
+     *      name="Validate changes",
+     *      description="Validate entityconfig changes",
      *      parent="oro_entityextend"
      * )
      * @Template()
@@ -105,7 +110,7 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @ Acl(
+     * @Acl(
      *      id="oro_entityextend_update",
      *      name="Apply changes",
      *      description="Apply entityconfig changes",
@@ -120,11 +125,12 @@ class ApplyController extends Controller
         $env = $this->get('kernel')->getEnvironment();
 
         $commands = array(
-            'backup'       => new Process('../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env='.$env),
-            'generator'    => new Process('../app/console oro:entity-extend:generate'. ' --env='.$env),
-            'cacheClear'   => new Process('../app/console cache:clear --no-warmup'. ' --env='.$env),
-            'schemaUpdate' => new Process('../app/console doctrine:schema:update --force'. ' --env='.$env),
-            'cacheWarmup'  => new Process('../app/console cache:warmup'. ' --env='.$env),
+            'backup'       => new Process('php ../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env '.$env),
+            'generator'    => new Process('php ../app/console oro:entity-extend:generate'. ' --env '.$env),
+            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup'. ' --env '.$env),
+            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force'. ' --env '.$env),
+            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env '.$env),
+            'cacheWarmup'  => new Process('php ../app/console cache:warmup'. ' --env '.$env),
         );
 
         foreach ($commands as $command) {
