@@ -40,8 +40,8 @@ jenkins:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,junit
+        name: pretty,pretty
         parameters:
-            output_path: null,app/build/logs/behat/
+            output_path: null,app/build/logs/behat/pretty.out
     filters:
         tags: ~@select2-regression
