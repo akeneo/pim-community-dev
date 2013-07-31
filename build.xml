@@ -7,7 +7,7 @@
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets"/>
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
 
@@ -161,6 +161,14 @@
             <arg value="--ansi" />
             <arg value="--no-paths" />
         </exec>
+    </target>
+
+    <target name="behat-check" description="Check Behat output">
+	<fail message="At least one scenario has failed">
+	    <condition>
+		<resourcecontains resource="./app/build/logs/behat/pretty.out" substring="failed"/>
+	    </condition>
+	</fail>
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
