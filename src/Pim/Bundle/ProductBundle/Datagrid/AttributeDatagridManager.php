@@ -119,6 +119,34 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
+     * Create attribute type field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAttributeTypeField()
+    {
+        $field = new FieldDescription();
+        $field->setName('attributeType');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Type'),
+                'field_name'  => 'attributeType',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array('choices' => $this->getAttributeTypeFieldOptions(), 'multiple' => true),
+            )
+        );
+        $templateProperty = new TwigTemplateProperty($field, 'PimProductBundle:ProductAttribute:_field-type.html.twig');
+        $field->setProperty($templateProperty);
+
+        return $field;
+    }
+
+    /**
      * Create a group field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -195,34 +223,6 @@ class AttributeDatagridManager extends DatagridManager
         );
 
         return array($clickAction, $editAction, $deleteAction);
-    }
-
-    /**
-     * Create attribute type field description for datagrid
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createAttributeTypeField()
-    {
-        $field = new FieldDescription();
-        $field->setName('attributeType');
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Type'),
-                'field_name'  => 'attributeType',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array('choices' => $this->getAttributeTypeFieldOptions()),
-            )
-        );
-        $templateProperty = new TwigTemplateProperty($field, 'PimProductBundle:ProductAttribute:_field-type.html.twig');
-        $field->setProperty($templateProperty);
-
-        return $field;
     }
 
     /**

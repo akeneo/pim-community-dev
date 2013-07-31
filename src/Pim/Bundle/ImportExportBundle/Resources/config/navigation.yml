@@ -2,10 +2,10 @@ oro_menu_config:
     items:
         pim_ie_import:
             label: 'Imports'
-            route: 'pim_ie_import_index'
+            route: 'pim_importexport_import_index'
         pim_ie_export:
             label: 'Exports'
-            route: 'pim_ie_export_index'
+            route: 'pim_importexport_export_index'
 
     tree:
         application_menu:
@@ -18,5 +18,5 @@ oro_menu_config:
                         pim_ie_export: ~
 
 oro_titles:
-    pim_ie_import_index: Import management
-    pim_ie_export_index: Export management
+    pim_importexport_import_index: Import management
+    pim_importexport_export_index: Export management

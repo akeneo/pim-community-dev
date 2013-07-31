@@ -1,21 +1,13 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Pim\Bundle\BatchBundle\Job\Job;
-use Pim\Bundle\BatchBundle\Job\JobParameters;
-use Pim\Bundle\BatchBundle\Job\JobRepository;
-use Pim\Bundle\BatchBundle\Job\Launch\SimpleJobLauncher;
-
-use Pim\Bundle\BatchBundle\Item\Support\ArrayReader;
-use Pim\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
-use Pim\Bundle\BatchBundle\Item\Support\EchoWriter;
-
-use Pim\Bundle\BatchBundle\Step\ItemStep;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Validator\Validator;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
 
 /**
  * Batch command
@@ -33,7 +25,8 @@ class BatchCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:batch:job')
-            ->setDescription('Launch a registered job');
+            ->setDescription('Launch a registered job')
+            ->addArgument('code', InputArgument::REQUIRED, 'Job code');
     }
 
     /**
@@ -41,33 +34,38 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getContainer()->get('logger');
+        $code = $input->getArgument('code');
+        $job = $this->getEntityManager()->getRepository('PimBatchBundle:Job')->findOneByCode($code);
+        if ($job === null or count($this->getValidator()->validate($job)) > 0) {
+            throw new \Exception('Job not valid');
+        }
 
-        $dummyJobRepository = new JobRepository();
-        $itemReader = new ArrayReader();
-        $itemReader->setItems(array('hello', 'world', 'akeneo', 'is', 'great'));
-        $itemProcessor = new UcfirstProcessor();
-        $itemWriter = new EchoWriter();
+        $definition = $this->getConnectorRegistry()->getJob($job);
+        $jobExecution = new JobExecution;
+        $definition->execute($jobExecution);
+    }
 
-        $step1 = new ItemStep("Sample export");
-        $step1->setLogger($logger);
-        $step1->setJobRepository($dummyJobRepository);
-        $step1->setReader($itemReader);
-        $step1->setProcessor($itemProcessor);
-        $step1->setWriter($itemWriter);
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getEntityManager();
+    }
 
-        $simpleJob = new Job("My super job");
-        $simpleJob->setLogger($logger);
-        $simpleJob->setJobRepository($dummyJobRepository);
-        $simpleJob->addStep($step1);
+    /**
+     * @return Validator
+     */
+    protected function getValidator()
+    {
+        return $this->getContainer()->get('validator');
+    }
 
-        $dummyJobParameters = new JobParameters();
-
-        $jobLauncher = new SimpleJobLauncher();
-        $jobLauncher->setJobRepository($dummyJobRepository);
-        $jobExecution = $jobLauncher->run($simpleJob, $dummyJobParameters);
-
-        echo $simpleJob."\n";
-        echo $jobExecution."\n";
+    /**
+     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
+    protected function getConnectorRegistry()
+    {
+        return $this->getContainer()->get('pim_batch.connectors');
     }
 }

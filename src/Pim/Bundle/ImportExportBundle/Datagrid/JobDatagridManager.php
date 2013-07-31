@@ -56,12 +56,20 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
+        // prepare route names
+        $editLink   = sprintf('pim_importexport_%s_edit', $this->jobType);
+        $showLink   = sprintf('pim_importexport_%s_show', $this->jobType);
+        $deleteLink = sprintf('pim_importexport_%s_remove', $this->jobType);
+        $reportLink = sprintf('pim_importexport_%s_report', $this->jobType);
+        $launchLink = sprintf('pim_importexport_%s_launch', $this->jobType);
+
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
-            new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
-            new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
-            new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
+            new UrlProperty('edit_link', $this->router, $editLink, array('id')),
+            new UrlProperty('show_link', $this->router, $showLink, array('id')),
+            new UrlProperty('delete_link', $this->router, $deleteLink, array('id')),
+            new UrlProperty('report_link', $this->router, $reportLink, array('id')),
+            new UrlProperty('launch_link', $this->router, $launchLink, array('id'))
         );
     }
 
@@ -82,14 +90,14 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        $showAction = array(
-            'name'         => 'show',
+        $editAction = array(
+            'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Show'),
+                'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
-                'link'    => 'show_link',
+                'link'    => 'edit_link',
                 'backUrl' => true
             )
         );
@@ -129,7 +137,7 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $showAction, $deleteAction, $reportAction, $launchAction);
+        return array($clickAction, $editAction, $deleteAction, $reportAction, $launchAction);
     }
 
     /**

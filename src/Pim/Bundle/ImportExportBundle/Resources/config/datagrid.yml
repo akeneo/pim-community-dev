@@ -11,7 +11,7 @@ services:
               entity_name: %pim_import_export.entity.job.class%
               query_entity_alias: job
               entity_hint: jobs
-              route_name: pim_ie_export_index
+              route_name: pim_importexport_export_index
         calls:
             - [ setJobType, ['export'] ]
             - [ setConnectorRegistry, [@pim_batch.connectors] ]
@@ -24,7 +24,7 @@ services:
               entity_name: %pim_import_export.entity.job.class%
               query_entity_alias: job
               entity_hint: jobs
-              route_name: pim_ie_import_index
+              route_name: pim_importexport_import_index
         calls:
             - [ setJobType, ['import'] ]
             - [ setConnectorRegistry, [@pim_batch.connectors] ]

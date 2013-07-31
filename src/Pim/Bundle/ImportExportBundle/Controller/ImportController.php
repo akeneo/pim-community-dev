@@ -18,14 +18,13 @@ use Pim\Bundle\BatchBundle\Entity\Job;
  *
  * @Route("/import")
  */
-class ImportController extends JobController
+class ImportController extends JobControllerAbstract
 {
     /**
      * {@inheritdoc}
      *
      * @Route(
      *     "/.{_format}",
-     *     name="pim_ie_import_index",
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
@@ -38,7 +37,7 @@ class ImportController extends JobController
     /**
      * {@inheritdoc}
      *
-     * @Route("/create", name="pim_ie_import_create")
+     * @Route("/create")
      * @Template("PimImportExportBundle:Import:edit.html.twig")
      */
     public function createAction(Request $request)
@@ -49,7 +48,7 @@ class ImportController extends JobController
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}", name="pim_ie_import_show")
+     * @Route("/{id}")
      * @Template("PimImportExportBundle:Import:show.html.twig")
      */
     public function showAction($id)
@@ -60,7 +59,7 @@ class ImportController extends JobController
     /**
      * {@inheritdoc}
      *
-     * @Route("/edit/{id}", name="pim_ie_import_edit")
+     * @Route("/edit/{id}")
      * @Template("PimImportExportBundle:Import:edit.html.twig")
      */
     public function editAction($id)
@@ -71,7 +70,7 @@ class ImportController extends JobController
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}/remove", requirements={"id"="\d+"}, name="pim_ie_import_remove")
+     * @Route("/{id}/remove", requirements={"id"="\d+"})
      * @Method("DELETE")
      */
     public function removeAction($id)
@@ -85,8 +84,7 @@ class ImportController extends JobController
      * @Route(
      *     "/show/{id}",
      *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_import_report"
+     *     defaults={"id"=0}
      * )
      * @Template
      */
@@ -100,13 +98,13 @@ class ImportController extends JobController
      * @Route(
      *     "/launch/{id}",
      *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_import_launch"
+     *     defaults={"id"=0}
      * )
      * @Template
      */
     public function launchAction($id)
     {
+        return parent::launchAction($id);
     }
 
     /**
@@ -123,8 +121,16 @@ class ImportController extends JobController
     protected function redirectToShowView($jobId)
     {
         return $this->redirect(
-            $this->generateUrl('pim_ie_import_show', array('id' => $jobId))
+            $this->generateUrl('pim_importexport_import_show', array('id' => $jobId))
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getIndexRouteName()
+    {
+        return 'pim_importexport_import_index';
     }
 
     /**

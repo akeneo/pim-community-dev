@@ -6,11 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 
 /**
  * Job controller
@@ -21,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
  *
  * @abstract
  */
-abstract class JobController extends Controller
+abstract class JobControllerAbstract extends Controller
 {
     /**
      * List the jobs
@@ -65,9 +64,9 @@ abstract class JobController extends Controller
 
         $job = new Job($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', 'Fail to create an job definition with an unknown job.');
+            $this->addFlash('error', sprintf('Fail to create an %s with an unknown job.', $this->getJobType()));
 
-            return $this->redirectIndex();
+            return $this->redirectToIndexView();
         }
         $job->setJobDefinition($jobDefinition);
 
@@ -80,7 +79,7 @@ abstract class JobController extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s job has been successfully created.', $this->getJobType())
+                    sprintf('The %s has been successfully created.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
@@ -137,7 +136,7 @@ abstract class JobController extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s job has been successfully updated.', $this->getJobType())
+                    sprintf('The %s has been successfully updated.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
@@ -153,8 +152,6 @@ abstract class JobController extends Controller
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Method("DELETE")
      */
     public function removeAction($id)
     {
@@ -198,7 +195,7 @@ abstract class JobController extends Controller
 
         // TODO || FIXME : Why ?
         // Ok the job can't be launch because invalid
-        // But we mustn't return a 404 !!
+        // But we mustn't return a 404 !!?
         if (count($this->getValidator()->validate($job)) > 0) {
             throw $this->createNotFoundException();
         }
@@ -253,6 +250,16 @@ abstract class JobController extends Controller
     }
 
     /**
+     * Redirect to the index view
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndexView()
+    {
+        return $this->redirectToRoute($this->getIndexRouteName());
+    }
+
+    /**
      * Return the job type of the controller
      *
      * @abstract
@@ -271,14 +278,12 @@ abstract class JobController extends Controller
     abstract protected function redirectToShowView($jobId);
 
     /**
-     * Redirect to the index view
+     * Get the index route name
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @abstract
+     * @return string
      */
-    protected function redirectToIndexView()
-    {
-        return $this->redirect($this->getIndexLogicName());
-    }
+    abstract protected function getIndexRouteName();
 
     /**
      * Get the index action logic name
