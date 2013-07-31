@@ -31,7 +31,13 @@ class StepElementConfigurationType extends AbstractType
                 $reader = $event->getData();
 
                 foreach ($reader->getConfigurationFields() as $field => $config) {
-                    $type    = isset($config['type']) ? $config['type'] : 'text';
+                    $config = array_merge(
+                        array(
+                            'type' => 'text',
+                            'options' => array(),
+                        ),
+                        $config
+                    );
                     $options = array_merge(
                         array(
                             'auto_initialize' => false,
@@ -40,7 +46,7 @@ class StepElementConfigurationType extends AbstractType
                         $config['options']
                     );
 
-                    $form->add($factory->createNamed($field, $type, null, $options));
+                    $form->add($factory->createNamed($field, $config['type'], null, $options));
                 }
             }
         );
