@@ -103,7 +103,13 @@ abstract class JobControllerAbstract extends Controller
      */
     public function showAction($id)
     {
-        $job = $this->getJob($id, false);
+        try {
+            $job = $this->getJob($id);
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
 
         return array(
             'job'        => $job,
