@@ -2,15 +2,23 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\SerializerInterface;
+use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 
 /**
+ * An abstract processor to serialize data into csv
+ *
+ * Use either one of the following services given the type of data to serialize
+ *   - HeterogeneousCsvSerializerProcessor (id: pim_import_export.processor.heterogeneous_csv_serializer)
+ *   - HomogeneousCsvSerializerProcessor   (id: pim_import_export.processor.homogeneous_csv_serializer)
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvSerializerProcessor extends SerializerProcessor
+abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /**
      * @Assert\NotBlank

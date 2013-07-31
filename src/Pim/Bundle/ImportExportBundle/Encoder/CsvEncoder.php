@@ -15,9 +15,8 @@ class CsvEncoder implements EncoderInterface
 {
     const FORMAT = 'csv';
 
-    protected $delimiter;
-    protected $enclosure;
-    protected $withHeader = false;
+    protected $firstExecution = true;
+    protected $hasHeader      = false;
 
     /**
      * {@inheritDoc}
@@ -26,14 +25,23 @@ class CsvEncoder implements EncoderInterface
     {
         $context = array_merge(
             array(
-                'delimiter' => ';',
-                'enclosure' => '"',
-                'withHeader' => false
+                'delimiter'     => ';',
+                'enclosure'     => '"',
+                'withHeader'    => false,
+                'heterogeneous' => false,
             ),
             $context
         );
-        $delimiter = is_string($context['delimiter']) ? $context['delimiter'] : ';';
-        $enclosure = is_string($context['enclosure']) ? $context['enclosure'] : '"';
+        if (!$this->firstExecution && $context['heterogeneous']) {
+            throw new \RuntimeException(
+                'The csv encode method should not be called more than once when handling heterogeneous data. '.
+                'Otherwise, it won\'t be able to compute the csv columns correctly.'
+            );
+        }
+        $this->firstExecution = false;
+
+        $delimiter  = is_string($context['delimiter']) ? $context['delimiter'] : ';';
+        $enclosure  = is_string($context['enclosure']) ? $context['enclosure'] : '"';
         $withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;
 
         if (!is_array($data)) {
@@ -49,7 +57,7 @@ class CsvEncoder implements EncoderInterface
 
         if (isset($data[0]) && is_array($data[0])) {
             $columns = $this->getColumns($data);
-            if ($withHeader) {
+            if ($withHeader && !$this->hasHeader) {
                 $this->encodeHeader($columns, $output, $delimiter, $enclosure);
             }
             foreach ($this->normalizeColumns($data, $columns) as $entry) {
@@ -57,7 +65,7 @@ class CsvEncoder implements EncoderInterface
                 $this->write($output, $entry, $delimiter, $enclosure);
             }
         } else {
-            if ($withHeader) {
+            if ($withHeader && !$this->hasHeader) {
                 $this->encodeHeader($data, $output, $delimiter, $enclosure);
             }
             $this->checkHasStringKeys($data);
@@ -78,6 +86,7 @@ class CsvEncoder implements EncoderInterface
     private function encodeHeader($data, $output, $delimiter, $enclosure)
     {
         $this->write($output, array_keys($data), $delimiter, $enclosure);
+        $this->hasHeader = true;
     }
 
     private function write($output, $entry, $delimiter, $enclosure)

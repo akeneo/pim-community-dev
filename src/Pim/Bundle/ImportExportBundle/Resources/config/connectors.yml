@@ -1,13 +1,14 @@
 parameters:
-    pim_import_export.reader.product.class:           Pim\Bundle\ImportExportBundle\Reader\ProductReader
-    pim_import_export.reader.category.class:          Pim\Bundle\ImportExportBundle\Reader\CategoryReader
-    pim_import_export.reader.attribute.class:         Pim\Bundle\ImportExportBundle\Reader\AttributeReader
-    pim_import_export.processor.csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor
-    pim_import_export.writer.file.class:              Pim\Bundle\ImportExportBundle\Writer\FileWriter
-    # TODO : fake implementations to replace by concret one when we'll work on launch an import
-    pim_import_export.reader.dummy.class:             Pim\Bundle\ImportExportBundle\Reader\DummyReader
-    pim_import_export.processor.dummy.class:          Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
-    pim_import_export.writer.dummy.class:             Pim\Bundle\ImportExportBundle\Writer\DummyWriter
+    pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ProductReader
+    pim_import_export.reader.category.class:                        Pim\Bundle\ImportExportBundle\Reader\CategoryReader
+    pim_import_export.reader.attribute.class:                       Pim\Bundle\ImportExportBundle\Reader\AttributeReader
+    pim_import_export.processor.homogeneous_csv_serializer.class:   Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor
+    pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
+    pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
+    # TODO fake implementations to replace by concret one when we'll work on launch an import
+    pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
+    pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
+    pim_import_export.writer.dummy.class:                           Pim\Bundle\ImportExportBundle\Writer\DummyWriter
 
 services:
 
@@ -32,8 +33,13 @@ services:
         class: %pim_import_export.reader.dummy.class%
 
     # processors
-    pim_import_export.processor.csv_serializer:
-        class: %pim_import_export.processor.csv_serializer.class%
+    pim_import_export.processor.homogeneous_csv_serializer:
+        class: %pim_import_export.processor.homogeneous_csv_serializer.class%
+        arguments:
+            - @pim_serializer
+
+    pim_import_export.processor.heterogeneous_csv_serializer:
+        class: %pim_import_export.processor.heterogeneous_csv_serializer.class%
         arguments:
             - @pim_serializer
 
