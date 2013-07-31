@@ -17,7 +17,7 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
  *
  * @ORM\Table(name="pim_job")
  * @ORM\Entity()
- * @UniqueEntity("code")
+ * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class Job
 {
@@ -40,6 +40,10 @@ class Job
      *
      * @ORM\Column(name="code", type="string", length=100, unique=true)
      * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern="/^[a-zA-Z0-9_]+$/",
+     *     message="The code must only contain alphanumeric characters and underscore."
+     * )
      */
     protected $code;
 

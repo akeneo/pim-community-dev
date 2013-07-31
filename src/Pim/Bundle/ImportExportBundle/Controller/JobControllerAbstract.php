@@ -195,7 +195,7 @@ abstract class JobControllerAbstract extends Controller
 
         // TODO || FIXME : Why ?
         // Ok the job can't be launch because invalid
-        // But we mustn't return a 404 !!
+        // But we mustn't return a 404 !!?
         if (count($this->getValidator()->validate($job)) > 0) {
             throw $this->createNotFoundException();
         }
@@ -256,7 +256,7 @@ abstract class JobControllerAbstract extends Controller
      */
     protected function redirectToIndexView()
     {
-        return $this->redirect($this->getIndexLogicName());
+        return $this->redirectToRoute($this->getIndexLogicName());
     }
 
     /**
