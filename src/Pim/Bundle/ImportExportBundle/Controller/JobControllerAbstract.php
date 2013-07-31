@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Controller\Controller;
@@ -22,8 +23,6 @@ use Pim\Bundle\BatchBundle\Job\JobExecution;
  */
 abstract class JobControllerAbstract extends Controller
 {
-    const JOB_STATUS_READY = 0;
-
     /**
      * List the jobs
      *
@@ -66,7 +65,7 @@ abstract class JobControllerAbstract extends Controller
 
         $job = new Job($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', sprintf('Fail to create an %s with an unknown job.', $this->getJobType()));
+            $this->addFlash('error', sprintf('Failed to create an %s with an unknown job.', $this->getJobType()));
 
             return $this->redirectToIndexView();
         }
@@ -123,7 +122,7 @@ abstract class JobControllerAbstract extends Controller
     {
         try {
             $job = $this->getJob($id);
-        } catch (\NotFoundHttpException $e) {
+        } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
@@ -157,7 +156,14 @@ abstract class JobControllerAbstract extends Controller
      */
     public function removeAction($id)
     {
-        $job = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+
         $this->remove($job);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -189,7 +195,7 @@ abstract class JobControllerAbstract extends Controller
     {
         try {
             $job = $this->getJob($id);
-        } catch (\NotFoundHttpException $e) {
+        } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
@@ -225,10 +231,8 @@ abstract class JobControllerAbstract extends Controller
     {
         $job = $this->findOr404('PimBatchBundle:Job', $id);
 
-        if ($checkStatus && $job->getStatus() !== self::JOB_STATUS_READY) {
-            $this->addFlash('error', sprintf('The job "%s" is currently in progress', $job->getLabel()));
-
-            return $this->redirectToIndexView();
+        if ($checkStatus && $job->getStatus() === Job::STATUS_IN_PROGRESS) {
+            throw $this->createNotFoundException(sprintf('The job "%s" is currently in progress', $job->getLabel()));
         }
 
         $jobDefinition = $this->getConnectorRegistry()->getJob($job);

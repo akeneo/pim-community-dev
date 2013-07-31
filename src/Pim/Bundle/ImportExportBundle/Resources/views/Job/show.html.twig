@@ -29,7 +29,7 @@
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {% if job.status == 0 %}
+        {% if job.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\Job::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if violations|length == 0 %}
