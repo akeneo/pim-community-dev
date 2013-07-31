@@ -130,22 +130,10 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetLastModified()
     {
         $asset = $this->getMock('Assetic\Asset\AssetInterface');
-        $child = $this->getMock('Assetic\Asset\AssetInterface');
-        $filter1 = $this->getMock('Assetic\Filter\FilterInterface');
-        $filter2 = $this->getMock('Assetic\Filter\DependencyExtractorInterface');
 
-        $asset->expects($this->any())
+        $this->am->expects($this->any())
             ->method('getLastModified')
             ->will($this->returnValue(123));
-        $asset->expects($this->any())
-            ->method('getFilters')
-            ->will($this->returnValue(array($filter1, $filter2)));
-        $child->expects($this->any())
-            ->method('getLastModified')
-            ->will($this->returnValue(456));
-        $child->expects($this->any())
-            ->method('getFilters')
-            ->will($this->returnValue(array()));
 
         $this->assertEquals(123, $this->manager->getLastModified($asset));
     }

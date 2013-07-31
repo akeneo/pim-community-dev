@@ -82,6 +82,7 @@ class EmailTemplateController extends RestController
                 $this->view(null, Codes::HTTP_NOT_FOUND)
             );
         }
+        $entityName = str_replace('_', '\\', $entityName);
 
         /** @var $emailTemplateRepository EmailTemplateRepository */
         $emailTemplateRepository = $this->getDoctrine()->getRepository('OroEmailBundle:EmailTemplate');

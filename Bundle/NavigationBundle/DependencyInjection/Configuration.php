@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                     'type'  => 'scalar',
                 ),
                 'title_suffix' => array(
-                    'value' => 'Oro', // default value, can be overridden in config.yml
+                    'value' => '', // default value, can be overridden in config.yml
                     'type'  => 'scalar',
                 ),
                 'title_delimiter' => array(

@@ -37,8 +37,11 @@ class AnnotationDriver implements DriverInterface
         /** @var Configurable $annot */
         if ($annot = $this->reader->getClassAnnotation($class, self::CONFIGURABLE)) {
             $metadata = new ConfigClassMetadata($class->getName());
-            $metadata->configurable = true;
-            $metadata->viewMode     = $annot->viewMode;
+
+            $metadata->configurable  = true;
+            $metadata->defaultValues = $annot->defaultValues;
+            $metadata->routeName     = $annot->routeName;
+            $metadata->viewMode      = $annot->viewMode;
 
             return $metadata;
         }
