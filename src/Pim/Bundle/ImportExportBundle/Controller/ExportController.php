@@ -8,8 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\JobExecution;
-use Pim\Bundle\BatchBundle\Job\JobRepository;
 
 /**
  * Export controller
@@ -20,7 +18,7 @@ use Pim\Bundle\BatchBundle\Job\JobRepository;
  *
  * @Route("/export")
  */
-class ExportController extends JobController
+class ExportController extends JobControllerAbstract
 {
     /**
      * {@inheritdoc}
@@ -101,8 +99,6 @@ class ExportController extends JobController
      *
      * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
      * @Template
-     *
-     * @return RedirectResponse
      */
     public function launchAction($id)
     {

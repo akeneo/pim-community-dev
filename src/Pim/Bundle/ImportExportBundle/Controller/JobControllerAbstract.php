@@ -6,11 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Job\JobExecution;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 
 /**
  * Job controller
@@ -21,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
  *
  * @abstract
  */
-abstract class JobController extends Controller
+abstract class JobControllerAbstract extends Controller
 {
     /**
      * List the jobs
@@ -153,8 +152,6 @@ abstract class JobController extends Controller
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Method("DELETE")
      */
     public function removeAction($id)
     {
@@ -253,6 +250,16 @@ abstract class JobController extends Controller
     }
 
     /**
+     * Redirect to the index view
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndexView()
+    {
+        return $this->redirect($this->getIndexLogicName());
+    }
+
+    /**
      * Return the job type of the controller
      *
      * @abstract
@@ -269,16 +276,6 @@ abstract class JobController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     abstract protected function redirectToShowView($jobId);
-
-    /**
-     * Redirect to the index view
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectToIndexView()
-    {
-        return $this->redirect($this->getIndexLogicName());
-    }
 
     /**
      * Get the index action logic name
