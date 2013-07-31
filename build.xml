@@ -167,7 +167,7 @@
     <target name="behat-check" description="Check Behat output">
 	<fail message="At least one scenario has failed">
 	    <condition>
-		<resourcecontains resource="./app/build/logs/behat/pretty.out" substring="échecs"/>
+		<resourcecontains resource="./app/build/logs/behat/pretty.out" substring="failed"/>
 	    </condition>
 	</fail>
     </target>
