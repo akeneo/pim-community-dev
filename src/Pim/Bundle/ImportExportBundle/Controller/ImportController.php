@@ -107,6 +107,7 @@ class ImportController extends JobControllerAbstract
      */
     public function launchAction($id)
     {
+        return parent::launchAction($id);
     }
 
     /**

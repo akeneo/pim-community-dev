@@ -262,6 +262,7 @@ abstract class JobControllerAbstract extends Controller
     /**
      * Return the job type of the controller
      *
+     * @abstract
      * @return string
      */
     abstract protected function getJobType();
