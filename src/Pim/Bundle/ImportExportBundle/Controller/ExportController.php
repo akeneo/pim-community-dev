@@ -25,7 +25,6 @@ class ExportController extends JobControllerAbstract
      *
      * @Route(
      *     "/.{_format}",
-     *     name="pim_ie_export_index",
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
@@ -38,7 +37,7 @@ class ExportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/create", name="pim_ie_export_create")
+     * @Route("/create")
      * @Template("PimImportExportBundle:Export:edit.html.twig")
      */
     public function createAction(Request $request)
@@ -49,7 +48,7 @@ class ExportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}", name="pim_ie_export_show")
+     * @Route("/{id}")
      * @Template("PimImportExportBundle:Export:show.html.twig")
      */
     public function showAction($id)
@@ -60,7 +59,7 @@ class ExportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/edit/{id}", name="pim_ie_export_edit")
+     * @Route("/edit/{id}")
      * @Template("PimImportExportBundle:Export:edit.html.twig")
      */
     public function editAction($id)
@@ -71,7 +70,7 @@ class ExportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}/remove", requirements={"id"="\d+"}, name="pim_ie_export_remove")
+     * @Route("/{id}/remove", requirements={"id"="\d+"})
      * @Method("DELETE")
      */
     public function removeAction($id)
@@ -85,8 +84,7 @@ class ExportController extends JobControllerAbstract
      * @Route(
      *     "/{id}/reports",
      *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_export_report"
+     *     defaults={"id"=0}
      * )
      * @Template
      */
@@ -97,7 +95,7 @@ class ExportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
+     * @Route("/{id}/launch", requirements={"id"="\d+"})
      * @Template
      */
     public function launchAction($id)
@@ -119,7 +117,7 @@ class ExportController extends JobControllerAbstract
     protected function redirectToShowView($jobId)
     {
         return $this->redirect(
-            $this->generateUrl('pim_ie_export_show', array('id' => $jobId))
+            $this->generateUrl('pim_importexport_export_show', array('id' => $jobId))
         );
     }
 
