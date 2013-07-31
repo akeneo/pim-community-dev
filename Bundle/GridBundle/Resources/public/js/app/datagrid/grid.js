@@ -115,7 +115,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         options.columns.push(this._createActionsColumn());
 
         this.loadingMask = this._createLoadingMask();
-        this.toolbar = this._createToolbar(this.toolbarOptions);
+        this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
 
         Backgrid.Grid.prototype.initialize.apply(this, arguments);
 

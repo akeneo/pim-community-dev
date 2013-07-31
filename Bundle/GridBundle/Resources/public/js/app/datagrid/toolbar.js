@@ -64,13 +64,16 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
             collection: this.collection
         });
 
-        this.pageSize = new this.pageSize({
-            collection: this.collection
-        });
+        options.pageSize = options.pageSize || {};
+        this.pageSize = new this.pageSize( _.extend({}, options.pageSize, { collection: this.collection }) );
 
         this.actionsPanel = new this.actionsPanel();
         if (options.actions) {
             this.actionsPanel.setActions(options.actions);
+        }
+
+        if (options.enable == false) {
+            this.disable();
         }
 
         Backbone.View.prototype.initialize.call(this, options);

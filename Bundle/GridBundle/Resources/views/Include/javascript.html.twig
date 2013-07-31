@@ -94,7 +94,11 @@
                     {% endfor %}
                 },
                 entityHint : {{ datagrid.entityHint|capitalize|json_encode|raw }},
-                noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }}
+                noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }},
+                toolbarOptions: {
+                    enable: false,
+                    pageSize: { items: [10, 20, 50, 100, 'All']}
+                }
             },
             collection: {
                 inputName: {{ datagrid.name|json_encode|raw }},
