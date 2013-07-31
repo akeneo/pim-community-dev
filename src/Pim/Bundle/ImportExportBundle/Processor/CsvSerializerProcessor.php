@@ -78,16 +78,13 @@ class CsvSerializerProcessor extends SerializerProcessor
     {
         return array(
             'delimiter' => array(
-                'type'    => 'text',
-                'options' => array(),
+                'type' => 'text',
             ),
             'enclosure' => array(
-                'type'    => 'text',
-                'options' => array(),
+                'type' => 'text',
             ),
             'withHeader' => array(
-                'type'    => 'checkbox',
-                'options' => array(),
+                'type' => 'checkbox',
             ),
 
         );
