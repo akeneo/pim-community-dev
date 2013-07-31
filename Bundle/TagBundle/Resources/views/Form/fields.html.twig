@@ -1,3 +1,50 @@
+
+{% block oro_tag_select_row %}
+    {% import 'OroTagBundle::macros.html.twig' as _tag %}
+
+    {% if resource_granted('oro_tag_assign_unassign') %}
+        <div>
+            <div class="controls">
+                <div>
+                    {{ _tag.tagSortActions() }}
+                </div>
+            </div>
+        </div>
+        {{ form_row(form.autocomplete) }}
+    {% endif %}
+
+    {# show all tags #}
+    {#{{ form_row(form.autocomplete) }}#}
+
+    {# show field with mine tags#}
+    {#{% if resource_granted('oro_tag_assign_unassign') %}#}
+        {#{{ form_row(form.autocomplete) }}#}
+    {#{% endif %}#}
+
+    {#<script type="text/javascript">#}
+    {#$(document).ready(function () {#}
+    {#var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};#}
+    {#new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.vars.id }}', tags: tags});#}
+
+    {#{% if not resource_granted('oro_tag_assign_unassign') %}#}
+    {#$('#tag-sort-actions').hide();#}
+    {#$('#{{ form.tags.vars.id }}').select2("readonly", true);#}
+    {#{% endif %}#}
+    {#});#}
+    {#</script>#}
+    <script type="text/javascript">
+        $(function () {
+            var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
+            {#new Oro.Tags.TagsUpdateView({autocompleteFieldId: '#{{ form.autocomplete.vars.id }}', tags: tags});#}
+            $('#{{ form.autocomplete.vars.id }}').on("select2-selecting", function(e) {
+                var value = e.val;
+
+            });
+        })
+    </script>
+{% endblock %}
+
+
 {% block oro_combobox_dataconfig_multi_autocomplete %}
     {{ block('oro_combobox_dataconfig_autocomplete') }}
 
@@ -7,7 +54,7 @@
                 return this.name.localeCompare(term) === 0;
             }).length === 0
         ) {
-            {% if not resource_granted('oro_tag_create') %}
+            {% if resource_granted('oro_tag_create') %}
                 return null;
             {% else %}
                 return {
@@ -17,4 +64,5 @@
             {% endif %}
         }
     }
+
 {% endblock %}

@@ -13,6 +13,7 @@ parameters:
 
     oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
     oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
+    oro_tag.form.type.tag_autocomplete.class: Oro\Bundle\TagBundle\Form\Type\TagAutocompleteType
 
     oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
 
@@ -106,6 +107,11 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign_unassign }
 
     # Autocomplete form type
+    oro_tag.form.type.tag_autocomplete:
+        class: %oro_tag.form.type.tag_autocomplete.class%
+        tags:
+            - { name: form.type, alias: oro_tag_autocomplete }
+
     oro_tag.form.type.tag_select:
         class: %oro_tag.form.type.tag_select.class%
         arguments:

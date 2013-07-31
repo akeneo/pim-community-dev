@@ -7,8 +7,3 @@ oro_tag_unassign_global:
     name: Tag unassign global
     description: User can unassign all tags from entities
     parent: oro_tag
-
-oro_tag_view_tag_cloud:
-    name: View tag cloud
-    description: User can view tag cloud
-    parent: oro_tag

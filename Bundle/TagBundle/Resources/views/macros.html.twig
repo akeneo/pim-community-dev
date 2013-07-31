@@ -18,37 +18,6 @@
 {% endmacro %}
 
 {#
-    Render input for tags
-#}
-{% macro tagInputField(label, form, defaultClass) %}
-
-    <div>
-        <div class="controls">
-            <div>
-                {% import _self as _ %}
-               {{ _.tagSortActions() }}
-            </div>
-        </div>
-    </div>
-
-    {{ form_row(form.tags)  }}
-    <input type="hidden" id="{{ form.tags.vars.id }}_owner" name="{{ form.tags.vars.full_name }}[owner]"  value="">
-    <input type="hidden" id="{{ form.tags.vars.id }}_all"   name="{{ form.tags.vars.full_name }}[all]"  value="">
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
-            new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.vars.id }}', tags: tags});
-
-            {% if not resource_granted('oro_tag_assign_unassign') %}
-                $('#tag-sort-actions').hide();
-                $('#{{ form.tags.vars.id }}').select2("readonly", true);
-            {% endif %}
-        });
-    </script>
-{% endmacro %}
-
-{#
     Render sort actions list
 #}
 {% macro tagSortActions() %}
