@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Entity;
+namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
+
+use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
  * Test related class
