@@ -128,6 +128,14 @@ class ImportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      */
+    protected function getIndexRouteName()
+    {
+        return 'pim_importexport_import_index';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getIndexLogicName()
     {
         return 'PimImportExportBundle:Import:index.html.twig';

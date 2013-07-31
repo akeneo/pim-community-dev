@@ -64,7 +64,7 @@ abstract class JobControllerAbstract extends Controller
 
         $job = new Job($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', 'Fail to create an job definition with an unknown job.');
+            $this->addFlash('error', sprintf('Fail to create an %s with an unknown job.', $this->getJobType()));
 
             return $this->redirectToIndexView();
         }
@@ -79,7 +79,7 @@ abstract class JobControllerAbstract extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s job has been successfully created.', $this->getJobType())
+                    sprintf('The %s has been successfully created.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
@@ -136,7 +136,7 @@ abstract class JobControllerAbstract extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s job has been successfully updated.', $this->getJobType())
+                    sprintf('The %s has been successfully updated.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
@@ -256,7 +256,7 @@ abstract class JobControllerAbstract extends Controller
      */
     protected function redirectToIndexView()
     {
-        return $this->redirectToRoute($this->getIndexLogicName());
+        return $this->redirectToRoute($this->getIndexRouteName());
     }
 
     /**
@@ -276,6 +276,14 @@ abstract class JobControllerAbstract extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     abstract protected function redirectToShowView($jobId);
+
+    /**
+     * Get the index route name
+     *
+     * @abstract
+     * @return string
+     */
+    abstract protected function getIndexRouteName();
 
     /**
      * Get the index action logic name
