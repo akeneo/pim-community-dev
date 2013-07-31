@@ -20,7 +20,7 @@ use Pim\Bundle\BatchBundle\Entity\Job;
  *
  * @abstract
  */
-abstract class JobController extends Controller
+abstract class JobControllerAbstract extends Controller
 {
     /**
      * List the jobs
@@ -152,8 +152,6 @@ abstract class JobController extends Controller
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Method("DELETE")
      */
     public function removeAction($id)
     {
@@ -182,6 +180,8 @@ abstract class JobController extends Controller
      * Launch a job
      *
      * @param integer $id
+     *
+     * @return RedirectResponse
      */
     public function launchAction($id)
     {
@@ -250,9 +250,18 @@ abstract class JobController extends Controller
     }
 
     /**
+     * Redirect to the index view
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndexView()
+    {
+        return $this->redirect($this->getIndexLogicName());
+    }
+
+    /**
      * Return the job type of the controller
      *
-     * @abstract
      * @return string
      */
     abstract protected function getJobType();
@@ -266,16 +275,6 @@ abstract class JobController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     abstract protected function redirectToShowView($jobId);
-
-    /**
-     * Redirect to the index view
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectToIndexView()
-    {
-        return $this->redirect($this->getIndexLogicName());
-    }
 
     /**
      * Get the index action logic name

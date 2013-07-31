@@ -20,7 +20,7 @@ use Pim\Bundle\BatchBundle\Job\JobRepository;
  *
  * @Route("/export")
  */
-class ExportController extends JobController
+class ExportController extends JobControllerAbstract
 {
     /**
      * {@inheritdoc}
@@ -101,8 +101,6 @@ class ExportController extends JobController
      *
      * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
      * @Template
-     *
-     * @return RedirectResponse
      */
     public function launchAction($id)
     {

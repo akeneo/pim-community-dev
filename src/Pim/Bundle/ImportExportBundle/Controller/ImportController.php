@@ -18,7 +18,7 @@ use Pim\Bundle\BatchBundle\Entity\Job;
  *
  * @Route("/import")
  */
-class ImportController extends JobController
+class ImportController extends JobControllerAbstract
 {
     /**
      * {@inheritdoc}
