@@ -1064,9 +1064,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iLaunchTheExportJob($job)
     {
-        $launchPageUrl = $this->getPage('Export launch')->getUrl($this->getJob($job));
-
-        return new Step\Given(sprintf('I go to "%s"', $launchPageUrl));
+        $this->openPage('Export launch', array(
+            'id' => $this->getJob($job)->getId()
+        ));
     }
 
     /**
