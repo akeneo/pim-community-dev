@@ -72,6 +72,17 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         return ucfirst(strtolower(preg_replace('/([A-Z])/', ' ${1}', $key)));
     }
 
+    /**
+     * Get the violations from a collection of violations that concern
+     * a given field (e.g: channel) of an element (e.g: reader) of a step (e.g: 0)
+     *
+     * @param ConstraintViolationList $violations
+     * @param integer                 $step
+     * @param string                  $element
+     * @param string                  $field
+     *
+     * @return string The violation messages separated by a space character
+     */
     public function getViolationsFunction($violations, $step, $element, $field)
     {
         $currentPropertyPath = sprintf('jobDefinition.steps[%d].%s.%s', $step, strtolower($element), $field);

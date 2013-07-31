@@ -7,6 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
+ * Compiler pass to register tagged encoders and normalizers into the pim serializer
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,6 +17,9 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
     protected $factory;
 
+    /**
+     * @param ReferenceFactory|null $factory
+     */
     public function __construct(ReferenceFactory $factory = null)
     {
         $this->factory = $factory ?: new ReferenceFactory;
