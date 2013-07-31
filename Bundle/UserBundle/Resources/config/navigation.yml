@@ -7,7 +7,7 @@ oro_menu_config:
             label: 'Users'
             route: 'oro_user_index'
             extras:
-                routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+                routes: ['/^oro_user_(?!role\w+|group\w+|security\w+|reset\w+)\w+$/']
                 description: List of all system users
         user_create:
             label: 'Create User'
@@ -64,14 +64,14 @@ oro_menu_config:
                 shortcut_new_group: ~
 
 oro_titles:
-    oro_user_view: %%username%% - Users
-    oro_user_update: %%username%% - Users
+    oro_user_view: %%username%%
+    oro_user_update: %%username%%
     oro_user_create: Create User
-    oro_user_index: Users
+    oro_user_index: ~
 
-    oro_user_role_update: %%role%% - Roles
+    oro_user_role_update: %%role%%
     oro_user_role_create: Create Role
-    oro_user_role_index: Roles
+    oro_user_role_index: ~
 
     oro_user_security_login: Login
     oro_user_status_list: "User Status - Users"
@@ -82,5 +82,5 @@ oro_titles:
     oro_user_reset_check_email: Password Reset - Check Email
 
     oro_user_group_create: Create Group
-    oro_user_group_update: %%group%% - Groups
-    oro_user_group_index: Groups
+    oro_user_group_update: %%group%%
+    oro_user_group_index: ~

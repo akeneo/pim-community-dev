@@ -1,11 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Metric backend type entity
- *
  *
  * @ORM\Table(name="oro_flexibleentity_metric")
  * @ORM\Entity

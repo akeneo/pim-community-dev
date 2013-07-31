@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;

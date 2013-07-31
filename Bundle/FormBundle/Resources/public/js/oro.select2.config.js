@@ -13,7 +13,7 @@ OroSelect2Config.prototype.getConfig = function () {
         this.config.formatSelection = this.format(this.config.selection_template !== undefined ? this.config.selection_template : false);
     }
     if (this.config.initSelection === undefined) {
-        this.config.initSelection = this.initSelection;
+        this.config.initSelection = _.bind(this.initSelection, this);
     }
     if (this.config.ajax === undefined) {
         this.config.ajax = {
@@ -63,7 +63,11 @@ OroSelect2Config.prototype.format = function (jsTemplate) {
 };
 
 OroSelect2Config.prototype.initSelection = function (element, callback) {
-    callback(element.data('entity'));
+    if (!_.isUndefined(this.config.multiple) && this.config.multiple === true) {
+        callback(element.data('entities'));
+    } else {
+        callback(element.data('entities').pop());
+    }
 };
 
 OroSelect2Config.prototype.highlightSelection = function (str, selection) {

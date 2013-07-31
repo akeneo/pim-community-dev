@@ -1,0 +1,87 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% set title = 'Entitie Unique Keys' %}
+{% set formAction = path('oro_entityextend_entity_unique_key', {id: entity_id}) %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {id: entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'Unique Keys',
+        'additional': [
+            {
+                'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
+                'indexLabel' : entity_config.get('label')|default('N/A'),
+            },
+        ]
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% macro unique_collection_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_errors(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.key) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block unique_collection_widget %}
+    {% spaceless %}
+        <div class="row-oro">
+            <div class="oro-address-collection collection-fields-list" id="entity_extend_unique_key_collection" data-prototype="{{ _self.unique_collection_prototype(form.keys)|escape }}">
+                {% for field in form.keys.children %}
+                    {{ _self.unique_collection_prototype(field) }}
+                {% endfor %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+    {% endspaceless %}
+{% endblock unique_collection_widget %}
+
+{% block content_data %}
+    {% set id = 'configentity-unique' %}
+    {% set dataBlocks = [{
+            'title': 'Unique Keys',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        block('unique_collection_widget')
+                    ]
+                }
+            ]
+        }]
+    %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

@@ -31,7 +31,7 @@ Oro.Filter.ChoiceFilter = Oro.Filter.TextFilter.extend({
                     '</div>' +
 
                 '</div>' +
-                '<button class="btn btn-primary filter-update" type="button">Update</button>' +
+                '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>' +
         '</div>'
     ),

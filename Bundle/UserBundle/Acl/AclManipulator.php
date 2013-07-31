@@ -54,8 +54,6 @@ abstract class AclManipulator
         $this->cache = $cache;
         $this->securityContext = $securityContext;
         $this->configReader = $configReader;
-
-        $this->cache->setNamespace('oro_user.cache');
     }
 
     /**

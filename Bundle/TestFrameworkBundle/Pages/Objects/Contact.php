@@ -71,6 +71,38 @@ class Contact extends AbstractEntity implements Entity
         return $this->email->value();
     }
 
+    public function verifyTag($tag)
+    {
+        if ($this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tags']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']//input");
+            $this->tags->click();
+            $this->tags->value(substr($tag, 0, (strlen($tag)-1)));
+            $this->waitForAjax();
+            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+            $this->tags->clear();
+        } else {
+            if ($this->isElementPresent("//div[@id='tags-holder']")) {
+                $this->assertElementPresent("//div[@id='tags-holder'][contains(., '{$tag}')]", 'Tag is not assigned to entity');
+            } else {
+                throw new \Exception("Tag field can't be found");
+            }
+        }
+        return $this;
+    }
+
+    public function setTag($tag)
+    {
+        $this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tagss']");
+        $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']//input");
+        $this->tags->click();
+        $this->tags->value($tag);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
+
+        return $this;
+    }
+
     public function setAddressTypes($values, $addressId = 0)
     {
         foreach ($values as $type) {
@@ -96,7 +128,7 @@ class Contact extends AbstractEntity implements Entity
         $types = $this->elements($this->using('xpath')->value("//input[@name = 'orocrm_contact_form[addresses][{$addressId}][types][]']"));
         foreach ($types as $type) {
             if ($type->selected()) {
-                $values[] = $type->value();
+                $values[] = $type->attribute('value');
             }
         }
 
@@ -121,7 +153,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressFirstName($addressId = 0)
     {
         $addressFirstName = $this->byId("orocrm_contact_form_addresses_{$addressId}_firstName");
-        return $addressFirstName->value();
+        return $addressFirstName->attribute('value');
     }
 
     public function setAddressLastName($value, $addressId = 0)
@@ -137,7 +169,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressLastName($addressId = 0)
     {
         $addressLastName = $this->byId("orocrm_contact_form_addresses_{$addressId}_lastName");
-        return $addressLastName->value();
+        return $addressLastName->attribute('value');
     }
 
     public function setAddressStreet($value, $addressId = 0)
@@ -152,7 +184,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressStreet($addressId = 0)
     {
         $street = $this->byId("orocrm_contact_form_addresses_{$addressId}_street");
-        return $street->value();
+        return $street->attribute('value');
     }
 
     public function setAddressCity($value, $addressId = 0)
@@ -166,7 +198,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressCity($addressId = 0)
     {
         $city = $this->byId("orocrm_contact_form_addresses_{$addressId}_city");
-        return $city->value();
+        return $city->attribute('value');
     }
 
     public function setAddressPostalCode($value, $addressId = 0)
@@ -180,7 +212,7 @@ class Contact extends AbstractEntity implements Entity
     public function getAddressPostalCode($addressId = 0)
     {
         $zipcode = $this->byId("orocrm_contact_form_addresses_{$addressId}_postalCode");
-        return $zipcode->value();
+        return $zipcode->attribute('value');
     }
 
     public function setAddressCountry($value, $addressId = 0)

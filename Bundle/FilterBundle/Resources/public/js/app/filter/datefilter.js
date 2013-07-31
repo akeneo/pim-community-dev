@@ -29,7 +29,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             '</div>' +
             '<div class="oro-action">' +
                 '<div class="btn-group">' +
-                    '<button class="btn btn-primary filter-update" type="button">Update</button>' +
+                    '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
                 '</div>' +
             '</div>' +
         '</div>'

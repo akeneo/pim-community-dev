@@ -15,9 +15,7 @@
             {% block script %}
                 {% placeholder scripts_before %}
 
-                {# Add translations, include only common domains translations until BAP-768 is not implemented #}
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'messages' }) }}"></script>
-                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'validators' }) }}"></script>
+                <script type="text/javascript" src="{{ url('oro_translation_jstranslation') }}"></script>
 
                 <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
                 <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
@@ -99,7 +97,14 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
-                    {% placeholder pin_button %}
+                    <div class="container-fluid breadcrumb-pin">
+                        <div id="breadcrumb">
+                            {% block breadcrumb %}
+                                {% placeholder breadcrumb %}
+                            {% endblock breadcrumb %}
+                        </div>
+                        {% placeholder pin_button %}
+                    </div>
                     <div id="flash-messages">
                         {% block messages %}
                             {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}
@@ -182,7 +187,8 @@
     with {
         'script': block('head_script'),
         'content': block('page_container'),
-        'menu': block('application_menu')
+        'menu': block('application_menu'),
+        'breadcrumb': block('breadcrumb')
     }
     %}
 {% endif %}

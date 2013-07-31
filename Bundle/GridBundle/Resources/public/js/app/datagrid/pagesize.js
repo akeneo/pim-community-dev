@@ -10,7 +10,7 @@ Oro.Datagrid = Oro.Datagrid || {};
 Oro.Datagrid.PageSize = Backbone.View.extend({
     /** @property */
     template: _.template(
-        '<label class="control-label">View per page: &nbsp;</label>' +
+        '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
         '<div class="btn-group ">' +
             '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
                 '<%= collectionState.pageSize %><span class="caret"></span>' +

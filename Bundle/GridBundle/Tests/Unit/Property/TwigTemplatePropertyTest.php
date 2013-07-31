@@ -7,11 +7,13 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 class TwigTemplatePropertyTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_FIELD_NAME        = 'test_field_name';
-    const TEST_DB_FIELD_NAME     = 'test_db_field_name';
-    const TEST_FIELD_VALUE       = 'test_field_value';
-    const TEST_TEMPLATE_NAME     = 'test_template_name';
-    const TEST_RENDERED_TEMPLATE = 'test_rendered template';
+    const TEST_FIELD_NAME             = 'test_field_name';
+    const TEST_DB_FIELD_NAME          = 'test_db_field_name';
+    const TEST_FIELD_VALUE            = 'test_field_value';
+    const TEST_TEMPLATE_NAME          = 'test_template_name';
+    const TEST_RENDERED_TEMPLATE      = 'test_rendered template';
+    const TEST_TEMPLATE_CONTEXT_KEY   = 'test_template_context_key';
+    const TEST_TEMPLATE_CONTEXT_VALUE = 'test_template_context_value';
 
     /**
      * @var TwigTemplateProperty
@@ -29,7 +31,13 @@ class TwigTemplatePropertyTest extends \PHPUnit_Framework_TestCase
         $this->fieldDescription->setName(self::TEST_FIELD_NAME);
         $this->fieldDescription->setFieldName(self::TEST_DB_FIELD_NAME);
 
-        $this->property = new TwigTemplateProperty($this->fieldDescription, self::TEST_TEMPLATE_NAME);
+        $this->property = new TwigTemplateProperty(
+            $this->fieldDescription,
+            self::TEST_TEMPLATE_NAME,
+            array(
+                self::TEST_TEMPLATE_CONTEXT_KEY => self::TEST_TEMPLATE_CONTEXT_VALUE
+            )
+        );
     }
 
     protected function tearDown()
@@ -41,6 +49,22 @@ class TwigTemplatePropertyTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $this->assertEquals(self::TEST_FIELD_NAME, $this->property->getName());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Context of template "test_template_name" includes reserved key(s) - (field, value)
+     */
+    public function testInvalidContext()
+    {
+        $this->property = new TwigTemplateProperty(
+            $this->fieldDescription,
+            self::TEST_TEMPLATE_NAME,
+            array(
+                'field' => 'field',
+                'value' => 'value',
+            )
+        );
     }
 
     public function testSetEnvironment()
@@ -76,10 +100,12 @@ class TwigTemplatePropertyTest extends \PHPUnit_Framework_TestCase
             true,
             array('render')
         );
+
         $expectedContext = array(
-            'field'  => $this->fieldDescription,
-            'record' => $record,
-            'value'  => self::TEST_FIELD_VALUE,
+            'field'                         => $this->fieldDescription,
+            'record'                        => $record,
+            'value'                         => self::TEST_FIELD_VALUE,
+            self::TEST_TEMPLATE_CONTEXT_KEY => self::TEST_TEMPLATE_CONTEXT_VALUE
         );
         $template->expects($this->once())
             ->method('render')

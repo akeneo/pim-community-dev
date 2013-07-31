@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,8 +25,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
  * Flexible object manager, allow to use flexible entity in storage agnostic way
- *
- *
  */
 class FlexibleManager implements TranslatableInterface, ScopableInterface
 {
