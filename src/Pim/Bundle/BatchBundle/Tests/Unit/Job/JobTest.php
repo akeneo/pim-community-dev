@@ -13,6 +13,7 @@ use Pim\Bundle\BatchBundle\Job\JobRepository;
 use Pim\Bundle\BatchBundle\Job\JobParameters;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
+use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
 
 /**
  * Tests related to the Job class
@@ -26,16 +27,20 @@ class JobTest extends \PHPUnit_Framework_TestCase
 {
     const JOB_TEST_NAME = 'job_test';
 
-    protected $job = null;
-    protected $logger = null;
+    protected $job           = null;
+    protected $logger        = null;
+    protected $jobRepository = null;
 
     protected function setUp()
     {
         $this->logger = new Logger('JobLogger');
         $this->logger->pushHandler(new TestHandler());
 
+        $this->jobRepository = new JobRepository();
+
         $this->job = new Job(self::JOB_TEST_NAME);
         $this->job->setLogger($this->logger);
+        $this->job->setStepHandler(new SimpleStepHandler($this->logger, $this->jobRepository));
     }
 
     public function testGetName()
@@ -53,15 +58,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $beforeExecute = time();
 
-        $jobRepository = new JobRepository();
         $jobParameters = new JobParameters();
-        $jobExecution = $jobRepository->createJobExecution($this->job->getName(), $jobParameters);
+        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName(), $jobParameters);
 
         $this->assertEquals(0, $jobExecution->getStartTime());
         $this->assertEquals(0, $jobExecution->getEndTIme());
         $this->assertEquals(BatchStatus::STARTING, $jobExecution->getStatus()->getValue(), 'Batch status starting');
 
-        $this->job->setJobRepository($jobRepository);
+        $this->job->setJobRepository($this->jobRepository);
         $this->job->execute($jobExecution);
 
         $this->assertGreaterThanOrEqual($beforeExecute, $jobExecution->getStartTime(), 'Start time after test beginning');
@@ -71,19 +75,21 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(BatchStatus::STARTED, $jobExecution->getStatus()->getValue(), 'Batch status started');
     }
 
+    /**
+     * @group fail
+     */
     public function testExecuteException()
     {
         $exception = new \Exception('My test exception');
 
-        $jobRepository = new JobRepository();
         $jobParameters = new JobParameters();
-        $jobExecution = $jobRepository->createJobExecution($this->job->getName(), $jobParameters);
-        $this->job->setJobRepository($jobRepository);
+        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName(), $jobParameters);
+        $this->job->setJobRepository($this->jobRepository);
 
         $mockStep = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step'));
 
         $mockStep->setLogger($this->logger);
-        $mockStep->setJobRepository($jobRepository);
+        $mockStep->setJobRepository($this->jobRepository);
         $mockStep->expects($this->any())
             ->method('doExecute')
             ->will($this->throwException($exception));
@@ -103,12 +109,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteStoppingWithNoStep()
     {
-        $jobRepository = new JobRepository();
         $jobParameters = new JobParameters();
-        $jobExecution = $jobRepository->createJobExecution($this->job->getName(), $jobParameters);
+        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName(), $jobParameters);
         $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
 
-        $this->job->setJobRepository($jobRepository);
+        $this->job->setJobRepository($this->jobRepository);
         $this->job->execute($jobExecution);
 
         $this->assertNull($jobExecution->getStartTime());
@@ -120,15 +125,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('My test exception');
 
-        $jobRepository = new JobRepository();
         $jobParameters = new JobParameters();
-        $jobExecution = $jobRepository->createJobExecution($this->job->getName(), $jobParameters);
+        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName(), $jobParameters);
 
         $step = new InterruptedStep('my_interrupted_step');
         $step->setLogger($this->logger);
-        $step->setJobRepository($jobRepository);
+        $step->setJobRepository($this->jobRepository);
 
-        $this->job->setJobRepository($jobRepository);
+        $this->job->setJobRepository($this->jobRepository);
         $this->job->addStep($step);
         $this->job->execute($jobExecution);
 
@@ -331,5 +335,4 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         return $writer;
     }
-
 }

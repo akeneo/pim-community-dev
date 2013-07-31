@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Job\JobRepository;
 
 /**
  * Export controller
@@ -83,7 +85,7 @@ class ExportController extends JobController
      * {@inheritdoc}
      *
      * @Route(
-     *     "/report/{id}",
+     *     "/{id}/reports",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
      *     name="pim_ie_export_report"
@@ -97,16 +99,14 @@ class ExportController extends JobController
     /**
      * {@inheritdoc}
      *
-     * @Route(
-     *     "/launch/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_export_launch"
-     * )
+     * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
      * @Template
+     *
+     * @return RedirectResponse
      */
     public function launchAction($id)
     {
+        return parent::launchAction($id);
     }
 
     /**
@@ -133,14 +133,6 @@ class ExportController extends JobController
     protected function getIndexLogicName()
     {
         return 'PimImportExportBundle:Export:index.html.twig';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getJobs()
-    {
-        return $this->getConnectorRegistry()->getExportJobs();
     }
 
     /**

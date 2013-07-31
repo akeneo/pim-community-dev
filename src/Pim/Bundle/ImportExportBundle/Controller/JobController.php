@@ -44,7 +44,7 @@ abstract class JobController extends Controller
             $view,
             array(
                 'datagrid' => $datagridView,
-                'connectors' => $this->getJobs()
+                'connectors' => $this->getConnectorRegistry()->getJobs($this->getJobType())
             )
         );
     }
@@ -119,7 +119,13 @@ abstract class JobController extends Controller
      */
     public function editAction($id)
     {
-        $job  = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
         $form = $this->createForm(new JobType(), $job);
 
         $request = $this->getRequest();
@@ -179,6 +185,28 @@ abstract class JobController extends Controller
      */
     public function launchAction($id)
     {
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+
+        // TODO || FIXME : Why ?
+        // Ok the job can't be launch because invalid
+        // But we mustn't return a 404 !!
+        if (count($this->getValidator()->validate($job)) > 0) {
+            throw $this->createNotFoundException();
+        }
+        $jobExecution = new JobExecution;
+        $definition = $job->getJobDefinition();
+        $definition->execute($jobExecution);
+
+        //TODO Analyse $jobExecution to define wether or not it was ok
+        $this->addFlash('success', 'Job has been successfully executed.');
+
+        return $this->redirectToShowView($job->getId());
     }
 
     /**
@@ -193,12 +221,10 @@ abstract class JobController extends Controller
     protected function getJob($id)
     {
         $job           = $this->findOr404('PimBatchBundle:Job', $id);
-        $registry      = $this->getConnectorRegistry();
-        $jobDefinition = $registry->getJob($job);
+        $jobDefinition = $this->getConnectorRegistry()->getJob($job);
 
         if (!$jobDefinition) {
-            $this->addFlash(
-                'error',
+            throw new \InvalidArgumentException(
                 sprintf(
                     'The following job does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
@@ -209,8 +235,6 @@ abstract class JobController extends Controller
                     $job->getAlias()
                 )
             );
-
-            return $this->redirectToIndexView();
         }
         $job->setJobDefinition($jobDefinition);
 
@@ -260,14 +284,6 @@ abstract class JobController extends Controller
      * @return string
      */
     abstract protected function getIndexLogicName();
-
-    /**
-     * Get jobs
-     *
-     * @abstract
-     * @return array
-     */
-    abstract protected function getJobs();
 
     /**
      * Get the datagrid manager

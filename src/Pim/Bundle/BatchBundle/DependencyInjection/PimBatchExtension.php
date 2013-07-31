@@ -31,15 +31,18 @@ class PimBatchExtension extends Extension
 
         $registry = $container->getDefinition('pim_batch.connectors');
         foreach ($config['jobs'] as $alias => $job) {
-            $jobDef = new Definition('Pim\\Bundle\\BatchBundle\\Job\\Job', array($job['title']));
             foreach ($job['steps'] as $step) {
-                $stepDef = new Definition('Pim\Bundle\BatchBundle\Step\ItemStep', array($step['title']));
-                $stepDef->addMethodCall('setReader', array(new Reference($step['reader'])));
-                $stepDef->addMethodCall('setProcessor', array(new Reference($step['processor'])));
-                $stepDef->addMethodCall('setWriter', array(new Reference($step['writer'])));
-                $jobDef->addMethodCall('addStep', array($stepDef));
+                $registry->addMethodCall('addStepToJob', array(
+                    $job['connector'],
+                    $job['type'],
+                    $alias,
+                    $job['title'],
+                    $step['title'],
+                    new Reference($step['reader']),
+                    new Reference($step['processor']),
+                    new Reference($step['writer']),
+                ));
             }
-            $registry->addMethodCall('addJobToConnector', array($job['connector'], $job['type'], $alias, $jobDef));
         }
     }
 }

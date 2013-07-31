@@ -31,9 +31,7 @@
         {{ elements.backLink(indexRoute) }}
         {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% if violations|length == 0 %}
-            {#
             {{ elements.link('Execute', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
-            #}
         {% endif %}
     {% endset %}
 

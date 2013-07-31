@@ -138,14 +138,6 @@ class ImportController extends JobController
     /**
      * {@inheritdoc}
      */
-    protected function getJobs()
-    {
-        return $this->getConnectorRegistry()->getImportJobs();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getDatagridManager()
     {
         return $this->get('pim_import_export.datagrid.manager.import');

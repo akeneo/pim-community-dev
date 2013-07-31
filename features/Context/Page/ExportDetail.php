@@ -32,4 +32,9 @@ class ExportDetail extends Page
 
         return $error->getText();
     }
+
+    public function execute()
+    {
+        $this->clickLink('Export now');
+    }
 }
