@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Test related class
@@ -100,6 +101,16 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($this->jobExecution->setExitStatus($expectedExitStatus));
         $this->assertEquals($expectedExitStatus, $this->jobExecution->getExitStatus());
     }
+
+    public function testGetSetExecutionContext()
+    {
+        $this->assertNull($this->jobExecution->getExecutionContext());
+
+        $expectedExecutionContext = new ExecutionContext();
+        $this->assertEntity($this->jobExecution->setExecutionContext($expectedExecutionContext));
+        $this->assertEquals($expectedExecutionContext, $this->jobExecution->getExecutionContext());
+    }
+
 
     /**
      * Assert the entity tested
