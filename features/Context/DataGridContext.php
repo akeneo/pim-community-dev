@@ -83,7 +83,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I should see the filters (.*)$/
+     * @Given /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
     {
