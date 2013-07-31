@@ -105,11 +105,6 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
     /**
      * {@inheritDoc}
      */
-    abstract public function process($item);
-
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'CSV Serializer';
