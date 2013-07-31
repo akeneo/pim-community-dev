@@ -32,10 +32,3 @@ Feature: Filter products per family
     When I filter per family Washing machines
     Then I should see products Whirlpool and Electrolux
     And I should not see products Amplifier, CD changer, PC and Laptop
-
-  Scenario: Successfully filter products by multiple families
-    Given I am on the products page
-    Then I should see the filter "Family"
-    When I filter per families Hi-fi and Computers
-    And I should see products Amplifier, CD changer, PC and Laptop
-    Then I should not see products Whirlpool and Electrolux
