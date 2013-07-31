@@ -26,6 +26,7 @@ js:
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/stringcell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/htmlcell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/selectcell.js'
+      - '@OroGridBundle/Resources/public/js/app/datagrid/cell/selectrowcell.js'
 
       - '@OroGridBundle/Resources/public/js/app/datagrid/headercell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/header.js'
