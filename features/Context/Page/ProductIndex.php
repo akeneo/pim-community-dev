@@ -17,6 +17,7 @@ class ProductIndex extends Page
         'Categories tree'   => array('css' => '#tree'),
         'Products'          => array('css' => 'table.grid tbody'),
         'Dialog'            => array('css' => 'div.modal'),
+        'Filters'           => array('css' => '.filter-item'),
     );
 
     public function clickNewProductLink()
@@ -85,5 +86,16 @@ class ProductIndex extends Page
         }
 
         $elt->click();
+    }
+
+    public function filterPerFamily($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
+        }
+
+        $elt->selectOption($code);
     }
 }

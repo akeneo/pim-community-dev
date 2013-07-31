@@ -886,7 +886,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $category = $this->getCategory($code);
         $this
-            ->getPage('ProductIndex')
+            ->getPage('Product index')
             ->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -897,8 +897,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerUnclassifiedCategory()
     {
         $this
-            ->getPage('ProductIndex')
+            ->getPage('Product index')
             ->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I filter per family ([^"]*)$/
+     */
+    public function iFilterPerFamily($code)
+    {
+        $this->getPage('Product index')->filterPerFamily($code);
         $this->wait();
     }
 
