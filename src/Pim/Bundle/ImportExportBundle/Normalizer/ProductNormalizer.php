@@ -90,12 +90,7 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalizes a product into a set of arrays/scalars
-     *
-     * @param ProductInterface $product Product entity to normalize
-     * @param string           $format  Encoding format
-     *
-     * @return array|scalar
+     * {@inheritDoc}
      */
     public function normalize($product, $format = null, array $context = array())
     {

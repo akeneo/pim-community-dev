@@ -34,54 +34,90 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
 
     protected $withHeader = false;
 
+    /**
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    /**
+     * Set the csv delimiter character
+     *
+     * @param string $delimiter
+     */
     public function setDelimiter($delimiter)
     {
         $this->delimiter = $delimiter;
     }
 
+    /**
+     * Get the csv delimiter character
+     *
+     * @return string
+     */
     public function getDelimiter()
     {
         return $this->delimiter;
     }
 
+    /**
+     * Set the csv enclosure character
+     *
+     * @param string $enclosure
+     */
     public function setEnclosure($enclosure)
     {
         $this->enclosure = $enclosure;
     }
 
+    /**
+     * Get the csv enclosure character
+     *
+     * @return string
+     */
     public function getEnclosure()
     {
         return $this->enclosure;
     }
 
+    /**
+     * Set wether or not to print a header row into the csv
+     *
+     * @param boolean $withHeader
+     */
     public function setWithHeader($withHeader)
     {
         $this->withHeader = $withHeader;
     }
 
+    /**
+     * Get wether or not to print a header row into the csv
+     *
+     * @return boolean
+     */
     public function isWithHeader()
     {
         return $this->withHeader;
     }
 
-    public function process($item)
-    {
-        return $this->serializer->serialize(
-            $item,
-            'csv',
-            array(
-                'delimiter'  => $this->delimiter,
-                'enclosure'  => $this->enclosure,
-                'withHeader' => $this->withHeader,
-            )
-        );
-    }
+    /**
+     * {@inheritDoc}
+     */
+    abstract public function process($item);
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'CSV Serializer';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getConfigurationFields()
     {
         return array(
