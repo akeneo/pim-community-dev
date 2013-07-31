@@ -56,12 +56,17 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
+        $showLink   = sprintf('pim_importexport_%s_show', $this->jobType);
+        $deleteLink = sprintf('pim_importexport_%s_remove', $this->jobType);
+        $reportLink = sprintf('pim_importexport_%s_report', $this->jobType);
+        $launchLink = sprintf('pim_importexport_%s_launch', $this->jobType);
+
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('show_link', $this->router, sprintf('pim_ie_%s_show', $this->jobType), array('id')),
-            new UrlProperty('delete_link', $this->router, sprintf('pim_ie_%s_remove', $this->jobType), array('id')),
-            new UrlProperty('report_link', $this->router, sprintf('pim_ie_%s_report', $this->jobType), array('id')),
-            new UrlProperty('launch_link', $this->router, sprintf('pim_ie_%s_launch', $this->jobType), array('id'))
+            new UrlProperty('show_link', $this->router, $showLink, array('id')),
+            new UrlProperty('delete_link', $this->router, $deleteLink, array('id')),
+            new UrlProperty('report_link', $this->router, $reportLink, array('id')),
+            new UrlProperty('launch_link', $this->router, $launchLink, array('id'))
         );
     }
 

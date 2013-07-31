@@ -1,12 +1,12 @@
 {% set actionRoute = form.vars.value.id ? 
-    path('pim_ie_import_edit', { 'id': form.vars.value.id }) : 
-    path('pim_ie_import_create', { 'connector': connector, 'alias': alias }) %}
+    path('pim_importexport_import_edit', { 'id': form.vars.value.id }) : 
+    path('pim_importexport_import_create', { 'connector': connector, 'alias': alias }) %}
 
 {% set title = form.vars.value.id ? 'Edit import'|trans : 'Create import'|trans %}
 
-{% set indexRoute = path('pim_ie_import_index') %}
+{% set indexRoute = path('pim_importexport_import_index') %}
 {% if form.vars.value.id %}
-    {% set removeRoute = path('pim_ie_import_remove', { 'id': form.vars.value.id }) %}
+    {% set removeRoute = path('pim_importexport_import_remove', { 'id': form.vars.value.id }) %}
 {% endif %}
 
 {% include 'PimImportExportBundle:Job:edit.html.twig' %}
