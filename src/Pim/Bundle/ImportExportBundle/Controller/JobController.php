@@ -1,0 +1,295 @@
+<?php
+
+namespace Pim\Bundle\ImportExportBundle\Controller;
+
+use Pim\Bundle\ProductBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
+use Pim\Bundle\BatchBundle\Entity\Job;
+
+/**
+ * Job controller
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @abstract
+ */
+abstract class JobController extends Controller
+{
+    /**
+     * List the jobs
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
+    {
+        $gridManager  = $this->getDatagridManager();
+        $datagridView = $gridManager->getDatagrid()->createView();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = $this->getIndexLogicName();
+        }
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagridView,
+                'connectors' => $this->getConnectorRegistry()->getJobs($this->getJobType())
+            )
+        );
+    }
+
+    /**
+     * Create a job
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     */
+    public function createAction(Request $request)
+    {
+        $connector = $request->query->get('connector');
+        $alias     = $request->query->get('alias');
+        $registry  = $this->getConnectorRegistry();
+
+        $job = new Job($connector, $this->getJobType(), $alias);
+        if (!$jobDefinition = $registry->getJob($job)) {
+            $this->addFlash('error', 'Fail to create an job definition with an unknown job.');
+
+            return $this->redirectIndex();
+        }
+        $job->setJobDefinition($jobDefinition);
+
+        $form = $this->createForm(new JobType(), $job);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->persist($job);
+
+                $this->addFlash(
+                    'success',
+                    sprintf('The %s job has been successfully created.', $this->getJobType())
+                );
+
+                return $this->redirectToShowView($job->getId());
+            }
+        }
+
+        return array(
+            'form'      => $form->createView(),
+            'connector' => $connector,
+            'alias'     => $alias,
+        );
+    }
+
+    /**
+     * Show a job
+     *
+     * @param integer $id
+     *
+     * @return array
+     */
+    public function showAction($id)
+    {
+        $job = $this->getJob($id);
+
+        return array(
+            'job'        => $job,
+            'violations' => $this->getValidator()->validate($job),
+        );
+    }
+
+    /**
+     * Edit a job
+     *
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     */
+    public function editAction($id)
+    {
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+        $form = $this->createForm(new JobType(), $job);
+
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->persist($job);
+
+                $this->addFlash(
+                    'success',
+                    sprintf('The %s job has been successfully updated.', $this->getJobType())
+                );
+
+                return $this->redirectToShowView($job->getId());
+            }
+        }
+
+        return array('form' => $form->createView());
+    }
+
+    /**
+     * Remove a job
+     *
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Method("DELETE")
+     */
+    public function removeAction($id)
+    {
+        $job = $this->getJob($id);
+        $this->remove($job);
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            $this->addFlash('success', 'Job successfully removed');
+
+            return $this->redirectToIndexView();
+        }
+    }
+
+    /**
+     * View report for a job
+     *
+     * @param integer $id
+     */
+    public function reportAction($id)
+    {
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param integer $id
+     */
+    public function launchAction($id)
+    {
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+
+        // TODO || FIXME : Why ?
+        // Ok the job can't be launch because invalid
+        // But we mustn't return a 404 !!
+        if (count($this->getValidator()->validate($job)) > 0) {
+            throw $this->createNotFoundException();
+        }
+        $jobExecution = new JobExecution;
+        $definition = $job->getJobDefinition();
+        $definition->execute($jobExecution);
+
+        //TODO Analyse $jobExecution to define wether or not it was ok
+        $this->addFlash('success', 'Job has been successfully executed.');
+
+        return $this->redirectToShowView($job->getId());
+    }
+
+    /**
+     * Get a job
+     *
+     * @param integer $id
+     *
+     * @return Job|RedirectResponse
+     *
+     * @throw NotFoundHttpException
+     */
+    protected function getJob($id)
+    {
+        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $jobDefinition = $this->getConnectorRegistry()->getJob($job);
+
+        if (!$jobDefinition) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The following job does not exist anymore. Please check configuration:<br />' .
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
+                    $job->getConnector(),
+                    $job->getType(),
+                    $job->getAlias()
+                )
+            );
+        }
+        $job->setJobDefinition($jobDefinition);
+
+        return $job;
+    }
+
+    /**
+     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
+    protected function getConnectorRegistry()
+    {
+        return $this->get('pim_batch.connectors');
+    }
+
+    /**
+     * Return the job type of the controller
+     *
+     * @abstract
+     * @return string
+     */
+    abstract protected function getJobType();
+
+    /**
+     * Redirect to the show view
+     *
+     * @param integer $jobId
+     *
+     * @abstract
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    abstract protected function redirectToShowView($jobId);
+
+    /**
+     * Redirect to the index view
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndexView()
+    {
+        return $this->redirect($this->getIndexLogicName());
+    }
+
+    /**
+     * Get the index action logic name
+     *
+     * @abstract
+     * @return string
+     */
+    abstract protected function getIndexLogicName();
+
+    /**
+     * Get the datagrid manager
+     *
+     * @abstract
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
+     */
+    abstract protected function getDatagridManager();
+}

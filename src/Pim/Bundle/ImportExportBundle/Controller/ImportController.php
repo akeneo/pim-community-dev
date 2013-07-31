@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
  * Import controller
@@ -20,11 +18,10 @@ use Pim\Bundle\ProductBundle\Controller\Controller;
  *
  * @Route("/import")
  */
-class ImportController extends Controller
+class ImportController extends JobController
 {
     /**
-     * List imports
-     * @param Request $request
+     * {@inheritdoc}
      *
      * @Route(
      *     "/.{_format}",
@@ -32,205 +29,117 @@ class ImportController extends Controller
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
-     * @return template
      */
     public function indexAction(Request $request)
     {
-        /** @var $gridManager ImportDatagridManager */
-        $gridManager = $this->get('pim_import_export.datagrid.manager.import');
-        $datagridView = $gridManager->getDatagrid()->createView();
-        $registry      = $this->get('pim_batch.connectors');
-
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimImportExportBundle:Import:index.html.twig';
-        }
-
-        return $this->render($view, array('datagrid' => $datagridView, 'connectors' => $registry->getImportJobs()));
+        return parent::indexAction($request);
     }
 
     /**
-     * Create import
-     * @param Request $request
+     * {@inheritdoc}
      *
-     * @Route(
-     *     "/create",
-     *     name="pim_ie_import_create"
-     * )
-     * @Template("PimImportExportBundle:Export:edit.html.twig")
-     *
-     * @return array
+     * @Route("/create", name="pim_ie_import_create")
+     * @Template("PimImportExportBundle:Import:edit.html.twig")
      */
     public function createAction(Request $request)
     {
-        $connector     = $request->query->get('connector');
-        $alias         = $request->query->get('alias');
-        $registry      = $this->getConnectorRegistry();
-
-        $job = new Job($connector, Job::TYPE_IMPORT, $alias);
-
-        if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', 'Fail to create an import with an unknown job.');
-
-            return $this->redirectToRoute('pim_ie_import_index');
-        }
-        $job->setJobDefinition($jobDefinition);
-
-        $form = $this->createForm(new JobType(), $job);
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->persist($job);
-
-                $this->addFlash('success', 'The import has been successfully created.');
-
-                return $this->redirectToRoute('pim_ie_import_show', array('id' => $job->getId()));
-            }
-        }
-
-        return array(
-            'form'      => $form->createView(),
-            'connector' => $connector,
-            'alias'     => $alias,
-        );
+        return parent::createAction($request);
     }
 
     /**
-     * Edit job
+     * {@inheritdoc}
      *
-     * @param Job $job
-     *
-     * @Route(
-     *     "/edit/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0},
-     *     name="pim_ie_import_edit"
-     * )
-     * @Template
-     *
-     * @return array
-     */
-    public function editAction(Job $job)
-    {
-        $request = $this->getRequest();
-        $form = $this->createForm(new JobType(), $job);
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->persist($job);
-
-                $this->addFlash('success', 'The import has been successfully updated.');
-
-                return $this->redirect(
-                    $this->generateUrl('pim_ie_import_index')
-                );
-            }
-        }
-
-        return array(
-            'form' => $form->createView()
-        );
-    }
-
-    /**
-     * Show import
-     * @param integer $id
-     *
-     * @Route(
-     *     "/{id}",
-     *     name="pim_ie_import_show"
-     * )
+     * @Route("/{id}", name="pim_ie_import_show")
      * @Template("PimImportExportBundle:Import:show.html.twig")
-     *
-     * @return array
      */
     public function showAction($id)
     {
-        $job           = $this->findOr404('PimBatchBundle:Job', $id);
-        $registry      = $this->get('pim_batch.connectors');
-        $jobDefinition = $registry->getJob($job->getConnector(), $job->getType(), $job->getAlias());
-        $jobDefinition->setConfiguration($job->getRawConfiguration());
-
-        return array(
-            'job'           => $job,
-            'jobDefinition' => $jobDefinition,
-        );
+        return parent::showAction($id);
     }
 
     /**
-     * Delete a job
+     * {@inheritdoc}
      *
-     * @param Job $job
+     * @Route("/edit/{id}", name="pim_ie_import_edit")
+     * @Template("PimImportExportBundle:Import:edit.html.twig")
+     */
+    public function editAction($id)
+    {
+        return parent::editAction($id);
+    }
+
+    /**
+     * {@inheritdoc}
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"}, name="pim_ie_import_remove")
+     * @Route("/{id}/remove", requirements={"id"="\d+"}, name="pim_ie_import_remove")
      * @Method("DELETE")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Job $job)
+    public function removeAction($id)
     {
-        $this->remove($job);
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            $this->addFlash('success', 'Job successfully removed');
-
-            return $this->redirectIndex();
-        }
+        return parent::removeAction($id);
     }
 
     /**
-     * Redirect to index
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectIndex()
-    {
-        return $this->redirect($this->generateUrl('pim_ie_import_index'));
-    }
-
-    /**
-     * View report for a job
-     *
-     * @param Job $job
+     * {@inheritdoc}
      *
      * @Route(
      *     "/show/{id}",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
-     *     name="pim_ie_export_report"
+     *     name="pim_ie_import_report"
      * )
      * @Template
-     *
-     * @return array
      */
-    public function reportAction(Job $job)
+    public function reportAction($id)
     {
     }
 
     /**
-     * Launch a job
+     * {@inheritdoc}
      *
-     * @param Job $job
-     *
-     * @Route("/launch/{id}", requirements={"id"="\d+"}, defaults={"id"=0}, name="pim_ie_import_launch")
-     * @Template()
-     *
-     * @return array
+     * @Route(
+     *     "/launch/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_import_launch"
+     * )
+     * @Template
      */
-    public function launchAction(Job $job)
+    public function launchAction($id)
     {
     }
 
     /**
-     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * {@inheritdoc}
      */
-    protected function getConnectorRegistry()
+    protected function getJobType()
     {
-        return $this->get('pim_batch.connectors');
+        return Job::TYPE_IMPORT;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirectToShowView($jobId)
+    {
+        return $this->redirect(
+            $this->generateUrl('pim_ie_import_show', array('id' => $jobId))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getIndexLogicName()
+    {
+        return 'PimImportExportBundle:Import:index.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDatagridManager()
+    {
+        return $this->get('pim_import_export.datagrid.manager.import');
     }
 }
