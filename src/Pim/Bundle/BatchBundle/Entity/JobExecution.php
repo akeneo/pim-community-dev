@@ -49,32 +49,32 @@ class JobExecution
      */
     private $status = null;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="start_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="start_time", type="datetime", nullable=true)
+     */
     private $startTime;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="end_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="end_time", type="datetime", nullable=true)
+     */
     private $endTime;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="create_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="create_time", type="datetime", nullable=true)
+     */
     private $createTime;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="updated_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="updated_time", type="datetime", nullable=true)
+     */
     private $updatedTime;
 
     /* @var ExecutionContext $executionContext */
@@ -383,7 +383,7 @@ class JobExecution
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
-        foreach($failureExceptions as $failureException) {
+        foreach ($failureExceptions as $failureException) {
             $failureExceptions[] = array(
                 'class' => get_class($e),
                 'message' => $e->getMessage(),
@@ -425,21 +425,19 @@ class JobExecution
             $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s,"
                 . "exitStatus=%s, job=[%s], jobParameters=[%s]";
             $string = sprintf(
-                    $message,
-                    $this->startTime,
-                    $this->endTime,
-                    $this->updatedTime,
-                    $this->status,
-                    $this->exitStatus,
-                    $this->jobInstance,
-                    $this->jobParameters
-                    );
+                $message,
+                $this->startTime,
+                $this->endTime,
+                $this->updatedTime,
+                $this->status,
+                $this->exitStatus,
+                $this->jobInstance,
+                $this->jobParameters
+            );
         } catch (\Exception $e) {
             $string = $e->getMessage();
         }
 
         return $string;
     }
-
-
 }

@@ -103,18 +103,18 @@ class StepExecution
      */
     private $writeSkipCount = 0;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="start_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="start_time", type="datetime", nullable=true)
+     */
     private $startTime;
 
-   /**
-    * @var DateTime
-    *
-    * @ORM\Column(name="end_time", type="datetime", nullable=true)
-    */
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="end_time", type="datetime", nullable=true)
+     */
     private $endTime;
 
     /* @var ExecutionContext $executionContext */
@@ -137,11 +137,11 @@ class StepExecution
      */
     private $exitDescription = null;
 
-   /**
-    * @var boolean
-    *
-    * @ORM\Column(name="terminate_only", type="boolean", nullable=true)
-    */
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="terminate_only", type="boolean", nullable=true)
+     */
     private $terminateOnly;
 
     /**
@@ -456,7 +456,7 @@ class StepExecution
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
-        foreach($failureExceptions as $failureException) {
+        foreach ($failureExceptions as $failureException) {
             $failureExceptions[] = array(
                 'class' => get_class($e),
                 'message' => $e->getMessage(),
