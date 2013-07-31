@@ -39,7 +39,7 @@ class ImportController extends JobController
      * {@inheritdoc}
      *
      * @Route("/create", name="pim_ie_import_create")
-     * @Template("PimImportExportBundle:Import:create.html.twig")
+     * @Template("PimImportExportBundle:Import:edit.html.twig")
      */
     public function createAction(Request $request)
     {

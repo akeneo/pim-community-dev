@@ -1,30 +1,12 @@
-{% extends 'PimProductBundle::layout.html.twig' %}
+{% set actionRoute = form.vars.value.id ? 
+    path('pim_ie_export_edit', { 'id': form.vars.value.id }) : 
+    path('pim_ie_export_create', { 'connector': connector, 'alias': alias }) %}
 
-{% block content %}
+{% set title = form.vars.value.id ? 'Edit export'|trans : 'Create export'|trans %}
 
-    {{ JSFV(form) }}
-    <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ? path('pim_ie_export_edit', { 'id': form.vars.value.id }) : path('pim_ie_export_create', { 'connector': connector, 'alias': alias }) }}" {{ form_enctype(form) }}>
+{% set indexRoute = path('pim_ie_export_index') %}
+{% if form.vars.value.id %}
+    {% set removeRoute = path('pim_ie_export_remove', { 'id': form.vars.value.id }) %}
+{% endif %}
 
-        {% set title = form.vars.value.id ? 'Edit export'|trans : 'Create export'|trans %}
-
-        {% set buttons %}
-            {{ elements.backLink(path('pim_ie_export_index')) }}
-            {% if form.vars.value.id %}
-                {{ elements.deleteLink(path('pim_ie_export_remove', { 'id': form.vars.value.id })) }}
-            {% endif %}
-            {{ elements.submitBtn }}
-        {% endset %}
-
-        {{ elements.page_header(title, buttons) }}
-
-        {{ elements.form_errors(form) }}
-
-        {{ elements.accordion({ 'General Properties': form_row(form.code) ~ form_row(form.label) }, 1) }}
-
-        {% for step in form.jobDefinition.steps %}
-            {{ elements.accordion({ ('Step'|trans ~ ' ' ~ loop.index): form_widget(step) }, loop.index + 1) }}
-        {% endfor %}
-
-        {{ form_rest(form) }}
-    </form>
-{% endblock %}
+{% include 'PimImportExportBundle:Job:edit.html.twig' %}

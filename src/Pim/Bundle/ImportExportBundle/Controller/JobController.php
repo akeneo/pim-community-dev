@@ -63,7 +63,6 @@ abstract class JobController extends Controller
         $registry  = $this->getConnectorRegistry();
 
         $job = new Job($connector, $this->getJobType(), $alias);
-
         if (!$jobDefinition = $registry->getJob($job)) {
             $this->addFlash('error', 'Fail to create an job definition with an unknown job.');
 
@@ -80,7 +79,7 @@ abstract class JobController extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s has been successfully created.', $this->getJobType())
+                    sprintf('The %s job has been successfully created.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
@@ -131,7 +130,7 @@ abstract class JobController extends Controller
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s has been successfully updated.', $this->getJobType())
+                    sprintf('The %s job has been successfully updated.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($job->getId());
