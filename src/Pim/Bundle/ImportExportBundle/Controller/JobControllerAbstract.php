@@ -22,6 +22,8 @@ use Pim\Bundle\BatchBundle\Job\JobExecution;
  */
 abstract class JobControllerAbstract extends Controller
 {
+    const JOB_STATUS_READY = 0;
+
     /**
      * List the jobs
      *
@@ -102,7 +104,7 @@ abstract class JobControllerAbstract extends Controller
      */
     public function showAction($id)
     {
-        $job = $this->getJob($id);
+        $job = $this->getJob($id, false);
 
         return array(
             'job'        => $job,
@@ -121,7 +123,7 @@ abstract class JobControllerAbstract extends Controller
     {
         try {
             $job = $this->getJob($id);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
@@ -187,7 +189,7 @@ abstract class JobControllerAbstract extends Controller
     {
         try {
             $job = $this->getJob($id);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
@@ -213,18 +215,26 @@ abstract class JobControllerAbstract extends Controller
      * Get a job
      *
      * @param integer $id
+     * @param boolean $checkStatus
      *
      * @return Job|RedirectResponse
      *
      * @throw NotFoundHttpException
      */
-    protected function getJob($id)
+    protected function getJob($id, $checkStatus = true)
     {
-        $job           = $this->findOr404('PimBatchBundle:Job', $id);
+        $job = $this->findOr404('PimBatchBundle:Job', $id);
+
+        if ($checkStatus && $job->getStatus() !== self::JOB_STATUS_READY) {
+            $this->addFlash('error', sprintf('The job "%s" is currently in progress', $job->getLabel()));
+
+            return $this->redirectToIndexView();
+        }
+
         $jobDefinition = $this->getConnectorRegistry()->getJob($job);
 
         if (!$jobDefinition) {
-            throw new \InvalidArgumentException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'The following job does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
