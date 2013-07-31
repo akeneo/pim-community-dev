@@ -1,6 +1,6 @@
 Feature: Product family creation
   In order to provide a new family for a new type of product
-  As an user
+  As a user
   I need to be able to create a family
 
   Scenario: Succesfully create a family

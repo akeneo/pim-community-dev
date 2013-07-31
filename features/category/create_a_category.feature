@@ -1,12 +1,12 @@
 Feature: Create a category
   In order to provide a tree of my product categories
-  As an user
+  As a user
   I need to be able to create a new category tree or a node of a category tree
 
   Scenario: Create a category tree
     Given I am logged in as "admin"
     And I am on the category tree creation page
-    When I fill in the following informations:
+    When I fill in the following information:
       | Code    | shoe |
       | Default | Shoe |
     And I save the category
@@ -19,7 +19,7 @@ Feature: Create a category
       | shoe | Shoe  |
     Given I am logged in as "admin"
     And I am on the category "shoe" node creation page
-    When I fill in the following informations:
+    When I fill in the following information:
       | Code    | flipflap |
       | Default | FlipFlap |
     And I save the category

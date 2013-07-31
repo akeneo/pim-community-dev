@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per category
   In order to enrich my catalog
-  As an user
+  As a user
   I need to be able to manually filter products per category
 
   Background:
@@ -23,7 +23,7 @@ Feature: Filter products per category
     And I filter per category "tshirts"
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
-    
+
   Scenario: Successfully display all products unclassified on products page
     Given I am on the products page
     And I filter per unclassified category

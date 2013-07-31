@@ -1,7 +1,7 @@
 @javascript
 Feature: Add attributes to a product
   In order to provide more information about a product
-  As an user
+  As a user
   I need to be able to add attributes to a product
 
   Background:

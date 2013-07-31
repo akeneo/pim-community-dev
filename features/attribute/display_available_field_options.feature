@@ -1,7 +1,7 @@
 @javascript
 Feature: Display available field options
   In order to configure an attribute validation rules
-  As an user
+  As a user
   I need to see only relevant validation fields given the attribute type
 
   Scenario: Successfully display available parameter fields for attribute types

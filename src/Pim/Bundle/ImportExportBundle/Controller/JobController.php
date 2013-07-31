@@ -141,7 +141,7 @@ abstract class JobController extends Controller
     }
 
     /**
-     * {@inheritdoc}
+     * Remove a job
      *
      * @param integer $id
      *
@@ -161,6 +161,24 @@ abstract class JobController extends Controller
 
             return $this->redirectToIndexView();
         }
+    }
+
+    /**
+     * View report for a job
+     *
+     * @param integer $id
+     */
+    public function reportAction($id)
+    {
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param integer $id
+     */
+    public function launchAction($id)
+    {
     }
 
     /**

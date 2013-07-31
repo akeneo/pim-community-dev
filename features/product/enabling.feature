@@ -1,6 +1,6 @@
 Feature: Enable and disable a product
   In order to avoid exportation of some products I'm still working on
-  As an user
+  As a user
   I need to be able to enable or disable a product
 
   Scenario: Successfully disable a product

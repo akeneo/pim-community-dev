@@ -5,10 +5,10 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
-
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Behat\Behat\Context\Step;
 
 /**
  * Context of the website
@@ -22,6 +22,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $pageFactory = null;
 
     private $currentPage = null;
+
+    private $username = null;
+
+    private $password = null;
 
     /* -------------------- Page-related methods -------------------- */
 
@@ -63,10 +67,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $password = $username.'pass';
         $this->getFixturesContext()->getOrCreateUser($username, $password);
 
-        $this
-            ->openPage('Login')
-            ->login($username, $password)
-        ;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -75,7 +77,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
-        $this->wait();
     }
 
     /**
@@ -125,7 +126,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
-        $this->wait();
     }
 
     /**
@@ -161,7 +161,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheChannelsPage()
     {
         $this->openPage('Channel index');
-        $this->wait();
     }
 
     /**
@@ -180,7 +179,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category edit', array(
             'id' => $this->getCategory($code)->getId(),
         ));
-        $this->wait();
     }
 
     /**
@@ -207,7 +205,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheExportsIndexPage()
     {
         $this->openPage('Export index');
-        $this->wait();
     }
 
     /**
@@ -216,7 +213,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheImportsIndexPage()
     {
         $this->openPage('Import index');
-        $this->wait();
     }
 
     /**
@@ -734,7 +730,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I fill in the following informations?:$/
+     * @Given /^I fill in the following information:$/
      */
     public function iFillInTheFollowingInformation(TableNode $table)
     {
@@ -980,20 +976,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iTryToCreateAnUnknownExport()
     {
-        $this->getSession()->visit(
-            rtrim($this->getMinkParameter('base_url'), '/') .
-            $this->getPage('Export creation')->getUrl(array('connector' => 'Unknown'))
-        );
+        $this->openPage('Export creation');
     }
 
     /**
-     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contains the value "([^"]*)"$/
+     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
      */
-    public function theColumnOfTheRowShouldContainsTheValue($column, $exportCode, $status)
+    public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
     {
         return new Step\Given(
             sprintf(
-                'Value of column "%s" of the row which contain "%s" should be "%s"',
+                'Value of column "%s" of the row which contains "%s" should be "%s"',
                 $column,
                 $exportCode,
                 $status
@@ -1018,7 +1011,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Export detail', array(
             'id' => $this->getJob($job)->getId()
         ));
-        $this->wait();
     }
 
     /**
@@ -1074,12 +1066,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->currentPage = $page;
 
-        return $this->getCurrentPage()->open($options);
+        $this->getCurrentPage()->open($options);
+        $this->loginIfRequired();
+        $this->wait();
     }
 
     private function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
+    }
+
+    private function loginIfRequired()
+    {
+        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
+        if ($loginForm) {
+            $loginForm->fillField('_username', $this->username);
+            $loginForm->fillField('_password', $this->password);
+            $loginForm->pressButton('Log in');
+        }
     }
 
     private function getInvalidValueFor($field)
@@ -1092,7 +1096,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
-        return $this->getMainContext()->wait($time, $condition);
+        try {
+            return $this->getMainContext()->wait($time, $condition);
+        } catch (UnsupportedDriverActionException $e) {
+        }
     }
 
     private function getProduct($sku)

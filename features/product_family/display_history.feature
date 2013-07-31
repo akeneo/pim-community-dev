@@ -1,6 +1,6 @@
 Feature: Display the family history
   In order to know who, when and what changes has been made to an family
-  As an user
+  As a user
   I need to have access to a family history
 
   @javascript

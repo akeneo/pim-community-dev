@@ -18,7 +18,7 @@
             {% for connector, jobs in connectors %}
             <li class="disabled"><a href="#"><b>{{ connector }}</b></a></li>
                 {% for alias, job in jobs %}
-                <li><a href="{{ path(createRoute, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
+                <li><a href="{{ path(createRouteName, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
                 {% endfor %}
             {% endfor %}
         </ul>

@@ -1,0 +1,62 @@
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% macro configuration(title, name, config, stepIndex, violations) %}
+    <li>{{ title|trans ~ ' - ' ~ name|trans }}
+        <ul>
+        {% for field, value in config %}
+            <li>
+                <b>{{ field|normalizeKey }}:</b>
+                <span class="label">{{ value|normalizeValue }}</span>
+                <span class="label label-important">{{ getViolations(violations, stepIndex, title, field) }}</span>
+            </li>
+        {% else %}
+            <li><i>{{ 'No configuration'|trans }}</i></li>
+        {% endfor %}
+        </ul>
+    </li>
+{% endmacro %}
+
+{% block content %}
+
+    {% set subtitle = job.label  %}
+
+    {% set left %}
+        <ul class="inline">
+           <li>{{ 'Code'|trans }}: {{ job.code|upper }}</li>
+           <li>{{ 'Connector'|trans }}: {{ job.jobDefinition.name|trans }}</li>
+       </ul>
+    {% endset %}
+
+    {% set buttons %}
+        {{ elements.backLink(indexRoute) }}
+        {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
+        {% if violations|length == 0 %}
+            {#
+            {{ elements.link('Execute', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+            #}
+        {% endif %}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle, left) }}
+
+    {% set accordionContent = {} %}
+    {% for stepTitle, stepConfig in job.jobDefinition.configuration %}
+
+        {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
+
+        {% set content %}
+            <ul>
+                {% set step = job.jobDefinition.step(stepTitle) %}
+                {% set stepIndex = loop.index - 1 %}
+                {{ _self.configuration('Reader', step.reader.name, stepConfig.reader, stepIndex, violations) }}
+                {{ _self.configuration('Processor', step.processor.name, stepConfig.processor, stepIndex, violations) }}
+                {{ _self.configuration('Writer', step.writer.name, stepConfig.writer, stepIndex, violations) }}
+            </ul>
+        {% endset %}
+
+        {% set accordionContent = accordionContent|merge({ (heading): content }) %}
+    {% endfor %}
+
+    {{ elements.accordion(accordionContent) }}
+
+{% endblock %}

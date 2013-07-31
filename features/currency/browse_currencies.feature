@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse currencies
   In order to check wether or not a currency is available in the catalog
-  As an user
+  As a user
   I need to be able to see active and inactive currencies in the catalog
 
   Background:

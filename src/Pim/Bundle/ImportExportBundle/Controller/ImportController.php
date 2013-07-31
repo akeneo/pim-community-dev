@@ -80,9 +80,7 @@ class ImportController extends JobController
     }
 
     /**
-     * View report for a job
-     *
-     * @param Job $job
+     * {@inheritdoc}
      *
      * @Route(
      *     "/show/{id}",
@@ -91,10 +89,23 @@ class ImportController extends JobController
      *     name="pim_ie_import_report"
      * )
      * @Template
-     *
-     * @return array
      */
-    public function reportAction(Job $job)
+    public function reportAction($id)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Route(
+     *     "/launch/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0},
+     *     name="pim_ie_import_launch"
+     * )
+     * @Template
+     */
+    public function launchAction($id)
     {
     }
 
