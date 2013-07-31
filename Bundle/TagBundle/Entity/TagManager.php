@@ -8,11 +8,13 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr;
 
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Oro\Bundle\UserBundle\Acl\Manager;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TagManager
 {
+    const ACL_RESOURCE_ID_KEY = 'oro_tag_unassign_global';
     /**
      * @var EntityManager
      */
@@ -38,14 +40,26 @@ class TagManager
      */
     protected $securityContext;
 
-    public function __construct(EntityManager $em, $tagClass, $taggingClass, ObjectMapper $mapper, SecurityContextInterface $securityContext)
-    {
+    /**
+     * @var Manager
+     */
+    protected $aclManager;
+
+    public function __construct(
+        EntityManager $em,
+        $tagClass,
+        $taggingClass,
+        ObjectMapper $mapper,
+        SecurityContextInterface $securityContext,
+        Manager $aclManager
+    ) {
         $this->em = $em;
 
         $this->tagClass = $tagClass;
         $this->taggingClass = $taggingClass;
         $this->mapper = $mapper;
         $this->securityContext = $securityContext;
+        $this->aclManager = $aclManager;
     }
 
     /**
@@ -65,7 +79,7 @@ class TagManager
      * @param Tag[]    $tags     Array of Tag objects
      * @param Taggable $resource Taggable resource
      */
-    public function addTags(array $tags, Taggable $resource)
+    public function addTags($tags, Taggable $resource)
     {
         foreach ($tags as $tag) {
             if ($tag instanceof Tag) {
@@ -84,19 +98,6 @@ class TagManager
     public function removeTag(Tag $tag, Taggable $resource)
     {
         return $resource->getTags()->removeElement($tag);
-    }
-
-    /**
-     * Replaces all current tags on the given taggable resource
-     *
-     * @param Tag[]    $tags     Array of Tag objects
-     * @param Taggable $resource Taggable resource
-     */
-    public function replaceTags(array $tags, Taggable $resource)
-    {
-        $resource->setTags(new ArrayCollection());
-
-        $this->addTags($tags, $resource);
     }
 
     /**
@@ -151,42 +152,70 @@ class TagManager
      */
     public function saveTagging(Taggable $resource)
     {
-        $oldTags = $this->getTagging($resource);
+        $oldTags = $this->getTagging($resource, $this->getUser()->getId());
         $newTags = $resource->getTags();
 
         if (!isset($newTags['all'], $newTags['owner'])) {
             return;
         }
 
-        $tagsToAdd = new ArrayCollection($newTags['owner']);
+        // allow adding only 'my' tags
+        $newOwnerTags = new ArrayCollection($newTags['owner']);
 
-        if ($oldTags !== null and is_array($oldTags) and !empty($oldTags)) {
-            $tagsToRemove = array();
+        // find new
+        $tagsToAdd = new ArrayCollection();
+        foreach ($newOwnerTags as $newOwnerTag) {
+            $callback = function ($index, $oldTag) use ($newOwnerTag) {
+                return $oldTag->getName() == $newOwnerTag->getName();
+            };
+
+            if (!$oldTags->exists($callback)) {
+                $tagsToAdd->add($newOwnerTag);
+            }
+        }
+
+        // find removed
+        $tagsToRemove = array();
+        foreach ($oldTags as $oldTag) {
+            $callback = function ($index, $newTag) use ($oldTag) {
+                return $newTag->getName() == $oldTag->getName();
+            };
+
+            if (!$newOwnerTags->exists($callback)) {
+                $tagsToRemove[] = $oldTag->getId();
+            }
+        }
+
+        // process if current user allowed to remove other's tag links
+        if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_ID_KEY)) {
+            $newAllTags = new ArrayCollection($newTags['all']);
 
             foreach ($oldTags as $oldTag) {
                 $callback = function ($index, $newTag) use ($oldTag) {
                     return $newTag->getName() == $oldTag->getName();
                 };
 
-                if ($tagsToAdd->exists($callback)) {
-                    $tagsToAdd->removeElement($oldTag);
-                } else {
+                if (!$newAllTags->exists($callback)) {
                     $tagsToRemove[] = $oldTag->getId();
                 }
             }
+        }
 
-            if (sizeof($tagsToRemove)) {
-                $builder = $this->em->createQueryBuilder();
-                $builder
-                    ->delete($this->taggingClass, 't')
-                    ->where($builder->expr()->in('t.tag', $tagsToRemove))
-                    ->andWhere('t.entityName = :entityName')
-                    ->setParameter('entityName', get_class($resource))
-                    ->andWhere('t.recordId = :recordId')
-                    ->setParameter('recordId', $resource->getTaggableId())
-                    ->getQuery()
-                    ->getResult();
-            }
+        if (sizeof($tagsToRemove)) {
+            $builder = $this->em->createQueryBuilder();
+            $builder
+                ->delete($this->taggingClass, 't')
+                ->where($builder->expr()->in('t.tag', $tagsToRemove))
+                ->andWhere('t.entityName = :entityName')
+                ->setParameter('entityName', get_class($resource))
+                ->andWhere('t.recordId = :recordId')
+                ->setParameter('recordId', $resource->getTaggableId())
+
+                ->andWhere('t.createdBy = :createdBy')
+                ->setParameter('createdBy', $this->getUser()->getId())
+
+                ->getQuery()
+                ->getResult();
         }
 
         foreach ($tagsToAdd as $tag) {
@@ -213,18 +242,20 @@ class TagManager
     public function loadTagging(Taggable $resource)
     {
         $tags = $this->getTagging($resource);
-        $this->replaceTags($tags, $resource);
+        $resource->setTags(new ArrayCollection());
+        $this->addTags($tags, $resource);
     }
 
     /**
      * Gets all tags for the given taggable resource
      *
      * @param  Taggable $resource Taggable resource
+     * @param null|int $createdBy
      * @return array
      */
-    protected function getTagging(Taggable $resource)
+    protected function getTagging(Taggable $resource, $createdBy = null)
     {
-        $query = $this->em
+        $qb = $this->em
             ->createQueryBuilder()
 
             ->select('t')
@@ -232,10 +263,14 @@ class TagManager
 
             ->innerJoin('t.tagging', 't2', Join::WITH, 't2.recordId = :recordId AND t2.entityName = :entityName')
             ->setParameter('recordId', $resource->getTaggableId())
-            ->setParameter('entityName', get_class($resource))
-            ->getQuery();
+            ->setParameter('entityName', get_class($resource));
 
-        return $query->getResult();
+        if (!is_null($createdBy)) {
+            $qb->where('t2.createdBy = :createdBy')
+                ->setParameter('createdBy', $createdBy);
+        }
+
+        return new ArrayCollection($qb->getQuery()->getResult());
     }
 
     /**
@@ -288,5 +323,15 @@ class TagManager
     protected function createTagging(Tag $tag, Taggable $resource)
     {
         return new $this->taggingClass($tag, $resource);
+    }
+
+    /**
+     * Return current user
+     *
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->securityContext->getToken()->getUser();
     }
 }

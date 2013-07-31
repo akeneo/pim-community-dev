@@ -70,7 +70,7 @@ Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
         tagCollection.add(this.getCollection('owner').models);
 
         $('.select2-search-choice div').click(function(){
-            var tagName = $(this).attr('title');
+            var tagName = $(this).html();
             var tag = tagCollection.toArray().filter(function(item){ return item.name == tagName })
             var url = tag[0].url;
 

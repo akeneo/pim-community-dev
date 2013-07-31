@@ -27,6 +27,7 @@ services:
             - %oro_tag.tagging.entity.class%
             - @oro_search.mapper
             - @security.context
+            - @oro_user.acl_manager
 
     oro_tag.docrine.event.listener:
         class: %oro_tag.tag_listener.class%
