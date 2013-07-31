@@ -104,7 +104,7 @@ class ItemStep extends AbstractStep
         $readCounter = 0;
         $writeCounter = 0;
 
-        while (($item = $this->reader->read()) != null) {
+        while (($item = $this->reader->read()) !== null) {
             $readCounter ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {

@@ -4,6 +4,7 @@ namespace Pim\Bundle\BatchBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 
@@ -16,6 +17,7 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
  *
  * @ORM\Table(name="pim_job")
  * @ORM\Entity()
+ * @UniqueEntity("code")
  */
 class Job
 {
@@ -36,7 +38,7 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=100, nullable=true)
+     * @ORM\Column(name="code", type="string", length=100, unique=true)
      * @Assert\NotBlank
      */
     protected $code;

@@ -15,9 +15,4 @@ use Pim\Bundle\BatchBundle\Entity\Job;
 class ExportLaunch extends Page
 {
     protected $path = '/ie/export/{id}/launch';
-
-    public function getUrl(Job $job)
-    {
-        return str_replace('{id}', $job->getId(), $this->getPath());
-    }
 }

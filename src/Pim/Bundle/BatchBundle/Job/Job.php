@@ -165,8 +165,16 @@ class Job implements JobInterface
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-        $this->stepHandler = new SimpleStepHandler($jobRepository, null);
-        $this->stepHandler->setLogger($this->getLogger());
+    }
+
+    /**
+     * Set the step handler
+     *
+     * @param SimpleStepHandler $stepHandler
+     */
+    public function setStepHandler(SimpleStepHandler $stepHandler)
+    {
+        $this->stepHandler = $stepHandler;
     }
 
     /**
@@ -185,7 +193,7 @@ class Job implements JobInterface
         try {
             //jobParametersValidator.validate(execution.getJobParameters());
 
-            if ($execution->getStatus()->getValue() != BatchStatus::STOPPING) {
+            if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
                 $execution->setStartTime(time());
                 $this->updateStatus($execution, BatchStatus::STARTED);
@@ -339,7 +347,7 @@ class Job implements JobInterface
 
         foreach ($this->steps as $step) {
             $stepExecution = $this->stepHandler->handleStep($step, $execution);
-            if ($stepExecution->getStatus()->getValue() != BatchStatus::COMPLETED) {
+            if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
                 //
                 // Terminate the job if a step fails
                 //
@@ -350,7 +358,7 @@ class Job implements JobInterface
         //
         // Update the job status to be the same as the last step
         //
-        if ($stepExecution != null) {
+        if ($stepExecution !== null) {
             $this->getLogger()->debug("Upgrading JobExecution status: " . $stepExecution);
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());

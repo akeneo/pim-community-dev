@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Job\JobRepository;
 
 /**
  * Export controller
@@ -51,7 +53,7 @@ class ExportController extends Controller
             $view,
             array(
                 'datagrid' => $datagridView,
-                'connectors' => $registry->getExportJobs(),
+                'connectors' => $registry->getJobs(Job::TYPE_EXPORT),
             )
         );
     }
@@ -117,7 +119,13 @@ class ExportController extends Controller
      */
     public function showAction($id)
     {
-        $job = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
 
         return array(
             'job'        => $job,
@@ -139,7 +147,13 @@ class ExportController extends Controller
      */
     public function editAction($id)
     {
-        $job  = $this->getJob($id);
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
         $form = $this->createForm(new JobType(), $job);
 
         $request = $this->getRequest();
@@ -186,7 +200,7 @@ class ExportController extends Controller
      * @param Job $job
      *
      * @Route(
-     *     "/show/{id}",
+     *     "/{id}/reports",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0},
      *     name="pim_ie_import_report"
@@ -200,6 +214,38 @@ class ExportController extends Controller
     }
 
     /**
+     * Launch a job
+     *
+     * @param integer $id
+     *
+     * @Route("/{id}/launch", requirements={"id"="\d+"}, name="pim_ie_export_launch")
+     *
+     * @return RedirectResponse
+     */
+    public function launchAction($id)
+    {
+        try {
+            $job = $this->getJob($id);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('pim_ie_export_index');
+        }
+
+        if (count($this->getValidator()->validate($job)) > 0) {
+            throw $this->createNotFoundException();
+        }
+        $jobExecution = new JobExecution;
+        $definition = $job->getJobDefinition();
+        $definition->execute($jobExecution);
+
+        //TODO Analyse $jobExecution to define wether or not it was ok
+        $this->addFlash('success', 'Job has been successfully executed.');
+
+        return $this->redirectToRoute('pim_ie_export_show', array('id' => $job->getId()));
+    }
+
+    /**
      * Get a job
      *
      * @param integer $id
@@ -207,6 +253,7 @@ class ExportController extends Controller
      * @return Job|RedirectResponse
      *
      * @throw NotFoundHttpException
+     * @throw InvalidArgumentException
      */
     protected function getJob($id)
     {
@@ -214,8 +261,7 @@ class ExportController extends Controller
         $registry      = $this->getConnectorRegistry();
         $jobDefinition = $registry->getJob($job);
         if (!$jobDefinition) {
-            $this->addFlash(
-                'error',
+            throw new \InvalidArgumentException(
                 sprintf(
                     'The following job does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
@@ -226,8 +272,6 @@ class ExportController extends Controller
                     $job->getAlias()
                 )
             );
-
-            return $this->redirectToRoute('pim_ie_export_index');
         }
         $job->setJobDefinition($jobDefinition);
 

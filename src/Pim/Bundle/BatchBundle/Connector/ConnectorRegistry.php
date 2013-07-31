@@ -4,6 +4,8 @@ namespace Pim\Bundle\BatchBundle\Connector;
 
 use Pim\Bundle\BatchBundle\Job\JobInterface;
 use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Job\JobFactory;
+use Pim\Bundle\BatchBundle\Step\StepFactory;
 
 /**
  * Aims to register all connectors
@@ -14,35 +16,14 @@ use Pim\Bundle\BatchBundle\Entity\Job;
  */
 class ConnectorRegistry
 {
+    protected $jobs = array();
+    protected $jobFactory;
+    protected $stepFactory;
 
-    /**
-     * TODO : Comments !!!
-     */
-    protected $importJobs = array();
-    /**
-     * TODO : Comments !!!
-     */
-    protected $exportJobs = array();
-
-    /**
-     * Add a job to a connector
-     *
-     * @param string       $connector the connector id
-     * @param string       $type      the job type
-     * @param string       $jobAlias  the job alias
-     * @param JobInterface $job       the job
-     *
-     * @return ConnectorRegistry
-     */
-    public function addJobToConnector($connector, $type, $jobAlias, JobInterface $job)
+    public function __construct(JobFactory $jobFactory, StepFactory $stepFactory)
     {
-        if ($type === Job::TYPE_IMPORT) {
-            $this->importJobs[$connector][$jobAlias] = $job;
-        } else {
-            $this->exportJobs[$connector][$jobAlias] = $job;
-        }
-
-        return $this;
+        $this->jobFactory = $jobFactory;
+        $this->stepFactory = $stepFactory;
     }
 
     /**
@@ -69,29 +50,39 @@ class ConnectorRegistry
      *
      * @return multitype:JobInterface
      */
-    public function getExportJobs()
+    public function getJobs($type)
     {
-        return $this->exportJobs;
+        return $this->jobs[$type];
     }
 
     /**
-     * Get the list of jobs
+     * Add a step to an existig job (or create it)
      *
-     * @return multitype:JobInterface
+     * @param string                 $jobConnector
+     * @param string                 $jobType
+     * @param string                 $jobAlias
+     * @param string                 $jobTitle
+     * @param string                 $stepTitle
+     * @param ItemReaderInterface    $stepReader
+     * @param ItemProcessorInterface $stepProcessor
+     * @param ItemWriterInterface    $stepWriter
+     *
+     * @return null
      */
-    public function getImportJobs()
+    public function addStepToJob($jobConnector, $jobType, $jobAlias, $jobTitle, $stepTitle, $stepReader, $stepProcessor, $stepWriter)
     {
-        return $this->importJobs;
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
+            $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
+        }
+
+        $this->jobs[$jobType][$jobConnector][$jobAlias]->addStep(
+            $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter)
+        );
     }
 
     private function getConnector($connector, $type)
     {
-        switch ($type) {
-            case Job::TYPE_IMPORT:
-                return isset($this->importJobs[$connector]) ? $this->importJobs[$connector] : null;
-            case Job::TYPE_EXPORT:
-                return isset($this->exportJobs[$connector]) ? $this->exportJobs[$connector] : null;
-        }
+        return isset($this->jobs[$type][$connector]) ? $this->jobs[$type][$connector] : null;
     }
 
     private function getConnectorJob($connector, $jobAlias)

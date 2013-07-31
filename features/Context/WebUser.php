@@ -77,6 +77,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductsPage()
     {
         $this->openPage('Product index');
+        $this->wait();
     }
 
     /**
@@ -126,6 +127,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
+        $this->wait();
     }
 
     /**
@@ -161,6 +163,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheChannelsPage()
     {
         $this->openPage('Channel index');
+        $this->wait();
     }
 
     /**
@@ -179,6 +182,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category edit', array(
             'id' => $this->getCategory($code)->getId(),
         ));
+        $this->wait();
     }
 
     /**
@@ -205,6 +209,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheExportsIndexPage()
     {
         $this->openPage('Export index');
+        $this->wait();
     }
 
     /**
@@ -213,6 +218,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheImportsIndexPage()
     {
         $this->openPage('Import index');
+        $this->wait();
     }
 
     /**
@@ -1011,6 +1017,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Export detail', array(
             'id' => $this->getJob($job)->getId()
         ));
+        $this->wait();
     }
 
     /**
@@ -1057,18 +1064,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iLaunchTheExportJob($job)
     {
-        $launchPageUrl = $this->getPage('Export launch')->getUrl($this->getJob($job));
+        $this->openPage('Export launch', array(
+            'id' => $this->getJob($job)->getId()
+        ));
+    }
 
-        return new Step\Given(sprintf('I go to "%s"', $launchPageUrl));
+    /**
+     * @When /^I launch the export job$/
+     */
+    public function iExecuteTheExportJob()
+    {
+        $this->getPage('Export detail')->execute();
+    }
+
+    /**
+     * @Given /^file "([^"]*)" should exist$/
+     */
+    public function fileShouldExist($file)
+    {
+        if (!file_exists($file)) {
+            throw $this->createExpectationException(sprintf(
+                'File %s does not exist.', $file
+            ));
+        }
+
+        unlink($file);
     }
 
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
 
-        $this->getCurrentPage()->open($options);
+        $page = $this->getCurrentPage()->open($options);
         $this->loginIfRequired();
         $this->wait();
+
+        return $page;
     }
 
     private function getCurrentPage()
