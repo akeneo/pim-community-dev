@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(name="oro_email")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Email
@@ -70,14 +71,14 @@ class Email
      *
      * @ORM\Column(name="received", type="datetime")
      */
-    protected $received;
+    protected $receivedAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="sent", type="datetime")
      */
-    protected $sent;
+    protected $sentAt;
 
     /**
      * @var integer
@@ -132,6 +133,7 @@ class Email
 
     public function __construct()
     {
+        $this->importance = self::NORMAL_IMPORTANCE;
         $this->recipients = new ArrayCollection();
     }
 
@@ -266,18 +268,18 @@ class Email
      */
     public function getReceivedAt()
     {
-        return $this->received;
+        return $this->receivedAt;
     }
 
     /**
      * Set date/time when email received
      *
-     * @param \DateTime $received
+     * @param \DateTime $receivedAt
      * @return $this
      */
-    public function setReceivedAt($received)
+    public function setReceivedAt($receivedAt)
     {
-        $this->received = $received;
+        $this->receivedAt = $receivedAt;
 
         return $this;
     }
@@ -289,18 +291,18 @@ class Email
      */
     public function getSentAt()
     {
-        return $this->sent;
+        return $this->sentAt;
     }
 
     /**
      * Set date/time when email sent
      *
-     * @param \DateTime $sent
+     * @param \DateTime $sentAt
      * @return $this
      */
-    public function setSentAt($sent)
+    public function setSentAt($sentAt)
     {
-        $this->sent = $sent;
+        $this->sentAt = $sentAt;
 
         return $this;
     }
@@ -473,9 +475,6 @@ class Email
      */
     public function beforeSave()
     {
-        if (!isset($this->importance)) {
-            $this->importance = self::NORMAL_IMPORTANCE;
-        }
         $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

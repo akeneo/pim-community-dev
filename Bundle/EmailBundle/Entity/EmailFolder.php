@@ -111,10 +111,13 @@ class EmailFolder
      * Set folder type
      *
      * @param string $type Can be 'inbox', 'sent', 'trash', 'drafts' or 'other'
+     * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**

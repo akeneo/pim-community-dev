@@ -1,0 +1,76 @@
+{% block page_container %}
+<div class="container-fluid email-body-holder">
+    {% block content %}
+        <div class="form-horizontal">
+            <div class="control-group">
+                {{ _self.renderRow('Sent', 'email-sent', entity.sentAt|date('m/d/Y H:m:s')) }}
+                {{ _self.renderRow('From', 'email-from', entity.fromName) }}
+                {{ _self.renderRow('To', 'email-to', entity.recipients('to')) }}
+                {{ _self.renderRow('Cc', 'email-cc', entity.recipients('cc')) }}
+                {{ _self.renderRow('Bcc', 'email-bcc', entity.recipients('bcc')) }}
+                {{ _self.renderRow('Subject', 'email-subject', entity.subject) }}
+                {% if entity.emailBody.hasAttachments %}
+                    {{ _self.renderAttachmentsRow('Attachments', entity.emailBody.attachments) }}
+                {% endif %}
+                {% if entity.emailBody.bodyIsText %}
+                    <pre class="email-body scrollable-container">{{ entity.emailBody.content }}</pre>
+                {% else %}
+                    <iframe class="email-body scrollable-container" src="{{ path('oro_email_body', {id:entity.emailBody.id}) }}">
+                    </iframe>
+                {% endif %}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+{% endblock %}
+
+{% macro renderRow(title, iClass, value) %}
+    {% macro row_data(value) %}
+        <div class="clearfix-oro">
+            {% if value is iterable %}
+                {% for val in value %}
+                    {% if val.name is not defined %}
+                        <p class="control-label">{{ val }}</p>
+                    {% else %}
+                        <p class="control-label">{{ val.name }}</p>
+                    {% endif %}
+                    {% if not loop.last %}
+                        <span>,</span>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="control-label">{{ value }}</p>
+            {% endif %}
+        </div>
+    {% endmacro %}
+    <div class="{{ iClass }}">
+        <label class="control-label">{{ title|trans }}</label>
+
+        <div class="controls">
+            {{ _self.row_data(value)|raw }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro renderAttachmentsRow(title, value) %}
+    {% macro attachments_row_data(value) %}
+        <div class="clearfix-oro well-small">
+            <ul class="inline">
+                {% for val in value %}
+                    <li>
+                        <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
+                            <span class="label label-info">{{ val.fileName }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmacro %}
+    <div class="email-attachments">
+        <label class="control-label">{{ title|trans }}</label>
+
+        <div class="controls">
+            {{ _self.attachments_row_data(value)|raw }}
+        </div>
+    </div>
+{% endmacro %}

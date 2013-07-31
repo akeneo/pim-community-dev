@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Email Attachment
@@ -36,9 +37,17 @@ class EmailAttachment
     protected $contentType;
 
     /**
+     * @var EmailAttachmentContent
+     *
+     * @ORM\OneToOne(targetEntity="EmailAttachmentContent", mappedBy="emailAttachment", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Exclude
+     */
+    protected $attachmentContent;
+
+    /**
      * @var EmailBody
      *
-     * @ORM\ManyToOne(targetEntity="EmailBody", inversedBy="folders")
+     * @ORM\ManyToOne(targetEntity="EmailBody", inversedBy="attachments")
      * @ORM\JoinColumn(name="body_id", referencedColumnName="id")
      */
     protected $emailBody;
@@ -67,10 +76,13 @@ class EmailAttachment
      * Set attachment file name
      *
      * @param string $fileName
+     * @return $this
      */
     public function setFileName($fileName)
     {
         $this->fileName = $fileName;
+
+        return $this;
     }
 
     /**
@@ -87,10 +99,38 @@ class EmailAttachment
      * Set content type
      *
      * @param string $contentType any MIME type
+     * @return $this
      */
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * Get content of email attachment
+     *
+     * @return EmailAttachmentContent
+     */
+    public function getContent()
+    {
+        return $this->attachmentContent;
+    }
+
+    /**
+     * Set content of email attachment
+     *
+     * @param  EmailAttachmentContent $attachmentContent
+     * @return $this
+     */
+    public function setContent(EmailAttachmentContent $attachmentContent)
+    {
+        $this->attachmentContent = $attachmentContent;
+
+        $attachmentContent->setEmailAttachment($this);
+
+        return $this;
     }
 
     /**

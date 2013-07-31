@@ -11,6 +11,7 @@ Oro.widget.DialogView = Backbone.View.extend({
     },
     actions: null,
     firstRun: true,
+    contentTop: null,
 
     // Windows manager global variables
     windowsPerRow: 10,
@@ -20,6 +21,7 @@ Oro.widget.DialogView = Backbone.View.extend({
     windowY: 0,
     defaultPos: 'center center',
     openedWindows: 0,
+    contentTop: null,
 
     /**
      * Initialize dialog
@@ -233,6 +235,34 @@ Oro.widget.DialogView = Backbone.View.extend({
         }
 
         this.adoptActions();
+        this.adjustHeight();
+    },
+
+    adjustHeight: function() {
+        var content = this.widget.find('.scrollable-container');
+
+        // first execute
+        if (_.isNull(this.contentTop)) {
+            content.css('overflow', 'auto');
+
+            var parentEl = content.parent();
+            var topPaddingOffset = parentEl.is(this.widget)?0:parentEl.position().top;
+            this.contentTop = content.position().top + topPaddingOffset;
+            var widgetHeight = this.widget.height();
+            content.outerHeight(this.widget.height() - this.contentTop);
+            if (widgetHeight != this.widget.height()) {
+                // there is some unpredictable offset
+                this.contentTop += this.widget.height() - this.contentTop - content.outerHeight();
+                content.outerHeight(this.widget.height() - this.contentTop);
+            }
+            this.widget.on("dialogresize", _.bind(this.adjustHeight, this));
+
+        }
+
+        content.each(_.bind(function(i, el){
+            var $el = $(el);
+            $el.outerHeight(this.widget.height() - this.contentTop);
+        },this));
     },
 
     /**

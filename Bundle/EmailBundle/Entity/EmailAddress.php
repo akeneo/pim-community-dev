@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Email Address
  *
- * @ORM\Table(name="oro_email_address")
+ * @ORM\Table(name="oro_email_address",
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email_address"})},
+ *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email_address"})})
  * @ORM\Entity
  */
 class EmailAddress
@@ -54,9 +56,12 @@ class EmailAddress
      * It means that if the full email is "John Smith" <john@example.com> the email address is john@example.com
      *
      * @param string $emailAddress
+     * @return $this
      */
     public function setEmailAddress($emailAddress)
     {
         $this->emailAddress = $emailAddress;
+
+        return $this;
     }
 }

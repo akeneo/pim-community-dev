@@ -77,6 +77,9 @@ class EmailBody
 
     public function __construct()
     {
+        $this->bodyIsText = false;
+        $this->hasAttachments = false;
+        $this->persistent = false;
         $this->attachments = new ArrayCollection();
     }
 
@@ -114,10 +117,13 @@ class EmailBody
      * Set body content.
      *
      * @param string $bodyContent
+     * @return $this
      */
     public function setContent($bodyContent)
     {
         $this->bodyContent = $bodyContent;
+
+        return $this;
     }
 
     /**
@@ -134,10 +140,13 @@ class EmailBody
      * Set body content type.
      *
      * @param bool $bodyIsText true for text/plain, false for text/html
+     * @return $this
      */
     public function setBodyIsText($bodyIsText)
     {
         $this->bodyIsText = $bodyIsText;
+
+        return $this;
     }
 
     /**
@@ -154,10 +163,13 @@ class EmailBody
      * Set flag indicates whether there are attachments or not.
      *
      * @param bool $hasAttachments
+     * @return $this
      */
     public function setHasAttachments($hasAttachments)
     {
         $this->hasAttachments = $hasAttachments;
+
+        return $this;
     }
 
     /**
@@ -174,10 +186,13 @@ class EmailBody
      * Set flag indicates whether email can be removed from the cache or not.
      *
      * @param bool $persistent true if this email newer removed from the cache; otherwise, false
+     * @return $this
      */
     public function setPersistent($persistent)
     {
         $this->persistent = $persistent;
+
+        return $this;
     }
 
     /**
@@ -237,15 +252,6 @@ class EmailBody
      */
     public function beforeSave()
     {
-        if (!isset($this->bodyIsText)) {
-            $this->bodyIsText = false;
-        }
-        if (!isset($this->hasAttachments)) {
-            $this->hasAttachments = false;
-        }
-        if (!isset($this->persistent)) {
-            $this->persistent = false;
-        }
         $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

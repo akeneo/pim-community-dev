@@ -1,0 +1,7 @@
+{# TODO: This is a demo template. It need to be replaced with a real one #}
+<tr>
+    <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
+    <td class="string-cell">{{ entity.fromName }}</td>
+    <td class="string-cell"><a class="no-hash view-email-body-btn" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+    <td class="datetime-cell">{{ entity.sentAt|date('m/d/Y H:m:s') }}</td>
+</tr>

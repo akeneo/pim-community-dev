@@ -79,10 +79,13 @@ class EmailRecipient
      * Set full email name
      *
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -99,10 +102,13 @@ class EmailRecipient
      * Set recipient type
      *
      * @param string $type Can be 'to', 'cc' or 'bcc'
+     * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
