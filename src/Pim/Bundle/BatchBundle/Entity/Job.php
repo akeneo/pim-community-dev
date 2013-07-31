@@ -21,7 +21,9 @@ use Pim\Bundle\BatchBundle\Job\JobInterface;
  */
 class Job
 {
-    const STATUS_READY = 0;
+    const STATUS_READY       = 0;
+    const STATUS_DRAFT       = 1;
+    const STATUS_IN_PROGRESS = 2;
 
     const TYPE_IMPORT = 'import';
     const TYPE_EXPORT = 'export';

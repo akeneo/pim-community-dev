@@ -19,6 +19,7 @@ class ExportCreation extends Page
     protected $elements = array(
         'Channel selector' => array('css' => '#pim_import_export_job_jobDefinition_steps_0_reader_channel'),
         'With header'      => array('css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'),
+        'Tabs'             => array('css' => '#form-navbar'),
     );
 
     public function selectChannel($channel)
@@ -44,5 +45,9 @@ class ExportCreation extends Page
     {
         return sprintf('%s?%s', $this->getPath(), http_build_query($options));
     }
-}
 
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
+    }
+}
