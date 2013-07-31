@@ -12,14 +12,14 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Datagrid extends Page
+class DataGrid extends Page
 {
     /**
      * @var array
      */
     protected $elements = array(
-        'grid'        => array('css' => 'table.grid'),
-        'grid-filter' => array('css' => 'div.filter-box')
+        'Grid'    => array('css' => 'table.grid'),
+        'Filters' => array('css' => 'div.filter-item'),
     );
 
     /**
@@ -31,8 +31,7 @@ class Datagrid extends Page
      */
     public function getGridRow($value)
     {
-        $gridRow = $this->getElement('grid')
-                        ->find('css', sprintf('tbody tr:contains("%s")', $value));
+        $gridRow = $this->getElement('Grid')->find('css', sprintf('tbody tr:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
@@ -45,16 +44,14 @@ class Datagrid extends Page
 
     /**
      *
-     * @param unknown_type $element
-     * @param unknown_type $actionName
+     * @param string $element
+     * @param string $actionName
      */
     public function clickOnTheAction($element, $actionName)
     {
         $rowElement = $this->getGridRow($element);
-        $rowElement->find('css', 'a.dropdown-toggle')
-                   ->click();
-        $rowElement->find('css', sprintf('a.action[title=%s]', $actionName))
-                   ->click();
+        $rowElement->find('css', 'a.dropdown-toggle')->click();
+        $rowElement->find('css', sprintf('a.action[title=%s]', $actionName))->click();
     }
 
     /**
@@ -65,18 +62,21 @@ class Datagrid extends Page
     public function filterBy($filterName, $value)
     {
         $filter = $this->getFilter($filterName);
-        // open the filter
         $this->openFilter($filter);
-        // set the value
-        $filterCriteria = $filter->find('css', 'div.filter-criteria');
-        $filterCriteria->fillField('value', $value);
-        // update the grid
-        $filterCriteria->find('css', 'button.filter-update')->click();
+
+        if ($elt = $filter->find('css', 'select')) {
+            $elt->selectOption($value);
+        } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
+            $elt->fillField('value', $value);
+            $filterCriteria->find('css', 'button.filter-update')->click();
+        } else {
+            throw new \InvalidArgumentException(sprintf('Filtering by "%s" is not yet implemented"', $filterName));
+        }
     }
 
     public function countRows()
     {
-        return count($this->getElement('grid')->findAll('css', 'tbody tr'));
+        return count($this->getElement('Grid')->findAll('css', 'tbody tr'));
     }
 
     public function getColumnValue($column, $row, $expectation)
@@ -91,7 +91,7 @@ class Datagrid extends Page
 
     protected function getColumnPosition($column)
     {
-        $headers = $this->getElement('grid')->findAll('css', 'thead th');
+        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
         foreach ($headers as $position => $header) {
             if ($column === $header->getText()) {
                 return $position;
@@ -117,7 +117,7 @@ class Datagrid extends Page
     }
 
     /**
-     * Open the filter depending of its type
+     * Open the filter
      * @param NodeElement $filter
      *
      * @throws \InvalidArgumentException
@@ -142,8 +142,7 @@ class Datagrid extends Page
      */
     public function getFilter($filterName)
     {
-        $filter = $this->getElement('grid-filter')
-                        ->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        $filter = $this->getElement('Filters')->find('css', sprintf(':contains("%s")', $filterName));
 
         if (!$filter) {
             throw new \InvalidArgumentException(

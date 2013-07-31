@@ -107,7 +107,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheRow($row)
     {
         $this->datagrid->getGridRow($row)->click();
-        $this->wait(5000, null);
+        $this->wait();
     }
 
     private function createExpectationException($message)
