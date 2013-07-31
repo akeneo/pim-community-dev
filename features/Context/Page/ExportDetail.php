@@ -35,7 +35,6 @@ class ExportDetail extends Page
 
     public function execute()
     {
-        $this->clickLink('Execute');
+        $this->clickLink('Export now');
     }
 }
-
