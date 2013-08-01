@@ -529,8 +529,17 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array('pim_product_price_collection', 'code8',
                 array('defaultValue' => 9.999, 'numberMin' => -0.01, 'numberMax' => 1000000,
                     'decimalsAllowed' => true, 'negativeAllowed' => false), 1),
-            array('pim_product_price_collection', 'code9',
-                array('defaultValue' => 1, 'numberMin' => 5.5, 'decimalsAllowed' => false, 'negativeAllowed' => false), 2),
+            array(
+                'pim_product_price_collection',
+                'code9',
+                array(
+                    'defaultValue' => 1,
+                    'numberMin' => 5.5,
+                    'decimalsAllowed' => false,
+                    'negativeAllowed' => false
+                ),
+                2
+            ),
             array('pim_product_price_collection', 'code10',
                 array('defaultValue' => 0, 'numberMax' => -1, 'negativeAllowed' => false), 2),
             array('pim_product_price_collection', 'code11',
