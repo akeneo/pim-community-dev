@@ -14,7 +14,7 @@ Feature: Delete import
     Given I am logged in as "admin"
 
   Scenario: Successfully delete an import job
-    Given I am on the imports index page
+    Given I am on the imports page
     Then the grid should contain 2 elements
     When I delete the "acme_product_import" job
     And I confirm on the grid modal window
@@ -24,7 +24,7 @@ Feature: Delete import
     And the grid should not contain the elements "acme_product_export", "acme_product_import"
 
   Scenario: Successfully cancel the deletion of an import job
-    Given I am on the imports index page
+    Given I am on the imports page
     Then the grid should contain 2 elements
     When I delete the "acme_product_import" job
     And I cancel on the grid modal window

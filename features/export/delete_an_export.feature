@@ -15,7 +15,7 @@ Feature: Delete export
     Given I am logged in as "admin"
 
   Scenario: Successfully delete an export job
-    Given I am on the exports index page
+    Given I am on the exports page
     Then the grid should contain 3 elements
     When I delete the "foo_product_export" job
     And I confirm on the grid modal window
@@ -25,7 +25,7 @@ Feature: Delete export
     And the grid should not contain the elements "foo_product_export" and "acme_product_import"
 
   Scenario: Successfully cancel the deletion of an export job
-    Given I am on the exports index page
+    Given I am on the exports page
     Then the grid should contain 3 elements
     When I delete the "foo_product_export" job
     And I cancel on the grid modal window

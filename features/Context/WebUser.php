@@ -27,6 +27,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $password = null;
 
+    private $pageMapping = array(
+        'channels'   => 'Family index',
+        'currencies' => 'Currency index',
+        'exports'    => 'Export index',
+        'families'   => 'Family index',
+        'imports'    => 'Import index',
+        'products'   => 'Product index',
+    );
+
     /* -------------------- Page-related methods -------------------- */
 
     /**
@@ -74,11 +83,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I am on the products page$/
+     * @Given /^I am on the ([^"]*) page$/
      */
-    public function iAmOnTheProductsPage()
+    public function iAmOnThePage($page)
     {
-        $this->openPage('Product index');
+        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+        $this->openPage($page);
         $this->wait();
     }
 
@@ -116,39 +126,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the attribute creation page$/
-     */
-    public function iAmOnTheAttributeCreationPage()
-    {
-        $this->openPage('Attribute creation');
-    }
-
-    /**
-     * @Given /^I am on the currencies page$/
-     */
-    public function iAmOnTheCurrenciesPage()
-    {
-        $this->openPage('Currency index');
-        $this->wait();
-    }
-
-    /**
-     * @When /^I am on the families page$/
-     */
-    public function iAmOnTheFamiliesPage()
-    {
-        $this->openPage('Family index');
-    }
-
-    /**
-     * @When /^I am on the family creation page$/
-     */
-    public function iAmOnTheFamilyCreationPage()
-    {
-        $this->openPage('Family creation');
-    }
-
-    /**
      * @Given /^I edit the "([^"]*)" family$/
      * @Given /^I am on the "([^"]*)" family page$/
      */
@@ -157,23 +134,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Family edit', array(
             'family_id' => $this->getFamily($family)->getId()
         ));
-    }
-
-    /**
-     * @Given /^I am on the channels page$/
-     */
-    public function iAmOnTheChannelsPage()
-    {
-        $this->openPage('Channel index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the channel creation page$/
-     */
-    public function iAmOnTheChannelCreationPage()
-    {
-        $this->openPage('Channel creation');
     }
 
     /**
@@ -188,14 +148,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the category tree creation page$/
-     */
-    public function iAmOnTheCategoryTreeCreationPage()
-    {
-        $this->openPage('Category tree creation');
-    }
-
-    /**
      * @Given /^I am on the category "([^"]*)" node creation page$/
      */
     public function iAmOnTheCategoryNodeCreationPage($code)
@@ -203,24 +155,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category node creation', array(
             'id' => $this->getCategory($code)->getId()
         ));
-    }
-
-    /**
-     * @Given /^I am on the exports index page$/
-     */
-    public function iAmOnTheExportsIndexPage()
-    {
-        $this->openPage('Export index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the imports index page$/
-     */
-    public function iAmOnTheImportsIndexPage()
-    {
-        $this->openPage('Import index');
-        $this->wait();
     }
 
     /**

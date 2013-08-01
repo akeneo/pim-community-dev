@@ -14,7 +14,7 @@ Feature: Browse exports
     Given I am logged in as "admin"
 
   Scenario: Successfully display all the export jobs
-    Given I am on the exports index page
+    Given I am on the exports page
     And the grid should contain 3 elements
     And the grid should contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
     And the grid should not contain the elements "acme_product_import"

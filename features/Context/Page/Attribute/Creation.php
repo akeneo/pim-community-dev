@@ -31,10 +31,7 @@ class Creation extends Form
 
     public function selectAttributeType($type)
     {
-        $this
-            ->getElement('Attribute type selector')
-            ->selectOption($type)
-        ;
+        $this->getElement('Attribute type selector')->selectOption($type);
     }
 
     public function findField($name)
