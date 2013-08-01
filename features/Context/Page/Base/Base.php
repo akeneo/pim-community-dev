@@ -30,7 +30,7 @@ class Base extends Page
         $separator = $elt->find('css', '.separator');
         $name      = $elt->find('css', '.product-name');
 
-        if (!$subtitle || !$separator || !$name ) {
+        if (!$subtitle || !$separator || !$name) {
             throw new \Exception('Could not find the page title');
         }
 

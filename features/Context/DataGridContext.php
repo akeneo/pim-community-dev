@@ -32,10 +32,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theGridShouldContainElement($count)
     {
         if (intval($count) !== $actualCount = $this->datagrid->countRows()) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting to see %d row(s) in the datagrid, actually saw %d.',
-                $count, $actualCount
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see %d row(s) in the datagrid, actually saw %d.',
+                    $count,
+                    $actualCount
+                )
+            );
         }
     }
 
@@ -76,10 +79,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $column = strtoupper($column);
         if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting column "%s" to contain "%s", got "%s".',
-                $column, $expectation, $actual
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting column "%s" to contain "%s", got "%s".',
+                    $column,
+                    $expectation,
+                    $actual
+                )
+            );
         }
     }
 

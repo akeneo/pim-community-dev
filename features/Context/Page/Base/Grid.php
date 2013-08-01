@@ -139,10 +139,13 @@ class Grid extends Index
     {
         $cell = $row->findAll('css', 'td');
         if (!isset($cell[$position])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Trying to access cell %d of a row which has %d cell(s).',
-                $position, count($cell)
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Trying to access cell %d of a row which has %d cell(s).',
+                    $position,
+                    count($cell)
+                )
+            );
         }
 
         return $cell[$position];

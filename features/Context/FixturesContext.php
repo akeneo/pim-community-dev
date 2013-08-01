@@ -199,10 +199,7 @@ class FixturesContext extends RawMinkContext
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array(
-                'languages' => 'english',
-                'family'    => null,
-            ), $data);
+            $data = array_merge(array('languages' => 'english', 'family' => null), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
             if ($data['family']) {
@@ -357,17 +354,20 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
-            $data = array_merge(array(
-                'position'     => 0,
-                'group'        => null,
-                'product'      => null,
-                'family'       => null,
-                'required'     => 'no',
-                'type'         => 'text',
-                'scopable'     => false,
-                'scopable'     => 'no',
-                'translatable' => 'no',
-            ), $data);
+            $data = array_merge(
+                array(
+                    'position'     => 0,
+                    'group'        => null,
+                    'product'      => null,
+                    'family'       => null,
+                    'required'     => 'no',
+                    'type'         => 'text',
+                    'scopable'     => false,
+                    'scopable'     => 'no',
+                    'translatable' => 'no',
+                ),
+                $data
+            );
 
             try {
                 $attribute = $this->getAttribute($data['label']);
@@ -393,10 +393,12 @@ class FixturesContext extends RawMinkContext
                     $attribute->setMetricFamily($data['metric family']);
                     $attribute->setDefaultMetricUnit($data['default metric unit']);
                 } else {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
-                        $data['label']
-                    ));
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                            $data['label']
+                        )
+                    );
                 }
             }
 
@@ -421,10 +423,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array(
-                'scope'  => null,
-                'locale' => null,
-            ), $data);
+            $data = array_merge(array('scope' => null, 'locale' => null), $data);
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
@@ -559,12 +558,7 @@ class FixturesContext extends RawMinkContext
             $audit->setVersion(1);
             list($field, $change) = explode(': ', $data['change']);
             list($old, $new) = explode(' => ', $change);
-            $audit->setData(array(
-                $field => array(
-                    'old' => $old,
-                    'new' => $new,
-                )
-            ));
+            $audit->setData(array($field => array('old' => $old, 'new' => $new)));
             $user = $this->getUser($data['updatedBy']);
             $audit->setUsername($user->getUsername());
             $audit->setUser($user);
@@ -632,11 +626,8 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
 
-        $attributes = $em
-            ->getRepository('PimProductBundle:ProductAttribute')
-            ->findBy(array(
-                'attributeType' => 'pim_product_identifier',
-            ));
+        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')
+                ->findBy(array('attributeType' => 'pim_product_identifier'));
 
         foreach ($attributes as $attribute) {
             $em->remove($attribute);
@@ -652,9 +643,7 @@ class FixturesContext extends RawMinkContext
      */
     private function getUser($username)
     {
-        return $this->getEntityOrException('OroUserBundle:User', array(
-            'username' => $username,
-        ));
+        return $this->getEntityOrException('OroUserBundle:User', array('username' => $username));
     }
 
     /**
@@ -684,9 +673,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
 
-        if ($user = $em->getRepository('OroUserBundle:User')->findOneBy(array(
-            'username' => $username,
-        ))) {
+        if ($user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $username))) {
             return $user;
         }
 
@@ -740,9 +727,12 @@ class FixturesContext extends RawMinkContext
      */
     public function getAttribute($label)
     {
-        return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
-            'code' => $this->camelize($label)
-        ));
+        return $this->getEntityOrException(
+            'PimProductBundle:ProductAttribute',
+            array(
+                'code' => $this->camelize($label)
+            )
+        );
     }
 
     /**
@@ -757,9 +747,7 @@ class FixturesContext extends RawMinkContext
         }
 
         if (!isset($this->locales[$language])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Undefined language "%s"', $language
-            ));
+            throw new \InvalidArgumentException(sprintf('Undefined language "%s"', $language));
         }
 
         return $this->locales[$language];
@@ -773,9 +761,12 @@ class FixturesContext extends RawMinkContext
     public function getGroup($name)
     {
         try {
-            return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
-                'code' => $this->camelize($name)
-            ));
+            return $this->getEntityOrException(
+                'PimProductBundle:AttributeGroup',
+                array(
+                    'code' => $this->camelize($name)
+                )
+            );
         } catch (\InvalidArgumentException $e) {
             return null;
         }
@@ -788,9 +779,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getFamily($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Family', array(
-            'code' => $code
-        ));
+        return $this->getEntityOrException('PimProductBundle:Family', array('code' => $code));
     }
 
     /**
@@ -893,9 +882,7 @@ class FixturesContext extends RawMinkContext
     private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array(
-                'code' => $code
-            ));
+            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
             $this->createLocale($code);
         }
@@ -947,9 +934,7 @@ class FixturesContext extends RawMinkContext
     private function getRoleOrCreate($label)
     {
         try {
-            $role = $this->getEntityOrException('OroUserBundle:Role', array(
-                'label' => $label
-            ));
+            $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
             $em = $this->getEntityManager();
@@ -967,9 +952,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCategory($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Category', array(
-            'code' => $code,
-        ));
+        return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
     }
 
     /**
@@ -979,9 +962,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getJob($code)
     {
-        return $this->getEntityOrException('PimBatchBundle:Job', array(
-            'code' => $code
-        ));
+        return $this->getEntityOrException('PimBatchBundle:Job', array('code' => $code));
     }
 
     /**
@@ -995,9 +976,13 @@ class FixturesContext extends RawMinkContext
         $entity = $this->getEntityManager()->getRepository($namespace)->findOneBy($criteria);
 
         if (!$entity) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find "%s" with criteria %s', $namespace, print_r($criteria, true)
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find "%s" with criteria %s',
+                    $namespace,
+                    print_r($criteria, true)
+                )
+            );
         }
 
         return $entity;
