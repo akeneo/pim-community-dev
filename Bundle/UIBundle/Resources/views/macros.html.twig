@@ -14,13 +14,18 @@
         {% set form = widget %}
         {% set name = widget.vars.full_name %}
     {% endif %}
+
     <div data-content="{{ name }}">
         <div class="row-oro oro-multiselect-holder">
             {{ form_errors(form) }}
-            {% for child in form %}
-                {{ form_errors(child) }}
-                {{ form_widget(child) }}
-            {% endfor %}
+            {% if form.children|length  %}
+                {% for child in form %}
+                    {{ form_errors(child) }}
+                    {{ form_widget(child) }}
+                {% endfor %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
             {{ form_rest(form) }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
         </div>
@@ -165,10 +170,19 @@
 #}
 {% macro buttonType(parameters) %}
     <div class="btn-group">
-        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}">
+        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+                {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
             {{ parameters.label|trans }}
         </button>
     </div>
+{% endmacro %}
+
+{% macro saveAndCloseButton(label = 'Save and Close') %}
+    {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
+{% endmacro %}
+
+{% macro saveAndStayButton(label = 'Save') %}
+    {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
 {% endmacro %}
 
 {#

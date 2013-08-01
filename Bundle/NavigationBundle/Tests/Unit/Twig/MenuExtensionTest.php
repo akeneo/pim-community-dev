@@ -36,6 +36,11 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
     protected $factory;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $breadcrumbManager;
+
+    /**
      * @var MenuExtension $menuExtension
      */
     protected $menuExtension;
@@ -43,6 +48,10 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->container = new Container();
+
+        $this->breadcrumbManager = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->helper = $this->getMockBuilder('Knp\Menu\Twig\Helper')
             ->disableOriginalConstructor()
@@ -70,7 +79,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
         $this->builder->setContainer($this->container);
         $provider->addBuilder($this->builder);
 
-        $this->menuExtension = new MenuExtension($this->helper, $provider, $this->container);
+        $this->menuExtension = new MenuExtension($this->helper, $provider, $this->breadcrumbManager, $this->container);
     }
 
     public function testGetFunctions()
@@ -245,5 +254,51 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
         $this->container->setParameter('oro_menu_config', $menuConfig);
         $this->menuExtension
             ->render(array('navbar', 'user_user_show'), array('type' => 'some_menu'), 'some_renderer');
+    }
+
+    public function testRenderBreadCrumbs()
+    {
+        $environment = $this->getMockBuilder('\Twig_Environment')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $template = $this->getMockBuilder('\Twig_TemplateInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->breadcrumbManager->expects($this->once())
+            ->method('getBreadcrumbs')
+            ->will($this->returnValue(array('test-breadcrumb')));
+
+        $environment->expects($this->once())
+            ->method('loadTemplate')
+            ->will($this->returnValue($template));
+
+        $template->expects($this->once())
+            ->method('render')
+            ->with(
+                array(
+                    'breadcrumbs' => array(
+                        'test-breadcrumb'
+                    ),
+                    'useDecorators' => true
+                )
+            );
+        ;
+        $this->menuExtension->renderBreadCrumbs($environment, 'test_menu');
+    }
+
+    public function testWrongBredcrumbs()
+    {
+
+        $environment = $this->getMockBuilder('\Twig_Environment')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->breadcrumbManager->expects($this->once())
+            ->method('getBreadcrumbs')
+            ->will($this->returnValue(null));
+
+        $this->assertNull($this->menuExtension->renderBreadCrumbs($environment, 'test_menu'));
     }
 }

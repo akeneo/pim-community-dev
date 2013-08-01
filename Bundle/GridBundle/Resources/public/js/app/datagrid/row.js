@@ -21,7 +21,7 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
     /** @property */
     clickData: {
         counter: 0,
-        timeout: 300,
+        timeout: 100,
         hasSelectedText: false
     },
 
@@ -90,9 +90,7 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
             this.trigger('cellEdited', this, cell);
         });
         if (cell.listenRowClick && cell.onRowClicked && _.isFunction(cell.onRowClicked)) {
-            this.on('clicked', function(e) {
-                cell.onRowClicked(this, e);
-            }, this);
+            this.on('clicked', _.bind(cell.onRowClicked, cell));
         }
     }
 });

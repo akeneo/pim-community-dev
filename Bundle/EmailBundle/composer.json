@@ -1,0 +1,22 @@
+{
+    "name": "oro/email-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Email Bundle",
+    "keywords": ["BAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "a2lix/translation-form-bundle" : "1.*@dev"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\EmailBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/EmailBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

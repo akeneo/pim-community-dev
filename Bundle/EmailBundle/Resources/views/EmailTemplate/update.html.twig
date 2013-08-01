@@ -1,0 +1,103 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with [
+    'OroUIBundle:Form:fields.html.twig',
+]%}
+{% set title = form.vars.value.id
+    ? 'Edit email template "%name%"'|trans({'%name%': form.vars.value.name})
+    : isClone ? 'Clone Email Template'|trans : 'Add Email Template'|trans
+%}
+{% if form.vars.value.id %}
+    {% oro_title_set({params : {"%name%": form.vars.value.name} }) %}
+{% endif %}
+
+{% set formAction = form.vars.value.id
+    ? path('oro_email_emailtemplate_update', { id: form.vars.value.id })
+    : path('oro_email_emailtemplate_create')
+%}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_clone') %}
+        {{ UI.button({
+                'path' :  path('oro_email_emailtemplate_clone', {'id': form.vars.value.id}),
+                'title' : 'Clone',
+                'label' : 'Clone',
+                aClass: 'btn-success',
+                iClass: 'icon-share'
+            })
+        }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {% set cancelButton = UI.button({'path' : path('oro_email_emailtemplate_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) %}
+    {% if form.vars.value.isSystem == false %}
+        {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_remove') %}
+            {{
+                UI.deleteButton({
+                    'dataUrl': path('oro_api_delete_emailtemplate', {'id': form.vars.value.id}),
+                    'dataRedirect': path('oro_email_emailtemplate_index'),
+                    'aCss': 'no-hash remove-button',
+                    'id': 'btn-remove-emailtemplate',
+                    'dataId': form.vars.value.id,
+                    'dataMessage': 'Are you sure you want to delete this email template?',
+                    'title': 'Delete email template',
+                    'label': 'Delete'
+                })
+            }}
+            {{ UI.buttonSeparator() }}
+        {% endif %}
+        {{ cancelButton }}
+
+        {{ UI.saveAndStayButton() }}
+        {{ UI.saveAndCloseButton() }}
+    {% else %}
+        {{ cancelButton  }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+                'entity':      form.vars.value,
+                'indexPath':   path('oro_email_emailtemplate_index'),
+                'indexLabel': 'Email Templates',
+                'entityTitle': title
+            }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'emailtemplate-edit' %}
+
+    {% set dataBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.entityName),
+                    form_row(form.type),
+                    form_row(form.name)
+                ]
+            }]
+        }, {
+            'title': 'Template data',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.translations)
+                ]
+            }]
+    }]
+    %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+        }
+    %}
+
+    {{ parent() }}
+{% endblock content_data %}

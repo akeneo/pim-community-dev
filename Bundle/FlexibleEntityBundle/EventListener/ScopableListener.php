@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -11,7 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 
 /**
  * Aims to inject selected scope into loaded entity
- *
  */
 class ScopableListener implements EventSubscriber
 {

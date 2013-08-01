@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,8 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 
 /**
  * Base Doctrine ORM entity
- *
- *
  */
 abstract class AbstractEntityFlexible extends AbstractFlexible
 {
@@ -138,7 +137,16 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValues()
     {
-        return $this->values;
+        if (!isset($this->values) || !$this->values->count()) {
+            return $this->values;
+        }
+
+        $collection = new ArrayCollection();
+        foreach ($this->values as $value) {
+            $collection[$value->getAttribute()->getCode()] = $value;
+        }
+
+        return $collection;
     }
 
     /**
@@ -237,6 +245,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                 }
             }
         );
+
         return (count($values) >= 1);
     }
 

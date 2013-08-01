@@ -7,8 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Repository for AttributeOption entity
- *
- * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeOptionRepository extends EntityRepository
 {

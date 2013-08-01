@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\EventListener;
 
 use Symfony\Component\Form\Form;
@@ -11,8 +12,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Aims to customized attribute form type
- *
- *
  */
 class AttributeTypeSubscriber implements EventSubscriberInterface
 {

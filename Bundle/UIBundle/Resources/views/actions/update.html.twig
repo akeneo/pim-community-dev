@@ -12,9 +12,10 @@
                         <div class="pull-right">
                             {% block navButtons %}
                             {% endblock navButtons %}
+                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
                         {% if (entityClass is defined and form.vars.value.id) %}
-                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value } %}
+                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
                         {% endif %}
                     </div>
                     <div class="span9">
@@ -31,6 +32,12 @@
                                             <div class="pull-left">
                                                 <div class="sub-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
                                                 <span class="separator">/</span>
+                                                {% if breadcrumbs.additional is defined %}
+                                                    {% for breadcrumb in breadcrumbs.additional %}
+                                                    <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                                    <span class="separator">/</span>
+                                                    {% endfor %}
+                                                {% endif %}
                                                 <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
                                             </div>
                                         {% endblock breadcrumbs %}

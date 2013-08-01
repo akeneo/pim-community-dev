@@ -1,0 +1,107 @@
+oro_entity_config:
+    datagrid:
+        entity:
+            grid_action:
+                -                           {"name":"Remove", "route":"oro_entityextend_remove", "type":"delete", "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            layout_action:
+                -                           {"name":"Create", "route":"oro_entityextend_create", "entity_id":true, "filter":"is_extend"}
+            items:
+                enabled:
+                    options:
+                        default_value:      true
+                        is_bool:            true
+                    grid:
+                        type:               boolean
+                        label:              'Show in Datagrid'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Show in Datagrid"
+
+            form:
+                block_config:
+                    datagrid:
+                        title:              'test Datagrid Config'
+                        subblocks:
+                            base:           ~
+
+        field:
+            grid_action:
+                -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"delete", "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            layout_action:
+                -                           {"name":"Create", "route":"oro_entityextend_field_create", "entity_id":true, "filter":"is_extend"}
+
+            form:
+                block_config:
+                    datagrid:
+                        title:              'test Datagrid Config'
+                        subblocks:
+                            base:           ~
+            items:
+                enabled:
+                    options:
+                        default_value:      true
+                        is_bool:            true
+                    grid:
+                        type:               boolean
+                        label:              'Show in Datagrid'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Show in Datagrid"
+
+                is_searchable:
+                    options:
+                        default_value:      false
+                        is_bool:            true
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid search'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid search"
+
+                is_filtrableble:
+                    options:
+                        default_value:      false
+                        is_bool:            true
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid filter'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid filter"

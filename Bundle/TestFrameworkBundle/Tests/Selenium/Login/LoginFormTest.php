@@ -78,8 +78,8 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitPageToLoad();
         $this->assertEquals('Dashboard', $this->title());
 
-        $this->byXPath("//*[@id='top-page']//div/div/div/ul[2]/li[1]/a")->click();
-        $this->byXPath("//*[@id='top-page']//div/ul//li/a[contains(.,'Logout')]")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']//li/a[contains(.,'Logout')]")->click();
         $this->assertEquals('Login', $this->title());
     }
 
@@ -101,7 +101,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
 
         $actualResult = $this->byXPath("//div[contains(@class,'alert')]/div")->text();
 
-        $this->assertContains('Login', $this->title());
+        $this->assertEquals('Login', $this->title());
         $this->assertEquals("Bad credentials", $actualResult);
     }
 

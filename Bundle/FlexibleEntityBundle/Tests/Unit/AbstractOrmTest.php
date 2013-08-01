@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit;
 
 use Doctrine\ORM\EntityManager;
@@ -11,7 +12,6 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Abstract test class which mock the entity manager
- *
  */
 abstract class AbstractOrmTest extends OrmTestCase
 {

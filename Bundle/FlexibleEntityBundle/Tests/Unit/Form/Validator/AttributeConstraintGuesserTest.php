@@ -6,6 +6,9 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\Validator\Constraints;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
 
+/**
+ * Test related class
+ */
 class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()

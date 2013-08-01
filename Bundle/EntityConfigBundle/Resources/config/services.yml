@@ -1,0 +1,46 @@
+parameters:
+    oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\ConfigManager
+    oro_entity_config.cache.file_cache.class:                   Oro\Bundle\EntityConfigBundle\Cache\FileCache
+    oro_entity_config.command.setup.class:                      Oro\Bundle\EntityConfigBundle\Command\SetupCommand
+    oro_entity_config.form.type.config_entity.class:            Oro\Bundle\EntityConfigBundle\Form\Type\ConfigEntityType
+    oro_entity_config.form.type.config_field.class:             Oro\Bundle\EntityConfigBundle\Form\Type\ConfigFieldType
+
+services:
+    oro_entity_config.proxy.entity_manager:
+        tags:
+            - { name: oro_entity_config.proxy,  service: doctrine.orm.default_entity_manager}
+    oro_entity_config.proxy.security_context:
+        tags:
+            - { name: oro_entity_config.proxy,  service: security.context}
+
+    oro_entity_config.config_manager:
+        class:                                                  %oro_entity_config.config_manager.class%
+        arguments:
+            - @oro_entity_config.metadata.annotation_metadata_factory
+            - @event_dispatcher
+            - @oro_entity_config.proxy.entity_manager
+            - @oro_entity_config.proxy.security_context
+        calls:
+            - [setCache, [@oro_entity_config.cache.file_cache]]
+
+    oro_entity_config.cache.file_cache:
+        class:                                                  %oro_entity_config.cache.file_cache.class%
+        arguments:                                              [%oro_entity_config.cache_dir.config%]
+        public:                                                 false
+
+    oro_entity_config.command:
+        class:                                                  %oro_entity_config.command.setup.class%
+        calls:
+            - [setContainer, [@service_container]]
+
+    oro_entity_config.form.type.config_entity:
+        class:                                                  %oro_entity_config.form.type.config_entity.class%
+        arguments:                                              [@oro_entity_config.config_manager]
+        tags:
+            - { name: form.type, alias: oro_entity_config_config_entity_type }
+
+    oro_entity_config.form.type.config_field:
+        class:                                                  %oro_entity_config.form.type.config_field.class%
+        arguments:                                              [@oro_entity_config.config_manager]
+        tags:
+            - { name: form.type, alias: oro_entity_config_config_field_type }

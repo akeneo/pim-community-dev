@@ -3,6 +3,8 @@ oro_menu_config:
         audit_list:
             label: 'Data Audit'
             route: 'oro_dataaudit_index'
+            extras:
+                routes: ['oro_dataaudit_*']
 
     tree:
         application_menu:
@@ -12,4 +14,4 @@ oro_menu_config:
                         audit_list: ~
 
 oro_titles:
-    oro_dataaudit_index: Data Audit
+    oro_dataaudit_index: ~

@@ -1,11 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 /**
  * Abstract entity attribute, independent of storage
- *
  */
 abstract class AbstractAttribute implements TimestampableInterface
 {
