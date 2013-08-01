@@ -108,13 +108,13 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param $code
+     * @param $fieldName
      * @return ConfigField
      */
-    public function getField($code)
+    public function getField($fieldName)
     {
-        $fields = $this->getFields(function (ConfigField $field) use ($code) {
-            return $field->getCode() == $code;
+        $fields = $this->getFields(function (ConfigField $field) use ($fieldName) {
+            return $field->getFieldName() == $fieldName;
         });
 
         return $fields->first();

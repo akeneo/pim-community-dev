@@ -19,7 +19,7 @@ class ConfigField extends AbstractConfig
 
     /**
      * @var integer
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -42,9 +42,9 @@ class ConfigField extends AbstractConfig
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(name="field_name", type="string", length=255)
      */
-    protected $code;
+    protected $fieldName;
 
     /**
      * @var string
@@ -52,12 +52,12 @@ class ConfigField extends AbstractConfig
      */
     protected $type;
 
-    public function __construct($code = null, $type = null)
+    public function __construct($fieldName = null, $type = null)
     {
-        $this->code   = $code;
-        $this->type   = $type;
-        $this->values = new ArrayCollection;
-        $this->mode   = self::MODE_VIEW_DEFAULT;
+        $this->fieldName = $fieldName;
+        $this->type      = $type;
+        $this->values    = new ArrayCollection;
+        $this->mode      = self::MODE_VIEW_DEFAULT;
     }
 
     /**
@@ -69,12 +69,12 @@ class ConfigField extends AbstractConfig
     }
 
     /**
-     * @param string $code
+     * @param string $fieldName
      * @return $this
      */
-    public function setCode($code)
+    public function setFieldName($fieldName)
     {
-        $this->code = $code;
+        $this->fieldName = $fieldName;
 
         return $this;
     }
@@ -82,9 +82,9 @@ class ConfigField extends AbstractConfig
     /**
      * @return string
      */
-    public function getCode()
+    public function getFieldName()
     {
-        return $this->code;
+        return $this->fieldName;
     }
 
     /**
