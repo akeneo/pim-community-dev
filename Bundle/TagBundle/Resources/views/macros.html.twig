@@ -1,11 +1,4 @@
 {% macro renderView(entity) %}
-    {# // check if block was not included yet #}
-    {% set _block = block('oro_tag_view_js') %}
-    {% if (_block is empty) %}
-        {% include 'OroTagBundle::javascript.html.twig' %}
-        {{ block('oro_tag_view_js')|raw }}
-    {% endif %}
-
     <div id="tags">
         <div class="tag-view span6">
             {% import _self as _ %}
@@ -48,6 +41,7 @@
             new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.vars.id }}', tags: tags});
 
             {% if not resource_granted('oro_tag_assign_unassign') %}
+                $('#tag-sort-actions').hide();
                 $('#{{ form.tags.vars.id }}').select2("readonly", true);
             {% endif %}
         });
