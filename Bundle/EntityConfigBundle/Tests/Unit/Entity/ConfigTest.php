@@ -51,6 +51,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         /** test ConfigField */
         $this->assertEmpty($this->configField->getId());
 
+        $this->configField->setMode(ConfigField::MODE_VIEW_READONLY);
+        $this->assertEquals(ConfigField::MODE_VIEW_READONLY, $this->configField->getMode());
+
         /** test ConfigValue */
         $this->assertEmpty($this->configValue->getId());
         $this->assertEmpty($this->configValue->getScope());
@@ -59,6 +62,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->configValue->getField());
 
         $this->assertFalse($this->configValue->getSerializable());
+
+        $this->configValue->setSerializable(true);
+        $this->assertTrue($this->configValue->getSerializable());
 
 
         $this->assertEmpty($this->configValue->getEntity());
@@ -160,6 +166,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'doctrine'      => $this->configValue
             ),
             $this->configField->toArray('datagrid')
+        );
+
+        $this->configEntity->addValue(new ConfigValue('is_searchable', 'datagrid', false));
+        $this->configEntity->fromArray('datagrid', $values, $serializable);
+        $this->assertEquals(
+            array(
+                'is_searchable' => 1,
+                'is_sortable'   => 0,
+                'doctrine'      => $this->configValue
+            ),
+            $this->configEntity->toArray('datagrid')
         );
     }
 }

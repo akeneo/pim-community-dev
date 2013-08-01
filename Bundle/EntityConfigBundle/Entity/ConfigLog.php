@@ -9,7 +9,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Table(name="oro_config_log")
- * @ORM\Entity(repositoryClass="Oro\Bundle\EntityConfigBundle\Entity\Repository\ConfigLogRepository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
 class ConfigLog

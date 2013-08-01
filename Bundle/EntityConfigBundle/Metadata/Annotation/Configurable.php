@@ -33,7 +33,9 @@ class Configurable
         }
 
         if (!is_array($this->defaultValues)) {
-            throw new AnnotationException(sprintf('Annotation "Configurable" parameter "defaultValues" expect "array" give "%s"', $this->defaultValues));
+            throw new AnnotationException(
+                sprintf('Annotation "Configurable" parameter "defaultValues" expect "array" but "%s" given', gettype($this->defaultValues))
+            );
         }
 
         if (!in_array($this->viewMode, array(AbstractConfig::MODE_VIEW_DEFAULT, AbstractConfig::MODE_VIEW_HIDDEN, AbstractConfig::MODE_VIEW_READONLY))) {

@@ -14,7 +14,7 @@ abstract class AbstractEntityManagerTest extends OrmTestCase
      */
     protected $em;
 
-    public function setUp()
+    protected function setUp()
     {
         $reader = new AnnotationReader();
 
