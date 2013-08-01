@@ -11,6 +11,9 @@ namespace Context\Page\Base;
  */
 class Index extends Base
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -23,6 +26,9 @@ class Index extends Base
         );
     }
 
+    /**
+     * Click the create button
+     */
     public function clickCreationLink()
     {
         $this->getElement('Creation link')->click();

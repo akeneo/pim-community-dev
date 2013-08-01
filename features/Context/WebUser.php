@@ -499,7 +499,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->getAvailableAttribute($attribute, $group);
+            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
             if (!$not) {
                 if (!$element) {
                     throw $this->createExpectationException(sprintf(
@@ -525,12 +525,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->getCurrentPage()->openAvailableAttributesMenu();
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $this->getCurrentPage()->selectAvailableAttribute($attribute);
-        }
-
-        $this->getCurrentPage()->addSelectedAvailableAttributes();
+        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
         $this->wait();
     }
 
@@ -828,7 +823,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $channels = $this->listToArray($channels);
 
         foreach ($channels as $channel) {
-            if (!$this->getPage('Channel index')->findChannelRow($channel)) {
+            if (!$this->getPage('Channel index')->getGridRow($channel)) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see channel %s, not found', $channel)
                 );

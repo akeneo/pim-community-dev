@@ -5,6 +5,8 @@ namespace Context\Page\Family;
 use Context\Page\Family\Creation;
 
 /**
+ * Family edit page
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -13,6 +15,9 @@ class Edit extends Creation
 {
     protected $path = '/enrich/family/edit/{id}';
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -20,26 +25,18 @@ class Edit extends Creation
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Available attributes'            => array('css' => '#pim_available_product_attributes_attributes'),
-                'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
-                'Available attributes add button' => array('css' => 'a:contains("Add")'),
                 'Attributes'                      => array('css' => '#attributes table'),
                 'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
             )
         );
     }
 
-    public function getAvailableAttribute($attribute, $group)
-    {
-        return $this
-            ->getElement('Available attributes')
-            ->find('css', sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group, $attribute
-            ))
-        ;
-    }
-
+    /**
+     * @param string $attribute
+     * @param string $group
+     *
+     * @return NodeElement
+     */
     public function getAttribute($attribute, $group)
     {
         $groupNode = $this
@@ -55,27 +52,14 @@ class Edit extends Creation
             ));
         }
 
-        return $groupNode
-            ->getParent()
-            ->find('css', sprintf(
-                'td:contains("%s")', $attribute
-            ))
-        ;
+        return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
     }
 
-    public function selectAvailableAttribute($attribute)
-    {
-        $this->getElement('Available attributes')->selectOption($attribute, true);
-    }
-
-    public function addSelectedAvailableAttributes()
-    {
-        $this
-            ->getElement('Available attributes add button')
-            ->press()
-        ;
-    }
-
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
     public function getUrl(array $options = array())
     {
         $url = $this->getPath();
@@ -87,6 +71,11 @@ class Edit extends Creation
         return $url;
     }
 
+    /**
+     * @param string $attribute
+     *
+     * @return NodeElement
+     */
     public function getRemoveLinkFor($attribute)
     {
         $attributeRow = $this
@@ -114,6 +103,9 @@ class Edit extends Creation
         return $removeLink;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributeAsLabelOptions()
     {
         return array_map(function ($option) {
@@ -121,16 +113,15 @@ class Edit extends Creation
         }, $this->getElement('Attribute as label choices')->findAll('css', 'option'));
     }
 
+    /**
+     * @param string $attribute
+     *
+     * @return Edit
+     */
     public function selectAttributeAsLabel($attribute)
     {
         $this->getElement('Attribute as label choices')->selectOption($attribute);
 
         return $this;
-    }
-
-    public function openAvailableAttributesMenu()
-    {
-        $this->visitTab('Attributes');
-        $this->getElement('Available attributes menu')->click();
     }
 }

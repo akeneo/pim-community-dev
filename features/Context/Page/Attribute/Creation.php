@@ -5,6 +5,8 @@ namespace Context\Page\Attribute;
 use Context\Page\Base\Form;
 
 /**
+ * Attribute creation page
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -13,6 +15,9 @@ class Creation extends Form
 {
     protected $path = '/enrich/product-attribute/create';
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -29,11 +34,18 @@ class Creation extends Form
         );
     }
 
+    /**
+     * Select the attribute type
+     * @param string $type
+     */
     public function selectAttributeType($type)
     {
         $this->getElement('Attribute type selector')->selectOption($type);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findField($name)
     {
         $field = parent::findField($name);
@@ -44,6 +56,11 @@ class Creation extends Form
         return $field;
     }
 
+    /**
+     * Add an attribute option
+     * @param string  $name
+     * @param boolean $selectedByDefault
+     */
     public function addOption($name, $selectedByDefault = 'no')
     {
         $selectedByDefault = strtolower($selectedByDefault == 'yes') ? true : false;
@@ -71,16 +88,28 @@ class Creation extends Form
         }
     }
 
+    /**
+     * Count the number of attribute options
+     * @return integer
+     */
     public function countOptions()
     {
         return count($this->findAll('css', $this->elements['Attribute options']['css']));
     }
 
+    /**
+     * Count the number of removable attribute options
+     * @return integer
+     */
     public function countRemovableOptions()
     {
         return count($this->findAll('css', 'button.action-delete-inline:not([disabled])'));
     }
 
+    /**
+     * Fill the default label field
+     * @param string $value
+     */
     public function fillDefaultLabelField($value)
     {
         $this->getElement('Default label field')->setValue($value);

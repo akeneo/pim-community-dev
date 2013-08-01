@@ -6,6 +6,8 @@ use Context\Page\Base\Form;
 use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
+ * Product creation page
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -16,6 +18,9 @@ class Creation extends Form
         'Activated locales' => array('css' => '#select2-drop'),
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function findField($field)
     {
         $label = $this->find('css', sprintf('#pim_product_product_create label:contains("%s")', $field));
@@ -37,12 +42,12 @@ class Creation extends Form
         return $field;
     }
 
+    /**
+     * @param string $locale
+     */
     public function selectActivatedLocale($locale)
     {
-        $elt = $this
-            ->getElement('Activated locales')
-            ->find('css', sprintf('li:contains("%s")', $locale))
-        ;
+        $elt = $this->getElement('Activated locales')->find('css', sprintf('li:contains("%s")', $locale));
 
         if (!$elt) {
             throw new \Exception(sprintf('Could not find locale "%s".', $locale));
