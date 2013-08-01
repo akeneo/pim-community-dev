@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Category reader
+ * Attribute reader
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -30,7 +30,7 @@ class AttributeReader extends ORMCursorReader
     {
         if (!$this->query) {
             $this->query = $this->em
-                ->getRepository('PimProductBundle:Category')
+                ->getRepository('PimProductBundle:ProductAttribute')
                 ->createQueryBuilder('c')
                 ->getQuery();
         }
