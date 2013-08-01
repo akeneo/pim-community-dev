@@ -28,7 +28,7 @@ class Config implements ConfigInterface
     /**
      * @return IdInterface
      */
-    public function getId()
+    public function getConfigId()
     {
         return $this->id;
     }
@@ -44,7 +44,7 @@ class Config implements ConfigInterface
         if (isset($this->values[$code])) {
             return $this->values[$code];
         } elseif ($strict) {
-            throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getId()));
+            throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getConfigId()));
         }
 
         return null;

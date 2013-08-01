@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Cache;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\IdInterface;
 
 class FileCache implements CacheInterface
 {
@@ -21,13 +22,12 @@ class FileCache implements CacheInterface
     }
 
     /**
-     * @param $className
-     * @param $scope
-     * @return EntityConfig
+     * @param IdInterface $configId
+     * @return ConfigInterface
      */
-    public function loadConfigFromCache($className, $scope)
+    public function loadConfigFromCache(IdInterface $configId)
     {
-        $path = $this->dir . '/' . strtr($className, '\\', '-') . '.' . $scope . '.cache.php';
+        $path = $this->dir . '/' . $configId->getId() . '.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -36,21 +36,20 @@ class FileCache implements CacheInterface
     }
 
     /**
-     * @param EntityConfig $config
+     * @param ConfigInterface $config
      */
-    public function putConfigInCache(EntityConfig $config)
+    public function putConfigInCache(ConfigInterface $config)
     {
-        $path = $this->dir . '/' . strtr($config->getClassName(), '\\', '-') . '.' . $config->getScope() . '.cache.php';
+        $path = $this->dir . '/' . $config->getConfigId()->getId() . '.cache.php';
         file_put_contents($path, '<?php return unserialize(' . var_export(serialize($config), true) . ');');
     }
 
     /**
-     * @param $className
-     * @param $scope
+     * @param IdInterface $configId
      */
-    public function removeConfigFromCache($className, $scope)
+    public function removeConfigFromCache(IdInterface $configId)
     {
-        $path = $this->dir . '/' . strtr($className, '\\', '-') . '.' . $scope . '.cache.php';
+        $path = $this->dir . '/' . $configId->getId() . '.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }

@@ -3,8 +3,8 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Cache;
 
 use Oro\Bundle\EntityConfigBundle\Cache\FileCache;
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
-use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityId;
 
 class FileCacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,6 +15,8 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
 
     private $testConfig;
 
+    private $testConfigId;
+
     private $cacheDir;
 
     protected function setUp()
@@ -22,8 +24,9 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
         $this->cacheDir = sys_get_temp_dir() . '/__phpunit__config_file_cache';
         mkdir($this->cacheDir);
 
-        $this->testConfig = new EntityConfig(ConfigManagerTest::DEMO_ENTITY, 'test');
-        $this->fileCache  = new FileCache($this->cacheDir);
+        $this->testConfigId = new EntityId('Test/Class', 'testScope');
+        $this->testConfig   = new Config($this->testConfigId);
+        $this->fileCache    = new FileCache($this->cacheDir);
     }
 
     protected function tearDown()
@@ -33,16 +36,16 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testCache()
     {
-        $result = $this->fileCache->loadConfigFromCache(ConfigManagerTest::DEMO_ENTITY, 'test');
+        $result = $this->fileCache->loadConfigFromCache($this->testConfigId);
         $this->assertEquals(null, $result);
 
         $this->fileCache->putConfigInCache($this->testConfig);
 
-        $result = $this->fileCache->loadConfigFromCache(ConfigManagerTest::DEMO_ENTITY, 'test');
+        $result = $this->fileCache->loadConfigFromCache($this->testConfigId);
         $this->assertEquals($this->testConfig, $result);
 
-        $this->fileCache->removeConfigFromCache(ConfigManagerTest::DEMO_ENTITY, 'test');
-        $result = $this->fileCache->loadConfigFromCache(ConfigManagerTest::DEMO_ENTITY, 'test');
+        $this->fileCache->removeConfigFromCache($this->testConfigId);
+        $result = $this->fileCache->loadConfigFromCache($this->testConfigId);
         $this->assertEquals(null, $result);
     }
 
@@ -50,13 +53,13 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
     {
         $cacheDir = '/__phpunit__config_file_cache_wrong';
         $this->setExpectedException('\InvalidArgumentException', sprintf('The directory "%s" does not exist.', $cacheDir));
-        $this->fileCache  = new FileCache($cacheDir);
+        $this->fileCache = new FileCache($cacheDir);
     }
 
     public function testExceptionNotWritableDirectory()
     {
         $cacheDir = '/';
         $this->setExpectedException('\InvalidArgumentException', sprintf('The directory "%s" is not writable.', $cacheDir));
-        $this->fileCache  = new FileCache($cacheDir);
+        $this->fileCache = new FileCache($cacheDir);
     }
 }
