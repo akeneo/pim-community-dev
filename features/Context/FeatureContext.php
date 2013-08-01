@@ -27,7 +27,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('webUser', new WebUser());
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
-        $this->useContext('modal', new ModalContext());
     }
 
     /**

@@ -1,21 +1,24 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Export;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
+ * Export index page
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyCreation extends Page
+class Index extends Page
 {
-    protected $path='/enrich/family/create';
+    protected $path = '/ie/export/';
 
-    public function getFieldLocator($name, $locale)
+    public function clickCreationLink($exportLink)
     {
-        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
+        $this->openCreationDropdown();
+        $this->clickLink($exportLink);
     }
 
     public function getUrl()
@@ -23,8 +26,8 @@ class FamilyCreation extends Page
         return $this->getPath();
     }
 
-    public function save()
+    private function openCreationDropdown()
     {
-        $this->pressButton('Save');
+        $this->clickLink('New export');
     }
 }

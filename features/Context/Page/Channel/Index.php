@@ -1,7 +1,8 @@
 <?php
-namespace Context\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+namespace Context\Page\Channel;
+
+use Context\Page\Base\Grid;
 
 /**
  * Channel index page
@@ -10,22 +11,18 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelIndex extends Page
+class Index extends Grid
 {
     protected $path = '/configuration/channel/';
 
-    protected $elements = array(
-        'Channels' => array('css' => 'table.grid'),
-    );
-
     public function findChannelRow($name)
     {
-        return $this->getElement('Channels')->find('css', sprintf('tr:contains("%s")', $name));
+        return $this->getElement('Grid content')->find('css', sprintf('tr:contains("%s")', $name));
     }
 
     public function channelCanExport($channel, $category)
     {
-        return $this->getElement('Channels')->find(
+        return $this->getElement('Grid content')->find(
             'css', sprintf('tr:contains("%s"):contains("%s")', $channel, $category)
         );
     }

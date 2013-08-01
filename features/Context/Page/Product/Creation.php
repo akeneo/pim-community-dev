@@ -1,8 +1,8 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Product;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Form;
 use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
@@ -10,7 +10,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCreation extends Page
+class Creation extends Form
 {
     protected $elements = array(
         'Activated locales' => array('css' => '#select2-drop'),
@@ -51,4 +51,3 @@ class ProductCreation extends Page
         $elt->click();
     }
 }
-

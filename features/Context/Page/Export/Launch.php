@@ -1,25 +1,18 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Export;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
- * Category tree creation page
+ * Export launch page
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryTreeCreation extends Page
+class Launch extends Page
 {
-    protected $path = '/enrich/category-tree/create';
-
-    /**
-     * Save the categoy tree
-     */
-    public function save()
-    {
-        $this->pressButton('Save');
-    }
+    protected $path = '/ie/export/{id}/launch';
 }

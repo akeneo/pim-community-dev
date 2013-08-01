@@ -1,8 +1,8 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Product;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Form;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
@@ -11,23 +11,30 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductEdit extends Page
+class Edit extends Form
 {
     protected $path = '/enrich/product/{id}/edit';
 
-    protected $elements = array(
-        'Locales dropdown'                => array('css' => '#locale-switcher'),
-        'Available attributes'            => array('css' => '#attributes .ui-multiselect-checkboxes'),
-        'Available attributes add button' => array('css' => 'a:contains("Add")'),
-        'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
-        'Title'                           => array('css' => '.navbar-title'),
-        'Tabs'                            => array('css' => '#form-navbar'),
-        'Groups'                          => array('css' => '.tab-groups'),
-        'Locales selector'                => array('css' => '#pim_product_locales'),
-        'Enable switcher'                 => array('css' => '#pim_product_enabled'),
-        'Updates grid'                    => array('css' => '#history table.grid'),
-        'Dialog'                          => array('css' => 'div.modal'),
-    );
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Locales dropdown'                => array('css' => '#locale-switcher'),
+                'Available attributes'            => array('css' => '#attributes .ui-multiselect-checkboxes'),
+                'Available attributes add button' => array('css' => 'a:contains("Add")'),
+                'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
+                'Title'                           => array('css' => '.navbar-title'),
+                'Groups'                          => array('css' => '.tab-groups'),
+                'Locales selector'                => array('css' => '#pim_product_locales'),
+                'Enable switcher'                 => array('css' => '#pim_product_enabled'),
+                'Updates grid'                    => array('css' => '#history table.grid'),
+            )
+        );
+    }
+
 
     public function pressButton($locator)
     {
@@ -43,23 +50,6 @@ class ProductEdit extends Page
             throw new ElementNotFoundException(
                 $this->getSession(), 'button', 'id|name|title|alt|value', $locator
             );
-        }
-
-        $button->click();
-    }
-
-    public function confirmRemoval()
-    {
-        $element = $this->getElement('Dialog');
-
-        if (!$element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        $button = $element->find('css', 'a.btn.ok');
-
-        if (!$button) {
-            throw new \Exception('Could not find confirmation button');
         }
 
         $button->click();
@@ -81,11 +71,6 @@ class ProductEdit extends Page
     public function selectLanguage($language)
     {
         $this->getElement('Locales selector')->selectOption(ucfirst($language), true);
-    }
-
-    public function save()
-    {
-        $this->pressButton('Save');
     }
 
     public function switchLocale($locale)
@@ -188,9 +173,9 @@ class ProductEdit extends Page
     {
         $titleElt = $this->getElement('Title');
 
-        $subtitle        = $titleElt->find('css', '.sub-title');
-        $separator       = $titleElt->find('css', '.separator');
-        $name            = $titleElt->find('css', '.product-name');
+        $subtitle  = $titleElt->find('css', '.sub-title');
+        $separator = $titleElt->find('css', '.separator');
+        $name      = $titleElt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name ) {
             throw new \Exception('Could not find product title');
@@ -202,11 +187,6 @@ class ProductEdit extends Page
             trim($separator->getText()),
             trim($name->getText())
         );
-    }
-
-    public function visitTab($tab)
-    {
-        $this->getElement('Tabs')->clickLink($tab);
     }
 
     public function visitGroup($group)

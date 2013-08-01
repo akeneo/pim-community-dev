@@ -8,7 +8,7 @@ Feature: Create an export
     Given I am logged in as "admin"
     And I am on the exports index page
     And I create a new "Product export in CSV" export
-    And I visit the "Step 1" tab
+    And I visit the "Export" tab
     Then I should see "Reader - Scoped products"
     And I should see "Processor - CSV Serializer"
     And I should see "Writer - File"
@@ -21,7 +21,7 @@ Feature: Create an export
     When I fill in the following information:
       | Code  | mobile_product_export |
       | Label | Mobile product export |
-    And I visit the "Step 1" tab
+    And I visit the "Export" tab
     And I fill in the following information:
       | Path  | /tmp/export.csv       |
     And I select the channel "Mobile"

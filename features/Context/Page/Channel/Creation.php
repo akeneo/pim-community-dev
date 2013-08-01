@@ -1,7 +1,8 @@
 <?php
-namespace Context\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+namespace Context\Page\Channel;
+
+use Context\Page\Base\Form;
 
 /**
  * Channel creation page
@@ -10,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelCreation extends Page
+class Creation extends Form
 {
     protected $path = '/configuration/channel/create';
 }
