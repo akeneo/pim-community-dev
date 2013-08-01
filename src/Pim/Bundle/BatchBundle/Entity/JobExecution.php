@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
-use \DateTime;
-use \Exception;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
@@ -118,7 +116,7 @@ class JobExecution
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->stepExecutions = array();
-        $this->createTime = new DateTime();
+        $this->createTime = new \DateTime();
     }
 
     /**
@@ -167,7 +165,7 @@ class JobExecution
      *
      * @param mixed $endTime the time that this execution ended
      */
-    public function setEndTime(DateTime $endTime)
+    public function setEndTime(\DateTime $endTime)
     {
         $this->endTime = $endTime;
 
@@ -189,7 +187,7 @@ class JobExecution
      *
      * @param mixed $startTime the time this execution started
      */
-    public function setStartTime(DateTime $startTime)
+    public function setStartTime(\DateTime $startTime)
     {
         $this->startTime = $startTime;
 
@@ -210,7 +208,7 @@ class JobExecution
      *
      * @param mixed $startTime the time this execution has been created
      */
-    public function setCreateTime(DateTime $createTime)
+    public function setCreateTime(\DateTime $createTime)
     {
         $this->createTime = $createTime;
 
@@ -232,7 +230,7 @@ class JobExecution
      *
      * @param mixed $startTime the time this execution has been updated
      */
-    public function setUpdatedTime(DateTime $updatedTime)
+    public function setUpdatedTime(\DateTime $updatedTime)
     {
         $this->updatedTime = $updatedTime;
 
@@ -382,7 +380,7 @@ class JobExecution
      * Add a failure exception
      * @param Exception $e
      */
-    public function addFailureException(Exception $e)
+    public function addFailureException(\Exception $e)
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();

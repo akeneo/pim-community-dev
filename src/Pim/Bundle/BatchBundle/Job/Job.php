@@ -198,7 +198,7 @@ class Job implements JobInterface
 
             if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
-                $execution->setStartTime(time());
+                $execution->setStartTime(new \DateTime());
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
                 //listener.beforeJob(execution);
@@ -238,7 +238,7 @@ class Job implements JobInterface
             $execution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
         }
 
-        $execution->setEndTime(time());
+        $execution->setEndTime(new \DateTime());
 
         /*
         try {

@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
-use \DateTime;
-use \Exception;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
@@ -182,7 +180,7 @@ class StepExecution
 
         $this->executionContext = new ExecutionContext();
 
-        $this->startTime = new DateTime();
+        $this->startTime = new \DateTime();
     }
 
     /**
@@ -249,7 +247,7 @@ class StepExecution
      *
      * @param mixed $endTime the time that this execution ended
      */
-    public function setEndTime(DateTime $endTime)
+    public function setEndTime(\DateTime $endTime)
     {
         $this->endTime = $endTime;
     }
@@ -365,7 +363,7 @@ class StepExecution
      *
      * @param mixed $startTime the time this execution started
      */
-    public function setStartTime(DateTime $startTime)
+    public function setStartTime(\DateTime $startTime)
     {
         $this->startTime = $startTime;
     }
@@ -454,7 +452,7 @@ class StepExecution
      * Add a failure exception
      * @param Exception $e
      */
-    public function addFailureException(Exception $e)
+    public function addFailureException(\Exception $e)
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
@@ -479,7 +477,7 @@ class StepExecution
 
         try {
             $string = $this->getSummary();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $string = $e->getMessage();
         }
 

@@ -158,7 +158,7 @@ abstract class AbstractStep implements StepInterface
     {
         $this->getLogger()->debug("Executing: id=" . $stepExecution->getId());
 
-        $stepExecution->setStartTime(time());
+        $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
 
         $this->getJobRepository()->updateStepExecution($stepExecution);
@@ -184,7 +184,7 @@ abstract class AbstractStep implements StepInterface
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
             $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
@@ -205,13 +205,13 @@ abstract class AbstractStep implements StepInterface
             $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
             $stepExecution->setExitStatus($exitStatus);
             //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
         }
 
         try {
             //getJobRepository().updateExecutionContext(stepExecution);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
             $stepExecution->addFailureException($e);
@@ -220,12 +220,12 @@ abstract class AbstractStep implements StepInterface
             $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
-        $stepExecution->setEndTime(time());
+        $stepExecution->setEndTime( new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
         try {
             //getJobRepository().update(stepExecution);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
             $stepExecution->addFailureException($e);
@@ -236,7 +236,7 @@ abstract class AbstractStep implements StepInterface
 
         try {
             $this->close($stepExecution->getExecutionContext());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
             $stepExecution->addFailureException($e);
         }
