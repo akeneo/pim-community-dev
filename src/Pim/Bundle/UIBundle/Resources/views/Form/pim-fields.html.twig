@@ -64,7 +64,7 @@
         <ul class="unstyled controls">
             <li>
                 <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                {{ form_widget(form.removed) }} {{ form_label(form.removed) }}
+                <label for="{{ form.removed.vars.id }}" style="float: none; display: inline; margin-left: 10px">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
         </ul>
     {% endif %}
