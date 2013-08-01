@@ -50,7 +50,9 @@ class Base extends Page
             throw new \Exception('Could not find dialog window');
         }
 
-        $button = $element->find('css', 'a.btn.close');
+        // TODO: Use the 'Cancel' button instead of the 'Close' button
+        // (waiting for BAP to get the 'Cancel' button on grid actions)
+        $button = $element->find('css', 'a.close');
 
         if (!$button) {
             throw new \Exception('Could not find the cancel button');

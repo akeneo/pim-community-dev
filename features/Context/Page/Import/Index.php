@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Export\Index as ExportIndex;
 
 /**
  * Import index page
@@ -12,30 +12,10 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class Index extends Page
+class Index extends ExportIndex
 {
     /**
      * @var string $path
      */
     protected $path = '/ie/import/';
-
-    /**
-     *
-     * @param string $importLink
-     */
-    public function clickCreationLink($importLink)
-    {
-        $this->openCreationDropdown();
-        $this->clickLink($importLink);
-    }
-
-    public function getUrl()
-    {
-        return $this->getPath();
-    }
-
-    protected function openCreationDropdown()
-    {
-        $this->clickLink('New import');
-    }
 }

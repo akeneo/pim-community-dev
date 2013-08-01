@@ -17,7 +17,7 @@ Feature: Delete import
     Given I am on the imports page
     Then the grid should contain 2 elements
     When I delete the "acme_product_import" job
-    And I confirm on the grid modal window
+    And I confirm the deletion
     Then I should see "Item was deleted"
     And the grid should contain 1 element
     And the grid should contain the elements "acme_attribute_import"
@@ -27,7 +27,7 @@ Feature: Delete import
     Given I am on the imports page
     Then the grid should contain 2 elements
     When I delete the "acme_product_import" job
-    And I cancel on the grid modal window
+    And I cancel the deletion
     Then the grid should contain 2 elements
     And the grid should contain the elements "acme_product_import", "acme_product_import"
     And the grid should not contain the elements "acme_product_export"

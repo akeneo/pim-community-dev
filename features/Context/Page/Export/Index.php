@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Grid;
 
 /**
  * Export index page
@@ -11,11 +11,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends Page
+class Index extends Grid
 {
     protected $path = '/ie/export/';
 
-    public function clickCreationLink($exportLink)
+    public function clickExportCreationLink($exportLink)
     {
         $this->openCreationDropdown();
         $this->clickLink($exportLink);

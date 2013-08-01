@@ -285,6 +285,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I cancel the ([^"]*)$/
+     */
+    public function iCancelThe($action)
+    {
+        $this->getCurrentPage()->cancelDialog();
+    }
+
+    /**
      * @Then /^I should see that the product is available in (.*)$/
      */
     public function iShouldSeeLanguages($languages)
@@ -923,7 +931,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateANewExport($exportTitle)
     {
-        $this->getPage('Export index')->clickCreationLink($exportTitle);
+        $this->getPage('Export index')->clickExportCreationLink($exportTitle);
         $this->currentPage = 'Export creation';
     }
 

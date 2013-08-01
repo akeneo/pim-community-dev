@@ -18,7 +18,7 @@ Feature: Delete export
     Given I am on the exports page
     Then the grid should contain 3 elements
     When I delete the "foo_product_export" job
-    And I confirm on the grid modal window
+    And I confirm the deletion
     Then I should see "Item was deleted"
     And the grid should contain 2 elements
     And the grid should contain the elements "acme_product_export" and "acme_attribute_export"
@@ -28,7 +28,7 @@ Feature: Delete export
     Given I am on the exports page
     Then the grid should contain 3 elements
     When I delete the "foo_product_export" job
-    And I cancel on the grid modal window
+    And I cancel the deletion
     Then the grid should contain 3 elements
     And the grid should contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
     And the grid should not contain the elements "acme_product_import"
