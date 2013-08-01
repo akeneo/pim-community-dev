@@ -60,11 +60,11 @@
     {{ form_errors(form) }}
     {{ form_row(form.file, {'label': form.vars.label}) }}
 
-    {% if form.vars.value %}
+    {% if form.vars.value and form.vars.value.filePath %}
         <ul class="unstyled controls">
             <li>
                 <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                {{ form_widget(form.removed, {attr: {style: 'margin: 4px;'}}) }} Remove
+                {{ form_widget(form.removed) }} {{ form_label(form.removed) }}
             </li>
         </ul>
     {% endif %}
