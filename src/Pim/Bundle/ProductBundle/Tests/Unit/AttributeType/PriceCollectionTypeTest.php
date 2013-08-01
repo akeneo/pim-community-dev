@@ -17,7 +17,8 @@ class PriceCollectionTypeTest extends AttributeTypeTest
     {
         parent::setUp();
 
-        $currencyManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\CurrencyManager')->disableOriginalConstructor()->getMock();
+        $currencyManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\CurrencyManager')
+            ->disableOriginalConstructor()->getMock();
         $this->target = new PriceCollectionType('decimal', 'text', $this->guesser, $currencyManager);
     }
 
@@ -65,7 +66,12 @@ class PriceCollectionTypeTest extends AttributeTypeTest
     {
         $this->assertEquals(
             9,
-            count($this->target->buildAttributeFormTypes($this->getFormFactoryMock(), $this->getAttributeMock(null, null)))
+            count(
+                $this->target->buildAttributeFormTypes(
+                    $this->getFormFactoryMock(),
+                    $this->getAttributeMock(null, null)
+                )
+            )
         );
     }
 }

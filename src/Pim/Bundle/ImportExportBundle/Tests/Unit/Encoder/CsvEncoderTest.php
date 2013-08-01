@@ -165,7 +165,13 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $encoder = new CsvEncoder;
 
-        $this->assertEquals("foo\nbar\n", $encoder->encode(array('foo' => 'bar'), 'csv', array('withHeader' => true, 'heterogeneous' => false)));
-        $this->assertEquals("baz\n", $encoder->encode(array('foo' => 'baz'), 'csv', array('withHeader' => true, 'heterogeneous' => false)));
+        $this->assertEquals(
+            "foo\nbar\n",
+            $encoder->encode(array('foo' => 'bar'), 'csv', array('withHeader' => true, 'heterogeneous' => false))
+        );
+        $this->assertEquals(
+            "baz\n",
+            $encoder->encode(array('foo' => 'baz'), 'csv', array('withHeader' => true, 'heterogeneous' => false))
+        );
     }
 }

@@ -18,13 +18,18 @@ class RangeGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_price_collection',)))
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_price_collection',))
+            )
         );
 
         $this->assertTrue(

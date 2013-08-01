@@ -18,7 +18,10 @@ class LengthGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAttribute()
@@ -32,7 +35,9 @@ class LengthGuesserTest extends ConstraintGuesserTest
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_identifier',)))
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_identifier',))
+            )
         );
     }
 

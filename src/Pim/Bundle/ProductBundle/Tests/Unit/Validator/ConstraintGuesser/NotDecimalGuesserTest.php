@@ -24,7 +24,10 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAttribute()
@@ -57,7 +60,11 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
     {
         $this->assertEquals(
             0,
-            count($this->target->guessConstraints($this->getAttributeMock(array('attributeType'   => 'pim_product_number','decimalsAllowed' => true,))))
+            count(
+                $this->target->guessConstraints(
+                    $this->getAttributeMock(array('attributeType'   => 'pim_product_number','decimalsAllowed' => true,))
+                )
+            )
         );
     }
 }

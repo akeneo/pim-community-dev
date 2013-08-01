@@ -68,9 +68,21 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->job->setJobRepository($this->jobRepository);
         $this->job->execute($jobExecution);
 
-        $this->assertGreaterThanOrEqual($beforeExecute, $jobExecution->getStartTime(), 'Start time after test beginning');
-        $this->assertGreaterThanOrEqual($beforeExecute, $jobExecution->getEndTime(), 'End time after test beginning');
-        $this->assertGreaterThanOrEqual($jobExecution->getEndTime(), $jobExecution->getStartTime(), 'End time after start time');
+        $this->assertGreaterThanOrEqual(
+            $beforeExecute,
+            $jobExecution->getStartTime(),
+            'Start time after test beginning'
+        );
+        $this->assertGreaterThanOrEqual(
+            $beforeExecute,
+            $jobExecution->getEndTime(),
+            'End time after test beginning'
+        );
+        $this->assertGreaterThanOrEqual(
+            $jobExecution->getEndTime(),
+            $jobExecution->getStartTime(),
+            'End time after start time'
+        );
         // No step executed, must be not completed
         $this->assertEquals(BatchStatus::STARTED, $jobExecution->getStatus()->getValue(), 'Batch status started');
     }
@@ -86,7 +98,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $jobExecution = $this->jobRepository->createJobExecution($this->job->getName(), $jobParameters);
         $this->job->setJobRepository($this->jobRepository);
 
-        $mockStep = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step'));
+        $mockStep = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step')
+        );
 
         $mockStep->setLogger($this->logger);
         $mockStep->setJobRepository($this->jobRepository);
@@ -99,7 +114,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->job->execute($jobExecution);
 
         $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue(), 'Batch status failed');
-        $this->assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode(), 'Exit status code stopped');
+        $this->assertEquals(
+            ExitStatus::FAILED,
+            $jobExecution->getExitStatus()->getExitCode(),
+            'Exit status code stopped'
+        );
         $this->assertStringStartsWith(
             $exception->getTraceAsString(),
             $jobExecution->getExitStatus()->getExitDescription(),
@@ -137,7 +156,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->job->execute($jobExecution);
 
         $this->assertEquals(BatchStatus::STOPPED, $jobExecution->getStatus()->getValue(), 'Batch status stopped');
-        $this->assertEquals(ExitStatus::STOPPED, $jobExecution->getExitStatus()->getExitCode(), 'Exit status code stopped');
+        $this->assertEquals(
+            ExitStatus::STOPPED,
+            $jobExecution->getExitStatus()->getExitCode(),
+            'Exit status code stopped'
+        );
         $this->assertStringStartsWith(
             'Pim\Bundle\BatchBundle\Job\JobInterruptedException',
             $jobExecution->getExitStatus()->getExitDescription(),
@@ -249,8 +272,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testAddStep()
     {
-        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
-        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+        $mockStep1 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step1')
+        );
+        $mockStep2 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step2')
+        );
 
         $this->job->addStep($mockStep1);
         $this->job->addStep($mockStep2);
@@ -260,8 +289,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testSetSteps()
     {
-        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
-        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+        $mockStep1 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step1')
+        );
+        $mockStep2 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step2')
+        );
 
         $this->job->setSteps(array($mockStep1, $mockStep2));
 
@@ -270,8 +305,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStepNames()
     {
-        $mockStep1 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step1'));
-        $mockStep2 = $this->getMockForAbstractClass('Pim\\Bundle\\BatchBundle\\Step\\AbstractStep', array('my_mock_step2'));
+        $mockStep1 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step1')
+        );
+        $mockStep2 = $this->getMockForAbstractClass(
+            'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            array('my_mock_step2')
+        );
 
         $this->job->setSteps(array($mockStep1, $mockStep2));
 

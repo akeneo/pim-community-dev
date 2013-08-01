@@ -22,7 +22,9 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $job       = $this->getJobMock();
         $step      = $this->getConstructorDisabledMock('Pim\Bundle\BatchBundle\Step\ItemStep');
         $reader    = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Reader\ProductReader');
-        $processor = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor');
+        $processor = $this->getConstructorDisabledMock(
+            'Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor'
+        );
         $writer    = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Writer\FileWriter');
 
         $this->jobFactory
@@ -68,7 +70,9 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $step0     = $this->getConstructorDisabledMock('Pim\Bundle\BatchBundle\Step\ItemStep');
         $step1     = $this->getConstructorDisabledMock('Pim\Bundle\BatchBundle\Step\ItemStep');
         $reader    = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Reader\ProductReader');
-        $processor = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor');
+        $processor = $this->getConstructorDisabledMock(
+            'Pim\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor'
+        );
         $writer    = $this->getConstructorDisabledMock('Pim\Bundle\ImportExportBundle\Writer\FileWriter');
 
         $this->jobFactory

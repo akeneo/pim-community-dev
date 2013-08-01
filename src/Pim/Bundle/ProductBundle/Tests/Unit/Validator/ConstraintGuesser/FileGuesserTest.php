@@ -18,7 +18,10 @@ class FileGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAttribute()

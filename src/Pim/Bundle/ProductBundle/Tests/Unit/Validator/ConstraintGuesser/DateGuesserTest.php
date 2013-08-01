@@ -62,7 +62,9 @@ class DateGuesserTest extends ConstraintGuesserTest
      */
     public function testDoNotGuessDateConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array('attributeType' => 'pim_product_text',)));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+        );
 
         $this->assertEquals(0, count($constraints));
     }
