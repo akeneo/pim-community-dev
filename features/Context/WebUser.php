@@ -48,6 +48,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
+        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
+
         return $this->pageFactory->createPage($name);
     }
 
@@ -96,7 +98,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateANewProduct()
     {
-        $this->getPage('Product index')->clickNewProductLink();
+        $this->getPage('Product index')->clickCreationLink();
         $this->currentPage = 'Product creation';
         $this->wait();
     }
@@ -343,8 +345,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iConfirmThe($action)
     {
-        $action = 'confirm'.ucfirst(strtolower($action));
-        $this->getCurrentPage()->$action();
+        $this->getCurrentPage()->confirmDialog();
 
         $this->wait();
     }
@@ -918,7 +919,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $products = $this->listToArray($products);
         foreach ($products as $product) {
-            if (!$this->getPage('Product index')->findProductRow($product)) {
+            if (!$this->getPage('Product index')->getGridRow($product)) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see product %s, not found', $product)
                 );
@@ -931,7 +932,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeProduct($product)
     {
-        if (!$this->getPage('Product index')->findProductRow($product)) {
+        if (!$this->getPage('Product index')->getGridRow($product)) {
             throw $this->createExpectationException(
                 sprintf('Expecting to see product %s, not found', $product)
             );
@@ -945,11 +946,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $products = $this->listToArray($products);
         foreach ($products as $product) {
-            if ($this->getPage('Product index')->findProductRow($product)) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to not see product %s, but I see it', $product)
-                );
+            try {
+                $this->getPage('Product index')->getGridRow($product);
+            } catch (\InvalidArgumentException $e) {
+                continue;
             }
+            throw $this->createExpectationException(
+                sprintf('Expecting not to see product %s, but I see it', $product)
+            );
         }
     }
 
@@ -958,11 +962,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeProduct($product)
     {
-        if ($this->getPage('Product index')->findProductRow($product)) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to not see product %s, but I see it', $product)
-            );
+        try {
+            $this->getPage('Product index')->getGridRow($product);
+        } catch (\InvalidArgumentException $e) {
+            return;
         }
+        throw $this->createExpectationException(
+            sprintf('Expecting not to see product %s, but I see it', $product)
+        );
     }
 
     /**

@@ -1,21 +1,17 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Currency;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Grid;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyIndex extends Page
+class Index extends Grid
 {
     protected $path = '/configuration/currency/';
-
-    protected $elements = array(
-        'Currencies' => array('css' => 'table.grid'),
-    );
 
     public function findActivatedCurrency($currency)
     {
@@ -50,7 +46,7 @@ class CurrencyIndex extends Page
     private function getCurrencyRow($currency)
     {
         $currencyRow = $this
-            ->getElement('Currencies')
+            ->getElement('Grid content')
             ->find('css', sprintf('tr:contains("%s")', $currency))
         ;
 

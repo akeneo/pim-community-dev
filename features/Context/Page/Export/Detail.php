@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Export;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExportDetail extends Page
+class Detail extends Page
 {
     protected $path = '/ie/export/{id}';
 
