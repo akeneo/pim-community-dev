@@ -72,24 +72,22 @@
                     {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
                 </div>
 
-                    <div class="tab-pane" id="associations"></div>
+                <div class="tab-pane" id="associations"></div>
 
-                    <div class="tab-pane" id="localisations">
-                        <div class="span12 tab-content">
-                            {{ form_row(form.locales) }}
-                        </div>
-                    </div>
+                <div class="tab-pane buffer-top" id="localisations">
+                    {{ form_row(form.locales) }}
+                </div>
 
-                    <div class="tab-pane" id="categories">
-                       {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
-                    </div>
+                <div class="tab-pane" id="categories">
+                   {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
+                </div>
 
-                    <div class="tab-pane" id="history">
-                        <div id="history-grid"></div>
-                    </div>
+                <div class="tab-pane" id="history">
+                    <div id="history-grid"></div>
+                </div>
 
-                    {{ form_row(form.id) }}
-                    {{ form_row(form._token) }}
+                {{ form_row(form.id) }}
+                {{ form_row(form._token) }}
             </div>
         </div>
     </form>

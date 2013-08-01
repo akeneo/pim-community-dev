@@ -48,27 +48,28 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         return $this
             ->getMockBuilder('Symfony\Component\Form\FormFactory')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
     }
 
     protected function getFlexibleValueMock(array $options)
     {
-        $options = array_merge(array(
-            'data'         => null,
-            'defaultValue' => null,
-            'backendType'  => null,
-        ), $options);
+        $options = array_merge(
+            array(
+                'data'         => null,
+                'defaultValue' => null,
+                'backendType'  => null,
+            ),
+            $options
+        );
 
-        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface', array(
-            'getAttribute', 'getData'
-        ));
+        $value = $this->getMock(
+            'Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
+            array('getAttribute', 'getData')
+        );
 
         $value->expects($this->any())
             ->method('getAttribute')
-            ->will($this->returnValue(
-                $this->getAttributeMock($options['backendType'], $options['defaultValue'])
-            ));
+            ->will($this->returnValue($this->getAttributeMock($options['backendType'], $options['defaultValue'])));
 
         $value->expects($this->any())
             ->method('getData')

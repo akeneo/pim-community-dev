@@ -27,6 +27,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $password = null;
 
+    private $pageMapping = array(
+        'channels'   => 'Channel index',
+        'currencies' => 'Currency index',
+        'exports'    => 'Export index',
+        'families'   => 'Family index',
+        'imports'    => 'Import index',
+        'products'   => 'Product index',
+    );
+
     /* -------------------- Page-related methods -------------------- */
 
     /**
@@ -35,6 +44,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @param PageFactory $pageFactory
+     */
+    public function setPageFactory(PageFactory $pageFactory)
+    {
+        $this->pageFactory = $pageFactory;
     }
 
     /**
@@ -48,15 +65,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
-        return $this->pageFactory->createPage($name);
-    }
+        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
 
-    /**
-     * @param PageFactory $pageFactory
-     */
-    public function setPageFactory(PageFactory $pageFactory)
-    {
-        $this->pageFactory = $pageFactory;
+        return $this->pageFactory->createPage($name);
     }
 
     /**
@@ -72,125 +83,38 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I am on the products page$/
+     * @Given /^I am on the ([^"]*) page$/
      */
-    public function iAmOnTheProductsPage()
+    public function iAmOnThePage($page)
     {
-        $this->openPage('Product index');
+        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+        $this->openPage($page);
         $this->wait();
     }
 
     /**
-     * @Given /^I am on the "([^"]*)" product page$/
+     * @Given /^I edit the "([^"]*)" (\w+)$/
+     * @Given /^I am on the "([^"]*)" (\w+) page$/
      */
-    public function iAmOnTheProductPage($product)
+    public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $product = $this->getProduct($product);
-        $this->openPage('Product edit', array(
-            'id' => $product->getId(),
+        $page = ucfirst($page);
+        $method = sprintf('get%s', $page);
+        $entity = $this->$method($identifier);
+        $this->openPage(sprintf('%s edit', $page), array(
+            'id' => $entity->getId(),
         ));
     }
 
     /**
-     * @Given /^I create a new product$/
+     * @Given /^I create a new (\w+)$/
      */
-    public function iCreateANewProduct()
+    public function iCreateANew($entity)
     {
-        $this->getPage('Product index')->clickNewProductLink();
-        $this->currentPage = 'Product creation';
+        $entity = ucfirst($entity);
+        $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+        $this->currentPage = sprintf('%s creation', $entity);
         $this->wait();
-    }
-
-    /**
-     * @When /^I am on the "([^"]*)" attribute page$/
-     */
-    public function iAmOnTheAttributePage($label)
-    {
-        $attribute = $this->getAttribute($label);
-
-        $this->openPage('Attribute Edit', array(
-            'id' => $attribute->getId(),
-        ));
-    }
-
-    /**
-     * @Given /^I am on the attribute creation page$/
-     */
-    public function iAmOnTheAttributeCreationPage()
-    {
-        $this->openPage('Attribute creation');
-    }
-
-    /**
-     * @Given /^I am on the currencies page$/
-     */
-    public function iAmOnTheCurrenciesPage()
-    {
-        $this->openPage('Currency index');
-        $this->wait();
-    }
-
-    /**
-     * @When /^I am on the families page$/
-     */
-    public function iAmOnTheFamiliesPage()
-    {
-        $this->openPage('Family index');
-    }
-
-    /**
-     * @When /^I am on the family creation page$/
-     */
-    public function iAmOnTheFamilyCreationPage()
-    {
-        $this->openPage('Family creation');
-    }
-
-    /**
-     * @Given /^I edit the "([^"]*)" family$/
-     * @Given /^I am on the "([^"]*)" family page$/
-     */
-    public function iAmOnTheFamilyPage($family)
-    {
-        $this->openPage('Family edit', array(
-            'family_id' => $this->getFamily($family)->getId()
-        ));
-    }
-
-    /**
-     * @Given /^I am on the channels page$/
-     */
-    public function iAmOnTheChannelsPage()
-    {
-        $this->openPage('Channel index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the channel creation page$/
-     */
-    public function iAmOnTheChannelCreationPage()
-    {
-        $this->openPage('Channel creation');
-    }
-
-    /**
-     * @Given /^I am on the "([^"]*)" category page$/
-     */
-    public function iAmOnTheCategoryPage($code)
-    {
-        $this->openPage('Category edit', array(
-            'id' => $this->getCategory($code)->getId(),
-        ));
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the category tree creation page$/
-     */
-    public function iAmOnTheCategoryTreeCreationPage()
-    {
-        $this->openPage('Category tree creation');
     }
 
     /**
@@ -201,24 +125,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Category node creation', array(
             'id' => $this->getCategory($code)->getId()
         ));
-    }
-
-    /**
-     * @Given /^I am on the exports index page$/
-     */
-    public function iAmOnTheExportsIndexPage()
-    {
-        $this->openPage('Export index');
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I am on the imports index page$/
-     */
-    public function iAmOnTheImportsIndexPage()
-    {
-        $this->openPage('Import index');
-        $this->wait();
     }
 
     /**
@@ -343,10 +249,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iConfirmThe($action)
     {
-        $action = 'confirm'.ucfirst(strtolower($action));
-        $this->getCurrentPage()->$action();
+        $this->getCurrentPage()->confirmDialog();
 
         $this->wait();
+    }
+
+    /**
+     * @Given /^I cancel the ([^"]*)$/
+     */
+    public function iCancelThe($action)
+    {
+        $this->getCurrentPage()->cancelDialog();
     }
 
     /**
@@ -503,7 +416,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I change the (?<field>\w+) to "([^"]*)"$/
+     * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -598,7 +511,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheFamilyPage($family)
     {
         $expectedAddress = $this->getPage('Family edit')->getUrl(array(
-            'family_id' => $this->getFamily($family)->getId(),
+            'id' => $this->getFamily($family)->getId(),
         ));
         $this->assertSession()->addressEquals($expectedAddress);
     }
@@ -886,7 +799,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $category = $this->getCategory($code);
         $this
-            ->getPage('ProductIndex')
+            ->getPage('Product index')
             ->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -897,8 +810,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerUnclassifiedCategory()
     {
         $this
-            ->getPage('ProductIndex')
+            ->getPage('Product index')
             ->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I filter per family ([^"]*)$/
+     */
+    public function iFilterPerFamily($code)
+    {
+        $this->getPage('Product index')->filterPerFamily($code);
         $this->wait();
     }
 
@@ -909,7 +831,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $products = $this->listToArray($products);
         foreach ($products as $product) {
-            if (!$this->getPage('Product index')->findProductRow($product)) {
+            if (!$this->getPage('Product index')->getGridRow($product)) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see product %s, not found', $product)
                 );
@@ -922,7 +844,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeProduct($product)
     {
-        if (!$this->getPage('Product index')->findProductRow($product)) {
+        if (!$this->getPage('Product index')->getGridRow($product)) {
             throw $this->createExpectationException(
                 sprintf('Expecting to see product %s, not found', $product)
             );
@@ -936,11 +858,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $products = $this->listToArray($products);
         foreach ($products as $product) {
-            if ($this->getPage('Product index')->findProductRow($product)) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to not see product %s, but I see it', $product)
-                );
+            try {
+                $this->getPage('Product index')->getGridRow($product);
+            } catch (\InvalidArgumentException $e) {
+                continue;
             }
+            throw $this->createExpectationException(
+                sprintf('Expecting not to see product %s, but I see it', $product)
+            );
         }
     }
 
@@ -949,11 +874,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeProduct($product)
     {
-        if ($this->getPage('Product index')->findProductRow($product)) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to not see product %s, but I see it', $product)
-            );
+        try {
+            $this->getPage('Product index')->getGridRow($product);
+        } catch (\InvalidArgumentException $e) {
+            return;
         }
+        throw $this->createExpectationException(
+            sprintf('Expecting not to see product %s, but I see it', $product)
+        );
     }
 
     /**
@@ -973,7 +901,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateANewExport($exportTitle)
     {
-        $this->getPage('Export index')->clickCreationLink($exportTitle);
+        $this->getPage('Export index')->clickExportCreationLink($exportTitle);
         $this->currentPage = 'Export creation';
     }
 
@@ -1005,7 +933,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheExportJobPage($job)
     {
-        $expectedAddress = $this->getPage('Export detail')->getUrl($this->getJob($job));
+        $expectedAddress = $this->getPage('Export show')->getUrl($this->getJob($job));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
@@ -1014,7 +942,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheExportJobPage($job)
     {
-        $this->openPage('Export detail', array(
+        $this->openPage('Export show', array(
             'id' => $this->getJob($job)->getId()
         ));
         $this->wait();
@@ -1039,7 +967,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export detail')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(sprintf(
                 'Expecting to see "%s" next to the %s property, but saw "%s"',
                 $message, $property, $error
@@ -1074,7 +1002,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iExecuteTheExportJob()
     {
-        $this->getPage('Export detail')->execute();
+        $this->getPage('Export show')->execute();
     }
 
     /**

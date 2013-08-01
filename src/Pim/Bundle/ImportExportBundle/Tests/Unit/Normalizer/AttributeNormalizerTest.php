@@ -241,9 +241,12 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             if (isset($data[$property]) && $data[$property] !== '') {
                 $method = 'set' . implode(
                     '',
-                    array_map(function ($item) {
-                        return ucfirst($item);
-                    }, explode('_', $property))
+                    array_map(
+                        function ($item) {
+                            return ucfirst($item);
+                        },
+                        explode('_', $property)
+                    )
                 );
                 $attribute->$method($data[$property]);
             }

@@ -41,7 +41,11 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
         $this->securityContext = $this->getSecurityContextMock();
         $this->productManager = $this->getProductManagerMock();
 
-        $this->target = new UserContextListener($this->securityContext, $this->translatableListener, $this->productManager);
+        $this->target = new UserContextListener(
+            $this->securityContext,
+            $this->translatableListener,
+            $this->productManager
+        );
     }
 
     /**

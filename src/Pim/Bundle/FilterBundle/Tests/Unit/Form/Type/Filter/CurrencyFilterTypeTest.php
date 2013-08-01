@@ -17,7 +17,6 @@ use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\NumberFilterTypeTest;
  */
 class CurrencyFilterTypeTest extends NumberFilterTypeTest
 {
-
     /**
      * @var ScopeFilterType
      */
@@ -47,7 +46,9 @@ class CurrencyFilterTypeTest extends NumberFilterTypeTest
      */
     protected function setUp()
     {
-        $this->markTestSkipped('Due to Symfony 2.3 Upgrade, cf https://github.com/symfony/symfony/blob/master/UPGRADE-2.1.md');
+        $this->markTestSkipped(
+            'Due to Symfony 2.3 Upgrade, cf https://github.com/symfony/symfony/blob/master/UPGRADE-2.1.md'
+        );
         parent::setUp();
 
         $translator = $this->createMockTranslator();

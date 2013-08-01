@@ -31,10 +31,10 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
     public function testProcessTaggedAttributeConstraintGuessersService()
     {
         $definition = $this->getDefinitionMock();
-        $container  = $this->getContainerBuilderMock($definition, array(
-            'pim.attribute_constraint_guesser.foo',
-            'pim.attribute_constraint_guesser.bar',
-        ));
+        $container  = $this->getContainerBuilderMock(
+            $definition,
+            array('pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar',)
+        );
 
         $definition->expects($this->exactly(2))
             ->method('addMethodCall')

@@ -32,4 +32,3 @@ class HeterogeneousCsvSerializerProcessor extends CsvSerializerProcessor
         );
     }
 }
-

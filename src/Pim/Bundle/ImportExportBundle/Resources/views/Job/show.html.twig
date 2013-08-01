@@ -29,7 +29,9 @@
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
+        {% if job.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\Job::STATUS_IN_PROGRESS') %}
+            {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
+        {% endif %}
         {% if violations|length == 0 %}
             {{ elements.link('Export now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}

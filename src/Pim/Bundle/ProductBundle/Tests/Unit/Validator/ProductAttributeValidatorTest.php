@@ -117,8 +117,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUniqueConstraintInvalid($attributeType, $code, $unique, $translatable, $searchable, $smart, $scopable)
     {
-        $productAttribute =
-            $this->createProductAttribute($attributeType, $code, $unique, $translatable, $searchable, $smart, $scopable);
+        $productAttribute = $this->createProductAttribute($attributeType, $code, $unique, $translatable, $searchable, $smart, $scopable);
 
         // Call validator
         ProductAttributeValidator::isValid($productAttribute, $this->executionContext);

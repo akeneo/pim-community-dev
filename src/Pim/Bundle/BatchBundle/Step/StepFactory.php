@@ -32,4 +32,3 @@ class StepFactory
         return $step;
     }
 }
-

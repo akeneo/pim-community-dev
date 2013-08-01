@@ -58,15 +58,18 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeProduct()
     {
-        $values = new ArrayCollection(array(
-            $this->getValueMock($this->getAttributeMock('sku'), 'KB0001'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
-            $this->getValueMock($this->getAttributeMock('tags'), new ArrayCollection(array(
-                'home', 'garden', 'tools'
-            ))),
-        ));
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('sku'), 'KB0001'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
+                $this->getValueMock(
+                    $this->getAttributeMock('tags'),
+                    new ArrayCollection(array('home', 'garden', 'tools'))
+                ),
+            )
+        );
         $product = $this->getProductMock($values);
 
         $result = array(
@@ -129,10 +132,12 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
 
-        $locales = new ArrayCollection(array(
-            $this->getLocaleMock('en_US'),
-            $this->getLocaleMock('fr_FR')
-        ));
+        $locales = new ArrayCollection(
+            array(
+                $this->getLocaleMock('en_US'),
+                $this->getLocaleMock('fr_FR')
+            )
+        );
 
         $channel->expects($this->any())
                 ->method('getLocales')
@@ -177,9 +182,11 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getIdentifier')
             ->will(
                 $this->returnValue(
-                    $values->filter(function ($value) {
-                        return strtolower($value->getAttribute()->getCode()) == 'sku';
-                    })->first()
+                    $values->filter(
+                        function ($value) {
+                            return strtolower($value->getAttribute()->getCode()) == 'sku';
+                        }
+                    )->first()
                 )
             );
 

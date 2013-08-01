@@ -21,12 +21,17 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testAddConstraintGuesser()
     {
-        $this->target->addConstraintGuesser($this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'));
+        $this->target->addConstraintGuesser(
+            $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface')
+        );
         $this->assertCount(1, $this->target->getConstraintGuessers());
     }
 

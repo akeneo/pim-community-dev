@@ -83,7 +83,8 @@ class ProductReader extends ORMReader
             'channel' => array(
                 'type' => 'choice',
                 'options' => array(
-                    'choices' => $this->channelManager->getChannelChoices()
+                    'choices' => $this->channelManager->getChannelChoices(),
+                    'required' => true
                 )
             )
         );

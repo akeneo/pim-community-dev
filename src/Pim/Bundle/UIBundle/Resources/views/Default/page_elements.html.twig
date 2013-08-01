@@ -75,10 +75,10 @@
                     <ul class="nav">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
-                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|lower }}" data-toggle="tab">{{ tab|trans }}</a></li>
+                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ tab|trans }}</a></li>
                             {% endfor %}
                         {% else %}
-                            <li class="active"><a href="#{{ tabs|lower }}" data-toggle="tab">{{ tabs|trans|capitalize }}</a></li>
+                            <li class="active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ tabs|trans|capitalize }}</a></li>
                         {% endif %}
                     </ul>
                 {% endif %}

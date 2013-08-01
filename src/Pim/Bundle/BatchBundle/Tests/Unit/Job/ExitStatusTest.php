@@ -223,11 +223,11 @@ class ExitStatusTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($executing2 !== $status);
         $description = $status->getExitDescription();
         $this->assertTrue(
-            (strstr($description,"Foo") !== -1),
+            (strstr($description, "Foo") !== -1),
             "Wrong description: ".$description
         );
         $this->assertTrue(
-            (strstr($description,"Exception") !== -1),
+            (strstr($description, "Exception") !== -1),
             "Wrong description: ".$description
         );
     }

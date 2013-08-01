@@ -31,4 +31,3 @@ class UniqueValueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_unique_value_validator', $this->constraint->validatedBy());
     }
 }
-

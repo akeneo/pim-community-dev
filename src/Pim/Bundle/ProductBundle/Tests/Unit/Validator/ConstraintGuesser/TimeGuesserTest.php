@@ -36,11 +36,11 @@ class TimeGuesserTest extends ConstraintGuesserTest
      */
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_date'
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_date'))
+            )
+        );
     }
 
     /**
@@ -48,15 +48,21 @@ class TimeGuesserTest extends ConstraintGuesserTest
      */
     public function testGuessDateConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType' => 'pim_product_date',
-            'dateType'      => 'time',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType' => 'pim_product_date',
+                    'dateType'      => 'time',
+                )
+            )
+        );
 
-        $attr = $this->getAttributeMock(array(
-            'attributeType' => 'pim_product_date',
-            'dateType'      => 'time',
-        ));
+        $attr = $this->getAttributeMock(
+            array(
+                'attributeType' => 'pim_product_date',
+                'dateType'      => 'time',
+            )
+        );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Time', $constraints);
     }
@@ -66,9 +72,11 @@ class TimeGuesserTest extends ConstraintGuesserTest
      */
     public function testDoNotGuessDateConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType' => 'pim_product_text',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array('attributeType' => 'pim_product_text',)
+            )
+        );
 
         $this->assertEquals(0, count($constraints));
     }

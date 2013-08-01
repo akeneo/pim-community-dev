@@ -108,22 +108,19 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     private function getFamilyMock()
     {
         return $this
-            ->getMock('Pim\Bundle\ProductBundle\Entity\Family')
-        ;
+            ->getMock('Pim\Bundle\ProductBundle\Entity\Family');
     }
 
     private function getProductMock()
     {
         return $this
-            ->getMock('Pim\Bundle\ProductBundle\Entity\Product')
-        ;
+            ->getMock('Pim\Bundle\ProductBundle\Entity\Product');
     }
 
     private function getProductAttributeMock()
     {
         return $this
-            ->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute')
-        ;
+            ->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
     }
 
     private function getArrayCollectionMock($element, $contains = true)

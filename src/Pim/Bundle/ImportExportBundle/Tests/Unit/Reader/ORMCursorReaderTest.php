@@ -20,11 +20,13 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
     {
         $reader = new ORMCursorReader;
         $query  = $this->getQueryMock();
-        $result = $this->getIterableResultMock(array(
-            $item1 = 'foo',
-            $item2 = 'bar',
-            $item3 = 'baz',
-        ));
+        $result = $this->getIterableResultMock(
+            array(
+                $item1 = 'foo',
+                $item2 = 'bar',
+                $item3 = 'baz',
+            )
+        );
 
         $query->expects($this->any())
             ->method('iterate')

@@ -21,7 +21,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function setPageFactory(PageFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
-        $this->datagrid = $pageFactory->createPage('DataGrid');
+        $this->datagrid = $pageFactory->createPage('Base\Grid');
     }
 
     /**
@@ -83,7 +83,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I should see the filters (.*)$/
+     * @Given /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
     {
@@ -98,7 +98,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        $this->datagrid->clickOnTheAction($element, $actionName);
+        $this->datagrid->clickOnAction($element, $actionName);
     }
 
     /**
