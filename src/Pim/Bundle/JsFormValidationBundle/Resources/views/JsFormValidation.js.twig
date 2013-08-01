@@ -57,13 +57,8 @@ var jsfv = new function () {
             return;
         }
 
-        $tabLabel = $('a i.validation-tooltip').first();
-
-        if (!$tabLabel.is(':visible')) {
-            $('a[href="#'+$tabLabel.closest('.tab-pane').attr('id')+'"]').click();
-        }
-
-        $tabLabel.click();
+        $error = $('a.validation-tooltip').first();
+        $('a[href="#'+$error.closest('.tab-pane').attr('id')+'"]').click();
     }
 
 {% block getFieldValue %}
