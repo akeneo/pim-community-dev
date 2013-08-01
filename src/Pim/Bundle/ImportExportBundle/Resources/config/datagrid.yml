@@ -1,6 +1,9 @@
 parameters:
-    pim_import_export.entity.job.class:                       Pim\Bundle\BatchBundle\Entity\Job
-    pim_import_export.datagrid.manager.job.class: Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
+    pim_import_export.entity.job.class:              Pim\Bundle\BatchBundle\Entity\Job
+    pim_import_export.entity.job_execution.class:    Pim\Bundle\BatchBundle\Entity\JobExecution
+    
+    pim_import_export.datagrid.manager.job.class:    Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
+    pim_import_export.datagrid.manager.report.class: Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
 
 services:
     pim_import_export.datagrid.manager.export:
@@ -28,3 +31,13 @@ services:
         calls:
             - [ setJobType, ['import'] ]
             - [ setConnectorRegistry, [@pim_batch.connectors] ]
+
+    pim_import_export.datagrid.manager.report:
+        class: %pim_import_export.datagrid.manager.report.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: job_reports
+              entity_name: %pim_import_export.entity.job_execution.class%
+              query_entity_alias: job_report
+              entity_hint: job_reports
+              route_name: pim_importexport_report_index

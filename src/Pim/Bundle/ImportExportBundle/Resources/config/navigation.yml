@@ -7,6 +7,19 @@ oro_menu_config:
             label: 'Exports'
             route: 'pim_importexport_export_index'
 
+        pim_report_tab:
+            label: 'Reports'
+            uri: '#'
+            extras:
+                position: 40
+        pim_report_export:
+            label: 'Exports'
+            route: 'pim_importexport_report_index'
+
+        pim_report_import:
+            label: 'Imports'
+            route: 'pim_importexport_report_index'
+
     tree:
         application_menu:
             children:
@@ -16,6 +29,10 @@ oro_menu_config:
                 pim_export_tab:
                     children:
                         pim_ie_export: ~
+                pim_report_tab:
+                    children:
+                        pim_report_export: ~
+                        pim_report_import: ~
 
 oro_titles:
     pim_importexport_import_index: Import management
