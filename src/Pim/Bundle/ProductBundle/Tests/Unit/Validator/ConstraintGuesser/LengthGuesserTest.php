@@ -23,31 +23,24 @@ class LengthGuesserTest extends ConstraintGuesserTest
 
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_text',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_text',)))
+        );
 
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_textarea',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_textarea',)))
+        );
 
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_identifier',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_identifier',)))
+        );
     }
 
     public function testGuessLengthConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType' => 'pim_product_text',
-            'maxCharacters' => 128,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType' => 'pim_product_text', 'maxCharacters' => 128,))
+        );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Length', $constraints);
         $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Length', $constraints, array(

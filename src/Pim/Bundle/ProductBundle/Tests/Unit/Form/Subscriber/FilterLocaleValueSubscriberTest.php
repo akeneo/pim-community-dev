@@ -43,15 +43,9 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreSetData()
     {
         $data = array(
-            'name_current' => $this->getProductValueMock(
-                $this->getProductAttributeMock(), self::CURRENT_LOCALE
-            ),
-            'name_other' => $this->getProductValueMock(
-                $this->getProductAttributeMock(), self::OTHER_LOCALE
-            ),
-            'not_translatable_attribute' => $this->getProductValueMock(
-                $this->getProductAttributeMock(false), null
-            ),
+            'name_current' => $this->getProductValueMock($this->getProductAttributeMock(), self::CURRENT_LOCALE),
+            'name_other' => $this->getProductValueMock($this->getProductAttributeMock(), self::OTHER_LOCALE),
+            'not_translatable_attribute' => $this->getProductValueMock($this->getProductAttributeMock(false), null),
         );
 
         $form  = $this->getFormMock();
@@ -69,8 +63,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $event = $this
             ->getMockBuilder('Symfony\Component\Form\FormEvent')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $event->expects($this->any())
             ->method('getData')
@@ -88,8 +81,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         return $this
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
     }
 
     private function getProductValueMock($attribute, $locale)

@@ -20,24 +20,30 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testAddChildrenWithBasicValue()
     {
-        $group = $this->getGroupMock(array(
-            'id'   => 1,
-            'name' => 'General',
-        ));
+        $group = $this->getGroupMock(
+            array(
+                'id'   => 1,
+                'name' => 'General',
+            )
+        );
 
-        $attribute = $this->getAttributeMock(array(
-            'id'           => 42,
-            'virtualGroup' => $group,
-            'code'         => 'name',
-            'label'        => 'Name',
-            'sortOrder'    => 0,
-            'scopable'     => false,
-        ));
+        $attribute = $this->getAttributeMock(
+            array(
+                'id'           => 42,
+                'virtualGroup' => $group,
+                'code'         => 'name',
+                'label'        => 'Name',
+                'sortOrder'    => 0,
+                'scopable'     => false,
+            )
+        );
 
-        $value = $this->getValueMock(array(
-            'attribute' => $attribute,
-            'removable' => true,
-        ));
+        $value = $this->getValueMock(
+            array(
+                'attribute' => $attribute,
+                'removable' => true,
+            )
+        );
 
         $view = $this->getMock('Symfony\Component\Form\FormView');
 
@@ -63,37 +69,47 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testAddMultiChildrenInTheSameGroup()
     {
-        $group = $this->getGroupMock(array(
-            'id'   => 1,
-            'name' => 'General',
-        ));
+        $group = $this->getGroupMock(
+            array(
+                'id'   => 1,
+                'name' => 'General',
+            )
+        );
 
-        $nameAttr = $this->getAttributeMock(array(
-            'id'           => 42,
-            'virtualGroup' => $group,
-            'code'         => 'name',
-            'label'        => 'Name',
-            'sortOrder'    => 0,
-            'scopable'     => false,
-        ));
-        $nameValue = $this->getValueMock(array(
-            'attribute' => $nameAttr,
-            'removable' => true,
-        ));
+        $nameAttr = $this->getAttributeMock(
+            array(
+                'id'           => 42,
+                'virtualGroup' => $group,
+                'code'         => 'name',
+                'label'        => 'Name',
+                'sortOrder'    => 0,
+                'scopable'     => false,
+            )
+        );
+        $nameValue = $this->getValueMock(
+            array(
+                'attribute' => $nameAttr,
+                'removable' => true,
+            )
+        );
         $nameView = $this->getMock('Symfony\Component\Form\FormView');
 
-        $colorAttr = $this->getAttributeMock(array(
-            'id'           => 1337,
-            'virtualGroup' => $group,
-            'code'         => 'color',
-            'label'        => 'Color',
-            'sortOrder'    => 0,
-            'scopable'     => false,
-        ));
-        $colorValue = $this->getValueMock(array(
-            'attribute' => $colorAttr,
-            'removable' => false,
-        ));
+        $colorAttr = $this->getAttributeMock(
+            array(
+                'id'           => 1337,
+                'virtualGroup' => $group,
+                'code'         => 'color',
+                'label'        => 'Color',
+                'sortOrder'    => 0,
+                'scopable'     => false,
+            )
+        );
+        $colorValue = $this->getValueMock(
+            array(
+                'attribute' => $colorAttr,
+                'removable' => false,
+            )
+        );
         $colorView = $this->getMock('Symfony\Component\Form\FormView');
 
         $this->formView->addChildren($nameValue, $nameView);
@@ -126,31 +142,39 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testAddChildrenWithScopableValue()
     {
-        $group = $this->getGroupMock(array(
-            'id'   => 1,
-            'name' => 'General',
-        ));
+        $group = $this->getGroupMock(
+            array(
+                'id'   => 1,
+                'name' => 'General',
+            )
+        );
 
-        $attribute = $this->getAttributeMock(array(
-            'id'           => 42,
-            'virtualGroup' => $group,
-            'code'         => 'name',
-            'label'        => 'Name',
-            'sortOrder'    => 0,
-            'scopable'     => true,
-        ));
+        $attribute = $this->getAttributeMock(
+            array(
+                'id'           => 42,
+                'virtualGroup' => $group,
+                'code'         => 'name',
+                'label'        => 'Name',
+                'sortOrder'    => 0,
+                'scopable'     => true,
+            )
+        );
 
-        $valueWeb = $this->getValueMock(array(
-            'scope'     => 'Web',
-            'attribute' => $attribute,
-            'removable' => true,
-        ));
+        $valueWeb = $this->getValueMock(
+            array(
+                'scope'     => 'Web',
+                'attribute' => $attribute,
+                'removable' => true,
+            )
+        );
 
-        $valueMobile = $this->getValueMock(array(
-            'scope'     => 'Mobile',
-            'attribute' => $attribute,
-            'removable' => true,
-        ));
+        $valueMobile = $this->getValueMock(
+            array(
+                'scope'     => 'Mobile',
+                'attribute' => $attribute,
+                'removable' => true,
+            )
+        );
 
         $viewWeb = $this->getMock('Symfony\Component\Form\FormView');
         $viewMobile = $this->getMock('Symfony\Component\Form\FormView');
@@ -184,25 +208,31 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testAddChildrenWithPriceValue()
     {
-        $group = $this->getGroupMock(array(
-            'id'   => 1,
-            'name' => 'General',
-        ));
+        $group = $this->getGroupMock(
+            array(
+                'id'   => 1,
+                'name' => 'General',
+            )
+        );
 
-        $attribute = $this->getAttributeMock(array(
-            'id'            => 42,
-            'virtualGroup'  => $group,
-            'code'          => 'name',
-            'label'         => 'Name',
-            'sortOrder'     => 0,
-            'scopable'      => false,
-            'attributeType' => 'pim_product_price_collection'
-        ));
+        $attribute = $this->getAttributeMock(
+            array(
+                'id'            => 42,
+                'virtualGroup'  => $group,
+                'code'          => 'name',
+                'label'         => 'Name',
+                'sortOrder'     => 0,
+                'scopable'      => false,
+                'attributeType' => 'pim_product_price_collection'
+            )
+        );
 
-        $value = $this->getValueMock(array(
-            'attribute' => $attribute,
-            'removable' => false,
-        ));
+        $value = $this->getValueMock(
+            array(
+                'attribute' => $attribute,
+                'removable' => false,
+            )
+        );
 
         $view = $this->getMock('Symfony\Component\Form\FormView');
 
@@ -231,11 +261,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     private function getValueMock(array $options)
     {
-        $options = array_merge(array(
-            'attribute' => null,
-            'removable' => null,
-            'scope'     => null,
-        ), $options);
+        $options = array_merge(
+            array(
+                'attribute' => null,
+                'removable' => null,
+                'scope'     => null,
+            ),
+            $options
+        );
 
         $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue');
 
@@ -256,15 +289,18 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     private function getAttributeMock(array $options)
     {
-        $options = array_merge(array(
-            'id'            => null,
-            'virtualGroup'  => null,
-            'code'          => null,
-            'label'         => null,
-            'sortOrder'     => null,
-            'scopable'      => null,
-            'attributeType' => null,
-        ), $options);
+        $options = array_merge(
+            array(
+                'id'            => null,
+                'virtualGroup'  => null,
+                'code'          => null,
+                'label'         => null,
+                'sortOrder'     => null,
+                'scopable'      => null,
+                'attributeType' => null,
+            ),
+            $options
+        );
 
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
@@ -302,79 +338,103 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testAttributeSortingInsideGroups()
     {
-        $generalGroup = $this->getGroupMock(array(
-            'id'   => 1,
-            'name' => 'General',
-        ));
-        $otherGroup = $this->getGroupMock(array(
-            'id'   => 2,
-            'name' => 'Other',
-        ));
+        $generalGroup = $this->getGroupMock(
+            array(
+                'id'   => 1,
+                'name' => 'General',
+            )
+        );
+        $otherGroup = $this->getGroupMock(
+            array(
+                'id'   => 2,
+                'name' => 'Other',
+            )
+        );
 
-        $nameAttr = $this->getAttributeMock(array(
-            'id'           => 42,
-            'virtualGroup' => $generalGroup,
-            'code'         => 'name',
-            'label'        => 'Name',
-            'sortOrder'    => 10,
-            'scopable'     => false,
-        ));
-        $nameValue = $this->getValueMock(array(
-            'attribute' => $nameAttr,
-            'removable' => true,
-        ));
+        $nameAttr = $this->getAttributeMock(
+            array(
+                'id'           => 42,
+                'virtualGroup' => $generalGroup,
+                'code'         => 'name',
+                'label'        => 'Name',
+                'sortOrder'    => 10,
+                'scopable'     => false,
+            )
+        );
+        $nameValue = $this->getValueMock(
+            array(
+                'attribute' => $nameAttr,
+                'removable' => true,
+            )
+        );
 
-        $colorAttr = $this->getAttributeMock(array(
-            'id'           => 1337,
-            'virtualGroup' => $generalGroup,
-            'code'         => 'color',
-            'label'        => 'Color',
-            'sortOrder'    => 0,
-            'scopable'     => false,
-        ));
-        $colorValue = $this->getValueMock(array(
-            'attribute' => $colorAttr,
-            'removable' => false,
-        ));
+        $colorAttr = $this->getAttributeMock(
+            array(
+                'id'           => 1337,
+                'virtualGroup' => $generalGroup,
+                'code'         => 'color',
+                'label'        => 'Color',
+                'sortOrder'    => 0,
+                'scopable'     => false,
+            )
+        );
+        $colorValue = $this->getValueMock(
+            array(
+                'attribute' => $colorAttr,
+                'removable' => false,
+            )
+        );
 
-        $priceAttr = $this->getAttributeMock(array(
-            'id'           => 14,
-            'virtualGroup' => $generalGroup,
-            'code'         => 'price',
-            'label'        => 'Price',
-            'sortOrder'    => 20,
-            'scopable'     => false,
-        ));
-        $priceValue = $this->getValueMock(array(
-            'attribute' => $priceAttr,
-            'removable' => true,
-        ));
+        $priceAttr = $this->getAttributeMock(
+            array(
+                'id'           => 14,
+                'virtualGroup' => $generalGroup,
+                'code'         => 'price',
+                'label'        => 'Price',
+                'sortOrder'    => 20,
+                'scopable'     => false,
+            )
+        );
+        $priceValue = $this->getValueMock(
+            array(
+                'attribute' => $priceAttr,
+                'removable' => true,
+            )
+        );
 
-        $releaseAttr = $this->getAttributeMock(array(
-            'id'           => 1987,
-            'virtualGroup' => $otherGroup,
-            'code'         => 'release date',
-            'label'        => 'Release date',
-            'sortOrder'    => 20,
-            'scopable'     => false,
-        ));
-        $releaseValue = $this->getValueMock(array(
-            'attribute' => $releaseAttr,
-            'removable' => true,
-        ));
+        $releaseAttr = $this->getAttributeMock(
+            array(
+                'id'           => 1987,
+                'virtualGroup' => $otherGroup,
+                'code'         => 'release date',
+                'label'        => 'Release date',
+                'sortOrder'    => 20,
+                'scopable'     => false,
+            )
+        );
+        $releaseValue = $this->getValueMock(
+            array(
+                'attribute' => $releaseAttr,
+                'removable' => true,
+            )
+        );
 
-        $weightAttr = $this->getAttributeMock(array(
-            'id'           => 73,
-            'virtualGroup' => $otherGroup,
-            'code'         => 'weight',
-            'label'        => 'Weight',
-            'sortOrder'    => 10,
-            'scopable'     => false,
-        ));
-        $weightValue = $this->getValueMock(array(
-            'attribute' => $weightAttr,
-            'removable' => true,
-        ));
+        $weightAttr = $this->getAttributeMock(
+            array(
+                'id'           => 73,
+                'virtualGroup' => $otherGroup,
+                'code'         => 'weight',
+                'label'        => 'Weight',
+                'sortOrder'    => 10,
+                'scopable'     => false,
+            )
+        );
+        $weightValue = $this->getValueMock(
+            array(
+                'attribute' => $weightAttr,
+                'removable' => true,
+            )
+        );
 
         $nameView    = $this->getMock('Symfony\Component\Form\FormView');
         $colorView   = $this->getMock('Symfony\Component\Form\FormView');
@@ -395,10 +455,13 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     private function getGroupMock(array $options)
     {
-        $options = array_merge(array(
-            'id'   => null,
-            'name' => null,
-        ), $options);
+        $options = array_merge(
+            array(
+                'id'   => null,
+                'name' => null,
+            ),
+            $options
+        );
 
         $group = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
 
@@ -413,4 +476,3 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         return $group;
     }
 }
-

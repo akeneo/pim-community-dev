@@ -31,11 +31,21 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     protected function assertContainsInstanceOf($class, $constraints)
     {
         if (!$this->getInstanceOf($class, $constraints)) {
-            $this->fail(sprintf(
-                'Expecting constraints to contain instance of "%s", instead got instance(s) of "%s"',
-                $class,
-                implode('", "', array_map(function ($constraint) { return get_class($constraint); }, $constraints))
-            ));
+            $this->fail(
+                sprintf(
+                    'Expecting constraints to contain instance of "%s", instead got instance(s) of "%s"',
+                    $class,
+                    implode(
+                        '", "',
+                        array_map(
+                            function ($constraint) {
+                                return get_class($constraint);
+                            },
+                            $constraints
+                        )
+                    )
+                )
+            );
         }
     }
 
@@ -44,10 +54,17 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         $constraint = $this->getInstanceOf($class, $constraints);
 
         foreach ($config as $name => $value) {
-            $this->assertEquals($value, $constraint->$name, sprintf(
-                'Expecting property "%s" of constraint "%s" to be "%s", but got "%s"',
-                $name, $class, print_r($value, true), print_r($constraint->$name, true)
-            ));
+            $this->assertEquals(
+                $value,
+                $constraint->$name,
+                sprintf(
+                    'Expecting property "%s" of constraint "%s" to be "%s", but got "%s"',
+                    $name,
+                    $class,
+                    print_r($value, true),
+                    print_r($constraint->$name, true)
+                )
+            );
         }
     }
 
