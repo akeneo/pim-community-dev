@@ -27,6 +27,13 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 class ReportDatagridManager extends DatagridManager
 {
     /**
+     * Job type
+     *
+     * @var string
+     */
+    protected $jobType = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
@@ -129,5 +136,24 @@ class ReportDatagridManager extends DatagridManager
         $proxyQuery->addSelect('job.label as jobLabel');
         $proxyQuery->addSelect('job.alias as jobAlias');
         $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
+
+        if ($this->jobType !== null) {
+            $proxyQuery->andWhere('job.type = :job_type');
+            $proxyQuery->setParameter('job_type', $this->jobType);
+        }
+    }
+
+    /**
+     * Set job type
+     *
+     * @param string $jobType
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+     */
+    public function setJobType($jobType)
+    {
+        $this->jobType = $jobType;
+
+        return $this;
     }
 }

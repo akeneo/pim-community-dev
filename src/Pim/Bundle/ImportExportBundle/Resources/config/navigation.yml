@@ -14,11 +14,11 @@ oro_menu_config:
                 position: 40
         pim_report_export:
             label: 'Exports'
-            route: 'pim_importexport_report_index'
+            route: 'pim_importexport_report_export'
 
         pim_report_import:
             label: 'Imports'
-            route: 'pim_importexport_report_index'
+            route: 'pim_importexport_report_import'
 
     tree:
         application_menu:

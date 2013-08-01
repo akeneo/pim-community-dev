@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Pim\Bundle\BatchBundle\Entity\Job;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -45,6 +47,59 @@ class ReportController extends Controller
         return $this->render($view, array('datagrid' => $datagridView));
     }
 
-    // TODO : the same for export action
-    // TODO : the same for import action
+    /**
+     * List the export reports
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route(
+     *     "/export.{_format}",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format"="html"}
+     * )
+     */
+    public function exportAction(Request $request)
+    {
+        $gridManager = $this->get('pim_import_export.datagrid.manager.report');
+        $gridManager->setJobType(Job::TYPE_EXPORT);
+        $datagridView = $gridManager->getDatagrid()->createView();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimImportExportBundle:Report:index.html.twig';
+        }
+
+        return $this->render($view, array('datagrid' => $datagridView));
+    }
+
+    /**
+     * List the import reports
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route(
+     *     "/export.{_format}",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format"="html"}
+     * )
+     */
+    public function importAction(Request $request)
+    {
+        $gridManager = $this->get('pim_import_export.datagrid.manager.report');
+        $gridManager->setJobType(Job::TYPE_IMPORT);
+        $datagridView = $gridManager->getDatagrid()->createView();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimImportExportBundle:Report:index.html.twig';
+        }
+
+        return $this->render($view, array('datagrid' => $datagridView));
+    }
 }
