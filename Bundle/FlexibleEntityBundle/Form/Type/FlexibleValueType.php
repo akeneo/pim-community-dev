@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -27,7 +28,7 @@ class FlexibleValueType extends AbstractType
     /**
      * Constructor
      *
-     * @param FlexibleManager $flexibleManager the manager
+     * @param FlexibleManager          $flexibleManager
      * @param EventSubscriberInterface $subscriber
      */
     public function __construct(FlexibleManager $flexibleManager, EventSubscriberInterface $subscriber)

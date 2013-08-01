@@ -1,0 +1,13 @@
+oro_notification:
+    resource:     "@OroNotificationBundle/Controller"
+    type:         annotation
+    prefix:       /notification
+
+
+oro_notification_api_emailnotification:
+    resource:     "@OroNotificationBundle/Controller/Api/Rest/EmailNotificationController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+

@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\CollectionTypeSubscriber;
 
+/**
+ * Collection
+ */
 abstract class CollectionAbstract extends AbstractType
 {
     /**

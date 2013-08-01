@@ -42,7 +42,7 @@ class SoapDataAuditApiTest extends WebTestCase
         $result = $this->client->soapClient->getAudits();
         $result = ToolsAPI::classToArray($result);
         if (!empty($result)) {
-            if (!is_array(array_shift($result['item']))) {
+            if (!is_array(reset($result['item']))) {
                 $result[] = $result['item'];
                 unset($result['item']);
             } else {

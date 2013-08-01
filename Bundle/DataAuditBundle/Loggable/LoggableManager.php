@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
+use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
@@ -75,11 +77,18 @@ class LoggableManager
     protected $loggedObjects = array();
 
     /**
-     * @param $logEntityClass
+     * @var ConfigProvider
      */
-    public function __construct($logEntityClass)
+    protected $auditConfigProvider;
+
+    /**
+     * @param                $logEntityClass
+     * @param ConfigProvider $auditConfigProvider
+     */
+    public function __construct($logEntityClass, ConfigProvider $auditConfigProvider)
     {
-        $this->logEntityClass = $logEntityClass;
+        $this->auditConfigProvider = $auditConfigProvider;
+        $this->logEntityClass      = $logEntityClass;
     }
 
     /**
@@ -153,7 +162,7 @@ class LoggableManager
     }
 
     /**
-     * @param $entity
+     * @param               $entity
      * @param EntityManager $em
      */
     public function handlePostPersist($entity, EntityManager $em)
@@ -237,7 +246,7 @@ class LoggableManager
 
     /**
      * @param string $action
-     * @param mixed $entity
+     * @param mixed  $entity
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -247,6 +256,8 @@ class LoggableManager
         if (!$this->username) {
             return;
         }
+
+        $this->checkAuditable(get_class($entity));
 
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
@@ -324,8 +335,8 @@ class LoggableManager
                         }
 
                         $method = $meta->propertyMetadata[$field]->method;
-                        $old = ($old !== null) ? $old->$method() : $old;
-                        $new = ($new !== null) ? $new->$method() : $new;
+                        $old    = ($old !== null) ? $old->$method() : $old;
+                        $new    = ($new !== null) ? $new->$method() : $new;
                     }
 
                     $newValues[$field] = array(
@@ -371,7 +382,6 @@ class LoggableManager
 
     /**
      * Get the LogEntry class
-     *
      * @return string
      */
     protected function getLogEntityClass()
@@ -381,7 +391,6 @@ class LoggableManager
 
     /**
      * Add flexible attribute log to a parent entity's log entry
-     *
      * @param  AbstractEntityFlexibleValue $entity
      * @return boolean                     True if value has been saved, false otherwise
      */
@@ -494,5 +503,35 @@ class LoggableManager
         $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
 
         return $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
+    }
+
+    protected function checkAuditable($entityClassName)
+    {
+        if ($this->hasConfig($entityClassName)) {
+            return;
+        }
+
+        if ($this->auditConfigProvider->hasConfig($entityClassName)
+            && $this->auditConfigProvider->getConfig($entityClassName)->is('auditable')
+        ) {
+            $reflection    = new \ReflectionClass($entityClassName);
+            $classMetadata = new ClassMetadata($reflection->getName());
+
+            foreach ($reflection->getProperties() as $reflectionProperty) {
+                if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $reflectionProperty->getName())
+                    && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $reflectionProperty->getName()))
+                    && $fieldConfig->is('auditable')
+                ) {
+                    $propertyMetadata = new PropertyMetadata($entityClassName, $reflectionProperty->getName());
+                    $propertyMetadata->method = '__toString';
+
+                    $classMetadata->addPropertyMetadata($propertyMetadata);
+                }
+            }
+
+            if (count($classMetadata->propertyMetadata)) {
+                $this->addConfig($classMetadata);
+            }
+        }
     }
 }

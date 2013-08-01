@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -8,8 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Base Doctrine ORM entity attribute
- *
- *
  */
 abstract class AbstractEntityAttribute extends AbstractAttribute
 {

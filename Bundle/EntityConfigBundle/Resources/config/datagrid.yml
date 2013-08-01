@@ -1,0 +1,54 @@
+parameters:
+    oro_entity_config.datagrid.manager.class:               Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
+    oro_entity_config.entityfieldsdatagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager
+    oro_entity_config.audit_datagrid.manager.class:         Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager
+    oro_entity_config.audit_field_datagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager
+
+services:
+    oro_entity_config.datagrid.manager:
+        class:                                  %oro_entity_config.datagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
+              entity_hint:                      entity
+              route_name:                       oro_entityconfig_index
+              query_entity_alias:               ce
+
+    oro_entity_config.entityfieldsdatagrid.manager:
+        class:                                  %oro_entity_config.entityfieldsdatagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    field
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+              entity_hint:                      fields
+              route_name:                       oro_entityconfig_fields
+              query_entity_alias:               cf
+
+    oro_entity_config.audit_datagrid.manager:
+        class:                                  %oro_entity_config.audit_datagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity_audit_log
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
+              entity_hint:                      oro_entityconfig_diff
+              route_name:                       oro_entityconfig_audit
+              query_entity_alias:               log
+
+    oro_entity_config.audit_field_datagrid.manager:
+        class:                                  %oro_entity_config.audit_field_datagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity_audit_field_log
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
+              entity_hint:                      oro_entityconfig_field_diff
+              route_name:                       oro_entityconfig_audit_field
+              query_entity_alias:               log

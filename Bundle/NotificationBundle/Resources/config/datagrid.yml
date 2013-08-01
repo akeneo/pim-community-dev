@@ -1,0 +1,13 @@
+parameters:
+    oro_notification.emailnotification.datagrid_manager.class: Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager
+
+services:
+    oro_notification.emailnotification.datagrid_manager:
+        class: %oro_notification.emailnotification.datagrid_manager.class%
+        arguments: [%oro_config.entities%]
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: emailnotification
+              entity_name: %oro_notification.emailnotification.entity.class%
+              entity_hint: transactional email
+              route_name: oro_notification_emailnotification_index

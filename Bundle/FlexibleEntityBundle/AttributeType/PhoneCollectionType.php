@@ -1,9 +1,13 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
+/**
+ * attribute type
+ */
 class PhoneCollectionType extends AbstractAttributeType
 {
     /**

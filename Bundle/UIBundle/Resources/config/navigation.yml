@@ -11,20 +11,9 @@ oro_menu_config:
         shortcuts:
             template: 'OroUIBundle:Menu:shortcuts.html.twig'
 
-    items:
-        home:
-            name: 'Home'
-            label: ''
-            extras:
-                icon: 'icon-home icon-white'
-                position: 1
-            route: 'oro_default'
-
     tree:
         application_menu:
             type: application_menu
-            children:
-                home: ~
 
         dots_menu:
             type: dots_menu

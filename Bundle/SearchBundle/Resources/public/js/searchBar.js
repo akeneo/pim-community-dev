@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var _searchFlag = false;
+    var timeout = 700;
     var searchBarContainer = $('#search-div');
     var searchBarInput = searchBarContainer.find('#search-bar-search');
     var searchBarDropdown = searchBarContainer.find('#search-bar-dropdown');
@@ -10,12 +11,7 @@ $(document).ready(function () {
     if (!_.isUndefined(Oro.Events)) {
         Oro.Events.bind(
             'hash_navigation_request:complete',
-            function() {
-                SearchByTagClose();
-                if (searchBarInput.size()) {
-                    SearchInputWidth();
-                }
-            },
+            SearchByTagClose,
             this
         );
 
@@ -52,11 +48,12 @@ $(document).ready(function () {
         searchBarForm.val($(this).parent().attr('data-alias'));
         searchBarButton.find('.search-bar-type').html($(this).html());
         SearchByTagClose();
-        SearchInputWidth();
         e.preventDefault();
     });
 
+    var searchInterval = null;
     function SearchByTag() {
+        clearInterval(searchInterval);
         var queryString = searchBarInput.val();
 
         if (queryString == '' || queryString.length < 3) {
@@ -90,16 +87,6 @@ $(document).ready(function () {
                 }
             });
         }
-    };
-
-    function SearchInputWidth() {
-        var _generalWidth = searchBarContainer.width();
-        var searchBtnWidth = searchBarContainer.find('.btn-search').outerWidth();
-        var searchBarButtonWidth = searchBarButton.outerWidth();
-
-        /* just need a design without border */
-        searchBarInput.width(_generalWidth - (searchBtnWidth + searchBarButtonWidth));
-        searchDropdown.width(_generalWidth - searchBarButtonWidth + 8);
     }
 
     function SearchByTagClose() {
@@ -121,17 +108,22 @@ $(document).ready(function () {
         }
     });
 
-    searchBarInput.keyup(function(event) {
-        switch(event.keyCode) {
-            case 40: //down
-            case 38: //up
-                searchBarContainer.addClass('header-search-focused');
-                searchDropdown.find('a:first').focus();
-                event.preventDefault();
-
-                return false;
-            default:
-                SearchByTag();
+    searchBarInput.keypress(function(e) {
+        if (e.keyCode == 8 || e.keyCode == 46 || (e.which !== 0 && e.charCode !== 0 && !e.ctrlKey && !e.altKey)) {
+            clearInterval(searchInterval);
+            searchInterval = setInterval(SearchByTag, timeout);
+        } else {
+            switch (e.keyCode) {
+                case 40:
+                case 38:
+                    searchBarContainer.addClass('header-search-focused');
+                    searchDropdown.find('a:first').focus();
+                    e.preventDefault();
+                    return false;
+                case 27:
+                    searchBarContainer.removeClass('header-search-focused');
+                    break;
+            }
         }
     });
 
@@ -174,6 +166,10 @@ $(document).ready(function () {
                 break;
             case 40: // Down arrow
                 selectNext();
+                break;
+            case 27:
+                searchBarContainer.removeClass('header-search-focused');
+                searchBarInput.focus();
                 break;
         }
     });

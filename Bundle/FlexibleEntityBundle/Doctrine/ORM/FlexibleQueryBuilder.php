@@ -214,37 +214,37 @@ class FlexibleQueryBuilder
         switch ($operator)
         {
             case '=':
-                $condition = $this->qb->expr()->eq($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->eq($field, $this->expr()->literal($value))->__toString();
                 break;
             case '<':
-                $condition = $this->qb->expr()->lt($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->lt($field, $this->expr()->literal($value))->__toString();
                 break;
             case '<=':
-                $condition = $this->qb->expr()->lte($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->lte($field, $this->expr()->literal($value))->__toString();
                 break;
             case '>':
-                $condition = $this->qb->expr()->gt($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->gt($field, $this->expr()->literal($value))->__toString();
                 break;
             case '>=':
-                $condition = $this->qb->expr()->gte($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->gte($field, $this->expr()->literal($value))->__toString();
                 break;
             case 'LIKE':
-                $condition = $this->qb->expr()->like($field, $this->qb->expr()->literal($value))->__toString();
+                $condition = $this->expr()->like($field, $this->expr()->literal($value))->__toString();
                 break;
             case 'NOT LIKE':
-                $condition = sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
+                $condition = sprintf('%s NOT LIKE %s', $field, $this->expr()->literal($value));
                 break;
             case 'NULL':
-                $condition = $this->qb->expr()->isNull($field);
+                $condition = $this->expr()->isNull($field);
                 break;
             case 'NOT NULL':
-                $condition = $this->qb->expr()->isNotNull($field);
+                $condition = $this->expr()->isNotNull($field);
                 break;
             case 'IN':
-                $condition = $this->qb->expr()->in($field, $value)->__toString();
+                $condition = $this->expr()->in($field, $value)->__toString();
                 break;
             case 'NOT IN':
-                $condition = $this->qb->expr()->notIn($field, $value)->__toString();
+                $condition = $this->expr()->notIn($field, $value)->__toString();
                 break;
             default:
                 throw new FlexibleQueryException('operator '.$operator.' is not supported');
@@ -282,26 +282,13 @@ class FlexibleQueryBuilder
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->innerJoin($this->qb->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+            $this->innerJoin($this->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
             // then join to option with filter on option id
             $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
             $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
-
-        } else if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_ENTITY) {
-
-            // inner join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $rootAlias = $this->qb->getRootAliases();
-            $this->qb->innerJoin($rootAlias[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
-
-            // then join to linked entity with filter on id
-            $joinAliasOpt = 'filterentity'.$attribute->getCode().$this->aliasCounter;
-            $backendField = sprintf('%s.id', $joinAliasEntity);
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
+            $this->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
 
         } else {
 
@@ -309,7 +296,7 @@ class FlexibleQueryBuilder
             $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($this->qb->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+            $this->innerJoin($this->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
         }
 
         return $this;
@@ -331,26 +318,25 @@ class FlexibleQueryBuilder
 
             // join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->leftJoin($this->qb->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+            $this->leftJoin($this->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
             // then to option and option value to sort on
             $joinAliasOpt = $aliasPrefix.'O'.$attribute->getCode().$this->aliasCounter;
             $condition    = $joinAliasOpt.".attribute = ".$attribute->getId();
-            $this->qb->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
+            $this->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
 
             $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode().$this->aliasCounter;
-            $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->getLocale());
-            $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
+            $condition       = $joinAliasOptVal.'.locale = '.$this->expr()->literal($this->getLocale());
+            $this->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
-            $this->qb->addOrderBy($joinAliasOpt.'.defaultValue', $direction);
-            $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
+            $this->addOrderBy($joinAliasOptVal.'.value', $direction);
 
         } else {
 
             // join to value and sort on
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->leftJoin($this->qb->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
-            $this->qb->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
+            $this->leftJoin($this->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+            $this->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
         }
     }
 }

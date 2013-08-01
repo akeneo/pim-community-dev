@@ -20,6 +20,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ShortcutsController extends FOSRestController
 {
+    protected $uris = array();
+
     /**
      * REST GET list
      *
@@ -35,24 +37,41 @@ class ShortcutsController extends FOSRestController
     {
         /** @var $provider BuilderChainProvider */
         $provider = $this->container->get('oro_menu.builder_chain');
-        /** @var $translator TranslatorInterface */
-        $translator = $this->get('translator');
-        $result = array();
-        $items = $provider->get('shortcuts');
-        /** @var $item ItemInterface */
-        $itemIterator = new RecursiveItemIterator($items);
-        $iterator = new \RecursiveIteratorIterator($itemIterator, \RecursiveIteratorIterator::SELF_FIRST);
-        foreach ($iterator as $item) {
-            if ($item->getExtra('isAllowed')) {
-                $key = $translator->trans($item->getLabel());
-                if (strpos(strtolower($key), strtolower($query)) !== false) {
-                    $result[$key] = array('url' => $item->getUri());
-                }
-            }
-        }
+        /**
+         * merging shortcuts and application menu
+         */
+        $shortcuts = $provider->get('shortcuts');
+        $menuItems = $provider->get('application_menu');
+        $result = array_merge($this->getResults($shortcuts, $query), $this->getResults($menuItems, $query));
 
         return $this->handleView(
             $this->view($result, is_array($result) ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND)
         );
+    }
+
+    /**
+     * @param ItemInterface $items
+     * @param $query
+     * @return array
+     */
+    protected function getResults(ItemInterface $items, $query)
+    {
+        /** @var $translator TranslatorInterface */
+        $translator = $this->get('translator');
+        $itemIterator = new RecursiveItemIterator($items);
+        $iterator = new \RecursiveIteratorIterator($itemIterator, \RecursiveIteratorIterator::SELF_FIRST);
+        $result = array();
+        /** @var $item ItemInterface */
+        foreach ($iterator as $item) {
+            if ($item->getExtra('isAllowed') && !in_array($item->getUri(), $this->uris) && $item->getUri() !== '#') {
+                $key = $translator->trans($item->getLabel());
+                if (strpos(strtolower($key), strtolower($query)) !== false) {
+                    $result[$key] = array('url' => $item->getUri());
+                    $this->uris[] = $item->getUri();
+                }
+            }
+        }
+
+        return $result;
     }
 }

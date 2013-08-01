@@ -38,7 +38,7 @@ class Collection
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -49,6 +49,7 @@ class Collection
      * Set id
      *
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -62,19 +63,20 @@ class Collection
      * Set data
      *
      * @param string $data
+     *
      * @return Collection
      */
     public function setData($data)
     {
         $this->data = $data;
-    
+
         return $this;
     }
 
     /**
      * Get data
      *
-     * @return string 
+     * @return string
      */
     public function getData()
     {
@@ -85,19 +87,20 @@ class Collection
      * Set type
      *
      * @param integer $type
+     *
      * @return Collection
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {

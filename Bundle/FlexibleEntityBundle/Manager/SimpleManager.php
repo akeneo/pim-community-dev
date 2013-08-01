@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity;
@@ -7,8 +8,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Aims to manage simple entity
- *
- *
  */
 class SimpleManager
 {
