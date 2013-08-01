@@ -223,7 +223,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
         var mode = this.mode;
         var links = this.links;
         var totalRecords = state.totalRecords;
-        var pageSize = state.pageSize;
+        var pageSize = state.pageSize == 'All' ? 0 : state.pageSize;
         var currentPage = state.currentPage;
         var firstPage = state.firstPage;
         var totalPages = state.totalPages;
@@ -236,11 +236,11 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             state.currentPage = currentPage = this.finiteInt(currentPage, "currentPage");
             state.firstPage = firstPage = this.finiteInt(firstPage, "firstPage");
 
-            if (pageSize < 1) {
-                throw new RangeError("`pageSize` must be >= 1");
+            if (pageSize < 0) {
+                throw new RangeError("`pageSize` must be >= 0");
             }
 
-            state.totalPages = totalPages = state.totalPages = Math.ceil(totalRecords / pageSize);
+            state.totalPages = pageSize == 0 ? 1 : totalPages = state.totalPages = Math.ceil(totalRecords / pageSize);
 
             if (firstPage < 0 || firstPage > 1) {
                 throw new RangeError("`firstPage` must be 0 or 1");

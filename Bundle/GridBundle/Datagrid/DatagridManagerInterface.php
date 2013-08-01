@@ -88,4 +88,11 @@ interface DatagridManagerInterface
      * @return void
      */
     public function setParameters(ParametersInterface $parameters);
+
+    /**
+     * Define grid toolbar options as assoc array
+     *
+     * @return array
+     */
+    public function getToolbarOptions();
 }

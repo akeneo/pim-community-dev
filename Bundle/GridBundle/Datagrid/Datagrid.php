@@ -112,6 +112,11 @@ class Datagrid implements DatagridInterface
     protected $rowActions;
 
     /**
+     * @var
+     */
+    protected $toolbarOptions;
+
+    /**
      * @param ProxyQueryInterface $query
      * @param FieldDescriptionCollection $columns
      * @param PagerInterface $pager
@@ -472,5 +477,22 @@ class Datagrid implements DatagridInterface
     public function createView()
     {
         return new DatagridView($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getToolbarOptions()
+    {
+        return $this->toolbarOptions;
+    }
+
+    /**
+     * @param $options
+     * @return $this
+     */
+    public function setToolbarOptions($options)
+    {
+        $this->toolbarOptions = $options;
     }
 }

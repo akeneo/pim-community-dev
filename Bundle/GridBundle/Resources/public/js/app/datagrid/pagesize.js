@@ -13,11 +13,12 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
         '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
         '<div class="btn-group ">' +
             '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                '<%= collectionState.pageSize %><span class="caret"></span>' +
+                '<%= currentSizeLabel %><span class="caret"></span>' +
             '</button>' +
             '<ul class="dropdown-menu pull-right">' +
                 '<% _.each(items, function (item) { %>' +
-                    '<li><a href="#"><%= item %></a></li>' +
+                    '<li><a href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
+                    '<% if (item.label == undefined) { %><%= item %><% } else { %><%= item.label %><% } %></a></li>' +
                 '<% }); %>' +
             '</ul>' +
         '</div>'
@@ -88,7 +89,7 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
      */
     onChangePageSize: function (e) {
         e.preventDefault();
-        var pageSize = parseInt($(e.target).text());
+        var pageSize = parseInt($(e.target).data('size'));
         if (pageSize !== this.collection.state.pageSize) {
             this.collection.state.pageSize = pageSize;
             this.collection.fetch();
@@ -98,10 +99,21 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
     render: function() {
         this.$el.empty();
 
+        var self = this;
+        var currentSizeLabel = _.filter(this.items, function(item) {
+            if (item.label == undefined) {
+                return self.collection.state.pageSize == item;
+            } else {
+                return self.collection.state.pageSize == item.size;
+            }
+        });
+        currentSizeLabel = currentSizeLabel[0].label == undefined ? currentSizeLabel[0] : currentSizeLabel[0].label;
+
         this.$el.append($(this.template({
             disabled: !this.enabled || !this.collection.state.totalRecords,
             collectionState: this.collection.state,
-            items: this.items
+            items: this.items,
+            currentSizeLabel: currentSizeLabel
         })));
 
         return this;

@@ -222,6 +222,9 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->datagridBuilder->addRowAction($datagrid, $actionParameters);
         }
 
+        // add toolbar options
+        $datagrid->setToolbarOptions($this->getToolbarOptions());
+
         return $datagrid;
     }
 
@@ -420,5 +423,15 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         return $this->translator->trans($id, $parameters, $domain);
+    }
+
+    /**
+     * Define grid toolbar options as assoc array
+     *
+     * @return array
+     */
+    public function getToolBarOptions()
+    {
+        return array();
     }
 }
