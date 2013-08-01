@@ -108,6 +108,7 @@
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -118,6 +119,7 @@
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
