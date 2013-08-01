@@ -15,7 +15,7 @@
 
         <div>
             {{ JSFV(form) }}
-            <form class="form-horizontal" action="{{ form.vars.value.id ?
+            <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
                 path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
 
