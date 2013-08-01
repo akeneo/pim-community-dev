@@ -71,6 +71,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $username
+     *
      * @Given /^I am logged in as "([^"]*)"$/
      */
     public function iAmLoggedInAs($username)
@@ -83,6 +85,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $page
+     *
      * @Given /^I am on the ([^"]*) page$/
      */
     public function iAmOnThePage($page)
@@ -93,6 +97,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $identifier
+     * @param string $page
+     *
      * @Given /^I edit the "([^"]*)" (\w+)$/
      * @Given /^I am on the "([^"]*)" (\w+) page$/
      */
@@ -107,6 +114,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $entity
+     *
      * @Given /^I create a new (\w+)$/
      */
     public function iCreateANew($entity)
@@ -118,6 +127,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
      * @Given /^I am on the category "([^"]*)" node creation page$/
      */
     public function iAmOnTheCategoryNodeCreationPage($code)
@@ -128,6 +139,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $page
+     *
      * @Then /^I should be redirected on the (.*) page$/
      */
     public function iShouldBeRedirectedOnThePage($page)
@@ -136,6 +149,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $tab
+     *
      * @Given /^I visit the "([^"]*)" tab$/
      */
     public function iVisitTheTab($tab)
@@ -146,6 +161,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Other methods -------------------- */
 
     /**
+     * @param string $currencies
+     *
      * @Then /^I should see activated currency (.*)$/
      * @Then /^I should see activated currencies (.*)$/
      */
@@ -161,6 +178,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $currencies
+     *
      * @Given /^I should see deactivated currency (.*)$/
      * @Given /^I should see deactivated currencies (.*)$/
      */
@@ -176,6 +195,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $currencies
+     *
      * @When /^I activate the (.*) currency$/
      */
     public function iActivateTheCurrency($currencies)
@@ -187,6 +208,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $currencies
+     *
      * @When /^I deactivate the (.*) currency$/
      */
     public function iDeactivateTheCurrency($currencies)
@@ -198,6 +221,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locale
+     *
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
@@ -206,6 +231,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Then /^the locale switcher should contain the following items:$/
      */
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
@@ -220,6 +247,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $action
+     * @param string $entity
+     * @param string $entityType
+     *
      * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
      */
     public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
@@ -245,6 +276,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $action
+     *
      * @Given /^I confirm the ([^"]*)$/
      */
     public function iConfirmThe($action)
@@ -255,6 +288,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $action
+     *
      * @Given /^I cancel the ([^"]*)$/
      */
     public function iCancelThe($action)
@@ -263,6 +298,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $languages
+     *
      * @Then /^I should see that the product is available in (.*)$/
      */
     public function iShouldSeeLanguages($languages)
@@ -279,16 +316,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $languages
+     *
      * @When /^I add the (.*) languages?$/
      */
     public function iAddTheLanguages($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
-            $this
-                ->getPage('Product edit')
-                ->selectLanguage($language)
-            ;
+            $this->getPage('Product edit')->selectLanguage($language);
         }
     }
 
@@ -301,18 +337,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param integer $position
+     *
      * @Given /^I change the attribute position to (\d+)$/
      */
     public function iChangeTheAttributePositionTo($position)
     {
-        $this
-            ->getPage('Attribute Edit')
-            ->setPosition($position)
-            ->save()
-        ;
+        $this->getPage('Attribute Edit')->setPosition($position)->save();
     }
 
     /**
+     * @param string $title
+     *
      * @Then /^I should see the "([^"]*)" section$/
      */
     public function iShouldSeeTheSection($title)
@@ -343,6 +379,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $group
+     * @param string $attributes
+     *
+     * @return void
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
@@ -374,6 +414,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $title
+     *
      * @Then /^the title of the product should be "([^"]*)"$/
      */
     public function theTitleOfTheProductShouldBe($title)
@@ -387,6 +429,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $pattern
+     *
      * @Then /^the title of the product should match "([^"]*)"$/
      */
     public function theTitleOfTheProductShouldMatch($pattern)
@@ -400,6 +444,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $fieldName
+     * @param string $expected
+     *
      * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
      */
@@ -416,6 +463,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $field
+     * @param string $value
+     * @param string $language
+     *
+     * @return void
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
@@ -438,6 +490,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
+     * @param string $attributes
+     * @param string $group
+     *
      * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
      */
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
@@ -463,6 +519,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attributes
+     *
      * @Given /^I add available attributes? (.*)$/
      */
     public function iAddAvailableAttributes($attributes)
@@ -477,6 +535,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $families
+     *
      * @Then /^I should see the families (.*)$/
      */
     public function iShouldSeeTheFamilies($families)
@@ -493,6 +553,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $group
+     *
      * @Given /^I should see attribute "([^"]*)" in group "([^"]*)"$/
      */
     public function iShouldSeeAttributeInGroup($attribute, $group)
@@ -506,6 +569,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $family
+     *
      * @Given /^I should be on the "([^"]*)" family page$/
      */
     public function iShouldBeOnTheFamilyPage($family)
@@ -517,6 +582,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
+     * @param string $field
+     *
      * @Then /^I should (not )?see a remove link next to the "([^"]*)" field$/
      */
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
@@ -538,6 +606,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $field
+     *
      * @When /^I remove the "([^"]*)" attribute$/
      */
     public function iRemoveTheAttribute($field)
@@ -553,6 +623,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attributes
+     *
      * @Then /^eligible attributes as label should be (.*)$/
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
@@ -576,42 +648,40 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     *
      * @Given /^I choose "([^"]*)" as the label of the family$/
      */
     public function iChooseAsTheLabelOfTheFamily($attribute)
     {
-        $this
-            ->getPage('Family edit')
-            ->selectAttributeAsLabel($attribute)
-            ->save()
-        ;
+        $this->getPage('Family edit')->selectAttributeAsLabel($attribute)->save();
     }
 
     /**
+     * @param string $type
+     *
      * @When /^I select the attribute type "([^"]*)"$/
      */
     public function iSelectTheAttributeType($type)
     {
-        $this
-            ->getPage('Attribute creation')
-            ->selectAttributeType($type)
-        ;
+        $this->getPage('Attribute creation')->selectAttributeType($type);
 
         $this->wait();
     }
 
     /**
+     * @param string $channel
+     *
      * @Given /^I select the channel "([^"]*)"$/
      */
     public function iSelectChannel($channel)
     {
-        $this
-            ->getPage('Export creation')
-            ->selectChannel($channel)
-        ;
+        $this->getPage('Export creation')->selectChannel($channel);
     }
 
     /**
+     * @param string $fields
+     *
      * @Then /^I should see the (.*) fields?$/
      */
     public function iShouldSeeTheFields($fields)
@@ -627,6 +697,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $fields
+     *
      * @Given /^the fields (.*) should be disabled$/
      */
     public function theFieldsShouldBeDisabled($fields)
@@ -649,6 +721,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^I fill in the following information:$/
      */
     public function iFillInTheFollowingInformation(TableNode $table)
@@ -659,6 +733,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following attribute types should have the following fields$/
      */
     public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
@@ -670,6 +746,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^I create the following attribute options:$/
      */
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
@@ -680,6 +758,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $button
+     *
      * @Given /^I press the "([^"]*)" button$/
      */
     public function iPressTheButton($button)
@@ -689,6 +769,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locale
+     *
      * @Given /^I select the (\w+) activated locale$/
      */
     public function iSelectTheActivatedLocale($locale)
@@ -701,11 +783,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDisableTheProduct()
     {
-        $this
-            ->getPage('Product edit')
-            ->disableProduct()
-            ->save()
-        ;
+        $this->getPage('Product edit')->disableProduct()->save();
     }
 
     /**
@@ -713,14 +791,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iEnableTheProduct()
     {
-        $this
-            ->getPage('Product edit')
-            ->enableProduct()
-            ->save()
-        ;
+        $this->getPage('Product edit')->enableProduct()->save();
     }
 
     /**
+     * @param string $sku
+     *
      * @Given /^product "([^"]*)" should be disabled$/
      */
     public function productShouldBeDisabled($sku)
@@ -731,6 +807,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $sku
+     *
      * @Given /^product "([^"]*)" should be enabled$/
      */
     public function productShouldBeEnabled($sku)
@@ -741,6 +819,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $channels
+     *
      * @Then /^I should see channels (.*)$/
      */
     public function iShouldSeeChannels($channels)
@@ -757,30 +837,27 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the channel (.*) is able to export category (.*)$/
+     * @param string $channel
+     * @param string $not
+     * @param string $category
+     *
+     * @Given /^the channel (.*) is (not )?able to export category (.*)$/
      */
-    public function theChannelIsAbleToExportCategory($channel, $category)
+    public function theChannelIsAbleToExportCategory($channel, $not, $category)
     {
-        if (!$this->getPage('Channel index')->channelCanExport($channel, $category)) {
+        $expected = (bool) $not;
+        $actual = $this->getPage('Channel index')->channelCanExport($channel, $category);
+
+        if ($expected !== $actual) {
             throw $this->createExpectationException(
-                sprintf('Expecting channel %s to be able to export category %s', $channel, $category)
+                sprintf('Expecting channel %s %sto be able to export category %s', $channel, $not, $category)
             );
         }
     }
 
     /**
-     * @Given /^the channel (.*) is not able to export category (.*)$/
-     */
-    public function theChannelIsNotAbleToExportCategory($channel, $category)
-    {
-        if ($this->getPage('Channel index')->channelCanExport($channel, $category)) {
-            throw $this->createExpectationException(
-                sprintf('Expecting channel %s not to be able to export category %s', $channel, $category)
-            );
-        }
-    }
-
-    /**
+     * @param integer $count
+     *
      * @Then /^there should be (\d+) update$/
      */
     public function thereShouldBeUpdate($count)
@@ -793,6 +870,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
      * @Given /^I filter per category "([^"]*)"$/
      */
     public function iFilterPerCategory($code)
@@ -816,6 +895,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
      * @Given /^I filter per family ([^"]*)$/
      */
     public function iFilterPerFamily($code)
@@ -825,6 +906,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $products
+     *
      * @Then /^I should see products (.*)$/
      */
     public function iShouldSeeProducts($products)
@@ -840,6 +923,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $product
+     *
      * @Then /^I should see product "([^"]*)"$/
      */
     public function iShouldSeeProduct($product)
@@ -852,6 +937,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $products
+     *
      * @Then /^I should not see products (.*)$/
      */
     public function iShouldNotSeeProducts($products)
@@ -870,6 +957,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $product
+     *
      * @Then /^I should not see product "([^"]*)"$/
      */
     public function iShouldNotSeeProduct($product)
@@ -885,6 +974,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
      * @Then /^I should be on the category "([^"]*)" edit page$/
      */
     public function iShouldBeOnTheCategoryEditPage($code)
@@ -897,6 +988,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $exportTitle
+     *
      * @Given /^I create a new "([^"]*)" export$/
      */
     public function iCreateANewExport($exportTitle)
@@ -914,6 +1007,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $column
+     * @param string $exportCode
+     * @param string $status
+     *
+     * @return Step
      * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
      */
     public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
@@ -929,6 +1027,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $job
+     *
      * @Then /^I should be on the "([^"]*)" export job page$/
      */
     public function iShouldBeOnTheExportJobPage($job)
@@ -938,6 +1038,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $job
+     *
      * @Given /^I am on the "([^"]*)" export job page$/
      */
     public function iAmOnTheExportJobPage($job)
@@ -949,8 +1051,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I delete the "([^"]*)" job$/
      * @param string $jobCode
+     *
+     * @return Step
+     * @When /^I delete the "([^"]*)" job$/
      */
     public function iDeleteTheJob($jobCode)
     {
@@ -963,6 +1067,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $message
+     * @param string $property
+     *
      * @Then /^I should see "([^"]*)" next to the (\w+)$/
      */
     public function iShouldSeeNextToThe($message, $property)
@@ -976,6 +1083,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $link
+     *
      * @Then /^I should not see the "([^"]*)" link$/
      */
     public function iShouldNotSeeTheLink($link)
@@ -988,6 +1097,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $job
+     *
      * @When /^I launch the "([^"]*)" export job$/
      */
     public function iLaunchTheExportJob($job)
@@ -1006,6 +1117,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $file
+     *
      * @Given /^file "([^"]*)" should exist$/
      */
     public function fileShouldExist($file)
@@ -1019,6 +1132,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         unlink($file);
     }
 
+    /**
+     * @param string $page
+     * @param array  $options
+     *
+     * @return Page
+     */
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -1030,11 +1149,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $page;
     }
 
+    /**
+     * @return Page
+     */
     private function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
     }
 
+    /**
+     * A method that logs the user in with the previously provided credentials if required by the page
+     */
     private function loginIfRequired()
     {
         $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
@@ -1045,6 +1170,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @param string $field
+     *
+     * @return string
+     */
     private function getInvalidValueFor($field)
     {
         switch ($field) {
@@ -1053,6 +1183,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @param integer $time
+     * @param string  $condition
+     *
+     * @return void
+     */
     private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         try {
@@ -1061,51 +1197,99 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @param string $sku
+     *
+     * @return Product
+     */
     private function getProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
     private function getCategory($code)
     {
         return $this->getFixturesContext()->getCategory($code);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return AttributeGroup
+     */
     private function getGroup($name)
     {
         return $this->getFixturesContext()->getGroup($name);
     }
 
+    /**
+     * @param string $type
+     *
+     * @return ProductAttribute
+     */
     private function getAttribute($type)
     {
         return $this->getFixturesContext()->getAttribute($type);
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Family
+     */
     private function getFamily($code)
     {
         return $this->getFixturesContext()->getFamily($code);
     }
 
+    /**
+     * @return FixturesContext
+     */
     private function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
 
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
     private function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
     }
 
+    /**
+     * @param string $language
+     *
+     * @return string
+     */
     private function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
     }
 
+    /**
+     * @param string $job
+     *
+     * @return Job
+     */
     private function getJob($job)
     {
         return $this->getFixturesContext()->getJob($job);
     }
 
+    /**
+     * @param string $message
+     *
+     * @return ExpectationException
+     */
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
