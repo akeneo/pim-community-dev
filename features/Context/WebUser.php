@@ -47,6 +47,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param PageFactory $pageFactory
+     */
+    public function setPageFactory(PageFactory $pageFactory)
+    {
+        $this->pageFactory = $pageFactory;
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -60,14 +68,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
 
         return $this->pageFactory->createPage($name);
-    }
-
-    /**
-     * @param PageFactory $pageFactory
-     */
-    public function setPageFactory(PageFactory $pageFactory)
-    {
-        $this->pageFactory = $pageFactory;
     }
 
     /**
@@ -93,57 +93,27 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the "([^"]*)" product page$/
+     * @Given /^I edit the "([^"]*)" (\w+)$/
+     * @Given /^I am on the "([^"]*)" (\w+) page$/
      */
-    public function iAmOnTheProductPage($product)
+    public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $product = $this->getProduct($product);
-        $this->openPage('Product edit', array(
-            'id' => $product->getId(),
+        $page = ucfirst($page);
+        $method = sprintf('get%s', $page);
+        $entity = $this->$method($identifier);
+        $this->openPage(sprintf('%s edit', $page), array(
+            'id' => $entity->getId(),
         ));
     }
 
     /**
-     * @Given /^I create a new product$/
+     * @Given /^I create a new (\w+)$/
      */
-    public function iCreateANewProduct()
+    public function iCreateANew($entity)
     {
-        $this->getPage('Product index')->clickCreationLink();
-        $this->currentPage = 'Product creation';
-        $this->wait();
-    }
-
-    /**
-     * @When /^I am on the "([^"]*)" attribute page$/
-     */
-    public function iAmOnTheAttributePage($label)
-    {
-        $attribute = $this->getAttribute($label);
-
-        $this->openPage('Attribute Edit', array(
-            'id' => $attribute->getId(),
-        ));
-    }
-
-    /**
-     * @Given /^I edit the "([^"]*)" family$/
-     * @Given /^I am on the "([^"]*)" family page$/
-     */
-    public function iAmOnTheFamilyPage($family)
-    {
-        $this->openPage('Family edit', array(
-            'family_id' => $this->getFamily($family)->getId()
-        ));
-    }
-
-    /**
-     * @Given /^I am on the "([^"]*)" category page$/
-     */
-    public function iAmOnTheCategoryPage($code)
-    {
-        $this->openPage('Category edit', array(
-            'id' => $this->getCategory($code)->getId(),
-        ));
+        $entity = ucfirst($entity);
+        $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+        $this->currentPage = sprintf('%s creation', $entity);
         $this->wait();
     }
 
@@ -446,7 +416,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I change the (?<field>\w+) to "([^"]*)"$/
+     * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -541,7 +511,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheFamilyPage($family)
     {
         $expectedAddress = $this->getPage('Family edit')->getUrl(array(
-            'family_id' => $this->getFamily($family)->getId(),
+            'id' => $this->getFamily($family)->getId(),
         ));
         $this->assertSession()->addressEquals($expectedAddress);
     }
@@ -963,7 +933,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheExportJobPage($job)
     {
-        $expectedAddress = $this->getPage('Export detail')->getUrl($this->getJob($job));
+        $expectedAddress = $this->getPage('Export show')->getUrl($this->getJob($job));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
@@ -972,7 +942,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheExportJobPage($job)
     {
-        $this->openPage('Export detail', array(
+        $this->openPage('Export show', array(
             'id' => $this->getJob($job)->getId()
         ));
         $this->wait();
@@ -997,7 +967,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export detail')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(sprintf(
                 'Expecting to see "%s" next to the %s property, but saw "%s"',
                 $message, $property, $error
@@ -1032,7 +1002,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iExecuteTheExportJob()
     {
-        $this->getPage('Export detail')->execute();
+        $this->getPage('Export show')->execute();
     }
 
     /**

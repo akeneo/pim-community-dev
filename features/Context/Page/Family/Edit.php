@@ -2,25 +2,32 @@
 
 namespace Context\Page\Family;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Family\Creation;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Edit extends Page
+class Edit extends Creation
 {
-    protected $path = '/enrich/family/edit/{family_id}';
+    protected $path = '/enrich/family/edit/{id}';
 
-    protected $elements = array(
-        'Available attributes'            => array('css' => '#pim_available_product_attributes_attributes'),
-        'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
-        'Available attributes add button' => array('css' => 'a:contains("Add")'),
-        'Attributes'                      => array('css' => '#attributes table'),
-        'Tabs'                            => array('css' => '#form-navbar'),
-        'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
-    );
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Available attributes'            => array('css' => '#pim_available_product_attributes_attributes'),
+                'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
+                'Available attributes add button' => array('css' => 'a:contains("Add")'),
+                'Attributes'                      => array('css' => '#attributes table'),
+                'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
+            )
+        );
+    }
 
     public function getAvailableAttribute($attribute, $group)
     {
@@ -69,12 +76,7 @@ class Edit extends Page
         ;
     }
 
-    public function save()
-    {
-        $this->pressButton('Save');
-    }
-
-    public function getUrl(array $options)
+    public function getUrl(array $options = array())
     {
         $url = $this->getPath();
 
@@ -83,11 +85,6 @@ class Edit extends Page
         }
 
         return $url;
-    }
-
-    public function getFieldLocator($name, $locale)
-    {
-        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
     }
 
     public function getRemoveLinkFor($attribute)
@@ -115,11 +112,6 @@ class Edit extends Page
         }
 
         return $removeLink;
-    }
-
-    public function visitTab($tab)
-    {
-        $this->getElement('Tabs')->clickLink($tab);
     }
 
     public function getAttributeAsLabelOptions()

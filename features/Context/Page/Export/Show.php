@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Index as BaseIndex;
 
 /**
  * The export detail page
@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Detail extends Page
+class Show extends BaseIndex
 {
     protected $path = '/ie/export/{id}';
 
