@@ -131,4 +131,19 @@ class Config implements ConfigInterface
             $this->values,
             ) = unserialize($serialized);
     }
+
+    /**
+     * Clone Config
+     */
+    public function __clone()
+    {
+        $this->id     = clone $this->id;
+        $this->values = array_map(function ($value) {
+            if (is_object($value)) {
+                return clone $value;
+            } else {
+                return $value;
+            }
+        }, $this->values);
+    }
 }
