@@ -20,19 +20,19 @@ Usage in code (any Bundle):
 ConfigProvider methods:
 
   hasConfig({Entity class name}) : checks if entity has config
-  getConfig({Entity class name}) : return configuration ( EntityConfig(AbstractConfig) instance )
+  getConfig({Entity class name}) : return configuration ( EntityConfig(Config) instance )
 
   hasFieldConfig({Entity class name}, {Field code}) : checks if field of entity has config
-  getFieldConfig({Entity class name}, {Field code}) : return configuration for specified field ( FieldConfig(AbstractConfig) instance )
+  getFieldConfig({Entity class name}, {Field code}) : return configuration for specified field ( FieldConfig(Config) instance )
 
-  AbstractConfig->is({parameter})  : check if parameter exists or equal to TRUE, return boolean
-  AbstractConfig->has({parameter}) : check if parameter exists, return boolean
+  Config->is({parameter})  : check if parameter exists or equal to TRUE, return boolean
+  Config->has({parameter}) : check if parameter exists, return boolean
 
-  AbstractConfig->get({parameter}, {strict = FALSE}) : return parameters
+  Config->get({parameter}, {strict = FALSE}) : return parameters
     - if strict == TRUE and parameters NOT exists will be Exception
     - if strict == FALSE and parameters NOT exists will return NULL
 
-  AbstractConfig->set({parameter}, {value}) : set parameter and return AbstractConfig
+  Config->set({parameter}, {value}) : set parameter and return Config
 
 Simple usage example:
         if ($entityAuditProvider->hasConfig(get_class($entity))) {

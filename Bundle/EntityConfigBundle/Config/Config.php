@@ -2,14 +2,36 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\IdInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-abstract class AbstractConfig implements ConfigInterface
+class Config implements ConfigInterface
 {
+    /**
+     * @var IdInterface
+     */
+    protected $id;
+
     /**
      * @var array
      */
     protected $values = array();
+
+    /**
+     * @param IdInterface $id
+     */
+    public function __construct(IdInterface $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return IdInterface
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @param                   $code
@@ -22,10 +44,7 @@ abstract class AbstractConfig implements ConfigInterface
         if (isset($this->values[$code])) {
             return $this->values[$code];
         } elseif ($strict) {
-            throw new RuntimeException(sprintf(
-                "Config '%s' for class '%s' in scope '%s' is not found ",
-                $code, $this->getClassName(), $this->getScope()
-            ));
+            throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getId()));
         }
 
         return null;
@@ -58,7 +77,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function is($code)
     {
-        return (bool) $this->get($code);
+        return (bool)$this->get($code);
     }
 
     /**
@@ -89,5 +108,27 @@ abstract class AbstractConfig implements ConfigInterface
         $this->values = $values;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->values,
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->values,
+            ) = unserialize($serialized);
     }
 }
