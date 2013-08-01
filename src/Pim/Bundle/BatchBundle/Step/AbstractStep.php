@@ -4,10 +4,12 @@ namespace Pim\Bundle\BatchBundle\Step;
 
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Job\JobRepository;
+use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
 
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
+
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -28,7 +30,7 @@ abstract class AbstractStep implements StepInterface
 
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
 
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepositoryInterace $jobRepository */
     private $jobRepository;
 
     /**
@@ -59,18 +61,18 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * Public setter for {@link JobRepository}.
+     * Public setter for {@link JobRepositoryInterface}.
      *
      * @param jobRepository is a mandatory dependence (no default).
      */
-    public function setJobRepository(JobRepository $jobRepository)
+    public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
     }
 
     /**
      *
-     * @return JobRepositoru
+     * @return JobRepositoryInterface
      */
     protected function getJobRepository()
     {

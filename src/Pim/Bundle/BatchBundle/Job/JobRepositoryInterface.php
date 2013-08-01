@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 /**
  * Common interface for Job repositories which should handle how job are stored, updated
  * and retrieved
@@ -22,19 +26,24 @@ interface JobRepositoryInterface
      *
      * @return JobExecution
      */
-    public function createJobExecution($jobName, JobParameters $jobParameters);
+    public function createJobExecution(Job $job);
 
     /**
      * Update a JobExecution object
      *
      * @param JobExecution
      */
-    public function updateJobExecution($jobExecution);
+    public function updateJobExecution(JobExecution $jobExecution);
 
     /**
      * Update a StepExecution object
      *
      * @return StepExecution
      */
-    public function updateStepExecution($stepExecution);
+    public function updateStepExecution(StepExecution $stepExecution);
+
+    /**
+     * Finalize all writes to the repository
+     */
+    public function flush();
 }

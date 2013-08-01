@@ -4,6 +4,7 @@ namespace Pim\Bundle\BatchBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
 use Pim\Bundle\BatchBundle\Job\JobInterface;
@@ -101,6 +102,11 @@ class Job
     protected $jobDefinition;
 
     /**
+     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="job")
+     */
+    protected $jobExecutions;
+
+    /**
      * Constructor
      *
      * @param string $connector
@@ -112,6 +118,7 @@ class Job
         $this->connector     = $connector;
         $this->type          = $type;
         $this->alias         = $alias;
+        $this->jobExecutions = new ArrayCollection();
     }
 
     /**

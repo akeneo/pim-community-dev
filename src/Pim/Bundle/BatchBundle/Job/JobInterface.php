@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
+
 /**
  * Batch domain object representing a job. Job is an explicit abstraction
  * representing the configuration of a job specified by a developer.

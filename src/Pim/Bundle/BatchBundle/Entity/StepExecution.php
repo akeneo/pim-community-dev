@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
+use \DateTime;
+use \Exception;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
@@ -180,7 +182,7 @@ class StepExecution
 
         $this->executionContext = new ExecutionContext();
 
-        $this->startTime = time();
+        $this->startTime = new DateTime();
     }
 
     /**
@@ -247,7 +249,7 @@ class StepExecution
      *
      * @param mixed $endTime the time that this execution ended
      */
-    public function setEndTime($endTime)
+    public function setEndTime(DateTime $endTime)
     {
         $this->endTime = $endTime;
     }
@@ -363,7 +365,7 @@ class StepExecution
      *
      * @param mixed $startTime the time this execution started
      */
-    public function setStartTime($startTime)
+    public function setStartTime(DateTime $startTime)
     {
         $this->startTime = $startTime;
     }
@@ -397,9 +399,9 @@ class StepExecution
      */
     public function upgradeStatus($status)
     {
-        $newBatchStatus = $this->getBatchStatus();
+        $newBatchStatus = $this->getStatus();
         $newBatchStatus->upgradeTo($status);
-        $this->status = $newBatchStatus->getValue();
+        $this->setStatus($newBatchStatus);
     }
 
     /**
@@ -452,7 +454,7 @@ class StepExecution
      * Add a failure exception
      * @param Exception $e
      */
-    public function addFailureException(\Exception $e)
+    public function addFailureException(Exception $e)
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
@@ -477,7 +479,7 @@ class StepExecution
 
         try {
             $string = $this->getSummary();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $string = $e->getMessage();
         }
 
@@ -498,8 +500,8 @@ class StepExecution
             $summary,
             $this->id,
             $this->stepName,
-            $this->status->getValue(),
-            $this->exitStatus->getExitCode(),
+            $this->status,
+            $this->exitCode,
             $this->readCount,
             $this->filterCount,
             $this->writeCount,
