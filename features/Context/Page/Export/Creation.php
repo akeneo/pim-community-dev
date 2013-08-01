@@ -15,6 +15,9 @@ class Creation extends Form
 {
     protected $path = '/ie/export/create';
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -28,20 +31,27 @@ class Creation extends Form
         );
     }
 
+    /**
+     * @param string $channel
+     */
     public function selectChannel($channel)
     {
-        $this
-            ->getElement('Channel selector')
-            ->selectOption($channel);
+        $this->getElement('Channel selector')->selectOption($channel);
     }
 
+    /**
+     * @param string $field
+     */
     public function checkField($field)
     {
-        $this
-            ->getElement($field)
-            ->check();
+        $this->getElement($field)->check();
     }
 
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
     public function getUrl(array $options)
     {
         return sprintf('%s?%s', $this->getPath(), http_build_query($options));

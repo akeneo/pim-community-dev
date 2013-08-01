@@ -5,7 +5,7 @@ namespace Context\Page\Export;
 use Context\Page\Base\Index as BaseIndex;
 
 /**
- * The export detail page
+ * Export show page
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,11 +15,21 @@ class Show extends BaseIndex
 {
     protected $path = '/ie/export/{id}';
 
+    /**
+     * @param Job $job
+     *
+     * @return string
+     */
     public function getUrl($job)
     {
         return str_replace('{id}', $job->getId(), $this->getPath());
     }
 
+    /**
+     * @param string $property
+     *
+     * @return string
+     */
     public function getPropertyErrorMessage($property)
     {
         $error = $this->find('css', sprintf('li:contains("%s") span.label-important', ucfirst($property)));
@@ -33,6 +43,9 @@ class Show extends BaseIndex
         return $error->getText();
     }
 
+    /**
+     * Click the job execution link
+     */
     public function execute()
     {
         $this->clickLink('Export now');

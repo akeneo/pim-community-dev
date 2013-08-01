@@ -15,11 +15,12 @@ class Index extends Grid
 {
     protected $path = '/configuration/channel/';
 
-    public function findChannelRow($name)
-    {
-        return $this->getElement('Grid content')->find('css', sprintf('tr:contains("%s")', $name));
-    }
-
+    /**
+     * @param string $channel
+     * @param string $category
+     *
+     * @return boolean
+     */
     public function channelCanExport($channel, $category)
     {
         return $this->getElement('Grid content')->find(

@@ -22,6 +22,7 @@ Feature: Add attribute to a product family
       | Size             |         |
     And I am logged in as "admin"
     When I am on the "Bags" family page
+    And I visit the "Attributes" tab
     Then I should see available attributes Long Description and Manufacturer in group "General"
     And I should see available attribute Size in group "Other"
 
@@ -33,6 +34,7 @@ Feature: Add attribute to a product family
       | Size             |         | Smartphone |
     And I am logged in as "admin"
     When I am on the "Smartphone" family page
+    And I visit the "Attributes" tab
     Then I should see attribute "Long Description" in group "General"
     And I should see attribute "Size" in group "Other"
 
@@ -45,6 +47,7 @@ Feature: Add attribute to a product family
       | Size             |         |
     And I am logged in as "admin"
     When I am on the "Bags" family page
+    And I visit the "Attributes" tab
     And I add available attributes Long Description and Size
     Then I should see attribute "Long Description" in group "General"
     And I should see attribute "Size" in group "Other"
