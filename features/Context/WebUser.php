@@ -28,7 +28,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
-        'channels'   => 'Family index',
+        'channels'   => 'Channel index',
         'currencies' => 'Currency index',
         'exports'    => 'Export index',
         'families'   => 'Family index',
