@@ -20,6 +20,11 @@ class ConnectorRegistry
     protected $jobFactory;
     protected $stepFactory;
 
+    /**
+     * Constructor
+     * @param JobFactory  $jobFactory
+     * @param StepFactory $stepFactory
+     */
     public function __construct(JobFactory $jobFactory, StepFactory $stepFactory)
     {
         $this->jobFactory = $jobFactory;
@@ -47,6 +52,7 @@ class ConnectorRegistry
 
     /**
      * Get the list of jobs
+     * @param string $type
      *
      * @return multitype:JobInterface
      */
@@ -69,8 +75,16 @@ class ConnectorRegistry
      *
      * @return null
      */
-    public function addStepToJob($jobConnector, $jobType, $jobAlias, $jobTitle, $stepTitle, $stepReader, $stepProcessor, $stepWriter)
-    {
+    public function addStepToJob(
+        $jobConnector,
+        $jobType,
+        $jobAlias,
+        $jobTitle,
+        $stepTitle,
+        $stepReader,
+        $stepProcessor,
+        $stepWriter
+    ) {
         if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
             $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
         }
@@ -80,11 +94,23 @@ class ConnectorRegistry
         );
     }
 
+    /**
+     * @param string $connector
+     * @param string $type
+     *
+     * @return mixed
+     */
     private function getConnector($connector, $type)
     {
         return isset($this->jobs[$type][$connector]) ? $this->jobs[$type][$connector] : null;
     }
 
+    /**
+     * @param array  $connector
+     * @param string $jobAlias
+     *
+     * @return mixed
+     */
     private function getConnectorJob($connector, $jobAlias)
     {
         return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
