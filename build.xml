@@ -118,7 +118,6 @@
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
-            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
