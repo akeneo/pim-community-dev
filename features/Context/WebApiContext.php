@@ -96,12 +96,15 @@ class WebApiContext extends BehatWebApiContext
         $digest  = base64_encode(sha1(base64_decode($nonce) . $created . $apiKey, true));
         $this->addHeader('CONTENT_TYPE: application/json');
         $this->addHeader('Authorization: WSSE profile="UsernameToken"');
-        $this->addHeader(sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-            $username,
-            $digest,
-            $nonce,
-            $created
-        ));
+        $this->addHeader(
+            sprintf(
+                'X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+                $username,
+                $digest,
+                $nonce,
+                $created
+            )
+        );
     }
 
     /**
