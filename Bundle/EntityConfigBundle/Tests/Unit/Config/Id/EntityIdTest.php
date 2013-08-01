@@ -13,14 +13,14 @@ class EntityIdTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->entityId = new EntityId('testClass', 'testScope');
+        $this->entityId = new EntityId('Test\Class', 'testScope');
     }
 
     public function testGetConfig()
     {
-        $this->assertEquals('testClass', $this->entityId->getClassName());
+        $this->assertEquals('Test\Class', $this->entityId->getClassName());
         $this->assertEquals('testScope', $this->entityId->getScope());
-        $this->assertEquals('entity_testScope_testClass', $this->entityId->getId());
+        $this->assertEquals('entity_testScope_Test_Class', $this->entityId->getId());
     }
 
     public function testSerialize()

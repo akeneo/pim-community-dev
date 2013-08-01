@@ -76,7 +76,7 @@ class FieldId implements FieldIdInterface
      */
     public function getId()
     {
-        return 'field_' . $this->scope . '_' . $this->className . '_' . $this->fieldName;
+        return 'field_' . $this->scope . '_' . strtr($this->className, '\\', '-') . '_' . $this->fieldName;
     }
 
     /**

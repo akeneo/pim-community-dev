@@ -7,11 +7,6 @@ interface FieldIdInterface extends IdInterface
     /**
      * @return string
      */
-    public function getClassName();
-
-    /**
-     * @return string
-     */
     public function getFieldName();
 
     /**

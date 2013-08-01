@@ -42,7 +42,7 @@ class EntityId implements EntityIdInterface
      */
     public function getId()
     {
-        return 'entity_' . $this->scope . '_' . $this->className;
+        return 'entity_' . $this->scope . '_' . strtr($this->className, '\\', '-');
     }
 
     /**
