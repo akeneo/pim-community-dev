@@ -19,8 +19,7 @@ class MediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden')
-            ->add('file', 'file', array('required' => false,))
+            ->add('file', 'file', array('required' => false))
             ->add(
                 'removed',
                 'checkbox',
