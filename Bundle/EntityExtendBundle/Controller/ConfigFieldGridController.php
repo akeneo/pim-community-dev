@@ -124,7 +124,7 @@ class ConfigFieldGridController extends Controller
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
         $fieldConfig = $extendManager->getConfigProvider()
-            ->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
+            ->getFieldConfig($field->getEntity()->getClassName(), $field->getFieldName());
         if (!$fieldConfig->is('is_extend')) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }

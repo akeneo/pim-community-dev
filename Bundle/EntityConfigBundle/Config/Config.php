@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\IdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 class Config implements ConfigInterface
 {
     /**
-     * @var IdInterface
+     * @var ConfigIdInterface
      */
     protected $id;
 
@@ -18,15 +18,15 @@ class Config implements ConfigInterface
     protected $values = array();
 
     /**
-     * @param IdInterface $id
+     * @param ConfigIdInterface $id
      */
-    public function __construct(IdInterface $id)
+    public function __construct(ConfigIdInterface $id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return IdInterface
+     * @return ConfigIdInterface
      */
     public function getConfigId()
     {

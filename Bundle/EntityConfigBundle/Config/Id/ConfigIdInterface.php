@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config\Id;
 
-interface IdInterface extends \Serializable
+interface ConfigIdInterface extends \Serializable
 {
     /**
      * @return string
