@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Cache;
 
 use Oro\Bundle\EntityConfigBundle\Cache\FileCache;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
 class FileCacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
         $this->cacheDir = sys_get_temp_dir() . '/__phpunit__config_file_cache';
         mkdir($this->cacheDir);
 
-        $this->testConfigId = new EntityId('Test/Class', 'testScope');
+        $this->testConfigId = new EntityConfigId('Test/Class', 'testScope');
         $this->testConfig   = new Config($this->testConfigId);
         $this->fileCache    = new FileCache($this->cacheDir);
     }

@@ -2,18 +2,18 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Config\Id;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
 class EntityIdTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EntityId
+     * @var EntityConfigId
      */
     protected $entityId;
 
     public function setUp()
     {
-        $this->entityId = new EntityId('Test\Class', 'testScope');
+        $this->entityId = new EntityConfigId('Test\Class', 'testScope');
     }
 
     public function testGetConfig()

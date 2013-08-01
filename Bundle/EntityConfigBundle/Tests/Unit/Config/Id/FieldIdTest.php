@@ -2,18 +2,18 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Config\Id;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 class FieldIdTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var FieldId
+     * @var FieldConfigId
      */
     protected $fieldId;
 
     public function setUp()
     {
-        $this->fieldId = new FieldId('Test\Class', 'testScope', 'testField', 'string');
+        $this->fieldId = new FieldConfigId('Test\Class', 'testScope', 'testField', 'string');
     }
 
     public function testGetConfig()

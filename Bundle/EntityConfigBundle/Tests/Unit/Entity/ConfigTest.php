@@ -79,7 +79,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'test',
-            $this->configField->getCode($this->configField->setCode('test'))
+            $this->configField->getFieldName($this->configField->setFieldName('test'))
         );
 
         $this->assertEquals(

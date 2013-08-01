@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Config;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
@@ -15,7 +15,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = new Config(new EntityId('testClass', 'testScope'));
+        $this->config = new Config(new EntityConfigId('testClass', 'testScope'));
     }
 
     public function testValueConfig()

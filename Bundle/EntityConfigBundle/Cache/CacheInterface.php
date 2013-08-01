@@ -3,15 +3,15 @@
 namespace Oro\Bundle\EntityConfigBundle\Cache;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityConfigBundle\Config\Id\IdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 
 interface CacheInterface
 {
     /**
-     * @param IdInterface $configId
+     * @param ConfigIdInterface $configId
      * @return ConfigInterface|null
      */
-    public function loadConfigFromCache(IdInterface $configId);
+    public function loadConfigFromCache(ConfigIdInterface $configId);
 
     /**
      * @param ConfigInterface $config
@@ -19,7 +19,7 @@ interface CacheInterface
     public function putConfigInCache(ConfigInterface $config);
 
     /**
-     * @param IdInterface $configId
+     * @param ConfigIdInterface $configId
      */
-    public function removeConfigFromCache(IdInterface $configId);
+    public function removeConfigFromCache(ConfigIdInterface $configId);
 }

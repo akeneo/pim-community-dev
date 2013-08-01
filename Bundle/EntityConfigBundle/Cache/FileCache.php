@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Cache;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityConfigBundle\Config\Id\IdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 
 class FileCache implements CacheInterface
 {
@@ -22,10 +22,10 @@ class FileCache implements CacheInterface
     }
 
     /**
-     * @param IdInterface $configId
+     * @param ConfigIdInterface $configId
      * @return ConfigInterface
      */
-    public function loadConfigFromCache(IdInterface $configId)
+    public function loadConfigFromCache(ConfigIdInterface $configId)
     {
         $path = $this->dir . '/' . $configId->getId() . '.cache.php';
         if (!file_exists($path)) {
@@ -45,9 +45,9 @@ class FileCache implements CacheInterface
     }
 
     /**
-     * @param IdInterface $configId
+     * @param ConfigIdInterface $configId
      */
-    public function removeConfigFromCache(IdInterface $configId)
+    public function removeConfigFromCache(ConfigIdInterface $configId)
     {
         $path = $this->dir . '/' . $configId->getId() . '.cache.php';
         if (file_exists($path)) {
