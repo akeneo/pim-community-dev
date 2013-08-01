@@ -47,7 +47,7 @@ class BatchStatus
     const ABANDONED = 7;
     const UNKNOWN   = 8;
 
-    protected static $statusLabels = array (
+    public static $statusLabels = array (
         self::COMPLETED => 'COMPLETED',
         self::STARTING  => 'STARTING',
         self::STARTED   => 'STARTED',
