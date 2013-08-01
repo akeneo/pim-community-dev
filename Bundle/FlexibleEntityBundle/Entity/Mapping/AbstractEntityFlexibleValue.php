@@ -526,6 +526,6 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
             return $data->__toString();
         }
 
-        return $data;
+        return (string) $data;
     }
 }
