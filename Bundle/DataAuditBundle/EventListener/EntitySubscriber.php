@@ -60,7 +60,11 @@ class EntitySubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        if ($metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())) {
+        $doctrineMetadata = $event->getClassMetadata();
+
+        if ($doctrineMetadata->getReflectionClass()
+            && $metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())
+        ) {
             $this->loggableManager->addConfig($metadata);
         }
     }
