@@ -128,6 +128,7 @@
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
