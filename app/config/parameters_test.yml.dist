@@ -17,4 +17,4 @@ parameters:
     default_locale:    default
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    upload_dir:        web/uploads/product
+    upload_dir:        uploads_test/product

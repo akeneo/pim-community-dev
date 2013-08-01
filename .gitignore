@@ -15,4 +15,5 @@ composer.phar
 /bin
 behat.yml
 app/phpunit.xml
-web/uploads/
+web/uploads/*
+web/uploads_test/*
