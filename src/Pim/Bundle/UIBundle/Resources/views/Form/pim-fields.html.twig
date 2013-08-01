@@ -61,10 +61,10 @@
     {{ form_row(form.file, {'label': form.vars.label}) }}
 
     {% if form.vars.value and form.vars.value.filePath %}
-        <ul class="unstyled controls">
+        <ul class="unstyled controls medias">
             <li>
                 <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                <label for="{{ form.removed.vars.id }}" style="float: none; display: inline; margin-left: 10px">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
         </ul>
     {% endif %}
