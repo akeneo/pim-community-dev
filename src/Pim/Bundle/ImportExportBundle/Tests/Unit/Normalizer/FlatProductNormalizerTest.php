@@ -48,9 +48,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
             $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock($this->getAttributeMock('elements'), new ArrayCollection(array(
-                'roue', 'poignées', 'benne'
-            ))),
+            $this->getValueMock(
+                $this->getAttributeMock('elements'),
+                new ArrayCollection(array('roue', 'poignées', 'benne'))
+            ),
         );
         $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
         $family     = $this->getFamilyMock('garden-tool');
@@ -81,9 +82,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
             $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock($this->getAttributeMock('elements'), new ArrayCollection(array(
-                'roue', 'poignées', 'benne'
-            ))),
+            $this->getValueMock(
+                $this->getAttributeMock('elements'),
+                new ArrayCollection(array('roue', 'poignées', 'benne'))
+            ),
         );
         $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
@@ -116,9 +118,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
             $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock($this->getAttributeMock('elements'), new ArrayCollection(array(
-                'roue', 'poignées', 'benne'
-            ))),
+            $this->getValueMock(
+                $this->getAttributeMock('elements'),
+                new ArrayCollection(array('roue', 'poignées', 'benne'))
+            ),
         );
         $family  = $this->getFamilyMock('garden-tool');
         $product = $this->getProductMock(null, $values, $family, 'cat1, cat2, cat3');

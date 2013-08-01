@@ -32,4 +32,3 @@ class JobFactory
         return $job;
     }
 }
-

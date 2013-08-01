@@ -54,27 +54,36 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $encoder = new CsvEncoder();
 
-        $this->assertEquals($expectedResult, $encoder->encode(
-            array(
-                'code' => 'foo',
-                'name' => '"bar"'
-            ),
-            'csv',
-            array(
-                'delimiter' => $delimiter,
-                'enclosure' => $enclosure,
+        $this->assertEquals(
+            $expectedResult,
+            $encoder->encode(
+                array(
+                    'code' => 'foo',
+                    'name' => '"bar"'
+                ),
+                'csv',
+                array(
+                    'delimiter' => $delimiter,
+                    'enclosure' => $enclosure,
+                )
             )
-        ));
+        );
     }
 
     public function testEncodeCollectionOfHashes()
     {
         $encoder = new CsvEncoder;
 
-        $this->assertEquals("foo;bar\nbaz;buz\n", $encoder->encode(array(
-            array('name' => 'foo', 'code' => 'bar'),
-            array('name' => 'baz', 'code' => 'buz'),
-        ), 'csv'));
+        $this->assertEquals(
+            "foo;bar\nbaz;buz\n",
+            $encoder->encode(
+                array(
+                    array('name' => 'foo', 'code' => 'bar'),
+                    array('name' => 'baz', 'code' => 'buz'),
+                ),
+                'csv'
+            )
+        );
     }
 
     public function testEncodeEmptyArray()

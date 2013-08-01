@@ -200,19 +200,21 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $itemStep = $this->getItemStep('export', $reader, $processor, $writer);
         $this->job->addStep($itemStep);
-        $this->job->setConfiguration(array(
-            'export' => array(
-                'reader' => array(
-                    'reader_foo' => 'reader_bar',
-                ),
-                'processor' => array(
-                    'processor_foo' => 'processor_bar',
-                ),
-                'writer' => array(
-                    'writer_foo' => 'writer_bar',
+        $this->job->setConfiguration(
+            array(
+                'export' => array(
+                    'reader' => array(
+                        'reader_foo' => 'reader_bar',
+                    ),
+                    'processor' => array(
+                        'processor_foo' => 'processor_bar',
+                    ),
+                    'writer' => array(
+                        'writer_foo' => 'writer_bar',
+                    )
                 )
             )
-        ));
+        );
     }
 
     /**
@@ -227,20 +229,22 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $step = $this->getItemStep('export', $reader, $processor, $writer);
 
         $this->job->addStep($step);
-        $this->job->setConfiguration(array(
-            'unknown' => array(),
-            'export' => array(
-                'reader' => array(
-                    'reader_foo' => 'reader_bar',
-                ),
-                'processor' => array(
-                    'processor_foo' => 'processor_bar',
-                ),
-                'writer' => array(
-                    'writer_foo' => 'writer_bar',
+        $this->job->setConfiguration(
+            array(
+                'unknown' => array(),
+                'export' => array(
+                    'reader' => array(
+                        'reader_foo' => 'reader_bar',
+                    ),
+                    'processor' => array(
+                        'processor_foo' => 'processor_bar',
+                    ),
+                    'writer' => array(
+                        'writer_foo' => 'writer_bar',
+                    )
                 )
             )
-        ));
+        );
     }
 
     public function testAddStep()

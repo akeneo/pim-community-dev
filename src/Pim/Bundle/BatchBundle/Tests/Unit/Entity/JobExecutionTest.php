@@ -74,7 +74,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     public function testGetSetStatus()
     {
         $this->assertEquals(new BatchStatus(BatchStatus::STARTING), $this->jobExecution->getStatus());
-        
+
         $expectedBatchStatus = new BatchStatus(BatchStatus::COMPLETED);
 
         $this->assertEntity($this->jobExecution->setStatus($expectedBatchStatus));
@@ -95,7 +95,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     public function testGetSetExitStatus()
     {
         $this->assertEquals(new ExitStatus(ExitStatus::UNKNOWN), $this->jobExecution->getExitStatus());
-        
+
         $expectedExitStatus = new ExitStatus(ExitStatus::COMPLETED);
 
         $this->assertEntity($this->jobExecution->setExitStatus($expectedExitStatus));
@@ -121,6 +121,4 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Pim\Bundle\BatchBundle\Entity\JobExecution', $entity);
     }
-
-
 }

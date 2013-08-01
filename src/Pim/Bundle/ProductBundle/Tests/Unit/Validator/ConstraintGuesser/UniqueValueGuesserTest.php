@@ -24,29 +24,37 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
 
     public function testSupportVarcharAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR))
+            )
+        );
     }
 
     public function testGuessUniqueValueConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
-            'unique'      => true,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+                    'unique'      => true,
+                )
+            )
+        );
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\UniqueValue', $constraints);
     }
 
     public function testDoNotGuessRangeConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
-            'unique'      => false,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+                    'unique'      => false,
+                )
+            )
+        );
 
         $this->assertEquals(0, count($constraints));
     }

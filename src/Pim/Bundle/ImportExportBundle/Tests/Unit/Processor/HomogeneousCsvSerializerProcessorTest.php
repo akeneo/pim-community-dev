@@ -33,12 +33,16 @@ class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
-            ->with($item, 'csv', array(
-                'delimiter'     => ';',
-                'enclosure'     => '"',
-                'withHeader'    => true,
-                'heterogeneous' => false,
-            ))
+            ->with(
+                $item,
+                'csv',
+                array(
+                    'delimiter'     => ';',
+                    'enclosure'     => '"',
+                    'withHeader'    => true,
+                    'heterogeneous' => false,
+                )
+            )
             ->will($this->returnValue('serialized'));
 
         $this->assertEquals('serialized', $this->processor->process($item));

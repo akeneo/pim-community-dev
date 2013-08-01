@@ -23,37 +23,59 @@ class RegexGuesserTest extends ConstraintGuesserTest
 
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_text',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_text',)))
+        );
     }
 
     public function testGuessRegexConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'    => 'pim_product_text',
-            'validationRule'   => 'regexp',
-            'validationRegexp' => '/foo/',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType'    => 'pim_product_text',
+                    'validationRule'   => 'regexp',
+                    'validationRegexp' => '/foo/',
+                )
+            )
+        );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Regex', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Regex', $constraints, array(
-            'pattern' => '/foo/',
-        ));
+        $this->assertConstraintsConfiguration(
+            'Symfony\Component\Validator\Constraints\Regex',
+            $constraints,
+            array('pattern' => '/foo/',)
+        );
     }
 
     public function testDoNotGuessRegexConstraint()
     {
-        $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => 'regexp',
-        )))));
+        $this->assertEquals(
+            0,
+            count(
+                $this->target->guessConstraints(
+                    $this->getAttributeMock(
+                        array(
+                            'attributeType'  => 'pim_product_text',
+                            'validationRule' => 'regexp',
+                        )
+                    )
+                )
+            )
+        );
 
-        $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => null,
-        )))));
+        $this->assertEquals(
+            0,
+            count(
+                $this->target->guessConstraints(
+                    $this->getAttributeMock(
+                        array(
+                            'attributeType'  => 'pim_product_text',
+                            'validationRule' => null,
+                        )
+                    )
+                )
+            )
+        );
     }
 }

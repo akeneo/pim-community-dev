@@ -29,40 +29,35 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
 
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_price_collection',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_price_collection',))
+            )
+        );
 
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_metric',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_metric',)))
+        );
 
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_number',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_number',)))
+        );
     }
 
     public function testGuessNotDecimalConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'   => 'pim_product_number',
-            'decimalsAllowed' => false,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType'   => 'pim_product_number', 'decimalsAllowed' => false,))
+        );
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\NotDecimal', $constraints);
     }
 
     public function testDoNotGuessNotDecimalConstraint()
     {
-        $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'   => 'pim_product_number',
-            'decimalsAllowed' => true,
-        )))));
+        $this->assertEquals(
+            0,
+            count($this->target->guessConstraints($this->getAttributeMock(array('attributeType'   => 'pim_product_number','decimalsAllowed' => true,))))
+        );
     }
 }

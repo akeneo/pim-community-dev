@@ -35,4 +35,3 @@ class RangeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('This value is not a valid date.', $this->target->invalidDateMessage);
     }
 }
-

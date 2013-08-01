@@ -23,29 +23,37 @@ class UrlGuesserTest extends ConstraintGuesserTest
 
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_text',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+            )
+        );
     }
 
     public function testGuessUrlConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => 'url',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType'  => 'pim_product_text',
+                    'validationRule' => 'url',
+                )
+            )
+        );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Url', $constraints);
     }
 
     public function testDoNotGuessUrlConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => null,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType'  => 'pim_product_text',
+                    'validationRule' => null,
+                )
+            )
+        );
 
         $this->assertEquals(0, count($constraints));
     }

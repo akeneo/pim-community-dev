@@ -50,8 +50,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->never())
             ->method('addViolation');
@@ -70,8 +69,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->once())
             ->method('addViolation')
@@ -93,8 +91,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->never())
             ->method('addViolation');
@@ -115,8 +112,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->once())
             ->method('addViolation')

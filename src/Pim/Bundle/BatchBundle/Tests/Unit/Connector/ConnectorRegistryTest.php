@@ -42,15 +42,24 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             ->with($step);
 
         $this->registry->addStepToJob(
-            'Akeneo', Job::TYPE_EXPORT, 'export_stuff', 'Export some stuff',
-            'Export', $reader, $processor, $writer
+            'Akeneo',
+            Job::TYPE_EXPORT,
+            'export_stuff',
+            'Export some stuff',
+            'Export',
+            $reader,
+            $processor,
+            $writer
         );
 
-        $this->assertEquals(array(
-            'Akeneo' => array(
-                'export_stuff' => $job
-            )
-        ), $this->registry->getJobs(Job::TYPE_EXPORT));
+        $this->assertEquals(
+            array(
+                'Akeneo' => array(
+                    'export_stuff' => $job
+                )
+            ),
+            $this->registry->getJobs(Job::TYPE_EXPORT)
+        );
     }
 
     public function testAddStepToExistantJob()
@@ -82,20 +91,35 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('addStep');
 
         $this->registry->addStepToJob(
-            'Akeneo', Job::TYPE_EXPORT, 'export_stuff', 'Export some stuff',
-            'Export', $reader, $processor, $writer
+            'Akeneo',
+            Job::TYPE_EXPORT,
+            'export_stuff',
+            'Export some stuff',
+            'Export',
+            $reader,
+            $processor,
+            $writer
         );
 
         $this->registry->addStepToJob(
-            'Akeneo', Job::TYPE_EXPORT, 'export_stuff', 'Export some stuff',
-            'Export2', $reader, $processor, $writer
+            'Akeneo',
+            Job::TYPE_EXPORT,
+            'export_stuff',
+            'Export some stuff',
+            'Export2',
+            $reader,
+            $processor,
+            $writer
         );
 
-        $this->assertEquals(array(
-            'Akeneo' => array(
-                'export_stuff' => $job
-            )
-        ), $this->registry->getJobs(Job::TYPE_EXPORT));
+        $this->assertEquals(
+            array(
+                'Akeneo' => array(
+                    'export_stuff' => $job
+                )
+            ),
+            $this->registry->getJobs(Job::TYPE_EXPORT)
+        );
     }
 
     public function testGetUnknownJob()

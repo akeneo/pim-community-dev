@@ -43,16 +43,18 @@ class LengthGuesserTest extends ConstraintGuesserTest
         );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Length', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Length', $constraints, array(
-            'max' => 128
-        ));
+        $this->assertConstraintsConfiguration(
+            'Symfony\Component\Validator\Constraints\Length',
+            $constraints,
+            array('max' => 128)
+        );
     }
 
     public function testDoNotGuessLengthConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType' => 'pim_product_text',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+        );
 
         $this->assertEquals(0, count($constraints));
     }

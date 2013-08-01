@@ -36,15 +36,14 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidValue($file)
     {
-        $constraint = new File(array(
-            'allowedExtensions' => array('gif', 'jpg')
-        ));
+        $constraint = new File(
+            array('allowedExtensions' => array('gif', 'jpg'))
+        );
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->never())
             ->method('addViolation');
@@ -58,21 +57,21 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidValue($file)
     {
-        $constraint = new File(array(
-            'allowedExtensions' => array('gif', 'png')
-        ));
+        $constraint = new File(
+            array('allowedExtensions' => array('gif', 'png'))
+        );
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->once())
             ->method('addViolation')
-            ->with($constraint->allowedExtensionsMessage, array(
-                '{{ extensions }}' => array('gif', 'png')
-            ));
+            ->with(
+                $constraint->allowedExtensionsMessage,
+                array('{{ extensions }}' => array('gif', 'png'))
+            );
 
         $this->target->initialize($context);
         $this->target->validate($file, $constraint);
@@ -88,8 +87,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $context->expects($this->never())
             ->method('addViolation');
