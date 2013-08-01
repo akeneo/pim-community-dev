@@ -421,7 +421,7 @@ class ProductManager extends FlexibleManager
     {
         return sprintf(
             '%s-%s-%s-%s-%s',
-            $product->getSku(),
+            $product->getIdentifier(),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
