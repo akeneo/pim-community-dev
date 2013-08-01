@@ -132,7 +132,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             $this->configValue->toArray()
         );
 
-        /** test AbstractConfig setValues() */
+        /** test Config setValues() */
         $this->configEntity->setValues(array($this->configValue));
         $this->assertEquals(
             $this->configValue,
