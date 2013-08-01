@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Base;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -25,4 +25,3 @@ class Login extends Page
         $element->pressButton('Log in');
     }
 }
-

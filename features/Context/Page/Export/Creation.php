@@ -1,8 +1,8 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Export;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Form;
 
 /**
  * Export creation page
@@ -11,16 +11,22 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExportCreation extends Page
+class Creation extends Form
 {
     protected $path = '/ie/export/create';
 
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
 
-    protected $elements = array(
-        'Channel selector' => array('css' => '#pim_import_export_job_jobDefinition_steps_0_reader_channel'),
-        'With header'      => array('css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'),
-        'Tabs'             => array('css' => '#form-navbar'),
-    );
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Channel selector' => array('css' => '#pim_import_export_job_jobDefinition_steps_0_reader_channel'),
+                'With header'      => array('css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'),
+            )
+        );
+    }
 
     public function selectChannel($channel)
     {
@@ -36,18 +42,8 @@ class ExportCreation extends Page
             ->check();
     }
 
-    public function save()
-    {
-        $this->pressButton('Save');
-    }
-
     public function getUrl(array $options)
     {
         return sprintf('%s?%s', $this->getPath(), http_build_query($options));
-    }
-
-    public function visitTab($tab)
-    {
-        $this->getElement('Tabs')->clickLink($tab);
     }
 }
