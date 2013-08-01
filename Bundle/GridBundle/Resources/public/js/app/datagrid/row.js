@@ -21,7 +21,7 @@ Oro.Datagrid.Row = Backgrid.Row.extend({
     /** @property */
     clickData: {
         counter: 0,
-        timeout: 300,
+        timeout: 100,
         hasSelectedText: false
     },
 
