@@ -125,11 +125,12 @@ class ApplyController extends Controller
         $env = $this->get('kernel')->getEnvironment();
 
         $commands = array(
-            'backup'       => new Process('../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env='.$env),
-            'generator'    => new Process('../app/console oro:entity-extend:generate'. ' --env='.$env),
-            'cacheClear'   => new Process('../app/console cache:clear --no-warmup'. ' --env='.$env),
-            'schemaUpdate' => new Process('../app/console doctrine:schema:update --force'. ' --env='.$env),
-            'cacheWarmup'  => new Process('../app/console cache:warmup'. ' --env='.$env),
+            'backup'       => new Process('php ../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env '.$env),
+            'generator'    => new Process('php ../app/console oro:entity-extend:generate'. ' --env '.$env),
+            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup'. ' --env '.$env),
+            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force'. ' --env '.$env),
+            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env '.$env),
+            'cacheWarmup'  => new Process('php ../app/console cache:warmup'. ' --env '.$env),
         );
 
         foreach ($commands as $command) {

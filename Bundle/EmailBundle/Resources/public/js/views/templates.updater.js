@@ -26,7 +26,7 @@ Oro.EmailTemplatesUpdater.View = Backbone.View.extend({
      */
     selectionChanged: function (e) {
         var entityId = $(e.currentTarget).val();
-        this.collection.setEntityId(entityId);
+        this.collection.setEntityId(entityId.split('\\').join('_'));
         this.collection.fetch();
     },
 
