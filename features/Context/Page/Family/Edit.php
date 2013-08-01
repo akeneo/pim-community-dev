@@ -39,17 +39,15 @@ class Edit extends Creation
      */
     public function getAttribute($attribute, $group)
     {
-        $groupNode = $this
-            ->getElement('Attributes')
-            ->find('css', sprintf(
-                'tr.group:contains("%s")', $group
-            ));
+        $groupNode = $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
 
         if (!$groupNode) {
-            throw new \RuntimeException(sprintf(
-                'Couldn\'t find the attribute group "%s" in the attributes table',
-                $group
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute group "%s" in the attributes table',
+                    $group
+                )
+            );
         }
 
         return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
@@ -78,26 +76,26 @@ class Edit extends Creation
      */
     public function getRemoveLinkFor($attribute)
     {
-        $attributeRow = $this
-            ->getElement('Attributes')
-            ->find('css', sprintf(
-                'tr:contains("%s")', $attribute
-            ));
+        $attributeRow = $this->getElement('Attributes')->find('css', sprintf('tr:contains("%s")', $attribute));
 
         if (!$attributeRow) {
-            throw new \RuntimeException(sprintf(
-                'Couldn\'t find the attribute row "%s" in the attributes table',
-                $attribute
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute row "%s" in the attributes table',
+                    $attribute
+                )
+            );
         }
 
         $removeLink = $attributeRow->find('css', 'a.remove-attribute');
 
         if (!$removeLink) {
-            throw new \RuntimeException(sprintf(
-                'Couldn\'t find the attribute remove link for "%s" in the attributes table',
-                $attribute
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute remove link for "%s" in the attributes table',
+                    $attribute
+                )
+            );
         }
 
         return $removeLink;
@@ -108,9 +106,12 @@ class Edit extends Creation
      */
     public function getAttributeAsLabelOptions()
     {
-        return array_map(function ($option) {
-            return $option->getText();
-        }, $this->getElement('Attribute as label choices')->findAll('css', 'option'));
+        return array_map(
+            function ($option) {
+                return $option->getText();
+            },
+            $this->getElement('Attribute as label choices')->findAll('css', 'option')
+        );
     }
 
     /**

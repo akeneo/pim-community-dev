@@ -155,7 +155,11 @@ class FixturesContext extends RawMinkContext
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
-                $value = $this->createValue($attribute, $translation['value'], $this->getLocaleCode($translation['locale']));
+                $value = $this->createValue(
+                    $attribute,
+                    $translation['value'],
+                    $this->getLocaleCode($translation['locale'])
+                );
                 $product->addValue($value);
             }
         }
@@ -284,7 +288,9 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $family      = $this->getFamily($data['family']);
             $translation = $this->createFamilyTranslation(
-                $family, $data['label'], $this->getLocaleCode($data['language'])
+                $family,
+                $data['label'],
+                $this->getLocaleCode($data['language'])
             );
 
             $family->addTranslation($translation);
@@ -608,11 +614,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $config[$data['element']][$data['property']] = $data['value'];
         }
-        $config = array_merge(array(
-            'reader' => array(),
-            'processor' => array(),
-            'writer' => array()
-        ), $config);
+        $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
         $job->setJobDefinition($jobDefinition);
 

@@ -35,9 +35,7 @@ class Show extends BaseIndex
         $error = $this->find('css', sprintf('li:contains("%s") span.label-important', ucfirst($property)));
 
         if (!$error) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find the %s property', $property
-            ));
+            throw new \InvalidArgumentException(sprintf('Could not find the %s property', $property));
         }
 
         return $error->getText();

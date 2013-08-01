@@ -35,9 +35,12 @@ class Index extends BaseIndex
      */
     public function getFamilies()
     {
-        return array_map(function ($node) {
-            return $node->getText();
-        }, $this->getElement('List')->findAll('css', 'a:not(.btn)'));
+        return array_map(
+            function ($node) {
+                return $node->getText();
+            },
+            $this->getElement('List')->findAll('css', 'a:not(.btn)')
+        );
     }
 
     /**

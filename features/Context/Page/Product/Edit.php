@@ -27,10 +27,10 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Locales dropdown'                => array('css' => '#locale-switcher'),
-                'Locales selector'                => array('css' => '#pim_product_locales'),
-                'Enable switcher'                 => array('css' => '#pim_product_enabled'),
-                'Updates grid'                    => array('css' => '#history table.grid'),
+                'Locales dropdown' => array('css' => '#locale-switcher'),
+                'Locales selector' => array('css' => '#pim_product_locales'),
+                'Enable switcher'  => array('css' => '#pim_product_enabled'),
+                'Updates grid'     => array('css' => '#history table.grid'),
             )
         );
     }
@@ -43,15 +43,17 @@ class Edit extends Form
         $button = $this->findButton($locator);
 
         if (!$button) {
-            $button =  $this->find('named', array(
-                'link', $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-            ));
+            $button =  $this->find(
+                'named',
+                array(
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                )
+            );
         }
 
         if (null === $button) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'button', 'id|name|title|alt|value', $locator
-            );
+            throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
         }
 
         $button->click();
@@ -100,9 +102,14 @@ class Edit extends Form
      */
     public function findLocale($locale, $label)
     {
-        return $this->getElement('Locales dropdown')->find('css', sprintf(
-            'a:contains("%s"):contains("%s")', strtoupper($locale), $label
-        ));
+        return $this->getElement('Locales dropdown')->find(
+            'css',
+            sprintf(
+                'a:contains("%s"):contains("%s")',
+                strtoupper($locale),
+                $label
+            )
+        );
     }
 
     /**
@@ -122,9 +129,7 @@ class Edit extends Form
      */
     public function getFieldsForGroup($group)
     {
-        $locator = sprintf(
-            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
-        );
+        $locator = sprintf('#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0);
 
         return $this->findAll('css', $locator);
     }
@@ -139,17 +144,13 @@ class Edit extends Form
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form label ', 'value', $name
-            );
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
 
         $field = $label->getParent()->find('css', 'input');
 
         if (!$field) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field ', 'id|name|label|value', $name
-            );
+            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
         }
 
         return $field;

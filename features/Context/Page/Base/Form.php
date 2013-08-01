@@ -26,7 +26,7 @@ class Form extends Base
                 'Tabs'                            => array('css' => '#form-navbar'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
-                'Available attributes button'     => array('css' => '#attribute-buttons button:contains("Add attributes")'),
+                'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '#attribute-buttons .ui-multiselect-checkboxes'),
                 'Available attributes add button' => array('css' => '#attribute-buttons a:contains("Add")'),
             )

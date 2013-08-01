@@ -24,7 +24,12 @@ class Index extends Grid
     public function channelCanExport($channel, $category)
     {
         return $this->getElement('Grid content')->find(
-            'css', sprintf('tr:contains("%s"):contains("%s")', $channel, $category)
+            'css',
+            sprintf(
+                'tr:contains("%s"):contains("%s")',
+                $channel,
+                $category
+            )
         );
     }
 }

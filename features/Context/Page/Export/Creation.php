@@ -26,7 +26,9 @@ class Creation extends Form
             $this->elements,
             array(
                 'Channel selector' => array('css' => '#pim_import_export_job_jobDefinition_steps_0_reader_channel'),
-                'With header'      => array('css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'),
+                'With header'      => array(
+                    'css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'
+                ),
             )
         );
     }
