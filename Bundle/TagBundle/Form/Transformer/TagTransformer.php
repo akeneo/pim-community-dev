@@ -1,11 +1,12 @@
 <?php
 
-namespace Oro\Bundle\TagBundle\Form;
+namespace Oro\Bundle\TagBundle\Form\Transformer;
 
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Oro\Bundle\TagBundle\Entity\TagManager;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -13,15 +14,24 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 /**
  * Transforms between array of entities and array of ids
  */
-class TagsTransformer extends EntityToIdTransformer
+class TagTransformer implements DataTransformerInterface
 {
+    /**
+     * @var TagManager
+     */
     protected $tagManager;
+
+    public function __construct(TagManager $manager)
+    {
+        $this->tagManager = $manager;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function transform($value)
     {
+        $tags = array();
         return $value;
     }
 
@@ -30,6 +40,7 @@ class TagsTransformer extends EntityToIdTransformer
      */
     public function reverseTransform($values)
     {
+        $a =1;
         $entities = array(
             'all'   => array(),
             'owner' => array()
@@ -97,10 +108,5 @@ class TagsTransformer extends EntityToIdTransformer
         }
 
         return $qb->getQuery()->execute();
-    }
-
-    public function setTagManager(TagManager $tagManager)
-    {
-        $this->tagManager = $tagManager;
     }
 }

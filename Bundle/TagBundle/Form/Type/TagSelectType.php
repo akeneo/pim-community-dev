@@ -1,32 +1,33 @@
 <?php
 namespace Oro\Bundle\TagBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\TagBundle\Entity\TagManager;
+use Oro\Bundle\TagBundle\Form\DataMapper\TagMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\TagBundle\Form\Transformer\TagTransformer;
+use Oro\Bundle\TagBundle\Form\EventSubscriber\TagSubscriber;
+
 class TagSelectType extends AbstractType
 {
     /**
-     * @var ObjectManager
+     * @var TagTransformer
      */
-    private $om;
+    protected $transformer;
 
     /**
-     * @var TagManager
+     * @var TagSubscriber
      */
-    protected $tagManager;
+    protected $subscriber;
+    protected $mapper;
 
-    /**
-     * @param ObjectManager $om
-     * @param TagManager    $tagManager
-     */
-    public function __construct(ObjectManager $om, TagManager $tagManager)
+    public function __construct(TagTransformer $transformer, TagSubscriber $subscriber, TagMapper $mapper)
     {
-        $this->om = $om;
-        $this->tagManager = $tagManager;
+        $this->transformer = $transformer;
+        $this->subscriber = $subscriber;
+
+        $this->mapper = $mapper;
     }
 
     /**
@@ -36,9 +37,7 @@ class TagSelectType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'fields'       => array(), // ?
-                'form'         => array(), // ?
-                'inherit_data' => true,
+                'required'     => false,
             )
         );
     }
@@ -48,9 +47,23 @@ class TagSelectType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber($this->subscriber);
+//        $builder->addViewTransformer($this->transformer);
+//        $builder->setDataMapper($this->mapper);
+
         $builder->add(
             'autocomplete',
             'oro_tag_autocomplete'
+        );
+
+        $builder->add(
+            'all',
+            'hidden'
+        );
+
+        $builder->add(
+            'owner',
+            'hidden'
         );
     }
 

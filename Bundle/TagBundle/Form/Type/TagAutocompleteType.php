@@ -21,7 +21,6 @@ class TagAutocompleteType extends AbstractType
                     'multiple'       => true
                 ),
                 'autocomplete_alias' => 'tags',
-                'inherit_data'       => true
             )
         );
 

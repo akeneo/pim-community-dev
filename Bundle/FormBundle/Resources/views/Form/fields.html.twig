@@ -61,6 +61,13 @@
     {{ block('genemu_jqueryselect2_row') }}
 {% endblock %}
 
+{% block oro_jqueryselect2_hidden_widget %}
+    <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+        {{ form_widget(form) }}
+        {{ form_javascript(form) }}
+    </div>
+{% endblock %}
+
 {% block genemu_jqueryselect2_row %}
     {{ form_row(form) }}
     {{ form_javascript(form) }}

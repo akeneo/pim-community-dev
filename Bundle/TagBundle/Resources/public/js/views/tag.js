@@ -7,15 +7,22 @@ Oro.Tags.TagView =  Backbone.View.extend({
     },
 
     /** @property */
-    template:_.template(
+    template: _.template(
         '<ul id="tag-list" class="inline">' +
             '<% _.each(models, function(tag, i) { %>' +
                 '<li>' +
-                    '<a href="<%= tag.get("url") %>">' +
+                    '<% if (tag.get("url").length > 0) { %>' +
+                        '<a href="<%= tag.get("url") %>">' +
+                    '<%} %>' +
                         '<span class="label label-info"><%= tag.get("name") %></span>' +
-                    '</a>' +
+                    '<% if (tag.get("url").length > 0) { %>' +
+                        '</a>' +
+                    '<%} %>' +
                 '</li>' +
             '<%}) %>' +
+            '<% if (models.length == 0) { %>' +
+                _.__('There are no tags yet') +
+            '<%} %>' +
         '</ul>'
     ),
 

@@ -9,6 +9,8 @@ use Doctrine\ORM\Query\Expr;
 
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\UserBundle\Acl\Manager;
+use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -45,13 +47,19 @@ class TagManager
      */
     protected $aclManager;
 
+    /**
+     * @var Router
+     */
+    protected $router;
+
     public function __construct(
         EntityManager $em,
         $tagClass,
         $taggingClass,
         ObjectMapper $mapper,
         SecurityContextInterface $securityContext,
-        Manager $aclManager
+        Manager $aclManager,
+        Router $router
     ) {
         $this->em = $em;
 
@@ -60,6 +68,7 @@ class TagManager
         $this->mapper = $mapper;
         $this->securityContext = $securityContext;
         $this->aclManager = $aclManager;
+        $this->router = $router;
     }
 
     /**
@@ -98,6 +107,25 @@ class TagManager
     public function removeTag(Tag $tag, Taggable $resource)
     {
         return $resource->getTags()->removeElement($tag);
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function loadTags(array $ids)
+    {
+        $builder = $this->em->createQueryBuilder();
+
+        $tags = $builder
+            ->select('t')
+            ->from($this->tagClass, 't')
+
+            ->where($builder->expr()->in('t.id', $ids))
+
+            ->getQuery()
+            ->getResult();
+
+        return $tags;
     }
 
     /**
@@ -143,6 +171,49 @@ class TagManager
         }
 
         return $tags;
+    }
+
+    /**
+     * Prepare array
+     *
+     * @param Taggable $entity
+     * @return array
+     */
+    public function getPreparedArray(Taggable $entity)
+    {
+        $this->loadTagging($entity);
+        $result = array();
+
+        /** @var Tag $tag */
+        foreach ($entity->getTags() as $tag) {
+            $entry = array(
+                'name' => $tag->getName(),
+                'id'   => $tag->getId(),
+                'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
+            );
+
+            $taggingCollection = $tag->getTagging()->filter(
+                function (Tagging $tagging) use ($entity) {
+                    // only use tagging entities that related to current entity
+                    return $tagging->getEntityName() == get_class($entity)
+                    && $tagging->getRecordId() == $entity->getTaggableId();
+                }
+            );
+            /** @var Tagging $tagging */
+            foreach ($taggingCollection as $tagging) {
+                if ($this->getUser()->getId() == $tagging->getCreatedBy()->getId()) {
+                    $entry['owner'] = true;
+                }
+            }
+
+            if (!$this->aclManager->isResourceGranted('oro_tag_unassign_global') && !isset($entry['owner'])) {
+                $entry['locked'] = true;
+            }
+
+            $result[] = $entry;
+        }
+
+        return $result;
     }
 
     /**

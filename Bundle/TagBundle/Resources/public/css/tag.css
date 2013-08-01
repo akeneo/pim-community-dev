@@ -1,7 +1,8 @@
+#tags-overlay #tag-list,
 .tag-view  #tag-list {
     margin-bottom: 0;
 }
-.tag-view #tag-sort-actions {
+#tag-sort-actions {
     margin-top: 5px;
 }
 #tag-sort-actions a.active:hover,

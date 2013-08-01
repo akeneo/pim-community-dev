@@ -22,12 +22,14 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
         return new Oro.Tags.TagCollection(filtered);
     },
 
-    toArray: function() {
-        var tagArray = [];
-        _.each(this.models, function(tag) {
-            tagArray.push(tag.attributes);
-        });
+    /**
+     * Used for adding item on tag_update view
+     * @param {Object} value
+     */
+    addItem: function(value) {
+        var tag = new this.model({id: value.id, name: value.name});
 
-        return tagArray;
+        this.add(tag);
+        this.trigger('addItem');
     }
 });
