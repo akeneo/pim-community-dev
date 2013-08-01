@@ -25,6 +25,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param integer $count
+     *
      * @Given /^the grid should contain (\d+) elements?$/
      */
     public function theGridShouldContainElement($count)
@@ -38,37 +40,36 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the grid should contain the elements? (.*)$/
+     * @param string $not
+     * @param string $elements
+     *
+     * @Given /^the grid should (not )?contain the elements? (.*)$/
      */
-    public function theGridShouldContainTheElements($expectedElements)
+    public function theGridShouldContainTheElements($not, $elements)
     {
-        $expectedElements = $this->getMainContext()->listToArray($expectedElements);
+        $elements = $this->getMainContext()->listToArray($elements);
 
-        foreach ($expectedElements as $expectedElement) {
-            $this->datagrid->getGridRow($expectedElement);
-        }
-    }
-
-    /**
-     * @Given /^the grid should not contain the elements? (.*)$/
-     */
-    public function theGridShouldNotContainTheElement($notExpectedElements)
-    {
-        $notExpectedElements = $this->getMainContext()->listToArray($notExpectedElements);
-
-        foreach ($notExpectedElements as $notExpectedElement) {
-            try {
-                $expectedValue = $this->datagrid->getGridRow($notExpectedElement);
-                throw new \InvalidArgumentException(
-                    sprintf('The grid should not contain the element %s', $notExpectedElement)
-                );
-            } catch (\InvalidArgumentException $e) {
-                // nothing to do
+        foreach ($elements as $element) {
+            if ($not) {
+                try {
+                    $expectedValue = $this->datagrid->getGridRow($element);
+                    throw new \InvalidArgumentException(
+                        sprintf('The grid should not contain the element %s', $element)
+                    );
+                } catch (\InvalidArgumentException $e) {
+                    // nothing to do
+                }
+            } else {
+                $this->datagrid->getGridRow($element);
             }
         }
     }
 
     /**
+     * @param string $column
+     * @param string $row
+     * @param string $expectation
+     *
      * @Given /^Value of column "([^"]*)" of the row which contains "([^"]*)" should be "([^"]*)"$/
      */
     public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
@@ -83,6 +84,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filters
+     *
      * @Given /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
@@ -94,6 +97,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $actionName
+     * @param string $element
+     *
      * @Given /^I click on the "([^"]*)" action of the row which contains "([^"]*)"$/
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
@@ -102,6 +108,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $row
+     *
      * @When /^I click on the "([^"]*)" row$/
      */
     public function iClickOnTheRow($row)
@@ -110,11 +118,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $this->wait(5000, null);
     }
 
+    /**
+     * Create an expectation exception
+     *
+     * @param string $message
+     *
+     * @return ExpectationException
+     */
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
     }
 
+    /**
+     * Wait
+     *
+     * @param integer $time
+     * @param string  $condition
+     *
+     * @return void
+     */
     private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         return $this->getMainContext()->wait($time, $condition);

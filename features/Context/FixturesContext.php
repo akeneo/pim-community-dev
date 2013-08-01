@@ -22,6 +22,8 @@ use Pim\Bundle\ConfigBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
+ * A context for creating entities
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -131,6 +133,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string         $sku
+     * @param TableNode|null $translations
+     *
+     * @return Product
      * @Given /^the "([^"]*)" product(?: has the following translations:)?$/
      */
     public function theProductWithTheFollowingTranslations($sku, TableNode $translations = null)
@@ -159,6 +165,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $sku
+     * @param languages $languages
+     *
+     * @return Product
      * @Given /^a "([^"]*)" product available in (.*)$/
      */
     public function aProductAvailableIn($sku, $languages)
@@ -181,6 +191,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following products?:$/
      */
     public function theFollowingProduct(TableNode $table)
@@ -202,19 +214,28 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $sku
+     *
+     * @Given /^an enabled "([^"]*)" product$/
+     */
+    public function anEnabledProduct($sku)
+    {
+        $this->aProductAvailableIn($sku, 'english')->setEnabled(true);
+    }
+
+    /**
+     * @param string $sku
+     *
      * @Given /^a disabled "([^"]*)" product$/
      */
     public function aDisabledProduct($sku)
     {
-        $this
-            ->aProductAvailableIn($sku, 'english')
-            ->setEnabled(false)
-        ;
-
-        $this->getEntityManager()->flush();
+        $this->aProductAvailableIn($sku, 'english')->setEnabled(false);
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following families:$/
      * @Given /^the following family:$/
      */
@@ -234,6 +255,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $family
+     * @param TableNode $table
+     *
      * @Given /^the product family "([^"]*)" has the following attribute:$/
      */
     public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
@@ -252,6 +276,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following family translations:$/
      */
     public function theFollowingFamilyTranslations(TableNode $table)
@@ -271,6 +297,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following currencies:$/
      */
     public function theFollowingCurrencies(TableNode $table)
@@ -287,6 +315,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $product
+     * @param string $family
+     *
      * @Given /^the product "([^"]*)" belongs to the family "([^"]*)"$/
      */
     public function theProductBelongsToTheFamily($product, $family)
@@ -299,6 +330,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following attribute groups?:$/
      */
     public function theFollowingAttributeGroups(TableNode $table)
@@ -316,6 +349,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following product attributes?:$/
      */
     public function theFollowingProductAttributes(TableNode $table)
@@ -378,6 +413,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following product values?:$/
      */
     public function theFollowingProductValue(TableNode $table)
@@ -422,19 +459,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^an enabled "([^"]*)" product$/
-     */
-    public function anEnabledProduct($sku)
-    {
-        $this
-            ->aProductAvailableIn($sku, 'english')
-            ->setEnabled(true)
-        ;
-
-        $this->getEntityManager()->flush();
-    }
-
-    /**
+     * @param string $attribute
+     * @param string $family
+     *
      * @Given /^the attribute "([^"]*)" has been removed from the "([^"]*)" family$/
      */
     public function theAttributeHasBeenRemovedFromTheFamily($attribute, $family)
@@ -448,6 +475,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $family
+     *
      * @Given /^the attribute "([^"]*)" has been chosen as the family "([^"]*)" label$/
      */
     public function theAttributeHasBeenChosenAsTheFamilyLabel($attribute, $family)
@@ -461,6 +491,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following categor(?:y|ies):$/
      */
     public function theFollowingCategories(TableNode $table)
@@ -484,6 +516,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following channels:$/
      */
     public function theFollowingChannels(TableNode $table)
@@ -504,6 +538,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $entityName
+     * @param string    $id
+     * @param TableNode $table
+     *
      * @Given /^the following (\w+) "([^"]*)" updates:$/
      */
     public function theFollowingUpdates($entityName, $id, TableNode $table)
@@ -537,6 +575,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following jobs?:$/
      */
     public function theFollowingJobs(TableNode $table)
@@ -558,6 +598,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Given /^the following job "([^"]*)" configuration:$/
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
@@ -602,6 +645,11 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
+    /**
+     * @param string $username
+     *
+     * @return User
+     */
     private function getUser($username)
     {
         return $this->getEntityOrException('OroUserBundle:User', array(
@@ -609,6 +657,11 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    /**
+     * @param string $sku
+     *
+     * @return Product
+     */
     public function getProduct($sku)
     {
         $pm   = $this->getProductManager();
@@ -620,6 +673,13 @@ class FixturesContext extends RawMinkContext
         return $product ?: $this->createProduct($sku);
     }
 
+    /**
+     * @param string $username
+     * @param string $password
+     * @param string $apiKey
+     *
+     * @return User
+     */
     public function getOrCreateUser($username, $password = null, $apiKey = 'admin_api_key')
     {
         $em = $this->getEntityManager();
@@ -673,6 +733,11 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @param string $label
+     *
+     * @return ProductAttribute
+     */
     public function getAttribute($label)
     {
         return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
@@ -680,6 +745,11 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    /**
+     * @param string $language
+     *
+     * @return string
+     */
     public function getLocaleCode($language)
     {
         if ('default' === $language) {
@@ -695,6 +765,11 @@ class FixturesContext extends RawMinkContext
         return $this->locales[$language];
     }
 
+    /**
+     * @param string $name
+     *
+     * @return AttributeGroup|null
+     */
     public function getGroup($name)
     {
         try {
@@ -706,6 +781,11 @@ class FixturesContext extends RawMinkContext
         }
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Family
+     */
     public function getFamily($code)
     {
         return $this->getEntityOrException('PimProductBundle:Family', array(
@@ -713,6 +793,12 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    /**
+     * @param string $data
+     * @param string $currency
+     *
+     * @return ProductPrice
+     */
     public function createPrice($data, $currency = 'EUR')
     {
         $price = new ProductPrice();
@@ -722,6 +808,11 @@ class FixturesContext extends RawMinkContext
         return $price;
     }
 
+    /**
+     * @param mixed $data
+     *
+     * @return Product
+     */
     private function createProduct($data)
     {
         $product = $this->getProductManager()->createFlexible();
@@ -735,6 +826,14 @@ class FixturesContext extends RawMinkContext
         return $product;
     }
 
+    /**
+     * @param string  $label
+     * @param boolean $translatable
+     * @param string  $type
+     * @param boolean $showInGrid
+     *
+     * @return ProductAttribute
+     */
     private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
@@ -748,11 +847,24 @@ class FixturesContext extends RawMinkContext
         return $attribute;
     }
 
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
     private function getAttributeType($type)
     {
         return isset($this->attributeTypes[$type]) ? $this->attributeTypes[$type] : null;
     }
 
+    /**
+     * @param ProductAttribute $attribute
+     * @param mixed            $data
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return ProductValue
+     */
     private function createValue(ProductAttribute $attribute, $data = null, $locale = null, $scope = null)
     {
         $pm = $this->getProductManager();
@@ -773,6 +885,11 @@ class FixturesContext extends RawMinkContext
         return $value;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Locale
+     */
     private function getLocale($code)
     {
         try {
@@ -786,6 +903,11 @@ class FixturesContext extends RawMinkContext
         return $lang;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Locale
+     */
     private function createLocale($code)
     {
         $locale = new Locale;
@@ -796,6 +918,12 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
+    /**
+     * @param string       $code
+     * @param array:string $locales
+     *
+     * @return Channel
+     */
     private function createChannel($code, $locales)
     {
         $channel = new Channel;
@@ -811,6 +939,11 @@ class FixturesContext extends RawMinkContext
         $em->flush();
     }
 
+    /**
+     * @param string $label
+     *
+     * @return Role
+     */
     private function getRoleOrCreate($label)
     {
         try {
@@ -827,6 +960,11 @@ class FixturesContext extends RawMinkContext
         return $role;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
     public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array(
@@ -834,6 +972,11 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Job
+     */
     public function getJob($code)
     {
         return $this->getEntityOrException('PimBatchBundle:Job', array(
@@ -841,13 +984,15 @@ class FixturesContext extends RawMinkContext
         ));
     }
 
+    /**
+     * @param string $namespace
+     * @param array  $criteria
+     *
+     * @return object
+     */
     private function getEntityOrException($namespace, array $criteria)
     {
-        $entity = $this
-            ->getEntityManager()
-            ->getRepository($namespace)
-            ->findOneBy($criteria)
-        ;
+        $entity = $this->getEntityManager()->getRepository($namespace)->findOneBy($criteria);
 
         if (!$entity) {
             throw new \InvalidArgumentException(sprintf(
@@ -858,6 +1003,13 @@ class FixturesContext extends RawMinkContext
         return $entity;
     }
 
+    /**
+     * @param Family $family
+     * @param string $content
+     * @param string $locale
+     *
+     * @return FamilyTranslation
+     */
     private function createFamilyTranslation(Family $family, $content, $locale = 'default')
     {
         $translation = new FamilyTranslation();
@@ -872,6 +1024,11 @@ class FixturesContext extends RawMinkContext
         return $translation;
     }
 
+    /**
+     * @param string $prices
+     *
+     * @return ArrayCollection:Price
+     */
     private function createPricesFromString($prices)
     {
         $prices = explode(',', $prices);
@@ -902,31 +1059,53 @@ class FixturesContext extends RawMinkContext
         return new ArrayCollection($data);
     }
 
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
     private function camelize($string)
     {
         return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
     }
 
+    /**
+     * @return ObjectManager
+     */
     private function getEntityManager()
     {
         return $this->getMainContext()->getEntityManager();
     }
 
+    /**
+     * @return ProductManager
+     */
     private function getProductManager()
     {
         return $this->getContainer()->get('pim_product.manager.product');
     }
 
+    /**
+     * @return UserManager
+     */
     private function getUserManager()
     {
         return $this->getContainer()->get('oro_user.manager');
     }
 
+    /**
+     * @return Container
+     */
     private function getContainer()
     {
         return $this->getMainContext()->getContainer();
     }
 
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
     private function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);

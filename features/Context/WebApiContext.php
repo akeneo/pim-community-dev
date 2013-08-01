@@ -45,6 +45,9 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @param string $sku
+     *
+     * @return array:Step
      * @Given /^I request information for product "([^"]*)"$/
      */
     public function iRequestInformationForProduct($sku)
@@ -66,6 +69,8 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^(?:the )?response should contain the following data:$/
      */
     public function theResponseShouldContainTheFollowingData(TableNode $table)
@@ -85,14 +90,14 @@ class WebApiContext extends BehatWebApiContext
      * @param string $apiKey
      * @param string $nonce
      */
-    private function generateWsseHeader($userName, $apiKey, $nonce = self::NONCE)
+    private function generateWsseHeader($username, $apiKey, $nonce = self::NONCE)
     {
         $created = date('c');
         $digest  = base64_encode(sha1(base64_decode($nonce) . $created . $apiKey, true));
         $this->addHeader('CONTENT_TYPE: application/json');
         $this->addHeader('Authorization: WSSE profile="UsernameToken"');
         $this->addHeader(sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-            $userName,
+            $username,
             $digest,
             $nonce,
             $created

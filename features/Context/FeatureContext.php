@@ -21,6 +21,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
 
+    /**
+     * Register contexts
+     * @param array $parameters
+     */
     public function __construct(array $parameters)
     {
         $this->useContext('fixtures', new FixturesContext());
@@ -66,21 +70,44 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         return $this->kernel->getContainer();
     }
 
+    /**
+     * Return doctrine manager
+     * @return ObjectManager
+     */
     public function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
 
+    /**
+     * Transform a list to array
+     * @param string $list
+     *
+     * @return array
+     */
     public function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
     }
 
+    /**
+     * Create an expectation exception
+     *
+     * @param string $message
+     *
+     * @return ExpectationException
+     */
     public function createExpectationException($message)
     {
         return new ExpectationException($message, $this->getSession());
     }
 
+    /**
+     * Wait
+     *
+     * @param integer $time
+     * @param string  $condition
+     */
     public function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         $this->getSession()->wait($time, $condition);
