@@ -27,9 +27,8 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
      * @param {Object} value
      */
     addItem: function(value) {
-        var tag = new this.model({id: value.id, name: value.name});
+        var tag = new this.model({id: value.id, name: value.name, owner: true, notSaved: true});
 
         this.add(tag);
-        this.trigger('addItem');
     }
 });

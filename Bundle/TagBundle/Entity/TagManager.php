@@ -110,25 +110,6 @@ class TagManager
     }
 
     /**
-     * @param array $ids
-     */
-    public function loadTags(array $ids)
-    {
-        $builder = $this->em->createQueryBuilder();
-
-        $tags = $builder
-            ->select('t')
-            ->from($this->tagClass, 't')
-
-            ->where($builder->expr()->in('t.id', $ids))
-
-            ->getQuery()
-            ->getResult();
-
-        return $tags;
-    }
-
-    /**
      * Loads or creates multiples tags from a list of tag names
      *
      * @param  array $names Array of tag names
@@ -162,12 +143,12 @@ class TagManager
         if (sizeof($missingNames)) {
             foreach ($missingNames as $name) {
                 $tag = $this->createTag($name);
-                $this->em->persist($tag);
+                // $this->em->persist($tag);
 
                 $tags[] = $tag;
             }
 
-            $this->em->flush();
+            // $this->em->flush();
         }
 
         return $tags;

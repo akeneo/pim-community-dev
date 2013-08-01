@@ -23,8 +23,6 @@ class TagAutocompleteType extends AbstractType
                 'autocomplete_alias' => 'tags',
             )
         );
-
-        $resolver->setNormalizers(array());
     }
 
     /**

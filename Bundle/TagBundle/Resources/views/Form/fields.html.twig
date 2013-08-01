@@ -24,14 +24,12 @@
         {# show all tags #}
         {{ form_row(form.autocomplete) }}
 
-        {# show field with mine tags#}
+        {# show field with mine tags #}
         {% if resource_granted('oro_tag_assign_unassign') %}
             {{ form_row(form.autocomplete) }}
         {% endif %}
         <script type="text/javascript">
             $(function () {
-                {#var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};#}
-
                 new Oro.Tags.TagsUpdateView({
                     autocompleteFieldId: '#{{ form.autocomplete.vars.id }}',
                     fieldId: '#{{ form.all.vars.id }}',
@@ -62,5 +60,4 @@
             {% endif %}
         }
     }
-
 {% endblock %}

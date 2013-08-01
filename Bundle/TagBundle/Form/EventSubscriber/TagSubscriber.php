@@ -28,7 +28,8 @@ class TagSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA  => 'preSet',
-            FormEvents::PRE_SUBMIT    => 'preSubmit'
+            FormEvents::PRE_SUBMIT    => 'preSubmit',
+            FormEvents::POST_SUBMIT   => 'preSet'
         );
     }
 
@@ -56,7 +57,7 @@ class TagSubscriber implements EventSubscriberInterface
             array(
                 'autocomplete' => null,
                 'all'          => json_encode($tags),
-                'owner'          => json_encode($ownTags)
+                'owner'        => json_encode($ownTags)
             )
         );
     }
@@ -72,42 +73,24 @@ class TagSubscriber implements EventSubscriberInterface
             'owner' => array()
         );
 
-        if (!isset($values['all'], $values['owner'])) {
-            return $values;
-        }
-
         foreach (array_keys($entities) as $type) {
-            if (!is_array($values[$type])) {
-                $values[$type] = json_decode($values[$type]);
-            }
+            if (isset($values[$type])) {
+                try {
+                    if (!is_array($values[$type])) {
+                        $values[$type] = json_decode($values[$type]);
+                    }
+                    $names[$type] = array();
+                    foreach ($values[$type] as $value) {
+                        if (!empty($value->name)) {
+                            // new tag
+                            $names[$type][] = $value->name;
+                        }
+                    }
 
-            $newValues[$type] = array_filter(
-                $values[$type],
-                function ($item) {
-                    return !intval($item->id) && !empty($item->name);
+                    $entities[$type] = $this->manager->loadOrCreateTags($names[$type]);
+                } catch (\Exception $e) {
+                    $entities[$type] = array();
                 }
-            );
-
-            $newValues[$type] =  array_map(
-                function ($item) {
-                    return $item->name;
-                },
-                $newValues[$type]
-            );
-
-            $values[$type] = array_map(
-                function ($item) {
-                    return $item->id;
-                },
-                $values[$type]
-            );
-
-            if ($values[$type]) {
-                $entities[$type] = $this->manager->loadTags($values[$type]);
-            }
-
-            if ($newValues[$type]) {
-                $entities[$type] = array_merge($entities[$type], $this->manager->loadOrCreateTags($newValues[$type]));
             }
         }
 

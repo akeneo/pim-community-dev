@@ -25,7 +25,7 @@ class Tagging implements ContainAuthorInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging")
+     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging", cascade="ALL")
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $tag;

@@ -47,9 +47,11 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
 
         Oro.Tags.TagView.prototype.initialize.apply(this, arguments);
 
+
+        this._renderOverlay();
         this._prepareCollections();
-        this._renderOverlay()
-        this.listenTo(this.getCollection(), 'addItem', this.render);
+        this.listenTo(this.getCollection(), 'add', this.render);
+        this.listenTo(this.getCollection(), 'add', this._updateHiddenInputs);
 
         $(this.options.autocompleteFieldId).on('change', _.bind(this._addItem, this));
     },
@@ -91,7 +93,27 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
      * @private
      */
     _prepareCollections: function() {
-//        var ownTags =
+        try {
+            var allTags = $.parseJSON($(this.options.fieldId).val());
+            if (! _.isArray(allTags)) {
+                throw new TypeError("tags hidden field data is not array")
+            }
+        } catch (e) {
+            allTags = [];
+        }
+
+        this.getCollection().reset(allTags);
+
         return this;
+    },
+
+    /**
+     * Update hidden inputs triggered by collection change
+     *
+     * @private
+     */
+    _updateHiddenInputs: function() {
+        $(this.options.fieldId).val(JSON.stringify(this.getCollection()));
+        $(this.options.ownFieldId).val(JSON.stringify(this.getCollection('owner')));
     }
 });
