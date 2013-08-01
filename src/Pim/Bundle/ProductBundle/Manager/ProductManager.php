@@ -403,7 +403,7 @@ class ProductManager extends FlexibleManager
                     $value->getMedia(),
                     null !== $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
                 );
-                if ($media->isRemoved() || null === $media->getFile()) {
+                if ($media->isRemoved()) {
                     $this->storageManager->remove($media);
                     $value->setMedia(null);
                 }
