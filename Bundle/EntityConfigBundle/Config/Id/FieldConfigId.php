@@ -97,8 +97,8 @@ class FieldConfigId implements FieldConfigIdInterface
     {
         return sprintf(
             'ConfigEntity Field "%s" in Entity "%s"',
-            $this->getClassName(),
-            $this->getFieldName()
+            $this->getFieldName(),
+            $this->getClassName()
         );
     }
 

@@ -2,10 +2,13 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Audit;
 
+
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class AuditManagerTest extends \PHPUnit_Framework_TestCase
@@ -44,15 +47,14 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
 
         $configManager->expects($this->any())->method('em')->will($this->returnValue($em));
 
-        $configManager->expects($this->any())->method('getUpdatedEntityConfig')->will(
+        $configManager->expects($this->any())->method('getUpdateConfig')->will(
             $this->returnValue(
                 array(
-                    new EntityConfig('testClass', 'testScope'),
-                    new FieldConfig('testClass', 'testField', 'string', 'testScope'),
+                    new Config(new EntityConfigId('testClass', 'testScope')),
+                    new Config(new FieldConfigId('testClass', 'testScope', 'testField', 'string')),
                 )
             )
         );
-        $configManager->expects($this->any())->method('getUpdatedFieldConfig')->will($this->returnValue(array()));
         $configManager->expects($this->any())->method('getConfigChangeSet')->will($this->returnValue(array('key' => 'value')));
         $configManager->expects($this->any())->method('getProvider')->will($this->returnValue($provider));
 

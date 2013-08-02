@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Event;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 
@@ -26,10 +27,11 @@ class PersistConfigEventTest extends \PHPUnit_Framework_TestCase
 
     public function testEvent()
     {
-        $config = new EntityConfig('testClass', 'testScope');
+        $config = new Config(new EntityConfigId('Test/Class', 'test'));
         $event  = new PersistConfigEvent($config, $this->configManager);
 
         $this->assertEquals($config, $event->getConfig());
+        $this->assertEquals($config->getConfigId(), $event->getConfigId());
         $this->assertEquals($this->configManager, $event->getConfigManager());
     }
 }

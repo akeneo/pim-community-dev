@@ -26,8 +26,18 @@ class FoundEntityConfigRepository extends EntityRepository
             $configField = new FieldConfigModel('test', 'string');
             self::$configEntity->addField($configField);
 
-            $configValue             = new ConfigModelValue('test_value', 'test', 'test_value_origin');
-            $configValueSerializable = new ConfigModelValue('test_value_serializable', 'test', array('test_value' => 'test_value_origin'));
+            $configValue = new ConfigModelValue(
+                'test_value',
+                'test',
+                'test_value_origin'
+            );
+
+            $configValueSerializable = new ConfigModelValue(
+                'test_value_serializable',
+                'test',
+                array('test_value' => 'test_value_origin')
+            );
+
             self::$configEntity->addValue($configValue);
             self::$configEntity->addValue($configValueSerializable);
         }

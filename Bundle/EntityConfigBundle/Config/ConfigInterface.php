@@ -38,11 +38,10 @@ interface ConfigInterface extends \Serializable
     public function is($code);
 
     /**
-     * @param  array $exclude
-     * @param  array $include
+     * @param callable $filter
      * @return array
      */
-    public function getValues(array $exclude = array(), array $include = array());
+    public function getValues(\Closure $filter = null);
 
     /**
      * @param $values

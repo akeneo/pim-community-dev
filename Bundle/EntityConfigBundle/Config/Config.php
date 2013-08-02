@@ -81,22 +81,16 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param  array $exclude
-     * @param  array $include
+     * @param callable $filter
      * @return array
      */
-    public function getValues(array $exclude = array(), array $include = array())
+    public function getValues(\Closure $filter = null)
     {
-        switch (true) {
-            case count($exclude):
-                return array_diff_key($this->values, array_reverse($exclude));
-                break;
-            case count($include):
-                return array_intersect_key($this->values, array_reverse($exclude));
-                break;
-            default:
-                return $this->values;
+        if ($filter) {
+            return array_filter($this->values, $filter);
         }
+
+        return $this->values;
     }
 
     /**

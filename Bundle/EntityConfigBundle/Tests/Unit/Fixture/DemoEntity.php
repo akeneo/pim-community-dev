@@ -12,6 +12,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  */
 class DemoEntity
 {
+    const ENTITY_NAME = 'Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity';
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")

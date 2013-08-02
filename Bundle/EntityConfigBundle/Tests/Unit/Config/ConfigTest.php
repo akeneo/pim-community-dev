@@ -18,12 +18,27 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config(new EntityConfigId('testClass', 'testScope'));
     }
 
+    public function testCloneConfig()
+    {
+        $values = array('firstKey' => 'firstValue', 'secondKey' => new \stdClass());
+        $this->config->setValues($values);
+
+        $clone = clone $this->config;
+
+        $this->assertTrue($this->config == $clone);
+        $this->assertFalse($this->config === $clone);
+
+    }
+
     public function testValueConfig()
     {
-        $values = array('firstKey' => 'firstValue', 'secondKey' => 'secondValue');
+        $values = array('firstKey' => 'firstValue', 'secondKey' => 'secondValue', 'fourthKey' => new \stdClass());
         $this->config->setValues($values);
 
         $this->assertEquals($values, $this->config->getValues());
+        $this->assertEquals(array('firstKey' => 'firstValue'), $this->config->getValues(function ($value) {
+            return $value == 'firstValue';
+        }));
 
         $this->assertEquals('firstValue', $this->config->get('firstKey'));
         $this->assertEquals('secondValue', $this->config->get('secondKey'));

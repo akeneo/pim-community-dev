@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
+use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity;
 
 class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,12 +18,12 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     protected $configManager;
 
     /**
-     * @var EntityConfig
+     * @var Config
      */
     protected $entityConfig;
 
     /**
-     * @var FieldConfig
+     * @var Config
      */
     protected $fieldConfig;
 
@@ -38,15 +39,14 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->entityConfig = new EntityConfig(ConfigManagerTest::DEMO_ENTITY, 'testScope');
-        $this->fieldConfig  = new FieldConfig(ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', 'testScope');
+        $this->entityConfig = new Config(new EntityConfigId(DemoEntity::ENTITY_NAME, 'test'));
 
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($this->entityConfig));
-        $this->configManager->expects($this->any())->method('isConfigurable')->will($this->returnValue(true));
+        $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
         $this->configContainer = new EntityConfigContainer('test', array());
@@ -55,16 +55,8 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testConfig()
     {
-        $this->assertEquals(true, $this->configProvider->isConfigurable(ConfigManagerTest::DEMO_ENTITY));
-        $this->assertEquals($this->entityConfig, $this->configProvider->getConfig(ConfigManagerTest::DEMO_ENTITY));
-
-        $this->entityConfig->addField($this->fieldConfig);
-
-        $this->assertEquals(true, $this->configProvider->hasFieldConfig(ConfigManagerTest::DEMO_ENTITY, 'testField'));
-        $this->assertEquals($this->fieldConfig, $this->configProvider->getFieldConfig(
-            ConfigManagerTest::DEMO_ENTITY,
-            'testField'
-        ));
+        $this->assertEquals(true, $this->configProvider->hasConfig(DemoEntity::ENTITY_NAME));
+        $this->assertEquals($this->entityConfig, $this->configProvider->getConfig(DemoEntity::ENTITY_NAME));
 
         $this->assertEquals('test', $this->configProvider->getScope());
 
@@ -73,12 +65,8 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConfig()
     {
-        $this->configProvider->createEntityConfig(
-            ConfigManagerTest::DEMO_ENTITY, array('first' => 'test'), true
-        );
-
-        $this->configProvider->createFieldConfig(
-            ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', array('first' => 'test'), true
+        $this->configProvider->createConfig(
+            new EntityConfigId(DemoEntity::ENTITY_NAME, 'test'), array('first' => 'test')
         );
 
         $this->configProvider->flush();
@@ -86,15 +74,15 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClassName()
     {
-        $this->assertEquals(ConfigManagerTest::DEMO_ENTITY, $this->configProvider->getClassName(ConfigManagerTest::DEMO_ENTITY));
+        $this->assertEquals(DemoEntity::ENTITY_NAME, $this->configProvider->getClassName(DemoEntity::ENTITY_NAME));
 
-        $className  = ConfigManagerTest::DEMO_ENTITY;
+        $className  = DemoEntity::ENTITY_NAME;
         $demoEntity = new $className();
-        $this->assertEquals(ConfigManagerTest::DEMO_ENTITY, $this->configProvider->getClassName($demoEntity));
+        $this->assertEquals(DemoEntity::ENTITY_NAME, $this->configProvider->getClassName($demoEntity));
 
-        $this->assertEquals(ConfigManagerTest::DEMO_ENTITY, $this->configProvider->getClassName(array($demoEntity)));
+        $this->assertEquals(DemoEntity::ENTITY_NAME, $this->configProvider->getClassName(array($demoEntity)));
 
         $this->setExpectedException('Oro\Bundle\EntityConfigBundle\Exception\RuntimeException');
-        $this->assertEquals(ConfigManagerTest::DEMO_ENTITY, $this->configProvider->getClassName(array()));
+        $this->assertEquals(DemoEntity::ENTITY_NAME, $this->configProvider->getClassName(array()));
     }
 }

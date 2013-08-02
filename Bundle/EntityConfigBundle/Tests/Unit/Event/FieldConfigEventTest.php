@@ -2,9 +2,11 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Event;
 
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
-use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 
 class FieldConfigEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,11 +28,15 @@ class FieldConfigEventTest extends \PHPUnit_Framework_TestCase
 
     public function testEvent()
     {
-        $event = new NewFieldEvent(ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', $this->configManager);
+        $entityConfigModel = new EntityConfigModel('Test\Class');
+        $fieldConfigModel  = new FieldConfigModel('testField', 'string');
+        $fieldConfigModel->setEntity($entityConfigModel);
 
-        $this->assertEquals(ConfigManagerTest::DEMO_ENTITY, $event->getClassName());
-        $this->assertEquals($this->configManager, $event->getConfigManager());
+        $event = new NewFieldConfigModelEvent($fieldConfigModel, $this->configManager);
+
+        $this->assertEquals('Test\Class', $event->getClassName());
         $this->assertEquals('testField', $event->getFieldName());
         $this->assertEquals('string', $event->getFieldType());
+        $this->assertEquals($this->configManager, $event->getConfigManager());
     }
 }
