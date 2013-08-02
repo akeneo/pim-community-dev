@@ -287,6 +287,8 @@ class ConfigManager
                 $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
             }
 
+            $this->em()->persist($entityModel);
+
             $this->eventDispatcher->dispatch(Events::NEW_ENTITY_CONFIG_MODEL, new NewEntityConfigModelEvent($entityModel, $this));
         }
     }
@@ -376,6 +378,29 @@ class ConfigManager
     {
         $entities = array();
 
+        foreach ($this->insertConfigs as $config) {
+            $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+
+            $this->calculateConfigChangeSet($config);
+
+            $changes = $this->getConfigChangeSet($config);
+            if (!count($changes)) {
+                continue;
+            }
+
+            $values = array_intersect_key($config->getValues(), $changes);
+
+            $model = $this->getConfigModelByConfigId($config->getConfigId());
+
+            //TODO::refactoring
+            $serializableValues = $this->getProvider($config->getConfigId())->getConfigContainer()->getEntitySerializableValues();
+            $model->fromArray($config->getConfigId()->getScope(), $values, $serializableValues);
+
+            if ($this->configCache) {
+                $this->configCache->removeConfigFromCache($config->getConfigId());
+            }
+        }
+
         foreach ($this->persistConfigs as $config) {
             $className = $config->getClassName();
 
@@ -416,8 +441,6 @@ class ConfigManager
             }
         }
 
-        $this->eventDispatcher->dispatch(Events::PRE_FLUSH, new FlushConfigEvent($this));
-
         $this->auditManager->log();
 
         foreach ($entities as $entity) {
@@ -426,16 +449,11 @@ class ConfigManager
 
         $this->em()->flush();
 
-        $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
-
-        $this->removeConfigs    = array();
-        $this->insertConfigs    = array();
-        $this->updateConfigs    = array();
-        $this->originalConfigs  = array();
+        $this->removeConfigs =
+        $this->insertConfigs =
+        $this->updateConfigs =
+        $this->originalConfigs =
         $this->configChangeSets = array();
-
-
-        $this->eventDispatcher->dispatch(Events::POST_FLUSH, new FlushConfigEvent($this));
     }
 
 

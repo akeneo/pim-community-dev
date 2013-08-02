@@ -4,10 +4,11 @@ namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
@@ -43,24 +44,25 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY_CONFIG_MODEL   => 'newConfigModel',
-            Events::PRE_PERSIST_CONFIG => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL => 'newConfigModel',
+            Events::PRE_PERSIST_CONFIG      => 'persistConfig',
         );
     }
 
     /**
-     * @param NewConfigModelEvent $event
+     * @param NewEntityConfigModelEvent $event
      */
-    public function newConfigModel(NewFieldConfigModelEvent $event)
+    public function newConfigModel(NewEntityConfigModelEvent $event)
     {
         /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($event->getConfigModel());
+        $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
         if ($metadata && $metadata->isExtend) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getConfigModel());
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getConfigModel());
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
 
+            $configId = new EntityConfigId($event->getClassName(), $this->extendManager->getConfigProvider()->getScope());
             $this->extendManager->getConfigProvider()->createConfig(
-                $event->getConfigModel(),
+                $configId,
                 $values = array(
                     'is_extend'    => true,
                     'extend_class' => $extendClass,
@@ -79,12 +81,18 @@ class ConfigSubscriber implements EventSubscriberInterface
         $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        if ($event->getConfig()->getScope() == 'extend'
+        $scope = $event->getConfig()->getConfigId()->getScope();
+        $className = $event->getConfig()->getConfigId()->getClassName();
+
+        if ($scope == 'extend'
             && $event->getConfig()->is('is_extend')
             && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
             && $event->getConfig()->get('state') != ExtendManager::STATE_NEW
         ) {
-            $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
+            $entityConfig = $event->getConfigManager()
+                ->getProvider($scope)
+                ->getConfig($className);
+
             $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
             $entityConfig->set('state', ExtendManager::STATE_UPDATED);
 
