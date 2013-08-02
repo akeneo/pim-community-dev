@@ -62,8 +62,7 @@ class ReportController extends Controller
      */
     public function exportAction(Request $request)
     {
-        $gridManager = $this->get('pim_import_export.datagrid.manager.report');
-        $gridManager->setJobType(Job::TYPE_EXPORT);
+        $gridManager = $this->get('pim_import_export.datagrid.manager.export_report');
         $datagridView = $gridManager->getDatagrid()->createView();
 
         if ('json' == $request->getRequestFormat()) {
@@ -83,15 +82,14 @@ class ReportController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Route(
-     *     "/export.{_format}",
+     *     "/import.{_format}",
      *     requirements={"_format"="html|json"},
      *     defaults={"_format"="html"}
      * )
      */
     public function importAction(Request $request)
     {
-        $gridManager = $this->get('pim_import_export.datagrid.manager.report');
-        $gridManager->setJobType(Job::TYPE_IMPORT);
+        $gridManager = $this->get('pim_import_export.datagrid.manager.import_report');
         $datagridView = $gridManager->getDatagrid()->createView();
 
         if ('json' == $request->getRequestFormat()) {

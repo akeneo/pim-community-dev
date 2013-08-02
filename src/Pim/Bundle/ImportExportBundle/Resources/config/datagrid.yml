@@ -41,3 +41,27 @@ services:
               query_entity_alias: job_report
               entity_hint: job_reports
               route_name: pim_importexport_report_index
+
+    pim_import_export.datagrid.manager.export_report:
+        class: %pim_import_export.datagrid.manager.report.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: job_reports
+              entity_name: %pim_import_export.entity.job_execution.class%
+              query_entity_alias: job_report
+              entity_hint: job_reports
+              route_name: pim_importexport_report_export
+        calls:
+            - [ setJobType, ['export'] ]
+
+    pim_import_export.datagrid.manager.import_report:
+        class: %pim_import_export.datagrid.manager.report.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: job_reports
+              entity_name: %pim_import_export.entity.job_execution.class%
+              query_entity_alias: job_report
+              entity_hint: job_reports
+              route_name: pim_importexport_report_import
+        calls:
+            - [ setJobType, ['import'] ]
