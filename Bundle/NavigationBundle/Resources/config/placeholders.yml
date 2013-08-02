@@ -30,15 +30,22 @@ placeholders:
         items:
             application_menu:
                 order: 100
-    pinbar:
-        label: Pinbar
+    before_navigation:
+        label: Top Navigation Before
         items:
             dots_menu:
                 order: 100
+    after_navigation:
+        label: Top Navigation After
     pin_button:
         label: Pinbar buttons
         items:
             pin_button:
+                order: 100
+    breadcrumb:
+        label: Breadcrumbs
+        items:
+            breadcrumbs:
                 order: 100
 
 items:
@@ -58,3 +65,5 @@ items:
         template: OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig
    pin_button:
         template: OroNavigationBundle:ApplicationMenu:pinButton.html.twig
+   breadcrumbs:
+        template: OroNavigationBundle:ApplicationMenu:breabcrumbs.html.twig

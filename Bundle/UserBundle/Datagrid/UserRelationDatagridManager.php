@@ -24,7 +24,10 @@ abstract class UserRelationDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldsCollection->add($this->createUserRelationColumn());
+        $relationColumn = $this->createUserRelationColumn();
+        if ($relationColumn) {
+            $fieldsCollection->add($relationColumn);
+        }
 
         $fieldId = new FieldDescription();
         $fieldId->setName('id');

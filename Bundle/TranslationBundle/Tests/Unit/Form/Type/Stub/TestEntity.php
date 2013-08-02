@@ -15,7 +15,7 @@ class TestEntity
     public $testProperty;
 
     /**
-     * @param int $id
+     * @param int    $id
      * @param string $property
      */
     public function __construct($id, $property)

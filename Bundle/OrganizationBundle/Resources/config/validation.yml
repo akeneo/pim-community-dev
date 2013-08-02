@@ -1,0 +1,14 @@
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+    properties:
+        name:
+            - NotBlank:     ~
+            - Length:
+                max:        255
+        phone:
+            - Length:
+                max:        100
+        email:
+            - Length:
+                min:        6
+                max:        255
+            - Email:        ~

@@ -36,6 +36,16 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $breadcrumbManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $userConfigManager;
+
+    /**
      * @var TitleService
      */
     private $titleService;
@@ -66,12 +76,22 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->userConfigManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\UserConfigManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->breadcrumbManager = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->titleService = new TitleService(
             $this->annotationsReader,
             $this->configReader,
             $this->translator,
             $this->em,
-            $this->serializer
+            $this->serializer,
+            $this->userConfigManager,
+            $this->breadcrumbManager
         );
     }
 
@@ -258,6 +278,13 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->will($this->returnValue($this->repository));
 
+        $this->userConfigManager->expects($this->at(0))->method('get')
+            ->with('oro_navigation.breadcrumb_menu')->will($this->returnValue('test-menu'));
+        $this->userConfigManager->expects($this->at(1))->method('get')
+            ->with('oro_navigation.title_suffix')->will($this->returnValue('test-suffix'));
+        $this->userConfigManager->expects($this->at(2))->method('get')
+            ->with('oro_navigation.title_delimiter')->will($this->returnValue('/'));
+
         $entityMock = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Title');
 
         $entityMock->expects($this->exactly(2))
@@ -270,7 +297,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $entityMock->expects($this->once())
             ->method('setTitle')
-            ->with($this->equalTo('Title'));
+            ->with($this->equalTo('Title / test-breadcrumb / test-suffix'));
 
         $this->repository->expects($this->once())
             ->method('findAll')
@@ -281,6 +308,10 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->em->expects($this->once())
             ->method('flush');
+
+        $this->breadcrumbManager->expects($this->once())
+            ->method('getBreadcrumbLabels')
+            ->will($this->returnValue(array('test-breadcrumb')));
 
         $this->titleService->update($testData);
     }

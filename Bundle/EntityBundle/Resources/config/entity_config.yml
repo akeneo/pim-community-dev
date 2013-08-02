@@ -7,14 +7,16 @@ oro_entity_config:
                         priority:           20
             items:
                 icon:
-                    priority:               10
+                    options:
+                        priority:           10
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
                 label:
-                    priority:               20
+                    options:
+                        priority:           20
                     grid:
                         type:               string
                         label:              'Label'
@@ -29,14 +31,16 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 plural_label:
-                    priority:               30
+                    options:
+                        priority:           30
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
                 description:
-                    priority:               50
+                    options:
+                        priority:           50
                     grid:
                         type:               text
                         label:              'Description'
@@ -51,9 +55,15 @@ oro_entity_config:
                             block:          entity
                             required:       false
         field:
+            form:
+                block_config:
+                    entity:
+                        title:              'Field Information'
+                        priority:           20
             items:
                 label:
-                    priority:               10
+                    options:
+                        priority:           10
                     grid:
                         type:               string
                         label:              'Label'
@@ -68,7 +78,8 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 description:
-                    priority:               30
+                    options:
+                        priority:           30
                     grid:
                         type:               text
                         label:              'Description'
@@ -85,28 +96,29 @@ oro_entity_config:
 
     datagrid:
         field:
-            form:
-                block_config:
-                    datagrid:
-                        title:              'Datagrid Config'
-                        subblocks:
-                            base:           ~
+#            form:
+#                block_config:
+#                    datagrid:
+#                        title:              'Datagrid Config'
+#                        subblocks:
+#                            base:           ~
             items:
                 is_searchable:
-                    default_value:          false
-                    entity_grid:            false
+                    options:
+                        default_value:      false
+                        is_bool:            true
                     grid:
                         type:               boolean
-                        label:              'Datagrid search'
+                        label:              'Grid'
                         filter_type:        oro_grid_orm_boolean
                         required:           true
                         sortable:           true
-                        filterable:         true
+                        filterable:         false
                         show_filter:        false
                     form:
                         type:               choice
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
-                            block:          datagrid
-                            label:          "Datagrid search"
+                            block:          other
+                            label:          'Grid'

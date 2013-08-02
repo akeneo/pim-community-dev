@@ -14,7 +14,9 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 /**
  * Country
  *
- * @ORM\Table("oro_dictionary_country")
+ * @ORM\Table("oro_dictionary_country", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\CountryTranslation")
  */

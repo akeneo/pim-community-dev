@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -17,6 +19,11 @@ use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entityextend/entity")
+ * @Acl(
+ *      id="oro_entityextend",
+ *      name="Entity extend manipulation",
+ *      description="Entity extend manipulation"
+ * )
  */
 class ConfigEntityGridController extends Controller
 {
@@ -26,6 +33,12 @@ class ConfigEntityGridController extends Controller
      *      name="oro_entityextend_entity_unique_key",
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entityextend_entity_unique_key",
+     *      name="Unique keys",
+     *      description="Update entity unique keys",
+     *      parent="oro_entityextend"
      * )
      * @Template
      */

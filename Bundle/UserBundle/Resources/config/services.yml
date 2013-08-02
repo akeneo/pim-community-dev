@@ -173,6 +173,8 @@ services:
         arguments:                    ["@oro_user.form.user", "@request", "@oro_user.manager"]
         tags:
             - { name: oro_tag.tag_manager }
+        calls:
+            - [setBusinessUnitManager, ["@oro_organization.business_unit_manager"]]
 
     oro_user.form.handler.user.api:
         class:                        %oro_user.handler.user.class%
@@ -224,9 +226,14 @@ services:
         class:                        %oro_user.acl.interceptor.class%
         arguments:                    ["@service_container"]
 
+    oro_user.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ "oro_user.cache" ] ]
+
     oro_user.acl_manager:
         class:                        %oro_user.acl.manager.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.acl_reader", "@cache", "@security.context", "@oro_user.acl_config_reader"]
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.acl_reader", "@oro_user.cache", "@security.context", "@oro_user.acl_config_reader"]
 
     oro_user.acl_manager.api:
         class:                        %oro_user.acl.manager.api.class%

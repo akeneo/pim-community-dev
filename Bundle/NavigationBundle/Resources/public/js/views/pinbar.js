@@ -9,8 +9,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         el: '.pin-bar',
         listBar: '.list-bar',
         minimizeButton: '.top-action-box .minimize-button',
-        closeButton: '.top-action-box .close-button',
-        history: [],
         defaultUrl: '/',
         tabId: 'pinbar',
         collection: navigation.pinbar.Items
@@ -26,7 +24,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     initialize: function() {
         this.$listBar = this.getBackboneElement(this.options.listBar);
         this.$minimizeButton = Backbone.$(this.options.minimizeButton);
-        this.$closeButton = Backbone.$(this.options.closeButton);
+        this.$icon = this.$minimizeButton.find('i');
 
         this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
         this.listenTo(this.options.collection, 'remove', this.onPageClose);
@@ -42,31 +40,24 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
          */
         Oro.Events.bind(
             "grid_load:complete",
-            function () {
-                this.updatePinbarState();
-            },
+            this.updatePinbarState,
+            this
+        );
+
+        /**
+         * Change pinbar icon state after hash navigation request is completed
+         */
+        Oro.Events.bind(
+            "hash_navigation_request:complete",
+            this.checkPinbarIcon,
             this
         );
 
         this.$minimizeButton.click(_.bind(this.minimizePage, this));
-        this.$closeButton.click(_.bind(this.closePage, this));
 
         this.registerTab();
         this.cleanup();
         this.render();
-    },
-
-    /**
-     * Get previous maximized URL
-     *
-     * @return {*}
-     */
-    getLatestUrl: function() {
-        if (this.options.history.length) {
-            return _.last(this.options.history);
-        } else {
-            return this.options.defaultUrl;
-        }
     },
 
     /**
@@ -87,22 +78,22 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     handleItemStateChange: function(item) {
         if (!this.massAdd) {
             var url = null;
-            var goBack = false;
-            if (item.get('maximized')) {
+            var changeLocation = item.get('maximized');
+            if (changeLocation) {
                 url = item.get('url');
-                this.removeFromHistory(item);
-                this.options.history.push(this.cleanupUrl(url));
-            } else {
-                goBack = true;
             }
             if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
+                if (Oro.hashNavigationEnabled() && changeLocation) {
+                    Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+                }
                 item.save(
                     null,
                     {
                         wait: true,
                         success: _.bind(function () {
-                            if (!goBack) {
-                                Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+                            this.checkPinbarIcon();
+                            if (!Oro.hashNavigationEnabled() && changeLocation) {
+                                window.location.href = url;
                             }
                         }, this)
                     }
@@ -111,23 +102,19 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         }
     },
 
-    /**
-     * Remove item from history
-     *
-     * @param item
-     */
-    removeFromHistory: function(item) {
-        var currentItemUrl = this.cleanupUrl(item.get('url'))
-        this.options.history = _.filter(this.options.history, function (url) {
-            return url != currentItemUrl;
-        });
+    checkPinbarIcon: function() {
+        if (this.getItemForCurrentPage().length) {
+            this.activate();
+        } else {
+            this.inactivate();
+        }
     },
 
     /**
      * Handle page close
      */
     onPageClose: function(item) {
-        this.removeFromHistory(item);
+        this.checkPinbarIcon();
         this.reorder();
     },
 
@@ -142,7 +129,6 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         var pinnedItem = this.getItemForCurrentPage(true);
         if (pinnedItem.length) {
             _.each(pinnedItem, function(item) {
-                this.removeFromHistory(item);
                 item.set('maximized', false);
             }, this);
         } else {
@@ -227,6 +213,14 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.options.collection.each(function(item, position) {
             item.set({position: position});
         });
+    },
+
+    activate: function() {
+        this.$icon.addClass('icon-gold');
+    },
+
+    inactivate: function() {
+        this.$icon.removeClass('icon-gold');
     },
 
     /**
