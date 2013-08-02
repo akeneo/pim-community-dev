@@ -223,7 +223,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
         var mode = this.mode;
         var links = this.links;
         var totalRecords = state.totalRecords;
-        var pageSize = state.pageSize == 'All' ? 0 : state.pageSize;
+        var pageSize = state.pageSize;
         var currentPage = state.currentPage;
         var firstPage = state.firstPage;
         var totalPages = state.totalPages;
