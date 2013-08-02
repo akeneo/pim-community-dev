@@ -30,7 +30,6 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
@@ -94,7 +93,7 @@ class ConfigManager
     /**
      * @var AbstractConfigModel[]
      */
-    protected $entities = array();
+    protected $models = array();
 
     /**
      * @var ConfigInterface[]
@@ -283,14 +282,17 @@ class ConfigManager
             /** @var ConfigClassMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataForClass($className);
 
+            $this->models[$className] = new EntityConfigModel($className);
+
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = array();
                 if (isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
-                $entityId = new EntityConfigId($className, $provider->getScope());
-                $provider->createConfig($entityId, $defaultValues);
+                $entityId                                               = new EntityConfigId($className, $provider->getScope());
+                $config                                                 = $provider->createConfig($entityId, $defaultValues);
+                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
 
                 $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
             }
@@ -301,6 +303,7 @@ class ConfigManager
      * @param $className
      * @param $fieldName
      * @param $fieldType
+     * @throws Exception\LogicException
      */
     public function createConfigFieldModel($className, $fieldName, $fieldType)
     {
@@ -308,24 +311,33 @@ class ConfigManager
             /** @var ConfigClassMetadata $metadata */
             //$metadata = $this->metadataFactory->getMetadataForClass($className); //TODO::implement default value for config
 
+            /** @var EntityConfigModel $entityModel */
+            $entityModel = isset($this->models[$className]) ? $this->models[$className] : $this->getConfigModel($className);
+            if (!$entityModel) {
+                throw new LogicException(sprintf('Entity "%" is not found', $className));
+            }
+
+            $this->models[$className . $fieldName] = $fieldModel = new FieldConfigModel($fieldName, $fieldType);
+
+            $entityModel->addField($fieldModel);
+
             foreach ($this->getProviders() as $provider) {
                 $entityId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $provider->createConfig($entityId, array());
 
-                $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
+                $config                                                 = $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
+                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
 
                 $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
             }
         }
     }
 
-
     /**
      * @param ConfigIdInterface $configId
      */
     public function clearCache(ConfigIdInterface $configId)
     {
-
         if ($this->configCache) {
             $this->configCache->removeConfigFromCache($configId);
         }
@@ -336,12 +348,24 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        $this->persistConfigs->push($config);
+        if (isset($this->originalConfigs[$config->getConfigId()->getId()])) {
+            $this->insertConfigs[$config->getConfigId()->getId()] = $config;
+        } else {
+            $this->updateConfigs[$config->getConfigId()->getId()] = $config;
+        }
+    }
 
-        if ($config instanceof EntityConfigInterface) {
-            foreach ($config->getFields() as $fieldConfig) {
-                $this->persistConfigs->push($fieldConfig);
-            }
+    /**
+     * @param ConfigInterface $config
+     */
+    public function merge(ConfigInterface $config)
+    {
+        $config = $this->doMerge($config);
+
+        if (isset($this->originalConfigs[$config->getConfigId()->getId()])) {
+            $this->insertConfigs[$config->getConfigId()->getId()] = $config;
+        } else {
+            $this->updateConfigs[$config->getConfigId()->getId()] = $config;
         }
     }
 
@@ -350,13 +374,7 @@ class ConfigManager
      */
     public function remove(ConfigInterface $config)
     {
-        $this->removeConfigs[spl_object_hash($config)] = $config;
-
-        if ($config instanceof EntityConfigInterface) {
-            foreach ($config->getFields() as $fieldConfig) {
-                $this->removeConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
-            }
-        }
+        $this->removeConfigs[$config->getConfigId()->getId()] = $config;
     }
 
     /**
@@ -547,8 +565,8 @@ class ConfigManager
     {
         $id = $className . $fieldName;
 
-        if (isset($this->entities[$id])) {
-            return $this->entities[$id];
+        if (isset($this->models[$id])) {
+            return $this->models[$id];
         }
 
         $entityConfigRepo = $this->em()->getRepository(EntityConfigModel::ENTITY_NAME);
@@ -566,5 +584,25 @@ class ConfigManager
         }
 
         return $result;
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @return ConfigInterface
+     */
+    protected function doMerge(ConfigInterface $config)
+    {
+        switch (true) {
+            case isset($this->insertConfigs[$config->getConfigId()->getId()]):
+                $persistConfig = $this->insertConfigs[$config->getConfigId()->getId()];
+                break;
+            case isset($this->updateConfigs[$config->getConfigId()->getId()]):
+                $persistConfig = $this->insertConfigs[$config->getConfigId()->getId()];
+                break;
+            default:
+                return $config;
+        }
+
+        return array_merge($persistConfig->getValues(), $config->getValues());
     }
 }
