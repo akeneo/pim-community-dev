@@ -116,102 +116,133 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit();
         switch ($aclcase) {
             case 'delete':
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('Delete tags')
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openTags()
-                    ->checkContextMenu($tagname, 'Delete');
+                $this->deleteAcl($login, $role, $username, $tagname);
                 break;
             case 'update':
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('Update tag')
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openTags()
-                    ->checkContextMenu($tagname, 'Update');
+                $this->updateAcl($login, $role, $username, $tagname);
                 break;
             case 'create':
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('Create tag')
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openTags()
-                    ->assertElementNotPresent("//div[@class = 'container-fluid']//a[contains(., 'Create tag')]");
+                $this->createAcl($login, $role, $username);
                 break;
             case 'view list':
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('View list of tags')
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openTags()
-                    ->assertTitle('403 - Forbidden');
+                $this->viewListAcl($login, $role, $username);
                 break;
             case 'unassign global':
-                $username = 'user' . mt_rand();
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('Tag unassign global')
-                    ->save()
-                    ->openUsers()
-                    ->add()
-                    ->setUsername($username)
-                    ->enable()
-                    ->setFirstpassword('123123q')
-                    ->setSecondpassword('123123q')
-                    ->setFirstname('First_'.$username)
-                    ->setLastname('Last_'.$username)
-                    ->setEmail($username.'@mail.com')
-                    ->setRoles(array('Manager'))
-                    ->setTag($tagname)
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openUsers()
-                    ->filterBy('Username', $username)
-                    ->open(array($username))
-                    ->edit()
-                    ->assertElementNotpresent
-                    ("//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]/a[@class='select2-search-choice-close']");
+                $this->unassignGlobalAcl($login, $role, $tagname);
                 break;
             case 'assign/unassign':
-                $login->openRoles()
-                    ->filterBy('Role', $role)
-                    ->open(array($role))
-                    ->selectAcl('Tag assign/unassign')
-                    ->save()
-                    ->logout()
-                    ->setUsername($username)
-                    ->setPassword('123123q')
-                    ->submit()
-                    ->openAccounts()
-                    ->add(false)
-                    ->assertElementPresent("//div[@class='select2-container select2-container-multi select2-container-disabled']");
+                $this->assignAcl($login, $role, $username);
                 break;
         }
+    }
+
+    public function deleteAcl($login, $role, $username, $tagname)
+    {
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('Delete tags')
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openTags()
+            ->checkContextMenu($tagname, 'Delete');
+    }
+
+    public function updateAcl($login, $role, $username, $tagname)
+    {
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('Update tag')
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openTags()
+            ->checkContextMenu($tagname, 'Update');
+    }
+
+    public function createAcl($login, $role, $username)
+    {
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('Create tag')
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openTags()
+            ->assertElementNotPresent("//div[@class = 'container-fluid']//a[contains(., 'Create tag')]");
+    }
+
+    public function viewListAcl($login, $role, $username)
+    {
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('View list of tags')
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openTags()
+            ->assertTitle('403 - Forbidden');
+    }
+
+    public function unassignGlobalAcl($login, $role, $tagname)
+    {
+        $username = 'user' . mt_rand();
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('Tag unassign global')
+            ->save()
+            ->openUsers()
+            ->add()
+            ->setUsername($username)
+            ->enable()
+            ->setFirstpassword('123123q')
+            ->setSecondpassword('123123q')
+            ->setFirstname('First_'.$username)
+            ->setLastname('Last_'.$username)
+            ->setEmail($username.'@mail.com')
+            ->setRoles(array($role))
+            ->setTag($tagname)
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openUsers()
+            ->filterBy('Username', $username)
+            ->open(array($username))
+            ->edit()
+            ->assertElementNotPresent(
+                "//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]/a[@class='select2-search-choice-close']"
+            );
+    }
+
+    public function assignAcl($login, $role, $username)
+    {
+        $login->openRoles()
+            ->filterBy('Role', $role)
+            ->open(array($role))
+            ->selectAcl('Tag assign/unassign')
+            ->save()
+            ->logout()
+            ->setUsername($username)
+            ->setPassword('123123q')
+            ->submit()
+            ->openAccounts()
+            ->add(false)
+            ->assertElementPresent("//div[@class='select2-container select2-container-multi select2-container-disabled']");
     }
 
     /**
