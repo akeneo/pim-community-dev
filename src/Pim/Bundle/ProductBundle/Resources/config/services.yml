@@ -15,6 +15,11 @@ services:
         tags:
             - { name: form.type, alias: pim_product_options }
 
+    pim_product.form.type.image:
+        class: %pim_product.form.type.image.class%
+        tags:
+            - { name: form.type, alias: pim_image }
+
     # Subscribers
     pim_product.form.subscriber.attribute:
         class:     %pim_product.subscriber.add_attribute_type.class%

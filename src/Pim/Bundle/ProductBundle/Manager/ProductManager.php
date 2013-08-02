@@ -398,15 +398,11 @@ class ProductManager extends FlexibleManager
     protected function handleMedia(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
-            if (null !== $media = $value->getMedia()) {
+            if ($media = $value->getMedia()) {
                 $this->mediaManager->handle(
                     $value->getMedia(),
-                    null !== $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
+                    $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
                 );
-                if ($media->isRemoved() || null === $media->getFile()) {
-                    $this->storageManager->remove($media);
-                    $value->setMedia(null);
-                }
             }
         }
     }
@@ -421,7 +417,7 @@ class ProductManager extends FlexibleManager
     {
         return sprintf(
             '%s-%s-%s-%s-%s',
-            $product->getSku(),
+            $product->getIdentifier(),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
