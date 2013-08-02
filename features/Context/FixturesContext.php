@@ -33,7 +33,7 @@ class FixturesContext extends RawMinkContext
     private $locales = array(
         'english' => 'en_US',
         'french'  => 'fr_FR',
-        'german'  => 'de',
+        'german'  => 'de_DE',
     );
 
     private $channels = array(
@@ -76,10 +76,7 @@ class FixturesContext extends RawMinkContext
      */
     public function createRequiredAttribute()
     {
-        $em = $this->getEntityManager();
-        $attr = $this->createAttribute('SKU', false, 'identifier', true);
-        $em->persist($attr);
-        $em->flush();
+        $this->createAttribute('SKU', false, 'identifier', true);
     }
 
     /**
@@ -106,7 +103,6 @@ class FixturesContext extends RawMinkContext
     {
         $attributes = array();
         $product    = $this->getProduct($sku);
-        $pm         = $this->getProductManager();
 
         if ($translations) {
             foreach ($translations->getHash() as $translation) {
@@ -114,7 +110,6 @@ class FixturesContext extends RawMinkContext
                     $attribute = $attributes[$translation['attribute']];
                 } else {
                     $attribute = $this->createAttribute($translation['attribute'], true);
-                    $pm->getStorageManager()->persist($attribute);
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
@@ -126,7 +121,8 @@ class FixturesContext extends RawMinkContext
                 $product->addValue($value);
             }
         }
-        $pm->save($product);
+
+        $this->getProductManager()->save($product);
 
         return $product;
     }
@@ -145,14 +141,13 @@ class FixturesContext extends RawMinkContext
 
         foreach ($languages as $language) {
             $language = $this->getLocale($this->getLocaleCode($language));
-            $pl = $product->getLocale($language);
-            if (!$pl) {
+            $locale = $product->getLocale($language);
+            if (!$locale) {
                 $product->addLocale($language);
             }
-            $this->getProductManager()->save($product);
         }
 
-        $this->getEntityManager()->flush();
+        $this->getProductManager()->save($product);
 
         return $product;
     }
@@ -205,17 +200,16 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingFamilies(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $family = new Family;
             $family->setCode($data['code']);
-            $em->persist($family);
+            $this->persist($family);
 
             $translation = $this->createFamilyTranslation($family, $data['code']);
             $family->addTranslation($translation);
         }
 
-        $em->flush();
+        $this->flush();
     }
 
     /**
@@ -236,7 +230,7 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $this->getEntityManager()->flush();
+        $this->flush();
     }
 
     /**
@@ -246,8 +240,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingFamilyTranslations(TableNode $table)
     {
-        $em = $this->getEntityManager();
-
         foreach ($table->getHash() as $data) {
             $family      = $this->getFamily($data['family']);
             $translation = $this->createFamilyTranslation(
@@ -259,7 +251,7 @@ class FixturesContext extends RawMinkContext
             $family->addTranslation($translation);
         }
 
-        $em->flush();
+        $this->flush();
     }
 
     /**
@@ -269,15 +261,13 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingCurrencies(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $currency = new \Pim\Bundle\ConfigBundle\Entity\Currency;
             $currency->setCode($data['code']);
             $currency->setActivated($data['activated'] === 'yes');
 
-            $em->persist($currency);
+            $this->persist($currency);
         }
-        $em->flush();
     }
 
     /**
@@ -292,7 +282,7 @@ class FixturesContext extends RawMinkContext
         $family  = $this->getFamily($family);
 
         $product->setFamily($family);
-        $this->getEntityManager()->flush();
+        $this->flush();
     }
 
     /**
@@ -302,16 +292,14 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
             $group->setCode($this->camelize($data['name']));
             $group->setName($data['name']);
             $group->setSortOrder($index);
 
-            $em->persist($group);
+            $this->persist($group);
         }
-        $em->flush();
     }
 
     /**
@@ -321,7 +309,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingProductAttributes(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $data = array_merge(
                 array(
@@ -380,7 +367,7 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $em->flush();
+        $this->flush();
     }
 
     /**
@@ -390,7 +377,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingProductValue(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array('scope' => null, 'locale' => null), $data);
 
@@ -423,7 +409,8 @@ class FixturesContext extends RawMinkContext
                 $product->addValue($value);
             }
         }
-        $em->flush();
+
+        $this->flush();
     }
 
     /**
@@ -439,7 +426,7 @@ class FixturesContext extends RawMinkContext
 
         $family->removeAttribute($attribute);
 
-        $this->getEntityManager()->flush();
+        $this->flush();
     }
 
     /**
@@ -455,7 +442,7 @@ class FixturesContext extends RawMinkContext
 
         $family->setAttributeAsLabel($attribute);
 
-        $this->getEntityManager()->flush();
+        $this->flush();
     }
 
     /**
@@ -465,7 +452,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingCategories(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setCode($data['code']);
@@ -478,9 +464,8 @@ class FixturesContext extends RawMinkContext
                 }
             }
 
-            $em->persist($category);
+            $this->persist($category);
         }
-        $em->flush();
     }
 
     /**
@@ -490,7 +475,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingChannels(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $channel = new Channel();
             $channel->setCode($data['code']);
@@ -500,9 +484,8 @@ class FixturesContext extends RawMinkContext
                 $category = $this->getCategory($data['category']);
                 $channel->setCategory($category);
             }
-            $em->persist($channel);
+            $this->persist($channel);
         }
-        $em->flush();
     }
 
     /**
@@ -515,7 +498,6 @@ class FixturesContext extends RawMinkContext
     public function theFollowingUpdates($entityName, $id, TableNode $table)
     {
         $entity = $this->{'get'.ucfirst($entityName)}($id);
-        $em     = $this->getEntityManager();
 
         foreach ($table->getHash() as $data) {
             $audit = new Audit;
@@ -531,10 +513,8 @@ class FixturesContext extends RawMinkContext
             $user = $this->getUser($data['updatedBy']);
             $audit->setUsername($user->getUsername());
             $audit->setUser($user);
-            $em->persist($audit);
+            $this->persist($audit);
         }
-
-        $em->flush();
     }
 
     /**
@@ -544,7 +524,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $em       = $this->getEntityManager();
         $registry = $this->getContainer()->get('pim_batch.connectors');
 
         foreach ($table->getHash() as $data) {
@@ -555,9 +534,8 @@ class FixturesContext extends RawMinkContext
             $jobDefinition = $registry->getJob($job);
             $job->setJobDefinition($jobDefinition);
 
-            $em->persist($job);
+            $this->persist($job);
         }
-        $em->flush();
     }
 
     /**
@@ -568,7 +546,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $em            = $this->getEntityManager();
         $registry      = $this->getContainer()->get('pim_batch.connectors');
         $job           = $this->getJob($code);
         $jobDefinition = $registry->getJob($job);
@@ -581,7 +558,7 @@ class FixturesContext extends RawMinkContext
         $steps[0]->setConfiguration($config);
         $job->setJobDefinition($jobDefinition);
 
-        $em->flush();
+        $this->flush();
     }
 
     /**
@@ -589,16 +566,12 @@ class FixturesContext extends RawMinkContext
      */
     public function thereIsNoIdentifierAttribute()
     {
-        $em = $this->getEntityManager();
-
-        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')
+        $attributes = $this->getRepository('PimProductBundle:ProductAttribute')
                 ->findBy(array('attributeType' => 'pim_product_identifier'));
 
         foreach ($attributes as $attribute) {
-            $em->remove($attribute);
+            $this->remove($attribute);
         }
-
-        $em->flush();
     }
 
     /**
@@ -636,9 +609,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getOrCreateUser($username, $password = null, $apiKey = null)
     {
-        $em = $this->getEntityManager();
-
-        if ($user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $username))) {
+        if ($user = $this->getRepository('OroUserBundle:User')->findOneBy(array('username' => $username))) {
             return $user;
         }
 
@@ -708,21 +679,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $data
-     * @param string $currency
-     *
-     * @return ProductPrice
-     */
-    public function createPrice($data, $currency = 'EUR')
-    {
-        $price = new ProductPrice();
-        $price->setData($data);
-        $price->setCurrency($currency);
-
-        return $price;
-    }
-
-    /**
      * @param mixed $data
      *
      * @return Product
@@ -734,8 +690,7 @@ class FixturesContext extends RawMinkContext
         $value   = $this->createValue($sku, $data);
 
         $product->addValue($value);
-        $this->getProductManager()->getStorageManager()->persist($product);
-        $this->getProductManager()->getStorageManager()->flush();
+        $this->persist($product);
 
         return $product;
     }
@@ -756,7 +711,7 @@ class FixturesContext extends RawMinkContext
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->persist($attribute);
 
         return $attribute;
     }
@@ -825,9 +780,7 @@ class FixturesContext extends RawMinkContext
         $locale = new Locale;
         $locale->setCode($code);
 
-        $em = $this->getEntityManager();
-        $em->persist($locale);
-        $em->flush();
+        $this->persist($locale);
     }
 
     /**
@@ -846,9 +799,7 @@ class FixturesContext extends RawMinkContext
             $channel->addLocale($this->getLocale($localeCode));
         }
 
-        $em = $this->getEntityManager();
-        $em->persist($channel);
-        $em->flush();
+        $this->persist($channel);
     }
 
     /**
@@ -862,9 +813,7 @@ class FixturesContext extends RawMinkContext
             $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
-            $em = $this->getEntityManager();
-            $em->persist($role);
-            $em->flush();
+            $this->persist($role);
         }
 
         return $role;
@@ -898,7 +847,7 @@ class FixturesContext extends RawMinkContext
      */
     private function getEntityOrException($namespace, array $criteria)
     {
-        $entity = $this->getEntityManager()->getRepository($namespace)->findOneBy($criteria);
+        $entity = $this->getRepository($namespace)->findOneBy($criteria);
 
         if (!$entity) {
             throw new \InvalidArgumentException(
@@ -927,9 +876,7 @@ class FixturesContext extends RawMinkContext
         $translation->setLocale($locale);
         $translation->setForeignKey($family);
 
-        $em = $this->getEntityManager();
-        $em->persist($translation);
-        $em->flush();
+        $this->persist($translation);
 
         return $translation;
     }
@@ -967,6 +914,21 @@ class FixturesContext extends RawMinkContext
         }
 
         return new ArrayCollection($data);
+    }
+
+    /**
+     * @param string $data
+     * @param string $currency
+     *
+     * @return ProductPrice
+     */
+    private function createPrice($data, $currency = 'EUR')
+    {
+        $price = new ProductPrice();
+        $price->setData($data);
+        $price->setCurrency($currency);
+
+        return $price;
     }
 
     /**
@@ -1067,8 +1029,31 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
+    }
+
+    /**
+     * Remove an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    private function remove($entity, $flush = true)
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * Flush
+     */
+    private function flush()
+    {
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -1077,6 +1062,16 @@ class FixturesContext extends RawMinkContext
     private function getEntityManager()
     {
         return $this->getMainContext()->getEntityManager();
+    }
+
+    /**
+     * @param string $repository
+     *
+     * @return Repository
+     */
+    private function getRepository($repository)
+    {
+        return $this->getEntityManager()->getRepository($repository);
     }
 
     /**
