@@ -7,7 +7,7 @@ use Metadata\MetadataFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
@@ -43,24 +43,24 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_CONFIG_MODEL     => 'newEntityConfig',
-            Events::PERSIST_CONFIG => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL   => 'newConfigModel',
+            Events::PRE_PERSIST_CONFIG => 'persistConfig',
         );
     }
 
     /**
      * @param NewConfigModelEvent $event
      */
-    public function newEntityConfig(NewConfigModelEvent $event)
+    public function newConfigModel(NewFieldConfigModelEvent $event)
     {
         /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($event->getConfigId());
+        $metadata = $this->metadataFactory->getMetadataForClass($event->getConfigModel());
         if ($metadata && $metadata->isExtend) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getConfigId());
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getConfigId());
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getConfigModel());
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getConfigModel());
 
-            $this->extendManager->getConfigProvider()->createEntityConfig(
-                $event->getConfigId(),
+            $this->extendManager->getConfigProvider()->createConfig(
+                $event->getConfigModel(),
                 $values = array(
                     'is_extend'    => true,
                     'extend_class' => $extendClass,

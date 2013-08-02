@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
@@ -30,7 +31,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 class ConfigManager
@@ -272,7 +273,7 @@ class ConfigManager
             /** @var ConfigClassMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataForClass($className);
 
-            $this->models[$className] = new EntityConfigModel($className);
+            $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = array();
@@ -280,12 +281,13 @@ class ConfigManager
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
-                $entityId                                               = new EntityConfigId($className, $provider->getScope());
-                $config                                                 = $provider->createConfig($entityId, $defaultValues);
-                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
+                $entityId = new EntityConfigId($className, $provider->getScope());
+                $config   = $provider->createConfig($entityId, $defaultValues);
 
-                $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
+                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
             }
+
+            $this->eventDispatcher->dispatch(Events::NEW_ENTITY_CONFIG_MODEL, new NewEntityConfigModelEvent($entityModel, $this));
         }
     }
 
@@ -298,8 +300,7 @@ class ConfigManager
     public function createConfigFieldModel($className, $fieldName, $fieldType)
     {
         if (!$this->getConfigModel($className, $fieldName)) {
-            /** @var ConfigClassMetadata $metadata */
-            //$metadata = $this->metadataFactory->getMetadataForClass($className); //TODO::implement default value for config
+            //TODO::implement default value for config
 
             /** @var EntityConfigModel $entityModel */
             $entityModel = isset($this->models[$className]) ? $this->models[$className] : $this->getConfigModel($className);
@@ -308,18 +309,19 @@ class ConfigManager
             }
 
             $this->models[$className . $fieldName] = $fieldModel = new FieldConfigModel($fieldName, $fieldType);
-
             $entityModel->addField($fieldModel);
 
             foreach ($this->getProviders() as $provider) {
                 $entityId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $provider->createConfig($entityId, array());
 
-                $config                                                 = $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
+                $config = $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
+
                 $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
 
-                $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
             }
+
+            $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
         }
     }
 
@@ -383,7 +385,7 @@ class ConfigManager
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
             }
 
-            $this->eventDispatcher->dispatch(Events::PERSIST_CONFIG, new PersistConfigEvent($config, $this));
+            $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
 
             $this->calculateConfigChangeSet($config);
 
