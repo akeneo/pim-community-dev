@@ -43,12 +43,18 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
         this.add(tag);
     },
 
+    /**
+     * Remove item from collection, or uncheck "owner" if filter is not in global mdoe
+     *
+     * @param {String}|{Number} id
+     * @param {String} filterState
+     */
     removeItem: function(id, filterState) {
         var model = this.where({'id': id});
         if (model.length) {
             model = model[0];
-            if (filterState == 'owner' && model.owner && model.moreOwners === false) {
-                model.owner = false;
+            if (filterState == 'owner' && model.get('owner') === true && model.get('moreOwners') === true) {
+                model.set('owner', false);
 
                 this.trigger('remove');
 

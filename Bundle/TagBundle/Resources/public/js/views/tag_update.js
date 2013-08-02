@@ -18,8 +18,8 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
         autocompleteFieldId: null,
         fieldId: null,
         ownFieldId: null,
-        unassign: true,
-        unassignGlobal: true
+        unassign: false,
+        unassignGlobal: false
     },
 
     /**
@@ -70,10 +70,10 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
 
         var renderButtons = false;
         switch (true) {
-            case this.filter == 'owner' && this.options.unassign:
+            case this.options.filter == 'owner' && this.options.unassign:
                 renderButtons = true;
                 break;
-            case this.filter != 'owner' && this.options.unassignGlobal:
+            case this.options.filter != 'owner' && this.options.unassignGlobal:
                 renderButtons = true;
                 break;
         }
@@ -82,6 +82,7 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
                 var $el = $(el);
 
                 $el.append($('<span class="select2-search-choice-close"></span>'));
+                $el.addClass('with-button');
             });
 
             $(this.options.tagsOverlayId).find('span.label .select2-search-choice-close').click(_.bind(this._removeItem, this));
@@ -121,7 +122,7 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
 
         var id = $($el).data('id');
         if (!_.isUndefined(id)) {
-            this.getCollection().removeItem(id, this.filter);
+            this.getCollection().removeItem(id, this.options.filter);
         }
         return this;
     },

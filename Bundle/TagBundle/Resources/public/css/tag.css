@@ -11,7 +11,7 @@
     text-decoration: none;
     color: #777777;
 }
-#tags-overlay #tag-list span.label {
+#tags-overlay #tag-list span.label.with-button {
     position: relative;
     padding-right: 17px;
 }
