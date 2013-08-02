@@ -86,50 +86,12 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root = new Acl();
-        $root
-            ->setId('root')
-            ->setName('root')
-            ->setDescription('root')
-            ->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT))
-            ->addAccessRole($this->getRoleOrCreate('ROLE_SUPER_ADMIN'));
+        $root        = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
+        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
 
-        $oroSecurity = new Acl();
-        $oroSecurity
-            ->setId('oro_security')
-            ->setName('Oro Security')
-            ->setDescription('Oro security')
-            ->setParent($root)
-            ->addAccessRole($this->getRoleOrCreate('IS_AUTHENTICATED_ANONYMOUSLY'));
-
-        $oroLogin = new Acl();
-        $oroLogin
-            ->setId('oro_login')
-            ->setName('Login page')
-            ->setDescription('Oro Login page')
-            ->setParent($oroSecurity);
-
-        $oroLoginCheck = new Acl();
-        $oroLoginCheck
-            ->setId('oro_login_check')
-            ->setName('Login check')
-            ->setDescription('Oro Login check')
-            ->setParent($oroSecurity);
-
-        $oroLogout = new Acl();
-        $oroLogout
-            ->setId('oro_logout')
-            ->setName('Logout')
-            ->setDescription('Oro Logout')
-            ->setParent($oroSecurity);
-
-        $em = $this->getEntityManager();
-        $em->persist($root);
-        $em->persist($oroSecurity);
-        $em->persist($oroLogin);
-        $em->persist($oroLoginCheck);
-        $em->persist($oroLogout);
-        $em->flush();
+        $this->createAcl('oro_login', $oroSecurity);
+        $this->createAcl('oro_login_check', $oroSecurity);
+        $this->createAcl('oro_logout', $oroSecurity);
     }
 
     /**
@@ -671,7 +633,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return User
      */
-    public function getOrCreateUser($username, $password = null, $apiKey = 'admin_api_key')
+    public function getOrCreateUser($username, $password = null, $apiKey = null)
     {
         $em = $this->getEntityManager();
 
@@ -679,47 +641,7 @@ class FixturesContext extends RawMinkContext
             return $user;
         }
 
-        $user = new User;
-
-        if (!$password) {
-            $password = $username.'pass';
-        }
-
-        $user->setUsername($username);
-        $user->setEmail($username.'@example.com');
-        $user->setPlainPassword($password);
-        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
-        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
-
-        $um = $this->getContainer()->get('oro_user.manager.flexible');
-        $catalogLocaleAttribute = $um->createAttribute('oro_flexibleentity_text');
-        $catalogLocaleAttribute->setCode('cataloglocale');
-        $catalogLocaleAttribute->setLabel('cataloglocale');
-        $em->persist($catalogLocaleAttribute);
-
-        $catalogLocaleValue = $um->createFlexibleValue();
-        $catalogLocaleValue->setAttribute($catalogLocaleAttribute);
-        $catalogLocaleValue->setData('en_US');
-        $user->addValue($catalogLocaleValue);
-
-        $um = $this->getContainer()->get('oro_user.manager.flexible');
-        $catalogScopeAttribute = $um->createAttribute('oro_flexibleentity_text');
-        $catalogScopeAttribute->setCode('catalogscope');
-        $catalogScopeAttribute->setLabel('catalogscope');
-        $em->persist($catalogScopeAttribute);
-
-        $catalogScopeValue = $um->createFlexibleValue();
-        $catalogScopeValue->setAttribute($catalogScopeAttribute);
-        $catalogScopeValue->setData('ecommerce');
-        $user->addValue($catalogScopeValue);
-
-        $this->getUserManager()->updateUser($user);
-
-        $api = new UserApi();
-        $api->setApiKey($apiKey)->setUser($user);
-
-        $this->getEntityManager()->persist($api);
-        $this->getEntityManager()->flush();
+        return $this->createUser($username, $password, $apiKey);
     }
 
     /**
@@ -1047,6 +969,83 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $username
+     * @param strng  $password
+     * @param string $apiKey
+     *
+     * @return User
+     */
+    private function createUser($username, $password = null, $apiKey = null)
+    {
+        $password = $password ?: $username . 'pass';
+        $apiKey   = $apiKey ?: $username . '_api_key';
+        $email    = $username.'@example.com';
+        $locale   = 'en_US';
+        $scope    = 'ecommerce';
+
+        $user = new User();
+        $user->setUsername($username);
+        $user->setPlainPassword($password);
+        $user->setEmail($email);
+
+        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
+
+        $manager = $this->getContainer()->get('oro_user.manager.flexible');
+
+        $localeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+        $this->persist($localeAttribute);
+
+        $localeValue = $manager->createFlexibleValue();
+        $localeValue->setAttribute($localeAttribute);
+        $localeValue->setData($locale);
+        $user->addValue($localeValue);
+
+        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+        $this->persist($scopeAttribute);
+
+        $scopeValue = $manager->createFlexibleValue();
+        $scopeValue->setAttribute($scopeAttribute);
+        $scopeValue->setData($scope);
+        $user->addValue($scopeValue);
+
+        $this->getUserManager()->updateUser($user);
+
+        $api = new UserApi();
+        $api->setApiKey($username.'_api_key')->setUser($user);
+
+        $this->persist($api);
+
+        return $user;
+    }
+
+    /**
+     * @param string $name
+     * @param Acl    $parent
+     * @param array  $roles
+     *
+     * @return Acl
+     */
+    private function createAcl($name, $parent = null, array $roles = array())
+    {
+        $acl = new Acl();
+        $acl->setId($name);
+        $acl->setName($this->camelize($name));
+        $acl->setDescription($this->camelize($name));
+        if ($parent) {
+            $acl->setParent($parent);
+        }
+        foreach ($roles as $role) {
+            $acl->addAccessRole($this->getRoleOrCreate($role));
+        }
+        $this->persist($acl);
+
+        return $acl;
+    }
+
+    /**
      * @param string $string
      *
      * @return string
@@ -1054,6 +1053,21 @@ class FixturesContext extends RawMinkContext
     private function camelize($string)
     {
         return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
+    }
+
+    /**
+     * Persist an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    private function persist($entity, $flush = true)
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**
