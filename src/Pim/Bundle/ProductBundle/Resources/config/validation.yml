@@ -12,3 +12,25 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
         description:
             - Length:
                 max: 255
+        searchable:
+            - Type: bool
+        translatable:
+            - Type: bool
+        useableAsGridColumn:
+            - Type: bool
+        useableAsGridFilter:
+            - Type: bool
+        wysiwygEnabled:
+            - Type: bool
+        valueCreationAllowed:
+            - Type: bool
+        decimalsAllowed:
+            - Type: bool
+        negativeAllowed:
+            - Type: bool
+        maxFileSize:
+            - Type: int
+        sortOrder:
+            - Type: int
+        maxCharacters:
+            - Type: int
