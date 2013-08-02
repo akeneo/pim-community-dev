@@ -6,7 +6,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
@@ -24,7 +23,6 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity("code")
  * @Oro\Loggable
  */
 class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface

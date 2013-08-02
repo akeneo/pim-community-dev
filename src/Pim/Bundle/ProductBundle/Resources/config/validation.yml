@@ -1,7 +1,9 @@
 Pim\Bundle\ProductBundle\Entity\ProductAttribute:
     constraints:
-        - Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttribute: ~
-        - Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttribute: ~
-        - Callback:
-            methods:
-                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isValid]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Attribute name may contain only letters, numbers and underscores"
