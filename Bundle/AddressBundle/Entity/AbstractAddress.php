@@ -3,19 +3,18 @@
 namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Type;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Address
  *
  * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
  */
-abstract class AbstractAddress extends AbstractEntityFlexible
+abstract class AbstractAddress
 {
     /**
      * @var integer
@@ -110,6 +109,20 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     protected $lastName;
 
     /**
+     * @var \DateTime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
      * Get id
      *
      * @return integer
@@ -117,6 +130,16 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -145,7 +168,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * Set street
      *
-     * @param  string      $street
+     * @param string $street
      * @return AbstractAddress
      */
     public function setStreet($street)
@@ -168,7 +191,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * Set street2
      *
-     * @param  string      $street2
+     * @param string $street2
      * @return AbstractAddress
      */
     public function setStreet2($street2)
@@ -191,7 +214,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * Set city
      *
-     * @param  string      $city
+     * @param string $city
      * @return AbstractAddress
      */
     public function setCity($city)
@@ -274,7 +297,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * Set postal_code
      *
-     * @param  string      $postalCode
+     * @param string $postalCode
      * @return AbstractAddress
      */
     public function setPostalCode($postalCode)
@@ -297,7 +320,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * Set country
      *
-     * @param  Country     $country
+     * @param Country $country
      * @return AbstractAddress
      */
     public function setCountry($country)
@@ -375,6 +398,16 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     }
 
     /**
+     * Set address created date/time
+     *
+     * @param \DateTime $created
+     */
+    public function setCreatedAt(\DateTime $created)
+    {
+        $this->created = $created;
+    }
+
+    /**
      * Get address last update date/time
      *
      * @return \DateTime
@@ -382,6 +415,16 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     public function getUpdatedAt()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set address updated date/time
+     *
+     * @param \DateTime $updated
+     */
+    public function setUpdatedAt(\DateTime $updated)
+    {
+        $this->updated = $updated;
     }
 
     /**
@@ -440,7 +483,7 @@ abstract class AbstractAddress extends AbstractEntityFlexible
      */
     public function isEmpty()
     {
-        $isEmpty = empty($this->label)
+        return empty($this->label)
             && empty($this->firstName)
             && empty($this->lastName)
             && empty($this->street)
@@ -450,11 +493,5 @@ abstract class AbstractAddress extends AbstractEntityFlexible
             && empty($this->stateText)
             && empty($this->country)
             && empty($this->postalCode);
-        /** @var FlexibleValueInterface $value */
-        foreach ($this->values as $value) {
-            $flexibleValue = $value->getData();
-            $isEmpty = $isEmpty && empty($flexibleValue);
-        }
-        return $isEmpty;
     }
 }

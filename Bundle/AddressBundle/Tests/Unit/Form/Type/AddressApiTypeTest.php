@@ -20,50 +20,42 @@ class AddressApiTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $buildAddressFormListener = $this->getMockBuilder('Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $flexibleManager = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->type = new AddressApiType(
-            $flexibleManager,
-            'oro_address_value',
-            $buildAddressFormListener
-        );
+        $this->type = new AddressApiType();
     }
 
-    public function testAddEntityFields()
+    public function testBuildForm()
     {
-        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->exactly(11))
-            ->method('add')
-            ->will($this->returnSelf());
-
-        $builder->expects($this->exactly(2))
+        $builder->expects($this->once())
             ->method('addEventSubscriber')
             ->with($this->isInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface'));
 
-        $this->type->addEntityFields($builder);
+        $this->type->buildForm($builder, array());
     }
 
     public function testSetDefaultOptions()
     {
-        /** @var OptionsResolverInterface $resolver */
         $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
         $resolver->expects($this->once())
             ->method('setDefaults')
-            ->with($this->isType('array'));
+            ->with(
+                array(
+                    'csrf_protection' => false,
+                )
+            );
         $this->type->setDefaultOptions($resolver);
     }
 
     public function testGetName()
     {
         $this->assertEquals('address', $this->type->getName());
+    }
+
+    public function testGetParent()
+    {
+        $this->assertEquals('oro_address', $this->type->getParent());
     }
 }

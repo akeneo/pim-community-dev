@@ -16,56 +16,42 @@ class AbstractTypedAddressTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $buildAddressFormListener
-            = $this->getMockBuilder('Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $flexibleManager = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->type = $this->getMockForAbstractClass(
-            'Oro\Bundle\AddressBundle\Form\Type\AbstractTypedAddressType',
-            array(
-                $flexibleManager,
-                'oro_address_value',
-                $buildAddressFormListener
-            )
-        );
+        $this->type = $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Form\Type\AbstractTypedAddressType');
     }
 
-    public function testAddEntityFields()
+    public function testBuildForm()
     {
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $builder->expects($this->any())
-            ->method('add')
-            ->will($this->returnSelf());
+
         $builder->expects($this->at(0))
             ->method('add')
             ->with(
                 'types',
                 'translatable_entity',
-                $this->callback(
-                    function ($options) {
-                        \PHPUnit_Framework_TestCase::assertArrayHasKey('class', $options);
-                        \PHPUnit_Framework_TestCase::assertArrayHasKey('property', $options);
-                        \PHPUnit_Framework_TestCase::assertEquals('OroAddressBundle:AddressType', $options['class']);
-                        \PHPUnit_Framework_TestCase::assertEquals('label', $options['property']);
-                        return true;
-                    }
+                array(
+                    'class'    => 'OroAddressBundle:AddressType',
+                    'property' => 'label',
+                    'required' => false,
+                    'multiple' => true,
+                    'expanded' => true,
                 )
-            );
+            )
+            ->will($this->returnSelf());
 
         $builder->expects($this->at(1))
             ->method('add')
             ->with(
                 'primary',
                 'checkbox',
-                $this->isType('array')
-            );
+                array(
+                    'label' => 'Primary',
+                    'required' => false
+                )
+            )
+            ->will($this->returnSelf());
 
-        $this->type->addEntityFields($builder);
+        $this->type->buildForm($builder, array());
     }
 }

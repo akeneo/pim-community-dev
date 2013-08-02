@@ -1,8 +1,6 @@
 <?php
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType;
 
 class AddressCollectionTypeTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +20,6 @@ class AddressCollectionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testSetDefaultOptions()
     {
-        /** @var OptionsResolverInterface $resolver */
         $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
         $resolver->expects($this->once())
             ->method('setDefaults')

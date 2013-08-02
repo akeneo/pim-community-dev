@@ -2,36 +2,63 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-abstract class AbstractTypedAddressType extends AbstractAddressType
+abstract class AbstractTypedAddressType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function addEntityFields(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'types',
-            'translatable_entity',
+        $builder
+            ->add(
+                'types',
+                'translatable_entity',
+                array(
+                    'class'    => 'OroAddressBundle:AddressType',
+                    'property' => 'label',
+                    'required' => false,
+                    'multiple' => true,
+                    'expanded' => true,
+                )
+            )
+            ->add(
+                'primary',
+                'checkbox',
+                array(
+                    'label' => 'Primary',
+                    'required' => false
+                )
+            );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
             array(
-                'class' => 'OroAddressBundle:AddressType',
-                'property' => 'label',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => true,
+                'data_class' => $this->getDataClass()
             )
         );
+    }
 
-        $builder->add(
-            'primary',
-            'checkbox',
-            array(
-                'label' => 'Primary',
-                'required' => false
-            )
-        );
+    /**
+     * Get value for option "data_class"
+     *
+     * @return string
+     */
+    abstract protected function getDataClass();
 
-        parent::addEntityFields($builder);
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'oro_address';
     }
 }

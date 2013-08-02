@@ -21,6 +21,7 @@ abstract class AbstractTypedAddress extends AbstractAddress
      * Many-to-many relation field, relation parameters must be in specific class
      *
      * @var Collection
+     *
      * @Soap\ComplexType("Oro\Bundle\AddressBundle\Entity\AddressType[]", nillable=true)
      */
     protected $types;
@@ -35,8 +36,6 @@ abstract class AbstractTypedAddress extends AbstractAddress
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->types = new ArrayCollection();
     }
 

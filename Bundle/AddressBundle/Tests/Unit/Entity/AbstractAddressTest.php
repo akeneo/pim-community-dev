@@ -13,7 +13,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property, $value)
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
 
         call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
         $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
@@ -44,14 +44,14 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             'stateText' => array('stateText', 'test state'),
             'postalCode' => array('postalCode', '12345'),
             'country' => array('country', $countryMock),
-            'created' => array('created', new \DateTime()),
-            'updated' => array('updated', new \DateTime()),
+            'created' => array('createdAt', new \DateTime()),
+            'updated' => array('updatedAt', new \DateTime()),
         );
     }
 
     public function testBeforeSave()
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $obj->beforeSave();
 
         $this->assertNotNull($obj->getCreatedAt());
@@ -65,7 +65,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString(array $actualData, $expected)
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
 
         foreach ($actualData as $key => $value) {
             $setter = 'set' . ucfirst($key);
@@ -129,7 +129,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
 
     public function testStateText()
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $region = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Region')
             ->disableOriginalConstructor()
             ->getMock();
@@ -147,7 +147,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->never())
             ->method('addViolationAt');
 
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $obj->isStateValid($context);
     }
 
@@ -166,7 +166,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->never())
             ->method('addViolationAt');
 
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $obj->setCountry($country);
         $obj->isStateValid($context);
     }
@@ -197,14 +197,14 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
                 array('%country%' => 'Country')
             );
 
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $obj->setCountry($country);
         $obj->isStateValid($context);
     }
 
     public function testIsEmpty()
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         $this->assertTrue($obj->isEmpty());
     }
 
@@ -215,7 +215,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
     */
     public function testIsNotEmpty($property, $value)
     {
-        $obj = $this->createAbstractAddress();
+        $obj = $this->createAddress();
         call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
         $this->assertFalse($obj->isEmpty());
     }
@@ -244,33 +244,10 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIsNotEmptyFlexible()
-    {
-        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue');
-        $value->expects($this->once())
-            ->method('getData')
-            ->will($this->returnValue('not empty'));
-
-        $obj = $this->createAbstractAddress();
-        $obj->addValue($value);
-        $this->assertFalse($obj->isEmpty());
-    }
-
-    public function testIsEmptyFlexible()
-    {
-        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue');
-        $value->expects($this->once())
-            ->method('getData');
-
-        $obj = $this->createAbstractAddress();
-        $obj->addValue($value);
-        $this->assertTrue($obj->isEmpty());
-    }
-
     /**
      * @return AbstractAddress|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createAbstractAddress()
+    protected function createAddress()
     {
         return $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractAddress');
     }
