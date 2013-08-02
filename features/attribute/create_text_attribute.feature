@@ -21,11 +21,23 @@ Feature: Create an attribute
     Given I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Text"
-    And I fill in the following information:
-     | Name | short descsription |
+    And I change the Name to an invalid value
     And I visit the "Values" tab
     And I fill in the following information:
      | Default     | Short description           |
      | Description | Short description attribute |
     And I save the attribute
     Then I should see "Attribute name may contain only letters, numbers and underscores"
+
+  Scenario: Fail to create a text attribute with an invalid description
+    Given I am logged in as "admin"
+    And I am on the attribute creation page
+    And I select the attribute type "Text"
+    And I fill in the following information:
+     | Name | short_descsription |
+    And I visit the "Values" tab
+    And I fill in the following information:
+     | Default | Short description |
+    And I change the Description to an invalid value
+    And I save the attribute
+    Then I should see "This value is too long"

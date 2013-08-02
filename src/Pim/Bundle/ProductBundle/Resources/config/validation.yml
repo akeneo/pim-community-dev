@@ -7,3 +7,8 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Regex:
                 pattern: "/^[a-zA-Z0-9_]+$/"
                 message: "Attribute name may contain only letters, numbers and underscores"
+            - Length:
+                max: 255
+        description:
+            - Length:
+                max: 255
