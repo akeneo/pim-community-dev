@@ -23,4 +23,3 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments: ["pim_family_form", "pim_family"]
-
