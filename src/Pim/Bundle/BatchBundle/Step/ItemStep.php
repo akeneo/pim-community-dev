@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;

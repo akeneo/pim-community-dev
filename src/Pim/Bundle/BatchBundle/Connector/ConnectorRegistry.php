@@ -115,4 +115,14 @@ class ConnectorRegistry
     {
         return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
     }
+
+    /**
+     * Get list of connectors
+     *
+     * @return array
+     */
+    public function getConnectors()
+    {
+        return array_unique(array_keys($this->jobs));
+    }
 }

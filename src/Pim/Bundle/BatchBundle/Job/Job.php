@@ -3,7 +3,10 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
+
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Implementation of the {@link Job} interface.
@@ -21,7 +24,7 @@ class Job implements JobInterface
 
     //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
 
-    /* @var JobRepository */
+    /* @var JobRepositoryInterface */
     protected $jobRepository;
 
     /* @var StepHandler */
@@ -156,13 +159,13 @@ class Job implements JobInterface
 
 
     /**
-     * Public setter for the {@link JobRepository} that is needed to manage the
+     * Public setter for the {@link JobRepositoryInterface} that is needed to manage the
      * state of the batch meta domain (jobs, steps, executions) during the life
      * of a job.
      *
-     * @param JobRepository $jobRepository
+     * @param JobRepositoryInterface $jobRepository
      */
-    public function setJobRepository(JobRepository $jobRepository)
+    public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
     }
@@ -195,7 +198,7 @@ class Job implements JobInterface
 
             if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
-                $execution->setStartTime(time());
+                $execution->setStartTime(new \DateTime());
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
                 //listener.beforeJob(execution);
@@ -226,7 +229,7 @@ class Job implements JobInterface
         }
 
         if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
-                && $execution->getStepExecutions()->isEmpty()
+                && (count($execution->getStepExecutions()) == 0)
         ) {
             /* @var ExitStatus */
             $exitStatus = $execution->getExitStatus();
@@ -235,7 +238,7 @@ class Job implements JobInterface
             $execution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
         }
 
-        $execution->setEndTime(time());
+        $execution->setEndTime(new \DateTime());
 
         /*
         try {
@@ -246,6 +249,7 @@ class Job implements JobInterface
         */
 
         $this->jobRepository->updateJobExecution($execution);
+        $this->jobRepository->flush();
     }
 
     /**

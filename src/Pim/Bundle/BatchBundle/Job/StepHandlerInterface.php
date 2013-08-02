@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Strategy interface for handling a {@link Step} on behalf of a {@link Job}.
