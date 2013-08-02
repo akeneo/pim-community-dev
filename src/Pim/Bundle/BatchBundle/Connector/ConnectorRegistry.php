@@ -37,6 +37,8 @@ class ConnectorRegistry
      * @param Pim\Bundle\BatchBundle\Entity\Job $job
      *
      * @return Pim\Bundle\BatchBundle\Job\JobInterface
+     *
+     * TODO : Rename the method as getJobDefinition ?! Change PHPDoc !
      */
     public function getJob(Job $job)
     {
@@ -55,6 +57,8 @@ class ConnectorRegistry
      * @param string $type
      *
      * @return multitype:JobInterface
+     *
+     * TODO : Rather return an array of array of JobInterface ?
      */
     public function getJobs($type)
     {
@@ -99,6 +103,7 @@ class ConnectorRegistry
      * @param string $type
      *
      * @return mixed
+     * TODO : Return mixed.. string or null ?
      */
     private function getConnector($connector, $type)
     {
@@ -110,6 +115,7 @@ class ConnectorRegistry
      * @param string $jobAlias
      *
      * @return mixed
+     * TODO : Return mixed.. string or null ?
      */
     private function getConnectorJob($connector, $jobAlias)
     {
