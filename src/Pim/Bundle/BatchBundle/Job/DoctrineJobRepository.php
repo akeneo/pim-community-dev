@@ -7,7 +7,6 @@ use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
-
 /**
  * Class peristing JobExecution and StepExecution states
  *

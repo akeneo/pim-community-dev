@@ -30,8 +30,11 @@ class SimpleStepHandler implements StepHandlerInterface
      * @param JobRepositoryInterface $jobRepository    Job repository
      * @param ExecutionContext       $executionContext Execution context
      */
-    public function __construct($logger, JobRepositoryInterface $jobRepository, ExecutionContext $executionContext = null)
-    {
+    public function __construct(
+        $logger,
+        JobRepositoryInterface $jobRepository,
+        ExecutionContext $executionContext = null
+    ) {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
             $executionContext = new ExecutionContext();

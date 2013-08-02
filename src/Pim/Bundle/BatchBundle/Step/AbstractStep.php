@@ -220,7 +220,7 @@ abstract class AbstractStep implements StepInterface
             $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
-        $stepExecution->setEndTime( new \DateTime());
+        $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
         try {

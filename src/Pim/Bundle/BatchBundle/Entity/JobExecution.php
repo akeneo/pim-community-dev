@@ -37,7 +37,7 @@ class JobExecution
     private $stepExecutions;
 
     /**
-    /* @var Job
+     * @var Job
      * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
