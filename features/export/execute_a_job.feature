@@ -17,7 +17,8 @@ Feature: Execute a job
       | Akeneo    | product_export | acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     When I launch the "acme_product_export" export job
-    Then the response status code should be 404
+    Then I should not see "Job has been successfully executed."
+    And I should not see "An error occured during the job execution."
 
   Scenario: Successfully launch a valid job
     Given the following job:
