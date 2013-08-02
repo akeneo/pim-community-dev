@@ -68,11 +68,6 @@ class ConfigManager
     /**
      * @var ConfigInterface[]
      */
-    protected $persistConfigs = array();
-
-    /**
-     * @var ConfigInterface[]
-     */
     protected $insertConfigs = array();
 
     /**
@@ -104,11 +99,6 @@ class ConfigManager
      * @var array
      */
     protected $configChangeSets = array();
-
-    /**
-     * @var array
-     */
-    protected $updatedConfigs = array();
 
     /**
      * @param MetadataFactory $metadataFactory
@@ -437,9 +427,10 @@ class ConfigManager
         $this->eventDispatcher->dispatch(Events::ON_FLUSH, new FlushConfigEvent($this));
 
         $this->removeConfigs    = array();
+        $this->insertConfigs    = array();
+        $this->updateConfigs    = array();
         $this->originalConfigs  = array();
         $this->configChangeSets = array();
-        $this->updatedConfigs   = array();
 
 
         $this->eventDispatcher->dispatch(Events::POST_FLUSH, new FlushConfigEvent($this));
@@ -452,8 +443,8 @@ class ConfigManager
     public function calculateConfigChangeSet(ConfigInterface $config)
     {
         $originConfigValue = array();
-        if (isset($this->originalConfigs[spl_object_hash($config)])) {
-            $originConfig      = $this->originalConfigs[spl_object_hash($config)];
+        if (isset($this->originalConfigs[$config->getConfigId()->getId()])) {
+            $originConfig      = $this->originalConfigs[$config->getConfigId()->getId()];
             $originConfigValue = $originConfig->getValues();
         }
 
@@ -478,60 +469,67 @@ class ConfigManager
         }
 
 
-        if (!isset($this->configChangeSets[spl_object_hash($config)])) {
-            $this->configChangeSets[spl_object_hash($config)] = array();
+        if (!isset($this->configChangeSets[$config->getConfigId()->getId()])) {
+            $this->configChangeSets[$config->getConfigId()->getId()] = array();
         }
 
         if (count($diff)) {
-            $this->configChangeSets[spl_object_hash($config)] = array_merge($this->configChangeSets[spl_object_hash($config)], $diff);
-
-            if (!isset($this->updatedConfigs[spl_object_hash($config)])) {
-                $this->updatedConfigs[spl_object_hash($config)] = $config;
-            }
+            $this->configChangeSets[$config->getConfigId()->getId()] = array_merge($this->configChangeSets[$config->getConfigId()->getId()], $diff);
         }
     }
 
     /**
-     * @param null $scope
-     * @return ConfigInterface[]|EntityConfigInterface[]
+     * @param callback $filter
+     * @throws Exception\RuntimeException
+     * @return ConfigInterface[]|
      */
-    public function getUpdatedEntityConfig($scope = null)
+    public function getUpdatedConfig($filter = null)
     {
-        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($scope) {
-            if (!$config instanceof EntityConfigInterface) {
-                return false;
-            }
+        if ($filter && !is_callable($filter)) {
+            throw new RuntimeException(sprintf('Expect callable $filter given "%s"', gettype($filter)));
+        }
 
-            if ($scope && $config->getScope() != $scope) {
-                return false;
-            }
+        if ($filter) {
+            return array_filter($this->updateConfigs, $filter);
+        }
 
-            return true;
-        });
+        return $this->updateConfigs;
     }
 
     /**
-     * @param null $className
-     * @param null $scope
-     * @return ConfigInterface[]|FieldConfigInterface[]
+     * @param callback $filter
+     * @throws Exception\RuntimeException
+     * @return ConfigInterface[]|
      */
-    public function getUpdatedFieldConfig($scope = null, $className = null)
+    public function getInsertConfig($filter = null)
     {
-        return array_filter($this->updatedConfigs, function (ConfigInterface $config) use ($className, $scope) {
-            if (!$config instanceof FieldConfigInterface) {
-                return false;
-            }
+        if ($filter && !is_callable($filter)) {
+            throw new RuntimeException(sprintf('Expect callable $filter given "%s"', gettype($filter)));
+        }
 
-            if ($className && $config->getClassName() != $className) {
-                return false;
-            }
+        if ($filter) {
+            return array_filter($this->insertConfigs, $filter);
+        }
 
-            if ($scope && $config->getScope() != $scope) {
-                return false;
-            }
+        return $this->insertConfigs;
+    }
 
-            return true;
-        });
+    /**
+     * @param callback $filter
+     * @throws Exception\RuntimeException
+     * @return ConfigInterface[]|
+     */
+    public function getRemoveConfig($filter = null)
+    {
+        if ($filter && !is_callable($filter)) {
+            throw new RuntimeException(sprintf('Expect callable $filter given "%s"', gettype($filter)));
+        }
+
+        if ($filter) {
+            return array_filter($this->removeConfigs, $filter);
+        }
+
+        return $this->removeConfigs;
     }
 
     /**

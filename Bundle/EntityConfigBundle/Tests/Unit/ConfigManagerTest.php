@@ -243,12 +243,12 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
         $this->assertEquals($result, $this->configManager->getConfigChangeSet($config));
 
-        $this->assertEquals(array(spl_object_hash($config) => $config), $this->configManager->getUpdatedEntityConfig());
-        $this->assertEquals(array(), $this->configManager->getUpdatedEntityConfig('test1'));
+        $this->assertEquals(array(spl_object_hash($config) => $config), $this->configManager->getUpdatedConfig());
+        $this->assertEquals(array(), $this->configManager->getUpdatedConfig('test1'));
 
-        $this->assertEquals(array(spl_object_hash($configField) => $configField), $this->configManager->getUpdatedFieldConfig());
-        $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig('test1'));
-        $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig(null, 'WrongClass'));
+        $this->assertEquals(array(spl_object_hash($configField) => $configField), $this->configManager->getInsertConfig());
+        $this->assertEquals(array(), $this->configManager->getInsertConfig('test1'));
+        $this->assertEquals(array(), $this->configManager->getInsertConfig(null, 'WrongClass'));
     }
 
     protected function initConfigManager()

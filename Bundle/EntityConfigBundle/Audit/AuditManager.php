@@ -46,7 +46,7 @@ class AuditManager
         $log = new ConfigLog();
         $log->setUser($this->getUser());
 
-        foreach (array_merge($this->configManager->getUpdatedEntityConfig(), $this->configManager->getUpdatedFieldConfig()) as $config) {
+        foreach (array_merge($this->configManager->getUpdatedConfig(), $this->configManager->getInsertConfig()) as $config) {
             $this->logConfig($config, $log);
         }
 
