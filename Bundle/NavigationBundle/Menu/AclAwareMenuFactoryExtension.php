@@ -18,7 +18,6 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
     const ROUTE_CONTROLLER_KEY = '_controller';
     const CONTROLLER_ACTION_DELIMITER = '::';
     const DEFAULT_ACL_POLICY = true;
-    const CACHE_NAMESPACE = 'oro_menu.cache';
     /**#@-*/
 
     /**
@@ -59,7 +58,6 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
     public function setCache(CacheProvider $cache)
     {
         $this->cache = $cache;
-        $this->cache->setNamespace(self::CACHE_NAMESPACE);
     }
 
     /**
