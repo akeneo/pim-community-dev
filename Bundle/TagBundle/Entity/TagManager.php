@@ -236,9 +236,21 @@ class TagManager
             }
         }
 
+        if (sizeof($tagsToRemove)) {
+            $this->deleteTaggingByParams(
+                $tagsToRemove,
+                get_class($resource),
+                $resource->getTaggableId(),
+                $this->getUser()->getId()
+            );
+        }
+
         // process if current user allowed to remove other's tag links
         if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
             $newAllTags = new ArrayCollection($newTags['all']);
+            // get 'not mine' taggings
+            $oldTags = $this->getTagging($resource, $this->getUser()->getId(), true);
+            $tagsToRemove = array();
 
             foreach ($oldTags as $oldTag) {
                 $callback = function ($index, $newTag) use ($oldTag) {
@@ -249,23 +261,14 @@ class TagManager
                     $tagsToRemove[] = $oldTag->getId();
                 }
             }
-        }
 
-        if (sizeof($tagsToRemove)) {
-            $builder = $this->em->createQueryBuilder();
-            $builder
-                ->delete($this->taggingClass, 't')
-                ->where($builder->expr()->in('t.tag', $tagsToRemove))
-                ->andWhere('t.entityName = :entityName')
-                ->setParameter('entityName', get_class($resource))
-                ->andWhere('t.recordId = :recordId')
-                ->setParameter('recordId', $resource->getTaggableId())
-
-                ->andWhere('t.createdBy = :createdBy')
-                ->setParameter('createdBy', $this->getUser()->getId())
-
-                ->getQuery()
-                ->getResult();
+            if (count($tagsToRemove) > 0) {
+                $this->deleteTaggingByParams(
+                    $tagsToRemove,
+                    get_class($resource),
+                    $resource->getTaggableId()
+                );
+            }
         }
 
         foreach ($tagsToAdd as $tag) {
@@ -309,9 +312,10 @@ class TagManager
      *
      * @param  Taggable $resource Taggable resource
      * @param null|int $createdBy
+     * @param bool $all
      * @return array
      */
-    protected function getTagging(Taggable $resource, $createdBy = null)
+    protected function getTagging(Taggable $resource, $createdBy = null, $all = false)
     {
         $qb = $this->em
             ->createQueryBuilder()
@@ -324,7 +328,7 @@ class TagManager
             ->setParameter('entityName', get_class($resource));
 
         if (!is_null($createdBy)) {
-            $qb->where('t2.createdBy = :createdBy')
+            $qb->where('t2.createdBy ' . ($all ? '!=' : '=') . ' :createdBy')
                 ->setParameter('createdBy', $createdBy);
         }
 
@@ -345,7 +349,6 @@ class TagManager
 
             ->where('t.entityName = :entityName')
             ->setParameter('entityName', get_class($resource))
-
             ->andWhere('t.recordId = :id')
             ->setParameter('id', $resource->getTaggableId())
 
@@ -358,6 +361,31 @@ class TagManager
         }
 
         return $this;
+    }
+
+    /**
+     * @param $tagIds
+     * @param $entityName
+     * @param $recordsId
+     * @param null $createdBy
+     */
+    public function deleteTaggingByParams($tagIds, $entityName, $recordId, $createdBy = null)
+    {
+        $builder = $this->em->createQueryBuilder();
+        $builder
+            ->delete($this->taggingClass, 't')
+            ->where($builder->expr()->in('t.tag', $tagIds))
+            ->andWhere('t.entityName = :entityName')
+            ->setParameter('entityName', $entityName)
+            ->andWhere('t.recordId = :recordId')
+            ->setParameter('recordId', $recordId);
+
+        if (!is_null($createdBy)) {
+            $builder->andWhere('t.createdBy = :createdBy')
+                    ->setParameter('createdBy', $createdBy);
+        }
+
+        $builder->getQuery()->getResult();
     }
 
     /**
