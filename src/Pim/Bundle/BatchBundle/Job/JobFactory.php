@@ -12,10 +12,14 @@ namespace Pim\Bundle\BatchBundle\Job;
 class JobFactory
 {
     protected $logger;
+
+    /* @var JobRepositoryInterface */
     protected $jobRepository;
+
+    /* @var StepHandlerInterface */
     protected $stepHandler;
 
-    public function __construct($logger, $jobRepository, $stepHandler)
+    public function __construct($logger, JobRepositoryInterface $jobRepository, StepHandlerInterface $stepHandler)
     {
         $this->logger        = $logger;
         $this->jobRepository = $jobRepository;

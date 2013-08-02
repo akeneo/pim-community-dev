@@ -14,11 +14,11 @@ oro_menu_config:
             label: 'Configuration'
             uri: '#'
             extras:
-                position: 40
+                position: 50
         system_tab:
             label: 'Administration'
             extras:
-                position: 50
+                position: 60
         pim_config_locale:
             label: 'Locales'
             route: 'pim_config_locale_index'

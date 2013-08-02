@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Implementation of {@link StepHandler} that manages repository and restart
@@ -17,7 +18,7 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
  */
 class SimpleStepHandler implements StepHandlerInterface
 {
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepositoryInterface $jobRepository */
     private $jobRepository = null;
 
     /* @var ExecutionContext $executionContext */
@@ -26,10 +27,10 @@ class SimpleStepHandler implements StepHandlerInterface
     private $logger = null;
 
     /**
-     * @param JobRepository    $jobRepository    Job repository
-     * @param ExecutionContext $executionContext Execution context
+     * @param JobRepositoryInterface $jobRepository    Job repository
+     * @param ExecutionContext       $executionContext Execution context
      */
-    public function __construct($logger, JobRepository $jobRepository, ExecutionContext $executionContext = null)
+    public function __construct($logger, JobRepositoryInterface $jobRepository, ExecutionContext $executionContext = null)
     {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
@@ -60,7 +61,7 @@ class SimpleStepHandler implements StepHandlerInterface
     /**
      * @param jobRepository the jobRepository to set
      */
-    public function setJobRepository(JobRepository $jobRepository)
+    public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
     }
@@ -71,12 +72,10 @@ class SimpleStepHandler implements StepHandlerInterface
      *
      * @param executionContext the execution context to set
      */
-    /*
     public function setExecutionContext(ExecutionContext $executionContext)
     {
         $this->executionContext = $executionContext;
     }
-    */
 
     /**
      * @param StepInterface $step      Step

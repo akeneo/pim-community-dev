@@ -65,7 +65,10 @@ abstract class JobControllerAbstract extends Controller
 
         $job = new Job($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', sprintf('Failed to create an %s with an unknown job.', $this->getJobType()));
+            $this->addFlash(
+                'error',
+                sprintf('Failed to create an %s with an unknown job definition.', $this->getJobType())
+            );
 
             return $this->redirectToIndexView();
         }
@@ -175,7 +178,7 @@ abstract class JobControllerAbstract extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'Job successfully removed');
+            $this->addFlash('success', sprintf('The %s has been successfully removed', $this->getJobType()));
 
             return $this->redirectToIndexView();
         }
@@ -218,7 +221,7 @@ abstract class JobControllerAbstract extends Controller
         $definition->execute($jobExecution);
 
         //TODO Analyse $jobExecution to define wether or not it was ok
-        $this->addFlash('success', 'Job has been successfully executed.');
+        $this->addFlash('success', sprintf('%s has been successfully executed.', $this->getJobType()));
 
         return $this->redirectToShowView($job->getId());
     }
@@ -238,18 +241,20 @@ abstract class JobControllerAbstract extends Controller
         $job = $this->findOr404('PimBatchBundle:Job', $id);
 
         if ($checkStatus && $job->getStatus() === Job::STATUS_IN_PROGRESS) {
-            throw $this->createNotFoundException(sprintf('The job "%s" is currently in progress', $job->getLabel()));
+            throw $this->createNotFoundException(
+                sprintf('The %s "%s" is currently in progress', $job->getJobType(), $job->getLabel())
+            );
         }
 
         $jobDefinition = $this->getConnectorRegistry()->getJob($job);
-
         if (!$jobDefinition) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'The following job does not exist anymore. Please check configuration:<br />' .
+                    'The following %s does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
                     'Type: %s<br />' .
                     'Alias: %s',
+                    $this->getJobType(),
                     $job->getConnector(),
                     $job->getType(),
                     $job->getAlias()
