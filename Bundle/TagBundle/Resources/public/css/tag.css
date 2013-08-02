@@ -11,15 +11,20 @@
     text-decoration: none;
     color: #777777;
 }
+#tags-overlay #tag-list span.label {
+    position: relative;
+    padding-right: 17px;
+}
 .select2-search-choice-close {
     display: block;
     width: 12px;
     height: 13px;
     position: absolute;
     right: 3px;
-    top: 4px;
+    top: 3px;
 
     font-size: 1px;
     outline: none;
     background: url("/bundles/orotag/img/select2.png") right top no-repeat;
 }
+

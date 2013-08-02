@@ -41,5 +41,20 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
         var tag = new this.model({id: value.id, name: value.name, owner: true, notSaved: true});
 
         this.add(tag);
+    },
+
+    removeItem: function(id, filterState) {
+        var model = this.where({'id': id});
+        if (model.length) {
+            model = model[0];
+            if (filterState == 'owner' && model.owner && model.moreOwners === false) {
+                model.owner = false;
+
+                this.trigger('remove');
+
+                return;
+            }
+            this.remove(model);
+        }
     }
 });

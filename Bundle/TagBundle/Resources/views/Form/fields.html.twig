@@ -13,7 +13,10 @@
                     </div>
                 </div>
             </div>
-            {{ form_widget(form.autocomplete) }}
+            <div class="controls">
+                {{ form_widget(form.autocomplete) }}
+                {{ form_javascript(form.autocomplete) }}
+            </div>
         </div>
     {% endif %}
 
@@ -30,7 +33,7 @@
                 new Oro.Tags.TagsUpdateView({
                     autocompleteFieldId: '#{{ form.autocomplete.vars.id }}',
                     fieldId: '#{{ form.all.vars.id }}',
-                    ownFieldId: '#{{ form.owner.vars.id }}'
+                    ownFieldId: '#{{ form.owner.vars.id }}',
                 });
 
             });

@@ -187,9 +187,7 @@ class TagManager
                 }
             }
 
-            if (!$this->aclManager->isResourceGranted('oro_tag_unassign_global') && !isset($entry['owner'])) {
-                $entry['locked'] = true;
-            }
+            $entry['moreOwners'] = $taggingCollection->count() > 1;
 
             $result[] = $entry;
         }

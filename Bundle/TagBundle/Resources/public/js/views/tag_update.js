@@ -17,7 +17,9 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
         tagsOverlayId: '#tags-overlay',
         autocompleteFieldId: null,
         fieldId: null,
-        ownFieldId: null
+        ownFieldId: null,
+        unassign: true,
+        unassignGlobal: true
     },
 
     /**
@@ -52,8 +54,38 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
         this._prepareCollections();
         this.listenTo(this.getCollection(), 'add', this.render);
         this.listenTo(this.getCollection(), 'add', this._updateHiddenInputs);
+        this.listenTo(this.getCollection(), 'remove', this.render);
+        this.listenTo(this.getCollection(), 'remove', this._updateHiddenInputs);
 
         $(this.options.autocompleteFieldId).on('change', _.bind(this._addItem, this));
+    },
+
+    /**
+     * Render widget
+     *
+     * @returns {}
+     */
+    render: function() {
+        Oro.Tags.TagView.prototype.render.apply(this, arguments);
+
+        var renderButtons = false;
+        switch (true) {
+            case this.filter == 'owner' && this.options.unassign:
+                renderButtons = true;
+                break;
+            case this.filter != 'owner' && this.options.unassignGlobal:
+                renderButtons = true;
+                break;
+        }
+        if (renderButtons) {
+            $(this.options.tagsOverlayId).find('span.label').each(function(i, el) {
+                var $el = $(el);
+
+                $el.append($('<span class="select2-search-choice-close"></span>'));
+            });
+
+            $(this.options.tagsOverlayId).find('span.label .select2-search-choice-close').click(_.bind(this._removeItem, this));
+        }
     },
 
     /**
@@ -67,11 +99,31 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
         var tag = e.added;
 
         if (!_.isUndefined(tag)) {
-            this.collection.addItem(tag);
+            this.getCollection().addItem(tag);
         }
 
         // clear autocomplete
         $(e.target).select2('val', '');
+    },
+
+    /**
+     * Removes item
+     *
+     * @param e
+     * @returns {*}
+     * @private
+     */
+    _removeItem: function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var $el = $(e.currentTarget).parents('li');
+
+        var id = $($el).data('id');
+        if (!_.isUndefined(id)) {
+            this.getCollection().removeItem(id, this.filter);
+        }
+        return this;
     },
 
     /**
