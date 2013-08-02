@@ -64,3 +64,8 @@ services:
             - @pim_product.manager.product
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_product.event_listener.add_hash_to_redirect_url:
+        class: %pim_product.event_listener.add_hash_to_redirect_url.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
