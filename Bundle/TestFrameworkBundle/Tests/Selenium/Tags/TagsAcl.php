@@ -109,29 +109,30 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testTagAcl($aclcase, $username, $role, $tagname)
     {
-        $role = 'ROLE_NAME_' . $role;
-        $login = new Login($this);
+        $rolename = 'ROLE_NAME_' . $role;
+        $rolelabel = 'Label_' .  $role;
+            $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit();
         switch ($aclcase) {
             case 'delete':
-                $this->deleteAcl($login, $role, $username, $tagname);
+                $this->deleteAcl($login, $rolename, $username, $tagname);
                 break;
             case 'update':
-                $this->updateAcl($login, $role, $username, $tagname);
+                $this->updateAcl($login, $rolename, $username, $tagname);
                 break;
             case 'create':
-                $this->createAcl($login, $role, $username);
+                $this->createAcl($login, $rolename, $username);
                 break;
             case 'view list':
-                $this->viewListAcl($login, $role, $username);
+                $this->viewListAcl($login, $rolename, $username);
                 break;
             case 'unassign global':
-                $this->unassignGlobalAcl($login, $role, $tagname);
+                $this->unassignGlobalAcl($login, $rolename, $rolelabel, $tagname);
                 break;
             case 'assign/unassign':
-                $this->assignAcl($login, $role, $username);
+                $this->assignAcl($login, $rolename, $username);
                 break;
         }
     }
@@ -196,12 +197,12 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->assertTitle('403 - Forbidden');
     }
 
-    public function unassignGlobalAcl($login, $role, $tagname)
+    public function unassignGlobalAcl($login, $rolename, $rolelabel, $tagname)
     {
         $username = 'user' . mt_rand();
         $login->openRoles()
-            ->filterBy('Role', $role)
-            ->open(array($role))
+            ->filterBy('Role', $rolename)
+            ->open(array($rolename))
             ->selectAcl('Tag unassign global')
             ->save()
             ->openUsers()
@@ -213,7 +214,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setFirstname('First_'.$username)
             ->setLastname('Last_'.$username)
             ->setEmail($username.'@mail.com')
-            ->setRoles(array($role))
+            ->setRoles(array($rolelabel))
             ->setTag($tagname)
             ->save()
             ->logout()
