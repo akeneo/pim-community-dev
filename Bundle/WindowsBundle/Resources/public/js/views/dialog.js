@@ -21,13 +21,12 @@ Oro.widget.DialogView = Backbone.View.extend({
     windowY: 0,
     defaultPos: 'center center',
     openedWindows: 0,
-    contentTop: null,
 
     /**
      * Initialize dialog
      */
     initialize: function(options) {
-        options = options || {}
+        options = options || {};
         options.dialogOptions = options.dialogOptions || {};
         options.dialogOptions.limitTo = options.dialogOptions.limitTo || '#container';
 
@@ -174,6 +173,9 @@ Oro.widget.DialogView = Backbone.View.extend({
      * Render dialog
      */
     render: function() {
+        if (!_.isUndefined(Oro.Events)) {
+            Oro.Events.trigger('dialog.open_request:start', this);
+        }
         var loadAllowed = this.$el.html().length == 0 || !this.options.elementFirst || (this.options.elementFirst && !this.firstRun);
         if (loadAllowed && this.options.url !== false) {
             this.loadContent();
@@ -236,6 +238,16 @@ Oro.widget.DialogView = Backbone.View.extend({
 
         this.adoptActions();
         this.adjustHeight();
+
+        // Allow children to close this dialog
+        this.dialogContent.on('click', '.close-dialog-btn', _.bind(function () {
+            this.close();
+            return true;
+        }, this));
+
+        if (!_.isUndefined(Oro.Events)) {
+            Oro.Events.trigger('dialog.open_request:complete', this);
+        }
     },
 
     adjustHeight: function() {

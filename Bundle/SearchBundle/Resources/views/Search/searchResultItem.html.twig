@@ -1,7 +1,7 @@
 {% import 'OroUserBundle::macros.html.twig' as macros %}
 <div class="customer-info well-small">
     <div class="visual">
-        {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
+        {% if recordUrl is defined %}<a href="{{ recordUrl }}" {% if recordUrlCssClass is defined %}class="{{ recordUrlCssClass }}"{% endif %}>{% endif %}
             <img src="{{ showImage and imagePath ? imagePath|imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ title }}" />
         {% if recordUrl is defined %}</a>{% endif %}
     </div>
@@ -13,7 +13,7 @@
             <div class="clearfix">
                 <div class="pull-left">
                     <h1 class="user-name">
-                        {% if recordUrl is defined %}<a href="{{ recordUrl }}">{% endif %}
+                        {% if recordUrl is defined %}<a href="{{ recordUrl }}" {% if recordUrlCssClass is defined %}class="{{ recordUrlCssClass }}"{% endif %}>{% endif %}
                             {{ title }}
                         {% if recordUrl is defined %}</a>{% endif %}
                     </h1>

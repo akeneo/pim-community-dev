@@ -1,14 +1,22 @@
+{#
+    Available variables:
+    * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
+#}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set format = oro_config_value('oro_user.name_format') %}
+
 {% block page_container %}
 <div class="container-fluid email-body-holder">
     {% block content %}
         <div class="form-horizontal">
             <div class="control-group">
-                {{ _self.renderRow('Sent', 'email-sent', entity.sentAt|date('m/d/Y H:m:s')) }}
-                {{ _self.renderRow('From', 'email-from', entity.fromName) }}
-                {{ _self.renderRow('To', 'email-to', entity.recipients('to')) }}
-                {{ _self.renderRow('Cc', 'email-cc', entity.recipients('cc')) }}
-                {{ _self.renderRow('Bcc', 'email-bcc', entity.recipients('bcc')) }}
-                {{ _self.renderRow('Subject', 'email-subject', entity.subject) }}
+                {{ _self.renderRow('Sent', 'email-sent', _self.text(UI.Time(entity.sentAt))) }}
+                {{ _self.renderRow('From', 'email-from', _self.email_address(entity.fromEmailAddress, entity.fromName, format)) }}
+                {{ _self.renderRow('To', 'email-to', _self.recipient_email_addresses(entity.recipients('to'), format)) }}
+                {{ _self.renderRow('Cc', 'email-cc', _self.recipient_email_addresses(entity.recipients('cc'), format)) }}
+                {{ _self.renderRow('Bcc', 'email-bcc', _self.recipient_email_addresses(entity.recipients('bcc'), format)) }}
+                {{ _self.renderRow('Subject', 'email-subject', _self.text(entity.subject)) }}
                 {% if entity.emailBody.hasAttachments %}
                     {{ _self.renderAttachmentsRow('Attachments', entity.emailBody.attachments) }}
                 {% endif %}
@@ -27,20 +35,7 @@
 {% macro renderRow(title, iClass, value) %}
     {% macro row_data(value) %}
         <div class="clearfix-oro">
-            {% if value is iterable %}
-                {% for val in value %}
-                    {% if val.name is not defined %}
-                        <p class="control-label">{{ val }}</p>
-                    {% else %}
-                        <p class="control-label">{{ val.name }}</p>
-                    {% endif %}
-                    {% if not loop.last %}
-                        <span>,</span>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <p class="control-label">{{ value }}</p>
-            {% endif %}
+            {{ value|raw }}
         </div>
     {% endmacro %}
     <div class="{{ iClass }}">
@@ -73,4 +68,27 @@
             {{ _self.attachments_row_data(value)|raw }}
         </div>
     </div>
+{% endmacro %}
+
+{% macro text(val) %}
+    <p class="control-label">{{ val|raw }}</p>
+{% endmacro %}
+
+{% macro email_address(emailAddress, emailAddressName, format) %}
+    {% if emailAddress.owner is defined %}
+        {# TODO: we need EntityConfig to get view url for an entity #}
+        <p class="control-label"><a class="close-dialog-btn" href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ emailAddress.owner.fullname(format)|default('N/A')|raw }}</a></p>
+    {% else %}
+        <p class="control-label">{{ emailAddressName|raw }}</p>
+    {% endif %}
+{% endmacro %}
+
+{% macro recipient_email_addresses(recipients, format) %}
+    {% set addreses = {} %}
+    {% for recipient in recipients %}
+        {{ _self.email_address(recipient.emailAddress, recipient.name, format) }}
+        {% if not loop.last %}
+            <span>,</span>
+        {% endif %}
+    {% endfor %}
 {% endmacro %}

@@ -1,4 +1,10 @@
+{#
+    Available variables:
+    * entities - array of activity entities. Which items of this array is an associative array contains subset of fields of an activity entity
+#}
 {# TODO: This is a temporary template created for demo purposes. It will be removed when 'display activities' functionality is implemented  #}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set format = oro_config_value('oro_user.name_format') %}
 <div id="emails-grid">
     <div class="clearfix">
         <div class="clearfix">

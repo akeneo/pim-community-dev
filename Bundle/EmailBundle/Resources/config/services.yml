@@ -1,5 +1,6 @@
 parameters:
     oro_email.cache.manager.class: Oro\Bundle\EmailBundle\Cache\EmailCacheManager
+    oro_email.address.manager.class: Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager
 
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
@@ -21,6 +22,9 @@ services:
         class: %oro_email.cache.manager.class%
         arguments:
             - @doctrine.orm.entity_manager
+
+    oro_email.address.manager:
+        class: %oro_email.address.manager.class%
 
     # Email template field
     oro_email.form.subscriber.emailtemplate:

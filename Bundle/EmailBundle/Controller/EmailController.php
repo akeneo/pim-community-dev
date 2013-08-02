@@ -43,6 +43,13 @@ class EmailController extends Controller
         $emailCacheManager = $this->get('oro_email.cache.manager');
         $emailCacheManager->ensureEmailBodyCached($entity);
 
+        // TODO: This is a temporary stub and it must be deleted after our implementation of flexible entity is finished
+        $emailAddressManager = $this->get('oro_email.address.manager');
+        $entity->getFromEmailAddress()->owner = $emailAddressManager->findEmailOwner($entity->getFromEmailAddress()->getEmailAddress());
+        foreach ($entity->getRecipients() as $recipient) {
+            $recipient->getEmailAddress()->owner = $emailAddressManager->findEmailOwner($recipient->getEmailAddress()->getEmailAddress());
+        }
+
         return array(
             'entity' => $entity
         );
@@ -62,6 +69,12 @@ class EmailController extends Controller
         $qb = $emailRepository->getEmailListQueryBuilder($emails);
 
         $rows = $qb->getQuery()->execute();
+
+        // TODO: This is a temporary stub and it must be deleted after our implementation of flexible entity is finished
+        $emailAddressManager = $this->get('oro_email.address.manager');
+        foreach ($rows as $key => $row) {
+            $rows[$key]['owner'] = $emailAddressManager->findEmailOwner($row['fromEmailAddress']);
+        }
 
         return array(
             'entities' => $rows

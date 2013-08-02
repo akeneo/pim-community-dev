@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EmailAddress
 {
+    // TODO: This is a temporary stub and it must be deleted after our implementation of flexible entity is finished
+    public $owner;
+
     /**
      * @var integer
      *

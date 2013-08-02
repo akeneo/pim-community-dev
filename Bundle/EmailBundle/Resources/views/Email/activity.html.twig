@@ -1,7 +1,20 @@
+{#
+    Available variables:
+    * entity - associative array contains subset of fields of Oro\Bundle\EmailBundle\Entity\Email, such as: id, fromName, fromEmailAddress, subject, sentAt
+#}
 {# TODO: This is a demo template. It need to be replaced with a real one #}
 <tr>
     <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
-    <td class="string-cell">{{ entity.fromName }}</td>
-    <td class="string-cell"><a class="no-hash view-email-body-btn" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
-    <td class="datetime-cell">{{ entity.sentAt|date('m/d/Y H:m:s') }}</td>
+    <td class="string-cell">{{ _self.email_address(entity.owner, entity.fromName, format) }}</td>
+    <td class="string-cell"><a class="view-email-body-btn no-hash" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+    <td class="datetime-cell">{{ UI.Time(entity.sentAt) }}</td>
 </tr>
+
+{% macro email_address(owner, emailAddressName, format) %}
+    {% if owner is not empty %}
+        {# TODO: we need EntityConfig to get view url for an entity #}
+        <a href="{{ path(owner.class|split('\\')|first|lower ~ '_' ~ owner.class|split('\\')|last|lower ~ '_view', {id:owner.id}) }}">{{ owner.fullname(format)|default('N/A')|raw }}</a>
+    {% else %}
+        {{ emailAddressName|raw }}
+    {% endif %}
+{% endmacro %}

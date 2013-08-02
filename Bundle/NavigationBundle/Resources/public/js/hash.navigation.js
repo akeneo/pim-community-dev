@@ -624,6 +624,17 @@ Oro.Navigation = Backbone.Router.extend({
             this
         );
 
+        /**
+         * Arrange navigation before an dialog opens
+         */
+        Oro.Events.bind(
+            "dialog.open_request:start",
+            function () {
+                this.hideActiveDropdowns();
+            },
+            this
+        );
+
         this.confirmModal = new Oro.BootstrapModal({
             title: Translator.get('Refresh Confirmation'),
             content: Translator.get('Your local changes will be lost. Are you sure you want to refresh the page?'),
