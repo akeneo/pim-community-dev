@@ -24,9 +24,20 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
 
     /**
      * Used for adding item on tag_update view
+     *
      * @param {Object} value
      */
     addItem: function(value) {
+        // check if exists tag
+        var exist = this.where({name: value.name});
+        if (exist.length && exist[0].get('owner') == false) {
+            // adding to owner
+            exist[0].set('owner', true);
+            this.trigger('add');
+
+            return;
+        }
+
         var tag = new this.model({id: value.id, name: value.name, owner: true, notSaved: true});
 
         this.add(tag);

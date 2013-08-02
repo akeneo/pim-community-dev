@@ -114,6 +114,6 @@ Oro.Tags.TagsUpdateView = Oro.Tags.TagView.extend({
      */
     _updateHiddenInputs: function() {
         $(this.options.fieldId).val(JSON.stringify(this.getCollection()));
-        $(this.options.ownFieldId).val(JSON.stringify(this.getCollection('owner')));
+        $(this.options.ownFieldId).val(JSON.stringify(this.getCollection().getFilteredCollection('owner')));
     }
 });

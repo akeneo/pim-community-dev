@@ -2,21 +2,23 @@
 
 namespace Oro\Bundle\TagBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+
 use Oro\Bundle\UserBundle\Acl\Manager;
 use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 
 class TagManager
 {
-    const ACL_RESOURCE_ID_KEY = 'oro_tag_unassign_global';
+    const ACL_RESOURCE_REMOVE_ID_KEY = 'oro_tag_unassign_global';
+    const ACL_RESOURCE_CREATE_ID_KEY = 'oro_tag_create';
+    const ACL_RESOURCE_ASSIGN_ID_KEY = 'oro_tag_assign_unassign';
     /**
      * @var EntityManager
      */
@@ -143,12 +145,10 @@ class TagManager
         if (sizeof($missingNames)) {
             foreach ($missingNames as $name) {
                 $tag = $this->createTag($name);
-                // $this->em->persist($tag);
 
                 $tags[] = $tag;
             }
 
-            // $this->em->flush();
         }
 
         return $tags;
@@ -239,7 +239,7 @@ class TagManager
         }
 
         // process if current user allowed to remove other's tag links
-        if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_ID_KEY)) {
+        if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
             $newAllTags = new ArrayCollection($newTags['all']);
 
             foreach ($oldTags as $oldTag) {
@@ -271,6 +271,14 @@ class TagManager
         }
 
         foreach ($tagsToAdd as $tag) {
+            if (
+                !$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+                || (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
+            ) {
+                // skip tags that have not ID because user not granted to create tags
+                continue;
+            }
+
             $this->em->persist($tag);
 
             $alias = $this->mapper->getEntityConfig(get_class($resource));
@@ -380,7 +388,7 @@ class TagManager
     /**
      * Return current user
      *
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {

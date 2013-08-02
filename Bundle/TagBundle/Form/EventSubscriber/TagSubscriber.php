@@ -9,6 +9,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 
+/**
+ * Class TagSubscriber
+ * @package Oro\Bundle\TagBundle\Form\EventSubscriber
+ *
+ * Loads tagging and assign to entity on pre set
+ * Works in way similar to data transformer
+ */
 class TagSubscriber implements EventSubscriberInterface
 {
     /**
@@ -28,13 +35,14 @@ class TagSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA  => 'preSet',
-            FormEvents::PRE_SUBMIT    => 'preSubmit',
-            FormEvents::POST_SUBMIT   => 'preSet'
+            FormEvents::PRE_SUBMIT    => 'preSubmit'
         );
     }
 
     /**
-     * {@inheritdoc}
+     * Loads tagging and transform it to view data
+     *
+     * @param FormEvent $event
      */
     public function preSet(FormEvent $event)
     {
@@ -63,7 +71,9 @@ class TagSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Transform submitted data to model data
+     *
+     * @param FormEvent $event
      */
     public function preSubmit(FormEvent $event)
     {

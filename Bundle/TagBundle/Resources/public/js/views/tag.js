@@ -10,7 +10,7 @@ Oro.Tags.TagView =  Backbone.View.extend({
     template: _.template(
         '<ul id="tag-list" class="inline">' +
             '<% _.each(models, function(tag, i) { %>' +
-                '<li>' +
+                '<li data-id="<%= tag.get("id") %>">' +
                     '<% if (tag.get("url").length > 0) { %>' +
                         '<a href="<%= tag.get("url") %>">' +
                     '<%} %>' +

@@ -16,7 +16,7 @@ class TagAutocompleteType extends AbstractType
         $resolver->setDefaults(
             array(
                 'configs' => array(
-                    'placeholder'    => 'oro.tag.form.choose_tag',
+                    'placeholder'    => 'oro.tag.form.choose_or_create_tag',
                     'extra_config'   => 'multi_autocomplete',
                     'multiple'       => true
                 ),

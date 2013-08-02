@@ -1,11 +1,11 @@
 
 {% block oro_tag_select_row %}
-    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-        {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+    {% if resource_granted('oro_tag_assign_unassign') %}
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
 
-        {% import 'OroTagBundle::macros.html.twig' as _tag %}
+            {% import 'OroTagBundle::macros.html.twig' as _tag %}
 
-        {% if resource_granted('oro_tag_assign_unassign') %}
             <div>
                 <div class="controls">
                     <div>
@@ -14,20 +14,17 @@
                 </div>
             </div>
             {{ form_widget(form.autocomplete) }}
-        {% endif %}
+        </div>
+    {% endif %}
 
-        {{ form_rest(form) }}
-    </div>
+    {{ form_row(form.all) }}
+    {{ form_row(form.owner) }}
+
     <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-        <div id="tags-overlay"></div>
-
-        {# show all tags #}
-        {{ form_row(form.autocomplete) }}
-
-        {# show field with mine tags #}
-        {% if resource_granted('oro_tag_assign_unassign') %}
-            {{ form_row(form.autocomplete) }}
+        {% if not resource_granted('oro_tag_assign_unassign') %}
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
         {% endif %}
+        <div id="tags-overlay"></div>
         <script type="text/javascript">
             $(function () {
                 new Oro.Tags.TagsUpdateView({
@@ -60,4 +57,8 @@
             {% endif %}
         }
     }
+
+    {% if not resource_granted('oro_tag_create') %}
+        select2Config.placeholder = '{{ 'oro.tag.form.choose_tag'|trans }}';
+    {% endif %}
 {% endblock %}
