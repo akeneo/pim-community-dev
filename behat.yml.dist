@@ -11,6 +11,7 @@ default:
             show_cmd: chromium-browser %s
             selenium2: ~
             base_url: http://localhost:8080/app_behat.php/
+            files_path: 'features/Context/fixtures/'
 
             # If you want MinkExtension to open browser
             # with last response page every time you have
@@ -35,6 +36,7 @@ jenkins:
             show_cmd: chromium-browser %s
             selenium2: ~
             base_url: http://behat-pim.ci/app_behat.php/
+            files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
