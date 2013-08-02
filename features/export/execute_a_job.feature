@@ -17,8 +17,8 @@ Feature: Execute a job
       | Akeneo    | product_export | acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     When I launch the "acme_product_export" export job
-    Then I should not see "Job has been successfully executed."
-    And I should not see "An error occured during the job execution."
+    Then I should not see "The export has been successfully executed."
+    And I should not see "An error occured during the export execution."
 
   Scenario: Successfully launch a valid job
     Given the following job:
@@ -31,5 +31,5 @@ Feature: Execute a job
     And I am logged in as "admin"
     And I am on the "acme_product_export" export job page
     When I launch the export job
-    Then I should see "Job has been successfully executed."
+    Then I should see "The export has been successfully executed."
     And file "/tmp/export.csv" should exist
