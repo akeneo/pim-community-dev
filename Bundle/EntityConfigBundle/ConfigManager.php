@@ -7,29 +7,31 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
+use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+
+use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
+use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
+
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\FlushConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewFieldEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 class ConfigManager
@@ -88,6 +90,11 @@ class ConfigManager
      * @var ConfigInterface[]
      */
     protected $configs = array();
+
+    /**
+     * @var AbstractConfigModel[]
+     */
+    protected $entities = array();
 
     /**
      * @var ConfigInterface[]
@@ -178,6 +185,17 @@ class ConfigManager
     }
 
     /**
+     * @return bool
+     */
+    public function checkDatabase()
+    {
+        $tables = $this->em()->getConnection()->getSchemaManager()->listTableNames();
+        $table  = $this->em()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
+
+        return in_array($table, $tables);
+    }
+
+    /**
      * @param $className
      * @return bool
      */
@@ -189,6 +207,10 @@ class ConfigManager
         return $metadata && $metadata->name == $className && $metadata->configurable;
     }
 
+    /**
+     * @param ConfigIdInterface $configId
+     * @return bool
+     */
     public function hasConfig(ConfigIdInterface $configId)
     {
         if (isset($this->configs[$configId->getId()])) {
@@ -201,12 +223,14 @@ class ConfigManager
             return true;
         }
 
+        return (bool) $this->getConfigModelByConfigId($configId);
     }
 
     /**
      * @param ConfigIdInterface $configId
-     * @return null|Config|ConfigInterface
      * @throws Exception\RuntimeException
+     * @throws Exception\LogicException
+     * @return null|Config|ConfigInterface
      */
     public function getConfig(ConfigIdInterface $configId)
     {
@@ -214,47 +238,31 @@ class ConfigManager
             return $this->configs[$configId->getId()];
         }
 
+        if (!$this->checkDatabase()) {
+            throw new LogicException(
+                "Database is not synced, if you use ConfigManager, when a db schema may be hasn't synced. check it by ConfigManager::checkDatabase"
+            );
+        }
+
         if (!$this->isConfigurable($configId->getClassName())) {
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $configId->getClassName()));
         }
 
-        $resultConfig = null;
-        if (null !== $this->configCache
-            && $config = $this->configCache->loadConfigFromCache($configId)
-        ) {
+        if (null !== $this->configCache && $config = $this->configCache->loadConfigFromCache($configId)) {
             $resultConfig = $config;
         } else {
-            /** @var AbstractConfig $resultEntity */
-            if (!$this->isSchemaSynced()) { //TODO::check isSchemaSynced before call ConfigManager::getConfig
-                $resultEntity = null;
-            } else {
-                $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);
-                $fieldConfigRepo  = $this->em()->getRepository(ConfigField::ENTITY_NAME);
-
-                $resultEntity = $entity = $entityConfigRepo->findOneBy(array('className' => $configId->getClassName()));
-
-                if ($configId instanceof FieldConfigIdInterface) {
-                    $resultEntity = $fieldConfigRepo->findOneBy(
-                        array(
-                            'entity'    => $resultEntity,
-                            'fieldName' => $configId->getFieldName()
-                        )
-                    );
-                }
+            if (!$model = $this->getConfigModelByConfigId($configId)) {
+                throw new RuntimeException(sprintf('%s is not found', $configId->getEntityId()));
             }
 
-            if ($resultEntity) {
-                $config = new Config($configId);
-                $config->setValues($resultEntity->toArray($configId->getScope()));
+            $config = new Config($configId);
+            $config->setValues($model->toArray($configId->getScope()));
 
-                if (null !== $this->configCache) {
-                    $this->configCache->putConfigInCache($config);
-                }
-
-                $resultConfig = $config;
-            } else {
-                $resultConfig = new Config($configId);
+            if (null !== $this->configCache) {
+                $this->configCache->putConfigInCache($config);
             }
+
+            $resultConfig = $config;
         }
 
         //internal cache
@@ -266,9 +274,12 @@ class ConfigManager
         return $resultConfig;
     }
 
-    public function createConfigEntity($className)
+    /**
+     * @param $className
+     */
+    public function createConfigEntityModel($className)
     {
-        if (!$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array('className' => $className))) {
+        if (!$this->getConfigModel($className)) {
             /** @var ConfigClassMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataForClass($className);
 
@@ -278,77 +289,36 @@ class ConfigManager
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
-                $provider->createConfig(new EntityConfigId($className, $provider->getScope()), $defaultValues);
+                $entityId = new EntityConfigId($className, $provider->getScope());
+                $provider->createConfig($entityId, $defaultValues);
 
-                $this->eventDispatcher->dispatch(Events::NEW_ENTITY, new NewEntityEvent($className, $this));
+                $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
             }
         }
     }
 
     /**
-     * @param ClassMetadataInfo $doctrineMetadata
+     * @param $className
+     * @param $fieldName
+     * @param $fieldType
      */
-    public function initConfigByDoctrineMetadata(ClassMetadataInfo $doctrineMetadata)
+    public function createConfigFieldModel($className, $fieldName, $fieldType)
     {
-        /** @var ConfigClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
-        if ($metadata
-            && $metadata->name == $doctrineMetadata->getName()
-            && $metadata->configurable
-            && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
-                'className' => $doctrineMetadata->getName()))
-        ) {
+        if (!$this->getConfigModel($className, $fieldName)) {
+            /** @var ConfigClassMetadata $metadata */
+            //$metadata = $this->metadataFactory->getMetadataForClass($className); //TODO::implement default value for config
+
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getEntityDefaultValues();
-                if (isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
-                }
+                $entityId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
+                $provider->createConfig($entityId, array());
 
-                $provider->createEntityConfig($doctrineMetadata->getName(), $defaultValues);
-            }
+                $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
 
-            $this->eventDispatcher->dispatch(
-                Events::NEW_ENTITY,
-                new NewEntityEvent($doctrineMetadata->getName(), $this)
-            );
-
-            foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
-                $type = $doctrineMetadata->getTypeOfField($fieldName);
-
-                foreach ($this->getProviders() as $provider) {
-                    $provider->createFieldConfig(
-                        $doctrineMetadata->getName(),
-                        $fieldName,
-                        $type,
-                        $provider->getConfigContainer()->getFieldDefaultValues()
-                    );
-                }
-
-                $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD,
-                    new NewFieldEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                );
-            }
-
-            foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
-                $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
-
-                foreach ($this->getProviders() as $provider) {
-                    $provider->createFieldConfig(
-                        $doctrineMetadata->getName(),
-                        $fieldName,
-                        $type,
-                        $provider->getConfigContainer()->getFieldDefaultValues()
-                    );
-                }
-
-                $this->eventDispatcher->dispatch(
-                    Events::NEW_FIELD,
-                    new NewFieldEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                );
+                $this->eventDispatcher->dispatch(Events::NEW_CONFIG_MODEL, new NewConfigModelEvent($entityId, $this));
             }
         }
     }
+
 
     /**
      * @param ConfigIdInterface $configId
@@ -419,7 +389,7 @@ class ConfigManager
 
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
-                    $configField = new ConfigField($config->getCode(), $config->getType());
+                    $configField = new FieldConfigModel($config->getCode(), $config->getType());
                     $configEntity->addField($configField);
                 }
 
@@ -558,43 +528,43 @@ class ConfigManager
     }
 
     /**
-     * @param $className
-     * @return ConfigEntity
+     * @param ConfigIdInterface $configId
+     * @return AbstractConfigModel|null
      */
-    protected function findOrCreateConfigEntity($className)
+    protected function getConfigModelByConfigId(ConfigIdInterface $configId)
     {
-        $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);
-        /** @var ConfigEntity $entity */
-        $entity = $entityConfigRepo->findOneBy(array('className' => $className));
-        if (!$entity) {
-            $metadata = $this->metadataFactory->getMetadataForClass($className);
-            $entity   = new ConfigEntity($className);
-            $entity->setMode($metadata->viewMode);
+        $fieldName = $configId instanceof FieldConfigId ? $configId->getFieldName() : 'null';
 
-            foreach ($this->getProviders() as $provider) {
-                $provider->createEntityConfig(
-                    $className,
-                    $provider->getConfigContainer()->getEntityDefaultValues()
-                );
-            }
-
-            $this->eventDispatcher->dispatch(
-                Events::NEW_ENTITY,
-                new NewEntityEvent($className, $this)
-            );
-        }
-
-        return $entity;
+        return $this->getConfigModel($configId->getClassName(), $fieldName);
     }
 
     /**
-     * @return bool
+     * @param      $className
+     * @param null $fieldName
+     * @return object|AbstractConfigModel
      */
-    protected function isSchemaSynced()
+    protected function getConfigModel($className, $fieldName = null)
     {
-        $tables = $this->em()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->em()->getClassMetadata(ConfigEntity::ENTITY_NAME)->getTableName();
+        $id = $className . $fieldName;
 
-        return in_array($table, $tables);
+        if (isset($this->entities[$id])) {
+            return $this->entities[$id];
+        }
+
+        $entityConfigRepo = $this->em()->getRepository(EntityConfigModel::ENTITY_NAME);
+        $fieldConfigRepo  = $this->em()->getRepository(FieldConfigModel::ENTITY_NAME);
+
+        $result = $entity = $entityConfigRepo->findOneBy(array('className' => $className));
+
+        if ($fieldName) {
+            $result = $fieldConfigRepo->findOneBy(
+                array(
+                    'entity'    => $result,
+                    'fieldName' => $fieldName
+                )
+            );
+        }
+
+        return $result;
     }
 }

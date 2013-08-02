@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oro_config_value")
  * @ORM\Entity
  */
-class ConfigValue
+class ConfigModelValue
 {
-    const ENTITY_NAME = 'OroEntityConfigBundle:ConfigValue';
+    const ENTITY_NAME = 'OroEntityConfigBundle:ConfigModelValue';
 
     /**
      * @var integer
@@ -21,8 +21,8 @@ class ConfigValue
     protected $id;
 
     /**
-     * @var ConfigEntity
-     * @ORM\ManyToOne(targetEntity="ConfigEntity", inversedBy="values")
+     * @var EntityConfigModel
+     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="values")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })
@@ -30,8 +30,8 @@ class ConfigValue
     protected $entity;
 
     /**
-     * @var ConfigField
-     * @ORM\ManyToOne(targetEntity="ConfigField", inversedBy="values")
+     * @var FieldConfigModel
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="values")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      * })
@@ -83,7 +83,7 @@ class ConfigValue
     /**
      * Set code
      * @param string $code
-     * @return ConfigValue
+     * @return ConfigModelValue
      */
     public function setCode($code)
     {
@@ -103,7 +103,7 @@ class ConfigValue
 
     /**
      * @param string $scope
-     * @return ConfigValue
+     * @return ConfigModelValue
      */
     public function setScope($scope)
     {
@@ -123,7 +123,7 @@ class ConfigValue
     /**
      * Set data
      * @param string $value
-     * @return ConfigValue
+     * @return ConfigModelValue
      */
     public function setValue($value)
     {
@@ -142,7 +142,7 @@ class ConfigValue
     }
 
     /**
-     * @param ConfigEntity $entity
+     * @param EntityConfigModel $entity
      * @return $this
      */
     public function setEntity($entity)
@@ -153,7 +153,7 @@ class ConfigValue
     }
 
     /**
-     * @return ConfigEntity
+     * @return EntityConfigModel
      */
     public function getEntity()
     {
@@ -161,7 +161,7 @@ class ConfigValue
     }
 
     /**
-     * @param ConfigField $field
+     * @param FieldConfigModel $field
      * @return $this
      */
     public function setField($field)
@@ -172,7 +172,7 @@ class ConfigValue
     }
 
     /**
-     * @return ConfigField
+     * @return FieldConfigModel
      */
     public function getField()
     {

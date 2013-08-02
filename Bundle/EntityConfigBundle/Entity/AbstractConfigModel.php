@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  */
-abstract class AbstractConfig
+abstract class AbstractConfigModel
 {
     /**
      * type of config
@@ -37,12 +37,12 @@ abstract class AbstractConfig
     protected $mode;
 
     /**
-     * @var ConfigValue[]|ArrayCollection
+     * @var ConfigModelValue[]|ArrayCollection
      */
     protected $values;
 
     /**
-     * @param ConfigValue[] $values
+     * @param ConfigModelValue[] $values
      * @return $this
      */
     public function setValues($values)
@@ -57,7 +57,7 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param ConfigValue $value
+     * @param ConfigModelValue $value
      * @return $this
      */
     public function addValue($value)
@@ -88,7 +88,7 @@ abstract class AbstractConfig
 
     /**
      * @param  callable $filter
-     * @return array|ArrayCollection|ConfigValue[]
+     * @return array|ArrayCollection|ConfigModelValue[]
      */
     public function getValues(\Closure $filter = null)
     {
@@ -98,11 +98,11 @@ abstract class AbstractConfig
     /**
      * @param $code
      * @param $scope
-     * @return ConfigValue
+     * @return ConfigModelValue
      */
     public function getValue($code, $scope)
     {
-        $values = $this->getValues(function (ConfigValue $value) use ($code, $scope) {
+        $values = $this->getValues(function (ConfigModelValue $value) use ($code, $scope) {
             return ($value->getScope() == $scope && $value->getCode() == $code);
         });
 
@@ -169,9 +169,9 @@ abstract class AbstractConfig
                 $configValue->setValue($value);
             } else {
 
-                $configValue = new ConfigValue($code, $scope, $value, $serializable);
+                $configValue = new ConfigModelValue($code, $scope, $value, $serializable);
 
-                if ($this instanceof ConfigEntity) {
+                if ($this instanceof EntityConfigModel) {
                     $configValue->setEntity($this);
                 } else {
                     $configValue->setField($this);
@@ -188,7 +188,7 @@ abstract class AbstractConfig
      */
     public function toArray($scope)
     {
-        $values = $this->getValues(function (ConfigValue $value) use ($scope) {
+        $values = $this->getValues(function (ConfigModelValue $value) use ($scope) {
             return $value->getScope() == $scope;
         });
 

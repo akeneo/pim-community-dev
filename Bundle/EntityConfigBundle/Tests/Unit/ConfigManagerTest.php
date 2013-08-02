@@ -13,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Driver\AnnotationDriver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\Repository\NotFoundEntityConfigRepository;
@@ -89,14 +89,14 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testGetConfigFoundConfigEntity()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
         $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
     }
 
     public function testGetConfigNotFoundConfigEntity()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::NOT_FOUND_CONFIG_ENTITY_REPOSITORY);
         $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
     }
@@ -111,7 +111,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
     {
         $this->configCache->expects($this->any())->method('loadConfigFromCache')->will($this->returnValue(null));
 
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
 
         $this->configManager->setCache($this->configCache);
@@ -139,7 +139,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testClearCache()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
         $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
 
@@ -163,7 +163,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testInitConfigByDoctrineMetadata()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::NOT_FOUND_CONFIG_ENTITY_REPOSITORY);
 
         $this->configManager->addProvider($this->provider);
@@ -189,7 +189,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testFlush()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
 
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -217,7 +217,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testChangeSet()
     {
-        $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
+        $meta = $this->em->getClassMetadata(EntityConfigModel::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
         $config      = $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
         $configField = $config->getFields()->first();

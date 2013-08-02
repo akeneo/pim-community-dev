@@ -6,16 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 
 /**
  * @ORM\Table(name="oro_config_field")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
-class ConfigField extends AbstractConfig
+class FieldConfigModel extends AbstractConfigModel
 {
-    const ENTITY_NAME = 'OroEntityConfigBundle:ConfigField';
+    const ENTITY_NAME = 'OroEntityConfigBundle:FieldConfigModel';
 
     /**
      * @var integer
@@ -26,8 +26,8 @@ class ConfigField extends AbstractConfig
     protected $id;
 
     /**
-     * @var ConfigEntity
-     * @ORM\ManyToOne(targetEntity="ConfigEntity", inversedBy="fields")
+     * @var EntityConfigModel
+     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="fields")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })
@@ -35,8 +35,8 @@ class ConfigField extends AbstractConfig
     protected $entity;
 
     /**
-     * @var ConfigValue[]|PersistentCollection
-     * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="field", cascade={"all"})
+     * @var ConfigModelValue[]|PersistentCollection
+     * @ORM\OneToMany(targetEntity="ConfigModelValue", mappedBy="field", cascade={"all"})
      */
     protected $values;
 
@@ -107,7 +107,7 @@ class ConfigField extends AbstractConfig
     }
 
     /**
-     * @param ConfigEntity $entity
+     * @param EntityConfigModel $entity
      * @return $this
      */
     public function setEntity($entity)
@@ -118,7 +118,7 @@ class ConfigField extends AbstractConfig
     }
 
     /**
-     * @return ConfigEntity
+     * @return EntityConfigModel
      */
     public function getEntity()
     {

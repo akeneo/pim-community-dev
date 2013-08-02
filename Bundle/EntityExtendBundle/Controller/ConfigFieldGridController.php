@@ -15,8 +15,8 @@ use FOS\Rest\Util\Codes;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -42,7 +42,7 @@ class ConfigFieldGridController extends Controller
      * )
      * @Template
      */
-    public function createAction(ConfigEntity $entity)
+    public function createAction(EntityConfigModel $entity)
     {
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
@@ -114,7 +114,7 @@ class ConfigFieldGridController extends Controller
      *      parent="oro_entityextend"
      * )
      */
-    public function removeAction(ConfigField $field)
+    public function removeAction(FieldConfigModel $field)
     {
         if (!$field) {
             throw $this->createNotFoundException('Unable to find ConfigField entity.');

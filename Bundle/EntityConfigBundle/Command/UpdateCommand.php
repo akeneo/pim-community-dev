@@ -32,7 +32,17 @@ class UpdateCommand extends BaseCommand
         /** @var ClassMetadataInfo $doctrineMetadata */
         foreach ($this->getConfigManager()->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
             if ($this->getConfigManager()->isConfigurable($doctrineMetadata->getName())) {
-                $this->getConfigManager()->createConfigEntity($doctrineMetadata->getName());
+                $this->getConfigManager()->createConfigEntityModel($doctrineMetadata->getName());
+
+                foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
+                    $type = $doctrineMetadata->getTypeOfField($fieldName);
+                    $this->getConfigManager()->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+                }
+
+                foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
+                    $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
+                    $this->getConfigManager()->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+                }
             }
         }
 

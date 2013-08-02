@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
-class ConfigEntity extends AbstractConfig
+class EntityConfigModel extends AbstractConfigModel
 {
-    const ENTITY_NAME = 'OroEntityConfigBundle:ConfigEntity';
+    const ENTITY_NAME = 'OroEntityConfigBundle:EntityConfigModel';
 
     /**
      * @var integer
@@ -23,14 +23,14 @@ class ConfigEntity extends AbstractConfig
     protected $id;
 
     /**
-     * @var ConfigValue[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="entity", cascade={"all"})
+     * @var ConfigModelValue[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="ConfigModelValue", mappedBy="entity", cascade={"all"})
      */
     protected $values;
 
     /**
-     * @var ConfigField[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="ConfigField", mappedBy="entity", cascade={"all"})
+     * @var FieldConfigModel[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="FieldConfigModel", mappedBy="entity", cascade={"all"})
      */
     protected $fields;
 
@@ -76,7 +76,7 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param ConfigField[] $fields
+     * @param FieldConfigModel[] $fields
      * @return $this
      */
     public function setFields($fields)
@@ -87,7 +87,7 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param ConfigField $field
+     * @param FieldConfigModel $field
      * @return $this
      */
     public function addField($field)
@@ -100,7 +100,7 @@ class ConfigEntity extends AbstractConfig
 
     /**
      * @param  callable $filter
-     * @return ConfigField[]|ArrayCollection
+     * @return FieldConfigModel[]|ArrayCollection
      */
     public function getFields(\Closure $filter = null)
     {
@@ -109,11 +109,11 @@ class ConfigEntity extends AbstractConfig
 
     /**
      * @param $fieldName
-     * @return ConfigField
+     * @return FieldConfigModel
      */
     public function getField($fieldName)
     {
-        $fields = $this->getFields(function (ConfigField $field) use ($fieldName) {
+        $fields = $this->getFields(function (FieldConfigModel $field) use ($fieldName) {
             return $field->getFieldName() == $fieldName;
         });
 

@@ -7,7 +7,7 @@ use Metadata\MetadataFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
 use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
@@ -43,24 +43,24 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY     => 'newEntityConfig',
+            Events::NEW_CONFIG_MODEL     => 'newEntityConfig',
             Events::PERSIST_CONFIG => 'persistConfig',
         );
     }
 
     /**
-     * @param NewEntityEvent $event
+     * @param NewConfigModelEvent $event
      */
-    public function newEntityConfig(NewEntityEvent $event)
+    public function newEntityConfig(NewConfigModelEvent $event)
     {
         /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
+        $metadata = $this->metadataFactory->getMetadataForClass($event->getConfigId());
         if ($metadata && $metadata->isExtend) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getConfigId());
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getConfigId());
 
             $this->extendManager->getConfigProvider()->createEntityConfig(
-                $event->getClassName(),
+                $event->getConfigId(),
                 $values = array(
                     'is_extend'    => true,
                     'extend_class' => $extendClass,

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Metadata\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 use Oro\Bundle\EntityConfigBundle\Exception\AnnotationException;
 
 /**
@@ -12,7 +12,7 @@ use Oro\Bundle\EntityConfigBundle\Exception\AnnotationException;
  */
 class Configurable
 {
-    public $viewMode = AbstractConfig::MODE_VIEW_DEFAULT;
+    public $viewMode = AbstractConfigModel::MODE_VIEW_DEFAULT;
     public $routeName = '';
     public $defaultValues = array();
 
@@ -38,7 +38,7 @@ class Configurable
             );
         }
 
-        if (!in_array($this->viewMode, array(AbstractConfig::MODE_VIEW_DEFAULT, AbstractConfig::MODE_VIEW_HIDDEN, AbstractConfig::MODE_VIEW_READONLY))) {
+        if (!in_array($this->viewMode, array(AbstractConfigModel::MODE_VIEW_DEFAULT, AbstractConfigModel::MODE_VIEW_HIDDEN, AbstractConfigModel::MODE_VIEW_READONLY))) {
             throw new AnnotationException(sprintf('Annotation "Configurable" give invalid parameter "viewMode" : "%s"', $this->viewMode));
         }
     }

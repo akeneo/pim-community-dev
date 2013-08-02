@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\Command;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
@@ -44,8 +44,8 @@ class GenerateCommand extends ContainerAwareCommand
         /** @var ExtendManager $xm */
         $xm = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
 
-        /** @var ConfigEntity[] $configs */
-        $configs = $em->getRepository(ConfigEntity::ENTITY_NAME)->findAll();
+        /** @var EntityConfigModel[] $configs */
+        $configs = $em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
         foreach ($configs as $config) {
             if ($xm->isExtend($config->getClassName())) {
                 $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true);

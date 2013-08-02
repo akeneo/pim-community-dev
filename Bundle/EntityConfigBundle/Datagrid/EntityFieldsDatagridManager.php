@@ -13,7 +13,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class EntityFieldsDatagridManager extends DatagridManager
@@ -24,7 +24,7 @@ class EntityFieldsDatagridManager extends DatagridManager
     protected $fieldsCollection;
 
     /**
-     * @var ConfigEntity id
+     * @var EntityConfigModel id
      */
     protected $entityId;
 
@@ -47,10 +47,10 @@ class EntityFieldsDatagridManager extends DatagridManager
     }
 
     /**
-     * @param  ConfigEntity $entity
+     * @param  EntityConfigModel $entity
      * @return array
      */
-    public function getLayoutActions(ConfigEntity $entity)
+    public function getLayoutActions(EntityConfigModel $entity)
     {
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {

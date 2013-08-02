@@ -17,8 +17,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 /**
  * EntityConfig controller.
@@ -72,7 +72,7 @@ class ConfigController extends Controller
      */
     public function updateAction($id)
     {
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $entity  = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
 
         $form = $this->createForm(
@@ -124,7 +124,7 @@ class ConfigController extends Controller
      * )
      * @Template()
      */
-    public function viewAction(ConfigEntity $entity)
+    public function viewAction(EntityConfigModel $entity)
     {
         /** @var  EntityFieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
@@ -200,7 +200,7 @@ class ConfigController extends Controller
      */
     public function fieldsAction($id, Request $request)
     {
-        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
         /** @var  FieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
@@ -241,7 +241,7 @@ class ConfigController extends Controller
      */
     public function fieldUpdateAction($id)
     {
-        $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
+        $field = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)->find($id);
 
         $form  = $this->createForm(
             'oro_entity_config_config_field_type',

@@ -9,6 +9,8 @@ interface ConfigIdInterface extends \Serializable
      */
     public function getId();
 
+    public function getEntityId();
+
     /**
      * @return string
      */

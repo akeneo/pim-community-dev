@@ -11,7 +11,7 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 use Oro\Bundle\EntityExtendBundle\Tools\Schema;
 use Symfony\Component\Process\Process;
@@ -44,8 +44,8 @@ class ApplyController extends Controller
      */
     public function applyAction($id)
     {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        /** @var EntityConfigModel $entity */
+        $entity  = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
@@ -120,8 +120,8 @@ class ApplyController extends Controller
      */
     public function updateAction($id)
     {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        /** @var EntityConfigModel $entity */
+        $entity  = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
         $env = $this->get('kernel')->getEnvironment();
 
         $commands = array(

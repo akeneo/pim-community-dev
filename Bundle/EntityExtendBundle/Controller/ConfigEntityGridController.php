@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
@@ -42,7 +42,7 @@ class ConfigEntityGridController extends Controller
      * )
      * @Template
      */
-    public function uniqueAction(ConfigEntity $entity)
+    public function uniqueAction(EntityConfigModel $entity)
     {
         /** @var ConfigProvider $configProvider */
         $configProvider = $this->get('oro_entity_extend.config.extend_config_provider');

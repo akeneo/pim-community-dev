@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -83,7 +83,7 @@ class AuditController extends Controller
      */
     public function auditFieldAction($entity, $id)
     {
-        /** @var ConfigField $fieldName */
+        /** @var FieldConfigModel $fieldName */
         $fieldName = $this->getDoctrine()
             ->getRepository('OroEntityConfigBundle:ConfigField')
             ->findOneBy(array('id' => $id));

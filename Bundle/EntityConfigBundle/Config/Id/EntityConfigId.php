@@ -48,6 +48,14 @@ class EntityConfigId implements EntityConfigIdInterface
     /**
      * @return string
      */
+    public function getEntityId()
+    {
+        return sprintf('ConfigEntity Entity "%s"', $this->getClassName());
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return sprintf(

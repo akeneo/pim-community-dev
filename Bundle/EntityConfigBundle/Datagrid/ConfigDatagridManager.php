@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
@@ -313,7 +313,7 @@ class ConfigDatagridManager extends DatagridManager
     protected function prepareQuery(ProxyQueryInterface $query)
     {
         $query->where('ce.mode <> :mode');
-        $query->setParameter('mode', AbstractConfig::MODE_VIEW_HIDDEN);
+        $query->setParameter('mode', AbstractConfigModel::MODE_VIEW_HIDDEN);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {

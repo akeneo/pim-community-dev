@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class Schema

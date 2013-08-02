@@ -4,15 +4,15 @@ namespace Oro\Bundle\EntityConfigBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
-class NewEntityEvent extends Event
+class NewConfigModelEvent extends Event
 {
     /**
      * @var string
      */
-    protected $className;
+    protected $configId;
 
     /**
      * @var ConfigManager
@@ -20,21 +20,21 @@ class NewEntityEvent extends Event
     protected $configManager;
 
     /**
-     * @param string        $className
-     * @param ConfigManager $configManager
+     * @param ConfigIdInterface $configId
+     * @param ConfigManager     $configManager
      */
-    public function __construct($className, ConfigManager $configManager)
+    public function __construct(ConfigIdInterface $configId, ConfigManager $configManager)
     {
-        $this->className     = $className;
+        $this->configId      = $configId;
         $this->configManager = $configManager;
     }
 
     /**
-     * @return EntityConfig
+     * @return ConfigIdInterface
      */
-    public function getClassName()
+    public function getConfigId()
     {
-        return $this->className;
+        return $this->configId;
     }
 
     /**
