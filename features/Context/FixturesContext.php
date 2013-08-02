@@ -86,50 +86,12 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root = new Acl();
-        $root
-            ->setId('root')
-            ->setName('root')
-            ->setDescription('root')
-            ->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT))
-            ->addAccessRole($this->getRoleOrCreate('ROLE_SUPER_ADMIN'));
+        $root        = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
+        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
 
-        $oroSecurity = new Acl();
-        $oroSecurity
-            ->setId('oro_security')
-            ->setName('Oro Security')
-            ->setDescription('Oro security')
-            ->setParent($root)
-            ->addAccessRole($this->getRoleOrCreate('IS_AUTHENTICATED_ANONYMOUSLY'));
-
-        $oroLogin = new Acl();
-        $oroLogin
-            ->setId('oro_login')
-            ->setName('Login page')
-            ->setDescription('Oro Login page')
-            ->setParent($oroSecurity);
-
-        $oroLoginCheck = new Acl();
-        $oroLoginCheck
-            ->setId('oro_login_check')
-            ->setName('Login check')
-            ->setDescription('Oro Login check')
-            ->setParent($oroSecurity);
-
-        $oroLogout = new Acl();
-        $oroLogout
-            ->setId('oro_logout')
-            ->setName('Logout')
-            ->setDescription('Oro Logout')
-            ->setParent($oroSecurity);
-
-        $em = $this->getEntityManager();
-        $em->persist($root);
-        $em->persist($oroSecurity);
-        $em->persist($oroLogin);
-        $em->persist($oroLoginCheck);
-        $em->persist($oroLogout);
-        $em->flush();
+        $this->createAcl('oro_login', $oroSecurity);
+        $this->createAcl('oro_login_check', $oroSecurity);
+        $this->createAcl('oro_logout', $oroSecurity);
     }
 
     /**
@@ -155,7 +117,11 @@ class FixturesContext extends RawMinkContext
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
-                $value = $this->createValue($attribute, $translation['value'], $this->getLocaleCode($translation['locale']));
+                $value = $this->createValue(
+                    $attribute,
+                    $translation['value'],
+                    $this->getLocaleCode($translation['locale'])
+                );
                 $product->addValue($value);
             }
         }
@@ -199,10 +165,7 @@ class FixturesContext extends RawMinkContext
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array(
-                'languages' => 'english',
-                'family'    => null,
-            ), $data);
+            $data = array_merge(array('languages' => 'english', 'family' => null), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
             if ($data['family']) {
@@ -287,7 +250,9 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $family      = $this->getFamily($data['family']);
             $translation = $this->createFamilyTranslation(
-                $family, $data['label'], $this->getLocaleCode($data['language'])
+                $family,
+                $data['label'],
+                $this->getLocaleCode($data['language'])
             );
 
             $family->addTranslation($translation);
@@ -357,17 +322,20 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
-            $data = array_merge(array(
-                'position'     => 0,
-                'group'        => null,
-                'product'      => null,
-                'family'       => null,
-                'required'     => 'no',
-                'type'         => 'text',
-                'scopable'     => false,
-                'scopable'     => 'no',
-                'translatable' => 'no',
-            ), $data);
+            $data = array_merge(
+                array(
+                    'position'     => 0,
+                    'group'        => null,
+                    'product'      => null,
+                    'family'       => null,
+                    'required'     => 'no',
+                    'type'         => 'text',
+                    'scopable'     => false,
+                    'scopable'     => 'no',
+                    'translatable' => 'no',
+                ),
+                $data
+            );
 
             try {
                 $attribute = $this->getAttribute($data['label']);
@@ -393,10 +361,12 @@ class FixturesContext extends RawMinkContext
                     $attribute->setMetricFamily($data['metric family']);
                     $attribute->setDefaultMetricUnit($data['default metric unit']);
                 } else {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
-                        $data['label']
-                    ));
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                            $data['label']
+                        )
+                    );
                 }
             }
 
@@ -421,10 +391,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array(
-                'scope'  => null,
-                'locale' => null,
-            ), $data);
+            $data = array_merge(array('scope' => null, 'locale' => null), $data);
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
@@ -559,12 +526,7 @@ class FixturesContext extends RawMinkContext
             $audit->setVersion(1);
             list($field, $change) = explode(': ', $data['change']);
             list($old, $new) = explode(' => ', $change);
-            $audit->setData(array(
-                $field => array(
-                    'old' => $old,
-                    'new' => $new,
-                )
-            ));
+            $audit->setData(array($field => array('old' => $old, 'new' => $new)));
             $user = $this->getUser($data['updatedBy']);
             $audit->setUsername($user->getUsername());
             $audit->setUser($user);
@@ -614,11 +576,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $config[$data['element']][$data['property']] = $data['value'];
         }
-        $config = array_merge(array(
-            'reader' => array(),
-            'processor' => array(),
-            'writer' => array()
-        ), $config);
+        $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
         $job->setJobDefinition($jobDefinition);
 
@@ -632,11 +590,8 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
 
-        $attributes = $em
-            ->getRepository('PimProductBundle:ProductAttribute')
-            ->findBy(array(
-                'attributeType' => 'pim_product_identifier',
-            ));
+        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')
+                ->findBy(array('attributeType' => 'pim_product_identifier'));
 
         foreach ($attributes as $attribute) {
             $em->remove($attribute);
@@ -652,9 +607,7 @@ class FixturesContext extends RawMinkContext
      */
     private function getUser($username)
     {
-        return $this->getEntityOrException('OroUserBundle:User', array(
-            'username' => $username,
-        ));
+        return $this->getEntityOrException('OroUserBundle:User', array('username' => $username));
     }
 
     /**
@@ -680,57 +633,15 @@ class FixturesContext extends RawMinkContext
      *
      * @return User
      */
-    public function getOrCreateUser($username, $password = null, $apiKey = 'admin_api_key')
+    public function getOrCreateUser($username, $password = null, $apiKey = null)
     {
         $em = $this->getEntityManager();
 
-        if ($user = $em->getRepository('OroUserBundle:User')->findOneBy(array(
-            'username' => $username,
-        ))) {
+        if ($user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $username))) {
             return $user;
         }
 
-        $user = new User;
-
-        if (!$password) {
-            $password = $username.'pass';
-        }
-
-        $user->setUsername($username);
-        $user->setEmail($username.'@example.com');
-        $user->setPlainPassword($password);
-        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
-        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
-
-        $um = $this->getContainer()->get('oro_user.manager.flexible');
-        $catalogLocaleAttribute = $um->createAttribute('oro_flexibleentity_text');
-        $catalogLocaleAttribute->setCode('cataloglocale');
-        $catalogLocaleAttribute->setLabel('cataloglocale');
-        $em->persist($catalogLocaleAttribute);
-
-        $catalogLocaleValue = $um->createFlexibleValue();
-        $catalogLocaleValue->setAttribute($catalogLocaleAttribute);
-        $catalogLocaleValue->setData('en_US');
-        $user->addValue($catalogLocaleValue);
-
-        $um = $this->getContainer()->get('oro_user.manager.flexible');
-        $catalogScopeAttribute = $um->createAttribute('oro_flexibleentity_text');
-        $catalogScopeAttribute->setCode('catalogscope');
-        $catalogScopeAttribute->setLabel('catalogscope');
-        $em->persist($catalogScopeAttribute);
-
-        $catalogScopeValue = $um->createFlexibleValue();
-        $catalogScopeValue->setAttribute($catalogScopeAttribute);
-        $catalogScopeValue->setData('ecommerce');
-        $user->addValue($catalogScopeValue);
-
-        $this->getUserManager()->updateUser($user);
-
-        $api = new UserApi();
-        $api->setApiKey($apiKey)->setUser($user);
-
-        $this->getEntityManager()->persist($api);
-        $this->getEntityManager()->flush();
+        return $this->createUser($username, $password, $apiKey);
     }
 
     /**
@@ -740,9 +651,12 @@ class FixturesContext extends RawMinkContext
      */
     public function getAttribute($label)
     {
-        return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
-            'code' => $this->camelize($label)
-        ));
+        return $this->getEntityOrException(
+            'PimProductBundle:ProductAttribute',
+            array(
+                'code' => $this->camelize($label)
+            )
+        );
     }
 
     /**
@@ -757,9 +671,7 @@ class FixturesContext extends RawMinkContext
         }
 
         if (!isset($this->locales[$language])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Undefined language "%s"', $language
-            ));
+            throw new \InvalidArgumentException(sprintf('Undefined language "%s"', $language));
         }
 
         return $this->locales[$language];
@@ -773,9 +685,12 @@ class FixturesContext extends RawMinkContext
     public function getGroup($name)
     {
         try {
-            return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
-                'code' => $this->camelize($name)
-            ));
+            return $this->getEntityOrException(
+                'PimProductBundle:AttributeGroup',
+                array(
+                    'code' => $this->camelize($name)
+                )
+            );
         } catch (\InvalidArgumentException $e) {
             return null;
         }
@@ -788,9 +703,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getFamily($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Family', array(
-            'code' => $code
-        ));
+        return $this->getEntityOrException('PimProductBundle:Family', array('code' => $code));
     }
 
     /**
@@ -893,9 +806,7 @@ class FixturesContext extends RawMinkContext
     private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array(
-                'code' => $code
-            ));
+            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
             $this->createLocale($code);
         }
@@ -947,9 +858,7 @@ class FixturesContext extends RawMinkContext
     private function getRoleOrCreate($label)
     {
         try {
-            $role = $this->getEntityOrException('OroUserBundle:Role', array(
-                'label' => $label
-            ));
+            $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
             $em = $this->getEntityManager();
@@ -967,9 +876,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCategory($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Category', array(
-            'code' => $code,
-        ));
+        return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
     }
 
     /**
@@ -979,9 +886,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getJob($code)
     {
-        return $this->getEntityOrException('PimBatchBundle:Job', array(
-            'code' => $code
-        ));
+        return $this->getEntityOrException('PimBatchBundle:Job', array('code' => $code));
     }
 
     /**
@@ -995,9 +900,13 @@ class FixturesContext extends RawMinkContext
         $entity = $this->getEntityManager()->getRepository($namespace)->findOneBy($criteria);
 
         if (!$entity) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find "%s" with criteria %s', $namespace, print_r($criteria, true)
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find "%s" with criteria %s',
+                    $namespace,
+                    print_r($criteria, true)
+                )
+            );
         }
 
         return $entity;
@@ -1060,6 +969,83 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $username
+     * @param strng  $password
+     * @param string $apiKey
+     *
+     * @return User
+     */
+    private function createUser($username, $password = null, $apiKey = null)
+    {
+        $password = $password ?: $username . 'pass';
+        $apiKey   = $apiKey ?: $username . '_api_key';
+        $email    = $username.'@example.com';
+        $locale   = 'en_US';
+        $scope    = 'ecommerce';
+
+        $user = new User();
+        $user->setUsername($username);
+        $user->setPlainPassword($password);
+        $user->setEmail($email);
+
+        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
+
+        $manager = $this->getContainer()->get('oro_user.manager.flexible');
+
+        $localeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+        $this->persist($localeAttribute);
+
+        $localeValue = $manager->createFlexibleValue();
+        $localeValue->setAttribute($localeAttribute);
+        $localeValue->setData($locale);
+        $user->addValue($localeValue);
+
+        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+        $this->persist($scopeAttribute);
+
+        $scopeValue = $manager->createFlexibleValue();
+        $scopeValue->setAttribute($scopeAttribute);
+        $scopeValue->setData($scope);
+        $user->addValue($scopeValue);
+
+        $this->getUserManager()->updateUser($user);
+
+        $api = new UserApi();
+        $api->setApiKey($username.'_api_key')->setUser($user);
+
+        $this->persist($api);
+
+        return $user;
+    }
+
+    /**
+     * @param string $name
+     * @param Acl    $parent
+     * @param array  $roles
+     *
+     * @return Acl
+     */
+    private function createAcl($name, $parent = null, array $roles = array())
+    {
+        $acl = new Acl();
+        $acl->setId($name);
+        $acl->setName($this->camelize($name));
+        $acl->setDescription($this->camelize($name));
+        if ($parent) {
+            $acl->setParent($parent);
+        }
+        foreach ($roles as $role) {
+            $acl->addAccessRole($this->getRoleOrCreate($role));
+        }
+        $this->persist($acl);
+
+        return $acl;
+    }
+
+    /**
      * @param string $string
      *
      * @return string
@@ -1067,6 +1053,21 @@ class FixturesContext extends RawMinkContext
     private function camelize($string)
     {
         return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
+    }
+
+    /**
+     * Persist an entity
+     *
+     * @param object  $entity
+     * @param boolean $flush
+     */
+    private function persist($entity, $flush = true)
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**

@@ -72,8 +72,11 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
         $this->pass->process($container);
     }
 
-    private function getContainerBuilderMock($definition = null, array $normalizers = array(), array $encoders = array())
-    {
+    private function getContainerBuilderMock(
+        $definition = null,
+        array $normalizers = array(),
+        array $encoders = array()
+    ) {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $container->expects($this->any())

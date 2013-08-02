@@ -38,6 +38,9 @@ class AttributeNormalizer implements NormalizerInterface
     {
         $attributeTypes = explode('_', $attribute->getAttributeType());
 
+        $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
+        $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
+
         $this->results = array(
             'type'                    => end($attributeTypes),
             'code'                    => $attribute->getCode(),
@@ -61,8 +64,8 @@ class AttributeNormalizer implements NormalizerInterface
             'number_max'              => (string) $attribute->getNumberMax(),
             'decimals_allowed'        => (string) $attribute->isDecimalsAllowed(),
             'negative_allowed'        => (string) $attribute->isNegativeAllowed(),
-            'date_min'                => (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601),
-            'date_max'                => (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601),
+            'date_min'                => $dateMin,
+            'date_max'                => $dateMax,
             'date_type'               => (string) $attribute->getDateType(),
             'metric_family'           => (string) $attribute->getMetricFamily(),
             'default_metric_unit'     => (string) $attribute->getDefaultMetricUnit(),

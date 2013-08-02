@@ -13,6 +13,9 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -48,7 +51,6 @@ class Grid extends Index
     }
 
     /**
-     *
      * @param string $element
      * @param string $actionName
      */
@@ -86,21 +88,33 @@ class Grid extends Index
         }
     }
 
+    /**
+     * Count all rows in the grid
+     * @return integer
+     */
     public function countRows()
     {
         return count($this->getElement('Grid content')->findAll('css', 'tr'));
     }
 
+    /**
+     * Get the text in the specified column of the specified row
+     * @param string $column
+     * @param string $row
+     * @param string $expectation
+     *
+     * @return string
+     */
     public function getColumnValue($column, $row, $expectation)
     {
-        return $this
-            ->getRowCell(
-                $this->getGridRow($row),
-                $this->getColumnPosition($column)
-            )
-            ->getText();
+        return $this->getRowCell($this->getGridRow($row), $this->getColumnPosition($column))->getText();
     }
 
+    /**
+     * @param string $column
+     *
+     * @return integer
+     */
     protected function getColumnPosition($column)
     {
         $headers = $this->getElement('Grid')->findAll('css', 'thead th');
@@ -115,14 +129,23 @@ class Grid extends Index
         );
     }
 
+    /**
+     * @param string $row
+     * @param string $position
+     *
+     * @return NodeElement
+     */
     protected function getRowCell($row, $position)
     {
         $cell = $row->findAll('css', 'td');
         if (!isset($cell[$position])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Trying to access cell %d of a row which has %d cell(s).',
-                $position, count($cell)
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Trying to access cell %d of a row which has %d cell(s).',
+                    $position,
+                    count($cell)
+                )
+            );
         }
 
         return $cell[$position];

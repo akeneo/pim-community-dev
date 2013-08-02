@@ -108,9 +108,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $page = ucfirst($page);
         $method = sprintf('get%s', $page);
         $entity = $this->$method($identifier);
-        $this->openPage(sprintf('%s edit', $page), array(
-            'id' => $entity->getId(),
-        ));
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
     /**
@@ -133,9 +131,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheCategoryNodeCreationPage($code)
     {
-        $this->openPage('Category node creation', array(
-            'id' => $this->getCategory($code)->getId()
-        ));
+        $this->openPage('Category node creation', array('id' => $this->getCategory($code)->getId()));
     }
 
     /**
@@ -170,9 +166,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($this->listToArray($currencies) as $currency) {
             if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf(
-                    'Currency "%s" is not activated.', $currency
-                ));
+                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
             }
         }
     }
@@ -187,9 +181,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($this->listToArray($currencies) as $currency) {
             if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf(
-                    'Currency "%s" is not activated.', $currency
-                ));
+                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
             }
         }
     }
@@ -201,9 +193,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iActivateTheCurrency($currencies)
     {
-        $this->getPage('Currency index')->activateCurrencies(
-            $this->listToArray($currencies)
-        );
+        $this->getPage('Currency index')->activateCurrencies($this->listToArray($currencies));
         $this->wait();
     }
 
@@ -214,9 +204,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDeactivateTheCurrency($currencies)
     {
-        $this->getPage('Currency index')->deactivateCurrencies(
-            $this->listToArray($currencies)
-        );
+        $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
         $this->wait();
     }
 
@@ -239,9 +227,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($table->getHash() as $data) {
             if (!$this->getPage('Product edit')->findLocaleLink($data['language'], $data['label'])) {
-                throw $this->createExpectationException(sprintf(
-                    'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
-                ));
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Could not find locale "%s %s" in the locale switcher',
+                        $data['locale'],
+                        $data['label']
+                    )
+                );
             }
         }
     }
@@ -307,9 +299,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
             if (null === $this->getPage('Product edit')->findLocaleLink($language)) {
-                throw $this->createExpectationException(sprintf('
-                    Expecting to see a locale link for "%s", but didn\'t', $language
-                ));
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see a locale link for "%s", but didn\'t',
+                        $language
+                    )
+                );
             }
         }
 
@@ -395,21 +390,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
-            throw $this->createExpectationException(sprintf(
-                'Expected to see %d fields in group "%s", actually saw %d',
-                count($attributes), $group, $actual
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected to see %d fields in group "%s", actually saw %d',
+                    count($attributes),
+                    $group,
+                    $actual
+                )
+            );
         }
 
-        $labels = array_map(function($field) {
-            return $field->getText();
-        }, $this->getPage('Product edit')->getFieldsForGroup($group));
+        $labels = array_map(
+            function ($field) {
+                return $field->getText();
+            },
+            $this->getPage('Product edit')->getFieldsForGroup($group)
+        );
 
         if (count(array_diff($attributes, $labels))) {
-            throw $this->createExpectationException(sprintf('
-                Expecting to see attributes "%s" in group "%s", but saw "%s".',
-                join('", "', $attributes), $group, join('", "', $labels)
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see attributes "%s" in group "%s", but saw "%s".',
+                    join('", "', $attributes),
+                    $group,
+                    join('", "', $labels)
+                )
+            );
         }
     }
 
@@ -421,10 +427,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theTitleOfTheProductShouldBe($title)
     {
         if ($title !== $actual = $this->getPage('Product edit')->getTitle()) {
-            throw $this->createExpectationException(sprintf(
-                'Expected product title "%s", actually saw "%s"',
-                $title, $actual
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected product title "%s", actually saw "%s"',
+                    $title,
+                    $actual
+                )
+            );
         }
     }
 
@@ -436,10 +445,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theTitleOfTheProductShouldMatch($pattern)
     {
         if (1 !== preg_match($pattern, $actual = $this->getPage('Product edit')->getTitle())) {
-            throw $this->createExpectationException(sprintf(
-                'Expected product title to match "%s", actually saw "%s"',
-                $pattern, $actual
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected product title to match "%s", actually saw "%s"',
+                    $pattern,
+                    $actual
+                )
+            );
         }
     }
 
@@ -455,10 +467,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
-            throw new \LogicException(sprintf(
-                'Expected product %s to be "%s", but got "%s".',
-                $fieldName, $expected, $actual
-            ));
+            throw new \LogicException(
+                sprintf(
+                    'Expected product %s to be "%s", but got "%s".',
+                    $fieldName,
+                    $expected,
+                    $actual
+                )
+            );
         }
     }
 
@@ -476,17 +492,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         if ($language) {
             try {
-                $field = $this->getCurrentPage()->getFieldLocator(
-                    $field, $this->getLocaleCode($language)
-                );
+                $field = $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
         }
 
-        return $this->getSession()->getPage()->fillField(
-            $field, $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field))
-        );
+        $value = $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field));
+
+        return $this->getSession()->getPage()->fillField($field, $value);
     }
 
     /**
@@ -499,20 +513,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->getAvailableAttribute($attribute, $group);
+            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
             if (!$not) {
                 if (!$element) {
-                    throw $this->createExpectationException(sprintf(
-                        'Expecting to see attribute %s under group %s, but was not present.',
-                        $attribute, $group
-                    ));
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting to see attribute %s under group %s, but was not present.',
+                            $attribute,
+                            $group
+                        )
+                    );
                 }
             } else {
                 if ($element) {
-                    throw $this->createExpectationException(sprintf(
-                        'Expecting not to see attribute %s under group %s, but was present.',
-                        $attribute, $group
-                    ));
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting not to see attribute %s under group %s, but was present.',
+                            $attribute,
+                            $group
+                        )
+                    );
                 }
             }
         }
@@ -525,12 +545,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->getCurrentPage()->openAvailableAttributesMenu();
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $this->getCurrentPage()->selectAvailableAttribute($attribute);
-        }
-
-        $this->getCurrentPage()->addSelectedAvailableAttributes();
+        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
         $this->wait();
     }
 
@@ -544,11 +559,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $expectedFamilies = $this->listToArray($families);
 
         if ($expectedFamilies !== $families = $this->getPage('Family index')->getFamilies()) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting to see families %s, but saw %s',
-                print_r($expectedFamilies, true),
-                print_r($families, true)
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see families %s, but saw %s',
+                    print_r($expectedFamilies, true),
+                    print_r($families, true)
+                )
+            );
         }
     }
 
@@ -561,10 +578,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAttributeInGroup($attribute, $group)
     {
         if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-            throw new ExpectationException(sprintf(
-                'Expecting to see attribute %s under group %s, but was not present.',
-                $attribute, $group
-            ));
+            throw new ExpectationException(
+                sprintf(
+                    'Expecting to see attribute %s under group %s, but was not present.',
+                    $attribute,
+                    $group
+                )
+            );
         }
     }
 
@@ -575,9 +595,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheFamilyPage($family)
     {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array(
-            'id' => $this->getFamily($family)->getId(),
-        ));
+        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $this->getFamily($family)->getId()));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
@@ -592,15 +610,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
         if (!$not) {
             if (!$removeLink) {
-                throw $this->createExpectationException(sprintf(
-                    'Remove link on field "%s" should not be displayed.', $field
-                ));
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Remove link on field "%s" should not be displayed.',
+                        $field
+                    )
+                );
             }
         } else {
             if ($removeLink) {
-                throw $this->createExpectationException(sprintf(
-                    'Remove link on field "%s" should be displayed.', $field
-                ));
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Remove link on field "%s" should be displayed.',
+                        $field
+                    )
+                );
             }
         }
     }
@@ -613,9 +637,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iRemoveTheAttribute($field)
     {
         if (null === $link = $this->getCurrentPage()->getRemoveLinkFor($field)) {
-            throw $this->createExpectationException(sprintf(
-                'Remove link on field "%s" should be displayed.', $field
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Remove link on field "%s" should be displayed.',
+                    $field
+                )
+            );
         }
 
         $link->click();
@@ -633,17 +660,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
         if (count($expectedAttributes) !== $actual = count($options)) {
-            throw $this->createExpectationException(sprintf(
-                'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
-                count($expectedAttributes), $actual, print_r($options, true)
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
+                    count($expectedAttributes),
+                    $actual,
+                    print_r($options, true)
+                )
+            );
         }
 
         if ($expectedAttributes !== $options) {
-            throw $this->createExpectationException(sprintf(
-                'Expected to see eligible attributes as label %s, actually saw %s',
-                print_r($expectedAttributes, true), print_r($options, true)
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected to see eligible attributes as label %s, actually saw %s',
+                    print_r($expectedAttributes, true),
+                    print_r($options, true)
+                )
+            );
         }
     }
 
@@ -689,9 +723,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $fields = $this->listToArray($fields);
         foreach ($fields as $field) {
             if (!$this->getCurrentPage()->findField($field)) {
-                throw $this->createExpectationException(sprintf(
-                    'Expecting to see field "%s".', $field
-                ));
+                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
             }
         }
     }
@@ -707,15 +739,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($fields as $fieldName) {
             $field = $this->getCurrentPage()->findField($fieldName);
             if (!$field) {
-                throw $this->createExpectationException(sprintf(
-                    'Expecting to see field "%s".', $fieldName
-                ));
+                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
                 return;
             }
             if (!$field->hasAttribute('disabled')) {
-                throw $this->createExpectationException(sprintf(
-                    'Expecting field "%s" to be disabled.', $fieldName
-                ));
+                throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
             }
         }
     }
@@ -828,10 +856,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $channels = $this->listToArray($channels);
 
         foreach ($channels as $channel) {
-            if (!$this->getPage('Channel index')->findChannelRow($channel)) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see channel %s, not found', $channel)
-                );
+            if (!$this->getPage('Channel index')->getGridRow($channel)) {
+                throw $this->createExpectationException(sprintf('Expecting to see channel %s, not found', $channel));
             }
         }
     }
@@ -850,7 +876,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         if ($expected !== $actual) {
             throw $this->createExpectationException(
-                sprintf('Expecting channel %s %sto be able to export category %s', $channel, $not, $category)
+                sprintf(
+                    'Expecting channel %s %sto be able to export category %s',
+                    $channel,
+                    $not,
+                    $category
+                )
             );
         }
     }
@@ -863,9 +894,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function thereShouldBeUpdate($count)
     {
         if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
-            throw $this->createExpectationException(sprintf(
-                'Expected %d updates, saw %d.', $count, $countUpdates
-            ));
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $countUpdates));
         }
     }
 
@@ -877,9 +906,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerCategory($code)
     {
         $category = $this->getCategory($code);
-        $this
-            ->getPage('Product index')
-            ->clickCategoryFilterLink($category);
+        $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }
 
@@ -888,9 +915,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerUnclassifiedCategory()
     {
-        $this
-            ->getPage('Product index')
-            ->clickUnclassifiedCategoryFilterLink();
+        $this->getPage('Product index')->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
 
@@ -915,9 +940,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $products = $this->listToArray($products);
         foreach ($products as $product) {
             if (!$this->getPage('Product index')->getGridRow($product)) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see product %s, not found', $product)
-                );
+                throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
             }
         }
     }
@@ -930,9 +953,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeProduct($product)
     {
         if (!$this->getPage('Product index')->getGridRow($product)) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see product %s, not found', $product)
-            );
+            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
         }
     }
 
@@ -950,9 +971,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             } catch (\InvalidArgumentException $e) {
                 continue;
             }
-            throw $this->createExpectationException(
-                sprintf('Expecting not to see product %s, but I see it', $product)
-            );
+            throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
         }
     }
 
@@ -968,9 +987,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         } catch (\InvalidArgumentException $e) {
             return;
         }
-        throw $this->createExpectationException(
-            sprintf('Expecting not to see product %s, but I see it', $product)
-        );
+        throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
     }
 
     /**
@@ -980,11 +997,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheCategoryEditPage($code)
     {
-        $this->assertSession()->addressEquals(
-            $this->getPage('Category edit')->getUrl(
-                $this->getCategory($code)
-            )
-        );
+        $this->assertSession()->addressEquals($this->getPage('Category edit')->getUrl($this->getCategory($code)));
     }
 
     /**
@@ -1044,9 +1057,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheExportJobPage($job)
     {
-        $this->openPage('Export show', array(
-            'id' => $this->getJob($job)->getId()
-        ));
+        $this->openPage('Export show', array('id' => $this->getJob($job)->getId()));
         $this->wait();
     }
 
@@ -1075,10 +1086,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeNextToThe($message, $property)
     {
         if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting to see "%s" next to the %s property, but saw "%s"',
-                $message, $property, $error
-            ));
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see "%s" next to the %s property, but saw "%s"',
+                    $message,
+                    $property,
+                    $error
+                )
+            );
         }
     }
 
@@ -1090,9 +1105,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldNotSeeTheLink($link)
     {
         if ($this->getCurrentPage()->findLink($link)) {
-            throw $this->createExpectationException(sprintf(
-                'Link %s should not be displayed', $link
-            ));
+            throw $this->createExpectationException(sprintf('Link %s should not be displayed', $link));
         }
     }
 
@@ -1103,9 +1116,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iLaunchTheExportJob($job)
     {
-        $this->openPage('Export launch', array(
-            'id' => $this->getJob($job)->getId()
-        ));
+        $this->openPage('Export launch', array('id' => $this->getJob($job)->getId()));
     }
 
     /**
@@ -1124,9 +1135,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function fileShouldExist($file)
     {
         if (!file_exists($file)) {
-            throw $this->createExpectationException(sprintf(
-                'File %s does not exist.', $file
-            ));
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $file));
         }
 
         unlink($file);

@@ -13,18 +13,38 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class Base extends Page
 {
-    public function __construct($session, $pageFactory, $parameters = array())
-    {
-        parent::__construct($session, $pageFactory, $parameters);
+    protected $elements = array(
+        'Dialog' => array('css' => 'div.modal'),
+        'Title'  => array('css' => '.navbar-title'),
+    );
 
-        $this->elements = array_merge(
-            $this->elements,
-            array(
-                'Dialog' => array('css' => 'div.modal'),
-            )
+    /**
+     * Get page title
+     * @return string
+     */
+    public function getTitle()
+    {
+        $elt = $this->getElement('Title');
+
+        $subtitle  = $elt->find('css', '.sub-title');
+        $separator = $elt->find('css', '.separator');
+        $name      = $elt->find('css', '.product-name');
+
+        if (!$subtitle || !$separator || !$name) {
+            throw new \Exception('Could not find the page title');
+        }
+
+        return sprintf(
+            '%s%s%s',
+            trim($subtitle->getText()),
+            trim($separator->getText()),
+            trim($name->getText())
         );
     }
 
+    /**
+     * Confirm the dialog action
+     */
     public function confirmDialog()
     {
         $element = $this->getElement('Dialog');
@@ -42,6 +62,9 @@ class Base extends Page
         $button->click();
     }
 
+    /**
+     * Cancel the dialog action
+     */
     public function cancelDialog()
     {
         $element = $this->getElement('Dialog');

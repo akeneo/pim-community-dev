@@ -15,6 +15,9 @@ class Creation extends Form
 {
     protected $path = '/ie/export/create';
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($session, $pageFactory, $parameters = array())
     {
         parent::__construct($session, $pageFactory, $parameters);
@@ -23,25 +26,34 @@ class Creation extends Form
             $this->elements,
             array(
                 'Channel selector' => array('css' => '#pim_import_export_job_jobDefinition_steps_0_reader_channel'),
-                'With header'      => array('css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'),
+                'With header'      => array(
+                    'css' => '#pim_import_export_job_jobDefinition_steps_0_processor_withHeader'
+                ),
             )
         );
     }
 
+    /**
+     * @param string $channel
+     */
     public function selectChannel($channel)
     {
-        $this
-            ->getElement('Channel selector')
-            ->selectOption($channel);
+        $this->getElement('Channel selector')->selectOption($channel);
     }
 
+    /**
+     * @param string $field
+     */
     public function checkField($field)
     {
-        $this
-            ->getElement($field)
-            ->check();
+        $this->getElement($field)->check();
     }
 
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
     public function getUrl(array $options)
     {
         return sprintf('%s?%s', $this->getPath(), http_build_query($options));

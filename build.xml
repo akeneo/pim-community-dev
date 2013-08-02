@@ -89,14 +89,14 @@
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src/Pim,${basedir}/features" />
             <arg value="text" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src/Pim,${basedir}/features" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -108,6 +108,7 @@
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -118,6 +119,7 @@
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -126,6 +128,7 @@
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 

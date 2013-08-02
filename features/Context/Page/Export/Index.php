@@ -15,19 +15,20 @@ class Index extends Grid
 {
     protected $path = '/ie/export/';
 
+    /**
+     * @param string $exportLink
+     */
     public function clickExportCreationLink($exportLink)
     {
-        $this->openCreationDropdown();
+        $this->clickLink('New export');
         $this->clickLink($exportLink);
     }
 
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         return $this->getPath();
-    }
-
-    private function openCreationDropdown()
-    {
-        $this->clickLink('New export');
     }
 }
