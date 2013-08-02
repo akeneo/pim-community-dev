@@ -46,7 +46,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($this->entityConfig));
-        $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
+        $this->configManager->expects($this->any())->method('isConfigurable')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
         $this->configContainer = new EntityConfigContainer('test', array());
@@ -55,7 +55,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testConfig()
     {
-        $this->assertEquals(true, $this->configProvider->hasConfig(ConfigManagerTest::DEMO_ENTITY));
+        $this->assertEquals(true, $this->configProvider->isConfigurable(ConfigManagerTest::DEMO_ENTITY));
         $this->assertEquals($this->entityConfig, $this->configProvider->getConfig(ConfigManagerTest::DEMO_ENTITY));
 
         $this->entityConfig->addField($this->fieldConfig);

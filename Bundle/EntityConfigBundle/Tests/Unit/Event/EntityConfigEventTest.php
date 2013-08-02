@@ -19,7 +19,7 @@ class EntityConfigEventTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
+        $this->configManager->expects($this->any())->method('isConfigurable')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
     }

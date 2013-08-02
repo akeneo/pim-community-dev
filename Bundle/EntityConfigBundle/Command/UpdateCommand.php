@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Command;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,8 +29,11 @@ class UpdateCommand extends BaseCommand
     {
         $output->writeln($this->getDescription());
 
+        /** @var ClassMetadataInfo $doctrineMetadata */
         foreach ($this->getConfigManager()->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
-            $this->getConfigManager()->initConfigByDoctrineMetadata($doctrineMetadata);
+            if ($this->getConfigManager()->isConfigurable($doctrineMetadata->getName())) {
+                $this->getConfigManager()->createConfigEntity($doctrineMetadata->getName());
+            }
         }
 
         $this->getConfigManager()->flush();

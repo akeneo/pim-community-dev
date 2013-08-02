@@ -4,9 +4,13 @@ namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Doctrine\ORM\PersistentCollection;
 
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
@@ -50,88 +54,60 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * @param $className
-     * @return EntityConfig
+     * @return bool
+     */
+    public function isConfigurable($className)
+    {
+        return $this->configManager->isConfigurable($this->getClassName($className));
+    }
+
+    /**
+     * @param $className
+     * @return Config
      */
     public function getConfig($className)
     {
-        return $this->configManager->getConfig($this->getClassName($className), $this->scope);
-    }
-
-    /**
-     * @param $className
-     * @return bool
-     */
-    public function hasConfig($className)
-    {
-        return $this->configManager->hasConfig($this->getClassName($className));
+        return $this->configManager->getConfig(new EntityConfigId($this->getClassName($className), $this->scope));
     }
 
     /**
      * @param $className
      * @param $code
-     * @return FieldConfig
+     * @return Config
      */
     public function getFieldConfig($className, $code)
     {
-        return $this->getConfig($className)->getField($code);
+        $configId = new FieldConfigId($className, $this->scope, $code);
+        return $this->getConfig($configId);
     }
 
     /**
      * @param $className
      * @param $code
-     * @return FieldConfig
+     * @return Config
      */
     public function hasFieldConfig($className, $code)
     {
-        return $this->hasConfig($className)
+        return $this->isConfigurable($className)
             ? $this->getConfig($className)->hasField($code)
             : false;
     }
 
     /**
-     * @param               $className
-     * @param  array        $values
-     * @param  bool         $flush
-     * @return EntityConfig
+     * @param  ConfigIdInterface $configId
+     * @param  array             $values
+     * @return Config
      */
-    public function createEntityConfig($className, array $values, $flush = false)
+    public function createConfig(ConfigIdInterface $configId, array $values)
     {
-        $className    = $this->getClassName($className);
-        $entityConfig = new EntityConfig($className, $this->scope);
+        $entityConfig = new Config($configId);
+        $values       = array_merge($this->getConfigContainer()->getEntityDefaultValues(), $values);
 
         foreach ($values as $key => $value) {
             $entityConfig->set($key, $value);
         }
 
-        $this->configManager->persist($entityConfig);
-
-        if ($flush) {
-            $this->configManager->flush();
-        }
-    }
-
-    /**
-     * @param              $className
-     * @param              $code
-     * @param              $type
-     * @param  array       $values
-     * @param  bool        $flush
-     * @return FieldConfig
-     */
-    public function createFieldConfig($className, $code, $type, array $values = array(), $flush = false)
-    {
-        $className   = $this->getClassName($className);
-        $fieldConfig = new FieldConfig($className, $code, $type, $this->scope);
-
-        foreach ($values as $key => $value) {
-            $fieldConfig->set($key, $value);
-        }
-
-        $this->configManager->persist($fieldConfig);
-
-        if ($flush) {
-            $this->configManager->flush();
-        }
+        $this->persist($entityConfig);
     }
 
     /**

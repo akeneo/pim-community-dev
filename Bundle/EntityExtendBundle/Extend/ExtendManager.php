@@ -99,7 +99,7 @@ class ExtendManager
     public function isExtend($entityName)
     {
         if ($entityName
-            && $this->configProvider->hasConfig($entityName)
+            && $this->configProvider->isConfigurable($entityName)
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
             return true;

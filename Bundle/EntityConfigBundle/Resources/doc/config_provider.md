@@ -19,7 +19,7 @@ Usage in code (any Bundle):
 
 ConfigProvider methods:
 
-  hasConfig({Entity class name}) : checks if entity has config
+  isConfigurable({Entity class name}) : checks if entity has config
   getConfig({Entity class name}) : return configuration ( EntityConfig(Config) instance )
 
   hasFieldConfig({Entity class name}, {Field code}) : checks if field of entity has config
@@ -35,6 +35,6 @@ ConfigProvider methods:
   Config->set({parameter}, {value}) : set parameter and return Config
 
 Simple usage example:
-        if ($entityAuditProvider->hasConfig(get_class($entity))) {
+        if ($entityAuditProvider->isConfigurable(get_class($entity))) {
             $audit_enabled = $entityAuditProvider->getConfig(get_class($entity))->is('auditable');
         }

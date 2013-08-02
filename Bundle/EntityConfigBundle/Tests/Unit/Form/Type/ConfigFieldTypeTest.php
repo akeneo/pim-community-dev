@@ -50,7 +50,7 @@ class ConfigFieldTypeTest extends \PHPUnit_Framework_TestCase
         $entityConfig->addField(new FieldConfig(ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', 'datagrid'));
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($entityConfig));
-        $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
+        $this->configManager->expects($this->any())->method('isConfigurable')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('getProviders')->will($this->returnValue(array($configProvider)));
     }

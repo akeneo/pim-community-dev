@@ -509,7 +509,7 @@ class LoggableManager
             return;
         }
 
-        if ($this->auditConfigProvider->hasConfig($entityClassName)
+        if ($this->auditConfigProvider->isConfigurable($entityClassName)
             && $this->auditConfigProvider->getConfig($entityClassName)->is('auditable')
         ) {
             $reflection    = new \ReflectionClass($entityClassName);

@@ -30,7 +30,7 @@ class FieldConfigId implements FieldConfigIdInterface
      * @param $fieldName
      * @param $fieldType
      */
-    public function __construct($className, $scope, $fieldName, $fieldType)
+    public function __construct($className, $scope, $fieldName, $fieldType = null)
     {
         $this->className = $className;
         $this->scope     = $scope;
@@ -69,6 +69,17 @@ class FieldConfigId implements FieldConfigIdInterface
     public function getFieldType()
     {
         return $this->fieldType;
+    }
+
+    /**
+     * @param string $fieldType
+     * @return $this
+     */
+    public function setFieldType($fieldType)
+    {
+        $this->fieldType = $fieldType;
+
+        return $this;
     }
 
     /**

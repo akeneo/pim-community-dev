@@ -92,7 +92,7 @@ class AuditController extends Controller
         $datagridManager = $this->get('oro_entity_config.audit_field_datagrid.manager');
 
         $datagridManager->entityClass   = str_replace('_', '\\', $entity);
-        $datagridManager->fieldName     = $fieldName->getCode();
+        $datagridManager->fieldName     = $fieldName->getFieldName();
 
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(
