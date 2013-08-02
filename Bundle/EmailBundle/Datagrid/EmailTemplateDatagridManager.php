@@ -207,19 +207,4 @@ class EmailTemplateDatagridManager extends DatagridManager
 
         return array($clickAction, $updateAction, $cloneAction, $deleteAction);
     }
-
-    /**
-     * Return toolbar options
-     *
-     * @return array
-     */
-    public function getToolbarOptions()
-    {
-        return array(
-            'enable'   => true,
-            'pageSize' => array(
-                'items' => array(10, 20, 50, 100, array('size' => 0, 'label' => 'All')),
-            ),
-        );
-    }
 }

@@ -99,14 +99,15 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
     render: function() {
         this.$el.empty();
 
-        var self = this;
-        var currentSizeLabel = _.filter(this.items, function(item) {
-            if (item.label == undefined) {
-                return self.collection.state.pageSize == item;
-            } else {
-                return self.collection.state.pageSize == item.size;
-            }
-        });
+        var currentSizeLabel = _.filter(
+            this.items,
+            _.bind(
+                function(item) {
+                    return item.size == undefined ? this.collection.state.pageSize == item : this.collection.state.pageSize == item.size;
+                },
+                this
+            )
+        );
         currentSizeLabel = currentSizeLabel[0].label == undefined ? currentSizeLabel[0] : currentSizeLabel[0].label;
 
         this.$el.append($(this.template({
