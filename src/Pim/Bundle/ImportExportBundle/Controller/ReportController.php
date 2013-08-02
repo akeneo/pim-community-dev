@@ -91,7 +91,7 @@ class ReportController extends Controller
     {
         $datagridView = $gridManager->getDatagrid()->createView();
 
-        if ('json' == $request->getRequestFormat()) {
+        if ('json' == $this->getRequest()->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
             $view = 'PimImportExportBundle:Report:index.html.twig';

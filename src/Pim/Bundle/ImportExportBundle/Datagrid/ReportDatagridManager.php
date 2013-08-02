@@ -82,7 +82,7 @@ class ReportDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Job'),
                 'field_name'      => 'jobAlias',
-                'expression'      => 'job.alias',
+                'expression'      => 'job.id',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'sortable'        => false,
                 'filterable'      => true,
