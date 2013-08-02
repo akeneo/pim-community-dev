@@ -4,7 +4,6 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -13,6 +12,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\UserBundle\Acl\Manager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Oro\Bundle\TagBundle\Entity\Repository\TagRepository;
 
 class TagManager
 {
@@ -74,17 +74,6 @@ class TagManager
     }
 
     /**
-     * Adds a tag on the given taggable resource
-     *
-     * @param Tag      $tag      Tag object
-     * @param Taggable $resource Taggable resource
-     */
-    public function addTag(Tag $tag, Taggable $resource)
-    {
-        $resource->getTags()->add($tag);
-    }
-
-    /**
      * Adds multiple tags on the given taggable resource
      *
      * @param Tag[]    $tags     Array of Tag objects
@@ -94,21 +83,9 @@ class TagManager
     {
         foreach ($tags as $tag) {
             if ($tag instanceof Tag) {
-                $this->addTag($tag, $resource);
+                $resource->getTags()->add($tag);
             }
         }
-    }
-
-    /**
-     * Removes an existant tag on the given taggable resource
-     *
-     * @param  Tag      $tag      Tag object
-     * @param  Taggable $resource Taggable resource
-     * @return Boolean
-     */
-    public function removeTag(Tag $tag, Taggable $resource)
-    {
-        return $resource->getTags()->removeElement($tag);
     }
 
     /**
@@ -124,19 +101,10 @@ class TagManager
         }
 
         $names = array_unique($names);
-
-        $builder = $this->em->createQueryBuilder();
-
-        $tags = $builder
-            ->select('t')
-            ->from($this->tagClass, 't')
-
-            ->where($builder->expr()->in('t.name', $names))
-
-            ->getQuery()
-            ->getResult();
+        $tags = $this->em->getRepository($this->tagClass)->findBy(array('name' =>  $names));
 
         $loadedNames = array();
+        /** @var Tag $tag */
         foreach ($tags as $tag) {
             $loadedNames[] = $tag->getName();
         }
@@ -148,7 +116,6 @@ class TagManager
 
                 $tags[] = $tag;
             }
-
         }
 
         return $tags;
@@ -158,19 +125,25 @@ class TagManager
      * Prepare array
      *
      * @param Taggable $entity
+     * @param ArrayCollection|null $tags
      * @return array
      */
-    public function getPreparedArray(Taggable $entity)
+    public function getPreparedArray(Taggable $entity, $tags = null)
     {
-        $this->loadTagging($entity);
+        if (is_null($tags)) {
+            $this->loadTagging($entity);
+            $tags = $entity->getTags();
+        }
         $result = array();
 
         /** @var Tag $tag */
-        foreach ($entity->getTags() as $tag) {
+        foreach ($tags as $tag) {
             $entry = array(
                 'name' => $tag->getName(),
                 'id'   => $tag->getId(),
-                'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
+                'url'  => $tag->getId()
+                    ? $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
+                    : false
             );
 
             $taggingCollection = $tag->getTagging()->filter(
@@ -299,12 +272,14 @@ class TagManager
      * Loads all tags for the given taggable resource
      *
      * @param Taggable $resource Taggable resource
+     * @return $this
      */
     public function loadTagging(Taggable $resource)
     {
         $tags = $this->getTagging($resource);
-        $resource->setTags(new ArrayCollection());
         $this->addTags($tags, $resource);
+
+        return $this;
     }
 
     /**
@@ -317,75 +292,27 @@ class TagManager
      */
     protected function getTagging(Taggable $resource, $createdBy = null, $all = false)
     {
-        $qb = $this->em
-            ->createQueryBuilder()
+        /** @var TagRepository $repository */
+        $repository = $this->em->getRepository($this->tagClass);
 
-            ->select('t')
-            ->from($this->tagClass, 't')
-
-            ->innerJoin('t.tagging', 't2', Join::WITH, 't2.recordId = :recordId AND t2.entityName = :entityName')
-            ->setParameter('recordId', $resource->getTaggableId())
-            ->setParameter('entityName', get_class($resource));
-
-        if (!is_null($createdBy)) {
-            $qb->where('t2.createdBy ' . ($all ? '!=' : '=') . ' :createdBy')
-                ->setParameter('createdBy', $createdBy);
-        }
-
-        return new ArrayCollection($qb->getQuery()->getResult());
+        return new ArrayCollection($repository->getTagging($resource, $createdBy, $all));
     }
 
     /**
-     * Deletes all tagging records for the given taggable resource
+     * Remove tagging related to tags by params
      *
-     * @param Taggable $resource
-     * @return $this
-     */
-    public function deleteTagging(Taggable $resource)
-    {
-        $taggingList = $this->em->createQueryBuilder()
-            ->select('t')
-            ->from($this->taggingClass, 't')
-
-            ->where('t.entityName = :entityName')
-            ->setParameter('entityName', get_class($resource))
-            ->andWhere('t.recordId = :id')
-            ->setParameter('id', $resource->getTaggableId())
-
-            ->getQuery()
-            ->getResult();
-
-        foreach ($taggingList as $tagging) {
-            $this->em->remove($tagging);
-            $this->em->flush($tagging);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param $tagIds
-     * @param $entityName
-     * @param $recordsId
-     * @param null $createdBy
+     * @param array|int $tagIds
+     * @param string $entityName
+     * @param int $recordId
+     * @param null|int $createdBy
+     * @return array
      */
     public function deleteTaggingByParams($tagIds, $entityName, $recordId, $createdBy = null)
     {
-        $builder = $this->em->createQueryBuilder();
-        $builder
-            ->delete($this->taggingClass, 't')
-            ->where($builder->expr()->in('t.tag', $tagIds))
-            ->andWhere('t.entityName = :entityName')
-            ->setParameter('entityName', $entityName)
-            ->andWhere('t.recordId = :recordId')
-            ->setParameter('recordId', $recordId);
+        /** @var TagRepository $repository */
+        $repository = $this->em->getRepository($this->tagClass);
 
-        if (!is_null($createdBy)) {
-            $builder->andWhere('t.createdBy = :createdBy')
-                    ->setParameter('createdBy', $createdBy);
-        }
-
-        $builder->getQuery()->getResult();
+        return $repository->deleteTaggingByParams($tagIds, $entityName, $recordId, $createdBy);
     }
 
     /**

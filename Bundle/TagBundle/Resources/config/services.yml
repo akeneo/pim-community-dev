@@ -15,6 +15,7 @@ parameters:
     oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
     oro_tag.form.type.tag_autocomplete.class: Oro\Bundle\TagBundle\Form\Type\TagAutocompleteType
     oro_tag.form.subscriber.tag_select.class: Oro\Bundle\TagBundle\Form\EventSubscriber\TagSubscriber
+    oro_tag.form.transformer.tag_select.class: Oro\Bundle\TagBundle\Form\Transformer\TagTransformer
 
     oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
 
@@ -118,11 +119,18 @@ services:
         class: %oro_tag.form.type.tag_select.class%
         arguments:
             - @oro_tag.form.subscriber.tag_select
+            - @oro_tag.form.transformer.tag_select
         tags:
             - { name: form.type, alias: oro_tag_select }
 
     oro_tag.form.subscriber.tag_select:
         class: %oro_tag.form.subscriber.tag_select.class%
+        arguments:
+            - @oro_tag.tag.manager
+            - @oro_tag.form.transformer.tag_select
+
+    oro_tag.form.transformer.tag_select:
+        class: %oro_tag.form.transformer.tag_select.class%
         arguments: [@oro_tag.tag.manager]
 
     # Twig extension

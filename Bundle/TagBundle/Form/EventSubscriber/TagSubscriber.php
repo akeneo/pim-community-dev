@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Form\EventSubscriber;
 
+use Oro\Bundle\TagBundle\Form\Transformer\TagTransformer;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,9 +24,15 @@ class TagSubscriber implements EventSubscriberInterface
      */
     protected $manager;
 
-    public function __construct(TagManager $manager)
+    /**
+     * @var TagTransformer
+     */
+    protected $transformer;
+
+    public function __construct(TagManager $manager, TagTransformer $transformer)
     {
         $this->manager = $manager;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -61,6 +68,9 @@ class TagSubscriber implements EventSubscriberInterface
             }
         );
 
+        // pass entity to transformer
+        $this->transformer->setEntity($entity);
+
         $event->setData(
             array(
                 'autocomplete' => null,
@@ -84,7 +94,7 @@ class TagSubscriber implements EventSubscriberInterface
         );
 
         foreach (array_keys($entities) as $type) {
-            if (isset($values[$type])) {
+            if (isset($values[$type]) && !empty($values[$type])) {
                 try {
                     if (!is_array($values[$type])) {
                         $values[$type] = json_decode($values[$type]);

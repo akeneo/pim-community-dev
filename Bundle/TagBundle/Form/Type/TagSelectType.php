@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Bundle\TagBundle\Form\Type;
 
+use Oro\Bundle\TagBundle\Form\Transformer\TagTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -14,9 +15,15 @@ class TagSelectType extends AbstractType
      */
     protected $subscriber;
 
-    public function __construct(TagSubscriber $subscriber)
+    /**
+     * @var TagTransformer
+     */
+    protected $transformer;
+
+    public function __construct(TagSubscriber $subscriber, TagTransformer $transformer)
     {
         $this->subscriber = $subscriber;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -44,13 +51,17 @@ class TagSelectType extends AbstractType
         );
 
         $builder->add(
-            'all',
-            'hidden'
+            $builder->create(
+                'all',
+                'hidden'
+            )->addViewTransformer($this->transformer)
         );
 
         $builder->add(
-            'owner',
-            'hidden'
+            $builder->create(
+                'owner',
+                'hidden'
+            )->addViewTransformer($this->transformer)
         );
     }
 
