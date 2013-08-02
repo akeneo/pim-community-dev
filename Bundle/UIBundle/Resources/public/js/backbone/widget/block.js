@@ -55,7 +55,6 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
 
     show: function() {
         if (!this.$el.data('wid')) {
-            this.$el.attr('data-wid', this.getWid());
             var anchorDiv = Backbone.$('<div/>');
             anchorDiv.insertAfter(this.$el);
             this.widgetContent.append(this.$el);

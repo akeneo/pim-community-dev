@@ -197,6 +197,7 @@ Oro.widget.Abstract = Backbone.View.extend({
     },
 
     show: function() {
+        this.$el.attr('data-wid', this.getWid());
         this.renderActions();
         this.$el.trigger('widgetize', this);
         this.trigger('widgetRender', this.widgetContent, this);
