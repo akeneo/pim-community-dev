@@ -6,6 +6,7 @@ parameters:
     pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
     pim_product.form.type.product_create.class:       Pim\Bundle\ProductBundle\Form\Type\ProductCreateType
     pim_product.form.type.product_value.class:        Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+    pim_product.form.type.image.class:                Pim\Bundle\ProductBundle\Form\Type\ImageType
 
     pim_product.handler.product_create.class:         Pim\Bundle\ProductBundle\Form\Handler\ProductCreateHandler
 

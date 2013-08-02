@@ -63,6 +63,24 @@
     {% if form.vars.value and form.vars.value.filePath %}
         <ul class="unstyled controls medias">
             <li>
+                <a href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
+            </li>
+        </ul>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block pim_image_row %}
+    {% spaceless %}
+
+    {{ form_errors(form) }}
+    {{ form_row(form.file, {'label': form.vars.label}) }}
+
+    {% if form.vars.value and form.vars.value.filePath %}
+        <ul class="unstyled controls medias">
+            <li>
                 <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
                 <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
