@@ -60,7 +60,9 @@ class EntitySubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        if ($metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())) {
+        if ($event->getClassMetadata()->getReflectionClass()
+            && $metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())
+        ) {
             $this->loggableManager->addConfig($metadata);
         }
     }

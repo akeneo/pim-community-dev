@@ -27,7 +27,6 @@ class MediaTypeTest extends TypeTestCase
      */
     public function testFormCreate()
     {
-        $this->assertField('id', 'hidden');
         $this->assertField('file', 'file');
         $this->assertField('removed', 'checkbox');
 

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\Flexible;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
@@ -44,36 +45,26 @@ class FlexibleEntityFilterTest extends FlexibleFilterTestCase
     /**
      * {@inheritdoc}
      */
-    protected function createQueryBuilder()
-    {
-        $qb = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder')
-                   ->disableOriginalConstructor()
-                   ->getMock();
-
-        $qb->expects($this->any())
-           ->method('prepareAttributeJoinCondition')
-           ->will($this->returnValue(self::TEST_JOIN_CONDITION));
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function filterDataProvider()
     {
         return array(
             'correct_equals' => array(
                 'data' => array('value' => $this->createEntities(2), 'type' => ChoiceFilterType::TYPE_CONTAINS),
-                'expectRepositoryCalls' => array()
+                'expectRepositoryCalls' => array(
+                    array('applyFilterByAttribute', array(self::TEST_FIELD, array(0 => 0, 1 => 1), 'IN'), null)
+                )
             ),
             'with_type_null' => array(
                 'data' => array('value' => $this->createEntities(2), 'type' => null),
-                'expectRepositoryCalls' => array()
+                'expectRepositoryCalls' => array(
+                    array('applyFilterByAttribute', array(self::TEST_FIELD, array(0 => 0, 1 => 1), 'IN'), null)
+                )
             ),
             'with_type_not_contains' => array(
                 'data' => array('value' => $this->createEntities(2), 'type' => ChoiceFilterType::TYPE_NOT_CONTAINS),
-                'expectRepositoryCalls' => array()
+                'expectRepositoryCalls' => array(
+                    array('applyFilterByAttribute', array(self::TEST_FIELD, array(0 => 0, 1 => 1), 'NOT IN'), null)
+                )
             )
         );
     }
