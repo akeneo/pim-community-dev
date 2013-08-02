@@ -36,15 +36,8 @@ class ReportController extends Controller
     public function indexAction(Request $request)
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.report');
-        $datagridView = $gridManager->getDatagrid()->createView();
 
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimImportExportBundle:Report:index.html.twig';
-        }
-
-        return $this->render($view, array('datagrid' => $datagridView));
+        return $this->renderDatagrid($gridManager);
     }
 
     /**
@@ -63,15 +56,8 @@ class ReportController extends Controller
     public function exportAction(Request $request)
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.export_report');
-        $datagridView = $gridManager->getDatagrid()->createView();
 
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimImportExportBundle:Report:index.html.twig';
-        }
-
-        return $this->render($view, array('datagrid' => $datagridView));
+        return $this->renderDatagrid($gridManager);
     }
 
     /**
@@ -90,6 +76,19 @@ class ReportController extends Controller
     public function importAction(Request $request)
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.import_report');
+
+        return $this->renderDatagrid($gridManager);
+    }
+
+    /**
+     * Render the report datagrid from a datagrid manager
+     *
+     * @param \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager $gridManager
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderDatagrid($gridManager)
+    {
         $datagridView = $gridManager->getDatagrid()->createView();
 
         if ('json' == $request->getRequestFormat()) {
