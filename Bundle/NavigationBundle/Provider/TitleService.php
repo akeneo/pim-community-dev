@@ -13,6 +13,7 @@ use Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader;
 use Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader;
 use Oro\Bundle\NavigationBundle\Title\StoredTitle;
 use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -72,24 +73,14 @@ class TitleService implements TitleServiceInterface
     protected $titles = null;
 
     /**
-     * @var string
-     */
-    protected $delimiter;
-
-    /**
-     * @var string
-     */
-    protected $applicationSuffix;
-
-    /**
      * @var BreadcrumbManager
      */
     protected $breadcrumbManager;
 
     /**
-     * @var string
+     * @var UserConfigManager
      */
-    protected $titleMenuName;
+    protected $userConfigManager;
 
     public function __construct(
         AnnotationsReader $reader,
@@ -97,20 +88,15 @@ class TitleService implements TitleServiceInterface
         Translator $translator,
         ObjectManager $em,
         Serializer $serializer,
-        $delimiter,
-        $applicationSuffix,
-        BreadcrumbManager $breadcrumbManager,
-        $titleMenuName
+        UserConfigManager $userConfigManager,
+        BreadcrumbManager $breadcrumbManager
     ) {
         $this->readers = array($reader, $configReader);
-
         $this->translator = $translator;
         $this->em = $em;
         $this->serializer = $serializer;
-        $this->delimiter = $delimiter;
-        $this->applicationSuffix = $applicationSuffix;
+        $this->userConfigManager = $userConfigManager;
         $this->breadcrumbManager = $breadcrumbManager;
-        $this->titleMenuName = $titleMenuName;
     }
 
     /**
@@ -363,16 +349,19 @@ class TitleService implements TitleServiceInterface
                 $titleData[] = $title;
             }
 
-            $breadcrumbLabels = $this->breadcrumbManager->getBreadcrumbLabels($this->titleMenuName, $route);
+            $breadcrumbLabels = $this->breadcrumbManager->getBreadcrumbLabels(
+                $this->userConfigManager->get('oro_navigation.breadcrumb_menu'),
+                $route
+            );
             if (count($breadcrumbLabels)) {
                 $titleData = array_merge($titleData, $breadcrumbLabels);
             }
 
-            if ($this->applicationSuffix) {
-                $titleData[] = $this->applicationSuffix;
+            if ($globalTitleSuffix = $this->userConfigManager->get('oro_navigation.title_suffix')) {
+                $titleData[] = $globalTitleSuffix;
             }
 
-            return implode(' ' . $this->delimiter . ' ', $titleData);
+            return implode(' ' . $this->userConfigManager->get('oro_navigation.title_delimiter') . ' ', $titleData);
         }
 
         return false;

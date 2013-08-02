@@ -20,7 +20,7 @@
         'additional': [
             {
                 'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
-                'indexLabel' : entity_config.get('label')
+                'indexLabel' : entity_config.get('label')|default('N/A')
             },
         ]
     } %}
@@ -28,10 +28,22 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-
 {% block content_data %}
     {% set id = 'configfield-create' %}
-    {% set dataBlocks = form_data_blocks(form) %}
+    {% set dataBlocks = [
+        {
+            'title': 'Doctrine Type',
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.code),
+                    form_row(form.type),
+                ]
+            }]
+        }
+    ] %}
+
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,

@@ -41,6 +41,7 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
         'value',
     );
 
+
     /**
      * @param FieldDescriptionInterface $field
      * @param string                    $templateName

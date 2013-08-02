@@ -121,3 +121,10 @@
 #oro_user_group_form_roles{
     height: 67px;
 }
+
+.version-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 5px 40px 0;
+}

@@ -10,6 +10,14 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class ExtendManager
 {
+    const STATE_NEW     = 'New';
+    const STATE_UPDATED = 'Updated';
+    const STATE_ACTIVE  = 'Active';
+    const STATE_DELETED = 'Deleted';
+
+    const OWNER_SYSTEM = 'System';
+    const OWNER_CUSTOM = 'Custom';
+
     /**
      * @var ProxyObjectFactory
      */

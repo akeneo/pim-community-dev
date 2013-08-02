@@ -23,6 +23,6 @@ oro_menu_config:
 
 oro_titles:
     oro_tag_index:  ~
-    oro_tag_update: Edit "%%tag.name%%" tag
-    oro_tag_create: Create tag
+    oro_tag_update: Edit "%%tag.name%%" Tag
+    oro_tag_create: Create Tag
     oro_tag_search: Records tagged as "%%tag.name%%"
