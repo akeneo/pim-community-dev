@@ -6,13 +6,11 @@ use Doctrine\ORM\PersistentCollection;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
@@ -62,35 +60,38 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param $className
-     * @return Config
+     * @param      $className
+     * @param null $fieldName
+     * @param null $fieldType
+     * @return EntityConfigId|FieldConfigId
      */
-    public function getConfig($className)
+    public function getConfigId($className, $fieldName = null, $fieldType = null)
     {
-        return $this->configManager->getConfig(new EntityConfigId($this->getClassName($className), $this->scope));
+        if ($fieldName) {
+            return new FieldConfigId($className, $this->getScope(), $fieldName, $fieldType);
+        } else {
+            return new EntityConfigId($className, $this->getScope());
+        }
     }
 
     /**
-     * @param $className
-     * @param $code
-     * @return Config
+     * @param      $className
+     * @param null $fieldName
+     * @return bool
      */
-    public function getFieldConfig($className, $code)
+    public function hasConfig($className, $fieldName = null)
     {
-        $configId = new FieldConfigId($className, $this->scope, $code);
-        return $this->getConfig($configId);
+        return $this->configManager->hasConfig($this->getConfigId($className, $fieldName));
     }
 
     /**
-     * @param $className
-     * @param $code
-     * @return Config
+     * @param      $className
+     * @param null $fieldName
+     * @return null|Config|ConfigInterface
      */
-    public function hasFieldConfig($className, $code)
+    public function getConfig($className, $fieldName = null)
     {
-        return $this->isConfigurable($className)
-            ? $this->getConfig($className)->hasField($code)
-            : false;
+        return $this->configManager->getConfig($this->getConfigId($className, $fieldName));
     }
 
     /**
