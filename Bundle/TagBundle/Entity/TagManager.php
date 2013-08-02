@@ -102,10 +102,11 @@ class TagManager
     /**
      * Loads or creates multiples tags from a list of tag names
      *
-     * @param  array $names Array of tag names
+     * @param array $names Array of tag names
+     * @param boolean $needFlush
      * @return Tag[]
      */
-    public function loadOrCreateTags(array $names)
+    public function loadOrCreateTags(array $names, $needFlush = true)
     {
         if (empty($names)) {
             return array();
@@ -138,7 +139,9 @@ class TagManager
                 $tags[] = $tag;
             }
 
-            $this->em->flush();
+            if ($needFlush) {
+                $this->em->flush();
+            }
         }
 
         return $tags;

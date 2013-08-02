@@ -6,7 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Oro\Bundle\TagBundle\Entity\TagManager;
-use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -15,6 +14,9 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class TagsTransformer extends EntityToIdTransformer
 {
+    /**
+     * @var TagManager
+     */
     protected $tagManager;
 
     /**
@@ -63,7 +65,10 @@ class TagsTransformer extends EntityToIdTransformer
             }
 
             if ($newValues[$type]) {
-                $entities[$type] = array_merge($entities[$type], $this->tagManager->loadOrCreateTags($newValues[$type]));
+                $entities[$type] = array_merge(
+                    $entities[$type],
+                    $this->tagManager->loadOrCreateTags($newValues[$type], false)
+                );
             }
 
             if (count($entities[$type]) !== count($values[$type]) + count($newValues[$type])) {
