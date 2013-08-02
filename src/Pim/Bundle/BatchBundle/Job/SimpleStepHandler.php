@@ -27,6 +27,7 @@ class SimpleStepHandler implements StepHandlerInterface
     private $logger = null;
 
     /**
+     * @param object                 $logger
      * @param JobRepositoryInterface $jobRepository    Job repository
      * @param ExecutionContext       $executionContext Execution context
      */
@@ -43,7 +44,7 @@ class SimpleStepHandler implements StepHandlerInterface
     /**
      * Set the logger
      *
-     * @param $logger The logger
+     * @param object $logger The logger
      */
     public function setLogger($logger)
     {
@@ -52,6 +53,7 @@ class SimpleStepHandler implements StepHandlerInterface
 
     /**
      * Get the logger for internal use
+     * @return object
      */
     protected function getLogger()
     {
@@ -59,7 +61,7 @@ class SimpleStepHandler implements StepHandlerInterface
     }
 
     /**
-     * @param jobRepository the jobRepository to set
+     * @param JobRepositoryInterface $jobRepository the jobRepository to set
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
@@ -70,7 +72,7 @@ class SimpleStepHandler implements StepHandlerInterface
      * A context containing values to be added to the step execution before it
      * is handled.
      *
-     * @param executionContext the execution context to set
+     * @param ExecutionContext $executionContext the execution context to set
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
