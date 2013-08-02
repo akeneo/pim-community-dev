@@ -7,7 +7,6 @@ use Pim\Bundle\BatchBundle\Entity\Job;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
-
 /**
  * Class peristing JobExecution and StepExecution states
  *
@@ -25,6 +24,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
     /**
      * Provides the doctrine entity manager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {

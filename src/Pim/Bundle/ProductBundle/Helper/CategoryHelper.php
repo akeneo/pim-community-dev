@@ -305,18 +305,18 @@ class CategoryHelper
 
             $children = static::formatCategoryAndCount($category['__children'], $selectedIds, $count);
 
-            $selectedChildrenCount = 0;
+            $selectedChildren = 0;
 
             foreach ($children as $child) {
-                $selectedChildrenCount += $child['selectedChildrenCount'];
+                $selectedChildren += $child['selectedChildrenCount'];
                 if (preg_match('/checked/', $child['state'])) {
-                    $selectedChildrenCount ++;
+                    $selectedChildren ++;
                 }
             }
 
             $title = $category['item']->getTitle();
 
-            if ($selectedChildrenCount > 0) {
+            if ($selectedChildren > 0) {
                 $title = '<strong>'.$title.'</strong>';
             }
 
@@ -331,7 +331,7 @@ class CategoryHelper
                 'data'  => $title,
                 'state' => $state,
                 'children' => $children,
-                'selectedChildrenCount' => $selectedChildrenCount
+                'selectedChildrenCount' => $selectedChildren
             );
         }
 

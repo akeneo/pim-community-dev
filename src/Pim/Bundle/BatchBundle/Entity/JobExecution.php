@@ -37,7 +37,7 @@ class JobExecution
     private $stepExecutions;
 
     /**
-    /* @var Job
+     * @var Job
      * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
@@ -142,6 +142,8 @@ class JobExecution
      * Sets the {@link ExecutionContext} for this execution
      *
      * @param ExecutionContext $executionContext the attributes
+     *
+     * @return JobExecution
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
@@ -164,6 +166,8 @@ class JobExecution
      * Sets the time that this execution ended
      *
      * @param mixed $endTime the time that this execution ended
+     *
+     * @return JobExecution
      */
     public function setEndTime(\DateTime $endTime)
     {
@@ -186,6 +190,8 @@ class JobExecution
      * Sets the time this execution started
      *
      * @param mixed $startTime the time this execution started
+     *
+     * @return JobExecution
      */
     public function setStartTime(\DateTime $startTime)
     {
@@ -206,7 +212,9 @@ class JobExecution
     /**
      * Sets the time this execution has been created
      *
-     * @param mixed $startTime the time this execution has been created
+     * @param mixed $createTime the time this execution has been created
+     *
+     * @return JobExecution
      */
     public function setCreateTime(\DateTime $createTime)
     {
@@ -228,7 +236,9 @@ class JobExecution
     /**
      * Sets the time this execution has been updated
      *
-     * @param mixed $startTime the time this execution has been updated
+     * @param mixed $updatedTime the time this execution has been updated
+     *
+     * @return JobExecution
      */
     public function setUpdatedTime(\DateTime $updatedTime)
     {
@@ -251,6 +261,8 @@ class JobExecution
      * Sets the current status of this step
      *
      * @param BatchStatus $status the current status of this step
+     *
+     * @return JobExecution
      */
     public function setStatus(BatchStatus $status)
     {
@@ -265,6 +277,8 @@ class JobExecution
      * that they don't overwrite a failed status with an successful one.
      *
      * @param mixed $status the new status value
+     *
+     * @return JobExecution
      */
     public function upgradeStatus($status)
     {
@@ -277,6 +291,8 @@ class JobExecution
 
     /**
      * @param ExitStatus $exitStatus
+     *
+     * @return JobExecution
      */
     public function setExitStatus(ExitStatus $exitStatus)
     {
@@ -324,6 +340,8 @@ class JobExecution
      * Add a step executions to job's step execution
      *
      * @param StepExecution $stepExecution
+     *
+     * @return JobExecution
      */
     public function addStepExecution(StepExecution $stepExecution)
     {
@@ -379,6 +397,8 @@ class JobExecution
     /**
      * Add a failure exception
      * @param Exception $e
+     *
+     * @return JobExecution
      */
     public function addFailureException(\Exception $e)
     {
@@ -419,6 +439,8 @@ class JobExecution
      * Set the associated job
      *
      * @param Job $job The job to associate the JobExecution to
+     *
+     * @return JobExecution
      */
     public function setJob(Job $job)
     {

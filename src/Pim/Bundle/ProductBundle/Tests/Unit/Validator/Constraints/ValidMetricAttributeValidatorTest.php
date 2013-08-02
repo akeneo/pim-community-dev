@@ -122,7 +122,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         $this->assertCount(1, $this->executionContext->getViolations());
         foreach ($this->executionContext->getViolations() as $violation) {
             $this->assertEquals(
-                $this->constraint->invalidMetricFamilyMessage,
+                $this->constraint->invalidFamilyMessage,
                 $violation->getMessageTemplate()
             );
         }

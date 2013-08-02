@@ -41,8 +41,8 @@ class FileGuesser implements ConstraintGuesserInterface
             $options['maxSize'] = $attribute->getMaxFileSize();
         }
 
-        if ($allowedFileExtensions = $attribute->getAllowedFileExtensions()) {
-            $options['allowedExtensions'] = $allowedFileExtensions;
+        if ($allowedExtensions = $attribute->getAllowedFileExtensions()) {
+            $options['allowedExtensions'] = $allowedExtensions;
         }
 
         if ($options) {
