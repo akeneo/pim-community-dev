@@ -1018,6 +1018,9 @@ Oro.Navigation = Backbone.Router.extend({
     processForms: function(selector) {
         $(selector).on('submit', _.bind(function (e) {
             var target = e.currentTarget;
+            if (target.data('nohash')) {
+                return;
+            }
             e.preventDefault();
 
             var url = $(target).attr('action');

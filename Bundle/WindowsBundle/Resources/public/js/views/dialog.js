@@ -3,11 +3,11 @@ Oro.widget = Oro.widget || {};
 
 Oro.widget.DialogView = Oro.widget.Abstract.extend({
     options: _.extend(
-        Oro.widget.Abstract.prototype.options,
         {
             type: 'dialog',
             dialogOptions: null
-        }
+        },
+        Oro.widget.Abstract.prototype.options
     ),
 
     // Windows manager global variables
@@ -97,6 +97,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         });
         this.widgetContent.remove();
         this._getActionsElement().remove();
+        this.widget.remove();
     },
 
     handleStateChange: function(e, data) {
@@ -155,7 +156,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         } else {
             this.widget.html(this.widgetContent);
         }
-        this.renderActions();
+        Oro.widget.Abstract.prototype.show.apply(this);
     },
 
     /**

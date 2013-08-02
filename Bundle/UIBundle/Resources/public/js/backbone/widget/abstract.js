@@ -14,10 +14,6 @@ Oro.widget.Abstract = Backbone.View.extend({
         console.warn('Implement setTitle');
     },
 
-    show: function() {
-        console.warn('Implement show');
-    },
-
     renderActions: function() {
         console.warn('Implement renderActions');
     },
@@ -32,7 +28,6 @@ Oro.widget.Abstract = Backbone.View.extend({
 
         this.actions = [];
         this.firstRun = true;
-        this.widgetContent = this.$el;
     },
 
     getWid: function() {
@@ -66,7 +61,7 @@ Oro.widget.Abstract = Backbone.View.extend({
      */
     adoptFormActions: function() {
         this._initEmbeddedForm();
-        if (this.form !== undefined) {
+        if (this.hasAdoptedActions && this.form !== undefined) {
             var actions = this._getActionsElement();
             var self = this;
             actions.find('[type=submit]').each(function(idx, btn) {
@@ -75,7 +70,8 @@ Oro.widget.Abstract = Backbone.View.extend({
                     return false;
                 });
             });
-            this.form.submit(function() {
+            this.form.submit(function(e) {
+                e.stopImmediatePropagation();
                 self.trigger('adoptedFormSubmit', self.form, self);
                 return false;
             });
@@ -127,16 +123,22 @@ Oro.widget.Abstract = Backbone.View.extend({
         return false;
     },
 
-    addAction: function(actionElement) {
-        this.actions.push(actionElement);
-        this.renderActions();
+    addAction: function(key, actionElement) {
+        if (!this.hasAction(key)) {
+            this.actions[key] = actionElement;
+            this._getActionsElement().append(actionElement);
+        }
+    },
+
+    hasAction: function(key) {
+        return this.actions.hasOwnProperty(key);
     },
 
     getPreparedActions: function() {
         this.adoptFormActions();
         var container = this._getActionsElement();
-        for (var i = 0; i < this.actions.length; i++) {
-            container.append(this.actions[i]);
+        for (var actionKey in this.actions) if (this.actions.hasOwnProperty(actionKey)) {
+            container.append(this.actions[actionKey]);
         }
         return container;
     },
@@ -193,4 +195,10 @@ Oro.widget.Abstract = Backbone.View.extend({
             }
         }, this));
     },
+
+    show: function() {
+        this.renderActions();
+        this.$el.trigger('widgetize', this);
+        this.trigger('widgetRender', this.widgetContent, this);
+    }
 });
