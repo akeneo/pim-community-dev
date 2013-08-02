@@ -24,6 +24,7 @@ class Form extends Base
             $this->elements,
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
+                'Active tab'                      => array('css' => '.tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
@@ -68,6 +69,14 @@ class Form extends Base
     public function getSection($title)
     {
         return $this->find('css', sprintf('div.accordion-heading:contains("%s")', $title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findField($name)
+    {
+        return $this->getElement('Active tab')->findField($name);
     }
 
     /**
