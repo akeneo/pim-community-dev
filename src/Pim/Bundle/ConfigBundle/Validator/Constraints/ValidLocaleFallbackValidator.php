@@ -49,7 +49,7 @@ class ValidLocaleFallbackValidator extends ConstraintValidator
             }
 
             if ($locale->getCode() === $locale->getFallback()) {
-                $this->context->addViolationAtSubPath('fallback', $constraint->fallbackDuplicatesLocale, array(), null);
+                $this->context->addViolationAtSubPath('fallback', $constraint->fallbackTwinLocale, array(), null);
             }
         }
     }
