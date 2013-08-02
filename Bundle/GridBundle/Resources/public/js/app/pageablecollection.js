@@ -49,7 +49,8 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
         currentPage: 'i',
         pageSize: 'p',
         sorters: 's',
-        filters: 'f'
+        filters: 'f',
+        gridName: 't'
     },
 
     /**
@@ -119,6 +120,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      */
     encodeStateData: function(stateObject) {
         var data = _.pick(stateObject, _.keys(this.stateShortKeys));
+        data.gridName = this.inputName;
         data = Oro.invertKeys(data, this.stateShortKeys);
         return Oro.packToQueryString(data);
     },
