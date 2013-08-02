@@ -24,6 +24,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
     /**
      * Provides the doctrine entity manager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {

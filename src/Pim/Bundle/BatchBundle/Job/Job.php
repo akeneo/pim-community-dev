@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
@@ -51,6 +52,7 @@ class Job implements JobInterface
 
     /**
      * Set the logger
+     * @param object $logger
      */
     public function setLogger($logger)
     {
@@ -59,6 +61,7 @@ class Job implements JobInterface
 
     /**
      * Get the logger for internal use
+     * @return object
      */
     protected function getLogger()
     {
@@ -79,6 +82,8 @@ class Job implements JobInterface
      * Set the name property
      *
      * @param string $name
+     *
+     * @return Job
      */
     public function setName($name)
     {
@@ -103,6 +108,8 @@ class Job implements JobInterface
      * addStep(Step).
      *
      * @param array $steps the steps to execute
+     *
+     * @return Job
      */
     public function setSteps(array $steps)
     {

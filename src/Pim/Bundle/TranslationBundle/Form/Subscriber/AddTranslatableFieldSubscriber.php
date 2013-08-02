@@ -195,15 +195,15 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected function bindTranslations($data)
     {
         $collection = array();
-        $availableTranslations = array();
+        $availableTrans = array();
 
         foreach ($data as $translation) {
-            $availableTranslations[strtolower($translation->getLocale())] = $translation;
+            $availableTrans[strtolower($translation->getLocale())] = $translation;
         }
 
         foreach ($this->getFieldNames() as $locale => $fieldName) {
-            if (isset($availableTranslations[strtolower($locale)])) {
-                $translation = $availableTranslations[strtolower($locale)];
+            if (isset($availableTrans[strtolower($locale)])) {
+                $translation = $availableTrans[strtolower($locale)];
             } else {
                 $translation = $this->translationFactory->createTranslation($locale);
             }

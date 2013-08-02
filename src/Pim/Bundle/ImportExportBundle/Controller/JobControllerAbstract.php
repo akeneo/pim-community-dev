@@ -210,18 +210,17 @@ abstract class JobControllerAbstract extends Controller
             return $this->redirectToIndexView();
         }
 
-        // TODO || FIXME : Why ?
-        // Ok the job can't be launch because invalid
-        // But we mustn't return a 404 !!?
-        if (count($this->getValidator()->validate($job)) > 0) {
-            throw $this->createNotFoundException();
-        }
-        $jobExecution = new JobExecution;
-        $definition = $job->getJobDefinition();
-        $definition->execute($jobExecution);
+        if (count($this->getValidator()->validate($job)) === 0) {
+            $jobExecution = new JobExecution;
+            $definition = $job->getJobDefinition();
+            $definition->execute($jobExecution);
 
-        //TODO Analyse $jobExecution to define wether or not it was ok
-        $this->addFlash('success', sprintf('%s has been successfully executed.', $this->getJobType()));
+            if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
+                $this->addFlash('success', sprintf('%s has been successfully executed.', $this->getJobType()));
+            } else {
+                $this->addFlash('success', sprintf('An error occured during the %s execution.', $this->getJobType()));
+            }
+        }
 
         return $this->redirectToShowView($job->getId());
     }
@@ -247,6 +246,7 @@ abstract class JobControllerAbstract extends Controller
         }
 
         $jobDefinition = $this->getConnectorRegistry()->getJob($job);
+
         if (!$jobDefinition) {
             throw $this->createNotFoundException(
                 sprintf(

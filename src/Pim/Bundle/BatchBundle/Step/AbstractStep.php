@@ -45,7 +45,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * Set the logger
      *
-     * @param $logger The logger
+     * @param object $logger The logger
      */
     public function setLogger($logger)
     {
@@ -54,6 +54,8 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * Get the logger for internal use
+     *
+     * @return object
      */
     protected function getLogger()
     {
@@ -63,7 +65,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * Public setter for {@link JobRepositoryInterface}.
      *
-     * @param jobRepository is a mandatory dependence (no default).
+     * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
@@ -71,7 +73,6 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     *
      * @return JobRepositoryInterface
      */
     protected function getJobRepository()

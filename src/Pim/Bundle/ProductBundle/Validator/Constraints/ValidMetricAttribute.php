@@ -19,7 +19,7 @@ class ValidMetricAttribute extends Constraint
      *
      * @var string
      */
-    public $invalidMetricFamilyMessage = 'Please specify a valid metric family';
+    public $invalidFamilyMessage = 'Please specify a valid metric family';
 
     /*
      * Violation message for invalid or missing default metric unit
