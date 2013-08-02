@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\Job as JobEntity;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
@@ -26,7 +26,7 @@ interface JobRepositoryInterface
      *
      * @return JobExecution
      */
-    public function createJobExecution(Job $job);
+    public function createJobExecution(JobEntity $job);
 
     /**
      * Update a JobExecution object
