@@ -2,14 +2,15 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Audit;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 class AuditManager
@@ -46,7 +47,7 @@ class AuditManager
         $log = new ConfigLog();
         $log->setUser($this->getUser());
 
-        foreach (array_merge($this->configManager->getUpdatedConfig(), $this->configManager->getInsertConfig()) as $config) {
+        foreach ($this->configManager->getUpdateConfig() as $config) {
             $this->logConfig($config, $log);
         }
 
@@ -63,8 +64,9 @@ class AuditManager
     {
         $changes = $this->configManager->getConfigChangeSet($config);
 
-        $configContainer = $this->configManager->getProvider($config->getScope())->getConfigContainer();
-        if ($config instanceof FieldConfigInterface) {
+        $configId = $config->getConfigId();
+        $configContainer = $this->configManager->getProvider($config->getConfigId()->getScope())->getConfigContainer();
+        if ($configId instanceof FieldConfigId) {
             $internalValues = $configContainer->getFieldInternalValues();
         } else {
             $internalValues = $configContainer->getEntityInternalValues();
@@ -77,12 +79,12 @@ class AuditManager
         }
 
         $diff = new ConfigLogDiff();
-        $diff->setScope($config->getScope());
+        $diff->setScope($configId->getScope());
         $diff->setDiff($changes);
-        $diff->setClassName($config->getClassName());
+        $diff->setClassName($configId->getClassName());
 
-        if ($config instanceof FieldConfigInterface) {
-            $diff->setFieldName($config->getCode());
+        if ($configId instanceof FieldConfigId) {
+            $diff->setFieldName($configId->getFieldName());
         }
 
         $log->addDiff($diff);
