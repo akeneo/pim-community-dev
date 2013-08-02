@@ -75,6 +75,7 @@ class ReportDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($field);
 
+        $jobType = $this->jobType;
         $field = new FieldDescription();
         $field->setName('alias');
         $field->setOptions(
@@ -89,11 +90,11 @@ class ReportDatagridManager extends DatagridManager
                 'show_filter'     => true,
                 'class'           => 'PimBatchBundle:Job',
                 'property'        => 'alias',
-                'query_builder'   => function (EntityRepository $er) {
+                'query_builder'   => function (EntityRepository $er) use ($jobType) {
                     $qb = $er->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
-                    if ($this->jobType !== null) {
+                    if ($jobType !== null) {
                         $qb->where('j.type = :job_type')
-                           ->setParameter('job_type', $this->jobType);
+                           ->setParameter('job_type', $jobType);
                     }
 
                     return $qb;
