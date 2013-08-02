@@ -235,7 +235,6 @@ class ProductAttributeType extends AttributeType
      */
     protected function addPositionField(FormBuilderInterface $builder)
     {
-        $builder->add('sortOrder', 'integer', array('label' => 'Position'));
     }
 
 
