@@ -8,7 +8,7 @@ use Pim\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 
 use Pim\Bundle\BatchBundle\Job\Job;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
