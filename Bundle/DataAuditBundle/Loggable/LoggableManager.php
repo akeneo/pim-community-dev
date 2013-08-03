@@ -516,8 +516,8 @@ class LoggableManager
             $classMetadata = new ClassMetadata($reflection->getName());
 
             foreach ($reflection->getProperties() as $reflectionProperty) {
-                if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $reflectionProperty->getName())
-                    && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $reflectionProperty->getName()))
+                if ($this->auditConfigProvider->hasConfig($entityClassName, $reflectionProperty->getName())
+                    && ($fieldConfig = $this->auditConfigProvider->getConfig($entityClassName, $reflectionProperty->getName()))
                     && $fieldConfig->is('auditable')
                 ) {
                     $propertyMetadata = new PropertyMetadata($entityClassName, $reflectionProperty->getName());

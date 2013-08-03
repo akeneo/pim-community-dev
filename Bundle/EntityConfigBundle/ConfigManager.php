@@ -188,6 +188,21 @@ class ConfigManager
     }
 
     /**
+     * @param $className
+     * @param $scope
+     * @return FieldConfigId[]
+     */
+    public function getFieldConfigIds($className, $scope)
+    {
+        /** @var EntityConfigModel $entityModel */
+        $entityModel = $this->getConfigModel($className);
+
+        return array_map(function (FieldConfigModel $fieldModel) use ($className, $scope) {
+            return new FieldConfigId($className, $scope, $fieldModel->getFieldName(), $fieldModel->getType());
+        }, $entityModel->getFields());
+    }
+
+    /**
      * @param ConfigIdInterface $configId
      * @return bool
      */
@@ -210,7 +225,7 @@ class ConfigManager
      * @param ConfigIdInterface $configId
      * @throws Exception\RuntimeException
      * @throws Exception\LogicException
-     * @return null|Config|ConfigInterface
+     * @return ConfigInterface
      */
     public function getConfig(ConfigIdInterface $configId)
     {
@@ -266,7 +281,7 @@ class ConfigManager
             $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = array();
+                $defaultValues = $provider->getConfigContainer()->getEntityDefaultValues();
                 if (isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
@@ -304,10 +319,9 @@ class ConfigManager
             $entityModel->addField($fieldModel);
 
             foreach ($this->getProviders() as $provider) {
-                $entityId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
-                $provider->createConfig($entityId, array());
-
-                $config = $provider->createConfig(new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType), array());
+                $defaultValues = $provider->getConfigContainer()->getFieldDefaultValues();
+                $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
+                $config        = $provider->createConfig($fieldId, $defaultValues);
 
                 $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
 

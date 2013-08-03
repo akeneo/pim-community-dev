@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -47,6 +47,7 @@ class ConfigEntityGridController extends Controller
         /** @var ConfigProvider $configProvider */
         $configProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $entityConfig   = $configProvider->getConfig($entity->getClassName());
+        $fieldConfigIds = $configProvider->getFieldConfigIds($entity->getClassName());
 
         $data = $entityConfig->has('unique_key') ? $entityConfig->get('unique_key') : array();
 
@@ -54,9 +55,9 @@ class ConfigEntityGridController extends Controller
 
         $form = $this->createForm(
             new UniqueKeyCollectionType(
-                $entityConfig->getFields(
-                    function (FieldConfig $fieldConfig) {
-                        return $fieldConfig->getType() != 'ref-many';
+                array_filter($fieldConfigIds,
+                    function (FieldConfigId $fieldConfigId) {
+                        return $fieldConfigId->getFieldType() != 'ref-many';
                     }
                 )
             ),
@@ -64,7 +65,7 @@ class ConfigEntityGridController extends Controller
         );
 
         if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -111,7 +112,7 @@ class ConfigEntityGridController extends Controller
         return array(
             'form'          => $form->createView(),
             'entity_id'     => $entity->getId(),
-            'entity_config' => $entityConfigProvider->getConfig($entityConfig->getClassName())
+            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName())
         );
     }
 }

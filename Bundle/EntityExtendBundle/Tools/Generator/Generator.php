@@ -48,7 +48,7 @@ class Generator
     }
 
     /**
-     * @param $entityName
+     * @param      $entityName
      * @param bool $force
      */
     public function checkEntityCache($entityName, $force = false)
@@ -56,7 +56,7 @@ class Generator
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
 
-        $validator   = $this->entityCacheDir. DIRECTORY_SEPARATOR . 'validator.yml';
+        $validator = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
         if (!file_exists($validator)) {
             file_put_contents(
                 $validator,
@@ -68,19 +68,19 @@ class Generator
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
-                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.php',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.php',
                 "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
             );
 
             /** write Dynamic yml */
             file_put_contents(
-                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.orm.yml',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.orm.yml',
                 Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5)
             );
 
             /** write Proxy class */
             file_put_contents(
-                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $proxyClass) . '.php',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $proxyClass) . '.php',
                 "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass)
             );
         }
@@ -130,17 +130,17 @@ class Generator
             )
         );
 
-        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
-            foreach ($fields as $field => $options) {
-                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
-                    $yml[$extendClass]['fields'][$field]['code'] = $options->getCode();
-                    $yml[$extendClass]['fields'][$field]['type'] = $options->getType();
+        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+            foreach ($fieldIds as $fieldId) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['code'] = $fieldId->getFieldName();
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['type'] = $fieldId->getFieldType();
 
-                    $fieldConfig =    $this->configProvider->getFieldConfig($entityName, $field);
+                    $fieldConfig = $this->configProvider->getConfigById($fieldId);
 
-                    $yml[$extendClass]['fields'][$field]['length'] = $fieldConfig->get('length');
-                    $yml[$extendClass]['fields'][$field]['precision'] = $fieldConfig->get('precision');
-                    $yml[$extendClass]['fields'][$field]['scale'] = $fieldConfig->get('scale');
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['length']    = $fieldConfig->get('length');
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['precision'] = $fieldConfig->get('precision');
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['scale']     = $fieldConfig->get('scale');
                 }
             }
         }
@@ -166,7 +166,6 @@ class Generator
 
     /**
      * Prepare Dynamic class
-     *
      * @param $entityName
      * @param $className
      * @return $this
@@ -208,25 +207,26 @@ class Generator
             );
 
         $toArray = '';
-        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
-            foreach ($fields as $field => $options) {
-                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
+        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+            foreach ($fieldIds as $fieldId) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                    $fieldName = $fieldId->getFieldName();
                     $class
-                        ->setProperty(PhpProperty::create($field)->setVisibility('protected'))
+                        ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
                         ->setMethod(
                             $this->generateClassMethod(
-                                'get'.ucfirst($field),
-                                'return $this->'.$field.';'
+                                'get' . ucfirst($fieldName),
+                                'return $this->' . $fieldName . ';'
                             )
                         )
                         ->setMethod(
                             $this->generateClassMethod(
-                                'set'.ucfirst($field),
-                                '$this->'.$field.' = $value; return $this;',
+                                'set' . ucfirst($fieldName),
+                                '$this->' . $fieldName . ' = $value; return $this;',
                                 array('value')
                             )
                         );
-                    $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
+                    $toArray .= '    \'' . $fieldName . '\' => $this->' . $fieldName . ',' . "\n";
                 }
             }
         }
@@ -234,7 +234,7 @@ class Generator
         $class->setMethod(
             $this->generateClassMethod(
                 '__toArray',
-                'return array('.$toArray."\n".');'
+                'return array(' . $toArray . "\n" . ');'
             )
         );
 
@@ -245,7 +245,6 @@ class Generator
 
     /**
      * Generate Proxy class
-     *
      * @param $entityName
      * @param $className
      * @return $this
@@ -287,27 +286,29 @@ class Generator
                 )
             );
 
-        $toArray   = '';
-        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
-            foreach ($fields as $field => $options) {
-                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
+        $toArray = '';
+        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+            foreach ($fieldIds as $fieldId) {
+                $fieldName = $fieldId->getFieldName();
+
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
                     $class->setMethod(
                         $this->generateClassMethod(
-                            'set'.ucfirst($field),
-                            '$this->__proxy__extend->set'.ucfirst($field).'($'.$field.'); return $this;',
-                            array($field)
+                            'set' . ucfirst($fieldName),
+                            '$this->__proxy__extend->set' . ucfirst($fieldName) . '($' . $fieldName . '); return $this;',
+                            array($fieldName)
                         )
                     );
                     $class->setMethod(
                         $this->generateClassMethod(
-                            'get'.ucfirst($field),
-                            'return $this->__proxy__extend->get'.ucfirst($field).'();'
+                            'get' . ucfirst($fieldName),
+                            'return $this->__proxy__extend->get' . ucfirst($fieldName) . '();'
                         )
                     );
 
-                    $toArray   .= '    \''.$field.'\' => $this->__proxy__extend->get'.ucfirst($field).'(),'."\n";
+                    $toArray .= '    \'' . $fieldName . '\' => $this->__proxy__extend->get' . ucfirst($fieldName) . '(),' . "\n";
                 } else {
-                    $toArray   .= '    \''.$field.'\' => $this->get'.ucfirst($field).'(),'."\n";
+                    $toArray .= '    \'' . $fieldName . '\' => $this->get' . ucfirst($fieldName) . '(),' . "\n";
                 }
             }
         }
@@ -315,7 +316,7 @@ class Generator
         $class->setMethod(
             $this->generateClassMethod(
                 '__proxy__toArray',
-                'return array('.$toArray."\n".');'
+                'return array(' . $toArray . "\n" . ');'
             )
         );
 

@@ -45,13 +45,10 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {
-                if ($fieldName) {
-                    $config = $provider->getFieldConfig($className, $fieldName);
-                } else {
-                    $config = $provider->getConfig($className);
-                }
+                $config = $provider->getConfig($className, $fieldName);
+
                 $config->setValues($data[$provider->getScope()]);
-                //TODO::look after a EntityConfig changes in configManager
+
                 $this->configManager->persist($config);
             }
         }

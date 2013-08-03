@@ -73,9 +73,7 @@ class ConfigFieldGridController extends Controller
                 } else {
                     $extendManager->getConfigFactory()->createFieldConfig($entity->getClassName(), $data);
 
-                    /** @var ConfigManager $configManager */
-                    $configManager = $this->get('oro_entity_config.config_manager');
-                    $configManager->clearCache($entity->getClassName());
+                    $extendManager->getConfigProvider()->clearCache($entity->getClassName());
 
                     $this->get('session')->getFlashBag()->add('success', sprintf(
                         'field "%s" has been added to entity "%', $data['code'], $entity->getClassName()
@@ -94,8 +92,8 @@ class ConfigFieldGridController extends Controller
         $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
 
         return array(
-            'form'      => $form->createView(),
-            'entity_id' => $entity->getId(),
+            'form'          => $form->createView(),
+            'entity_id'     => $entity->getId(),
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
         );
     }
@@ -123,8 +121,11 @@ class ConfigFieldGridController extends Controller
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
-        $fieldConfig = $extendManager->getConfigProvider()
-            ->getFieldConfig($field->getEntity()->getClassName(), $field->getFieldName());
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
+            $field->getEntity()->getClassName(),
+            $field->getFieldName()
+        );
+
         if (!$fieldConfig->is('is_extend')) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
@@ -132,9 +133,10 @@ class ConfigFieldGridController extends Controller
         $this->getDoctrine()->getManager()->remove($field);
         $this->getDoctrine()->getManager()->flush($field);
 
-        /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
-        $configManager->clearCache($fieldConfig->getClassName());
+        $extendManager->getConfigProvider()->clearCache(
+            $field->getEntity()->getClassName(),
+            $field->getFieldName()
+        );
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }

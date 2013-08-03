@@ -60,6 +60,15 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @param $className
+     * @return FieldConfigId[]
+     */
+    public function getFieldConfigIds($className)
+    {
+        return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
+    }
+
+    /**
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
@@ -68,9 +77,9 @@ class ConfigProvider implements ConfigProviderInterface
     public function getConfigId($className, $fieldName = null, $fieldType = null)
     {
         if ($fieldName) {
-            return new FieldConfigId($className, $this->getScope(), $fieldName, $fieldType);
+            return new FieldConfigId($this->getClassName($className), $this->getScope(), $fieldName, $fieldType);
         } else {
-            return new EntityConfigId($className, $this->getScope());
+            return new EntityConfigId($this->getClassName($className), $this->getScope());
         }
     }
 
@@ -95,6 +104,15 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @param ConfigIdInterface $configId
+     * @return ConfigInterface
+     */
+    public function getConfigById(ConfigIdInterface $configId)
+    {
+        return $this->configManager->getConfig($configId);
+    }
+
+    /**
      * @param  ConfigIdInterface $configId
      * @param  array             $values
      * @return Config
@@ -109,6 +127,8 @@ class ConfigProvider implements ConfigProviderInterface
         }
 
         $this->persist($entityConfig);
+
+        return $entityConfig;
     }
 
     /**
@@ -133,6 +153,15 @@ class ConfigProvider implements ConfigProviderInterface
         }
 
         return $className;
+    }
+
+    /**
+     * @param      $className
+     * @param null $fieldName
+     */
+    public function clearCache($className, $fieldName = null)
+    {
+        $this->configManager->clearCache($this->getConfigId($className, $fieldName));
     }
 
     /**
