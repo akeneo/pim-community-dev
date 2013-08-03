@@ -30,6 +30,8 @@ class UniqueKeyType extends AbstractType
             $this->fields
         );
 
+        $choices = array_combine($choices, $choices);
+
         $builder->add(
             'name',
             'text',

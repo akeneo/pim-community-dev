@@ -199,7 +199,7 @@ class ConfigManager
 
         return array_map(function (FieldConfigModel $fieldModel) use ($className, $scope) {
             return new FieldConfigId($className, $scope, $fieldModel->getFieldName(), $fieldModel->getType());
-        }, $entityModel->getFields());
+        }, $entityModel->getFields()->toArray());
     }
 
     /**
@@ -289,7 +289,7 @@ class ConfigManager
                 $entityId = new EntityConfigId($className, $provider->getScope());
                 $config   = $provider->createConfig($entityId, $defaultValues);
 
-                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
+                $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
 
             $this->em()->persist($entityModel);
@@ -323,9 +323,10 @@ class ConfigManager
                 $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config        = $provider->createConfig($fieldId, $defaultValues);
 
-                $this->originalConfigs[$config->getConfigId()->getId()] = clone $config;
-
+                $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
+
+            $this->em()->persist($fieldModel);
 
             $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
         }
@@ -365,22 +366,17 @@ class ConfigManager
         $models = array();
 
         foreach ($this->persistConfigs as $config) {
-            $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
-
             $this->calculateConfigChangeSet($config);
 
-            $changes = $this->getConfigChangeSet($config);
-            if (!count($changes)) {
-                continue;
-            }
+            $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
 
-            $values = array_intersect_key($config->getValues(), $changes);
-
-            $models[spl_object_hash($model)] = $model = $this->getConfigModelByConfigId($config->getConfigId());
+            $models[] = $model = $this->getConfigModelByConfigId($config->getConfigId());
 
             //TODO::refactoring
-            $serializableValues = $this->getProvider($config->getConfigId())->getConfigContainer()->getEntitySerializableValues();
-            $model->fromArray($config->getConfigId()->getScope(), $values, $serializableValues);
+            $serializableValues = $this->getProvider($config->getConfigId()->getScope())
+                ->getConfigContainer()
+                ->getEntitySerializableValues();
+            $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
             if ($this->configCache) {
                 $this->configCache->removeConfigFromCache($config->getConfigId());

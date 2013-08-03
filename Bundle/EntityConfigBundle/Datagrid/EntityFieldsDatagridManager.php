@@ -116,12 +116,12 @@ class EntityFieldsDatagridManager extends DatagridManager
         $fieldsCollection->add($fieldId);
 
         $fieldCode = new FieldDescription();
-        $fieldCode->setName('code');
+        $fieldCode->setName('fieldName');
         $fieldCode->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => 'Name',
-                'field_name'  => 'code',
+                'field_name'  => 'fieldName',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
