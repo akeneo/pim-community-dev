@@ -76,7 +76,7 @@ class ConfigController extends Controller
         $request = $this->getRequest();
 
         $form = $this->createForm(
-            'oro_entity_config_config_entity_type',
+            'oro_entity_config_config_type',
             null,
             array(
                 'class_name' => $entity->getClassName(),
@@ -85,7 +85,7 @@ class ConfigController extends Controller
         );
 
         if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 //persist data inside the form
@@ -172,12 +172,6 @@ class ConfigController extends Controller
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
 
-        /*
-        var_dump($this->getRequest()->headers->get('referer'));
-        if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
-            $this->get('session')->getFlashBag()->add('success', 'Schema successfully updated.');
-        }*/
-
         return array(
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
@@ -245,7 +239,7 @@ class ConfigController extends Controller
         $field = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)->find($id);
 
         $form    = $this->createForm(
-            'oro_entity_config_config_field_type',
+            'oro_entity_config_config_type',
             null,
             array(
                 'class_name' => $field->getEntity()->getClassName(),

@@ -77,7 +77,7 @@ class ConfigFieldType extends AbstractType
 
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigType($items, $fieldType),
+                    new ConfigScopeType($items, $fieldType),
                     array('block_config' => (array) $provider->getConfigContainer()->getFieldFormBlockConfig())
                 );
 

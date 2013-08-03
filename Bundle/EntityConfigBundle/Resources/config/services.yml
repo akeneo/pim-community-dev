@@ -2,8 +2,6 @@ parameters:
     oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\ConfigManager
     oro_entity_config.cache.file_cache.class:                   Oro\Bundle\EntityConfigBundle\Cache\FileCache
     oro_entity_config.command.setup.class:                      Oro\Bundle\EntityConfigBundle\Command\SetupCommand
-    oro_entity_config.form.type.config_entity.class:            Oro\Bundle\EntityConfigBundle\Form\Type\ConfigEntityType
-    oro_entity_config.form.type.config_field.class:             Oro\Bundle\EntityConfigBundle\Form\Type\ConfigFieldType
 
 services:
     oro_entity_config.proxy.entity_manager:
@@ -33,14 +31,3 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
-    oro_entity_config.form.type.config_entity:
-        class:                                                  %oro_entity_config.form.type.config_entity.class%
-        arguments:                                              [@oro_entity_config.config_manager]
-        tags:
-            - { name: form.type, alias: oro_entity_config_config_entity_type }
-
-    oro_entity_config.form.type.config_field:
-        class:                                                  %oro_entity_config.form.type.config_field.class%
-        arguments:                                              [@oro_entity_config.config_manager]
-        tags:
-            - { name: form.type, alias: oro_entity_config_config_field_type }

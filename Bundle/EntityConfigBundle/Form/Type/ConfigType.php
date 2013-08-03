@@ -2,46 +2,37 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ConfigType extends AbstractType
 {
     /**
-     * @var array
+     * @var ConfigManager
      */
-    protected $items;
+    protected $configManager;
 
     /**
-     * @var string
+     * @param ConfigManager $configManager
      */
-    protected $fieldType;
-
-    /**
-     * @param $items
-     * @param $fieldType
-     */
-    public function __construct($items, $fieldType = null)
+    public function __construct(ConfigManager $configManager)
     {
-        $this->items     = $items;
-        $this->fieldType = $fieldType;
+        $this->configManager = $configManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        foreach ($this->items as $code => $config) {
-            if (isset($config['form']) && isset($config['form']['type'])) {
-                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
+        $resolver->setRequired(array('config_model'));
 
-                if ($this->fieldType) {
-                    $options['field_type'] = $this->fieldType;
-                }
-                $builder->add($code, $config['form']['type'], $options);
-            }
-        }
+        $resolver->setAllowedTypes(
+            array(
+                'config_model' => 'Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel'
+            )
+        );
     }
 
     /**
