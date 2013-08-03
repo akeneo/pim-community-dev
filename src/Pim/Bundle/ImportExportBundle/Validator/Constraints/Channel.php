@@ -25,4 +25,3 @@ class Channel extends Choice
         return 'channel_validator';
     }
 }
-

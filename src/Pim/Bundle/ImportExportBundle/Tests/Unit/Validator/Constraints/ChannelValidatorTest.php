@@ -53,10 +53,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
 
         $manager->expects($this->any())
             ->method('getChannelChoices')
-            ->will($this->returnValue(array(
-                'foo' => 'Foo',
-                'bar' => 'Bar',
-            )));
+            ->will($this->returnValue(array('foo' => 'Foo', 'bar' => 'Bar',)));
 
         return $manager;
     }

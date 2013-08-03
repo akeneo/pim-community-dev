@@ -30,4 +30,3 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('The channel you selected does not exist.', $this->constraint->message);
     }
 }
-

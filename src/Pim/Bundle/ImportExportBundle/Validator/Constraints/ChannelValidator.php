@@ -35,4 +35,3 @@ class ChannelValidator extends ChoiceValidator
         parent::validate($value, $constraint);
     }
 }
-
