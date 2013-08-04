@@ -28,9 +28,49 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Type: bool
         negativeAllowed:
             - Type: bool
+        maxCharacters:
+            - Type: int
         maxFileSize:
             - Type: int
         sortOrder:
             - Type: int
-        maxCharacters:
-            - Type: int
+        unique:
+            - Type: bool
+            - "False":
+                message: This attribute type can't have unique value
+                groups:
+                    - pim_product_textarea
+                    - pim_product_price_collection
+                    - pim_product_multiselect
+                    - pim_product_simpleselect
+                    - pim_product_image
+                    - pim_product_file
+                    - pim_product_metric
+                    - pim_product_boolean
+        options:
+            - Count:
+                min: 1
+                minMessage: You must specify at least one option
+                groups: [pim_product_simpleselect, pim_product_multiselect]
+        dateType:
+            - Choice:
+                choices: [date, time, datetime]
+                groups: [pim_product_date]
+        allowedFileSources:
+            - Choice:
+                choices: [upload, external]
+                groups: [pim_product_file, pim_product_image]
+        maxFileSize:
+            - Type:
+                type: integer
+                groups: [pim_product_file, pim_product_image]
+            - GreaterThanOrEqual:
+                value: 0
+                groups: [pim_product_file, pim_product_image]
+        defaultValue:
+            - Blank:
+                message: No default value may be specified for this attribute type
+                groups: [pim_product_file, pim_product_image, pim_product_identifier]
+            - Type:
+                type: bool
+                groups: [pim_product_boolean]
