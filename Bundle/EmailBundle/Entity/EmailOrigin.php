@@ -4,7 +4,6 @@ namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Email Origin
@@ -34,7 +33,6 @@ class EmailOrigin
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailFolder", mappedBy="origin", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
      */
     protected $folders;
 

@@ -39,9 +39,7 @@ class EmailController extends Controller
      */
     public function viewAction(Email $entity)
     {
-        /** @var EmailCacheManager $emailCacheManager */
-        $emailCacheManager = $this->get('oro_email.email.cache.manager');
-        $emailCacheManager->ensureEmailBodyCached($entity);
+        $this->getEmailCacheManager()->ensureEmailBodyCached($entity);
 
         return array(
             'entity' => $entity
@@ -96,5 +94,15 @@ class EmailController extends Controller
         $response->setContent($entity->getContent()->getValue());
 
         return $response;
+    }
+
+    /**
+     * Get email cache manager
+     *
+     * @return EmailCacheManager
+     */
+    protected function getEmailCacheManager()
+    {
+        return $this->container->get('oro_email.email.cache.manager');
     }
 }

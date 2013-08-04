@@ -4,7 +4,9 @@ namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
+use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 /**
  * Email
@@ -26,6 +28,8 @@ class Email
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Soap\ComplexType("int")
+     * @Type("integer")
      */
     protected $id;
 
@@ -33,6 +37,7 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime")
+     * @Exclude
      */
     protected $created;
 
@@ -40,6 +45,8 @@ class Email
      * @var string
      *
      * @ORM\Column(name="subject", type="string", length=500)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $subject;
 
@@ -47,6 +54,8 @@ class Email
      * @var string
      *
      * @ORM\Column(name="from_name", type="string", length=255)
+     * @Soap\ComplexType("string", name="from")
+     * @Type("string")
      */
     protected $fromName;
 
@@ -55,6 +64,7 @@ class Email
      *
      * @ORM\ManyToOne(targetEntity="EmailAddress", fetch="EAGER")
      * @ORM\JoinColumn(name="from_email_address_id", referencedColumnName="id", nullable=false)
+     * @Exclude
      */
     protected $fromEmailAddress;
 
@@ -62,7 +72,6 @@ class Email
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailRecipient", mappedBy="email", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
      */
     protected $recipients;
 
@@ -70,6 +79,8 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="received", type="datetime")
+     * @Soap\ComplexType("dateTime")
+     * @Type("dateTime")
      */
     protected $receivedAt;
 
@@ -77,6 +88,8 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="sent", type="datetime")
+     * @Soap\ComplexType("dateTime")
+     * @Type("dateTime")
      */
     protected $sentAt;
 
@@ -84,6 +97,8 @@ class Email
      * @var integer
      *
      * @ORM\Column(name="importance", type="integer")
+     * @Soap\ComplexType("int")
+     * @Type("integer")
      */
     protected $importance;
 
@@ -91,6 +106,7 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="internaldate", type="datetime")
+     * @Exclude
      */
     protected $internalDate;
 
@@ -98,6 +114,8 @@ class Email
      * @var string
      *
      * @ORM\Column(name="message_id", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $messageId;
 
@@ -105,6 +123,7 @@ class Email
      * @var string
      *
      * @ORM\Column(name="x_message_id", type="string", length=255, nullable=true)
+     * @Exclude
      */
     protected $xMessageId;
 
@@ -112,6 +131,7 @@ class Email
      * @var string
      *
      * @ORM\Column(name="x_thread_id", type="string", length=255, nullable=true)
+     * @Exclude
      */
     protected $xThreadId;
 
@@ -120,6 +140,7 @@ class Email
      *
      * @ORM\ManyToOne(targetEntity="EmailFolder", inversedBy="emails")
      * @ORM\JoinColumn(name="folder_id", referencedColumnName="id")
+     * @Exclude
      */
     protected $folder;
 

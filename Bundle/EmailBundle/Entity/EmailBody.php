@@ -4,7 +4,9 @@ namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
+use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 /**
  * Email Body
@@ -21,6 +23,7 @@ class EmailBody
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Exclude
      */
     protected $id;
 
@@ -28,6 +31,7 @@ class EmailBody
      * @var \DateTime $created
      *
      * @ORM\Column(name="created", type="datetime")
+     * @Exclude
      */
     protected $created;
 
@@ -35,6 +39,8 @@ class EmailBody
      * @var string
      *
      * @ORM\Column(name="body", type="text")
+     * @Soap\ComplexType("string", name="content")
+     * @Type("string")
      */
     protected $bodyContent;
 
@@ -42,6 +48,8 @@ class EmailBody
      * @var bool
      *
      * @ORM\Column(name="body_is_text", type="boolean")
+     * @Soap\ComplexType("boolean")
+     * @Type("boolean")
      */
     protected $bodyIsText;
 
@@ -49,6 +57,7 @@ class EmailBody
      * @var bool
      *
      * @ORM\Column(name="has_attachments", type="boolean")
+     * @Exclude
      */
     protected $hasAttachments;
 
@@ -56,6 +65,7 @@ class EmailBody
      * @var bool
      *
      * @ORM\Column(name="persistent", type="boolean")
+     * @Exclude
      */
     protected $persistent;
 
@@ -64,6 +74,7 @@ class EmailBody
      *
      * @ORM\OneToOne(targetEntity="Email", inversedBy="emailBody")
      * @ORM\JoinColumn(name="email_id", referencedColumnName="id")
+     * @Exclude
      */
     protected $header;
 
@@ -71,7 +82,6 @@ class EmailBody
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailAttachment", mappedBy="emailBody", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
      */
     protected $attachments;
 

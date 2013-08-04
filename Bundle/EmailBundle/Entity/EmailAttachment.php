@@ -3,7 +3,9 @@
 namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
+use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 /**
  * Email Attachment
@@ -19,6 +21,8 @@ class EmailAttachment
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Soap\ComplexType("int")
+     * @Type("integer")
      */
     protected $id;
 
@@ -26,6 +30,8 @@ class EmailAttachment
      * @var string
      *
      * @ORM\Column(name="file_name", type="string", length=255)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $fileName;
 
@@ -33,6 +39,8 @@ class EmailAttachment
      * @var string
      *
      * @ORM\Column(name="content_type", type="string", length=100)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $contentType;
 
@@ -49,6 +57,7 @@ class EmailAttachment
      *
      * @ORM\ManyToOne(targetEntity="EmailBody", inversedBy="attachments")
      * @ORM\JoinColumn(name="body_id", referencedColumnName="id")
+     * @Exclude
      */
     protected $emailBody;
 
