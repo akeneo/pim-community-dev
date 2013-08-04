@@ -4,6 +4,7 @@ Create a new job
 We begin by defining Job class as following (inherits of configure method) :
 ```php
 <?php
+
 namespace Acme\Bundle\DemoDataFlowBundle\Job;
 
 use Oro\Bundle\DataFlowBundle\Job\AbstractJob;

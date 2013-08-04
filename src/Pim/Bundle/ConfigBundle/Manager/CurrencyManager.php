@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;

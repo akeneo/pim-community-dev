@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\SearchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;

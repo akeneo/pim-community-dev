@@ -15,7 +15,6 @@ use Pim\Bundle\FilterBundle\DependencyInjection\PimFilterExtension;
  */
 class PimFilterExtensionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Symfony\Component\HttpKernel\DependencyInjection\Extension
      */

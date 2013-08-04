@@ -17,7 +17,6 @@ use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
  */
 class FamilyType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */

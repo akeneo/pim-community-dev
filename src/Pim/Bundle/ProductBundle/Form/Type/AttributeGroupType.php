@@ -1,23 +1,21 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for AttributeGroup form
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
 class AttributeGroupType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */

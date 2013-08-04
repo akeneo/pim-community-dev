@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;

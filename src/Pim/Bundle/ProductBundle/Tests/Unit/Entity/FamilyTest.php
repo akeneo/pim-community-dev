@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -14,7 +15,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  */
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test related method
      */

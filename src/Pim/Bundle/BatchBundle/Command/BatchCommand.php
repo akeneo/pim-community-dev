@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;

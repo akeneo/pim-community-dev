@@ -1,10 +1,11 @@
 <?php
+
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for Product families

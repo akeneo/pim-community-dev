@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;

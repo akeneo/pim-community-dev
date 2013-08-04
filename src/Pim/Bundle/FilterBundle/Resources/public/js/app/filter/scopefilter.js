@@ -19,7 +19,7 @@ Pim.Filter.ScopeFilter = Oro.Filter.SelectFilter.extend({
      * @see Oro.Filter.SelectFilter
      */
     contextSearch: false,
-    
+
     /**
      * Filter template
      *

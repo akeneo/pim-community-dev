@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Translatable interface, must be implemented by translatable business objects
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface TranslatableInterface
@@ -62,7 +62,7 @@ interface TranslatableInterface
     /**
      * Set the locale used by default for translation
      *
-     * @param string
+     * @param string $locale
      *
      * @return Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
      */

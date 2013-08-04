@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;

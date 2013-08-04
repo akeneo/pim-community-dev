@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

@@ -82,7 +82,7 @@ class TranslatableEntity implements Translatable
      * @Gedmo\Locale
      */
     protected $locale;
-    
+
     // ... define methods (getter/setter and others)
 
     /**
@@ -147,7 +147,6 @@ Update form type
  */
 class TranslatableEntityType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
