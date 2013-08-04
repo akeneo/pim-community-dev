@@ -5,8 +5,7 @@ namespace Oro\Bundle\EmailBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\EmailOwnerProviderPass;
-use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\EmailAddressManagerPass;
+use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\EmailAddressConfigurationPass;
 
 class OroEmailBundle extends Bundle
 {
@@ -17,7 +16,6 @@ class OroEmailBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new EmailOwnerProviderPass());
-        $container->addCompilerPass(new EmailAddressManagerPass());
+        $container->addCompilerPass(new EmailAddressConfigurationPass());
     }
 }

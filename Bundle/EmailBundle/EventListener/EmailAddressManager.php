@@ -42,11 +42,11 @@ class EmailAddressManager
      */
     public function handleLoadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        if ($event->getClassMetadata()->getName() !== 'Oro\Bundle\EmailBundle\Entity\EmailAddress') {
+        $classMetadata = $event->getClassMetadata();
+        if ($classMetadata->getName() !== 'Oro\Bundle\EmailBundle\Entity\EmailAddress') {
             return;
         }
 
-        $classMetadata = $event->getClassMetadata();
         foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
             $prefix = strtolower(substr($emailOwnerClass, 0, strpos($emailOwnerClass, '\\')));
             if ($prefix === 'oro' || $prefix === 'orocrm') {
