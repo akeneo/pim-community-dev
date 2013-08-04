@@ -1,6 +1,17 @@
 Pim\Bundle\ProductBundle\Entity\ProductAttribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttribute: ~
+        - Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Bundle\ProductBundle\Validator\Constraints\UniquePropertyAvailable:
+            groups:
+                - pim_product_identifier
+                - pim_product_text
+                - pim_product_number
+                - pim_product_date
+        - Callback:
+            methods:
+                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isValid]
     properties:
         code:
             - NotBlank: ~
@@ -30,10 +41,12 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Type: bool
         maxCharacters:
             - Type: int
-        maxFileSize:
-            - Type: int
+            - GreaterThanOrEqual:
+                value: 0
         sortOrder:
             - Type: int
+            - GreaterThanOrEqual:
+                value: 0
         unique:
             - Type: bool
             - "False":
@@ -71,6 +84,13 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Blank:
                 message: No default value may be specified for this attribute type
                 groups: [pim_product_file, pim_product_image, pim_product_identifier]
-            - Type:
-                type: bool
-                groups: [pim_product_boolean]
+        dateMin:
+            - DateTime:
+                groups: [pim_product_date]
+        dateMax:
+            - DateTime:
+                groups: [pim_product_date]
+        validationRule:
+            - Choice:
+                choices: [url, email, regexp]
+                groups: [pim_product_text]

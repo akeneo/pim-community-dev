@@ -46,6 +46,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
+    pim_product.validator.constraints.unique_property_available:
+        class: Pim\Bundle\ProductBundle\Validator\Constraints\UniquePropertyAvailableValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_property_validator }
+
     # twig extension
     pim_product.twig.product_extension:
         class: Pim\Bundle\ProductBundle\Twig\ProductExtension
