@@ -180,7 +180,7 @@ class StepExecution
 
         $this->executionContext = new ExecutionContext();
 
-        $this->startTime = time();
+        $this->startTime = new \DateTime();
     }
 
     /**
@@ -247,7 +247,7 @@ class StepExecution
      *
      * @param mixed $endTime the time that this execution ended
      */
-    public function setEndTime($endTime)
+    public function setEndTime(\DateTime $endTime)
     {
         $this->endTime = $endTime;
     }
@@ -363,7 +363,7 @@ class StepExecution
      *
      * @param mixed $startTime the time this execution started
      */
-    public function setStartTime($startTime)
+    public function setStartTime(\DateTime $startTime)
     {
         $this->startTime = $startTime;
     }
@@ -397,9 +397,9 @@ class StepExecution
      */
     public function upgradeStatus($status)
     {
-        $newBatchStatus = $this->getBatchStatus();
+        $newBatchStatus = $this->getStatus();
         $newBatchStatus->upgradeTo($status);
-        $this->status = $newBatchStatus->getValue();
+        $this->setStatus($newBatchStatus);
     }
 
     /**
@@ -498,8 +498,8 @@ class StepExecution
             $summary,
             $this->id,
             $this->stepName,
-            $this->status->getValue(),
-            $this->exitStatus->getExitCode(),
+            $this->status,
+            $this->exitCode,
             $this->readCount,
             $this->filterCount,
             $this->writeCount,

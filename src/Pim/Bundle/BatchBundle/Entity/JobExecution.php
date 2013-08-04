@@ -33,14 +33,15 @@ class JobExecution
      */
     private $id;
 
-    /* @var ArrayCollection $stepExecutions */
-    /* TODO: link with the jobExecution entity */
-    private $stepExecutions = null;
+    /* @var array */
+    private $stepExecutions;
 
-    /* @var Job $jobExecution */
-    /* TODO: link with the jobExecution entity */
+    /**
+     * @var Job
+     * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
+     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     */
     private $job = null;
-
 
     /**
      * @var integer
@@ -115,7 +116,7 @@ class JobExecution
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->stepExecutions = array();
-        $this->createTime = time();
+        $this->createTime = new \DateTime();
     }
 
     /**
@@ -141,6 +142,8 @@ class JobExecution
      * Sets the {@link ExecutionContext} for this execution
      *
      * @param ExecutionContext $executionContext the attributes
+     *
+     * @return JobExecution
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
@@ -163,8 +166,10 @@ class JobExecution
      * Sets the time that this execution ended
      *
      * @param mixed $endTime the time that this execution ended
+     *
+     * @return JobExecution
      */
-    public function setEndTime($endTime)
+    public function setEndTime(\DateTime $endTime)
     {
         $this->endTime = $endTime;
 
@@ -185,8 +190,10 @@ class JobExecution
      * Sets the time this execution started
      *
      * @param mixed $startTime the time this execution started
+     *
+     * @return JobExecution
      */
-    public function setStartTime($startTime)
+    public function setStartTime(\DateTime $startTime)
     {
         $this->startTime = $startTime;
 
@@ -205,9 +212,11 @@ class JobExecution
     /**
      * Sets the time this execution has been created
      *
-     * @param mixed $startTime the time this execution has been created
+     * @param mixed $createTime the time this execution has been created
+     *
+     * @return JobExecution
      */
-    public function setCreateTime($createTime)
+    public function setCreateTime(\DateTime $createTime)
     {
         $this->createTime = $createTime;
 
@@ -227,9 +236,11 @@ class JobExecution
     /**
      * Sets the time this execution has been updated
      *
-     * @param mixed $startTime the time this execution has been updated
+     * @param mixed $updatedTime the time this execution has been updated
+     *
+     * @return JobExecution
      */
-    public function setUpdatedTime($updatedTime)
+    public function setUpdatedTime(\DateTime $updatedTime)
     {
         $this->updatedTime = $updatedTime;
 
@@ -250,6 +261,8 @@ class JobExecution
      * Sets the current status of this step
      *
      * @param BatchStatus $status the current status of this step
+     *
+     * @return JobExecution
      */
     public function setStatus(BatchStatus $status)
     {
@@ -264,6 +277,8 @@ class JobExecution
      * that they don't overwrite a failed status with an successful one.
      *
      * @param mixed $status the new status value
+     *
+     * @return JobExecution
      */
     public function upgradeStatus($status)
     {
@@ -276,6 +291,8 @@ class JobExecution
 
     /**
      * @param ExitStatus $exitStatus
+     *
+     * @return JobExecution
      */
     public function setExitStatus(ExitStatus $exitStatus)
     {
@@ -314,7 +331,7 @@ class JobExecution
     public function createStepExecution($stepName)
     {
         $stepExecution = new StepExecution($stepName, $this);
-        $this->stepExecutions->add($stepExecution);
+        $this->stepExecutions[] = $stepExecution;
 
         return $stepExecution;
     }
@@ -323,10 +340,12 @@ class JobExecution
      * Add a step executions to job's step execution
      *
      * @param StepExecution $stepExecution
+     *
+     * @return JobExecution
      */
     public function addStepExecution(StepExecution $stepExecution)
     {
-        $this->stepExecutions->add($stepExecution);
+        $this->stepExecutions[] = $stepExecution;
 
         return $this;
     }
@@ -350,7 +369,7 @@ class JobExecution
      */
     public function isStopping()
     {
-        return $this->status->getValue() == BatchStatus::STOPPING;
+        return $this->status == BatchStatus::STOPPING;
     }
 
     /**
@@ -378,6 +397,8 @@ class JobExecution
     /**
      * Add a failure exception
      * @param Exception $e
+     *
+     * @return JobExecution
      */
     public function addFailureException(\Exception $e)
     {
@@ -415,6 +436,31 @@ class JobExecution
     }
 
     /**
+     * Set the associated job
+     *
+     * @param Job $job The job to associate the JobExecution to
+     *
+     * @return JobExecution
+     */
+    public function setJob(Job $job)
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get the associated job
+     *
+     * @return $job The job to which the JobExecution is associated
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+
+
+    /**
      * To string
      * @return string
      */
@@ -423,7 +469,7 @@ class JobExecution
         $string = "";
         try {
             $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s,"
-                . "exitStatus=%s, job=[%s], jobParameters=[%s]";
+                . "exitStatus=%s, job=[%s]";
             $string = sprintf(
                 $message,
                 $this->startTime,
@@ -431,10 +477,9 @@ class JobExecution
                 $this->updatedTime,
                 $this->status,
                 $this->exitStatus,
-                $this->jobInstance,
-                $this->jobParameters
+                $this->job
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $string = $e->getMessage();
         }
 

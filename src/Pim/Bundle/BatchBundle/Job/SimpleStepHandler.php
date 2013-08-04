@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Implementation of {@link StepHandler} that manages repository and restart
@@ -17,7 +18,7 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
  */
 class SimpleStepHandler implements StepHandlerInterface
 {
-    /* @var JobRepository $jobRepository */
+    /* @var JobRepositoryInterface $jobRepository */
     private $jobRepository = null;
 
     /* @var ExecutionContext $executionContext */
@@ -26,11 +27,15 @@ class SimpleStepHandler implements StepHandlerInterface
     private $logger = null;
 
     /**
-     * @param JobRepository    $jobRepository    Job repository
-     * @param ExecutionContext $executionContext Execution context
+     * @param object                 $logger
+     * @param JobRepositoryInterface $jobRepository    Job repository
+     * @param ExecutionContext       $executionContext Execution context
      */
-    public function __construct($logger, JobRepository $jobRepository, ExecutionContext $executionContext = null)
-    {
+    public function __construct(
+        $logger,
+        JobRepositoryInterface $jobRepository,
+        ExecutionContext $executionContext = null
+    ) {
         $this->jobRepository = $jobRepository;
         if ($executionContext = null) {
             $executionContext = new ExecutionContext();
@@ -42,7 +47,7 @@ class SimpleStepHandler implements StepHandlerInterface
     /**
      * Set the logger
      *
-     * @param $logger The logger
+     * @param object $logger The logger
      */
     public function setLogger($logger)
     {
@@ -51,6 +56,7 @@ class SimpleStepHandler implements StepHandlerInterface
 
     /**
      * Get the logger for internal use
+     * @return object
      */
     protected function getLogger()
     {
@@ -58,9 +64,9 @@ class SimpleStepHandler implements StepHandlerInterface
     }
 
     /**
-     * @param jobRepository the jobRepository to set
+     * @param JobRepositoryInterface $jobRepository the jobRepository to set
      */
-    public function setJobRepository(JobRepository $jobRepository)
+    public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
     }
@@ -69,14 +75,12 @@ class SimpleStepHandler implements StepHandlerInterface
      * A context containing values to be added to the step execution before it
      * is handled.
      *
-     * @param executionContext the execution context to set
+     * @param ExecutionContext $executionContext the execution context to set
      */
-    /*
     public function setExecutionContext(ExecutionContext $executionContext)
     {
         $this->executionContext = $executionContext;
     }
-    */
 
     /**
      * @param StepInterface $step      Step

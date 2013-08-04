@@ -344,7 +344,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         /**
          * @var FlexibleQueryBuilder
-         * @deprecated : getRootAlias method is deprecated. Use getRootAliases (and current() ?).
          */
         $query
             ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')

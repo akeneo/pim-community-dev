@@ -58,17 +58,33 @@
     {% spaceless %}
 
     {{ form_errors(form) }}
-    {{ form_row(form.file) }}
+    {{ form_row(form.file, {'label': form.vars.label}) }}
 
-    {% if form.vars.value %}
-    <div style="clear: both;">
-        <ul class="unstyled">
+    {% if form.vars.value and form.vars.value.filePath %}
+        <ul class="unstyled controls medias">
             <li>
-                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                {{ form_widget(form.removed, {attr: {style: 'margin: 4px;'}}) }} Remove
+                <a href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
         </ul>
-    </div>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block pim_image_row %}
+    {% spaceless %}
+
+    {{ form_errors(form) }}
+    {{ form_row(form.file, {'label': form.vars.label}) }}
+
+    {% if form.vars.value and form.vars.value.filePath %}
+        <ul class="unstyled controls medias">
+            <li>
+                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
+            </li>
+        </ul>
     {% endif %}
 
     {% endspaceless %}

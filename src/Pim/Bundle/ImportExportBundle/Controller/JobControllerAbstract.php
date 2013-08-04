@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Pim\Bundle\BatchBundle\Job\ExitStatus;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -10,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\JobExecution;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Job controller
@@ -65,7 +67,10 @@ abstract class JobControllerAbstract extends Controller
 
         $job = new Job($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
-            $this->addFlash('error', sprintf('Failed to create an %s with an unknown job.', $this->getJobType()));
+            $this->addFlash(
+                'error',
+                sprintf('Failed to create an %s with an unknown job definition.', $this->getJobType())
+            );
 
             return $this->redirectToIndexView();
         }
@@ -175,7 +180,7 @@ abstract class JobControllerAbstract extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'Job successfully removed');
+            $this->addFlash('success', sprintf('The %s has been successfully removed', $this->getJobType()));
 
             return $this->redirectToIndexView();
         }
@@ -207,18 +212,17 @@ abstract class JobControllerAbstract extends Controller
             return $this->redirectToIndexView();
         }
 
-        // TODO || FIXME : Why ?
-        // Ok the job can't be launch because invalid
-        // But we mustn't return a 404 !!?
-        if (count($this->getValidator()->validate($job)) > 0) {
-            throw $this->createNotFoundException();
-        }
-        $jobExecution = new JobExecution;
-        $definition = $job->getJobDefinition();
-        $definition->execute($jobExecution);
+        if (count($this->getValidator()->validate($job)) === 0) {
+            $jobExecution = new JobExecution;
+            $definition = $job->getJobDefinition();
+            $definition->execute($jobExecution);
 
-        //TODO Analyse $jobExecution to define wether or not it was ok
-        $this->addFlash('success', 'Job has been successfully executed.');
+            if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
+                $this->addFlash('success', sprintf('The %s has been successfully executed.', $this->getJobType()));
+            } else {
+                $this->addFlash('error', sprintf('An error occured during the %s execution.', $this->getJobType()));
+            }
+        }
 
         return $this->redirectToShowView($job->getId());
     }
@@ -238,7 +242,9 @@ abstract class JobControllerAbstract extends Controller
         $job = $this->findOr404('PimBatchBundle:Job', $id);
 
         if ($checkStatus && $job->getStatus() === Job::STATUS_IN_PROGRESS) {
-            throw $this->createNotFoundException(sprintf('The job "%s" is currently in progress', $job->getLabel()));
+            throw $this->createNotFoundException(
+                sprintf('The %s "%s" is currently in progress', $job->getJobType(), $job->getLabel())
+            );
         }
 
         $jobDefinition = $this->getConnectorRegistry()->getJob($job);
@@ -246,10 +252,11 @@ abstract class JobControllerAbstract extends Controller
         if (!$jobDefinition) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'The following job does not exist anymore. Please check configuration:<br />' .
+                    'The following %s does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
                     'Type: %s<br />' .
                     'Alias: %s',
+                    $this->getJobType(),
                     $job->getConnector(),
                     $job->getType(),
                     $job->getAlias()

@@ -12,17 +12,4 @@ namespace Context\Page\Attribute;
 class Edit extends Creation
 {
     protected $path = '/enrich/product-attribute/edit/{id}';
-
-    /**
-     * Set the attribute position
-     * @param integer $position
-     *
-     * @return Edit
-     */
-    public function setPosition($position)
-    {
-        $this->fillField('Position', $position);
-
-        return $this;
-    }
 }

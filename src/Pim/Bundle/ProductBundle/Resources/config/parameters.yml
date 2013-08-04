@@ -6,6 +6,7 @@ parameters:
     pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
     pim_product.form.type.product_create.class:       Pim\Bundle\ProductBundle\Form\Type\ProductCreateType
     pim_product.form.type.product_value.class:        Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+    pim_product.form.type.image.class:                Pim\Bundle\ProductBundle\Form\Type\ImageType
 
     pim_product.handler.product_create.class:         Pim\Bundle\ProductBundle\Form\Handler\ProductCreateHandler
 
@@ -41,3 +42,5 @@ parameters:
     pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\ScopableType
     pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
+
+    pim_product.event_listener.add_hash_to_redirect_url.class: Pim\Bundle\ProductBundle\EventListener\AddHashtagToRedirectedUrlListener

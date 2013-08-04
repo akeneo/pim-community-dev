@@ -11,13 +11,13 @@ Feature: Add attributes to a product
       | General |
       | Prices  |
     And the following product attribute:
-      | product | label        | group   | position |
-      | Car     | Release Date | General | 1        |
+      | product | label        | group   |
+      | Car     | Release Date | General |
     And the following product attributes:
-      | label            | group   | position |
-      | Long Description | General | 10       |
-      | Manufacturer     | General | 20       |
-      | Size             |         | 10       |
+      | label            | group   |
+      | Long Description | General |
+      | Manufacturer     | General |
+      | Size             |         |
     And I am logged in as "admin"
 
   Scenario: Display attributes that are not related to the current product

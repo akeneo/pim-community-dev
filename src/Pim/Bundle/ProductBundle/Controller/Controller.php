@@ -15,28 +15,6 @@ use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
 class Controller extends BaseController
 {
     /**
-     * Custom method to generate url with a hash
-     * @param string  $route      The name of the route
-     * @param mixed   $parameters An array of parameters
-     * @param Boolean $absolute   Whether to generate an absolute URL
-     * @param string  $hash       The hash to prepend to the URL
-     *
-     * @return string
-     */
-    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
-    {
-        $url = parent::generateUrl($route, $parameters, $absolute);
-        if (!$hash) {
-            $hash = $this->getRequest()->query->get('hash');
-        }
-        if ($hash) {
-            $url .= '#'.$hash;
-        }
-
-        return $url;
-    }
-
-    /**
      * @return ObjectManager
      */
     protected function getManager()

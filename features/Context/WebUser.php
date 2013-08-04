@@ -332,13 +332,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string  $attribute
      * @param integer $position
      *
-     * @Given /^I change the attribute position to (\d+)$/
+     * @Given /^I change the attribute "([^"]*)" position to (\d+)$/
      */
-    public function iChangeTheAttributePositionTo($position)
+    public function iChangeTheAttributePositionTo($attribute, $position)
     {
-        $this->getPage('Attribute Edit')->setPosition($position)->save();
+        $this->getCurrentPage()->dragAttributeToPosition($attribute, $position)->save();
+    }
+
+    /**
+     * @param string  $attribute
+     * @param integer $position
+     *
+     * @Then /^the attribute "([^"]*)" should be in position (\d+)$/
+     */
+    public function theAttributeShouldBeInPosition($attribute, $position)
+    {
+        $actual = $this->getCurrentPage()->getAttributePosition($attribute);
+        assertEquals($position, $actual);
     }
 
     /**

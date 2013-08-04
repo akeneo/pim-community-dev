@@ -39,7 +39,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNull($this->jobExecution->getEndTime());
 
-        $expectedEndTime = time();
+        $expectedEndTime = new \DateTime();
         $this->assertEntity($this->jobExecution->setEndTime($expectedEndTime));
         $this->assertEquals($expectedEndTime, $this->jobExecution->getEndTime());
     }
@@ -48,7 +48,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNull($this->jobExecution->getStartTime());
 
-        $expectedStartTime = time();
+        $expectedStartTime = new \DateTime();
         $this->assertEntity($this->jobExecution->setStartTime($expectedStartTime));
         $this->assertEquals($expectedStartTime, $this->jobExecution->getStartTime());
     }
@@ -57,7 +57,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNotNull($this->jobExecution->getCreateTime());
 
-        $expectedCreateTime = time();
+        $expectedCreateTime = new \DateTime();
         $this->assertEntity($this->jobExecution->setCreateTime($expectedCreateTime));
         $this->assertEquals($expectedCreateTime, $this->jobExecution->getCreateTime());
     }
@@ -66,7 +66,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNull($this->jobExecution->getUpdatedTime());
 
-        $expectedUpdatedTime = time();
+        $expectedUpdatedTime = new \DateTime();
         $this->assertEntity($this->jobExecution->setUpdatedTime($expectedUpdatedTime));
         $this->assertEquals($expectedUpdatedTime, $this->jobExecution->getUpdatedTime());
     }

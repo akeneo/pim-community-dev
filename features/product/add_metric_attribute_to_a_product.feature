@@ -7,8 +7,8 @@ Feature: Add metric attribute to a product
   Background:
     Given a "Car" product available in english
     And the following product attribute:
-      | type   | label  | metric family | default metric unit | position |
-      | metric | Weight | Weight        | KILOGRAM            | 2        |
+      | type   | label  | metric family | default metric unit |
+      | metric | Weight | Weight        | KILOGRAM            |
     And I am logged in as "admin"
 
   Scenario: Successfully add a metric attribute to a product

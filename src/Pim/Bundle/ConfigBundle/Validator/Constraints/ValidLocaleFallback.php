@@ -19,7 +19,7 @@ class ValidLocaleFallback extends Constraint
      *
      * @var string
      */
-    public $fallbackDuplicatesLocale = 'Inherited locale must not be the same as the locale';
+    public $fallbackTwinLocale = 'Inherited locale must not be the same as the locale';
 
     /*
      * Violation message for not allowed fallback

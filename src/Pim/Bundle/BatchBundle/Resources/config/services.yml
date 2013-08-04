@@ -1,6 +1,6 @@
 parameters:
     pim_batch.connectors.class:     Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\JobRepository
+    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
     pim_batch.step_handler.class:   Pim\Bundle\BatchBundle\Job\SimpleStepHandler
     pim_batch.job_factory.class:    Pim\Bundle\BatchBundle\Job\JobFactory
     pim_batch.step_factory.class:   Pim\Bundle\BatchBundle\Step\StepFactory
@@ -17,6 +17,8 @@ services:
 
     pim_batch.job_repository:
         class: %pim_batch.job_repository.class%
+        arguments:
+            - @doctrine.orm.entity_manager
 
     pim_batch.step_handler:
         class: %pim_batch.step_handler.class%

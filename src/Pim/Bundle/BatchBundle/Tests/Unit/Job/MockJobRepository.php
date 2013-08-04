@@ -1,6 +1,12 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Job;
+namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
+
+use Pim\Bundle\BatchBundle\Entity\Job as JobEntity;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
+use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 
 /**
  * Mock class implementing job repository interface
@@ -10,21 +16,20 @@ namespace Pim\Bundle\BatchBundle\Job;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class JobRepostoryInterface
+class MockJobRepository implements JobRepositoryInterface
 {
     private $jobExecutions = array();
 
     /**
      * {@inheritDoc}}
      */
-    public function createJobExecution($jobName, JobParameters $jobParameters)
+    public function createJobExecution(JobEntity $job)
     {
-        $ex = new JobExecution();
-        $ex->setJobParameters($jobParameters);
+        $jobExecution = new JobExecution();
 
-        $this->jobExecutions[] = $ex;
+        $this->jobExecutions[] = $jobExecutions;
 
-        $ex->setId(count($this->jobExecutions) - 1);
+        $jobExecution->setId(count($this->jobExecutions) - 1);
 
         return $ex;
     }
@@ -32,14 +37,21 @@ class JobRepostoryInterface
     /**
      * {@inheritDoc}}
      */
-    public function updateJobExecution($jobExecution)
+    public function updateJobExecution(JobExecution $jobExecution)
     {
     }
 
     /**
      * {@inheritDoc}}
      */
-    public function updateStepExecution($stepExecution)
+    public function updateStepExecution(StepExecution $stepExecution)
+    {
+    }
+
+    /**
+     * {@inheritDoc}}
+     */
+    public function flush()
     {
     }
 }

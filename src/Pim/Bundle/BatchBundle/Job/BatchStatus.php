@@ -59,6 +59,17 @@ class BatchStatus
     );
 
     /**
+     * Get all labels associative array
+     * @static
+     *
+     * @return array
+     */
+    public static function getAllLabels()
+    {
+        return self::$statusLabels;
+    }
+
+    /**
      * Set the current status
      *
      * @param mixed $value

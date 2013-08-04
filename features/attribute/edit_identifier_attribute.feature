@@ -27,7 +27,6 @@ Feature: Edit an identifier attribute
     And I fill in the following information:
       | Name           | mySecondId |
       | Max characters | 100        |
-      | Position       | 2          |
     And I visit the "Values" tab
     And I fill in the following information:
       | Default     | Sku2              |
