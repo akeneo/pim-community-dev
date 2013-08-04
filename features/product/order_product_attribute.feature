@@ -3,18 +3,26 @@ Feature: Order product attributes
   As a user
   I need to be able to set an order parameter which will manage fields order
 
+  @javascript
   Scenario: Successfully update an attribute position
     Given a "Car" product available in english
     And the following attribute group:
       | name    |
       | General |
     And the following product attribute:
-      | product | label         | group   |
-      | Car     | Release Date | General |
+      | product | label        | group   | position |
+      | Car     | Release Date | General | 1        |
+      | Car     | Color        | General | 2        |
+      | Car     | Price        | General | 3        |
     And I am logged in as "admin"
-    When I am on the "Release date" attribute page
-    And I change the attribute position to 40
-    Then I should see "Attribute successfully saved"
+    When I am on the "General" group page
+    And I visit the "Attributes" tab
+    Then the attribute "Price" should be in position 3
+    And I change the attribute "Price" position to 1
+    Then I should see "Group successfully saved"
+    And I visit the "Attributes" tab
+    Then the attribute "Price" should be in position 1
+    And the attribute "Color" should be in position 3
 
   Scenario: Display a produt attribute fields ordered by their position
     Given a "Car" product available in english

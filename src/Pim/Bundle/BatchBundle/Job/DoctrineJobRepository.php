@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
@@ -34,10 +34,10 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createJobExecution(Job $job)
+    public function createJobExecution(JobInstance $jobInstance)
     {
         $jobExecution = new JobExecution();
-        $job->addJobExecution($jobExcecution);
+        $jobInstance->addJobExecution($jobExecution);
 
         return $jobExecution;
     }

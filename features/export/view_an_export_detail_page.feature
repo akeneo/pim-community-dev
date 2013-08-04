@@ -27,4 +27,4 @@ Feature: View an export detail page
       | Akeneo    | removed_export | removed_acme_product_export | Product export for Acme.com | export |
     Given I am logged in as "admin"
     And I am on the "removed_acme_product_export" export job page
-    Then I should see "The following job does not exist anymore."
+    Then I should see "The following export does not exist anymore."

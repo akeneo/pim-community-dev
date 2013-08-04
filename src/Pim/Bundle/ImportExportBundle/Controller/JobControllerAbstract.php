@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Pim\Bundle\BatchBundle\Job\ExitStatus;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -216,9 +218,9 @@ abstract class JobControllerAbstract extends Controller
             $definition->execute($jobExecution);
 
             if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
-                $this->addFlash('success', sprintf('%s has been successfully executed.', $this->getJobType()));
+                $this->addFlash('success', sprintf('The %s has been successfully executed.', $this->getJobType()));
             } else {
-                $this->addFlash('success', sprintf('An error occured during the %s execution.', $this->getJobType()));
+                $this->addFlash('error', sprintf('An error occured during the %s execution.', $this->getJobType()));
             }
         }
 

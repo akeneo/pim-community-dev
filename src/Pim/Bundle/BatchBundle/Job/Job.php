@@ -6,8 +6,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * Implementation of the {@link Job} interface.
  *
