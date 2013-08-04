@@ -15,6 +15,13 @@ interface EmailOwnerInterface
     public function getClass();
 
     /**
+     * Get name of field contains the primary email address
+     *
+     * @return string
+     */
+    public function getPrimaryEmailField();
+
+    /**
      * Get entity unique id
      *
      * @return integer

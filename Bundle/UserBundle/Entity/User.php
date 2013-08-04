@@ -369,6 +369,16 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
+     * Get name of field contains the primary email address
+     *
+     * @return string
+     */
+    public function getPrimaryEmailField()
+    {
+        return 'email';
+    }
+
+    /**
      * Returns the user unique id.
      *
      * @return mixed

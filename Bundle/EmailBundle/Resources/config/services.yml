@@ -1,6 +1,8 @@
 parameters:
-    oro_email.cache.manager.class: Oro\Bundle\EmailBundle\Cache\EmailCacheManager
-    oro_email.address.manager.class: Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager
+    oro_email.email.cache.manager.class: Oro\Bundle\EmailBundle\Cache\EmailCacheManager
+    oro_email.email.owner.provider.class: Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider
+    oro_email.email.address.manager.class: Oro\Bundle\EmailBundle\EventListener\EmailAddressManager
+    oro_email.listener.entity_subscriber.class: Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
 
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
@@ -18,13 +20,25 @@ parameters:
     oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
 
 services:
-    oro_email.cache.manager:
-        class: %oro_email.cache.manager.class%
+    oro_email.email.cache.manager:
+        class: %oro_email.email.cache.manager.class%
         arguments:
             - @doctrine.orm.entity_manager
 
-    oro_email.address.manager:
-        class: %oro_email.address.manager.class%
+    oro_email.email.owner.provider:
+        class: %oro_email.email.owner.provider.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    oro_email.email.address.manager:
+        class: %oro_email.email.address.manager.class%
+
+    oro_email.listener.entity_subscriber:
+        class: %oro_email.listener.entity_subscriber.class%
+        arguments:
+            - @oro_email.email.address.manager
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     # Email template field
     oro_email.form.subscriber.emailtemplate:

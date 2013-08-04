@@ -3,20 +3,20 @@
 namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\UserBundle\Entity\User;
+use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 /**
  * Email Address
  *
  * @ORM\Table(name="oro_email_address",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email_address"})},
- *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email_address"})})
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email"})},
+ *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class EmailAddress
 {
-    // TODO: This is a temporary stub and it must be deleted after our implementation of flexible entity is finished
-    public $owner;
-
     /**
      * @var integer
      *
@@ -27,11 +27,29 @@ class EmailAddress
     protected $id;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    protected $updated;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="email_address", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255)
      */
-    protected $emailAddress;
+    protected $email;
+
+    // TODO: This should be replaces by array or proxy class. Need an investigation how to do this. Also see related code in EmailAddressManager class
+    private $_owner1;
+    private $_owner2;
 
     /**
      * Get id
@@ -44,27 +62,103 @@ class EmailAddress
     }
 
     /**
-     * Get a 'pure' email address.
-     * It means that if the full email is "John Smith" <john@example.com> the email address is john@example.com
+     * Get entity created date/time
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getEmailAddress()
+    public function getCreatedAt()
     {
-        return $this->emailAddress;
+        return $this->created;
     }
 
     /**
-     * Set a 'pure' email address.
-     * It means that if the full email is "John Smith" <john@example.com> the email address is john@example.com
+     * Get entity updated date/time
      *
-     * @param string $emailAddress
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Get email address.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email address.
+     *
+     * @param string $email
      * @return $this
      */
-    public function setEmailAddress($emailAddress)
+    public function setEmail($email)
     {
-        $this->emailAddress = $emailAddress;
+        $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * Get email owner
+     *
+     * @return EmailOwnerInterface
+     */
+    public function getOwner()
+    {
+        $owner = $this->_owner1;
+        if ($owner === null) {
+            $owner = $this->_owner2;
+        }
+
+        return $owner;
+    }
+
+    /**
+     * Set email owner
+     *
+     * @param EmailOwnerInterface|null $owner
+     * @return $this
+     */
+    public function setOwner(EmailOwnerInterface $owner = null)
+    {
+        if ($owner instanceof User) {
+            $this->_owner1 = $owner;
+            $this->_owner2 = null;
+        } elseif ($owner instanceof Contact) {
+            $this->_owner1 = null;
+            $this->_owner2 = $owner;
+        } else {
+            $this->_owner1 = null;
+            $this->_owner2 = null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Pre update event listener
+     *
+     * @ORM\PreUpdate
+     */
+    public function beforeUpdate()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

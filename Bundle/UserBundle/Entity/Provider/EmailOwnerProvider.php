@@ -10,34 +10,27 @@ use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
 class EmailOwnerProvider implements EmailOwnerProviderInterface
 {
     /**
-     * @var EntityManager
+     * {@inheritdoc}
      */
-    private $em;
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em)
+    public function getEmailOwnerClass()
     {
-        $this->em = $em;
+        return 'Oro\Bundle\UserBundle\Entity\User';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findEmailOwner($emailAddress)
+    public function findEmailOwner(EntityManager $em, $email)
     {
         /** @var User $user */
-        $user = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\User')
-            ->findOneBy(array('email' => $emailAddress));
+        $user = $em->getRepository('OroUserBundle:User')
+            ->findOneBy(array('email' => $email));
         if ($user === null) {
-            /** @var Email $email */
-            $email = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\Email')
-                ->findOneBy(array('email' => $emailAddress));
-            if ($email !== null) {
-                $user = $email->getUser();
+            /** @var Email $emailEntity */
+            $emailEntity = $em->getRepository('OroUserBundle:Email')
+                ->findOneBy(array('email' => $email));
+            if ($emailEntity !== null) {
+                $user = $emailEntity->getUser();
             }
         }
 

@@ -341,7 +341,5 @@ services:
 
     oro_user.email.owner.provider:
         class: %oro_user.email.owner.provider.class%
-        arguments:
-            - @doctrine.orm.entity_manager
         tags:
             - { name: oro_email.owner.provider, order: 1 }

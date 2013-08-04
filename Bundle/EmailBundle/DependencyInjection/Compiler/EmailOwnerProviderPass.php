@@ -5,11 +5,10 @@ namespace Oro\Bundle\EmailBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
 
-class EmailAddressManagerPass implements CompilerPassInterface
+class EmailOwnerProviderPass implements CompilerPassInterface
 {
-    const SERVICE_KEY = 'oro_email.email.address.manager';
+    const SERVICE_KEY = 'oro_email.email.owner.provider';
     const TAG = 'oro_email.owner.provider';
 
     /**

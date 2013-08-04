@@ -1,14 +1,29 @@
 <?php
 
-namespace Oro\Bundle\EmailBundle\Entity\Manager;
+namespace Oro\Bundle\EmailBundle\Entity\Provider;
 
-use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
- * Provides a set of method to manage email addresses.
+ * Email owner provider chain
  */
-class EmailAddressManager implements EmailOwnerProviderInterface
+class EmailOwnerProvider
 {
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * Constructor
+     *
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @var EmailOwnerProviderInterface[]
      */
@@ -27,11 +42,11 @@ class EmailAddressManager implements EmailOwnerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findEmailOwner($emailAddress)
+    public function findEmailOwner($email)
     {
         $emailOwner = null;
         foreach ($this->emailOwnerProviders as $emailOwnerProvider) {
-            $emailOwner = $emailOwnerProvider->findEmailOwner($emailAddress);
+            $emailOwner = $emailOwnerProvider->findEmailOwner($this->em, $email);
             if ($emailOwner !== null) {
                 break;
             }

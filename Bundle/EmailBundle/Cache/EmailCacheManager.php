@@ -3,7 +3,6 @@
 namespace Oro\Bundle\EmailBundle\Cache;
 
 use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;

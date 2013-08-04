@@ -24,24 +24,18 @@ class EmailRepository extends EntityRepository
             ->from('OroEmailBundle:Email', 're')
             ->innerJoin('re.recipients', 'r')
             ->innerJoin('r.emailAddress', 'ra');
-        $emailAddresses = array();
+        $emails = array();
         if ($recipients instanceof \Traversable) {
             foreach ($recipients as $recipient) {
-                $emailAddresses[] = EmailUtil::extractPureEmailAddress($recipient);
+                $emails[] = EmailUtil::extractPureEmailAddress($recipient);
             }
         } else {
-            $emailAddresses[] = EmailUtil::extractPureEmailAddress($recipients);
+            $emails[] = EmailUtil::extractPureEmailAddress($recipients);
         }
-        $qbRecipients->where($qbRecipients->expr()->in('ra.emailAddress', $emailAddresses));
+        $qbRecipients->where($qbRecipients->expr()->in('ra.email', $emails));
 
         $qb = $this->createQueryBuilder('e')
-            ->select(
-                'e.id',
-                'e.fromName',
-                'a.emailAddress as fromEmailAddress',
-                'e.subject',
-                'e.sentAt'
-            )
+            ->select('partial e.{id, fromName, subject, sentAt}, a')
             ->innerJoin('e.fromEmailAddress', 'a')
             ->orderBy('e.created', 'DESC');
         $qb->where($qb->expr()->in('e.id', $qbRecipients->getDQL()));
