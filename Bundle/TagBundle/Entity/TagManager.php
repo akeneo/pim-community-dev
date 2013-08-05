@@ -168,6 +168,7 @@ class TagManager
                     && $tagging->getRecordId() == $entity->getTaggableId();
                 }
             );
+
             /** @var Tagging $tagging */
             foreach ($taggingCollection as $tagging) {
                 if ($this->getUser()->getId() == $tagging->getCreatedBy()->getId()) {
@@ -192,94 +193,85 @@ class TagManager
     {
         $oldTags = $this->getTagging($resource, $this->getUser()->getId());
         $newTags = $resource->getTags();
+        if (isset($newTags['all'], $newTags['owner'])) {
+            $newOwnerTags = new ArrayCollection($newTags['owner']);
+            $newAllTags   = new ArrayCollection($newTags['all']);
 
-        if (!isset($newTags['all'], $newTags['owner'])) {
-            return;
-        }
-
-        // allow adding only 'my' tags
-        $newOwnerTags = new ArrayCollection($newTags['owner']);
-
-        // find new
-        $tagsToAdd = new ArrayCollection();
-        foreach ($newOwnerTags as $newOwnerTag) {
-            $callback = function ($index, $oldTag) use ($newOwnerTag) {
-                return $oldTag->getName() == $newOwnerTag->getName();
-            };
-
-            if (!$oldTags->exists($callback)) {
-                $tagsToAdd->add($newOwnerTag);
-            }
-        }
-
-        // find removed
-        $tagsToRemove = array();
-        foreach ($oldTags as $oldTag) {
-            $callback = function ($index, $newTag) use ($oldTag) {
-                return $newTag->getName() == $oldTag->getName();
-            };
-
-            if (!$newOwnerTags->exists($callback)) {
-                $tagsToRemove[] = $oldTag->getId();
-            }
-        }
-
-        if (sizeof($tagsToRemove)) {
-            $this->deleteTaggingByParams(
-                $tagsToRemove,
-                get_class($resource),
-                $resource->getTaggableId(),
-                $this->getUser()->getId()
+            $manager = $this;
+            $tagsToAdd = $newOwnerTags->filter(
+                function ($tag) use ($oldTags, $manager) {
+                    return !$oldTags->exists($manager->compareCallback($tag));
+                }
             );
-        }
+            $tagsToDelete = $oldTags->filter(
+                function ($tag) use ($newOwnerTags, $manager) {
+                    return !$newOwnerTags->exists($manager->compareCallback($tag));
+                }
+            );
 
-        // process if current user allowed to remove other's tag links
-        if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
-            $newAllTags = new ArrayCollection($newTags['all']);
-            // get 'not mine' taggings
-            $oldTags = $this->getTagging($resource, $this->getUser()->getId(), true);
-            $tagsToRemove = array();
+            if (!$tagsToDelete->isEmpty()
+                && $this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+            ) {
+                $this->deleteTaggingByParams(
+                    $tagsToDelete,
+                    get_class($resource),
+                    $resource->getTaggableId(),
+                    $this->getUser()->getId()
+                );
+            }
 
-            foreach ($oldTags as $oldTag) {
-                $callback = function ($index, $newTag) use ($oldTag) {
-                    return $newTag->getName() == $oldTag->getName();
-                };
-
-                if (!$newAllTags->exists($callback)) {
-                    $tagsToRemove[] = $oldTag->getId();
+            // process if current user allowed to remove other's tag links
+            if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
+                // get 'not mine' taggings
+                $oldTags = $this->getTagging($resource, $this->getUser()->getId(), true);
+                $tagsToDelete = $oldTags->filter(
+                    function ($tag) use ($newAllTags, $manager) {
+                        return !$newAllTags->exists($manager->compareCallback($tag));
+                    }
+                );
+                if (!$tagsToDelete->isEmpty()) {
+                    $this->deleteTaggingByParams(
+                        $tagsToDelete,
+                        get_class($resource),
+                        $resource->getTaggableId()
+                    );
                 }
             }
 
-            if (count($tagsToRemove) > 0) {
-                $this->deleteTaggingByParams(
-                    $tagsToRemove,
-                    get_class($resource),
-                    $resource->getTaggableId()
-                );
+            foreach ($tagsToAdd as $tag) {
+                if (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+                    || (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
+                ) {
+                    // skip tags that have not ID because user not granted to create tags
+                    continue;
+                }
+
+                $this->em->persist($tag);
+
+                $alias = $this->mapper->getEntityConfig(get_class($resource));
+
+                $tagging = $this->createTagging($tag, $resource)
+                    ->setAlias($alias['alias']);
+
+                $this->em->persist($tagging);
+            }
+
+            if (!$tagsToAdd->isEmpty()) {
+                $this->em->flush();
             }
         }
+    }
 
-        foreach ($tagsToAdd as $tag) {
-            if (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
-                || (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
-            ) {
-                // skip tags that have not ID because user not granted to create tags
-                continue;
-            }
-
-            $this->em->persist($tag);
-
-            $alias = $this->mapper->getEntityConfig(get_class($resource));
-
-            $tagging = $this->createTagging($tag, $resource)
-                ->setAlias($alias['alias']);
-
-            $this->em->persist($tagging);
-        }
-
-        if (count($tagsToAdd)) {
-            $this->em->flush();
-        }
+    /**
+     * @param Tag $tag
+     * @return callable
+     */
+    public function compareCallback($tag)
+    {
+        return function ($index, $item) use ($tag) {
+            /** @var Tag $item */
+            return $item->getName() == $tag->getName();
+        };
     }
 
     /**
@@ -299,7 +291,7 @@ class TagManager
     /**
      * Remove tagging related to tags by params
      *
-     * @param array|int $tagIds
+     * @param array|ArrayCollection|int $tagIds
      * @param string $entityName
      * @param int $recordId
      * @param null|int $createdBy
@@ -312,6 +304,14 @@ class TagManager
 
         if (!$tagIds) {
             $tagIds = array();
+        } elseif ($tagIds instanceof ArrayCollection) {
+            $tagIds = array_map(
+                function ($item) {
+                    /** @var Tag $item */
+                    return $item->getId();
+                },
+                $tagIds->toArray()
+            );
         }
 
         return $repository->deleteTaggingByParams($tagIds, $entityName, $recordId, $createdBy);
@@ -346,7 +346,7 @@ class TagManager
      * @param  Taggable $resource Taggable resource
      * @param null|int $createdBy
      * @param bool $all
-     * @return array
+     * @return ArrayCollection
      */
     private function getTagging(Taggable $resource, $createdBy = null, $all = false)
     {
