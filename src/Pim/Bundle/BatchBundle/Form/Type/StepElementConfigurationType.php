@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\Common\Util\Inflector;
 
 /**
  * Form type for step element configuration
@@ -28,9 +29,9 @@ class StepElementConfigurationType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory) {
                 $form   = $event->getForm();
-                $reader = $event->getData();
+                $stepElement = $event->getData();
 
-                foreach ($reader->getConfigurationFields() as $field => $config) {
+                foreach ($stepElement->getConfigurationFields() as $field => $config) {
                     $config = array_merge(
                         array(
                             'type' => 'text',
@@ -42,6 +43,13 @@ class StepElementConfigurationType extends AbstractType
                         array(
                             'auto_initialize' => false,
                             'required'        => false,
+                            'attr'            => array(
+                                'help' => sprintf(
+                                    'pim_batch.%s.%s.help',
+                                    $this->getTableizedClassName($stepElement),
+                                    $this->tableize($field)
+                                )
+                            )
                         ),
                         $config['options']
                     );
@@ -69,6 +77,22 @@ class StepElementConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_batch_reader_configuration';
+        return 'pim_batch_step_element_configuration';
+    }
+
+    private function getTableizedClassName($object)
+    {
+        $classname = get_class($object);
+
+        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+            $classname = $matches[1];
+        }
+
+        return $this->tableize($classname);
+    }
+
+    private function tableize($string)
+    {
+        return Inflector::tableize($string);
     }
 }
