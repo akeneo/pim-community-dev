@@ -271,6 +271,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the following locales:$/
+     */
+    public function theFollowingLocales(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $locale = $em->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $data['code']));
+            if (!$locale) {
+                $locale = new Locale();
+                $locale->setCode($data['code']);
+            }
+
+            $locale->setFallback($data['fallback']);
+            $locale->setActivated($data['activated'] === 'yes');
+
+            $em->persist($locale);
+        }
+        $em->flush();
+    }
+
+    /**
      * @param string $product
      * @param string $family
      *
@@ -1057,7 +1078,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
     {
@@ -1075,7 +1096,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return ProductManager
+     * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
      */
     private function getProductManager()
     {
@@ -1083,7 +1104,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return UserManager
+     * @return \Oro\Bundle\UserBundle\Entity\UserManager
      */
     private function getUserManager()
     {
@@ -1091,7 +1112,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return Container
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     private function getContainer()
     {
