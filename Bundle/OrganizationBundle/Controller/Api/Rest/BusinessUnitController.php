@@ -103,7 +103,7 @@ class BusinessUnitController extends RestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_business_unit_delete",
-     *      name="Delete business units",
+     *      name="Delete business unit",
      *      description="User can delete business units",
      *      parent="oro_business_unit"
      * )
