@@ -1,7 +1,7 @@
 /* jshint browser:true */
 (function (factory) {
     "use strict";
-    /* global define, Oro, jQuery, _, Backbone, Backgrid */
+    /* global define, Oro, jQuery, _, Backgrid */
     if (typeof define === 'function' && define.amd) {
         define(['Oro', 'jQuery', '_', 'Backgrid', 'OroDatagridCellSelectRowCell'], factory);
     } else {
@@ -157,7 +157,10 @@
         render: function () {
             /*jshint multistr:true */
             /*jslint es5: true */
-            /* render method will detend on options or will be empty */
+            /* temp solution: start */
+            // It's not clear for now, how mass selection will be designed,
+            // thus implementation is done just to check functionality.
+            // For future render method will depend on options or will be empty
             this.$el.empty().append('<div class="btn-group">\
                 <button type="button" class="btn btn-default" data-select-all>All</button>\
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
@@ -175,7 +178,7 @@
                 this.collection.trigger('backgrid:selectAllVisible');
                 e.preventDefault();
             }, this));
-            /* */
+            /* temp solution: end */
             return this;
         }
     });

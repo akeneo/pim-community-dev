@@ -37,6 +37,11 @@
         var datagridOptions = {
             grid: {
                 columns: [
+                    {
+                        name: "",
+                        cell: Oro.Datagrid.Cell.SelectRowCell,
+                        headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
+                    },
                     {% for column in datagrid.columns %}
                     {
                         name: {{ column.name|json_encode|raw }},
@@ -149,6 +154,15 @@
                 tagName: 'div',
                 className: 'navigation container-fluid'
             }, datagridOptions.grid);
+
+            // Extra filter by selected rows
+            datagridOptions.grid.filters['selected'] = new (Oro.Datagrid.Filter.SelectRowFilter.extend({
+                name:    'selected',
+                label:   'Rows',
+                enabled: true,
+                options: ['Not selected', 'Selected'],
+                collection: datagridCollection.collection
+            }));
 
             // Filters
             var filterListParameters = _.extend({
