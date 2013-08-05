@@ -33,6 +33,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'exports'    => 'Export index',
         'families'   => 'Family index',
         'imports'    => 'Import index',
+        'locales'    => 'Locale index',
         'products'   => 'Product index',
     );
 
@@ -206,6 +207,71 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
         $this->wait();
+    }
+
+    /**
+     * @Given /^I should be on the locales page$/
+     */
+    public function iShouldBeOnTheLocalesPage()
+    {
+        $this->assertSession()->addressEquals(
+            $this->getPage('Locale index')->getUrl()
+        );
+    }
+
+    /**
+     * @Given /^I should be on the locale creation page$/
+     */
+    public function iShouldBeOnTheLocaleCreationPage()
+    {
+        $this->openPage('Locale creation');
+        $this->wait();
+    }
+
+    /**
+     * @When /^I should see activated locales? (.*)$/
+     */
+    public function iShouldSeeActivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not activated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should see deactivated locales? (.*)$/
+     */
+    public function iShouldSeeDeactivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not deactivated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should not see locales? (.*)$/
+     */
+    public function iShouldNotSeeLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            try {
+                $gridRow = $this->getPage('Locale index')->getGridRow($locale);
+                $this->createExpectationException(
+                    sprintf('Locale "%s" should not be seen', $locale)
+                );
+            } catch (\InvalidArgumentException $e) {
+                // here we must catch an exception because the row is not found
+                continue;
+            }
+        }
     }
 
     /**
@@ -1030,6 +1096,57 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iTryToCreateAnUnknownExport()
     {
         $this->openPage('Export creation');
+    }
+
+    /**
+     * @param string $importTitle
+     *
+     * @Given /^I create a new "([^"]*)" import$/
+     */
+    public function iCreateANewImport($importTitle)
+    {
+        $this->getPage('Import index')->clickImportCreationLink($importTitle);
+        $this->currentPage = 'Import creation';
+    }
+
+    /**
+     * @Given /^I try to create an unknown import$/
+     */
+    public function iTryToCreateAnUnknownImport()
+    {
+        $this->openPage('Import creation');
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Then /^I should be on the "([^"]*)" import job page$/
+     */
+    public function iShouldBeOnTheImportJobPage($job)
+    {
+        $expectedAddress = $this->getPage('Import show')->getUrl($this->getJob($job));
+        $this->assertSession()->addressEquals($expectedAddress);
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Given /^I am on the "([^"]*)" import job page$/
+     */
+    public function iAmOnTheImportJobPage($job)
+    {
+        $this->openPage('Import show', array('id' => $this->getJob($job)->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param string $job
+     *
+     * @When /^I launch the "([^"]*)" import job$/
+     */
+    public function iLaunchTheImportJob($job)
+    {
+        $this->openPage('Import launch', array('id' => $this->getJob($job)->getId()));
     }
 
     /**
