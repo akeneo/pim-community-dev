@@ -17,6 +17,12 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
     /** @property {Oro.Datagrid.Action.Launcher[]} */
     launchers: [],
 
+    /** @property */
+    enabled: true,
+
+    /** @property */
+    enabledNow: true,
+
     /**
      * Initialize view
      *
@@ -30,6 +36,7 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
             this.setActions(options.actions);
         }
 
+        this.enabled = options.enable != false;
         Backbone.View.prototype.initialize.apply(this, arguments);
     },
 
@@ -59,6 +66,10 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
         _.each(actions, function(action) {
             this.addAction(action);
         }, this);
+
+        if (this.enabled == false) {
+            this.disable();
+        }
     },
 
     /**
@@ -80,6 +91,7 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
         _.each(this.launchers, function(launcher) {
             launcher.disable();
         });
+        this.enabledNow = false;
 
         return this;
     },
@@ -89,10 +101,15 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
      *
      * @return {*}
      */
-    enable: function() {
+    enable: function(force) {
+        if (force == undefined && !this.enabled) {
+            return false;
+        }
+
         _.each(this.launchers, function(launcher) {
             launcher.enable();
         });
+        this.enabledNow = true;
 
         return this;
     }

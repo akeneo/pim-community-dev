@@ -207,4 +207,27 @@ class EmailTemplateDatagridManager extends DatagridManager
 
         return array($clickAction, $updateAction, $cloneAction, $deleteAction);
     }
+
+    /**
+     * Return toolbar options
+     *
+     * @return array
+     */
+    public function getToolbarOptions()
+    {
+        return array(
+            'pageSize' => array(
+                'items' => array(
+                    10, 20, 50, 100,
+                    array('size' => 0, 'label' => $this->translate('oro.grid.page_size.all'))
+                ),
+            ),
+            'pagination' => array(
+                'enable' => false,
+            ),
+            'actionsPanel' => array(
+                'enable' => false,
+            )
+        );
+    }
 }
