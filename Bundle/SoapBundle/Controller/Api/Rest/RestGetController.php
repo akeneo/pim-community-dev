@@ -12,9 +12,7 @@ use Doctrine\ORM\UnitOfWork;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\FOSRestController;
 
-abstract class RestGetController extends FOSRestController implements
-    EntityManagerAwareInterface,
-    RestApiReadInterface
+abstract class RestGetController extends FOSRestController implements EntityManagerAwareInterface, RestApiReadInterface
 {
     const ITEMS_PER_PAGE = 10;
 

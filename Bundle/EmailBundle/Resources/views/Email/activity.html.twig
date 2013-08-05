@@ -6,8 +6,8 @@
 <tr>
     <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
     <td class="string-cell">{{ _self.email_address(entity.fromEmailAddress, entity.fromName, format) }}</td>
-    <td class="string-cell"><a class="view-email-body-btn no-hash" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
-    <td class="datetime-cell">{{ UI.Time(entity.sentAt) }}</td>
+    <td class="string-cell"><a class="view-email-entity-btn no-hash" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+    <td class="datetime-cell">{{ UI.time(entity.sentAt) }}</td>
 </tr>
 
 {% macro email_address(emailAddress, emailAddressName, format) %}

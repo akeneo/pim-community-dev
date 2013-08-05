@@ -53,7 +53,7 @@ class EmailController extends Controller
      * @AclAncestor("oro_email_view")
      * @Template
      */
-    public function activitiesAction(ArrayCollection $emails)
+    public function activitiesAction(array $emails)
     {
         /** @var $emailRepository EmailRepository */
         $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');

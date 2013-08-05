@@ -25,11 +25,30 @@ class EmailAddressConfigurationPass implements CompilerPassInterface
         if ($container->hasDefinition(self::EMAIL_OWNER_PROVIDER_SERVICE_KEY)) {
             $emailOwnerProviderDefinition = $container->getDefinition(self::EMAIL_OWNER_PROVIDER_SERVICE_KEY);
         }
-        if ($emailAddressManagerDefinition === null && $emailOwnerProviderDefinition === null)
-        {
+        if ($emailAddressManagerDefinition === null && $emailOwnerProviderDefinition === null) {
             return;
         }
 
+        $providers = $this->loadProviders($container);
+
+        foreach ($providers as $providerServiceId) {
+            if ($emailAddressManagerDefinition !== null) {
+                $emailAddressManagerDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
+            }
+            if ($emailOwnerProviderDefinition !== null) {
+                $emailOwnerProviderDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
+            }
+        }
+    }
+
+    /**
+     * Load services implements an email owner providers
+     *
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    protected function loadProviders(ContainerBuilder $container)
+    {
         $taggedServices = $container->findTaggedServiceIds(self::TAG);
         $providers = array();
         foreach ($taggedServices as $id => $tagAttributes) {
@@ -44,13 +63,6 @@ class EmailAddressConfigurationPass implements CompilerPassInterface
         }
         ksort($providers);
 
-        foreach ($providers as $providerServiceId) {
-            if ($emailAddressManagerDefinition !== null) {
-                $emailAddressManagerDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
-            }
-            if ($emailOwnerProviderDefinition !== null) {
-                $emailOwnerProviderDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
-            }
-        }
+        return $providers;
     }
 }

@@ -234,15 +234,15 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             'no items' => array(null, false, false, false),
             'not tracked item' => array(new \stdClass(), false, false, false),
             'EmailOwnerInterface nothing to change' =>
-            array($this->handleInsertionsOrUpdates_prepareMockForEmailOwnerInterface(), true, false, false),
-            'EmailOwnerInterface' => array($this->handleInsertionsOrUpdates_prepareMockForEmailOwnerInterface(), true, true, true),
+            array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, false, false),
+            'EmailOwnerInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, true, true),
             'EmailInterface nothing to change' =>
-            array($this->handleInsertionsOrUpdates_prepareMockForEmailInterface(), true, false, false),
-            'EmailInterface' => array($this->handleInsertionsOrUpdates_prepareMockForEmailInterface(), true, true, true),
+            array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, false, false),
+            'EmailInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, true, true),
         );
     }
 
-    private function handleInsertionsOrUpdates_prepareMockForEmailOwnerInterface()
+    private function handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface()
     {
         $mock = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
         $mock->expects($this->once())
@@ -252,7 +252,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    private function handleInsertionsOrUpdates_prepareMockForEmailInterface()
+    private function handleInsertionsOrUpdatesPrepareMockForEmailInterface()
     {
         $mock = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailInterface');
         $mock->expects($this->once())
@@ -316,22 +316,22 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             'no items' => array(null, false, false, false),
             'not tracked item' => array(new \stdClass(), false, false, false),
             'EmailOwnerInterface nothing to change' =>
-            array($this->handleDeletions_prepareMockForEmailOwnerInterface(), true, false, false),
-            'EmailOwnerInterface' => array($this->handleDeletions_prepareMockForEmailOwnerInterface(), true, true, true),
+            array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, false, false),
+            'EmailOwnerInterface' => array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, true, true),
             'EmailInterface nothing to change' =>
-            array($this->handleDeletions_prepareMockForEmailInterface(), true, false, false),
-            'EmailInterface' => array($this->handleDeletions_prepareMockForEmailInterface(), true, true, true),
+            array($this->handleDeletionsPrepareMockForEmailInterface(), true, false, false),
+            'EmailInterface' => array($this->handleDeletionsPrepareMockForEmailInterface(), true, true, true),
         );
     }
 
-    private function handleDeletions_prepareMockForEmailOwnerInterface()
+    private function handleDeletionsPrepareMockForEmailOwnerInterface()
     {
         $mock = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
         return $mock;
     }
 
-    private function handleDeletions_prepareMockForEmailInterface()
+    private function handleDeletionsPrepareMockForEmailInterface()
     {
         $mock = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailInterface');
         $mock->expects($this->once())

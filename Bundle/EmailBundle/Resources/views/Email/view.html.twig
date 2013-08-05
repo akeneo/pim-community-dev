@@ -11,7 +11,7 @@
     {% block content %}
         <div class="form-horizontal">
             <div class="control-group">
-                {{ _self.renderRow('Sent', 'email-sent', _self.text(UI.Time(entity.sentAt))) }}
+                {{ _self.renderRow('Sent', 'email-sent', _self.text(UI.time(entity.sentAt))) }}
                 {{ _self.renderRow('From', 'email-from', _self.email_address(entity.fromEmailAddress, entity.fromName, format)) }}
                 {{ _self.renderRow('To', 'email-to', _self.recipient_email_addresses(entity.recipients('to'), format)) }}
                 {{ _self.renderRow('Cc', 'email-cc', _self.recipient_email_addresses(entity.recipients('cc'), format)) }}
@@ -79,7 +79,7 @@
         <p class="control-label">{{ emailAddressName|raw }}</p>
     {% else %}
         {# TODO: we need EntityConfig to get view url for an entity #}
-        <p class="control-label"><a class="close-dialog-btn" href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ emailAddress.owner.fullname(format)|default('N/A')|raw }}</a></p>
+        <p class="control-label"><a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ emailAddress.owner.fullname(format)|default('N/A')|raw }}</a></p>
     {% endif %}
 {% endmacro %}
 

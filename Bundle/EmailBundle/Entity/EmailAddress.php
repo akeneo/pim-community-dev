@@ -48,8 +48,10 @@ class EmailAddress
     protected $email;
 
     // TODO: This should be replaces by array or proxy class. Need an investigation how to do this. Also see related code in EmailAddressManager class
+    // @codingStandardsIgnoreStart
     private $_owner1;
     private $_owner2;
+    // @codingStandardsIgnoreEnd
 
     /**
      * Get id

@@ -5,9 +5,7 @@ namespace Oro\Bundle\SoapBundle\Controller\Api\Soap;
 use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
-abstract class SoapGetController extends ContainerAware implements
-    EntityManagerAwareInterface,
-    SoapApiReadInterface
+abstract class SoapGetController extends ContainerAware implements EntityManagerAwareInterface, SoapApiReadInterface
 {
     /**
      * {@inheritDoc}

@@ -1,28 +1,29 @@
 $(function () {
-    var assignShowEmailBodyDialog = function (btn) {
-        btn.addClass('no-hash');
-        btn.on('click', function () {
-            new Oro.widget.DialogView({
-                url: $(this).attr('href'),
-                dialogOptions: {
-                    allowMaximize: true,
-                    allowMinimize: true,
-                    dblclick: 'maximize',
-                    maximizedHeightDecreaseBy: 'minimize-bar',
-                    width: 1000,
-                    title: $(this).attr('title')
-                }
-            }).render();
-            return false;
-        });
+    var showEmailEntityDialog = function (el) {
+        new Oro.widget.DialogView({
+            url: $(el).attr('href'),
+            dialogOptions: {
+                allowMaximize: true,
+                allowMinimize: true,
+                dblclick: 'maximize',
+                maximizedHeightDecreaseBy: 'minimize-bar',
+                width: 1000,
+                title: $(el).attr('title')
+            }
+        }).render();
     };
 
-    assignShowEmailBodyDialog($('.view-email-body-btn'));
-
+    $(document).on('click', '.view-email-entity-btn', function (e) {
+        showEmailEntityDialog(this);
+        e.preventDefault();
+    });
     if (!_.isUndefined(Oro.Events)) {
         Oro.Events.on('top_search_request:complete', function () {
-            assignShowEmailBodyDialog($('#search-dropdown .view-email-search-suggestion-btn'));
-            return false;
+            $('#search-dropdown').find('.view-email-search-suggestion-btn').on('click', function (e) {
+                showEmailEntityDialog(this);
+                e.preventDefault();
+            });
+            e.preventDefault();
         });
     }
 });

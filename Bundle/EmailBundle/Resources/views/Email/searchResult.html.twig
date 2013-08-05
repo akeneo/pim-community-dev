@@ -10,7 +10,7 @@
 {% set showImage = false %}
 
 {% set recordUrl = indexer_item.recordUrl %}
-{% set recordUrlCssClass = 'no-hash view-email-body-btn' %}
+{% set recordUrlCssClass = 'no-hash view-email-entity-btn' %}
 {% set title = entity ? entity.subject : indexer_item.recordTitle %}
 
 {% set entityType = 'Email'|trans %}
@@ -18,6 +18,7 @@
 {% set entityInfo = [
 {'title': 'Sent', 'value': macros.time(entity.sentAt)},
 {'title': 'From', 'value': _self.email_address(entity.fromEmailAddress, entity.fromName, format)},
+{'title': 'To', 'value': _self.recipient_email_addresses(entity.recipients('to'), format)},
 ] %}
 
 {% macro email_address(emailAddress, emailAddressName, format) %}
@@ -27,4 +28,14 @@
         {# TODO: we need EntityConfig to get view url for an entity #}
         <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ emailAddress.owner.fullname(format)|default('N/A')|raw }}</a>
     {% endif %}
+{% endmacro %}
+
+{% macro recipient_email_addresses(recipients, format) %}
+    {% set addreses = {} %}
+    {% for recipient in recipients %}
+        {{ _self.email_address(recipient.emailAddress, recipient.name, format) }}
+        {% if not loop.last %}
+            <span>,</span>
+        {% endif %}
+    {% endfor %}
 {% endmacro %}
