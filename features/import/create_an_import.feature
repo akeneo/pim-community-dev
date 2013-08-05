@@ -9,9 +9,9 @@ Feature: Create an import
     And I am on the imports page
     And I create a new "Product import in CSV" import
     And I visit the "Import" tab
-    Then I should see "Reader - Scoped products"
-    And I should see "Processor - CSV Serializer"
-    And I should see "Writer - File"
+    Then I should see "Reader - Dummy reader"
+    And I should see "Processor - Dummy processor"
+    And I should see "Writer - Dummy writer"
 
   @javascript
   Scenario: Successfully create a product import into csv
@@ -22,10 +22,6 @@ Feature: Create an import
       | Code  | mobile_product_import |
       | Label | Mobile product import |
     And I visit the "Import" tab
-    And I fill in the following information:
-      | Path  | /tmp/import.csv       |
-    And I select the channel "Mobile"
-    And I check "With header"
     And I save the import
     Then I should be on the "mobile_product_import" import job page
     And I should see "The import has been successfully created."

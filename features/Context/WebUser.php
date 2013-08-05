@@ -1140,6 +1140,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $job
+     *
+     * @When /^I launch the "([^"]*)" import job$/
+     */
+    public function iLaunchTheImportJob($job)
+    {
+        $this->openPage('Import launch', array('id' => $this->getJob($job)->getId()));
+    }
+
+    /**
      * @param string $column
      * @param string $exportCode
      * @param string $status
