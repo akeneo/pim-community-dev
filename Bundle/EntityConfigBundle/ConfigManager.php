@@ -271,10 +271,11 @@ class ConfigManager
 
     /**
      * @param $className
+     * @return EntityConfigModel
      */
     public function createConfigEntityModel($className)
     {
-        if (!$this->getConfigModel($className)) {
+        if (!$entityModel = $this->getConfigModel($className)) {
             /** @var ConfigClassMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataForClass($className);
 
@@ -296,6 +297,8 @@ class ConfigManager
 
             $this->eventDispatcher->dispatch(Events::NEW_ENTITY_CONFIG_MODEL, new NewEntityConfigModelEvent($entityModel, $this));
         }
+
+        return $entityModel;
     }
 
     /**
@@ -303,11 +306,12 @@ class ConfigManager
      * @param $className
      * @param $fieldName
      * @param $fieldType
+     * @return FieldConfigModel
      * @throws Exception\LogicException
      */
     public function createConfigFieldModel($className, $fieldName, $fieldType)
     {
-        if (!$this->getConfigModel($className, $fieldName)) {
+        if (!$fieldModel = $this->getConfigModel($className, $fieldName)) {
 
             /** @var EntityConfigModel $entityModel */
             $entityModel = isset($this->models[$className]) ? $this->models[$className] : $this->getConfigModel($className);
@@ -330,6 +334,8 @@ class ConfigManager
 
             $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
         }
+
+        return $fieldModel;
     }
 
     /**

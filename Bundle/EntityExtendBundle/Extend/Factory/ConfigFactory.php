@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend\Factory;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigFactory
@@ -51,12 +52,14 @@ class ConfigFactory
         $entityConfig->set('state', ExtendManager::STATE_UPDATED);
         $this->extendManager->getConfigProvider()->persist($entityConfig);
 
-        $this->extendManager->getConfigProvider()->createFieldConfig(
-            $className,
-            $data['code'],
-            $data['type'],
-            $values,
-            true
+        $this->extendManager->getConfigProvider()->createConfig(
+            new FieldConfigId(
+                $className,
+                $this->extendManager->getConfigProvider()->getScope(),
+                $data['code'],
+                $data['type']
+            ),
+            $values
         );
     }
 }
