@@ -140,7 +140,6 @@ class ReportDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($field);
     }
-
     /**
      * {@inheritdoc}
      */
