@@ -26,11 +26,11 @@ services:
         arguments: [@pim_product.manager.attribute_type, @oro_flexibleentity.attributetype.factory]
 
     # Validators
-    pim_product.form.validator.metric_attribute:
-        class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
+    pim_product.form.validator.metric:
+        class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator
         arguments: [%oro_measure.measures_config%]
         tags:
-            - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
+            - { name: validator.constraint_validator, alias: pim_metric_validator }
 
     pim_product.form.validator.single_identifier_attribute:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttributeValidator
@@ -45,11 +45,6 @@ services:
             - @doctrine
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
-
-    pim_product.validator.constraints.unique_property_available:
-        class: Pim\Bundle\ProductBundle\Validator\Constraints\UniquePropertyAvailableValidator
-        tags:
-            - { name: validator.constraint_validator, alias: pim_unique_property_validator }
 
     # twig extension
     pim_product.twig.product_extension:
