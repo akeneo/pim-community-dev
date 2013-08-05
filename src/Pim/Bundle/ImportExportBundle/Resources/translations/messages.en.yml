@@ -12,15 +12,15 @@ pim_import_export.jobs.attribute_export:
 
 pim_import_export.jobs.product_import:
     title: 'Product import in CSV'
-    export.title: 'Import'
+    import.title: 'Import'
 
 pim_import_export.jobs.category_import:
     title: 'Category import in CSV'
-    export.title: 'Import'
+    import.title: 'Import'
 
 pim_import_export.jobs.attribute_import:
     title: 'Attribute import in CSV'
-    export.title: 'Import'
+    import.title: 'Import'
 
 pim_import_export.status:
     0: 'Ready'

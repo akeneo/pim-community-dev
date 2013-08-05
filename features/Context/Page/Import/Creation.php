@@ -1,13 +1,13 @@
 <?php
 
-namespace Context\Page\Export;
+namespace Context\Page\Import;
 
 use Context\Page\Job\JobCreation;
 
 /**
- * Export creation page
+ * Import creation page
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -16,5 +16,5 @@ class Creation extends JobCreation
     /**
      * @var string $path
      */
-    protected $path = '/ie/export/create';
+    protected $path = '/ie/import/create';
 }
