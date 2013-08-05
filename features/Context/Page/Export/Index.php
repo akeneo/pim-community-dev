@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Base\Grid;
+use Context\Page\Job\JobIndex;
 
 /**
  * Export index page
@@ -11,8 +11,11 @@ use Context\Page\Base\Grid;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends Grid
+class Index extends JobIndex
 {
+    /**
+     * @var string $path
+     */
     protected $path = '/ie/export/';
 
     /**
@@ -22,13 +25,5 @@ class Index extends Grid
     {
         $this->clickLink('New export');
         $this->clickLink($exportLink);
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->getPath();
     }
 }

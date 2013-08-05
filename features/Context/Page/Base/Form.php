@@ -47,6 +47,7 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
+        var_dump($tab);
         $this->getElement('Tabs')->clickLink($tab);
     }
 

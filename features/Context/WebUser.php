@@ -1099,6 +1099,47 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $importTitle
+     *
+     * @Given /^I create a new "([^"]*)" import$/
+     */
+    public function iCreateANewImport($importTitle)
+    {
+        $this->getPage('Import index')->clickImportCreationLink($importTitle);
+        $this->currentPage = 'Import creation';
+    }
+
+    /**
+     * @Given /^I try to create an unknown import$/
+     */
+    public function iTryToCreateAnUnknownImport()
+    {
+        $this->openPage('Import creation');
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Then /^I should be on the "([^"]*)" import job page$/
+     */
+    public function iShouldBeOnTheImportJobPage($job)
+    {
+        $expectedAddress = $this->getPage('Import show')->getUrl($this->getJob($job));
+        $this->assertSession()->addressEquals($expectedAddress);
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Given /^I am on the "([^"]*)" import job page$/
+     */
+    public function iAmOnTheImportJobPage($job)
+    {
+        $this->openPage('Import show', array('id' => $this->getJob($job)->getId()));
+        $this->wait();
+    }
+
+    /**
      * @param string $column
      * @param string $exportCode
      * @param string $status

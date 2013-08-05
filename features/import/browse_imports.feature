@@ -14,7 +14,7 @@ Feature: Browse imports
     Given I am logged in as "admin"
 
   Scenario: Successfully display all the import jobs
-    And I am on the imports page
+    Given I am on the imports page
     And the grid should contain 1 element
     And the grid should not contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
     And the grid should contain the elements "acme_product_import"
