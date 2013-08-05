@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Oro\Bundle\AddressBundle\Entity\Address;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 class AddressHandler
 {
@@ -42,10 +42,10 @@ class AddressHandler
     /**
      * Process form
      *
-     * @param Address $entity
+     * @param AbstractAddress $entity
      * @return bool True on successful processing, false otherwise
      */
-    public function process(Address $entity)
+    public function process(AbstractAddress $entity)
     {
         $this->form->setData($entity);
 
@@ -64,9 +64,9 @@ class AddressHandler
     /**
      * "Success" form handler
      *
-     * @param Address $entity
+     * @param AbstractAddress $entity
      */
-    protected function onSuccess(Address $entity)
+    protected function onSuccess(AbstractAddress $entity)
     {
         $this->manager->persist($entity);
         $this->manager->flush();
