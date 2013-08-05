@@ -3,13 +3,16 @@
 namespace Oro\Bundle\AsseticBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Assetic\Asset\AssetInterface;
-use Assetic\Util\VarUtils;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
+
+use Doctrine\Common\Cache\CacheProvider;
+
+use Assetic\Asset\AssetInterface;
+use Assetic\Util\VarUtils;
 
 use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 
@@ -19,6 +22,11 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
      * @var OroAssetManager
      */
     protected $am;
+
+    /**
+     * @var CacheProvider
+     */
+    protected $cache;
 
     protected function configure()
     {
@@ -33,6 +41,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     {
         $this->basePath = $input->getArgument('write_to') ?: $this->getContainer()->getParameter('assetic.write_to');
         $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
+        $this->cache = $this->getContainer()->get('oro_assetic.cache');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -45,6 +54,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
             $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
             $output->writeln('');
 
+            $this->cache->flushAll();
             $this->dumpAssets($output);
         }
     }

@@ -14,10 +14,11 @@ class Tag extends AbstractEntity implements Entity
         parent::__construct($testCase, $redirect);
     }
 
-    public function init()
+    public function init($new = true)
     {
-        $this->tagname = $this->byId('oro_tag_tag_form_name');
-
+        if ($new) {
+            $this->tagname = $this->byId('oro_tag_tag_form_name');
+        }
         return $this;
     }
 

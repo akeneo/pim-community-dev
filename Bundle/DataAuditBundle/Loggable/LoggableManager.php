@@ -431,7 +431,9 @@ class LoggableManager
                     );
 
                 } elseif ($newData instanceof \DateTime) {
-                    $oldData = $oldData->format(\DateTime::ISO8601);
+                    if ($oldData instanceof \DateTime) {
+                        $oldData = $oldData->format(\DateTime::ISO8601);
+                    }
                     $newData = $newData->format(\DateTime::ISO8601);
 
                 } elseif (is_object($newData)) {
