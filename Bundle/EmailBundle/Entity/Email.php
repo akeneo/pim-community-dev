@@ -72,6 +72,7 @@ class Email
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailRecipient", mappedBy="email", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailRecipient[]")
      */
     protected $recipients;
 
@@ -114,7 +115,7 @@ class Email
      * @var string
      *
      * @ORM\Column(name="message_id", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
+     * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
      */
     protected $messageId;
@@ -123,7 +124,8 @@ class Email
      * @var string
      *
      * @ORM\Column(name="x_message_id", type="string", length=255, nullable=true)
-     * @Exclude
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
      */
     protected $xMessageId;
 
@@ -131,7 +133,8 @@ class Email
      * @var string
      *
      * @ORM\Column(name="x_thread_id", type="string", length=255, nullable=true)
-     * @Exclude
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
      */
     protected $xThreadId;
 
@@ -140,6 +143,7 @@ class Email
      *
      * @ORM\ManyToOne(targetEntity="EmailFolder", inversedBy="emails")
      * @ORM\JoinColumn(name="folder_id", referencedColumnName="id")
+     * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailFolder")
      * @Exclude
      */
     protected $folder;

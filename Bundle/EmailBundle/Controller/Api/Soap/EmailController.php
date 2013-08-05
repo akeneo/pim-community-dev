@@ -16,7 +16,7 @@ class EmailController extends SoapGetController
      * @Soap\Method("getEmails")
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
-     * @Soap\Result(phpType = "Oro\Bundle\EmailBundle\Entity\Email")
+     * @Soap\Result(phpType = "Oro\Bundle\EmailBundle\Entity\Email[]")
      * @AclAncestor("oro_email_view")
      */
     public function cgetAction($page = 1, $limit = 10)

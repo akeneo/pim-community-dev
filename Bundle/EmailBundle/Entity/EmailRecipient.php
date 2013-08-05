@@ -25,7 +25,8 @@ class EmailRecipient
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Exclude
+     * @Soap\ComplexType("int")
+     * @Type("integer")
      */
     protected $id;
 

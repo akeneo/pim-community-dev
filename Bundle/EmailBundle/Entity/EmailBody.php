@@ -82,6 +82,7 @@ class EmailBody
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailAttachment", mappedBy="emailBody", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailAttachment[]")
      */
     protected $attachments;
 

@@ -4,6 +4,9 @@ namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Exclude;
+use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 /**
  * Email Folder
@@ -25,6 +28,7 @@ class EmailFolder
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Exclude
      */
     protected $id;
 
@@ -32,6 +36,8 @@ class EmailFolder
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $name;
 
@@ -39,6 +45,8 @@ class EmailFolder
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=10)
+     * @Soap\ComplexType("string")
+     * @Type("string")
      */
     protected $type;
 
@@ -47,6 +55,7 @@ class EmailFolder
      *
      * @ORM\ManyToOne(targetEntity="EmailOrigin", inversedBy="folders")
      * @ORM\JoinColumn(name="origin_id", referencedColumnName="id")
+     * @Exclude
      */
     protected $origin;
 
@@ -54,6 +63,7 @@ class EmailFolder
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Email", mappedBy="folder", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Exclude
      */
     protected $emails;
 
