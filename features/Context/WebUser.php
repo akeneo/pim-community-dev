@@ -78,7 +78,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmLoggedInAs($username)
     {
-        $password = $username.'pass';
+        $password = $username;
         $this->getFixturesContext()->getOrCreateUser($username, $password);
 
         $this->username = $username;
