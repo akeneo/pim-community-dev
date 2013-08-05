@@ -1,3 +1,7 @@
+pim_import_export.status:
+    0: 'Ready'
+
+## Jobs and steps
 pim_import_export.jobs.product_export:
     title: 'Product export in CSV'
     export.title: 'Export'
@@ -22,5 +26,29 @@ pim_import_export.jobs.attribute_import:
     title: 'Attribute import in CSV'
     export.title: 'Import'
 
-pim_import_export.status:
-    0: 'Ready'
+## Step elements (readers, processors, writers)
+pim_batch.product_reader:
+    title: 'Scope'
+    channel.help: 'The channel you want to export'
+
+pim_batch.category_reader:
+    title: 'Category extraction'
+
+pim_batch.attribute_reader:
+    title: 'Attribute extraction'
+
+pim_batch.heterogeneous_csv_serializer_processor:
+    title: 'CSV configuration'
+    delimiter.help: 'One character used to set the field delimiter'
+    enclosure.help: 'One character used to set the field enclosure'
+    with_header.help: 'Wether or not to print the column name'
+
+pim_batch.homogeneous_csv_serializer_processor:
+    title: 'CSV configuration'
+    delimiter.help: 'One character used to set the field delimiter'
+    enclosure.help: 'One character used to set the field enclosure'
+    with_header.help: 'Wether or not to print the column name'
+
+pim_batch.file_writer:
+    title: 'File configuration'
+    path.help: 'Where to write the generated file on the file system'
