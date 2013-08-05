@@ -57,8 +57,11 @@ class ConfigFieldGridController extends Controller
             ));
         }
 
+        $newFieldModel = new FieldConfigModel();
+        $newFieldModel->setEntity($entity);
+
+        $form    = $this->createForm(new FieldType(), $newFieldModel);
         $request = $this->getRequest();
-        $form    = $this->createForm(new FieldType());
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -66,7 +69,7 @@ class ConfigFieldGridController extends Controller
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                if ($entity->getField($data['code'])) {
+                /*if ($entity->getField($data['code'])) {
                     $form->get('code')->addError(new FormError(sprintf(
                         "Field '%s' already exist in entity '%s', ", $data['code'], $entity->getClassName()
                     )));
@@ -84,7 +87,7 @@ class ConfigFieldGridController extends Controller
                             'id' => $entity->getField($data['code'])->getId()
                         )
                     ));
-                }
+                }*/
             }
         }
 
