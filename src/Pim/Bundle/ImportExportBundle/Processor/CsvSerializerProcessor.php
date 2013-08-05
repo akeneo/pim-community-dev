@@ -22,13 +22,13 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
 {
     /**
      * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"})
+     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
      */
     protected $delimiter = ';';
 
     /**
      * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"})
+     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
      */
     protected $enclosure = '"';
 
