@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\Common\Util\Inflector;
 
 /**
  * Form type for step element configuration
@@ -46,13 +45,13 @@ class StepElementConfigurationType extends AbstractType
                             'label'           => sprintf(
                                 'pim_batch.%s.%s.label',
                                 $stepElement->getName(),
-                                $this->tableize($field)
+                                $field
                             ),
                             'attr'            => array(
                                 'help' => sprintf(
                                     'pim_batch.%s.%s.help',
                                     $stepElement->getName(),
-                                    $this->tableize($field)
+                                    $field
                                 )
                             )
                         ),
@@ -83,10 +82,5 @@ class StepElementConfigurationType extends AbstractType
     public function getName()
     {
         return 'pim_batch_step_element_configuration';
-    }
-
-    private function tableize($string)
-    {
-        return Inflector::tableize($string);
     }
 }
