@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @Annotation
  */
-class ValidMetricAttribute extends Constraint
+class ValidMetric extends Constraint
 {
     /*
      * Violation message for invalid or missing metric type
@@ -33,7 +33,7 @@ class ValidMetricAttribute extends Constraint
      */
     public function validatedBy()
     {
-        return 'pim_metric_attribute_validator';
+        return 'pim_metric_validator';
     }
 
     /**

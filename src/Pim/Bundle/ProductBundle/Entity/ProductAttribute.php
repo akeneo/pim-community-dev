@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Custom properties for a product attribute
@@ -24,10 +25,10 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity("code")
  * @Oro\Loggable
+ * @Assert\GroupSequenceProvider
  */
-class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface
+class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface, GroupSequenceProviderInterface
 {
     /**
      * Overrided to change target entity name
@@ -319,6 +320,15 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
+    }
+
+    /**
+     * Return the identifier-based validation group for validation of properties
+     * @return array:string
+     */
+    public function getGroupSequence()
+    {
+        return array('Default', $this->getAttributeType());
     }
 
     /**

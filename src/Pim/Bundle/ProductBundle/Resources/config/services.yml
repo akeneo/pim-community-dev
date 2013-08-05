@@ -26,11 +26,11 @@ services:
         arguments: [@pim_product.manager.attribute_type, @oro_flexibleentity.attributetype.factory]
 
     # Validators
-    pim_product.form.validator.metric_attribute:
-        class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
+    pim_product.form.validator.metric:
+        class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator
         arguments: [%oro_measure.measures_config%]
         tags:
-            - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
+            - { name: validator.constraint_validator, alias: pim_metric_validator }
 
     pim_product.form.validator.single_identifier_attribute:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttributeValidator

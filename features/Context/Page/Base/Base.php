@@ -19,6 +19,18 @@ class Base extends Page
     );
 
     /**
+     * {@inheritdoc}
+     */
+    public function fillField($locator, $value)
+    {
+        parent::fillField($locator, $value);
+
+        $this->getSession()->executeScript(
+            "$('.select2-drop-active input:visible').trigger($.Event('keydown', {which: 9, keyCode: 9}));"
+        );
+    }
+
+    /**
      * Get page title
      * @return string
      */

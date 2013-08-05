@@ -330,7 +330,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingProductAttributes(TableNode $table)
     {
-        foreach ($table->getHash() as $index => $data) {
+        foreach ($table->getHash() as $data) {
             $data = array_merge(
                 array(
                     'position'     => 0,
