@@ -1,6 +1,8 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Locale;
+
+use Context\Page\Base\Grid;
 
 /**
  * Behat context page for locale index
@@ -8,9 +10,8 @@ namespace Context\Page;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
-class LocaleIndex extends AbstractDatagridPage
+class Index extends Grid
 {
     protected $path = '/configuration/locale/';
 

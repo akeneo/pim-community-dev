@@ -10,12 +10,10 @@ Feature: Browse locales
       | de_DE | en_US    | yes       |
       | en_US |          | yes       |
       | fr_FR | en_US    | yes       |
-
     And I am logged in as "admin"
 
-  Scenario: Successfully filter locales
+  Scenario: Successfully display locales
     Given I am on the locales page
-    And I filter my locales per Code "e"
-    And I filter my locales per Fallback "en_US"
-    Then I should see activated locales de_DE
-    And I should not see locales en_US and fr_FR
+    And the grid should contain 3 elements
+    And the grid should contain the elements "de_DE", "en_US" and "fr_FR"
+    And I should see the filters "Code", "Fallback" and "Activated"

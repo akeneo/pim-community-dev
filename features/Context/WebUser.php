@@ -33,6 +33,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'exports'    => 'Export index',
         'families'   => 'Family index',
         'imports'    => 'Import index',
+        'locales'    => 'Locale index',
         'products'   => 'Product index',
     );
 
@@ -209,16 +210,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the locales page$/
-     */
-    public function iAmOnTheLocalesPage()
-    {
-        $this->openPage('Locale index');
-        $this->wait();
-    }
-
-
-    /**
      * @Given /^I should be on the locales page$/
      */
     public function iShouldBeOnTheLocalesPage()
@@ -283,23 +274,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-    /**
-     * @When /^I create a new locale$/
-     */
-    public function iCreateANewLocale()
-    {
-        $this->getPage('Locale index')->clickNewLocaleLink();
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I filter my locales per (.*) "([^"]*)"$/
-     */
-    public function iFilterMyLocalesPer($filter, $value)
-    {
-        $this->getPage('Locale index')->filterBy($filter, $value);
-        $this->wait(5000);
-    }
+//     /**
+//      * @Given /^I filter my locales per (.*) "([^"]*)"$/
+//      */
+//     public function iFilterMyLocalesPer($filter, $value)
+//     {
+//         $this->getPage('Locale index')->filterBy($filter, $value);
+//         $this->wait(5000);
+//     }
 
     /**
      * @param string $locale

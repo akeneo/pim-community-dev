@@ -1,8 +1,8 @@
 <?php
 
-namespace Context\Page;
+namespace Context\Page\Locale;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Context\Page\Base\Form;
 
 /**
  * Behat context page for locale creation
@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleCreation extends Page
+class Creation extends Form
 {
     protected $path = '/configuration/locale/create';
 
