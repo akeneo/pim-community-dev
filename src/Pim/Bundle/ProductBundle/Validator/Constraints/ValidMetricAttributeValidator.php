@@ -37,15 +37,13 @@ class ValidMetricAttributeValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity->getAttributeType() == 'pim_product_metric') {
-            $type = $entity->getMetricFamily();
-            $unit = $entity->getDefaultMetricUnit();
+        $type = $entity->getMetricFamily();
+        $unit = $entity->getDefaultMetricUnit();
 
-            if (!array_key_exists($type, $this->measures)) {
-                $this->context->addViolation($constraint->invalidFamilyMessage);
-            } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
-                $this->context->addViolation($constraint->invalidMetricUnitMessage);
-            }
+        if (!array_key_exists($type, $this->measures)) {
+            $this->context->addViolationAt('metricFamily', $constraint->invalidFamilyMessage);
+        } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
+            $this->context->addViolationAt('defaultMetricUnit', $constraint->invalidMetricUnitMessage);
         }
     }
 }

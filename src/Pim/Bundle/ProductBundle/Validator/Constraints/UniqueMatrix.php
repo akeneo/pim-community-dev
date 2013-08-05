@@ -11,7 +11,16 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidRegex extends Constraint
+class UniqueMatrix extends Constraint
 {
-    public $message = 'This regular expression is not valid.';
+    public $translatableMessage = 'An unique attribute can not be localizable.';
+    public $scopableMessage     = 'An unique attribute can not be sccopable.';
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }

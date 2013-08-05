@@ -328,7 +328,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function getGroupSequence()
     {
-        return array($this->getAttributeType());
+        return array('Default', $this->getAttributeType());
     }
 
     /**

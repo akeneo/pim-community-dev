@@ -1,27 +1,21 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for ProductAttrkbute not being translatable and scopable when unique
+ * Constraint for valid number range
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Annotation
  */
-class UniquePropertyAvailable extends Constraint
+class ValidNumberRange extends Constraint
 {
-    public $message = 'An unique attribute can not be localizable or sccopable.';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'pim_unique_property_validator';
-    }
+    public $message              = 'The max number must be greater than the min number';
+    public $invalidNumberMessage = 'This number is not valid';
 
     /**
      * {@inheritDoc}
