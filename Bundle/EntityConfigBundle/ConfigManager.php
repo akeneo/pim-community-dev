@@ -74,6 +74,11 @@ class ConfigManager
     /**
      * @var ConfigInterface[]
      */
+    protected $persistModels = array();
+
+    /**
+     * @var ConfigInterface[]
+     */
     protected $configs = array();
 
     /**
@@ -218,7 +223,7 @@ class ConfigManager
             return true;
         }
 
-        return (bool)$this->getConfigModelByConfigId($configId);
+        return (bool) $this->getConfigModelByConfigId($configId);
     }
 
     /**
@@ -293,8 +298,6 @@ class ConfigManager
                 $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
 
-            $this->em()->persist($entityModel);
-
             $this->eventDispatcher->dispatch(Events::NEW_ENTITY_CONFIG_MODEL, new NewEntityConfigModelEvent($entityModel, $this));
         }
 
@@ -329,8 +332,6 @@ class ConfigManager
 
                 $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
-
-            $this->em()->persist($fieldModel);
 
             $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
         }

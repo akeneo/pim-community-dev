@@ -280,6 +280,7 @@ class ConfigController extends Controller
             'field_config'  => $fieldConfig,
             'field'         => $field,
             'form'          => $form->createView(),
+            'formAction'    => $this->generateUrl('oro_entityconfig_field_update', array('id' => $field->getId()))
         );
     }
 }

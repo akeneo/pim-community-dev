@@ -5,6 +5,8 @@ oro_entity_config:
                 block_config:
                     entity:
                         priority:           20
+            constraints:
+
             items:
                 icon:
                     options:
@@ -17,6 +19,11 @@ oro_entity_config:
                 label:
                     options:
                         priority:           20
+                    constraints:
+                        - NotBlank:     ~
+                        - Length:
+                            min:        2
+                            max:        50
                     grid:
                         type:               string
                         label:              'Label'

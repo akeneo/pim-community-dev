@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
-use Oro\Bundle\EntityExtendBundle\Extend\Factory\ConfigFactory;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -22,11 +21,6 @@ class ExtendManager
      * @var ProxyObjectFactory
      */
     protected $proxyFactory;
-
-    /**
-     * @var ConfigFactory
-     */
-    protected $configFactory;
 
     /**
      * @var ConfigProvider
@@ -48,7 +42,6 @@ class ExtendManager
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
         $this->proxyFactory   = new ProxyObjectFactory($this);
-        $this->configFactory  = new ConfigFactory($this);
         $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
     }
 
@@ -74,14 +67,6 @@ class ExtendManager
     public function getProxyFactory()
     {
         return $this->proxyFactory;
-    }
-
-    /**
-     * @return ConfigFactory
-     */
-    public function getConfigFactory()
-    {
-        return $this->configFactory;
     }
 
     /**
