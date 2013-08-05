@@ -13,15 +13,6 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_config_locale_index')) }}
-            {% if form.vars.value.id %}
-                {% if form.activated.vars.value %}
-                    {{ elements.link('Disable', path('pim_config_locale_disable', { id: form.vars.value.id }),
-                        { attr: { 'data-dialog': 'confirm', 'data-title': 'Disable confirmation'|trans, 'data-message': 'Are you sure you want to disable this locale?'|trans }}) }}
-                {% else %}
-                    {{ elements.link('Enable', path('pim_config_locale_enable', { id: form.vars.value.id }),
-                        { attr: { 'data-dialog': 'confirm', 'data-title': 'Enable confirmation'|trans, 'data-message': 'Are you sure you want to enable this locale?'|trans }}) }}
-                {% endif %}
-            {% endif %}
             {{ elements.submitBtn }}
         {% endset %}
 
