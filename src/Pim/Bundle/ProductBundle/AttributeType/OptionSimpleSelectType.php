@@ -5,7 +5,6 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 
 /**
  * Simple options (select) attribute type

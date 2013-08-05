@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -44,7 +42,7 @@ class ValidMetricAttributeValidator extends ConstraintValidator
             $unit = $entity->getDefaultMetricUnit();
 
             if (!array_key_exists($type, $this->measures)) {
-                $this->context->addViolation($constraint->invalidMetricFamilyMessage);
+                $this->context->addViolation($constraint->invalidFamilyMessage);
             } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
                 $this->context->addViolation($constraint->invalidMetricUnitMessage);
             }

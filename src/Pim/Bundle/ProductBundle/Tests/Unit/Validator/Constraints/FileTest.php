@@ -16,4 +16,3 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Validator\Constraints\File', new File);
     }
 }
-

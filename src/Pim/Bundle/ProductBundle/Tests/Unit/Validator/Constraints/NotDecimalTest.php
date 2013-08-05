@@ -16,4 +16,3 @@ class NotDecimalTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Validator\Constraint', new NotDecimal);
     }
 }
-

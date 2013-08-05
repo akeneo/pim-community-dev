@@ -1,54 +1,34 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit locale'|trans : 'Add locale'|trans %}
-
-{% block page_container %}
-<div class="container-fluid">
-
-    {% block content %}
+{% block content %}
 
     {{ JSFV(form) }}
-    <form class="form-horizontal" action="{{ form.vars.value.id ?
+    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_config_locale_edit', { id: form.vars.value.id }) :
-        path('pim_config_locale_create') }}" method="POST" class="form-register">
+        path('pim_config_locale_create') }}" method="POST">
 
-        <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row-fluid">
-                <div class="pull-right">
-                    <div class="pull-right">
-                        <div class="btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_config_locale_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-                        </div>
-                        <div class="btn-group icons-holder">
-                            {% if form.vars.value.id %}
-                                <a class="btn pull-right" href="#" id="btn-disable-locale">
-                                    {% if form.vars.value.activated %} {{ "Disable" | trans }} {% else %} {{ "Enable" | trans }} {% endif %}
-                                </a>
-                            {% endif %}
-                        </div>
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="pull-left">
-                    <div class="navbar-content pull-left">
-                        <div class="navbar-title clearfix-oro">
-                            <div class="sub-title">{{ 'Locale'|trans }}</div>
-                            <span class="separator">/</span>
-                            <div class="sub-title">{{ form.vars.value.id ? form.vars.value.code : 'New locale'|trans }}</div>
-                        </div>
-                   </div>
-                </div>
-            </div>
-        </div>
+        {% set title = 'Locale'|trans %}
+
+        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New locale'|trans %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_config_locale_index')) }}
+            {% if form.vars.value.id %}
+                {% if form.activated.vars.value %}
+                    {{ elements.link('Disable', path('pim_config_locale_disable', { id: form.vars.value.id }),
+                        { attr: { 'data-dialog': 'confirm', 'data-title': 'Disable confirmation'|trans, 'data-message': 'Are you sure you want to disable this locale?'|trans }}) }}
+                {% else %}
+                    {{ elements.link('Enable', path('pim_config_locale_enable', { id: form.vars.value.id }),
+                        { attr: { 'data-dialog': 'confirm', 'data-title': 'Enable confirmation'|trans, 'data-message': 'Are you sure you want to enable this locale?'|trans }}) }}
+                {% endif %}
+            {% endif %}
+            {{ elements.submitBtn }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, subtitle) }}
 
         <div class="row-fluid">
-            {% if form.vars.errors|length %}
-                <div class="alert alert-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
+            {{ elements.form_errors(form) }}
 
             {{ form_row(form.id) }}
 
@@ -63,46 +43,10 @@
             {{ form_row(form._token) }}
         </div>
     </form>
-    {% endblock %}
-</div>
 {% endblock %}
 
 {% block head_script_component %}
     {{ parent() }}
-
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-
-    <script type="text/javascript">
-    $(function() {
-        $('select').select2({ allowClear: true });
-        $('input.multiselect').select2({ tags: $(this).val() });
-        $('#btn-disable-locale').click(function(event) {
-            doAction = function() {
-                if ($('#pim_config_locale_form_activated').val() == '1') {
-                    window.location.href = "{{ path('pim_config_locale_disable', { id: form.vars.value.id }) }}";
-                } else {
-                    window.location.href = "{{ path('pim_config_locale_enable', { id: form.vars.value.id }) }}";
-                }
-            };
-
-            if (!_.isUndefined(Backbone.BootstrapModal)) {
-                if ($('#pim_config_locale_form_activated').val() == '1') {
-                    confirm = new Backbone.BootstrapModal({
-                        title: "{{ 'Disable Confirmation' | trans }}",
-                        content: "{{ 'Are you sure you want to disable this item' | trans }}"
-                    });
-                } else {
-                    confirm = new Backbone.BootstrapModal({
-                        title: "{{ 'Enable Confirmation' | trans }}",
-                        content: "{{ 'Are you sure you want to enable this item' | trans }}"
-                    });
-                }
-                confirm.on('ok', doAction);
-                confirm.open();
-            } else if (window.confirm(message)) {
-                doAction();
-            }
-        });
-    });
-    </script>
+    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
 {% endblock %}

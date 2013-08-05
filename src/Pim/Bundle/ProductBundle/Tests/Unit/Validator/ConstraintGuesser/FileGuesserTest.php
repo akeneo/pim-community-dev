@@ -18,62 +18,73 @@ class FileGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_file',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_file',)))
+        );
 
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_image',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_image',)))
+        );
     }
 
     public function testGuessFileMaxSizeConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType' => 'pim_product_file',
-            'maxFileSize'   => 5000,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType' => 'pim_product_file', 'maxFileSize'   => 5000,))
+        );
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints);
-        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints, array(
-            'maxSize' => 5000,
-        ));
+        $this->assertConstraintsConfiguration(
+            'Pim\Bundle\ProductBundle\Validator\Constraints\File',
+            $constraints,
+            array('maxSize' => 5000,)
+        );
     }
 
     public function testGuessAllowedExtensionConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'         => 'pim_product_file',
-            'allowedFileExtensions' => array('gif', 'jpg'),
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType'         => 'pim_product_file',
+                    'allowedFileExtensions' => array('gif', 'jpg'),
+                )
+            )
+        );
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints);
-        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints, array(
-            'allowedExtensions' => array('gif', 'jpg'),
-        ));
+        $this->assertConstraintsConfiguration(
+            'Pim\Bundle\ProductBundle\Validator\Constraints\File',
+            $constraints,
+            array('allowedExtensions' => array('gif', 'jpg'),)
+        );
     }
 
     public function testGuessMultipleFileConstraints()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'         => 'pim_product_file',
-            'maxFileSize'           => 5000,
-            'allowedFileExtensions' => array('gif', 'jpg'),
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(
+                array(
+                    'attributeType'         => 'pim_product_file',
+                    'maxFileSize'           => 5000,
+                    'allowedFileExtensions' => array('gif', 'jpg'),
+                )
+            )
+        );
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints);
-        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints, array(
-            'maxSize'           => 5000,
-            'allowedExtensions' => array('gif', 'jpg'),
-        ));
+        $this->assertConstraintsConfiguration(
+            'Pim\Bundle\ProductBundle\Validator\Constraints\File',
+            $constraints,
+            array('maxSize' => 5000, 'allowedExtensions' => array('gif', 'jpg'),)
+        );
     }
 }

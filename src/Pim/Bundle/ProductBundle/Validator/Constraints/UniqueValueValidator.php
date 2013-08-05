@@ -2,20 +2,29 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
+ * Validator for unique value constraint
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class UniqueValueValidator extends ConstraintValidator
 {
+    /**
+     * Constructor
+     *
+     * @param object $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
@@ -25,13 +34,15 @@ class UniqueValueValidator extends ConstraintValidator
      * Constraint is applied on ProductValue data property.
      * That's why we use the current property path to guess the code
      * of the attribute to which the data belongs to.
+     * @param object     $value
+     * @param Constraint $constraint
      *
      * @see Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
     public function validate($value, Constraint $constraint)
     {
         $entity = $this->getEntity();
-        if (!$entity instanceof ProductValue) {
+        if (!$entity instanceof ProductValueInterface) {
             return;
         }
 
@@ -51,6 +62,11 @@ class UniqueValueValidator extends ConstraintValidator
         $this->context->addViolation($constraint->message);
     }
 
+    /**
+     * Get entity
+     *
+     * @return mixed|void
+     */
     private function getEntity()
     {
         preg_match(
@@ -63,7 +79,7 @@ class UniqueValueValidator extends ConstraintValidator
         }
 
         $product = $this->context->getRoot()->getData();
-        if (!$product instanceof Product) {
+        if (!$product instanceof ProductInterface) {
             return;
         }
 

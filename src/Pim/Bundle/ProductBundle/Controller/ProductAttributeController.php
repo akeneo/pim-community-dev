@@ -3,12 +3,11 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product attribute controller
@@ -37,7 +36,6 @@ class ProductAttributeController extends Controller
         /** @var $gridManager AttributeDatagridManager */
         $gridManager  = $this->get('pim_product.datagrid.manager.productattribute');
         $datagrid     = $gridManager->getDatagrid();
-        $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -52,7 +50,7 @@ class ProductAttributeController extends Controller
      * Create attribute
      *
      * @Route("/create")
-     * @Template
+     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
      *
      * @return array
      */
@@ -84,7 +82,7 @@ class ProductAttributeController extends Controller
      * @param ProductAttribute $attribute
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
+     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
      *
      * @return array
      */
@@ -116,7 +114,7 @@ class ProductAttributeController extends Controller
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config'),
-            'datagrid'       => $datagrid->createView(),
+            'datagrid'        => $datagrid->createView(),
         );
     }
 
@@ -188,17 +186,15 @@ class ProductAttributeController extends Controller
 
         $data = $request->request->all();
 
-        $em = $this->getEntityManager();
-
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
-                $attribute = $this->getProductAttributeRepository()->find((int) $id);
+                $attribute = $this->getRepository('PimProductBundle:ProductAttribute')->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $em->persist($attribute);
+                    $this->persist($attribute, false);
                 }
             }
-            $em->flush();
+            $this->flush();
 
             return new Response(1);
         }
@@ -212,6 +208,7 @@ class ProductAttributeController extends Controller
      * @param Attribute $entity
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -225,9 +222,7 @@ class ProductAttributeController extends Controller
             }
         }
 
-        $em = $this->getProductManager()->getStorageManager();
-        $em->remove($entity);
-        $em->flush();
+        $this->remove($entity);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

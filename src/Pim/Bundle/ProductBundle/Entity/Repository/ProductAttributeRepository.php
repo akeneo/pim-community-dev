@@ -1,9 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Repository for attribute entity

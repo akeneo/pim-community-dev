@@ -6,6 +6,7 @@ parameters:
     pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
     pim_product.form.type.product_create.class:       Pim\Bundle\ProductBundle\Form\Type\ProductCreateType
     pim_product.form.type.product_value.class:        Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+    pim_product.form.type.image.class:                Pim\Bundle\ProductBundle\Form\Type\ImageType
 
     pim_product.handler.product_create.class:         Pim\Bundle\ProductBundle\Form\Handler\ProductCreateHandler
 
@@ -20,10 +21,6 @@ parameters:
     pim_product.handler.family.class:                  Pim\Bundle\ProductBundle\Form\Handler\FamilyHandler
     pim_product.type.family.class:                     Pim\Bundle\ProductBundle\Form\Type\FamilyType
     pim_product.type.attribute_group.class:            Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
-
-    pim_product.entity.export_profile.class:           Pim\Bundle\ProductBundle\Entity\ExportProfile
-    pim_product.handler.export_profile.class:          Pim\Bundle\ProductBundle\Form\Handler\ExportProfileHandler
-    pim_product.type.export_profile.class:             Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
 
     pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
     pim_product.entity.category_translation.class:     Pim\Bundle\ProductBundle\Entity\CategoryTranslation
@@ -45,3 +42,5 @@ parameters:
     pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\ScopableType
     pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
+
+    pim_product.event_listener.add_hash_to_redirect_url.class: Pim\Bundle\ProductBundle\EventListener\AddHashtagToRedirectedUrlListener

@@ -110,14 +110,18 @@ $(function() {
         });
 
         $(document).on('click', 'button.action-delete-inline', function(e) {
-            var rows = $optionList.find('tr').length;
-            if (rows > 2) {
+            var rows = $optionList.find('tbody tr').length;
+            if (rows > 1) {
                 $(this).parent().parent().remove();
-                if (rows == 3) {
-                    $('button.action-delete-inline').hide();
+                if (rows === 2) {
+                    $('button.action-delete-inline').attr('disabled', 'disabled');
                 }
             }
         });
+
+        if ($('button.action-delete-inline').length === 1) {
+            $('button.action-delete-inline').attr('disabled', 'disabled');
+        }
 
         $(document).on('change', 'input[name="default"]', updateDefaultField);
 
@@ -164,7 +168,7 @@ $(function() {
 
         $optionList.find('tbody').append($option);
 
-        $('button.action-delete-inline').show();
+        $('button.action-delete-inline').removeAttr('disabled');
         updateSortOrder();
     }
 
@@ -181,21 +185,4 @@ $(function() {
             $(this).prev().val($(this).is(':checked') ? 1 : 0);
         });
     }
-
-    $('#btn-delete-attribute').click(function(event) {
-        doAction = function() {
-            window.location.href = "{{ path('pim_product_productattribute_remove', { id: form.vars.value.id }) }}";
-        };
-
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            confirm = new Backbone.BootstrapModal({
-                title: "{{ 'Delete Confirmation' | trans }}",
-                content: "{{ 'Are you sure you want to delete this attribute' | trans }}"
-            });
-            confirm.on('ok', doAction);
-            confirm.open();
-        } else if (window.confirm(message)) {
-            doAction();
-        }
-    });
 });

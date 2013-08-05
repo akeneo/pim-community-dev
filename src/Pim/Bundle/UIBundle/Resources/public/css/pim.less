@@ -208,9 +208,14 @@ header h1.logo {
   background-color: @backgroundColor-white;
 }
 
+.navbar.application-menu {
+  background-color: @color-grey_tab;
+}
+
 .navigation .top-action-box {
-  background-color: transparent;
-  padding: 0;
+  background-color: @backgroundColor-white;
+  padding: 5px 6px 9px;
+  .box-shadow(-3px -3px 3px -2px rgba(20, 20, 20, 0.25));
 }
 
 /* Messages *********************************************************************************************************/
@@ -298,6 +303,10 @@ form.form-signin {
   }
 }
 
+.btn-group.open .btn-primary.dropdown-toggle {
+  .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+}
+
 a.return {
   line-height: 30px;
   margin-top: 8px;
@@ -317,6 +326,9 @@ a.accordion-toggle {
 
 .accordion-group {
   margin: 10px;
+  li span.label {
+    margin-bottom: 5px;
+  }
 }
 
 .form-horizontal .control-group {
@@ -592,7 +604,7 @@ table.ui-sortable, tbody.ui-sortable {
   .select2-container { max-width: 365px;}
   .select2-container { width: 365px!important; } /* important statement come from bap */
 }
-.navbar-extra {padding: 10px;}
+.navbar-extra {padding: 10px 7px 10px 12px;}
 .navbar-content {line-height: 18px;}
 .navbar-content .sub-title {font-size: 17px; color: #999; float: left;}
 .navbar-content .separator {float: left; padding: 0 3px; color: #999; font-size: 18px; }
@@ -611,7 +623,12 @@ table.ui-sortable, tbody.ui-sortable {
     margin-right: -8px;
   }
 }
-.product-edit #localisations {margin-top:20px;}
+#container {
+  .buffer-top {padding-top:20px;}
+  .buffer-right {padding-right:20px;}
+  .buffer-bottom {padding-bottom:20px;}
+  .buffer-left {padding-left:20px;}
+}
 
 form .scopable {
   margin-bottom: 10px;
@@ -939,11 +956,13 @@ table.grid { margin-bottom: 0; }
 }
 
 /* Tree */
-.product-list h3 {margin:0px;}
-
 .jstree-default {
   height: 100%;
   overflow: auto;
+}
+
+.jstree-root > a > .jstree-checkbox {
+    display: none;
 }
 
 #tree_toolbar {
@@ -981,6 +1000,17 @@ table.grid { margin-bottom: 0; }
   margin: 0 3px;
 }
 
+a {
+  &.icons-holder,
+  &.icons-holder-text {
+    height: 28px;
+    line-height: 28px;
+  }
+  &.icons-holder [class^="fa-icon-"] {
+    margin: 0 -3px;
+  }
+}
+
 .fa-icon-collapse-alt, .fa-icon-expand-alt {
   font-size: 14px;
 }
@@ -1000,4 +1030,10 @@ code.flag-language {
     border: none;
     background-color: transparent;
     padding: 4px;
+}
+
+ul.medias label.remove-media {
+    float: none;
+    display: inline;
+    margin-left: 10px;
 }

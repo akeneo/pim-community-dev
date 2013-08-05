@@ -47,8 +47,8 @@ class MediaManager
      */
     public function handle(Media $media, $filenamePrefix)
     {
-        if (null !== $file = $media->getFile()) {
-            if (null !== $media->getFilename() && $this->fileExists($media)) {
+        if ($file = $media->getFile()) {
+            if ($media->getFilename() && $this->fileExists($media)) {
                 $this->delete($media);
             }
             $this->upload($media, $this->generateFilename($file, $filenamePrefix));
@@ -116,6 +116,11 @@ class MediaManager
     protected function delete(Media $media)
     {
         $this->fileSystem->delete($media->getFilename());
+
+        $media->setOriginalFilename(null);
+        $media->setFilename(null);
+        $media->setFilepath(null);
+        $media->setMimeType(null);
     }
 
     /**

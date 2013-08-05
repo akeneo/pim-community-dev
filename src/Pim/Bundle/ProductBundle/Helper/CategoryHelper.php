@@ -1,10 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Helper;
 
-use \RecursiveArrayIterator;
-
 use Doctrine\Common\Collections\Collection;
-
 use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
@@ -176,6 +173,10 @@ class CategoryHelper
                 $title .= ' ('.$category['item']->getProductsCount().')';
             }
 
+            if ($category['item']->getParent() == null) {
+                $state .= ' jstree-root';
+            }
+
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
@@ -200,7 +201,13 @@ class CategoryHelper
      */
     protected static function getState(Category $category)
     {
-        return $category->hasChildren() ? 'closed' : 'leaf';
+        $state = $category->hasChildren() ? 'closed' : 'leaf';
+
+        if ($category->getParent() == null) {
+            $state .= ' jstree-root';
+        }
+
+        return $state;
     }
 
     /**
@@ -283,6 +290,7 @@ class CategoryHelper
         foreach ($categories as $category) {
             $state = 'leaf';
 
+
             if (count($category['__children']) > 0) {
                 $state = 'open';
             } else {
@@ -297,19 +305,23 @@ class CategoryHelper
 
             $children = static::formatCategoryAndCount($category['__children'], $selectedIds, $count);
 
-            $selectedChildrenCount = 0;
+            $selectedChildren = 0;
 
             foreach ($children as $child) {
-                $selectedChildrenCount += $child['selectedChildrenCount'];
+                $selectedChildren += $child['selectedChildrenCount'];
                 if (preg_match('/checked/', $child['state'])) {
-                    $selectedChildrenCount ++;
+                    $selectedChildren ++;
                 }
             }
 
             $title = $category['item']->getTitle();
 
-            if ($selectedChildrenCount > 0) {
+            if ($selectedChildren > 0) {
                 $title = '<strong>'.$title.'</strong>';
+            }
+
+            if ($category['item']->getParent() == null) {
+                $state .= ' jstree-root';
             }
 
             $result[] = array(
@@ -319,7 +331,7 @@ class CategoryHelper
                 'data'  => $title,
                 'state' => $state,
                 'children' => $children,
-                'selectedChildrenCount' => $selectedChildrenCount
+                'selectedChildrenCount' => $selectedChildren
             );
         }
 

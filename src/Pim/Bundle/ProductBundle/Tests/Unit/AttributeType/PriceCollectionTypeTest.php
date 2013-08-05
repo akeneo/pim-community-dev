@@ -17,31 +17,37 @@ class PriceCollectionTypeTest extends AttributeTypeTest
     {
         parent::setUp();
 
-        $currencyManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\CurrencyManager')->disableOriginalConstructor()->getMock();
+        $currencyManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\CurrencyManager')
+            ->disableOriginalConstructor()->getMock();
         $this->target = new PriceCollectionType('decimal', 'text', $this->guesser, $currencyManager);
     }
 
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
-        $value = $this->getFlexibleValueMock(array(
-            'data'        => 'bar',
-            'backendType' => 'foo',
-        ));
+        $value = $this->getFlexibleValueMock(
+            array(
+                'data'        => 'bar',
+                'backendType' => 'foo'
+            )
+        );
 
         $factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'text', 'bar', array(
-                'options'      => array(
-                    'constraints' => array('constraints'),
-                ),
+            ->with(
+                'foo',
+                'text',
+                'bar',
+                array('options'      => array('constraints' => array('constraints'),),
                 'label'        => null,
                 'required'     => null,
                 'type'         => 'pim_product_price',
                 'allow_add'    => false,
                 'allow_delete' => false,
                 'by_reference' => false,
-            ));
+                'auto_initialize' => false
+                )
+            );
 
         $this->target->buildValueFormType($factory, $value);
     }
@@ -58,10 +64,14 @@ class PriceCollectionTypeTest extends AttributeTypeTest
 
     public function testBuildAttributeFormTypes()
     {
-        $this->assertEquals(9, count($this->target->buildAttributeFormTypes(
-            $this->getFormFactoryMock(),
-            $this->getAttributeMock(null, null)
-        )));
+        $this->assertEquals(
+            9,
+            count(
+                $this->target->buildAttributeFormTypes(
+                    $this->getFormFactoryMock(),
+                    $this->getAttributeMock(null, null)
+                )
+            )
+        );
     }
 }
-

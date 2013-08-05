@@ -1,12 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType;
-
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
@@ -91,11 +86,17 @@ class PriceCollectionType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'decimalsAllowed',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
+                )
             ),
             array(
                 'name'      => 'negativeAllowed',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
+                )
             ),
             array(
                 'name'      => 'searchable',

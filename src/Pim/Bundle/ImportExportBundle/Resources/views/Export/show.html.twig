@@ -1,0 +1,7 @@
+{% set title = 'Export'|trans %}
+
+{% set indexRoute  = path('pim_importexport_export_index') %}
+{% set editRoute   = path('pim_importexport_export_edit', {'id': job.id}) %}
+{% set launchRoute = path('pim_importexport_export_launch', {'id': job.id}) %}
+
+{% include 'PimImportExportBundle:Job:show.html.twig' %}

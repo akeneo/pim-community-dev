@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 /**
  * Batch domain interface representing the configuration of a step. As with the
  * Job, a Step is meant to explicitly represent the configuration of a step by
@@ -26,7 +28,7 @@ interface StepInterface
      * StepExecution provided. The Step is responsible for setting the meta
      * information and also saving it if required by the implementation.
      *
-     * @param StepExecution stepExecution an entity representing the step to be executed
+     * @param StepExecution $stepExecution an entity representing the step to be executed
      *
      * @throws JobInterruptedException if the step is interrupted externally
      */

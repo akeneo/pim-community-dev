@@ -17,7 +17,6 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
  */
 class ProductAttributeTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ProductAttribute
      */
@@ -55,9 +54,8 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->attribute->getVariant());
         $this->assertFalse($this->attribute->isUseableAsGridColumn());
         $this->assertFalse($this->attribute->isUseableAsGridFilter());
-        $this->assertTrue($this->attribute->isDecimalsAllowed());
-        $this->assertTrue($this->attribute->isNegativeAllowed());
-
+        $this->assertNull($this->attribute->isDecimalsAllowed());
+        $this->assertNull($this->attribute->isNegativeAllowed());
     }
 
     /**
@@ -302,7 +300,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSetDecimalsAllowed()
     {
-        $this->assertTrue($this->attribute->isDecimalsAllowed());
+        $this->assertNull($this->attribute->isDecimalsAllowed());
 
         $decimalsAllowed = false;
         $this->assertEntity($this->attribute->setDecimalsAllowed($decimalsAllowed));
@@ -316,7 +314,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSetNegativeAllowed()
     {
-        $this->assertTrue($this->attribute->isNegativeAllowed());
+        $this->assertNull($this->attribute->isNegativeAllowed());
 
         // Change value and assert new
         $this->assertEntity($this->attribute->setNegativeAllowed(false));

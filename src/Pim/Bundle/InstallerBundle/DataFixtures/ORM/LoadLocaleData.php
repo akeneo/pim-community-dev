@@ -1,10 +1,9 @@
 <?php
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ConfigBundle\Entity\Currency;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Load fixtures for locales
@@ -65,6 +64,6 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 3;
+        return 2;
     }
 }

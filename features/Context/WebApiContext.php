@@ -18,6 +18,17 @@ class WebApiContext extends BehatWebApiContext
     /** Default Nonce */
     const NONCE = 'd36e316282959a9ed4c89851497a717f';
 
+    protected $url;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($baseUrl, Browser $browser = null)
+    {
+        parent::__construct($baseUrl, $browser);
+        $this->url = rtrim($baseUrl, '/');
+    }
+
     /**
      * Provides WSSE authentication for next request.
      *
@@ -34,12 +45,16 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @param string $sku
+     *
+     * @return array:Step
      * @Given /^I request information for product "([^"]*)"$/
      */
     public function iRequestInformationForProduct($sku)
     {
         $product = $this->getFixturesContext()->getProduct($sku);
         $this->setPlaceHolder('{identifier}', $product->getIdentifier());
+        $this->setPlaceHolder('{baseUrl}', $this->url);
 
         return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{identifier}.json\""));
     }
@@ -54,6 +69,8 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^(?:the )?response should contain the following data:$/
      */
     public function theResponseShouldContainTheFollowingData(TableNode $table)
@@ -73,18 +90,21 @@ class WebApiContext extends BehatWebApiContext
      * @param string $apiKey
      * @param string $nonce
      */
-    private function generateWsseHeader($userName, $apiKey, $nonce = self::NONCE)
+    private function generateWsseHeader($username, $apiKey, $nonce = self::NONCE)
     {
         $created = date('c');
         $digest  = base64_encode(sha1(base64_decode($nonce) . $created . $apiKey, true));
         $this->addHeader('CONTENT_TYPE: application/json');
         $this->addHeader('Authorization: WSSE profile="UsernameToken"');
-        $this->addHeader(sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-            $userName,
-            $digest,
-            $nonce,
-            $created
-        ));
+        $this->addHeader(
+            sprintf(
+                'X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+                $username,
+                $digest,
+                $nonce,
+                $created
+            )
+        );
     }
 
     /**

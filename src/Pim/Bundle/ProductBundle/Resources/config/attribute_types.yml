@@ -94,7 +94,7 @@ services:
         class: Pim\Bundle\ProductBundle\AttributeType\ImageType
         arguments:
             - "media"
-            - "oro_media"
+            - "pim_image"
             - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_image }

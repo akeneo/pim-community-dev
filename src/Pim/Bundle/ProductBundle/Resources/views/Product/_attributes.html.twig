@@ -49,10 +49,11 @@
                     </div>
             {% endif %}
             {% if attributeView.isRemovable %}
-                <a href="{{ path('pim_product_product_removeproductvalue', { 'productId': product.id, 'attributeId': attributeId }) }}"
+                <a href="{{ path('pim_product_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}"
                         class="btn btn-action btn-link remove-attribute"
                         title="Remove this attribute"
-                        data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
+                        data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" 
+                        data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
             {% endif %}
             </div>
         {% endfor %}

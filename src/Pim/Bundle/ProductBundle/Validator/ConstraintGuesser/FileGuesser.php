@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Validator\ConstraintGuesser;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Validator\Constraints\File;
 
 /**
@@ -42,8 +41,8 @@ class FileGuesser implements ConstraintGuesserInterface
             $options['maxSize'] = $attribute->getMaxFileSize();
         }
 
-        if ($allowedFileExtensions = $attribute->getAllowedFileExtensions()) {
-            $options['allowedExtensions'] = $allowedFileExtensions;
+        if ($allowedExtensions = $attribute->getAllowedFileExtensions()) {
+            $options['allowedExtensions'] = $allowedExtensions;
         }
 
         if ($options) {

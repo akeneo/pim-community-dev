@@ -1,9 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
-
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'category' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
@@ -13,73 +9,40 @@
     {% set title = title ~ ' - ' ~ form.vars.value.title %}
 {% endif %}
 
-{% block page_container %}
-<div class="container-fluid category">
-    {% block content %}
+{% block content %}
     <div id="category-tree-container" class="row-fluid">
         <div id="tree"></div>
 
         <div>
             {{ JSFV(form) }}
-            <form action="{{ form.vars.value.id ?
+            <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
-                path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">
+                path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
 
-                <div class="form-row">
-                    <h3>{{ title|trans }}
-                        <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-                    </h3>
-                </div>
+                {% set buttons %}
+                    {% if form.vars.value.id %}
+                        {{ elements.deleteLink(path('pim_product_categorytree_remove', { id: form.vars.value.id })) }}
+                    {% endif %}
+                    {{ elements.submitBtn }}
+                {% endset %}
 
-                {% if form.vars.value.id %}
-                    {{ elements.form_navbar(['Properties', 'History'], 'tab') }}
-                {% else %}
-                    {{ elements.form_navbar(['Properties'], 'tab') }}
-                {% endif %}
+                {{ elements.page_header(title|trans, buttons) }}
+
+                {% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
+                {{ elements.form_navbar(tabs) }}
 
                 <div class="row-fluid tab-content">
-                    {% if form.vars.errors|length %}
-                        <div class="alert alert-error">
-                            {{ form_errors(form) }}
-                        </div>
-                    {% endif %}
+                    {{ elements.form_errors(form) }}
 
                     <div class="tab-pane active" id="properties">
-                        <div id="accordion1" class="accordion">
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseOne">
-                                        <i class="fa-icon-collapse-alt"></i>
-                                        {{ "General Properties"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseOne" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            {{ form_row(form.code) }}
-                                            {% if form.dynamic is defined %}
-                                                {{ form_row(form.dynamic) }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseTwo">
-                                        <i class="fa-icon-collapse-alt"></i>
-                                        {{ "Node values"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseTwo" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            {{ form_row(form.title) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% set generalProperties %}
+                            {{ form_row(form.code) }}
+                            {% if form.dynamic is defined %}
+                                {{ form_row(form.dynamic) }}
+                            {% endif %}
+                        {% endset %}
+
+                        {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': form_row(form.title) }) }}
                     </div>
 
                     <div class="tab-pane" id="history">
@@ -92,8 +55,6 @@
     </div>
 
     {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
-    {% endblock %}
-</div>
 {% endblock %}
 
 {% block head_script %}
@@ -106,23 +67,3 @@
     {% endif %}
 
 {% endblock %}
-
-{% if form.vars.value.id %}
-    {% block javascripts %}
-        {{ parent() }}
-        <script type="text/javascript">
-    $(function() {
-        $('#btn-delete-category').click(function(event) {
-            doRemove = function() {
-                window.location.href = "{{ path('pim_product_categorytree_remove', { id: form.vars.value.id }) }}";
-            };
-            PimDialog.confirm(
-                "{{ 'Are you sure you want to delete this item' | trans }}",
-                "{{ 'Delete Confirmation' | trans }}",
-                doRemove
-            );
-        });
-    });
-        </script>
-    {% endblock %}
-{% endif %}

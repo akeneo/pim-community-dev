@@ -14,11 +14,14 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    trusted_proxies: ~
     trusted_proxies: ~
     session:
         cookie_lifetime:      43200
         name:                 BAPID
+    fragments:
+        enabled: true
+        path: /_fragment # used for controller action in template
 
 # Twig Configuration
 twig:
@@ -29,22 +32,27 @@ twig:
         env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      pim_default
+            start_route:      oro_default
     form:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'
+#            - 'OroUIBundle:Form:fields.html.twig'
+#            - 'OroFormBundle:Form:fields.html.twig'
+#            - 'OroTranslationBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
     debug:                    false
     use_controller:           false
     bundles:
+        - OroAsseticBundle
         - OroUIBundle
         - OroUserBundle
         - OroGridBundle
+        - OroFilterBundle
         - OroNavigationBundle
         - OroWindowsBundle
-        - OroFilterBundle
+        - OroEntityExtendBundle
         - OroSegmentationTreeBundle
         - PimUIBundle
         - PimProductBundle
@@ -79,10 +87,13 @@ doctrine:
             Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
             Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
             Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
+            Pim\Bundle\ImportExportBundle\Model\ExportInterface:  Pim\Bundle\ImportExportBundle\Entity\Export
 
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
+    encryption:               "%mailer_encryption%"
+    auth_mode:                "%mailer_auth_mode%"
     host:                     "%mailer_host%"
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
@@ -136,12 +147,12 @@ stof_doctrine_extensions:
         default:
             timestampable:    true
             tree:             true
-            loggable:         true
 
 services:
-    cache:
-        class:                Doctrine\Common\Cache\PhpFileCache
-        arguments:            [%kernel.cache_dir%]
+    oro.cache.abstract:
+        abstract: true
+        class:     Doctrine\Common\Cache\PhpFileCache
+        arguments: [%kernel.cache_dir%]
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
          tags:
@@ -159,6 +170,10 @@ liip_imagine:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
 
+genemu_form:
+    select2: ~
+    autocomplete: ~
+
 oro_search:
     engine:                   orm
     realtime_update:          true
@@ -175,6 +190,22 @@ oro_user:
         name_format:
           value:              %%last%%, %%first%%
 
+oro_translation:
+    js_translation:
+        # order of domains reflects messages fallback
+        domains: [jsmessages, validators]
+
+oro_assetic:
+    uncompress_js: ~
+    uncompress_css: ~
+
+jms_di_extra:
+    doctrine_integration: false
+    
+oro_entity_extend:
+    backend:        Dynamic
+    backup:         "%kernel.root_dir%/entities/Backup/"
+
 oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig
@@ -190,21 +221,68 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
-pim_import_export:
-    encoders:
-        csv:
-            delimiter: ';'
-            enclosure: '"'
-            with_header: true
-    exporters:
-        product:
-            format: csv
-            reader:
-                type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
-                options:
-                    em: @doctrine.orm.default_entity_manager
-                    entity: "PimProductBundle:Product"
-            writer:
-                type: Pim\Bundle\ImportExportBundle\Writer\FilePutContentsWriter
-                options:
-                    path: "/tmp/export.csv"
+pim_batch:
+    jobs:
+        product_export:
+            title:      pim_import_export.jobs.product_export.title
+            connector: "Akeneo"
+            type:      "export"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.product_export.export.title
+                    reader:     pim_import_export.reader.product
+                    processor:  pim_import_export.processor.heterogeneous_csv_serializer
+                    writer:     pim_import_export.writer.file
+        category_export:
+            title:     pim_import_export.jobs.category_export.title
+            connector: "Akeneo"
+            type:      "export"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.category_export.export.title
+                    reader:     pim_import_export.reader.category
+                    processor:  pim_import_export.processor.homogeneous_csv_serializer
+                    writer:     pim_import_export.writer.file
+        attribute_export:
+            title:     pim_import_export.jobs.attribute_export.title
+            connector: "Akeneo"
+            type:      "export"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.attribute_export.export.title
+                    reader:     pim_import_export.reader.attribute
+                    processor:  pim_import_export.processor.homogeneous_csv_serializer
+                    writer:     pim_import_export.writer.file
+        product_import:
+            title:     pim_import_export.jobs.product_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.product_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+        category_import:
+            title:     pim_import_export.jobs.category_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.category_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+        attribute_import:
+            title:     pim_import_export.jobs.attribute_import.title
+            connector: "Akeneo"
+            type:      "import"
+            steps:
+                export:
+                    title:      pim_import_export.jobs.attribute_import.import.title
+                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
+                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+
+pim_demo:
+    load_data: true

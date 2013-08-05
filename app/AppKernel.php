@@ -17,9 +17,10 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+
+            // BAP deps
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-            //new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\JobQueueBundle\JMSJobQueueBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
@@ -29,7 +30,6 @@ class AppKernel extends Kernel
             new BeSimple\SoapBundle\BeSimpleSoapBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
@@ -42,7 +42,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\JsFormValidationBundle\OroJsFormValidationBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
             new Oro\Bundle\SearchBundle\OroSearchBundle(),
-            new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
             new Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle(),
@@ -53,6 +52,19 @@ class AppKernel extends Kernel
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
+            new Oro\Bundle\TagBundle\OroTagBundle(),
+            new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
+            new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
+            new Oro\Bundle\OrganizationBundle\OroOrganizationBundle(),
+            new Oro\Bundle\NotificationBundle\OroNotificationBundle($this),
+            new Oro\Bundle\EmailBundle\OroEmailBundle(),
+            new Oro\Bundle\EntityBundle\OroEntityBundle(),
+            new Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
+            new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
+            new Oro\Bundle\ImapBundle\OroImapBundle(),
+
+            // PIM deps
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
@@ -70,15 +82,13 @@ class AppKernel extends Kernel
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\BatchBundle\PimBatchBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
+            new Pim\Bundle\DemoBundle\PimDemoBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-
-            // PIM demo bundle
-            $bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
         }
 
         return $bundles;

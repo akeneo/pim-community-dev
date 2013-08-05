@@ -18,34 +18,35 @@ class EmailGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportTextAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'attributeType' => 'pim_product_text',
-            ))
-        ));
+        $this->assertTrue(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+            )
+        );
     }
 
     public function testGuessEmailConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => 'email',
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType'  => 'pim_product_text','validationRule' => 'email',))
+        );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Email', $constraints);
     }
 
     public function testDoNotGuessEmailConstraint()
     {
-        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'attributeType'  => 'pim_product_text',
-            'validationRule' => null,
-        )));
+        $constraints = $this->target->guessConstraints(
+            $this->getAttributeMock(array('attributeType'  => 'pim_product_text','validationRule' => null,))
+        );
 
         $this->assertEquals(0, count($constraints));
     }

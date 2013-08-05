@@ -11,7 +11,6 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  */
 class CategoryTreeControllerTest extends ControllerTest
 {
-
     /**
      * @staticvar string
      */
@@ -26,6 +25,31 @@ class CategoryTreeControllerTest extends ControllerTest
      * @staticvar string
      */
     const TREE_EDITED_CODE = 'tree-edited-code';
+
+    /**
+     * @staticvar string
+     */
+    const TREE_CREATED_MSG = 'Tree successfully created';
+
+    /**
+     * @staticvar string
+     */
+    const TREE_SAVED_MSG = 'Tree successfully updated';
+
+    /**
+     * @staticvar string
+     */
+    const CATEGORY_CREATED_MSG = 'Category successfully created';
+
+    /**
+     * @staticvar string
+     */
+    const CATEGORY_SAVED_MSG = 'Category successfully updated';
+
+    /**
+     * @staticvar string
+     */
+    const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
      * @staticvar string
@@ -48,21 +72,6 @@ class CategoryTreeControllerTest extends ControllerTest
     const NODE_IS_DYNAMIC = 1;
 
     /**
-     * @staticvar string
-     */
-    const CATEGORY_SAVED_MSG = 'Category successfully saved';
-
-    /**
-     * @staticvar string
-     */
-    const TREE_SAVED_MSG = 'Tree successfully saved';
-
-    /**
-     * @staticvar string
-     */
-    const CATEGORY_REMOVED_MSG = 'Category successfully removed';
-
-    /**
      * Test create action for a tree
      *
      * @return null
@@ -81,10 +90,9 @@ class CategoryTreeControllerTest extends ControllerTest
 
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
-            function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
-                    if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
+            function ($node, $i) use ($uri) {
+                if ($action = $node->attr('action')) {
+                    if (strpos($action, $uri) !== false) {
                         return true;
                     }
                 }
@@ -102,7 +110,7 @@ class CategoryTreeControllerTest extends ControllerTest
             'pim_category[title][default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_CREATED_MSG);
 
         // assert entity well inserted
         $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
@@ -135,8 +143,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert node form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/create/[0-9]*#', $action)) {
                         return true;
                     }
@@ -155,7 +162,7 @@ class CategoryTreeControllerTest extends ControllerTest
             'pim_category[title][default]' => self::NODE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_CREATED_MSG);
 
         // assert entity well inserted
         $category = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
@@ -188,8 +195,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
@@ -246,8 +252,7 @@ class CategoryTreeControllerTest extends ControllerTest
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }

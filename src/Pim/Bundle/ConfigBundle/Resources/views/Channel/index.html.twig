@@ -7,20 +7,14 @@
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block page_container %}
-<div class="container-fluid">
-    {% block content %}
+{% block content %}
 
-        {% set title = 'Channels overview'|trans %}
+    {% set title = 'Channels overview'|trans %}
 
-        {% set buttons %}
-            <a class="btn btn-primary pull-right" href="{{ path('pim_config_channel_create') }}">{{ 'New channel'|trans }}</a>
-        {% endset %}
+    {% set buttons = elements.createBtn('New channel', path('pim_config_channel_create')) %}
 
-        {{ elements.page_header(title, buttons) }}
+    {{ elements.page_header(title, buttons) }}
 
-        <div id="channel-grid"></div>
+    <div id="channel-grid"></div>
 
-    {% endblock %}
-</div>
 {% endblock %}

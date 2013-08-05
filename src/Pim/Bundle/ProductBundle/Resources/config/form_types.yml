@@ -44,11 +44,6 @@ services:
         tags:
             - { name: form.type, alias: pim_family }
 
-    pim_product.form.type.export_profile:
-        class: %pim_product.type.export_profile.class%
-        tags:
-            - { name: form.type, alias: pim_export_profile }
-
     pim_product.form.type.wysiwyg:
         class: %pim_product.form.type.product_value_wysiwyg.class%
         tags:

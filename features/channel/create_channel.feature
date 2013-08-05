@@ -18,7 +18,7 @@ Feature: Create a channel
   Scenario: Succesfully create a channel
     Given I am on the channel creation page
     Then I should see the Code, Default label, Currencies, Locales and Category tree fields
-    And I fill in the following fields:
+    And I fill in the following information:
       | Code          | foo            |
       | Default label | bar            |
       | Currencies    | EUR            |

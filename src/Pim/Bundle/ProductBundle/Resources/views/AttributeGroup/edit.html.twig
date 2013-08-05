@@ -2,79 +2,31 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-<form action="{{ form.vars.value.id ?
+<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
     path('pim_product_attributegroup_edit', { id: form.vars.value.id }) :
-    path('pim_product_attributegroup_create') }}" method="POST" class="form-horizontal">
-    <div class="form-row">
-        <h3>
-            {% if form.vars.value.id %}
-                {{ 'Group'|trans }} - {{ form.vars.data.name }}
-            {% else %}
-                {{ 'New group'|trans }}
-            {% endif %}
-            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            {% if form.vars.value.id %}
-                <a href="{{ path('pim_product_attributegroup_remove', {'id': form.vars.value.id}) }}"
-                    class="btn pull-right" data-method="DELETE"
-                    data-confirm="{{ 'Are you sure you want to remove the group %group%?'|trans({'%group%': form.vars.data.name}) }}">
-                    {{ 'Delete'|trans }}
-                </a>
-            {% endif %}
-        </h3>
-    </div>
+    path('pim_product_attributegroup_create') }}" method="POST">
 
-    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
-        <div class="navbar-inner">
-            <div class="row-fluid">
-                <ul class="nav">
-                    <li class="active"><a href="#properties" data-toggle="tab">{{ 'Properties' | trans }}</a></li>
-                    {% if form.vars.value.id %}
-                    <li><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
+    {% set title = form.vars.value.id ? 'Group'|trans ~ ' - ' ~ form.vars.data.name : 'New group'|trans %}
+
+    {% set buttons %}
+        {{ elements.submitBtn }}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(path('pim_product_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
+        {% endif %}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {% set tabs = form.vars.value.id ? ['Properties', 'Attributes'] : 'Properties' %}
+
+    {{ elements.form_navbar(tabs) }}
 
     <div class="tab-content">
 
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
+        {{ elements.form_errors(form) }}
 
         <div class="tab-pane active" id="properties">
-            <div id="accordion1" class="accordion">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                            <i class="fa-icon-collapse-alt"></i>
-                            {{ "General Properties"|trans }}
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="accordion-body in">
-                        <div class="accordion-inner">
-                            {{ form_row(form.code) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="accordion2" class="accordion">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                            <i class="fa-icon-collapse-alt"></i>
-                            {{ "Group values"|trans }}
-                        </a>
-                    </div>
-                    <div id="collapseTwo" class="accordion-body in">
-                        <div class="accordion-inner">
-                            {{ form_row(form.name) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.name) }) }}
         </div>
         {{ form_row(form.sort_order) }}
         {{ form_row(form._token) }}
@@ -108,7 +60,7 @@
                                         <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
                                     </td>
                                     <td>
-                                        <a href="{{ path('pim_product_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                        <a href="{{ path('pim_product_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
                                             <i class="icon-trash"></i>
                                         </a>
                                     </td>
@@ -123,7 +75,7 @@
 
 {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
     'form': attributesForm,
-    'action': path('pim_product_attributegroup_addproductattributes', {'id': group.id})
+    'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
 } %}
 
 {% include 'PimProductBundle:AttributeGroup:_attribute-sort-form.html.twig' with {

@@ -90,14 +90,9 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalizes a product into a set of arrays/scalars
-     *
-     * @param ProductInterface $product Product entity to normalize
-     * @param string           $format  Encoding format
-     *
-     * @return array|scalar
+     * {@inheritDoc}
      */
-    public function normalize($product, $format = null)
+    public function normalize($product, $format = null, array $context = array())
     {
         $values = $this->filterValues($product->getValues());
         $attributes = $this->getAttributes($values);
@@ -129,12 +124,12 @@ class ProductNormalizer implements NormalizerInterface
             'oro_api_get_product',
             array(
                 'scope' => $this->channel->getCode(),
-                'identifier' => $identifier
+                'identifier' => $identifier->getData()
             ),
             true
         );
 
-        return array($identifier => $data);
+        return array($identifier->getData() => $data);
     }
 
     /**

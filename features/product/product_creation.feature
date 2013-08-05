@@ -1,7 +1,7 @@
 @javascript
 Feature: Product creation
   In order to add a non-imported product
-  As an user
+  As a user
   I need to be able to manually create a product
 
   Background:
@@ -20,7 +20,7 @@ Feature: Product creation
   Scenario: Successfully create a product
     Given I am on the products page
     And I create a new product
-    And I fill in the following informations:
+    And I fill in the following information:
       | SKU               | barbecue  |
       | Reference         | BBQ       |
       | Activated locales | French    |

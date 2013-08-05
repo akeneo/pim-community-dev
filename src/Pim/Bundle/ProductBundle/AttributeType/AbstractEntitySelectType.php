@@ -33,6 +33,7 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
             if ($isTranslatable) {
                 $qb->addSelect('translation')->leftJoin('o.translations', 'translation');
             }
+
             return $qb->orderBy('o.'.$orderBy);
         };
 

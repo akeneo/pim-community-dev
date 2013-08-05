@@ -30,6 +30,8 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
             array(false),
             array(true),
             array('foo'),
+            array(array('foo')),
+            array(array('foo', 'bar' => 'baz')),
             array(1),
         );
     }
@@ -50,19 +52,38 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeArray($delimiter, $enclosure, $expectedResult)
     {
-        $encoder = new CsvEncoder($delimiter, $enclosure);
+        $encoder = new CsvEncoder();
 
-        $this->assertEquals($expectedResult, $encoder->encode(array('foo', '"bar"'), 'csv'));
+        $this->assertEquals(
+            $expectedResult,
+            $encoder->encode(
+                array(
+                    'code' => 'foo',
+                    'name' => '"bar"'
+                ),
+                'csv',
+                array(
+                    'delimiter' => $delimiter,
+                    'enclosure' => $enclosure,
+                )
+            )
+        );
     }
 
-    public function testEncodeCollectionOfArrays()
+    public function testEncodeCollectionOfHashes()
     {
         $encoder = new CsvEncoder;
 
-        $this->assertEquals("foo;bar\nbaz;buz\n", $encoder->encode(array(
-            array('foo', 'bar'),
-            array('baz', 'buz'),
-        ), 'csv'));
+        $this->assertEquals(
+            "foo;bar\nbaz;buz\n",
+            $encoder->encode(
+                array(
+                    array('name' => 'foo', 'code' => 'bar'),
+                    array('name' => 'baz', 'code' => 'buz'),
+                ),
+                'csv'
+            )
+        );
     }
 
     public function testEncodeEmptyArray()
@@ -83,42 +104,74 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $encoder->encode($value, 'csv');
     }
 
-    public function testEncodeCollectionOfArraysWithHeader()
+    public static function getEncodeArrayWithHeader()
     {
-        $encoder = new CsvEncoder(';', '"', true);
+        $entry1 = array('name' => 'foo', 'code' => 'bar');
+        $entry2 = array('name' => 'baz', 'code' => 'buz');
+        $entry3 = array('name' => 'foo', 'data' => 'buz');
 
-        $this->assertEquals("name;code\nfoo;bar\nbaz;buz\n", $encoder->encode(array(
-            array('name' => 'foo', 'code' => 'bar'),
-            array('name' => 'baz', 'code' => 'buz'),
-        ), 'csv'));
+        return array(
+            array($entry1,                 "name;code\nfoo;bar\n"),
+            array(array($entry1, $entry2), "name;code\nfoo;bar\nbaz;buz\n"),
+            array(array($entry2, $entry3), "name;code;data\nbaz;buz;\nfoo;;buz\n"),
+        );
     }
 
-    public function testEncodeCollectionOfArraysWithoutHeader()
+    /**
+     * @dataProvider getEncodeArrayWithHeader
+     */
+    public function testEncodeArrayWithHeader($array, $csv)
     {
-        $encoder = new CsvEncoder(';', '"');
+        $encoder = new CsvEncoder();
 
-        $this->assertEquals("foo;bar\nbaz;buz\n", $encoder->encode(array(
-            array('name' => 'foo', 'code' => 'bar'),
-            array('name' => 'baz', 'code' => 'buz'),
-        ), 'csv'));
+        $this->assertEquals($csv, $encoder->encode($array, 'csv', array('withHeader' => true)));
     }
 
-    public function testEncodeArrayWithHeader()
+    public static function getEncodeArrayWithoutHeader()
     {
-        $encoder = new CsvEncoder(';', '"', true);
+        $entry1 = array('name' => 'foo', 'code' => 'bar');
+        $entry2 = array('name' => 'baz', 'code' => 'buz');
+        $entry3 = array('name' => 'foo', 'data' => 'buz');
 
-        $this->assertEquals("name;code\nfoo;bar\n", $encoder->encode(array(
-            'name' => 'foo', 'code' => 'bar'
-        ), 'csv'));
+        return array(
+            array($entry1,                 "foo;bar\n"),
+            array(array($entry1, $entry2), "foo;bar\nbaz;buz\n"),
+            array(array($entry2, $entry3), "baz;buz;\nfoo;;buz\n"),
+        );
     }
 
-    public function testEncodeArrayWithoutHeader()
+    /**
+     * @dataProvider getEncodeArrayWithoutHeader
+     */
+    public function testEncodeArrayWithoutHeader($array, $csv)
     {
-        $encoder = new CsvEncoder(';', '"');
+        $encoder = new CsvEncoder();
 
-        $this->assertEquals("foo;bar\n", $encoder->encode(array(
-            'name' => 'foo', 'code' => 'bar'
-        ), 'csv'));
+        $this->assertEquals($csv, $encoder->encode($array, 'csv'));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testMultipleEncodeOfHeterogeneousData()
+    {
+        $encoder = new CsvEncoder;
+
+        $encoder->encode(array('foo' => 'bar'), 'csv', array('heterogeneous' => true));
+        $encoder->encode(array('boo' => 'far'), 'csv', array('heterogeneous' => true));
+    }
+
+    public function testMultipleEncodeOfHomogeneousData()
+    {
+        $encoder = new CsvEncoder;
+
+        $this->assertEquals(
+            "foo\nbar\n",
+            $encoder->encode(array('foo' => 'bar'), 'csv', array('withHeader' => true, 'heterogeneous' => false))
+        );
+        $this->assertEquals(
+            "baz\n",
+            $encoder->encode(array('foo' => 'baz'), 'csv', array('withHeader' => true, 'heterogeneous' => false))
+        );
     }
 }
-

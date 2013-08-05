@@ -1,0 +1,16 @@
+parameters:
+    pim_import_export.twig.normalize_configuration_extension.class:  Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
+    pim_import_export.validator.constraints.channel_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
+
+services:
+    pim_import_export.twig.normalize_configuration_extension:
+        class: %pim_import_export.twig.normalize_configuration_extension.class%
+        tags:
+            - { name: twig.extension }
+
+    pim_import_export.validator.constraints.channel_validator:
+        class: %pim_import_export.validator.constraints.channel_validator.class%
+        arguments:
+            - @pim_config.manager.channel
+        tags:
+            - { name: validator.constraint_validator, alias: channel_validator }

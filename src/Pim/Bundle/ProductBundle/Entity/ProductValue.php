@@ -3,7 +3,6 @@ namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
@@ -158,6 +157,16 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @ORM\OrderBy({"currency" = "ASC"})
      */
     protected $prices;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->prices = new ArrayCollection();
+    }
 
     /**
      * Remove an option

@@ -11,18 +11,12 @@
         {% set title = 'Products'|trans %}
 
         {% set buttons %}
-            <div class="btn-group icons-holder">
-                <a class="btn" href="{{ path('pim_product_product_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-            </div>
-            <div class="btn-group icons-holder">
+            {{ elements.backLink(path('pim_product_product_index')) }}
+            <div class="btn-group">
                 {{ form_widget(form.enabled) }}
             </div>
-            <div class="btn-group icons-holder">
-                <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-product" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this product ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-            </div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-            </div>
+            {{ elements.deleteLink(path('pim_product_product_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this product ?'|trans) }}
+            {{ elements.submitBtn }}
         {% endset %}
 
         {% set subtitle %}
@@ -36,11 +30,11 @@
                     {% for locale in form.vars.value.getLocales() %}
                         <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
                             <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
-                                    {% if locale.code == dataLocale %}
-                                <span class="icon">
+                                {% if locale.code == dataLocale %}
+                                    <span class="icon">
                                         <i class="icon-bullet"></i>
-                                </span>
-                                    {% endif %}
+                                    </span>
+                                {% endif %}
                                 {{ locale.code|flag }}
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
@@ -68,7 +62,7 @@
 
         <div class="layout-content">
 
-            {{ elements.form_navbar(['Attributes', 'Categories', 'Localisations', 'History'], 'tab') }}
+            {{ elements.form_navbar(['Attributes', 'Categories', 'Localisations', 'History']) }}
 
             <div class="row-fluid tab-content">
 
@@ -78,24 +72,22 @@
                     {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
                 </div>
 
-                    <div class="tab-pane" id="associations"></div>
+                <div class="tab-pane" id="associations"></div>
 
-                    <div class="tab-pane" id="localisations">
-                        <div class="span12 tab-content">
-                            {{ form_row(form.locales) }}
-                        </div>
-                    </div>
+                <div class="tab-pane buffer-top" id="localisations">
+                    {{ form_row(form.locales) }}
+                </div>
 
-                    <div class="tab-pane" id="categories">
-                       {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
-                    </div>
+                <div class="tab-pane" id="categories">
+                   {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
+                </div>
 
-                    <div class="tab-pane" id="history">
-                        <div id="history-grid"></div>
-                    </div>
+                <div class="tab-pane" id="history">
+                    <div id="history-grid"></div>
+                </div>
 
-                    {{ form_row(form.id) }}
-                    {{ form_row(form._token) }}
+                {{ form_row(form.id) }}
+                {{ form_row(form._token) }}
             </div>
         </div>
     </form>
@@ -119,8 +111,6 @@
     {% javascripts
         '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
         '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-
-
         filter='?yui_js'
         output='js/pim.multiselect.js'
         %}
@@ -128,4 +118,5 @@
     {% endjavascripts %}
 
     {% include 'PimProductBundle:Product:_js-handler.html.twig' %}
+    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
 {% endblock %}

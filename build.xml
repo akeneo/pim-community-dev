@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-no-coverage"/>
+
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
+
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
+
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -82,14 +89,14 @@
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src/Pim,${basedir}/features" />
             <arg value="text" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src/Pim,${basedir}/features" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -98,12 +105,10 @@
 
     <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
-            <arg value="--standard=Symfony2" />
-            <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
-            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -111,12 +116,10 @@
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
-            <arg value="--standard=Symfony2" />
-            <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
-            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -125,6 +128,7 @@
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -143,12 +147,34 @@
         </exec>
     </target>
 
+    <target name="phpunit-no-coverage" description="Run unit tests with PHPUnit without coverage">
+        <exec executable="phpunit">
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.jenkins-no-coverage.xml" />
+            <arg value="--testsuite=Jenkins_PIM_Test" />
+        </exec>
+    </target>
+
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="bin/behat">
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
+            <arg value="--no-paths" />
         </exec>
+    </target>
+
+    <target name="behat-check" description="Check Behat output">
+        <fail message="At least one scenario has failed">
+            <condition>
+                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="failed"/>
+            </condition>
+        </fail>
+        <fail message="A fatal error occured">
+            <condition>
+                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="PHP Fatal error"/>
+            </condition>
+        </fail>
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
@@ -173,12 +199,19 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
+            <arg value="--prefer-dist" />
         </exec>
     </target>
 
     <target name="dumpassets" description="Dump the assets">
         <exec executable="app/console">
-          <arg value="assetic:dump" />
+            <arg value="oro:navigation:init" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="assetic:dump" />
+        </exec>
+        <exec executable="app/console">
+            <arg value="oro:assetic:dump" />
         </exec>
     </target>
 
@@ -198,6 +231,9 @@
           <arg value="--complete" />
           <arg value="--force" />
         </exec>
+    </target>
+
+    <target name="fixtures" description="Load fixtures">
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />

@@ -1,15 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
 
 /**
  * Product form type

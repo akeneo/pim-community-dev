@@ -1,10 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 use Symfony\Component\Validator\ExecutionContext;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
@@ -172,15 +169,15 @@ class ProductAttributeValidator
         );
 
         if (in_array($productAttribute->getAttributeType(), $optionTypes)) {
-            $existingDefaultValues = array();
+            $existingValues = array();
             foreach ($productAttribute->getOptions() as $option) {
-                if (in_array($option->getDefaultValue(), $existingDefaultValues)) {
+                if (in_array($option->getDefaultValue(), $existingValues)) {
                     $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE);
                 }
                 if ($option->getDefaultValue() === null) {
                     $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
                 } else {
-                    $existingDefaultValues[] = $option->getDefaultValue();
+                    $existingValues[] = $option->getDefaultValue();
                 }
             }
         }

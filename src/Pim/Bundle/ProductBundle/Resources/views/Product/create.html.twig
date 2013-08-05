@@ -1,12 +1,13 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
 <form id="pim_product_product_create" method="POST" class="form-horizontal" data-title="{{ 'Create a new product'|trans }}" data-button-submit="{{ 'Create'|trans }}"  data-button-cancel="{{ 'Cancel'|trans }}" action="{{ path('pim_product_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
     {{ JSFV(form) }}
 
-    {% if form.vars.errors|length %}
-        <div class="alert alert-error">
-            {{ form_errors(form) }}
-        </div>
-    {% endif %}
+    {{ elements.form_errors(form) }}
 
     <div class="row-fluid">
         {{ form_row(form.id) }}

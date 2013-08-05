@@ -3,12 +3,12 @@ oro_menu_config:
         home:
             extras:
                 icon: 'fa-icon-home'
-            route: 'pim_default'
+            route: 'oro_default'
         pim_enrich_tab:
             label: 'Enrich'
             uri: '#'
             extras:
-                position: 10
+                position: 20
         pim_enrich_product:
             label: 'Products'
             route: 'pim_product_product_index'
@@ -39,12 +39,8 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
 
-                pim_export_tab:
-                    children:
-                        pim_enrich_exportprofile: ~
-
 oro_titles:
-    pim_default:                             Dashboard
+    oro_default:                             Dashboard
     pim_product_attributegroup_index:        Attribute groups
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit
@@ -52,12 +48,9 @@ oro_titles:
     pim_product_categorytree_index:          Category trees
     pim_product_categorytree_listtree:       Category trees | List
     pim_product_categorytree_manage:         Category trees | Manage
-    pim_product_categorytree_view:           Category trees | View
+    pim_product_categorytree_edit:           Category trees | View
     pim_product_categorytree_create:         Category trees | Create
     pim_product_categorytree_edit:           Category trees | Edit
-    pim_product_exportprofile_index:         Export profiles
-    pim_product_exportprofile_create:        Export profiles | Create
-    pim_product_exportprofile_edit:          Export profiles | Edit
     pim_product_productattribute_index:      Product attributes
     pim_product_productattribute_create:     Product attributes | Create
     pim_product_productattribute_edit:       Product attributes | Edit
@@ -71,8 +64,6 @@ oro_titles:
     pim_config_channel_create:               Channels | Create
     pim_config_channel_edit:                 Channels | Edit
     pim_config_currency_index:               Currencies
-    pim_config_currency_create:              Currencies | Create
-    pim_config_currency_edit:                Currencies | Edit
     pim_config_locale_index:                 Locales
     pim_config_locale_create:                Locales | Create
     pim_config_locale_edit:                  Locales | Edit

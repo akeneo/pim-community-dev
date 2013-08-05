@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -16,13 +19,19 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
  */
 class ItemStep extends AbstractStep
 {
-    /* @var ItemReaderInterface $reader */
+    /**
+     * @Assert\Valid
+     */
     private $reader = null;
 
-    /* @var ItemWriterInterfacce $writer */
+    /**
+     * @Assert\Valid
+     */
     private $writer = null;
 
-    /* @var ItemProcessorInterface $processor */
+    /**
+     * @Assert\Valid
+     */
     private $processor = null;
 
     /**
@@ -34,6 +43,11 @@ class ItemStep extends AbstractStep
         $this->reader = $reader;
     }
 
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
     /**
      * Set writer
      * @param ItemWriterInterface $writer
@@ -41,6 +55,11 @@ class ItemStep extends AbstractStep
     public function setWriter(ItemWriterInterface $writer)
     {
         $this->writer = $writer;
+    }
+
+    public function getWriter()
+    {
+        return $this->writer;
     }
 
     /**
@@ -52,6 +71,33 @@ class ItemStep extends AbstractStep
         $this->processor = $processor;
     }
 
+    public function getProcessor()
+    {
+        return $this->processor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfiguration()
+    {
+        return array(
+            'reader'    => $this->getReader()->getConfiguration(),
+            'processor' => $this->getProcessor()->getConfiguration(),
+            'writer'    => $this->getWriter()->getConfiguration(),
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setConfiguration(array $config)
+    {
+        $this->getReader()->setConfiguration($config['reader']);
+        $this->getProcessor()->setConfiguration($config['processor']);
+        $this->getWriter()->setConfiguration($config['writer']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -60,7 +106,7 @@ class ItemStep extends AbstractStep
         $readCounter = 0;
         $writeCounter = 0;
 
-        while ( ($item = $this->reader->read()) != null) {
+        while (($item = $this->reader->read()) !== null) {
             $readCounter ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {

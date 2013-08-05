@@ -18,23 +18,23 @@ class NotBlankGuesserTest extends ConstraintGuesserTest
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testSupportAnyAttribute()
     {
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock()
-        ));
+        $this->assertTrue($this->target->supportAttribute($this->getAttributeMock()));
     }
 
     public function testGuessNotBlankConstraint()
     {
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\NotBlank', $this->target->guessConstraints(
-            $this->getAttributeMock(array(
-                'required' => true,
-            ))
-        ));
+        $this->assertContainsInstanceOf(
+            'Symfony\Component\Validator\Constraints\NotBlank',
+            $this->target->guessConstraints($this->getAttributeMock(array('required' => true,)))
+        );
     }
 
     public function testDoNotGuessNotBlankConstraint()

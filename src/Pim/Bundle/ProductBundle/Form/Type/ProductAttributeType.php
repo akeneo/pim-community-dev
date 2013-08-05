@@ -1,17 +1,11 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
-
-use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
-
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\AbstractType;
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 
 /**
  * Type for attribute form
@@ -241,7 +235,6 @@ class ProductAttributeType extends AttributeType
      */
     protected function addPositionField(FormBuilderInterface $builder)
     {
-        $builder->add('sortOrder', 'integer', array('label' => 'Position'));
     }
 
 

@@ -3,7 +3,7 @@
 namespace Context;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -17,15 +17,20 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureContext extends RawMinkContext implements KernelAwareInterface
+class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
 
+    /**
+     * Register contexts
+     * @param array $parameters
+     */
     public function __construct(array $parameters)
     {
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('webUser', new WebUser());
-        $this->useContext('web_api', new WebApiContext($parameters['base_url']));
+        $this->useContext('webApi', new WebApiContext($parameters['base_url']));
+        $this->useContext('datagrid', new DataGridContext());
     }
 
     /**
@@ -66,9 +71,9 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
-     * Returns entity manager instance.
+     * Return doctrine manager instance
      *
-     * @return \Doctrine\ORM\EntityManager
+     * @return ObjectManager
      */
     public function getEntityManager()
     {
@@ -76,32 +81,36 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
-     * Opens last response content in browser.
+     * Transform a list to array
      *
-     * @Then /^show last response$/
+     * @param string $list
+     *
+     * @return array
      */
-    public function showLastResponse()
-    {
-        if (null === $this->getMinkParameter('show_cmd')) {
-            throw new \RuntimeException('Set "show_cmd" parameter in behat.yml to be able to open page in browser (ex.: "show_cmd: firefox %s")');
-        }
-
-        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
-        file_put_contents($filename, $this->getSession()->getPage()->getContent());
-        system(sprintf($this->getMinkParameter('show_cmd'), escapeshellarg($filename)));
-    }
-
     public function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
     }
 
+    /**
+     * Create an expectation exception
+     *
+     * @param string $message
+     *
+     * @return ExpectationException
+     */
     public function createExpectationException($message)
     {
         return new ExpectationException($message, $this->getSession());
     }
 
-    public function wait($time, $condition = null)
+    /**
+     * Wait
+     *
+     * @param integer $time
+     * @param string  $condition
+     */
+    public function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         $this->getSession()->wait($time, $condition);
     }

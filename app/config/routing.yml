@@ -1,4 +1,4 @@
-pim_default:
+oro_default:
     pattern:  /
     defaults: { _controller: FrameworkBundle:Redirect:redirect, route: pim_product_product_index, permanent: true }
 
@@ -15,18 +15,22 @@ pim_config:
     type:     annotation
     prefix:   /configuration/
 
-oro_default:
-    pattern:  /{_locale}
-    defaults:
-        template:    ::base.html.twig
-        _locale:     %locale%
-        _controller: FrameworkBundle:Template:template
-    requirements:
-        _locale:  en|fr|de
+pim_importexport:
+    resource: "@PimImportExportBundle/Controller/"
+    type:     annotation
+    prefix:   /ie/
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"
     prefix:   /ui
+
+oro_form:
+    resource: "@OroFormBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_notification:
+    resource: "@OroNotificationBundle/Resources/config/routing.yml"
+    prefix:   /
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
@@ -47,14 +51,23 @@ oro_soap:
     resource: "@OroSoapBundle/Resources/config/routing.yml"
     prefix:   /api
 
-oro_dataflow:
-    resource: "@OroDataFlowBundle/Resources/config/routing.yml"
-
 oro_config:
     resource: "@OroConfigBundle/Resources/config/routing.yml"
 
 oro_dataaudit:
     resource: "@OroDataAuditBundle/Resources/config/routing.yml"
+
+oro_tag:
+    resource: "@OroTagBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_email:
+    resource: "@OroEmailBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_organization:
+    resource: "@OroOrganizationBundle/Resources/config/routing.yml"
+    prefix:   /
 
 nelmio_api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
@@ -67,8 +80,18 @@ _imagine:
     resource: .
     type:     imagine
 
-_bazinga_exposetranslation:
-    resource: "@BazingaExposeTranslationBundle/Resources/config/routing/routing.yml"
+oro_translation_bundle:
+    resource: "@OroTranslationBundle/Resources/config/routing.yml"
 
 _apy_jsformvalidation:
     resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"
+
+oro_assets:
+    resource: .
+    type: oro_assetic
+
+oro_entity_config:
+    resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
+
+oro_entity_extend:
+    resource: "@OroEntityExtendBundle/Resources/config/routing.yml"

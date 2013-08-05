@@ -1,19 +1,17 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Product attribute grid manager
@@ -105,7 +103,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Translatable'),
+                'label'       => $this->translate('Localizable'),
                 'field_name'  => 'translatable',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
@@ -118,6 +116,34 @@ class AttributeDatagridManager extends DatagridManager
 
         $field = $this->createGroupField();
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create attribute type field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAttributeTypeField()
+    {
+        $field = new FieldDescription();
+        $field->setName('attributeType');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Type'),
+                'field_name'  => 'attributeType',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array('choices' => $this->getAttributeTypeFieldOptions(), 'multiple' => true),
+            )
+        );
+        $templateProperty = new TwigTemplateProperty($field, 'PimProductBundle:ProductAttribute:_field-type.html.twig');
+        $field->setProperty($templateProperty);
+
+        return $field;
     }
 
     /**
@@ -197,34 +223,6 @@ class AttributeDatagridManager extends DatagridManager
         );
 
         return array($clickAction, $editAction, $deleteAction);
-    }
-
-    /**
-     * Create attribute type field description for datagrid
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createAttributeTypeField()
-    {
-        $field = new FieldDescription();
-        $field->setName('attributeType');
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Type'),
-                'field_name'  => 'attributeType',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array('choices' => $this->getAttributeTypeFieldOptions()),
-            )
-        );
-        $templateProperty = new TwigTemplateProperty($field, 'PimProductBundle:ProductAttribute:_field-type.html.twig');
-        $field->setProperty($templateProperty);
-
-        return $field;
     }
 
     /**

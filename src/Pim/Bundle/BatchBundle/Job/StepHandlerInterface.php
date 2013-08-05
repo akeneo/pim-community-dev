@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
+use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Strategy interface for handling a {@link Step} on behalf of a {@link Job}.
@@ -28,7 +29,7 @@ interface StepHandlerInterface
      * @return an execution of the step
      *
      * @throws JobInterruptedException if there is an interruption
-     * @throws JobRestartException if there is a problem restarting a failed
+     * @throws JobRestartException     if there is a problem restarting a failed
      * step
      * @throws StartLimitExceededException if the step exceeds its start limit
      *

@@ -1,14 +1,14 @@
 <script type="text/javascript">
-var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-var tree_id = "#tree";
+'use strict';
+var assetsPath  = "{{ asset('bundles/pimproduct/') }}";
+var tree_id     = "#tree";
 var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
 var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
-var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}";
-var urlRemove   = urlRemove.replace(0, '#ID#');
+var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}".replace(0, '#ID#');
 var urlIndex    = "{{ path('pim_product_categorytree_index') }}";
 
 // Message used by the tree-management.jstree.js file when not tree in DB
-var no_tree_message = "{{ "No tree available" | trans }}";
+var no_tree_message = "{{ 'No tree available' | trans }}";
 
 $(function() {
     // define buttons
@@ -18,13 +18,13 @@ $(function() {
         ).append($('<span>', { 'class': 'caret' }))
     ).append(
         $('<ul>', { 'class': 'dropdown-menu' }).append(
-            $('<li>').html($('<a>', { id: 'tree-create', html: '{{ 'Create tree'|trans }}' }).on(
+            $('<li>').html($('<a>', { id: 'tree-create', html: '{{ "Create tree"|trans }}' }).on(
                 'click', function() {
                     window.location = "{{ path('pim_product_categorytree_create') }}";
                 }
             ))
         ).append(
-            $('<li>').html($('<a>', { id: 'category-create', html: '{{ 'Create category'|trans }}' }).on(
+            $('<li>').html($('<a>', { id: 'category-create', html: '{{ "Create category"|trans }}' }).on(
                 'click', function() {
                     var node = $.jstree._focused().get_selected();
                     if(!$.jstree._focused()._get_node()) {

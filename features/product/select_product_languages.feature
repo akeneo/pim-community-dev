@@ -1,6 +1,6 @@
 Feature: Select product activated languages
   In order to provide translations of the product in some specific languages
-  As an user
+  As a user
   I need to be able to select product activated languages
 
   Background:

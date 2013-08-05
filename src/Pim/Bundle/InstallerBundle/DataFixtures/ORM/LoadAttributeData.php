@@ -1,12 +1,10 @@
 <?php
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 
 /**
  * Load fixtures for Product attributes
@@ -50,6 +48,8 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param string $code
      * @param array  $data
+     *
+     * @return ProductAttribute
      */
     public function createAttribute($code, $data)
     {

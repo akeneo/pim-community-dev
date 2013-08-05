@@ -1,31 +1,22 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% block page_container %}
-<div class="container-fluid">
-
-    {% block content %}
+{% block content %}
 
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_config_channel_edit', { id: form.vars.value.id }) :
-        path('pim_config_channel_create') }}" method="POST" class="form-register">
+        path('pim_config_channel_create') }}" method="POST">
 
         {% set title = 'Channels'|trans %}
 
         {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New channel'|trans %}
 
         {% set buttons %}
-            <div class="btn-group icons-holder">
-                <a class="btn" href="{{ path('pim_config_channel_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-            </div>
+            {{ elements.backLink(path('pim_config_channel_index')) }}
             {% if form.vars.value.id %}
-                <div class="btn-group icons-holder">
-                    <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-channel" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this channel ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                </div>
+                {{ elements.deleteLink(path('pim_config_channel_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this channel?') }}
             {% endif %}
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-            </div>
+            {{ elements.submitBtn }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, subtitle) }}
@@ -48,33 +39,10 @@
             {{ form_row(form._token) }}
         </div>
     </form>
-    {% endblock %}
-</div>
 {% endblock %}
 
 {% block head_script_component %}
     {{ parent() }}
-
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-
-    <script type="text/javascript">
-    $(function() {
-        $('#btn-delete-channel').click(function(event) {
-            doAction = function() {
-                window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}";
-            };
-
-            if (!_.isUndefined(Backbone.BootstrapModal)) {
-                confirm = new Backbone.BootstrapModal({
-                    title: "{{ 'Delete Confirmation' | trans }}",
-                    content: "{{ 'Are you sure you want to delete this item' | trans }}"
-                });
-                confirm.on('ok', doAction);
-                confirm.open();
-            } else if (window.confirm(message)) {
-                doAction();
-            }
-        });
-    });
-    </script>
+    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
 {% endblock %}

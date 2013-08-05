@@ -78,8 +78,7 @@ class FamilyControllerTest extends ControllerTest
         // assert family form well works
         $form = $crawler->filter('form')->reduce(
             function ($node, $i) {
-                if ($node->hasAttribute('action')) {
-                    $action = $node->getAttribute('action');
+                if ($action = $node->attr('action')) {
                     if (preg_match('#\/enrich\/family\/create$#', $action)) {
                         return true;
                     }

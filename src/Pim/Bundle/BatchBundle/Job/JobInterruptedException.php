@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BatchBundle\Item;
+namespace Pim\Bundle\BatchBundle\Job;
 
 /**
  * Exception to indicate the the job has been interrupted. The exception state
@@ -20,14 +20,14 @@ class JobInterruptedException extends \Exception
 
     /**
      * Constructor
-     * @param string      $message
-     * @param integer     $code
-     * @param Exception   $previous
-     * @param BatchStatus $status
+     * @param string      $message  Execption message
+     * @param integer     $code     Execption code
+     * @param Exception   $previous Exception causing this one
+     * @param BatchStatus $status   Status of the batch when the execption occured
      */
     public function __construct($message = "", $code = 0, \Exception $previous = null, BatchStatus $status = null)
     {
-        parent::__construct($message, $code, $exception);
+        parent::__construct($message, $code, $previous);
 
         if ($status != null) {
             $this->status = $status;

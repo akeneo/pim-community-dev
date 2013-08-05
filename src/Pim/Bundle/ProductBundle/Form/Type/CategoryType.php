@@ -1,13 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
-
-use Pim\Bundle\ProductBundle\Form\Subscriber\CategorySubscriber;
-
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
 
 /**
  * Type for category form

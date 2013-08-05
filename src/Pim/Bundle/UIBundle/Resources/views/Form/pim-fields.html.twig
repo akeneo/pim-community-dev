@@ -1,7 +1,8 @@
 {% extends 'OroUIBundle:Form:fields.html.twig' %}
 
 {% block form_label %}
-    {% spaceless %}
+{% spaceless %}
+    {% if label is not sameas(false) %}
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
         {% endif %}
@@ -13,7 +14,8 @@
         {% endif %}
         {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}</label>
-    {% endspaceless %}
+    {% endif %}
+{% endspaceless %}
 {% endblock form_label %}
 
 {% block pim_wysiwyg_widget %}
@@ -56,17 +58,33 @@
     {% spaceless %}
 
     {{ form_errors(form) }}
-    {{ form_row(form.file) }}
+    {{ form_row(form.file, {'label': form.vars.label}) }}
 
-    {% if form.vars.value %}
-    <div style="clear: both;">
-        <ul class="unstyled">
+    {% if form.vars.value and form.vars.value.filePath %}
+        <ul class="unstyled controls medias">
             <li>
-                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                {{ form_widget(form.removed, {attr: {style: 'margin: 4px;'}}) }} Remove
+                <a href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
         </ul>
-    </div>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block pim_image_row %}
+    {% spaceless %}
+
+    {{ form_errors(form) }}
+    {{ form_row(form.file, {'label': form.vars.label}) }}
+
+    {% if form.vars.value and form.vars.value.filePath %}
+        <ul class="unstyled controls medias">
+            <li>
+                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
+            </li>
+        </ul>
     {% endif %}
 
     {% endspaceless %}
@@ -122,11 +140,10 @@
     {% endfor %}
 {% endblock pim_product_price_collection_widget %}
 
+
 {% block pim_product_price_widget %}
 {% spaceless %}
     {{ form_widget(form.currency) }}
     {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
 {% endspaceless %}
 {% endblock pim_product_price_widget %}
-
-
