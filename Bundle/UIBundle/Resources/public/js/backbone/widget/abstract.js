@@ -26,12 +26,13 @@ Oro.widget.Abstract = Backbone.View.extend({
         if (this.options.wid) {
             this._wid = this.options.wid;
         }
+        this.widgetContent = this.$el;
 
         this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
         this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
         this.on('adoptedFormSubmit', _.bind(this._onAdoptedFormSubmit, this));
 
-        this.actions = [];
+        this.actions = {};
         this.firstRun = true;
     },
 
@@ -52,39 +53,12 @@ Oro.widget.Abstract = Backbone.View.extend({
     /**
      * Move form actions to widget actions
      */
-    _adoptFormActions: function() {
-        this._initEmbeddedForm();
-        if (this.hasAdoptedActions && this.form !== undefined) {
-            var actions = this._getAdoptedActionsContainer().find('button, input, a');
+    _adoptWidgetActions: function() {
+        var adoptedActionsContainer = this._getAdoptedActionsContainer();
+        if (adoptedActionsContainer.length > 0) {
             var self = this;
-            _.each(actions, function(action) {
-                if (action.type.toLowerCase() == 'submit') {
-                    $(action).click(function() {
-                        self.trigger('adoptedFormSubmitClick', self.form, self);
-                        return false;
-                    });
-                }
-                if (action.type.toLowerCase() == 'reset') {
-                    $(action).click(function() {
-                        self.trigger('adoptedFormResetClick', self.form, self);
-                    });
-                }
-                self.actions.push(action);
-            });
-            this.form.submit(function(e) {
-                e.stopImmediatePropagation();
-                self.trigger('adoptedFormSubmit', self.form, self);
-                return false;
-            });
-            this._getAdoptedActionsContainer().remove();
-        }
-    },
-
-    _initEmbeddedForm: function() {
-        var adoptedActions = this._getAdoptedActionsContainer();
-        this.hasAdoptedActions = adoptedActions.length > 0;
-        if (this.hasAdoptedActions) {
-            var form = adoptedActions.closest('form');
+            var form = adoptedActionsContainer.closest('form');
+            var actions = adoptedActionsContainer.find('button, input, a');
 
             if (form.length > 0) {
                 this.form = form;
@@ -92,7 +66,32 @@ Oro.widget.Abstract = Backbone.View.extend({
                 if (formAction.length > 0 && formAction[0] != '#') {
                     this.options.url = formAction;
                 }
+                this.form.submit(function(e) {
+                    e.stopImmediatePropagation();
+                    self.trigger('adoptedFormSubmit', self.form, self);
+                    return false;
+                });
             }
+
+            self.actions['adopted'] = {};
+            _.each(actions, function(action, idx) {
+                var actionId = 'form-action-' + idx;
+                if (action.type.toLowerCase() == 'submit') {
+                    $(action).click(function() {
+                        self.trigger('adoptedFormSubmitClick', self.form, self);
+                        return false;
+                    });
+                    actionId = 'form_submit';
+                }
+                if (action.type.toLowerCase() == 'reset') {
+                    $(action).click(function() {
+                        self.trigger('adoptedFormResetClick', self.form, self);
+                    });
+                    actionId = 'form_reset';
+                }
+                self.actions['adopted'][actionId] = action;
+            });
+            adoptedActionsContainer.remove();
         }
     },
 
@@ -122,8 +121,11 @@ Oro.widget.Abstract = Backbone.View.extend({
         $(form).trigger('reset');
     },
 
-    addAction: function(key, actionElement) {
-        if (!this.hasAction(key)) {
+    addAction: function(key, actionElement, section) {
+        if (section === undefined) {
+            section = 'main';
+        }
+        if (!this.hasAction(key, section)) {
             this.actions[key] = actionElement;
             this.getActionsElement().append(actionElement);
         }
@@ -133,27 +135,56 @@ Oro.widget.Abstract = Backbone.View.extend({
         return this.actions;
     },
 
-    removeAction: function(key) {
-        if (this.hasAction(key)) {
-            if (_.isElement(this.actions[key])) {
-                this.actions[key].remove();
+    removeAction: function(key, section) {
+        var self = this;
+        var remove = function(actions, key) {
+            if (_.isElement(self.actions[key])) {
+                self.actions[key].remove();
             }
-            delete this.actions[key];
+            delete self.actions[key];
+        };
+        if (this.hasAction(key, section)) {
+            if (section !== undefined) {
+                remove(this.actions[section], key);
+            } else {
+                _.each(this.actions, function(actions, section) {
+                    if (self.hasAction(key, section)) {
+                        remove(actions, key);
+                    }
+                });
+            }
         }
     },
 
-    hasAction: function(key) {
-        return this.actions.hasOwnProperty(key);
+    hasAction: function(key, section) {
+        if (section !== undefined) {
+            return this.actions[section].hasOwnProperty(key);
+        } else {
+            var hasAction = false;
+            _.each(this.actions, function(actions) {
+                if (actions.hasOwnProperty(key)) {
+                    hasAction = true;
+                }
+            });
+            return hasAction;
+        }
     },
 
     _renderActions: function() {
+        this._clearActionsContainer();
         var container = this.getActionsElement();
-        container.empty();
 
-        this._adoptFormActions();
-        for (var actionKey in this.actions) if (this.actions.hasOwnProperty(actionKey)) {
-            container.append(this.actions[actionKey]);
-        }
+        _.each(this.actions, function(actions, section) {
+            var sectionContainer = $('<div id="' + section + '"/>');
+            _.each(actions, function(action) {
+                sectionContainer.append(action);
+            });
+            container.append(sectionContainer);
+        });
+    },
+
+    _clearActionsContainer: function() {
+        this.getActionsElement().empty();
     },
 
     /**
@@ -165,8 +196,7 @@ Oro.widget.Abstract = Backbone.View.extend({
         if (loadAllowed && this.options.url !== false) {
             this.loadContent();
         } else {
-            this.show();
-            this.trigger('render', this.$el, this);
+            this._show();
         }
         this.firstRun = false;
     },
@@ -200,8 +230,7 @@ Oro.widget.Abstract = Backbone.View.extend({
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
                 this.widgetContent = $('<div/>').html(content);
-                this.show();
-                this.trigger('render', this.$el, this);
+                this._show();
             } catch (error) {
                 // Remove state with unrestorable content
                 this.trigger('contentLoadError', this);
@@ -209,10 +238,17 @@ Oro.widget.Abstract = Backbone.View.extend({
         }, this));
     },
 
+    _show: function() {
+        this.trigger('renderStart', this.$el, this);
+        this._adoptWidgetActions();
+        this.show();
+        this.trigger('renderComplete', this.$el, this);
+    },
+
     show: function() {
-        this.$el.attr('data-wid', this.getWid());
+        this.widgetContent.attr('data-wid', this.getWid());
         this._renderActions();
-        this.$el.trigger('widgetize', this);
+        this.widgetContent.trigger('widgetize', this);
         this.trigger('widgetRender', this.widgetContent, this);
     }
 });

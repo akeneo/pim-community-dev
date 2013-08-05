@@ -2,7 +2,6 @@
 
 <script type="text/javascript">
     $(function(){
-        var options = {{ options|json_encode|raw }};
-        Oro.widget.Manager.createWidget({{ widgetType|json_encode|raw }}, options).render();
+        Oro.widget.Manager.createWidget({{ widgetType|json_encode|raw }}, {{ options|json_encode|raw }}).render();
     });
 </script>
