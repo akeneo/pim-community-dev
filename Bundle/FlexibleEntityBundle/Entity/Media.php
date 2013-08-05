@@ -36,7 +36,7 @@ class Media
      *
      * @var string $filename
      *
-     * @ORM\Column(name="filename", type="string", length=255, unique=true)
+     * @ORM\Column(name="filename", type="string", length=255, unique=true, nullable=true)
      */
     protected $filename;
 
@@ -45,7 +45,7 @@ class Media
      *
      * @var string $filePath
      *
-     * @ORM\Column(name="filepath", type="string", length=255, unique=true)
+     * @ORM\Column(name="filepath", type="string", length=255, unique=true, nullable=true)
      */
     protected $filePath;
 
@@ -54,15 +54,16 @@ class Media
      *
      * @var string $originalFilename
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     protected $originalFilename;
+
     /**
      * Mime type
      *
      * @var string $mimeType
      *
-     * @ORM\Column(name="mimeType", type="string", length=255)
+     * @ORM\Column(name="mimeType", type="string", length=255, nullable=true)
      */
     protected $mimeType;
 
