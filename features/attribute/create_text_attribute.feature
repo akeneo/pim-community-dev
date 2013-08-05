@@ -33,3 +33,14 @@ Feature: Create an attribute
     When I change the Description to an invalid value
     And I save the attribute
     Then I should see "This value is too long"
+
+  Scenario: Fail to create a text attribute with an invalid validation regex
+    Given I am logged in as "admin"
+    And I am on the attribute creation page
+    And I select the attribute type "Text"
+    And I fill in the following information:
+     | Name              | short_descsription |
+     | Validation rule   | Regular expression |
+     | Validation regexp | this is not valid  |
+    And I save the attribute
+    Then I should see "This regular expression is not valid"
