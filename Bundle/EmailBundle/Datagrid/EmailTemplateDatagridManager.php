@@ -221,12 +221,13 @@ class EmailTemplateDatagridManager extends DatagridManager
                     10, 20, 50, 100,
                     array('size' => 0, 'label' => $this->translate('oro.grid.page_size.all'))
                 ),
+                'enable' => false,
             ),
             'pagination' => array(
                 'enable' => false,
             ),
             'actionsPanel' => array(
-                'enable' => false,
+                'enable' => true,
             )
         );
     }

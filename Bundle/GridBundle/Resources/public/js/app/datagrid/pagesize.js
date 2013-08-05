@@ -13,7 +13,7 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
         '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
         '<div class="btn-group ">' +
             '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                '<%=  _.__(currentSizeLabel) %><span class="caret"></span>' +
+                '<%=  currentSizeLabel %><span class="caret"></span>' +
             '</button>' +
             '<ul class="dropdown-menu pull-right">' +
                 '<% _.each(items, function (item) { %>' +
@@ -34,6 +34,9 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
 
     /** @property */
     enabled: true,
+
+    /** @property */
+    enabledNow: true,
 
     /**
      * Initializer.
@@ -57,6 +60,9 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
         this.listenTo(this.collection, "add", this.render);
         this.listenTo(this.collection, "remove", this.render);
         this.listenTo(this.collection, "reset", this.render);
+
+        this.enabled = options.enable != false;
+
         Backbone.View.prototype.initialize.call(this, options);
     },
 
