@@ -5,7 +5,7 @@
         <ul>
         {% for field, value in config %}
             <li>
-                <b>{{ field|normalizeKey }}:</b>
+                <b>{{ ('pim_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
                 <span class="label">{{ value|normalizeValue }}</span>
                 <span class="label label-important">{{ getViolations(violations, stepIndex, title, field) }}</span>
             </li>

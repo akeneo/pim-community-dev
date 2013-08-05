@@ -36,25 +36,6 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedValue, $this->extension->normalizeValueFilter($value));
     }
 
-    public static function getNormalizeValuesData()
-    {
-        return array(
-            array(true, 'Yes'),
-            array(false, 'No'),
-            array('foo', 'foo'),
-            array(1, 1),
-            array(null, 'N/A')
-        );
-    }
-
-    /**
-     * @dataProvider getNormalizeKeysData
-     */
-    public function testNormalizeKeys($key, $expectedKey)
-    {
-        $this->assertEquals($expectedKey, $this->extension->normalizeKeyFilter($key));
-    }
-
     public static function getNormalizeKeysData()
     {
         return array(
