@@ -40,12 +40,6 @@ class Client extends BaseClient
         if (isset($this->soapClient)) {
             unset($this->soapClient);
         }
-        if (!is_null(self::$connection)) {
-            if (self::$connection->getTransactionNestingLevel()>0) {
-                self::$connection->rollback();
-            }
-            self::$connection = null;
-        }
     }
 
     /**
@@ -143,9 +137,7 @@ class Client extends BaseClient
     {
         self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
 
-        if (self::$connection->getTransactionNestingLevel()<1) {
-            self::$connection->beginTransaction();
-        }
+        self::$connection->beginTransaction();
     }
 
     public static function getTransactionLevel()
@@ -153,7 +145,7 @@ class Client extends BaseClient
         return self::$connection->getTransactionNestingLevel();
     }
 
-    public static function rollbackTransaction()
+    public function rollbackTransaction()
     {
         if (!is_null(self::$connection)) {
             self::$connection->rollback();

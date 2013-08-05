@@ -44,11 +44,6 @@ class SoapSearchApiTest extends WebTestCase
         self::$hasLoaded = true;
     }
 
-    public static function tearDownAfterClass()
-    {
-        Client::rollbackTransaction();
-    }
-
     /**
      * @param string $request
      * @param array  $response
