@@ -61,10 +61,10 @@ abstract class AbstractConfigurableStepElement
             if (!array_key_exists($key, $this->getConfigurationFields())) {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Unknown configuration field "%s" in class "%", available fields are "%s"',
-                        $field,
+                        'Unknown configuration field "%s" in class "%s", available fields are "%s"',
+                        $key,
                         get_class($this),
-                        join('", "', $this->getConfigurationFields())
+                        join('", "', array_keys($this->getConfigurationFields()))
                     )
                 );
             }
