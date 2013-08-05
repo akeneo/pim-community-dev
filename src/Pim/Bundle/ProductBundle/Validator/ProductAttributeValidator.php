@@ -5,12 +5,11 @@ use Symfony\Component\Validator\ExecutionContext;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
- * Validator class for ProductAttribute entity
+ * Validator for options and default value of ProductAttribute entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ProductAttributeValidator
 {
@@ -33,44 +32,24 @@ class ProductAttributeValidator
     const VIOLATION_INVALID_DEFAULT_VALUE = 'The default value is not valid';
 
     /**
-     * Validate ProductAttribute entity
-     * @param ProductAttribute $productAttribute ProductAttirbute entity
-     * @param ExecutionContext $context          Execution context
-     *
-     * @static
-     */
-    public static function isValid(ProductAttribute $productAttribute, ExecutionContext $context)
-    {
-        self::areOptionsValid($productAttribute, $context);
-        self::isDefaultValueValid($productAttribute, $context);
-    }
-
-    /**
      * Validation rule for attribute option values
      *
-     * @param ProductAttribute $productAttribute ProductAttirbute entity
-     * @param ExecutionContext $context          Execution context
+     * @param ProductAttribute $attribute
+     * @param ExecutionContext $context
      *
      * @static
      */
-    protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
+    public static function areOptionsValid(ProductAttribute $attribute, ExecutionContext $context)
     {
-        $optionTypes = array(
-            'pim_product_multiselect',
-            'pim_product_simpleselect'
-        );
-
-        if (in_array($productAttribute->getAttributeType(), $optionTypes)) {
-            $existingValues = array();
-            foreach ($productAttribute->getOptions() as $option) {
-                if (in_array($option->getDefaultValue(), $existingValues)) {
-                    $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE);
-                }
-                if ($option->getDefaultValue() === null) {
-                    $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
-                } else {
-                    $existingValues[] = $option->getDefaultValue();
-                }
+        $existingValues = array();
+        foreach ($attribute->getOptions() as $option) {
+            if (in_array($option->getDefaultValue(), $existingValues)) {
+                $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE);
+            }
+            if ($option->getDefaultValue() === null) {
+                $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
+            } else {
+                $existingValues[] = $option->getDefaultValue();
             }
         }
     }
@@ -78,28 +57,28 @@ class ProductAttributeValidator
     /**
      * Validation rule for defaultValue
      *
-     * @param ProductAttribute $productAttribute ProductAttirbute entity
-     * @param ExecutionContext $context          Execution context
+     * @param ProductAttribute $attribute
+     * @param ExecutionContext $context
      *
      * @static
      *
      * @return void
      */
-    protected static function isDefaultValueValid(ProductAttribute $productAttribute, ExecutionContext $context)
+    public static function isDefaultValueValid(ProductAttribute $attribute, ExecutionContext $context)
     {
-        $value = $productAttribute->getDefaultValue();
+        $value = $attribute->getDefaultValue();
         if ($value !== null) {
-            switch ($productAttribute->getAttributeType()) {
+            switch ($attribute->getAttributeType()) {
                 case 'pim_product_date':
                     if (!$value instanceof \Datetime) {
                         break;
                     }
-                    if ($min = $productAttribute->getDateMin()) {
+                    if ($min = $attribute->getDateMin()) {
                         if ($min->getTimestamp() > $value->getTimestamp()) {
                             break;
                         }
                     }
-                    if ($max = $productAttribute->getDateMax()) {
+                    if ($max = $attribute->getDateMax()) {
                         if ($max->getTimestamp() < $value->getTimestamp()) {
                             break;
                         }
@@ -109,48 +88,48 @@ class ProductAttributeValidator
                 case 'pim_product_price_collection':
                 case 'pim_product_number':
                 case 'pim_product_metric':
-                    if ($productAttribute->isNegativeAllowed() === false && $value < 0) {
+                    if ($attribute->isNegativeAllowed() === false && $value < 0) {
                         break;
                     }
-                    if ($productAttribute->getNumberMin() !== null && $value < $productAttribute->getNumberMin()) {
+                    if ($attribute->getNumberMin() !== null && $value < $attribute->getNumberMin()) {
                         break;
                     }
-                    if ($productAttribute->getNumberMax() !== null && $value > $productAttribute->getNumberMax()) {
+                    if ($attribute->getNumberMax() !== null && $value > $attribute->getNumberMax()) {
                         break;
                     }
-                    if (!$productAttribute->isDecimalsAllowed() && $value != (int) $value) {
+                    if (!$attribute->isDecimalsAllowed() && $value != (int) $value) {
                         break;
                     }
 
                     return;
                 case 'pim_product_textarea':
-                    if ($productAttribute->getMaxCharacters() !== null) {
-                        if (strlen($value) > $productAttribute->getMaxCharacters()) {
+                    if ($attribute->getMaxCharacters() !== null) {
+                        if (strlen($value) > $attribute->getMaxCharacters()) {
                             break;
                         }
                     }
 
                     return;
                 case 'pim_product_text':
-                    if ($productAttribute->getMaxCharacters() !== null) {
-                        if (strlen($value) > $productAttribute->getMaxCharacters()) {
+                    if ($attribute->getMaxCharacters() !== null) {
+                        if (strlen($value) > $attribute->getMaxCharacters()) {
                             break;
                         }
                     }
-                    if ($productAttribute->getValidationRule() == 'regexp') {
-                        if (@preg_match($productAttribute->getValidationRegexp(), $value)) {
+                    if ($attribute->getValidationRule() == 'regexp') {
+                        if (@preg_match($attribute->getValidationRegexp(), $value)) {
                             return;
                         }
                         break;
                     }
-                    if ($productAttribute->getValidationRule() == 'email') {
+                    if ($attribute->getValidationRule() == 'email') {
                         $validator = new \Symfony\Component\Validator\Constraints\EmailValidator();
                         $validator->initialize($context);
                         $validator->validate($value, new \Symfony\Component\Validator\Constraints\Email());
 
                         return;
                     }
-                    if ($productAttribute->getValidationRule() == 'url') {
+                    if ($attribute->getValidationRule() == 'url') {
                         $validator = new \Symfony\Component\Validator\Constraints\UrlValidator();
                         $validator->initialize($context);
                         $validator->validate($value, new \Symfony\Component\Validator\Constraints\Url());
@@ -168,7 +147,7 @@ class ProductAttributeValidator
                 default:
                     return;
             }
-            $context->addViolation(self::VIOLATION_INVALID_DEFAULT_VALUE);
+            $context->addViolationAt('defaultValue', self::VIOLATION_INVALID_DEFAULT_VALUE);
         }
     }
 }

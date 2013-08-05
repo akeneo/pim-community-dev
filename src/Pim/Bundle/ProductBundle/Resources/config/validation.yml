@@ -21,7 +21,21 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
                 - pim_product_metric
         - Callback:
             methods:
-                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isValid]
+                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, areOptionsValid]
+            groups:
+                - pim_product_multiselect
+                - pim_product_simpleselect
+        - Callback:
+            methods:
+                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isDefaultValueValid]
+            groups:
+                - pim_product_text
+                - pim_product_textarea
+                - pim_product_price_collection
+                - pim_product_number
+                - pim_product_boolean
+                - pim_product_date
+                - pim_product_metric
     properties:
         attributeType:
             - Choice:
