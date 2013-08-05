@@ -274,15 +274,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-//     /**
-//      * @Given /^I filter my locales per (.*) "([^"]*)"$/
-//      */
-//     public function iFilterMyLocalesPer($filter, $value)
-//     {
-//         $this->getPage('Locale index')->filterBy($filter, $value);
-//         $this->wait(5000);
-//     }
-
     /**
      * @param string $locale
      *
