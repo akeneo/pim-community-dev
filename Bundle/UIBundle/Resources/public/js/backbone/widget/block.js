@@ -34,12 +34,7 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
         this._getTitleContainer().html(this.options.title);
     },
 
-    renderActions: function() {
-        this._getActionsContainer().empty();
-        this._getActionsContainer().append(this.getPreparedActions());
-    },
-
-    _getActionsContainer: function() {
+    getActionsElement: function() {
         if (this.actionsContainer === undefined) {
             this.actionsContainer = this.widget.find(this.options.actionsContainer);
         }

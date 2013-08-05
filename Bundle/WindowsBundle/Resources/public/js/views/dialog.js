@@ -5,7 +5,8 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
     options: _.extend(
         {
             type: 'dialog',
-            dialogOptions: null
+            dialogOptions: null,
+            stateEnabled: true
         },
         Oro.widget.Abstract.prototype.options
     ),
@@ -62,7 +63,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
     },
 
     _initModel: function(options) {
-        if (this.model) {
+        if (this.options.stateEnabled && this.model) {
             this.restoreMode = true;
             var attributes = this.model.get('data');
             _.extend(options, attributes);
@@ -96,18 +97,20 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
             }, this)
         });
         this.widgetContent.remove();
-        this._getActionsElement().remove();
         this.widget.remove();
     },
 
     handleStateChange: function(e, data) {
+        if (!this.options.stateEnabled) {
+            return;
+        }
         if (this.restoreMode) {
             this.restoreMode = false;
             return;
         }
         var saveData = _.omit(this.options, ['dialogOptions', 'el', 'model']);
         if (!saveData.url) {
-            saveData.el = $('<div/>').append(this.$el).html();
+            saveData.el = Backbone.$('<div/>').append(this.$el.clone()).html();
         }
         saveData.dialogOptions = {};
         _.each(this.options.dialogOptions, function(val, key) {
@@ -116,7 +119,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
             }
         }, this);
 
-        saveData.dialogOptions.title = $(e.target).dialog('option', 'title');
+        saveData.dialogOptions.title = Backbone.$(e.target).dialog('option', 'title');
         saveData.dialogOptions.state = data.state;
         saveData.dialogOptions.snapshot = data.snapshot;
 
@@ -136,10 +139,19 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         this.model.destroy();
     },
 
-    renderActions: function() {
-        var container = this.widget.dialog('actionsContainer');
-        container.empty();
-        this.getPreparedActions().appendTo(container);
+    getActionsElement: function() {
+        if (!this.actionsEl) {
+            this.actionsEl = Backbone.$('<div class="pull-right"/>').appendTo(
+                Backbone.$('<div class="form-actions widget-actions"/>').appendTo(
+                    this.widget.dialog('actionsContainer')
+                )
+            );
+        }
+        return this.actionsEl;
+    },
+
+    _renderActions: function() {
+        Oro.widget.Abstract.prototype._renderActions.apply(this);
         this.widget.dialog('showActionsContainer');
     },
 

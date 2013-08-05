@@ -14,8 +14,8 @@ Oro.widget.Abstract = Backbone.View.extend({
         console.warn('Implement setTitle');
     },
 
-    renderActions: function() {
-        console.warn('Implement renderActions');
+    getActionsElement: function() {
+        console.warn('Implement getActionsElement');
     },
 
     /**
@@ -32,12 +32,47 @@ Oro.widget.Abstract = Backbone.View.extend({
 
     getWid: function() {
         if (!this._wid) {
-            this._wid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                return v.toString(16);
-            });
+            this._wid = this._getUniqueIdentifier();
         }
         return this._wid;
+    },
+
+    _getUniqueIdentifier: function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        });
+    },
+
+    /**
+     * Move form actions to widget actions
+     */
+    _adoptFormActions: function() {
+        this._initEmbeddedForm();
+        if (this.hasAdoptedActions && this.form !== undefined) {
+            var actions = this._getAdoptedActionsContainer().find('button, input, a');
+            var self = this;
+            _.each(actions, function(action) {
+                if (action.type.toLowerCase() == 'submit') {
+                    $(action).click(function() {
+                        self.trigger('adoptedFormSubmitClick', self.form, self);
+                        return false;
+                    });
+                }
+                if (action.type.toLowerCase() == 'reset') {
+                    $(action).click(function() {
+                        self.trigger('adoptedFormResetClick', self.form, self);
+                    });
+                }
+                self.actions.push(action);
+            });
+            this.form.submit(function(e) {
+                e.stopImmediatePropagation();
+                self.trigger('adoptedFormSubmit', self.form, self);
+                return false;
+            });
+            this._getAdoptedActionsContainer().remove();
+        }
     },
 
     _initEmbeddedForm: function() {
@@ -56,32 +91,15 @@ Oro.widget.Abstract = Backbone.View.extend({
         }
     },
 
-    /**
-     * Move form actions to widget actions
-     */
-    adoptFormActions: function() {
-        this._initEmbeddedForm();
-        if (this.hasAdoptedActions && this.form !== undefined) {
-            var actions = this._getActionsElement();
-            var self = this;
-            actions.find('[type=submit]').each(function(idx, btn) {
-                $(btn).click(function() {
-                    self.trigger('adoptedFormSubmitClick', self.form, self);
-                    return false;
-                });
-            });
-            this.form.submit(function(e) {
-                e.stopImmediatePropagation();
-                self.trigger('adoptedFormSubmit', self.form, self);
-                return false;
-            });
-            actions.find('[type=reset]').each(function(idx, btn) {
-                $(btn).click(function() {
-                    self.trigger('adoptedFormResetClick', self.form, self);
-                });
-            });
-            actions.show();
+    _getAdoptedActionsContainer: function() {
+        if (this.options.actionsEl !== undefined) {
+            if (typeof this.options.actionsEl == 'string') {
+                return this.widgetContent.find(this.options.actionsEl);
+            } else if (_.isElement(this.options.actionsEl )) {
+                return this.options.actionsEl;
+            }
         }
+        return false;
     },
 
     _onAdoptedFormSubmitClick: function(form)
@@ -99,34 +117,23 @@ Oro.widget.Abstract = Backbone.View.extend({
         $(form).trigger('reset');
     },
 
-    /**
-     * Get form buttons
-     *
-     * @returns {(*|jQuery|HTMLElement)}
-     * @private
-     */
-    _getActionsElement: function() {
-        if (!this.actionsEl) {
-            this.actionsEl = this._getAdoptedActionsContainer() || document.createElement('div');
-        }
-        return this.actionsEl;
-    },
-
-    _getAdoptedActionsContainer: function() {
-        if (this.options.actionsEl !== undefined) {
-            if (typeof this.options.actionsEl == 'string') {
-                return this.widgetContent.find(this.options.actionsEl);
-            } else if (_.isElement(this.options.actionsEl )) {
-                return this.options.actionsEl;
-            }
-        }
-        return false;
-    },
-
     addAction: function(key, actionElement) {
         if (!this.hasAction(key)) {
             this.actions[key] = actionElement;
-            this._getActionsElement().append(actionElement);
+            this.getActionsElement().append(actionElement);
+        }
+    },
+
+    getActions: function() {
+        return this.actions;
+    },
+
+    removeAction: function(key) {
+        if (this.hasAction(key)) {
+            if (_.isElement(this.actions[key])) {
+                this.actions[key].remove();
+            }
+            delete this.actions[key];
         }
     },
 
@@ -134,13 +141,14 @@ Oro.widget.Abstract = Backbone.View.extend({
         return this.actions.hasOwnProperty(key);
     },
 
-    getPreparedActions: function() {
-        this.adoptFormActions();
-        var container = this._getActionsElement();
+    _renderActions: function() {
+        var container = this.getActionsElement();
+        container.empty();
+
+        this._adoptFormActions();
         for (var actionKey in this.actions) if (this.actions.hasOwnProperty(actionKey)) {
             container.append(this.actions[actionKey]);
         }
-        return container;
     },
 
     /**
@@ -198,7 +206,7 @@ Oro.widget.Abstract = Backbone.View.extend({
 
     show: function() {
         this.$el.attr('data-wid', this.getWid());
-        this.renderActions();
+        this._renderActions();
         this.$el.trigger('widgetize', this);
         this.trigger('widgetRender', this.widgetContent, this);
     }
