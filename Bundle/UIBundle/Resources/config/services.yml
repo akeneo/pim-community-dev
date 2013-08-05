@@ -3,6 +3,7 @@ parameters:
     oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
     oro_ui.twig.md5.class:               Oro\Bundle\UIBundle\Twig\Md5Extension
     oro_ui.router.class:                 Oro\Bundle\UIBundle\Route\Router
+    oro_ui.twig.widget.class:            Oro\Bundle\UIBundle\Twig\WidgetExtension
 
 services:
     oro_ui.router:
@@ -23,5 +24,10 @@ services:
 
     oro_ui.twig.md5_extension:
         class: %oro_ui.twig.md5.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.widget_extension:
+        class: %oro_ui.twig.widget.class%
         tags:
             - { name: twig.extension }

@@ -7,7 +7,8 @@ Oro.widget.Abstract = Backbone.View.extend({
         actionsEl: '.widget-actions',
         url: false,
         elementFirst: true,
-        title: ''
+        title: '',
+        wid: null
     },
 
     setTitle: function(title) {
@@ -22,6 +23,10 @@ Oro.widget.Abstract = Backbone.View.extend({
      * Initialize
      */
     initializeWidget: function(options) {
+        if (this.options.wid) {
+            this._wid = this.options.wid;
+        }
+
         this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
         this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
         this.on('adoptedFormSubmit', _.bind(this._onAdoptedFormSubmit, this));
