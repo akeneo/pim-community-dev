@@ -59,7 +59,7 @@ pim_batch.homogeneous_csv_serializer_processor:
     enclosure:
         label: 'Enclosure'
         help: 'One character used to set the field enclosure'
-    with_header:
+    withHeader:
         label: 'With header'
         help: 'Wether or not to print the column name'
 
