@@ -3,6 +3,8 @@
 namespace Oro\Bundle\EmailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
@@ -23,6 +25,7 @@ class EmailAddress
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     protected $id;
 
@@ -30,6 +33,7 @@ class EmailAddress
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime")
+     * @Type("dateTime")
      */
     protected $created;
 
@@ -37,6 +41,7 @@ class EmailAddress
      * @var \DateTime
      *
      * @ORM\Column(name="updated", type="datetime")
+     * @Type("dateTime")
      */
     protected $updated;
 
@@ -44,12 +49,21 @@ class EmailAddress
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Type("string")
      */
     protected $email;
 
     // TODO: This should be replaces by array or proxy class. Need an investigation how to do this. Also see related code in EmailAddressManager class
     // @codingStandardsIgnoreStart
+    /**
+     * @var EmailOwnerInterface
+     * @Exclude
+     */
     private $_owner1;
+    /**
+     * @var EmailOwnerInterface
+     * @Exclude
+     */
     private $_owner2;
     // @codingStandardsIgnoreEnd
 

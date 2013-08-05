@@ -23,7 +23,7 @@ class EmailBody
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Exclude
+     * @Type("integer")
      */
     protected $id;
 
@@ -31,7 +31,7 @@ class EmailBody
      * @var \DateTime $created
      *
      * @ORM\Column(name="created", type="datetime")
-     * @Exclude
+     * @Type("dateTime")
      */
     protected $created;
 
@@ -57,7 +57,7 @@ class EmailBody
      * @var bool
      *
      * @ORM\Column(name="has_attachments", type="boolean")
-     * @Exclude
+     * @Type("boolean")
      */
     protected $hasAttachments;
 
@@ -65,7 +65,7 @@ class EmailBody
      * @var bool
      *
      * @ORM\Column(name="persistent", type="boolean")
-     * @Exclude
+     * @Type("boolean")
      */
     protected $persistent;
 
@@ -83,6 +83,7 @@ class EmailBody
      *
      * @ORM\OneToMany(targetEntity="EmailAttachment", mappedBy="emailBody", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailAttachment[]")
+     * @Exclude
      */
     protected $attachments;
 

@@ -37,7 +37,7 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime")
-     * @Exclude
+     * @Type("dateTime")
      */
     protected $created;
 
@@ -107,7 +107,7 @@ class Email
      * @var \DateTime
      *
      * @ORM\Column(name="internaldate", type="datetime")
-     * @Exclude
+     * @Type("dateTime")
      */
     protected $internalDate;
 
