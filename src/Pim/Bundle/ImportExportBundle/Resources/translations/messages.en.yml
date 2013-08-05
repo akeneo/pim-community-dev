@@ -29,7 +29,9 @@ pim_import_export.jobs.attribute_import:
 ## Step elements (readers, processors, writers)
 pim_batch.product_reader:
     title: 'Scope'
-    channel.help: 'The channel you want to export'
+    channel:
+        label: 'Channel'
+        help: 'The channel you want to export'
 
 pim_batch.category_reader:
     title: 'Category extraction'
@@ -39,16 +41,30 @@ pim_batch.attribute_reader:
 
 pim_batch.heterogeneous_csv_serializer_processor:
     title: 'CSV configuration'
-    delimiter.help: 'One character used to set the field delimiter'
-    enclosure.help: 'One character used to set the field enclosure'
-    with_header.help: 'Wether or not to print the column name'
+    delimiter:
+        label: 'Delimiter'
+        help: 'One character used to set the field delimiter'
+    enclosure:
+        label: 'Enclosure'
+        help: 'One character used to set the field enclosure'
+    with_header:
+        label: 'With header'
+        help: 'Wether or not to print the column name'
 
 pim_batch.homogeneous_csv_serializer_processor:
     title: 'CSV configuration'
-    delimiter.help: 'One character used to set the field delimiter'
-    enclosure.help: 'One character used to set the field enclosure'
-    with_header.help: 'Wether or not to print the column name'
+    delimiter:
+        label: 'Delimiter'
+        help: 'One character used to set the field delimiter'
+    enclosure:
+        label: 'Enclosure'
+        help: 'One character used to set the field enclosure'
+    with_header:
+        label: 'With header'
+        help: 'Wether or not to print the column name'
 
 pim_batch.file_writer:
     title: 'File configuration'
-    path.help: 'Where to write the generated file on the file system'
+    path:
+        label: 'Path'
+        help: 'Where to write the generated file on the file system'

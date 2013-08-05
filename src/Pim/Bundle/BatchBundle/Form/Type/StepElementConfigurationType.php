@@ -34,7 +34,7 @@ class StepElementConfigurationType extends AbstractType
                 foreach ($stepElement->getConfigurationFields() as $field => $config) {
                     $config = array_merge(
                         array(
-                            'type' => 'text',
+                            'type'    => 'text',
                             'options' => array(),
                         ),
                         $config
@@ -43,6 +43,11 @@ class StepElementConfigurationType extends AbstractType
                         array(
                             'auto_initialize' => false,
                             'required'        => false,
+                            'label'           => sprintf(
+                                'pim_batch.%s.%s.label',
+                                $stepElement->getName(),
+                                $this->tableize($field)
+                            ),
                             'attr'            => array(
                                 'help' => sprintf(
                                     'pim_batch.%s.%s.help',
