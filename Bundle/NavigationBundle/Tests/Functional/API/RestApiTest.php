@@ -21,11 +21,7 @@ class RestApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient();
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient();
     }
 
     /**
@@ -91,7 +87,10 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            $this->client->generate('oro_api_put_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            $this->client->generate(
+                'oro_api_put_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
             $updatedPintab,
             array(),
             ToolsAPI::generateWsseHeader()
@@ -146,7 +145,10 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->client->generate('oro_api_delete_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            $this->client->generate(
+                'oro_api_delete_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
             array(),
             array(),
             ToolsAPI::generateWsseHeader()
@@ -171,7 +173,10 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            $this->client->generate('oro_api_put_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            $this->client->generate(
+                'oro_api_put_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
             self::$entities[$itemType],
             array(),
             ToolsAPI::generateWsseHeader()
@@ -185,7 +190,10 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->client->generate('oro_api_delete_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            $this->client->generate(
+                'oro_api_delete_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
             array(),
             array(),
             ToolsAPI::generateWsseHeader()
@@ -206,10 +214,22 @@ class RestApiTest extends WebTestCase
         $this->assertNotEmpty(self::$entities[$itemType]);
 
         $requests = array(
-            'GET'    => $this->client->generate('oro_api_get_navigationitems', array('type' => $itemType)),
-            'POST'   => $this->client->generate('oro_api_post_navigationitems', array('type' => $itemType)),
-            'PUT'    => $this->client->generate('oro_api_put_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
-            'DELETE' => $this->client->generate('oro_api_delete_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            'GET'    => $this->client->generate(
+                'oro_api_get_navigationitems',
+                array('type' => $itemType)
+            ),
+            'POST'   => $this->client->generate(
+                'oro_api_post_navigationitems',
+                array('type' => $itemType)
+            ),
+            'PUT'    => $this->client->generate(
+                'oro_api_put_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
+            'DELETE' => $this->client->generate(
+                'oro_api_delete_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
         );
 
         foreach ($requests as $requestType => $url) {
@@ -235,8 +255,14 @@ class RestApiTest extends WebTestCase
         $this->assertNotEmpty(self::$entities[$itemType]);
 
         $requests = array(
-            'POST' => $this->client->generate('oro_api_post_navigationitems', array('type' => $itemType)),
-            'PUT'  => $this->client->generate('oro_api_put_navigationitems_id', array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])),
+            'POST' => $this->client->generate(
+                'oro_api_post_navigationitems',
+                array('type' => $itemType)
+            ),
+            'PUT'  => $this->client->generate(
+                'oro_api_put_navigationitems_id',
+                array('type' => $itemType, 'itemId' => self::$entities[$itemType]['id'])
+            ),
         );
 
         foreach ($requests as $requestType => $url) {
