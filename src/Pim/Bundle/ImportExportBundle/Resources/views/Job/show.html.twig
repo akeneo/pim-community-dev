@@ -1,7 +1,7 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% macro configuration(title, name, config, stepIndex, violations) %}
-    <li>{{ title|trans ~ ' - ' ~ name|trans }}
+{% macro configuration(title, config, stepIndex, violations) %}
+    <li>{{ ('pim_batch.' ~ title ~ '.title')|trans }}
         <ul>
         {% for field, value in config %}
             <li>
@@ -48,9 +48,9 @@
             <ul>
                 {% set step = job.jobDefinition.step(stepTitle) %}
                 {% set stepIndex = loop.index - 1 %}
-                {{ _self.configuration('Reader', step.reader.name, stepConfig.reader, stepIndex, violations) }}
-                {{ _self.configuration('Processor', step.processor.name, stepConfig.processor, stepIndex, violations) }}
-                {{ _self.configuration('Writer', step.writer.name, stepConfig.writer, stepIndex, violations) }}
+                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations) }}
+                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations) }}
+                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations) }}
             </ul>
         {% endset %}
 
