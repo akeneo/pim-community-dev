@@ -36,7 +36,6 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         this.options.dialogOptions.limitTo = this.options.dialogOptions.limitTo || '#container';
 
         this._initModel(this.options);
-        this.widgetContent = this.$el;
 
         var runner = function(handlers) {
             return function() {
@@ -148,6 +147,10 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
             );
         }
         return this.actionsEl;
+    },
+
+    _clearActionsContainer: function() {
+        this.widget.dialog('actionsContainer').empty();
     },
 
     _renderActions: function() {

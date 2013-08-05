@@ -26,7 +26,7 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
         this.widget = Backbone.$(this.options.template({
             'title': this.options.title
         }));
-        this.widgetContent = this.widget.find(this.options.contentContainer);
+        this.widgetContentContainer = this.widget.find(this.options.contentContainer);
     },
 
     setTitle: function(title) {
@@ -49,13 +49,26 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
     },
 
     show: function() {
-        if (!this.$el.data('wid')) {
-            var anchorDiv = Backbone.$('<div/>');
-            anchorDiv.insertAfter(this.$el);
-            this.widgetContent.append(this.$el);
-            anchorDiv.replaceWith($(this.widget));
+        if (!this.widgetContent.data('wid')) {
+            if (this.widgetContent.parent().length) {
+                this._showStatic();
+            } else {
+                this._showRemote();
+            }
         }
         Oro.widget.Abstract.prototype.show.apply(this);
+    },
+
+    _showStatic: function() {
+        var anchorDiv = Backbone.$('<div/>');
+        anchorDiv.insertAfter(this.$el);
+        this.widgetContentContainer.append(this.widgetContent);
+        anchorDiv.replaceWith(Backbone.$(this.widget));
+    },
+
+    _showRemote: function() {
+        this.widgetContentContainer.empty();
+        this.widgetContentContainer.append(this.widgetContent);
     }
 });
 
