@@ -132,7 +132,7 @@ class ReportDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
-            'field_options' => array(
+                'field_options' => array(
                     'choices'  => array_combine(BatchStatus::getAllLabels(), BatchStatus::getAllLabels()),
                     'multiple' => true
                 )
