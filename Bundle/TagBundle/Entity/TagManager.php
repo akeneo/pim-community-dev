@@ -139,13 +139,27 @@ class TagManager
         /** @var Tag $tag */
         foreach ($tags as $tag) {
             $entry = array(
-                'name' => $tag->getName(),
-                'id'   => $tag->getId() ? $tag->getId() : $tag->getName(),
-                'url'  => $tag->getId()
-                    ? $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
-                    : false,
-                'owner' => false
+                'name' => $tag->getName()
             );
+            if (!$tag->getId()) {
+                $entry = array_merge(
+                    $entry,
+                    array(
+                        'id'    => $tag->getName(),
+                        'url'   => false,
+                        'owner' => true
+                    )
+                );
+            } else {
+                $entry = array_merge(
+                    $entry,
+                    array(
+                        'id'    => $tag->getId(),
+                        'url'   => $this->router->generate('oro_tag_search', array('id' => $tag->getId())),
+                        'owner' => false
+                    )
+                );
+            }
 
             $taggingCollection = $tag->getTagging()->filter(
                 function (Tagging $tagging) use ($entity) {
@@ -162,7 +176,6 @@ class TagManager
             }
 
             $entry['moreOwners'] = $taggingCollection->count() > 1;
-            $entry['owner'] = $tag->getId() ? $entry['owner'] : true;
 
             $result[] = $entry;
         }
@@ -247,8 +260,7 @@ class TagManager
         }
 
         foreach ($tagsToAdd as $tag) {
-            if (
-                !$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+            if (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
                 || (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
             ) {
                 // skip tags that have not ID because user not granted to create tags
@@ -285,22 +297,6 @@ class TagManager
     }
 
     /**
-     * Gets all tags for the given taggable resource
-     *
-     * @param  Taggable $resource Taggable resource
-     * @param null|int $createdBy
-     * @param bool $all
-     * @return array
-     */
-    protected function getTagging(Taggable $resource, $createdBy = null, $all = false)
-    {
-        /** @var TagRepository $repository */
-        $repository = $this->em->getRepository($this->tagClass);
-
-        return new ArrayCollection($repository->getTagging($resource, $createdBy, $all));
-    }
-
-    /**
      * Remove tagging related to tags by params
      *
      * @param array|int $tagIds
@@ -327,7 +323,7 @@ class TagManager
      * @param  string $name Tag name
      * @return Tag
      */
-    protected function createTag($name)
+    private function createTag($name)
     {
         return new $this->tagClass($name);
     }
@@ -339,9 +335,25 @@ class TagManager
      * @param  Taggable $resource Taggable resource object
      * @return Tagging
      */
-    protected function createTagging(Tag $tag, Taggable $resource)
+    private function createTagging(Tag $tag, Taggable $resource)
     {
         return new $this->taggingClass($tag, $resource);
+    }
+
+    /**
+     * Gets all tags for the given taggable resource
+     *
+     * @param  Taggable $resource Taggable resource
+     * @param null|int $createdBy
+     * @param bool $all
+     * @return array
+     */
+    private function getTagging(Taggable $resource, $createdBy = null, $all = false)
+    {
+        /** @var TagRepository $repository */
+        $repository = $this->em->getRepository($this->tagClass);
+
+        return new ArrayCollection($repository->getTagging($resource, $createdBy, $all));
     }
 
     /**
@@ -349,7 +361,7 @@ class TagManager
      *
      * @return User
      */
-    public function getUser()
+    private function getUser()
     {
         return $this->securityContext->getToken()->getUser();
     }
