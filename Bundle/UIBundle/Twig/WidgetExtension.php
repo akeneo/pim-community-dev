@@ -13,7 +13,7 @@ class WidgetExtension extends \Twig_Extension
      *
      * @var bool
      */
-    protected $rendered = false;
+    protected $rendered = array();
 
     /**
      * Returns a list of functions to add to the existing list.
@@ -45,10 +45,11 @@ class WidgetExtension extends \Twig_Extension
      */
     public function render(Twig_Environment $environment, array $options = array())
     {
-        if ($this->rendered) {
+        $optionsHash = spl_object_hash((object)$options);
+        if (!empty($this->rendered[$optionsHash])) {
             return '';
         }
-        $this->rendered = true;
+        $this->rendered[$optionsHash] = true;
 
         if (!array_key_exists('url', $options)) {
             throw new \InvalidArgumentException('Option url is required');
