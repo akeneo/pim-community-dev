@@ -55,7 +55,7 @@ class ReportDatagridManager extends DatagridManager
                 'query_builder'   => function (EntityRepository $er) {
                     return $er->createQueryBuilder('j')
                         ->orderBy('j.code', 'ASC');
-                },
+          },
                 'filter_by_where' => true,
             )
         );
