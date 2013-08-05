@@ -208,7 +208,6 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountryRegion()
     {
-        $this->markTestSkipped('');
         $result = $this->client->getSoap()->getRegionByCountry('US');
         $result = ToolsAPI::classToArray($result);
         foreach ($result['item'] as $region) {
