@@ -20,10 +20,23 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
+        $allLocales = $this->container->getParameter('pim_config.locales');
         $activatedLocales = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($activatedLocales['locales'] as $code => $data) {
-            $locale = $this->createLocale($code, $data['fallback'], $data['currency']);
+        foreach (array_keys($allLocales['locales']) as $localeCode) {
+            $activated = in_array($localeCode, array_keys($activatedLocales['locales']));
+            $locale = $this->createLocale($localeCode, $activated);
+
+            if ($activated) {
+                $fallback     = $activatedLocales['locales'][$localeCode]['fallback'];
+                $currencyCode = $activatedLocales['locales'][$localeCode]['currency'];
+                $currency     = $this->getReference('currency.'. $currencyCode);
+
+                $locale->setFallback($fallback);
+                $locale->setDefaultCurrency($currency);
+            }
+
+            $this->setReference('locale.'. $localeCode, $locale);
             $manager->persist($locale);
         }
 
@@ -32,21 +45,17 @@ class LoadLocaleData extends AbstractInstallerFixture
 
     /**
      * Create locale entity and persist it
-     * @param string  $code         Locale code
-     * @param string  $fallback     Locale fallback
-     * @param string  $currencyCode Currencies used
-     * @param boolean $activated    Define if locale is activated or not
+     *
+     * @param string  $code      Locale code
+     * @param boolean $activated Define if locale is activated or not
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
-    protected function createLocale($code, $fallback, $currencyCode, $activated = true)
+    protected function createLocale($code, $activated = false)
     {
         $locale = new Locale();
         $locale->setCode($code);
-        $locale->setFallback($fallback);
         $locale->setActivated($activated);
-        $locale->setDefaultCurrency($this->getReference('currency.'. $currencyCode));
-        $this->setReference('locale.'. $code, $locale);
 
         return $locale;
     }
