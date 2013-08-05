@@ -10,7 +10,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: business_units
               entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-              entity_hint: business_units
+              entity_hint: business units
               route_name: oro_business_unit_index
 
     oro_organization.business_unit_update_user_datagrid_manager:
