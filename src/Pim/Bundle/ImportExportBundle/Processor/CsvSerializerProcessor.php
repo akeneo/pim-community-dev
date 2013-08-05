@@ -108,12 +108,8 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
     public function getConfigurationFields()
     {
         return array(
-            'delimiter' => array(
-                'type' => 'text',
-            ),
-            'enclosure' => array(
-                'type' => 'text',
-            ),
+            'delimiter' => array(),
+            'enclosure' => array(),
             'withHeader' => array(
                 'type' => 'checkbox',
             ),
