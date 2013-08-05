@@ -1316,10 +1316,34 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function getInvalidValueFor($field)
     {
-        switch ($field) {
-            case 'Family edit.Code':
+        switch (strtolower($field)) {
+            case 'family edit.code':
                 return 'inv@lid';
+            case 'attribute creation.name':
+                return $this->lorem(20);
+            case 'attribute creation.description':
+                return $this->lorem(256);
         }
+    }
+
+    /**
+     * @param integer $length
+     *
+     * @return string
+     */
+    private function lorem($length = 100)
+    {
+        $lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore'
+            .'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut'
+            .'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
+            .'dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui'
+            .'officia deserunt mollit anim id est laborum.';
+
+        while (strlen($lorem) < $length) {
+            $lorem .= ' ' . $lorem;
+        }
+
+        return substr($lorem, 0, $length);
     }
 
     /**

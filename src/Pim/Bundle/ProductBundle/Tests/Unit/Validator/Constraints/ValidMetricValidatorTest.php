@@ -5,8 +5,8 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
-use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttribute;
-use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator;
+use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetric;
+use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator;
 
 use Symfony\Component\Validator\GlobalExecutionContext;
 use Symfony\Component\Validator\ExecutionContext;
@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ValidMetricAttributeValidatorTest extends WebTestCase
+class ValidMetricValidatorTest extends WebTestCase
 {
     /**
      * @var ExecutionContext
@@ -28,12 +28,12 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     protected $executionContext;
 
     /**
-     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetricAttribute
+     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetric
      */
     protected $constraint;
 
     /**
-     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetricAttributeValidator
+     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetricValidator
      */
     protected $validator;
 
@@ -57,9 +57,9 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
         $this->measures = static::$kernel->getContainer()->getParameter('oro_measure.measures_config');
 
-        $this->constraint = new ValidMetricAttribute();
+        $this->constraint = new ValidMetric();
 
-        $this->validator = new ValidMetricAttributeValidator($this->measures);
+        $this->validator = new ValidMetricValidator($this->measures);
         $this->validator->initialize($this->executionContext);
     }
 
@@ -202,7 +202,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      */
     public function testValidatedBy()
     {
-        $this->assertEquals($this->constraint->validatedBy(), 'pim_metric_attribute_validator');
+        $this->assertEquals($this->constraint->validatedBy(), 'pim_metric_validator');
     }
 
     /**
