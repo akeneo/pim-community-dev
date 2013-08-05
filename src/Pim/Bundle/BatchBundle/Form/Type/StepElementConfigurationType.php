@@ -46,7 +46,7 @@ class StepElementConfigurationType extends AbstractType
                             'attr'            => array(
                                 'help' => sprintf(
                                     'pim_batch.%s.%s.help',
-                                    $this->getTableizedClassName($stepElement),
+                                    $stepElement->getName(),
                                     $this->tableize($field)
                                 )
                             )
@@ -78,17 +78,6 @@ class StepElementConfigurationType extends AbstractType
     public function getName()
     {
         return 'pim_batch_step_element_configuration';
-    }
-
-    private function getTableizedClassName($object)
-    {
-        $classname = get_class($object);
-
-        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-            $classname = $matches[1];
-        }
-
-        return $this->tableize($classname);
     }
 
     private function tableize($string)

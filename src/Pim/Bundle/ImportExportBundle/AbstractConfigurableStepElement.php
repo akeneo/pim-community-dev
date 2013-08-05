@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Doctrine\Common\Util\Inflector;
+
 /**
  * Define a configurable step element
  *
@@ -19,9 +21,19 @@ abstract class AbstractConfigurableStepElement
 
     /**
      * Return name
+     *
      * @return string
      */
-    abstract public function getName();
+    public function getName()
+    {
+        $classname = get_class($this);
+
+        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+            $classname = $matches[1];
+        }
+
+        return Inflector::tableize($classname);
+    }
 
     /**
      * Get the step element configuration (based on its properties)

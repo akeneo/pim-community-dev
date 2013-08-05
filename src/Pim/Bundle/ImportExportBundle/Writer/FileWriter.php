@@ -69,14 +69,6 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return 'File';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getConfigurationFields()
     {
         return array(

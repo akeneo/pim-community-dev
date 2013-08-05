@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Doctrine\Common\Util\Inflector;
 
 /**
  * Form type for step configuration
@@ -40,7 +39,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $reader,
                         array(
-                            'label' => sprintf('pim_batch.%s.title', $this->getTableizedClassName($reader)),
+                            'label' => sprintf('pim_batch.%s.title', $reader->getName()),
                             'auto_initialize' => false,
                         )
                     )
@@ -52,7 +51,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $processor,
                         array(
-                            'label' => sprintf('pim_batch.%s.title', $this->getTableizedClassName($processor)),
+                            'label' => sprintf('pim_batch.%s.title', $processor->getName()),
                             'auto_initialize' => false,
                         )
                     )
@@ -64,7 +63,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $writer,
                         array(
-                            'label' => sprintf('pim_batch.%s.title', $this->getTableizedClassName($writer)),
+                            'label' => sprintf('pim_batch.%s.title', $writer->getName()),
                             'auto_initialize' => false,
                         )
                     )
@@ -91,16 +90,5 @@ class StepConfigurationType extends AbstractType
     public function getName()
     {
         return 'pim_batch_step_configuration';
-    }
-
-    private function getTableizedClassName($object)
-    {
-        $classname = get_class($object);
-
-        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-            $classname = $matches[1];
-        }
-
-        return Inflector::tableize($classname);
     }
 }
