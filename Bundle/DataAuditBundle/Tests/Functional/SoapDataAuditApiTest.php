@@ -18,19 +18,14 @@ class SoapDataAuditApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-            $this->client->soap(
-                "http://localhost/api/soap",
-                array(
-                    'location' => 'http://localhost/api/soap',
-                    'soap_version' => SOAP_1_2
-                )
-            );
-
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        $this->client->soap(
+            "http://localhost/api/soap",
+            array(
+                'location' => 'http://localhost/api/soap',
+                'soap_version' => SOAP_1_2
+            )
+        );
     }
 
     /**
@@ -39,7 +34,7 @@ class SoapDataAuditApiTest extends WebTestCase
     public function testPreconditions()
     {
         //clear Audits
-        $result = $this->client->soapClient->getAudits();
+        $result = $this->client->getSoap()->getAudits();
         $result = ToolsAPI::classToArray($result);
         if (!empty($result)) {
             if (!is_array(reset($result['item']))) {
@@ -49,7 +44,7 @@ class SoapDataAuditApiTest extends WebTestCase
                 $result = $result['item'];
             }
             foreach ($result as $audit) {
-                $this->client->soapClient->deleteAudit($audit['id']);
+                $this->client->getSoap()->deleteAudit($audit['id']);
             }
         }
 
@@ -63,8 +58,8 @@ class SoapDataAuditApiTest extends WebTestCase
             "lastName" => "lastName",
             "rolesCollection" => array("1")
         );
-        $result = $this->client->soapClient->createUser($request);
-        $this->assertTrue($result, $this->client->soapClient->__getLastResponse());
+        $result = $this->client->getSoap()->createUser($request);
+        $this->assertTrue($result, $this->client->getSoap()->__getLastResponse());
 
         return $request;
     }
@@ -76,7 +71,7 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testGetAudits($response)
     {
-        $result = $this->client->soapClient->getAudits();
+        $result = $this->client->getSoap()->getAudits();
         $result = ToolsAPI::classToArray($result);
 
         if (!is_array(reset($result['item']))) {
@@ -104,7 +99,7 @@ class SoapDataAuditApiTest extends WebTestCase
     public function testGetAudit($response)
     {
         foreach ($response as $audit) {
-            $result = $this->client->soapClient->getAudit($audit['id']);
+            $result = $this->client->getSoap()->getAudit($audit['id']);
             $result = ToolsAPI::classToArray($result);
             unset($result['loggedAt']);
             unset($audit['loggedAt']);
@@ -119,9 +114,9 @@ class SoapDataAuditApiTest extends WebTestCase
     public function testDeleteAudit($response)
     {
         foreach ($response as $audit) {
-            $this->client->soapClient->deleteAudit($audit['id']);
+            $this->client->getSoap()->deleteAudit($audit['id']);
         }
-        $result = $this->client->soapClient->getAudits();
+        $result = $this->client->getSoap()->getAudits();
         $result = ToolsAPI::classToArray($result);
         $this->assertEmpty($result);
     }

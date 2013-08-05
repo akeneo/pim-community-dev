@@ -18,11 +18,7 @@ class RestApiUserTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -74,7 +70,11 @@ class RestApiUserTest extends WebTestCase
                 "label" => "new_label_update"
             )
         );
-        $this->client->request('PUT', $this->client->generate('oro_api_put_role', array('id' => $roleId)), $requestUpdate);
+        $this->client->request(
+            'PUT',
+            $this->client->generate('oro_api_put_role', array('id' => $roleId)),
+            $requestUpdate
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
         $this->client->request('GET', $this->client->generate('oro_api_get_roles'));
@@ -149,7 +149,11 @@ class RestApiUserTest extends WebTestCase
                 "roles" => array(3)
             )
         );
-        $this->client->request('PUT', $this->client->generate('oro_api_put_group', array('id' => $groupId)), $requestUpdate);
+        $this->client->request(
+            'PUT',
+            $this->client->generate('oro_api_put_group', array('id' => $groupId)),
+            $requestUpdate
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
         $this->client->request('GET', $this->client->generate('oro_api_get_groups'));

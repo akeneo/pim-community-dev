@@ -14,6 +14,11 @@ class WebTestCase extends BaseWebTestCase
     static protected $db_reindex = false;
 
     /**
+     * @var Client
+     */
+    static protected $internalClient;
+
+    /**
      * Creates a Client.
      *
      * @param array $options An array of options to pass to the createKernel class
@@ -23,31 +28,43 @@ class WebTestCase extends BaseWebTestCase
      */
     protected static function createClient(array $options = array(), array $server = array())
     {
-        /** @var  \Oro\Bundle\TestFrameworkBundle\Test\Client $client */
-        $client = parent::createClient($options, $server);
 
-        if (self::$db_isolation && Client::getTransactionLevel() < 1) {
-            //workaround MyISAM search tables are not on transaction
-            if (self::$db_reindex) {
-                $kernel = $client->getKernel();
-                $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
-                $application->setAutoExit(false);
-                $options = array('command' => 'oro:search:reindex');
-                $options['--env'] = "test";
-                $options['--quiet'] = null;
-                $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+        if (!self::$internalClient) {
+            self::$internalClient = parent::createClient($options, $server);
+
+            if (self::$db_isolation) {
+                /** @var Client $client */
+                $client = self::$internalClient;
+
+                //workaround MyISAM search tables are not on transaction
+                if (self::$db_reindex) {
+                    $kernel = $client->getKernel();
+                    $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+                    $application->setAutoExit(false);
+                    $options = array('command' => 'oro:search:reindex');
+                    $options['--env'] = "test";
+                    $options['--quiet'] = null;
+                    $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+                }
+
+                $client->startTransaction();
             }
-
-            $client->startTransaction();
         }
-        return $client;
+
+        return self::$internalClient;
     }
 
     public static function tearDownAfterClass()
     {
-        if (self::$db_isolation) {
-            Client::rollbackTransaction();
-            self::$db_isolation = false;
+        if (self::$internalClient) {
+            /** @var Client $client */
+            $client = self::$internalClient;
+            if (self::$db_isolation) {
+                $client->rollbackTransaction();
+                self::$db_isolation = false;
+            }
+            $client->setSoapClient(null);
+            self::$internalClient = null;
         }
     }
 
@@ -68,11 +85,17 @@ class WebTestCase extends BaseWebTestCase
         }
     }
 
+    /**
+     * @return bool
+     */
     public function getIsolation()
     {
         return self::$db_isolation;
     }
 
+    /**
+     * @param bool $dbIsolation
+     */
     public function setIsolation($dbIsolation = false)
     {
         self::$db_isolation = $dbIsolation;
