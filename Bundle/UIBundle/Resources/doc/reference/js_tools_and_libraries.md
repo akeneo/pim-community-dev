@@ -21,8 +21,6 @@ Oro is the global namespace for all JS widgets. Also it contains several useful 
 * **unpackFromQueryString** (String query) - reverse action to packToQueryString function, converts query string to object;
 * **invertKeys** (Object object, Object keys) - replaces key in object according to data from keys;
 * **isEqualsLoosely** (value1, value2) - compares any type of values for equality;
-* **createInstanceFromConstructor** (Function constructor, *arguments) - creates instance from constructor
-with source arguments;
 * **deepClone** (Object value) - clones source value with all references.
 
 
