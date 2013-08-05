@@ -153,8 +153,9 @@
         <div id="{{ child.vars.id }}">
             <div class="control-group">
                 {{ form_label(child, child.vars.label, {label_attr: {class: 'control-label'}}) }}
-                <div class="controls">
+                <div class="controls {{ not child.vars.valid ? ' validation-error' : '' }}">
                     {{ form_widget(child) }}
+                    {{ form_errors(child) }}
                     {% if child.vars.attr.help is defined %}
                         <span class="help-inline">{{ child.vars.attr.help|trans }}</span>
                     {% endif %}
