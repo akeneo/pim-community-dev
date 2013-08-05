@@ -47,11 +47,14 @@ class TagRepository extends EntityRepository
         $builder = $this->_em->createQueryBuilder();
         $builder
             ->delete('OroTagBundle:Tagging', 't')
-            ->where($builder->expr()->in('t.tag', $tagIds))
-            ->andWhere('t.entityName = :entityName')
+            ->where('t.entityName = :entityName')
             ->setParameter('entityName', $entityName)
             ->andWhere('t.recordId = :recordId')
             ->setParameter('recordId', $recordId);
+
+        if (!empty($tagIds)) {
+            $builder->andWhere($builder->expr()->in('t.tag', $tagIds));
+        }
 
         if (!is_null($createdBy)) {
             $builder->andWhere('t.createdBy = :createdBy')

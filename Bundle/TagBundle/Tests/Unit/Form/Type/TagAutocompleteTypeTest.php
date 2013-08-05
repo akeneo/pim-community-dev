@@ -2,19 +2,19 @@
 
 namespace Oro\Bundle\TagBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\TagBundle\Form\Type\TagType;
+use Oro\Bundle\TagBundle\Form\Type\TagAutocompleteType;
 
-class TagTypeTest extends \PHPUnit_Framework_TestCase
+class TagAutocompleteTypeTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var TagType
+     * @var TagAutocompleteType
      */
     protected $type;
 
     protected function setUp()
     {
-        $this->type = new TagType();
+        $this->type = new TagAutocompleteType();
     }
 
     public function tearDown()
@@ -34,18 +34,11 @@ class TagTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_tag_tag', $this->type->getName());
+        $this->assertEquals('oro_tag_autocomplete', $this->type->getName());
     }
 
-    public function testBuildForm()
+    public function testGetParent()
     {
-        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $builder->expects($this->once())
-            ->method('add')
-            ->will($this->returnSelf());
-
-        $this->type->buildForm($builder, array());
+        $this->assertEquals('oro_jqueryselect2_hidden', $this->type->getParent());
     }
 }

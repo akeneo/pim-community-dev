@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\TagBundle\Form\EventSubscriber;
 
-use Oro\Bundle\TagBundle\Form\Transformer\TagTransformer;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\TagBundle\Entity\TagManager;
+use Oro\Bundle\TagBundle\Form\Transformer\TagTransformer;
 
 /**
  * Class TagSubscriber
@@ -55,7 +55,7 @@ class TagSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getForm()->getParent()->getData();
 
-        if (!$entity instanceof Taggable || $entity->getTaggableId() == null) {
+        if (!$entity instanceof Taggable) {
             // do nothing if new entity or some error
             return;
         }

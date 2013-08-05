@@ -47,7 +47,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     protected $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="LAZY")
      */
     protected $tagging;
 
@@ -73,7 +73,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function __construct($name = null)
     {
         $this->setName($name);
-        $this->tagging = new ArrayCollection(array());
+        $this->tagging = new ArrayCollection();
 
         $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));

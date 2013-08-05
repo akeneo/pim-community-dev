@@ -14,6 +14,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->tag = new Tag();
+
+        $this->assertEquals(null, $this->tag->getId());
     }
 
     public function testSetGetNameMethods()
@@ -59,5 +61,10 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $this->tag->doUpdate();
         $this->assertInstanceOf('\DateTime', $this->tag->getUpdatedAt());
         $this->assertNotEquals($oldUpdatedTime, $this->tag->getUpdatedAt());
+    }
+
+    public function testGetTagging()
+    {
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->tag->getTagging());
     }
 }

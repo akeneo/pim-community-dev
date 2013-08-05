@@ -140,10 +140,11 @@ class TagManager
         foreach ($tags as $tag) {
             $entry = array(
                 'name' => $tag->getName(),
-                'id'   => $tag->getId(),
+                'id'   => $tag->getId() ? $tag->getId() : $tag->getName(),
                 'url'  => $tag->getId()
                     ? $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
-                    : false
+                    : false,
+                'owner' => false
             );
 
             $taggingCollection = $tag->getTagging()->filter(
@@ -161,6 +162,7 @@ class TagManager
             }
 
             $entry['moreOwners'] = $taggingCollection->count() > 1;
+            $entry['owner'] = $tag->getId() ? $entry['owner'] : true;
 
             $result[] = $entry;
         }
@@ -311,6 +313,10 @@ class TagManager
     {
         /** @var TagRepository $repository */
         $repository = $this->em->getRepository($this->tagClass);
+
+        if (!$tagIds) {
+            $tagIds = array();
+        }
 
         return $repository->deleteTaggingByParams($tagIds, $entityName, $recordId, $createdBy);
     }
