@@ -71,7 +71,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Return doctrine manager
+     * Return doctrine manager instance
+     *
      * @return ObjectManager
      */
     public function getEntityManager()
@@ -81,6 +82,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /**
      * Transform a list to array
+     *
      * @param string $list
      *
      * @return array
