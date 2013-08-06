@@ -39,10 +39,12 @@ class ConfigType extends AbstractType
         if ($configModel instanceof FieldConfigModel) {
             $className = $configModel->getEntity()->getClassName();
             $fieldName = $configModel->getFieldName();
+            $fieldType = $configModel->getType();
             $configType = EntityConfigContainer::TYPE_FIELD;
         } else {
             $className = $configModel->getClassName();
-            $fieldName = '';
+            $fieldName = null;
+            $fieldType = null;
             $configType = EntityConfigContainer::TYPE_ENTITY;
         }
 
@@ -52,7 +54,7 @@ class ConfigType extends AbstractType
             if ($provider->getConfigContainer()->hasForm($configType)) {
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigScopeType($provider->getConfigContainer()->getItems($configType)),
+                    new ConfigScopeType($provider->getConfigContainer()->getFormItems($configType, $fieldType)),
                     array(
                         'block_config' => (array)$provider->getConfigContainer()->getFormBlockConfig($configType)
                     )
@@ -84,6 +86,6 @@ class ConfigType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_entity_config_config_type';
+        return 'oro_entity_config_type';
     }
 }

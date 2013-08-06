@@ -17,14 +17,15 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 label:
                     options:
                         priority:           20
                     constraints:
-                        - NotBlank:     ~
+                        - NotBlank:         ~
                         - Length:
-                            min:        2
-                            max:        50
+                            min:            2
+                            max:            50
                     grid:
                         type:               string
                         label:              'Label'
@@ -38,6 +39,7 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 plural_label:
                     options:
                         priority:           30
@@ -46,6 +48,7 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           50
@@ -85,6 +88,7 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           30
@@ -104,17 +108,10 @@ oro_entity_config:
 
     datagrid:
         field:
-#            form:
-#                block_config:
-#                    datagrid:
-#                        title:              'Datagrid Config'
-#                        subblocks:
-#                            base:           ~
             items:
                 is_searchable:
                     options:
                         default_value:      false
-                        is_bool:            true
                     grid:
                         type:               boolean
                         label:              'Grid'

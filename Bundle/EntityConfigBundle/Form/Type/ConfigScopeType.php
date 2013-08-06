@@ -13,18 +13,11 @@ class ConfigScopeType extends AbstractType
     protected $items;
 
     /**
-     * @var string
-     */
-    protected $fieldType;
-
-    /**
      * @param $items
-     * @param $fieldType
      */
-    public function __construct($items, $fieldType = null)
+    public function __construct($items)
     {
-        $this->items     = $items;
-        $this->fieldType = $fieldType;
+        $this->items = $items;
     }
 
     /**
@@ -33,12 +26,9 @@ class ConfigScopeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->items as $code => $config) {
-            if (isset($config['form']) && isset($config['form']['type'])) {
+            if (isset($config['form']['type'])) {
                 $options = isset($config['form']['options']) ? $config['form']['options'] : array();
 
-                if ($this->fieldType) {
-                    $options['field_type'] = $this->fieldType;
-                }
                 $builder->add($code, $config['form']['type'], $options);
             }
         }
@@ -49,6 +39,6 @@ class ConfigScopeType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_entity_config_config_type';
+        return 'oro_entity_config_scope_type';
     }
 }

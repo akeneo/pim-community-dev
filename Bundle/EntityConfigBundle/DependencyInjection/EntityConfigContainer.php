@@ -117,7 +117,7 @@ class EntityConfigContainer
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool) $item['options']['serializable'];
+                $result[$code] = (bool)$item['options']['serializable'];
             }
         }
 
@@ -126,14 +126,38 @@ class EntityConfigContainer
 
     /**
      * @param string $type
+     * @param null   $fieldType
      * @return bool
      */
-    public function hasForm($type = self::TYPE_ENTITY)
+    public function hasForm($type = self::TYPE_ENTITY, $fieldType = null)
     {
         $type = $this->getConfigType($type);
 
-        return (boolean) array_filter($this->getItems($type), function ($item) {
-            return (isset($item['form']) && isset($item['form']['type']));
+        return (boolean)$this->getFormItems($type, $fieldType);
+    }
+
+    /**
+     * @param string $type
+     * @param null   $fieldType
+     * @return bool
+     */
+    public function getFormItems($type = self::TYPE_ENTITY, $fieldType = null)
+    {
+        $type = $this->getConfigType($type);
+
+        return (boolean)array_filter($this->getItems($type), function ($item) use ($fieldType) {
+            if (!isset($item['form']['type'])) {
+                return false;
+            }
+
+            if ($fieldType
+                || isset($items['options']['allowed_type'])
+                || in_array($fieldType, $items['options']['allowed_type'])
+            ) {
+                return false;
+            }
+
+            return true;
         });
     }
 

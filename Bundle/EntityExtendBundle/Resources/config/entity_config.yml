@@ -22,14 +22,12 @@ oro_entity_config:
                             read_only:      true
                             required:       false
                             label:          'Type'
-                    view:
-                        type:               string
-                        stats:              false
-                        block:
+
                 is_extend:
                     options:
                         default_value:      false
                         internal:           true
+
                 state:
                     options:
                         priority:           25
@@ -44,13 +42,16 @@ oro_entity_config:
                         sortable:           true
                         filterable:         false
                         show_filter:        false
+
                 extend_class:
                     options:
                         internal:           true
+
                 unique_key:
                     options:
                         internal:           true
                         serializable:       true
+
                 proxy_class:
                     options:
                         internal:           true
@@ -100,29 +101,14 @@ oro_entity_config:
                     options:
                         priority:           40
                         default_value:      false
-                        is_bool:            true
                         internal:           true
-#                    grid:
-#                        type:               boolean
-#                        label:              'Is Extend Field'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         false
-#                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        block:              entity
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            read_only:      true
-#                            required:       false
-#                            label:          "Is Extend Field"
 
                 length:
                     options:
                         default_value:      255
+                        allowed_type:       [string]
                         required_property:
+                            property_type:  field
                             property_path:  extend.owner
                             value:          Custom
                     form:
@@ -130,13 +116,13 @@ oro_entity_config:
                         options:
                             required:       false
                             label:          'Length'
-                            allowed_type:   'string'
                             block:          entity
                             subblock:       properties
 
                 precision:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
                             property_type:  field
                             property_path:  extend.owner
@@ -146,14 +132,15 @@ oro_entity_config:
                         options:
                             required:       false
                             label:          'Precision'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
 
                 scale:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
+                            property_type:  field
                             property_path:  extend.owner
                             value:          Custom
                     form:
@@ -161,6 +148,5 @@ oro_entity_config:
                         options:
                             required:       false
                             label:          'Scale'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
