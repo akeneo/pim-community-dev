@@ -281,7 +281,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product edit')->switchLocale($locale);
+        $this->getCurrentPage()->switchLocale($locale);
+        $this->wait();
     }
 
     /**
@@ -1012,11 +1013,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $code
      *
-     * @Given /^I filter per scope ([^"]*)$/
+     * @Given /^I filter per channel ([^"]*)$/
      */
-    public function iFilterPerScope($code)
+    public function iFilterPerChannel($code)
     {
-        $this->getPage('Product index')->filterPerScope($code);
+        $this->getPage('Product index')->filterPerChannel($code);
         $this->wait();
     }
 
