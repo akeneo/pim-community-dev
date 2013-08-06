@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Cache;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
+use Symfony\Component\Filesystem\Filesystem;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
 
 class EntityCacheWarmer extends CacheWarmer
@@ -47,6 +48,12 @@ class EntityCacheWarmer extends CacheWarmer
     public function warmUp($cacheDir)
     {
         $entityCacheDir = sprintf('%s/%s', $this->entityCacheDir, str_replace('\\', '/', $this->entityCacheNamespace));
+
+        // Ensure the cache directory exists
+        $fs = new Filesystem();
+        if (!is_dir($entityCacheDir)) {
+            $fs->mkdir($entityCacheDir, 0777);
+        }
 
         $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
         $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
