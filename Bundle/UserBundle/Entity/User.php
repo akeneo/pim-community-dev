@@ -105,7 +105,7 @@ class User extends AbstractEntityFlexible implements
      * @var DateTime
      *
      * @ORM\Column(name="birthday", type="datetime", nullable=true)
-     * @Soap\ComplexType("dateTime", nillable=true)
+     * @Soap\ComplexType("date", nillable=true)
      * @Type("dateTime")
      * @Oro\Versioned
      */

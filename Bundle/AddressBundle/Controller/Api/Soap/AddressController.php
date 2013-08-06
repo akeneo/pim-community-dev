@@ -38,7 +38,7 @@ class AddressController extends SoapController
     /**
      * @Soap\Method("createAddress")
      * @Soap\Param("address", phpType = "Oro\Bundle\AddressBundle\Entity\Address")
-     * @Soap\Result(phpType = "boolean")
+     * @Soap\Result(phpType = "int")
      * @AclAncestor("oro_address_create")
      */
     public function createAction($address)

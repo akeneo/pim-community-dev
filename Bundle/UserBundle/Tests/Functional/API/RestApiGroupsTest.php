@@ -19,11 +19,7 @@ class RestApiGroupsTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -93,7 +89,11 @@ class RestApiGroupsTest extends WebTestCase
     public function testApiUpdateGroup($request, $group)
     {
         $request['group']['name'] .= '_updated';
-        $this->client->request('PUT', $this->client->generate('oro_api_put_group', array('id' => $group['id'])), $request);
+        $this->client->request(
+            'PUT',
+            $this->client->generate('oro_api_put_group', array('id' => $group['id'])),
+            $request
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
         $this->client->request('GET', $this->client->generate('oro_api_get_group', array('id' => $group['id'])));

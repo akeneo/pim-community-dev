@@ -56,12 +56,13 @@ class WebTestCase extends BaseWebTestCase
     public static function tearDownAfterClass()
     {
         if (self::$internalClient) {
+            /** @var Client $client */
+            $client = self::$internalClient;
             if (self::$db_isolation) {
-                /** @var Client $client */
-                $client = self::$internalClient;
                 $client->rollbackTransaction();
                 self::$db_isolation = false;
             }
+            $client->setSoapClient(null);
             self::$internalClient = null;
         }
     }
@@ -83,11 +84,17 @@ class WebTestCase extends BaseWebTestCase
         }
     }
 
+    /**
+     * @return bool
+     */
     public function getIsolation()
     {
         return self::$db_isolation;
     }
 
+    /**
+     * @param bool $dbIsolation
+     */
     public function setIsolation($dbIsolation = false)
     {
         self::$db_isolation = $dbIsolation;
