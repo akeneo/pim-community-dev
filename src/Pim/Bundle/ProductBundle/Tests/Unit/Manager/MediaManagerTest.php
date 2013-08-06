@@ -31,17 +31,25 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
                        $this->equalTo(false)
                    );
 
-        $media->expects($this->once())
-              ->method('setOriginalFilename')
-              ->with($this->equalTo('akeneo.jpg'));
+        $filesystem->expects($this->at(0))
+                   ->method('has')
+                   ->will($this->returnValue(false));
 
-        $media->expects($this->once())
-              ->method('setFilename')
-              ->with($this->equalTo('foo-akeneo.jpg'));
+        $filesystem->expects($this->at(2))
+                   ->method('has')
+                   ->will($this->returnValue(true));
 
         $media->expects($this->any())
               ->method('getFilename')
               ->will($this->returnValue('foo-akeneo.jpg'));
+
+        $media->expects($this->once())
+              ->method('setOriginalFilename')
+              ->with('akeneo.jpg');
+
+        $media->expects($this->once())
+              ->method('setFilename')
+              ->with($this->equalTo('foo-akeneo.jpg'));
 
         $media->expects($this->once())
               ->method('setFilepath')
@@ -62,6 +70,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $filesystem = $this->getFilesystemMock();
         $target     = $this->getTargetedClass($filesystem);
         $media      = $this->getMediaMock();
+
+        $filesystem->expects($this->any())
+                   ->method('has')
+                   ->will($this->returnValue(true));
 
         $media->expects($this->any())
               ->method('isRemoved')
@@ -105,29 +117,12 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $filesystem->expects($this->any())
-                   ->method('has')
-                   ->will($this->returnValue(true));
-
         return $filesystem;
     }
 
     private function getMediaMock($file = null)
     {
-        $media = $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Entity\Media')
-            ->setMethods(
-                array(
-                    'getFile',
-                    'setOriginalFilename',
-                    'setFilename',
-                    'getFilename',
-                    'setFilepath',
-                    'setMimeType',
-                    'isRemoved'
-                )
-            )
-            ->getMock();
+        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')
@@ -140,7 +135,6 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $file = $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->setMethods(array('getPathname', 'getClientOriginalName', 'getMimeType'))
             ->disableOriginalConstructor()
             ->getMock();
 

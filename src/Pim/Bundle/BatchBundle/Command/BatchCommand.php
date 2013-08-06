@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Validator\Validator;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Batch command
@@ -37,13 +39,25 @@ class BatchCommand extends ContainerAwareCommand
     {
         $code = $input->getArgument('code');
         $job = $this->getEntityManager()->getRepository('PimBatchBundle:Job')->findOneByCode($code);
-        if ($job === null or count($this->getValidator()->validate($job)) > 0) {
-            throw new \Exception('Job not valid');
+        if (!$job) {
+            throw new \InvalidArgumentException(sprintf('Could not find job "%s".', $code));
         }
 
         $definition = $this->getConnectorRegistry()->getJob($job);
+        $job->setJobDefinition($definition);
+
+        $errors = $this->getValidator()->validate($job);
+        if (count($errors) > 0) {
+            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+        }
         $jobExecution = new JobExecution;
         $definition->execute($jobExecution);
+
+        if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
+            $output->writeln(sprintf('<info>%s has been successfully executed.</info>', ucfirst($job->getType())));
+        } else {
+            $output->writeln(sprintf('<error>An error occured during the %s execution.</error>', $job->getType()));
+        }
     }
 
     /**
@@ -68,5 +82,15 @@ class BatchCommand extends ContainerAwareCommand
     protected function getConnectorRegistry()
     {
         return $this->getContainer()->get('pim_batch.connectors');
+    }
+
+    private function getErrorMessages(ConstraintViolationList $errors)
+    {
+        $str = '';
+        foreach ($errors as $error) {
+            $str .= sprintf("\n  - %s", $error);
+        }
+
+        return $str;
     }
 }

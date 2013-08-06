@@ -1,13 +1,13 @@
 <?php
 
-namespace Context\Page\Export;
+namespace Context\Page\Import;
 
-use Context\Page\Export\Show;
+use Context\Page\Import\Show;
 
 /**
- * Export launch page
+ * Import launch page
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -16,5 +16,5 @@ class Launch extends Show
     /**
      * @var string $path
      */
-    protected $path = '/ie/export/{id}/launch';
+    protected $path = '/ie/import/{id}/launch';
 }

@@ -36,6 +36,9 @@ class AppKernel extends Kernel
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
 
+            // PIM deps
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
@@ -62,9 +65,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
             new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
             new Oro\Bundle\ImapBundle\OroImapBundle(),
-
-            // PIM deps
-            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),

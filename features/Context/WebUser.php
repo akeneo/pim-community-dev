@@ -33,6 +33,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'exports'    => 'Export index',
         'families'   => 'Family index',
         'imports'    => 'Import index',
+        'locales'    => 'Locale index',
         'products'   => 'Product index',
     );
 
@@ -77,7 +78,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmLoggedInAs($username)
     {
-        $password = $username.'pass';
+        $password = $username;
         $this->getFixturesContext()->getOrCreateUser($username, $password);
 
         $this->username = $username;
@@ -206,6 +207,71 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
         $this->wait();
+    }
+
+    /**
+     * @Given /^I should be on the locales page$/
+     */
+    public function iShouldBeOnTheLocalesPage()
+    {
+        $this->assertSession()->addressEquals(
+            $this->getPage('Locale index')->getUrl()
+        );
+    }
+
+    /**
+     * @Given /^I should be on the locale creation page$/
+     */
+    public function iShouldBeOnTheLocaleCreationPage()
+    {
+        $this->openPage('Locale creation');
+        $this->wait();
+    }
+
+    /**
+     * @When /^I should see activated locales? (.*)$/
+     */
+    public function iShouldSeeActivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not activated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should see deactivated locales? (.*)$/
+     */
+    public function iShouldSeeDeactivatedLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
+                throw $this->createExpectationException(
+                    sprintf('Locale "%s" is not deactivated', $locale)
+                );
+            }
+        }
+    }
+
+    /**
+     * @When /^I should not see locales? (.*)$/
+     */
+    public function iShouldNotSeeLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            try {
+                $gridRow = $this->getPage('Locale index')->getGridRow($locale);
+                $this->createExpectationException(
+                    sprintf('Locale "%s" should not be seen', $locale)
+                );
+            } catch (\InvalidArgumentException $e) {
+                // here we must catch an exception because the row is not found
+                continue;
+            }
+        }
     }
 
     /**
@@ -1033,6 +1099,57 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $importTitle
+     *
+     * @Given /^I create a new "([^"]*)" import$/
+     */
+    public function iCreateANewImport($importTitle)
+    {
+        $this->getPage('Import index')->clickImportCreationLink($importTitle);
+        $this->currentPage = 'Import creation';
+    }
+
+    /**
+     * @Given /^I try to create an unknown import$/
+     */
+    public function iTryToCreateAnUnknownImport()
+    {
+        $this->openPage('Import creation');
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Then /^I should be on the "([^"]*)" import job page$/
+     */
+    public function iShouldBeOnTheImportJobPage($job)
+    {
+        $expectedAddress = $this->getPage('Import show')->getUrl($this->getJob($job));
+        $this->assertSession()->addressEquals($expectedAddress);
+    }
+
+    /**
+     * @param string $job
+     *
+     * @Given /^I am on the "([^"]*)" import job page$/
+     */
+    public function iAmOnTheImportJobPage($job)
+    {
+        $this->openPage('Import show', array('id' => $this->getJob($job)->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param string $job
+     *
+     * @When /^I launch the "([^"]*)" import job$/
+     */
+    public function iLaunchTheImportJob($job)
+    {
+        $this->openPage('Import launch', array('id' => $this->getJob($job)->getId()));
+    }
+
+    /**
      * @param string $column
      * @param string $exportCode
      * @param string $status
@@ -1199,10 +1316,34 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function getInvalidValueFor($field)
     {
-        switch ($field) {
-            case 'Family edit.Code':
+        switch (strtolower($field)) {
+            case 'family edit.code':
                 return 'inv@lid';
+            case 'attribute creation.name':
+                return $this->lorem(20);
+            case 'attribute creation.description':
+                return $this->lorem(256);
         }
+    }
+
+    /**
+     * @param integer $length
+     *
+     * @return string
+     */
+    private function lorem($length = 100)
+    {
+        $lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore'
+            .'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut'
+            .'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
+            .'dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui'
+            .'officia deserunt mollit anim id est laborum.';
+
+        while (strlen($lorem) < $length) {
+            $lorem .= ' ' . $lorem;
+        }
+
+        return substr($lorem, 0, $length);
     }
 
     /**

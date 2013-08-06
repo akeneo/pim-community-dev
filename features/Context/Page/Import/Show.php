@@ -2,28 +2,27 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobIndex;
+use Context\Page\Job\JobShow;
 
 /**
- * Import index page
+ * Import show page
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends JobIndex
+class Show extends JobShow
 {
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/';
+    protected $path = '/ie/import/{id}';
 
     /**
-     * @param string $importLink
+     * Click the job execution link
      */
-    public function clickImportCreationLink($importLink)
+    public function execute()
     {
-        $this->clickLink('New import');
-        $this->clickLink($importLink);
+        $this->clickLink('Import now');
     }
 }

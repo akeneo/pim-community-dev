@@ -45,7 +45,7 @@ $(function() {
             if ($(this).val() == 'regexp') {
                 $('#'+formName+'_validationRegexp').parent().parent().show();
             } else {
-                $('#'+formName+'_validationRegexp').parent().parent().hide();
+                $('#'+formName+'_validationRegexp').val('').parent().parent().hide();
             }
         }).trigger('change');
 
@@ -148,7 +148,7 @@ $(function() {
         var option = $optionList.find('tr').last().html();
 
         var optionNumber = $optionList.find('tr.att-option').length + 1;
-        while ($optionList.find('[id*=pim_product_attribute_form_options_'+optionNumber+']').length) {
+        while ($optionList.find('[id*='+formName+'_options_'+optionNumber+']').length) {
             optionNumber++;
         }
 
