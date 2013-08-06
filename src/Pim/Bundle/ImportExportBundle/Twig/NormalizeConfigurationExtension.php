@@ -36,7 +36,6 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('normalizeValue', array($this, 'normalizeValueFilter')),
-            new \Twig_SimpleFilter('normalizeKey', array($this, 'normalizeKeyFilter')),
         );
     }
 
@@ -58,18 +57,6 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         }
 
         return (string) $value;
-    }
-
-    /**
-     * Normalize key to print intelligible data to user
-     *
-     * @param string $key
-     *
-     * @return string
-     */
-    public function normalizeKeyFilter($key)
-    {
-        return ucfirst(strtolower(preg_replace('/([A-Z])/', ' ${1}', $key)));
     }
 
     /**

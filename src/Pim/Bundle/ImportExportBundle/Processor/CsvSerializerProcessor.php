@@ -22,13 +22,13 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
 {
     /**
      * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"})
+     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
      */
     protected $delimiter = ';';
 
     /**
      * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"})
+     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
      */
     protected $enclosure = '"';
 
@@ -105,23 +105,11 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return 'CSV Serializer';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getConfigurationFields()
     {
         return array(
-            'delimiter' => array(
-                'type' => 'text',
-            ),
-            'enclosure' => array(
-                'type' => 'text',
-            ),
+            'delimiter' => array(),
+            'enclosure' => array(),
             'withHeader' => array(
                 'type' => 'checkbox',
             ),

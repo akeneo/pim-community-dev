@@ -19,14 +19,6 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements ItemRea
     private $cursor;
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ORM Cursor';
-    }
-
-    /**
      * Set query used by the reader
      * @param AbstractQuery $query
      */

@@ -17,14 +17,6 @@ class DummyReader extends AbstractConfigurableStepElement implements ItemReaderI
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Dummy reader';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function read()
     {
         return null;

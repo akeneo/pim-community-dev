@@ -17,14 +17,6 @@ class DummyProcessor extends AbstractConfigurableStepElement implements ItemProc
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Dummy processor';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function process($item)
     {
         return null;

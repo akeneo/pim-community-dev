@@ -71,14 +71,6 @@ class ProductReader extends ORMReader
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Scoped products';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurationFields()
     {
         return array(

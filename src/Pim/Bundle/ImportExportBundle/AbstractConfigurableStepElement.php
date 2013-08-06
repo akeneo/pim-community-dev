@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Doctrine\Common\Util\Inflector;
+
 /**
  * Define a configurable step element
  *
@@ -19,9 +21,19 @@ abstract class AbstractConfigurableStepElement
 
     /**
      * Return name
+     *
      * @return string
      */
-    abstract public function getName();
+    public function getName()
+    {
+        $classname = get_class($this);
+
+        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+            $classname = $matches[1];
+        }
+
+        return Inflector::tableize($classname);
+    }
 
     /**
      * Get the step element configuration (based on its properties)
@@ -49,10 +61,10 @@ abstract class AbstractConfigurableStepElement
             if (!array_key_exists($key, $this->getConfigurationFields())) {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Unknown configuration field "%s" in class "%", available fields are "%s"',
-                        $field,
+                        'Unknown configuration field "%s" in class "%s", available fields are "%s"',
+                        $key,
                         get_class($this),
-                        join('", "', $this->getConfigurationFields())
+                        join('", "', array_keys($this->getConfigurationFields()))
                     )
                 );
             }
