@@ -1,6 +1,5 @@
 parameters:
     pim_config.event_listener.user_preferences.class:  Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
-    pim_config.event_listener.locale_activation.class: Pim\Bundle\ConfigBundle\EventListener\LocaleActivationListener
     
 services:
     # Subscriber
@@ -8,13 +7,6 @@ services:
         class: %pim_config.event_listener.user_preferences.class%
         calls:
             - [ setContainer, [ @service_container ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-            
-    pim_config.event_listener.locale_activation:
-        class: %pim_config.event_listener.locale_activation.class%
-        calls:
-            - [ setContainer, [@service_container ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
