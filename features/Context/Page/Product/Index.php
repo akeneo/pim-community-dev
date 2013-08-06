@@ -75,4 +75,18 @@ class Index extends Grid
 
         $elt->selectOption($code);
     }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerScope($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for scope "%s".', $code));
+        }
+
+        $elt->selectOption($code);
+    }
 }
