@@ -1,0 +1,3 @@
+js:
+  entityconfig:
+      - @OroEntityConfigBundle/Resources/public/js/entity_config.form.js

@@ -2,15 +2,16 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
 
 class ConfigType extends AbstractType
