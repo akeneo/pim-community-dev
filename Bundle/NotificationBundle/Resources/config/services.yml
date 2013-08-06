@@ -112,6 +112,9 @@ services:
             - %oro_notification.send_from%
             - @logger
             - @security.context
+            - @oro_email.config.available_in_templates
+            - @oro_email.cache
+            - %oro_email.cache.available_in_template_key%
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
@@ -160,9 +163,7 @@ services:
             # filters
             - [ 'upper', 'escape' ]
             # methods
-            -
-              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname, getlastname]
-              Oro\Bundle\TagBundle\Entity\Tag: [getcreatedby, getname]
+            - []
             # properties
             - []
             # functions

@@ -3,48 +3,49 @@
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
 use Monolog\Logger;
+
+use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
+use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
-    const SEND_COMMAND = 'oro:spool:send';
+    const SEND_COMMAND       = 'oro:spool:send';
 
-    /**
-     * @var \Twig_Environment
-     */
+    /** @var \Twig_Environment */
     protected $twig;
 
-    /**
-     * @var \Swift_Mailer
-     */
+    /** @var \Swift_Mailer */
     protected $mailer;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $sendFrom;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $messageLimit = 100;
 
-    /**
-     * @var Logger
-     */
+    /** @var Logger */
     protected $logger;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $env = 'prod';
+
+    /** @var  Cache|null */
+    protected $cache;
+
+    /** @var  ConfigProvider */
+    protected $configProvider;
+
+    /** @var  string */
+    protected $cacheKey;
 
     public function __construct(
         \Twig_Environment $twig,
@@ -52,15 +53,22 @@ class EmailNotificationHandler extends EventHandlerAbstract
         ObjectManager $em,
         $sendFrom,
         Logger $logger,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ConfigProvider $configProvider,
+        Cache $cache,
+        $cacheKey
     ) {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->em = $em;
         $this->sendFrom = $sendFrom;
         $this->logger = $logger;
+        $this->configProvider = $configProvider;
+        $this->cache = $cache;
 
+        $this->cacheKey = $cacheKey;
         $this->user = $this->getUser($securityContext);
+        $this->configureSandbox($this->twig);
     }
 
     /**
@@ -192,6 +200,59 @@ class EmailNotificationHandler extends EventHandlerAbstract
     public function setEnv($env)
     {
         $this->env = $env;
+    }
+
+    /**
+     * Configure sandbox form config data
+     *
+     * @param \Twig_Environment $twig
+     */
+    protected function configureSandbox(\Twig_Environment $twig)
+    {
+        $allowedData = $this->cache->fetch($this->cacheKey);
+
+        if (false === $allowedData) {
+            $allowedData = $this->prepareConfiguration();
+            $this->cache->save($this->cacheKey, serialize($allowedData));
+        } else {
+            $allowedData = unserialize($allowedData);
+        }
+        /** @var \Twig_Extension_Sandbox $sandbox */
+        $sandbox = $twig->getExtension('sandbox');
+        /** @var \Twig_Sandbox_SecurityPolicy $security */
+        $security = $sandbox->getSecurityPolicy();
+        $security->setAllowedMethods($allowedData);
+    }
+
+    /**
+     * Prepare configuration from entity config
+     *
+     * @return array
+     */
+    private function prepareConfiguration()
+    {
+        $configuration = array();
+
+        /**
+         * @TODO Change when new code of entity config will be merged
+         */
+        foreach ($this->configProvider->getAllConfigurableEntityNames() as $className) {
+            $config = $this->configProvider->getConfig($className);
+            $fields = $config->getFields(
+                function (FieldConfig $field) {
+                    return $field->is('available_in_template');
+                }
+            );
+
+            if (!$fields->isEmpty()) {
+                $configuration[$className] = array();
+                foreach ($fields as $field) {
+                    $configuration[$className][] = 'get' . strtolower($field->getCode());
+                }
+            }
+        }
+
+        return $configuration;
     }
 
     /**

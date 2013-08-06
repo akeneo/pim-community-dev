@@ -2,61 +2,84 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Unit\Event\Handler;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler;
-use Psr\Log\LoggerInterface;
 use Monolog\Logger;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    const TEST_ENTITY_CLASS = 'SomeEntity';
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $entityManager;
 
-    /**
-     * @var \Twig_Environment
-     */
+    /** @var \Twig_Environment */
     protected $twig;
 
-    /**
-     * @var \Swift_Mailer
-     */
+    /** @var \Swift_Mailer */
     protected $mailer;
 
-    /**
-     * @var EmailNotificationHandler
-     */
+    /** @var EmailNotificationHandler */
     protected $handler;
 
-    /**
-     * @var Monolog\Logger
-     */
+    /** @var Logger */
     protected $logger;
 
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
+
+    /** @var  \PHPUnit_Framework_MockObject_MockObject */
+    protected $cache;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject  */
+    protected $configProvider;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject  */
+    protected $securityPolicy;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject  */
+    protected $sandbox;
+
+    /** @var string */
+    protected $cacheKey = 'test.key';
 
     protected function setUp()
     {
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
         $this->twig = $this->getMockBuilder('\Twig_Environment')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
+
+        $this->securityPolicy = $this->getMockBuilder('\Twig_Sandbox_SecurityPolicy')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->sandbox = $this->getMockBuilder('\Twig_Extension_Sandbox')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->twig->expects($this->once())->method('getExtension')->with('sandbox')
+            ->will($this->returnValue($this->sandbox));
+
+        $this->sandbox->expects($this->once())->method('getSecurityPolicy')
+            ->will($this->returnValue($this->securityPolicy));
+
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
         $this->logger = $this->getMockBuilder('Monolog\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+
+        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->cache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->cache->expects($this->once())->method('fetch')
+            ->will($this->returnValue(serialize(array('somekey' => array()))));
 
         $this->handler = new EmailNotificationHandler(
             $this->twig,
@@ -64,7 +87,10 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             $this->entityManager,
             'a@a.com',
             $this->logger,
-            $this->securityContext
+            $this->securityContext,
+            $this->configProvider,
+            $this->cache,
+            $this->cacheKey
         );
         $this->handler->setEnv('prod');
         $this->handler->setMessageLimit(10);
@@ -74,7 +100,13 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
     {
         unset($this->entityManager);
         unset($this->twig);
+        unset($this->securityPolicy);
+        unset($this->sandbox);
         unset($this->mailer);
+        unset($this->logger);
+        unset($this->securityContext);
+        unset($this->configProvider);
+        unset($this->cache);
         unset($this->handler);
     }
 
@@ -240,5 +272,83 @@ class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('persist');
         $this->entityManager->expects($this->once())
             ->method('flush');
+    }
+
+    public function testPrepareConfiguration()
+    {
+        $configuredData = array(
+            self::TEST_ENTITY_CLASS => array(
+                'getsomecode'
+            )
+        );
+
+        $newcache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')
+            ->disableOriginalConstructor()->getMock();
+        $newcache->expects($this->once())->method('fetch')
+            ->will($this->returnValue(false));
+        $newcache->expects($this->once())->method('save')
+            ->with($this->cacheKey, serialize($configuredData));
+
+        $twig = $this->getMockBuilder('\Twig_Environment')
+            ->disableOriginalConstructor()->getMock();
+
+        $securityPolicy = $this->getMockBuilder('\Twig_Sandbox_SecurityPolicy')
+            ->disableOriginalConstructor()->getMock();
+
+        $sandbox = $this->getMockBuilder('\Twig_Extension_Sandbox')
+            ->disableOriginalConstructor()->getMock();
+
+        $twig->expects($this->once())->method('getExtension')->with('sandbox')
+            ->will($this->returnValue($sandbox));
+
+        $sandbox->expects($this->once())->method('getSecurityPolicy')
+            ->will($this->returnValue($securityPolicy));
+
+        $this->configProvider->expects($this->once())->method('getAllConfigurableEntityNames')
+            ->will($this->returnValue(array(self::TEST_ENTITY_CLASS)));
+
+        $fieldsCollection = new ArrayCollection();
+
+        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
+            ->disableOriginalConstructor()->getMock();
+        $config->expects($this->once())->method('getFields')
+            ->will(
+                $this->returnCallback(
+                    function ($callback) use ($fieldsCollection) {
+                        return $fieldsCollection->filter($callback);
+                    }
+                )
+            );
+
+        $this->configProvider->expects($this->once())->method('getConfig')->with(self::TEST_ENTITY_CLASS)
+            ->will($this->returnValue($config));
+
+        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+            ->disableOriginalConstructor()->getMock();
+        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+            ->disableOriginalConstructor()->getMock();
+
+        $field1->expects($this->once())->method('is')->with('available_in_template')
+            ->will($this->returnValue(true));
+        $field1->expects($this->once())->method('getCode')
+            ->will($this->returnValue('someCode'));
+
+        $field2->expects($this->once())->method('is')->with('available_in_template')
+            ->will($this->returnValue(false));
+
+        $fieldsCollection->add($field1);
+        $fieldsCollection->add($field2);
+
+        new EmailNotificationHandler(
+            $twig,
+            $this->mailer,
+            $this->entityManager,
+            'a@a.com',
+            $this->logger,
+            $this->securityContext,
+            $this->configProvider,
+            $newcache,
+            $this->cacheKey
+        );
     }
 }

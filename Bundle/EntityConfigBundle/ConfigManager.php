@@ -169,6 +169,21 @@ class ConfigManager
     }
 
     /**
+     * Return array of all existing configurable entities class names
+     *
+     * @return array
+     */
+    public function getAllConfigurableEntityNames()
+    {
+        return array_map(
+            function (EntityConfig $config) {
+                return $config->getClassName();
+            },
+            $this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findAll()
+        );
+    }
+
+    /**
      * @param $className
      * @param $scope
      * @throws Exception\RuntimeException

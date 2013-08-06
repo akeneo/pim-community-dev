@@ -14,6 +14,11 @@ parameters:
     oro_email.manager.emailtemplate.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
 
+    # Entity config event listener
+    oro_email.listener.config_subscriber.class: Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber
+
+    oro_email.cache.available_in_template_key: 'oro_email.available_in_template_fields'
+
 services:
     # Email template field
     oro_email.form.subscriber.emailtemplate:
@@ -81,3 +86,18 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @translator
+
+    oro_email.config.available_in_templates:
+        tags:
+            - { name: oro_entity_config.provider, scope: email }
+
+    oro_email.cache:
+          parent: oro.cache.abstract
+          calls:
+              - [setNamespace, ['oro_email.cache']]
+
+    oro_email.listener.config_subscriber:
+        class:      %oro_email.listener.config_subscriber.class%
+        arguments:  [@oro_email.cache, %oro_email.cache.available_in_template_key%]
+        tags:
+            - { name: kernel.event_subscriber}
