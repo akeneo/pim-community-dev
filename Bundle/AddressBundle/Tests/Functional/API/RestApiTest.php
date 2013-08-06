@@ -86,6 +86,31 @@ class RestApiTest extends WebTestCase
     }
 
     /**
+     * Test GET
+     *
+     * @depends testCreateAddress
+     */
+    public function testGetAddresses($id)
+    {
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_addresses')
+        );
+
+        /** @var $result Response */
+        $result = $this->client->getResponse();
+
+        ToolsAPI::assertJsonResponse($result, 200);
+        $resultJson = json_decode($result->getContent(), true);
+
+        $this->assertNotEmpty($resultJson);
+        $this->assertArrayHasKey(0, $resultJson);
+        $this->assertArrayHasKey('id', $resultJson[0]);
+
+        $this->assertEquals($id, $resultJson[0]['id']);
+    }
+
+    /**
      * Test PUT
      *
      * @depends testCreateAddress
