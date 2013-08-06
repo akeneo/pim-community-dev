@@ -100,6 +100,12 @@ class TagManager
             return array();
         }
 
+        array_walk(
+            $names,
+            function (&$item) {
+                $item = trim($item);
+            }
+        );
         $names = array_unique($names);
         $tags = $this->em->getRepository($this->tagClass)->findBy(array('name' =>  $names));
 
