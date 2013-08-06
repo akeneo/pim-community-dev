@@ -142,9 +142,14 @@ class Family implements TranslatableInterface
      * @param ProductAttribute $attribute
      *
      * @return Family
+     *
+     * @throw InvalidArgumentException
      */
     public function addAttribute(ProductAttribute $attribute)
     {
+        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+            throw new \InvalidArgumentException('Identifier cannot be part of a family.');
+        }
         $this->attributes[] = $attribute;
 
         return $this;
