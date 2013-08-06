@@ -1283,6 +1283,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the "([^"]*)" content$/
+     */
+    public function iShouldSeeTheContent($path)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
+            if (is_file($fullPath)) {
+                $path = $fullPath;
+            }
+        }
+
+        $this->assertSession()->responseContains(file_get_contents($path));
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
