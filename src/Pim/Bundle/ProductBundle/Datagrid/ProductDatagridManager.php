@@ -38,7 +38,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
-     * @staticvar string
+     * @staticvar integer
      */
     const UNCLASSIFIED_CATEGORY = 0;
 
@@ -345,10 +345,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         /**
          * @var FlexibleQueryBuilder
          */
-        $query
-            ->innerJoin($query->getRootAlias().'.locales', 'FilterLocale', 'WITH', 'FilterLocale.code = :filterlocale')
-            ->setParameter('filterlocale', $this->flexibleManager->getLocale());
-
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
 

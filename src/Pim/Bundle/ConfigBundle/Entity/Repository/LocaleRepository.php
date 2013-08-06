@@ -52,9 +52,7 @@ class LocaleRepository extends EntityRepository
      */
     public function getActivatedLocales()
     {
-        $qb = $this->createQueryBuilder('l');
-        $qb->where($qb->expr()->eq('l.activated', true))
-           ->orderBy('l.code');
+        $qb = $this->getActivatedLocalesQB();
 
         return $qb->getQuery()->getResult();
     }
