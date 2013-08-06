@@ -84,7 +84,9 @@ class ProductController extends Controller
         if ($this->get('pim_product.form.handler.product_create')->process($entity)) {
             $this->addFlash('success', 'Product successfully saved.');
 
-            $dataLocale = $entity->getLocales()->first()->getCode();
+            if ($dataLocale === null) {
+                $dataLocale = $this->getDataLocale();
+            }
             $url = $this->generateUrl(
                 'pim_product_product_edit',
                 array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
@@ -150,17 +152,18 @@ class ProductController extends Controller
 
                 $this->addFlash('success', 'Product successfully saved');
 
-                $dataLocale = $this->getDataLocale();
-                if (!$product->isEnabledForLocale($dataLocale)) {
-                    $dataLocale = $product->getLocales()->first()->getCode();
-                }
+                // TODO : Check if the locale exists and is activated
+//                 $dataLocale = $this->getDataLocale();
+//                 if (!$product->isEnabledForLocale($dataLocale)) {
+//                     $dataLocale = $product->getLocales()->first()->getCode();
+//                 }
 
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
                         array(
                             'id' => $product->getId(),
-                            'dataLocale' => $dataLocale
+                            'dataLocale' => $this->getDataLocale()
                         )
                     )
                 );
@@ -463,12 +466,13 @@ class ProductController extends Controller
             );
         }
 
-        $localeCode = $this->getProductManager()->getLocale();
-        if ($product->isEnabledForLocale($localeCode) === false) {
-            throw $this->createNotFoundException(
-                sprintf('Product with id %d is not enabled for locale %s', $id, $localeCode)
-            );
-        }
+        // TODO : Maybe just check if the locale is well activated
+//         $localeCode = $this->getProductManager()->getLocale();
+//         if ($product->isEnabledForLocale($localeCode) === false) {
+//             throw $this->createNotFoundException(
+//                 sprintf('Product with id %d is not enabled for locale %s', $id, $localeCode)
+//             );
+//         }
 
         $currencyManager = $this->container->get('pim_config.manager.currency');
         $this->getProductManager()->addMissingPrices($currencyManager, $product);

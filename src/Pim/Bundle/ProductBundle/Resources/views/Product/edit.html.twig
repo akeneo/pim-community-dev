@@ -62,7 +62,7 @@
 
         <div class="layout-content">
 
-            {{ elements.form_navbar(['Attributes', 'Categories', 'Localisations', 'History']) }}
+            {{ elements.form_navbar(['Attributes', 'Categories', 'History']) }}
 
             <div class="row-fluid tab-content">
 
@@ -73,10 +73,6 @@
                 </div>
 
                 <div class="tab-pane" id="associations"></div>
-
-                <div class="tab-pane buffer-top" id="localisations">
-                    {{ form_row(form.locales) }}
-                </div>
 
                 <div class="tab-pane" id="categories">
                    {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}

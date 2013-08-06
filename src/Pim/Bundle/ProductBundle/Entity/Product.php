@@ -21,7 +21,6 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Assert\Callback(methods={"haveAtLeastOneActivatedLocale"})
  * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
@@ -57,6 +56,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      * @Oro\Versioned("getCode")
+     *
+     * TODO : must be removed
      */
     protected $locales;
 
@@ -80,7 +81,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     {
         parent::__construct();
 
-        $this->locales = new ArrayCollection();
+        $this->locales = new ArrayCollection(); // TODO : must be removed
     }
 
     /**
@@ -111,6 +112,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * Get locales
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
+     *
+     * TODO : must be removed
      */
     public function getLocales()
     {
@@ -123,6 +126,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
+     *
+     * TODO : must be removed
      */
     public function addLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
     {
@@ -137,6 +142,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
+     *
+     * TODO : must be removed
      */
     public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
     {
@@ -146,29 +153,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
-     * Check if product is activated on that locale
-     *
-     * @param string $localeCode
-     *
-     * @return boolean
-     */
-    public function isEnabledForLocale($localeCode)
-    {
-        $locales = $this->locales->filter(
-            function ($locale) use ($localeCode) {
-                return ($locale->getCode() === $localeCode);
-            }
-        );
-
-        return $locales->count() > 0;
-    }
-
-    /**
      * Set locales
      *
      * @param ArrayCollection $locales
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
+     *
+     * TODO : must be removed
      */
     public function setLocales($locales)
     {
@@ -285,21 +276,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         );
 
         return $groups;
-    }
-
-    /**
-     * Make sure that at least one locale has been added to the product
-     *
-     * @param ExecutionContext $context Execution Context
-     */
-    public function haveAtLeastOneActivatedLocale(ExecutionContext $context)
-    {
-        if ($this->locales->count() == 0) {
-            $context->addViolationAtPath(
-                $context->getPropertyPath() . '.locales',
-                'Please specify at least one activated locale'
-            );
-        }
     }
 
     /**

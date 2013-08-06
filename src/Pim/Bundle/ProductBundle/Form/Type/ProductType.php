@@ -19,6 +19,11 @@ use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
  */
 class ProductType extends FlexibleType
 {
+    /**
+     * TODO : comment !!!
+     *
+     * @var ProductFormView $productFormView
+     */
     protected $productFormView;
 
     /**
@@ -58,7 +63,7 @@ class ProductType extends FlexibleType
             )
         );
 
-        $this->addLocaleField($builder);
+//         $this->addLocaleField($builder);
     }
 
     /**
@@ -67,6 +72,8 @@ class ProductType extends FlexibleType
      * @param FormBuilderInterface $builder
      *
      * @return ProductType
+     *
+     * @TODO : Must be removed
      */
     protected function addLocaleField(FormBuilderInterface $builder)
     {

@@ -356,40 +356,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $languages
-     *
-     * @Then /^I should see that the product is available in (.*)$/
-     */
-    public function iShouldSeeLanguages($languages)
-    {
-        $languages = $this->listToArray($languages);
-        foreach ($languages as $language) {
-            if (null === $this->getPage('Product edit')->findLocaleLink($language)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see a locale link for "%s", but didn\'t',
-                        $language
-                    )
-                );
-            }
-        }
-
-    }
-
-    /**
-     * @param string $languages
-     *
-     * @When /^I add the (.*) languages?$/
-     */
-    public function iAddTheLanguages($languages)
-    {
-        $languages = $this->listToArray($languages);
-        foreach ($languages as $language) {
-            $this->getPage('Product edit')->selectLanguage($language);
-        }
-    }
-
-    /**
      * @Given /^I save the (.*)$/
      */
     public function iSave()
