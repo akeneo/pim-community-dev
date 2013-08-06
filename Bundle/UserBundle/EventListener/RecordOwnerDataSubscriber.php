@@ -57,12 +57,20 @@ class RecordOwnerDataSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $user = $this->getSecurityContext()->getToken();
+        $user = $this->getSecurityContext()->getToken()->getUser();
         if ($user) {
             $entity = $args->getEntity();
-            $entity->setUser($user)
-                ->setBusinessUnit($user->getBusinnesUnit())
-                ->setOrganization($user->getOrganization());
+            if(method_exists($entity, 'setUserOwner')) {
+                $entity->setUserOwner($user);
+            }
+            $businessUnits = $user->getBusinessUnits();
+            $businessUnit = $businessUnits->first();
+            if(method_exists($entity, 'setBusinessUnitOwner')) {
+                $entity->setBusinessUnitOwner($businessUnit);
+            }
+            if(method_exists($entity, 'setOrganizationOwner')) {
+                $entity->setOrganizationOwner($businessUnit->getOrganization());
+            }
         }
     }
 }
