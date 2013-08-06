@@ -26,8 +26,27 @@ class Index extends Grid
             $this->elements,
             array(
                 'Categories tree' => array('css' => '#tree'),
+                'Locales dropdown' => array('css' => '#locale-switcher'),
             )
         );
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function switchLocale($locale)
+    {
+        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
+        if (!$elt) {
+            throw new \Exception('Could not find locale switcher.');
+        }
+        $elt->click();
+
+        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title=%s]', $locale));
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
+        }
+        $elt->click();
     }
 
     /**
@@ -71,6 +90,20 @@ class Index extends Grid
 
         if (!$elt) {
             throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
+        }
+
+        $elt->selectOption($code);
+    }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerChannel($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for channel "%s".', $code));
         }
 
         $elt->selectOption($code);
