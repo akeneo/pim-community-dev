@@ -243,7 +243,7 @@ class Group
     /**
      * @return User
      */
-    public function getUserOwnerId()
+    public function getUserOwner()
     {
         return $this->userOwner;
     }
@@ -251,7 +251,7 @@ class Group
     /**
      * @param User $userOwner
      */
-    public function setUserOwnerId(User $userOwner)
+    public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
     }
@@ -259,7 +259,7 @@ class Group
     /**
      * @return BusinessUnit
      */
-    public function getBusinessUnitOwnerId()
+    public function getBusinessUnitOwner()
     {
         return $this->businessUnitOwner;
     }
