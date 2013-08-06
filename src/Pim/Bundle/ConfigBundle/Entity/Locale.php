@@ -178,12 +178,12 @@ class Locale
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
-    public function setActivated($activated)
-    {
-        $this->activated = $activated;
+//     public function setActivated($activated)
+//     {
+//         $this->activated = $activated;
 
-        return $this;
-    }
+//         return $this;
+//     }
 
     /**
      * Get default currency
@@ -233,6 +233,33 @@ class Locale
     public function setChannels($channels)
     {
         $this->channels = $channels;
+
+        return $this;
+    }
+
+    /**
+     * Activate the locale
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function activate()
+    {
+        $this->activated = true;
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the locale
+     * Only if it's no more link to a channel
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function deactivate()
+    {
+        if ($this->getChannels()->count() === 0) {
+            $this->activated = false;
+        }
 
         return $this;
     }

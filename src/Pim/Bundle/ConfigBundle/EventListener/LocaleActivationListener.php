@@ -43,7 +43,7 @@ class LocaleActivationListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'postPersist'
+//             'postPersist'
         );
     }
 
@@ -79,7 +79,6 @@ class LocaleActivationListener implements EventSubscriber
             ->leftJoin('l.channels', 'c')
             ->andWhere('l.activated = false')
             ->andWhere('c.id IS NOT NULL');
-
         $locales = $qb->getQuery()->getResult();
 
         foreach ($locales as $locale) {

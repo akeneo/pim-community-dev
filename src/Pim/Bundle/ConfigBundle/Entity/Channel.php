@@ -18,6 +18,7 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\ChannelRepository")
  * @UniqueEntity("code")
+ * @ORM\HasLifecycleCallbacks
  */
 class Channel
 {
@@ -251,6 +252,7 @@ class Channel
     public function addLocale(Locale $locale)
     {
         $this->locales[] = $locale;
+        $locale->activate();
 
         return $this;
     }
@@ -265,6 +267,7 @@ class Channel
     public function removeLocale(Locale $locale)
     {
         $this->locales->removeElement($locale);
+        $locale->deactivate();
 
         return $this;
     }
@@ -276,10 +279,10 @@ class Channel
      *
      * @return Channel
      */
-    public function setLocales($locales)
-    {
-        $this->locales = $locales;
+//     public function setLocales($locales)
+//     {
+//         $this->locales = $locales;
 
-        return $this;
-    }
+//         return $this;
+//     }
 }
