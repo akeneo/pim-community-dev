@@ -26,6 +26,10 @@ pim_import_export.jobs.attribute_import:
     title: 'Attribute import in CSV'
     import.title: 'Import'
 
+pim_import_export.jobs.product_import:
+    title: 'Product import'
+    import.title: 'Configuration'
+
 ## Step elements (readers, processors, writers)
 pim_batch.product_reader:
     title: 'Scope'
