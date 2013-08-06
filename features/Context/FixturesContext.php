@@ -151,9 +151,9 @@ class FixturesContext extends RawMinkContext
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('languages' => 'english', 'family' => null), $data);
+            $data = array_merge(array('family' => null), $data);
 
-            $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
+            $product = $this->aProduct($data['sku']);
             if ($data['family']) {
                 $product->setFamily($this->getFamily($data['family']));
             }
@@ -169,7 +169,7 @@ class FixturesContext extends RawMinkContext
      */
     public function anEnabledProduct($sku)
     {
-        $this->aProductAvailableIn($sku, 'english')->setEnabled(true);
+        $this->aProduct($sku)->setEnabled(true);
     }
 
     /**
@@ -179,7 +179,7 @@ class FixturesContext extends RawMinkContext
      */
     public function aDisabledProduct($sku)
     {
-        $this->aProductAvailableIn($sku, 'english')->setEnabled(false);
+        $this->aProduct($sku)->setEnabled(false);
     }
 
     /**
