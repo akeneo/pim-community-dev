@@ -1,9 +1,9 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Manager;
 
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 /**
  * Test related class
@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class CurrencyManagerTest extends WebTestCase
 {
-
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */

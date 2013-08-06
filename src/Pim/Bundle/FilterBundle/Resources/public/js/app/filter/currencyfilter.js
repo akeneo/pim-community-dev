@@ -22,7 +22,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
             choices: this.choices,
             currencies: this.currencies
         }));
-        
+
         return this;
     },
 
@@ -33,10 +33,10 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
         this._setInputValue(this.criteriaValueSelectors.value, value.value);
         this._setInputValue(this.criteriaValueSelectors.type, value.type);
         this._setInputValue(this.criteriaValueSelectors.currency, value.currency);
-        
+
         return this;
     },
-    
+
     /**
      * @inheritDoc
      */
@@ -64,7 +64,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
             return value.value;
         }
     },
-    
+
     /**
      * @inheritDoc
      */
@@ -83,9 +83,9 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
                     '</ul>' +
                     '<input class="name_input" type="hidden" name="currency_type" id="<%= name %>" value=""/>' +
                 '</div>' +
-                    
+
                 '<input type="text" name="value" value="">' +
-                
+
                 '<div class="btn-group">' +
                     '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
                         'Currency' +
@@ -98,7 +98,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
                     '</ul>' +
                     '<input class="name_input" type="hidden" name="currency_currency" id="<%= name %>" value=""/>' +
                 '</div>' +
-                    
+
                 '<button class="btn btn-primary filter-update" type="button">Update</button>' +
             '</div>' +
         '</div>'
@@ -106,7 +106,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
 
     /**
      * Selectors for filter criteria elements
-     * 
+     *
      * @property {Object}
      */
     criteriaValueSelectors: {
@@ -114,10 +114,10 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
         type:     'input[name="currency_type"]',
         value:    'input[name="value"]'
     },
-    
+
     /**
      * Empty value object
-     * 
+     *
      * @property {0bject}
      */
     emptyValue: {

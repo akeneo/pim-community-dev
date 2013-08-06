@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\NavigationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;

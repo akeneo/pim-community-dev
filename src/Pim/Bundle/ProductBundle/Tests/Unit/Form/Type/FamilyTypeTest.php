@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\ProductBundle\Form\Type\FamilyType;
@@ -14,7 +15,6 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  */
 class FamilyTypeTest extends AbstractFormTypeTest
 {
-
     /**
      * {@inheritdoc}
      */

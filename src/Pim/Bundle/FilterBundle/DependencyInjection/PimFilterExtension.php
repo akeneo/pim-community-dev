@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class PimFilterExtension extends Extension
 {
-
     /**
      * {@inheritdoc}
      */

@@ -1,8 +1,9 @@
 <?php
+
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 
 /**
  * Product normalizer test

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\SearchBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

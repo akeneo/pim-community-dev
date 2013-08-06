@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Doctrine\Common\Collections\Collection;

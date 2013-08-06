@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\JsFormValidationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;

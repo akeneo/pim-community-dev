@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -7,7 +8,7 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  * Tests related to the ExitStatus class
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */

@@ -1,10 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\EventListener;
 
-use Pim\Bundle\ConfigBundle\Entity\Channel;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Aims to add / remove locales and channels

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Helper;
 
 use Doctrine\Common\Collections\Collection;

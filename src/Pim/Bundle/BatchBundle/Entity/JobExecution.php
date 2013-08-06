@@ -2,13 +2,11 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
-use Pim\Bundle\BatchBundle\Job\BatchStatus;
-use Pim\Bundle\BatchBundle\Job\ExitStatus;
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
+use Pim\Bundle\BatchBundle\Job\BatchStatus;
+use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Batch domain object representing the execution of a job

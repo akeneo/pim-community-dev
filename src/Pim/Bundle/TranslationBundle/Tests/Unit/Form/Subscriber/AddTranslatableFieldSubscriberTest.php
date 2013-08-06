@@ -14,7 +14,6 @@ use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
  */
 class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Symfony\Component\Form\FormFactory
      */

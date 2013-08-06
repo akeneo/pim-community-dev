@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 /**
  * Currency filter type for products
@@ -18,7 +18,6 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
  */
 class CurrencyFilterType extends NumberFilterType
 {
-
     /**
      * @staticvar string
      */
