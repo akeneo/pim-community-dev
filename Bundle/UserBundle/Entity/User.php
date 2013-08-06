@@ -24,7 +24,9 @@ use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use DateTime;
 
@@ -204,6 +206,30 @@ class User extends AbstractEntityFlexible implements
      * @Exclude
      */
     protected $loginCount;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $userOwner;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $businessUnitOwner;
+
+    /**
+     * @var Organization
+     * @ORM\ManyToOne(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $organizationOwner;
 
     /**
      * Set name formatting using "%first%" and "%last%" placeholders
@@ -1213,5 +1239,53 @@ class User extends AbstractEntityFlexible implements
         }
 
         return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUserOwnerId()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     */
+    public function setUserOwnerId(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getBusinessUnitOwnerId()
+    {
+        return $this->businessUnitOwner;
+    }
+
+    /**
+     * @param BusinessUnit $businessUnitOwner
+     */
+    public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
+    {
+        $this->businessUnitOwner = $businessUnitOwner;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganizationOwner()
+    {
+        return $this->organizationOwner;
+    }
+
+    /**
+     * @param Organization $organizationOwner
+     */
+    public function setOrganizationOwner(Organization $organizationOwner)
+    {
+        $this->organizationOwner = $organizationOwner;
     }
 }
