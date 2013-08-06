@@ -4,7 +4,6 @@
             'default': 'Mug'
             'fr_FR': 'Tasse'
         'attributes' :
-            - 'sku'
             - 'name'
             - 'short_description'
             - 'manufacturer'
@@ -15,7 +14,6 @@
             'default': 'Shirt'
             'fr_FR': 'Chemise'
         'attributes' :
-            - 'sku'
             - 'name'
             - 'short_description'
             - 'size'
@@ -26,7 +24,6 @@
             'default': 'Shoe'
             'fr_FR': 'Chaussure'
         'attributes' :
-            - 'sku'
             - 'name'
             - 'short_description'
             - 'long_description'
