@@ -38,7 +38,7 @@
             <ul class="dropdown-menu">
                 {% for locale in locales %}
                     <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
-                        <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
+                        <a href="?dataLocale={{ locale.code }}" title="{{ locale.code }}">
                             {% if locale.code == dataLocale %}
                             <span class="icon">
                                     <i class="icon-bullet"></i>
