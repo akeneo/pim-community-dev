@@ -47,21 +47,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $family;
 
     /**
-     * @var ArrayCollection $locales
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
-     * @ORM\JoinTable(
-     *    name="pim_product_locale",
-     *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     * @Oro\Versioned("getCode")
-     *
-     * TODO : must be removed
-     */
-    protected $locales;
-
-    /**
      * @var ArrayCollection $categories
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", mappedBy="products")
@@ -70,19 +55,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
-     *  @Oro\Versioned
+     * @Oro\Versioned
      */
     protected $enabled = true;
-
-    /**
-     * Redefine constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->locales = new ArrayCollection(); // TODO : must be removed
-    }
 
     /**
      * Get product family
@@ -104,66 +79,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function setFamily($family)
     {
         $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * Get locales
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     *
-     * TODO : must be removed
-     */
-    public function getLocales()
-    {
-        return $this->locales;
-    }
-
-    /**
-     * Add locale
-     *
-     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     *
-     * TODO : must be removed
-     */
-    public function addLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
-    {
-        $this->locales[] = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Remove locale
-     *
-     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     *
-     * TODO : must be removed
-     */
-    public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
-    {
-        $this->locales->removeElement($locale);
-
-        return $this;
-    }
-
-    /**
-     * Set locales
-     *
-     * @param ArrayCollection $locales
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     *
-     * TODO : must be removed
-     */
-    public function setLocales($locales)
-    {
-        $this->locales = $locales;
 
         return $this;
     }

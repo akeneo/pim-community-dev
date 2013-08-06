@@ -62,34 +62,6 @@ class ProductType extends FlexibleType
                 )
             )
         );
-
-//         $this->addLocaleField($builder);
-    }
-
-    /**
-     * Add locale field
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return ProductType
-     *
-     * @TODO : Must be removed
-     */
-    protected function addLocaleField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'locales',
-            'entity',
-            array(
-                'required' => true,
-                'multiple' => true,
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                'by_reference' => false,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-                }
-            )
-        );
     }
 
     /**
