@@ -106,18 +106,9 @@
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
 
-    {#
+{#
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
-    #}
-
-    {% javascripts
-        '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
-        '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-        filter='?yui_js'
-        output='js/pim.multiselect.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+#}
 
     {% include 'PimProductBundle:Product:_js-handler.html.twig' %}
     {% include 'PimUIBundle:Default:_back-url.html.twig' %}
