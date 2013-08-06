@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Pim\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
 
 /**

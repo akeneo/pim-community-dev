@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class PimGridExtension extends Extension
 {
-
     /**
      * {@inheritDoc}
      */

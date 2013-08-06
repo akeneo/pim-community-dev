@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;

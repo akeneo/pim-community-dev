@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 
 /**
  * Overriding of ChoiceFilterType
@@ -17,7 +17,6 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
  */
 class ScopeFilterType extends ChoiceFilterType
 {
-
     /**
      * @staticvar string
      */

@@ -11,6 +11,7 @@ Create a form type in classic SF 2 way (it uses the default validator).
 Here we just extending AbstractConfigurationType to ensure presence of basic fields as id :
 ```php
 <?php
+
 namespace Acme\Bundle\DemoDataFlowBundle\Form\Type;
 
 use Oro\Bundle\DataFlowBundle\Form\Type\AbstractConfigurationType;
@@ -62,6 +63,7 @@ Then in default views this configuration can be edited with the related form typ
 
 ```php
 <?php
+
 namespace Acme\Bundle\DemoDataFlowBundle\Configuration;
 
 use Oro\Bundle\DataFlowBundle\Configuration\AbstractConfiguration;

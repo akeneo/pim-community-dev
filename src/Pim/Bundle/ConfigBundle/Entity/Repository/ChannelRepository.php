@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -14,7 +15,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class ChannelRepository extends EntityRepository
 {
-
     /**
      * {@inheritdoc}
      */

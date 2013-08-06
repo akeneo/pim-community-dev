@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
 
 use Pim\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
@@ -10,7 +11,6 @@ use Pim\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
  */
 class FieldMappingTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var FieldMappping
      */

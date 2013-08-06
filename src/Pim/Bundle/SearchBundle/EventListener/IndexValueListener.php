@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\SearchBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;

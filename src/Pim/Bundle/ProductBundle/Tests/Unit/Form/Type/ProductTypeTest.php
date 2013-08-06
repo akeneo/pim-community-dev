@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\ProductBundle\Manager\ProductManager;

@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
-
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
