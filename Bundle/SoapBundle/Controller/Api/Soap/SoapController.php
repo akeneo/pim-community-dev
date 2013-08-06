@@ -46,7 +46,10 @@ abstract class SoapController extends ContainerAware implements
      */
     public function handleCreateRequest()
     {
-        return $this->processForm($this->getManager()->createEntity());
+        $entity = $this->getManager()->createEntity();
+        $this->processForm($entity);
+
+        return $this->getManager()->getEntityId($entity);
     }
 
     /**
