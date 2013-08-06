@@ -6,10 +6,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EmailAddressConfigurationPass implements CompilerPassInterface
+class EmailOwnerConfigurationPass implements CompilerPassInterface
 {
-    const EMAIL_ADDRESS_MANAGER_SERVICE_KEY = 'oro_email.email.address.manager';
-    const EMAIL_OWNER_PROVIDER_SERVICE_KEY = 'oro_email.email.owner.provider';
+    const SERVICE_KEY = 'oro_email.email.owner.provider.storage';
     const TAG = 'oro_email.owner.provider';
 
     /**
@@ -17,28 +16,17 @@ class EmailAddressConfigurationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $emailAddressManagerDefinition = null;
-        $emailOwnerProviderDefinition = null;
-        if ($container->hasDefinition(self::EMAIL_ADDRESS_MANAGER_SERVICE_KEY)) {
-            $emailAddressManagerDefinition = $container->getDefinition(self::EMAIL_ADDRESS_MANAGER_SERVICE_KEY);
-        }
-        if ($container->hasDefinition(self::EMAIL_OWNER_PROVIDER_SERVICE_KEY)) {
-            $emailOwnerProviderDefinition = $container->getDefinition(self::EMAIL_OWNER_PROVIDER_SERVICE_KEY);
-        }
-        if ($emailAddressManagerDefinition === null && $emailOwnerProviderDefinition === null) {
+        if (!$container->hasDefinition(self::SERVICE_KEY)) {
             return;
         }
+        $storageDefinition = $container->getDefinition(self::SERVICE_KEY);
 
         $providers = $this->loadProviders($container);
-
         foreach ($providers as $providerServiceId) {
-            if ($emailAddressManagerDefinition !== null) {
-                $emailAddressManagerDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
-            }
-            if ($emailOwnerProviderDefinition !== null) {
-                $emailOwnerProviderDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
-            }
+            $storageDefinition->addMethodCall('addProvider', array(new Reference($providerServiceId)));
         }
+
+        $this->setEmailAddressEntityResolver($container);
     }
 
     /**
@@ -64,5 +52,25 @@ class EmailAddressConfigurationPass implements CompilerPassInterface
         ksort($providers);
 
         return $providers;
+    }
+
+    /**
+     * Register a proxy of EmailAddress entity in doctrine ORM
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function setEmailAddressEntityResolver(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition('doctrine.orm.listeners.resolve_target_entity')) {
+            $targetEntityResolver = $container->getDefinition('doctrine.orm.listeners.resolve_target_entity');
+            $targetEntityResolver->addMethodCall(
+                'addResolveTargetEntity',
+                array(
+                    'Oro\Bundle\EmailBundle\Entity\EmailAddress',
+                    sprintf('%s\EmailAddressProxy', $container->getParameter('oro_email.entity.cache_namespace')),
+                    array()
+                )
+            );
+        }
     }
 }

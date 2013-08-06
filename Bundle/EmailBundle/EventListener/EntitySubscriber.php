@@ -25,17 +25,8 @@ class EntitySubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            Events::loadClassMetadata,
-            Events::onFlush,
+            Events::onFlush
         );
-    }
-
-    /**
-     * @param LoadClassMetadataEventArgs $event
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $event)
-    {
-        $this->emailAddressManager->handleLoadClassMetadata($event);
     }
 
     /**

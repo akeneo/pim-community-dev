@@ -5,17 +5,19 @@ namespace Oro\Bundle\EmailBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
-use Oro\Bundle\UserBundle\Entity\User;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 /**
  * Email Address
+ * This class is dynamically extended based of email owner providers.
+ * For details see
+ *   - Resources/cache/Entity/EmailAddress.php.twig
+ *   - Cache/EmailAddressCacheWarmer.php
+ *   - Cache/EmailAddressCacheClearer.php
+ *   - Entity/Provider/EmailOwnerProviderStorage.php
+ *   - DependencyInjection/Compiler/EmailOwnerConfigurationPass.php
+ *   - OroEmailBundle.php
  *
- * @ORM\Table(name="oro_email_address",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email"})},
- *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email"})})
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
+ * @ORM\MappedSuperclass
  */
 class EmailAddress
 {
@@ -52,20 +54,6 @@ class EmailAddress
      * @Type("string")
      */
     protected $email;
-
-    // TODO: This should be replaces by array or proxy class. Need an investigation how to do this. Also see related code in EmailAddressManager class
-    // @codingStandardsIgnoreStart
-    /**
-     * @var EmailOwnerInterface
-     * @Exclude
-     */
-    private $_owner1;
-    /**
-     * @var EmailOwnerInterface
-     * @Exclude
-     */
-    private $_owner2;
-    // @codingStandardsIgnoreEnd
 
     /**
      * Get id
@@ -127,12 +115,7 @@ class EmailAddress
      */
     public function getOwner()
     {
-        $owner = $this->_owner1;
-        if ($owner === null) {
-            $owner = $this->_owner2;
-        }
-
-        return $owner;
+        return null;
     }
 
     /**
@@ -143,17 +126,6 @@ class EmailAddress
      */
     public function setOwner(EmailOwnerInterface $owner = null)
     {
-        if ($owner instanceof User) {
-            $this->_owner1 = $owner;
-            $this->_owner2 = null;
-        } elseif ($owner instanceof Contact) {
-            $this->_owner1 = null;
-            $this->_owner2 = $owner;
-        } else {
-            $this->_owner1 = null;
-            $this->_owner2 = null;
-        }
-
         return $this;
     }
 

@@ -10,6 +10,11 @@ use Doctrine\ORM\EntityManager;
 class EmailOwnerProvider
 {
     /**
+     * @var EmailOwnerProviderStorage
+     */
+    private $emailOwnerProviderStorage;
+
+    /**
      * @var EntityManager
      */
     private $em;
@@ -17,26 +22,13 @@ class EmailOwnerProvider
     /**
      * Constructor
      *
+     * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, EntityManager $em)
     {
+        $this->emailOwnerProviderStorage = $emailOwnerProviderStorage;
         $this->em = $em;
-    }
-
-    /**
-     * @var EmailOwnerProviderInterface[]
-     */
-    private $emailOwnerProviders = array();
-
-    /**
-     * Add email owner provider
-     *
-     * @param EmailOwnerProviderInterface $provider
-     */
-    public function addProvider(EmailOwnerProviderInterface $provider)
-    {
-        $this->emailOwnerProviders[] = $provider;
     }
 
     /**
@@ -45,8 +37,8 @@ class EmailOwnerProvider
     public function findEmailOwner($email)
     {
         $emailOwner = null;
-        foreach ($this->emailOwnerProviders as $emailOwnerProvider) {
-            $emailOwner = $emailOwnerProvider->findEmailOwner($this->em, $email);
+        foreach ($this->emailOwnerProviderStorage->getProviders() as $provider) {
+            $emailOwner = $provider->findEmailOwner($this->em, $email);
             if ($emailOwner !== null) {
                 break;
             }

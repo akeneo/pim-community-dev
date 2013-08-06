@@ -5,12 +5,11 @@ namespace Oro\Bundle\EmailBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
-use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
+use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
 
 /**
  * This class responsible for configuration of EmailAddress entity and binging it to owner entities
@@ -25,49 +24,15 @@ class EmailAddressManager
     protected $emailOwnerClasses = array();
 
     /**
-     * Add email owner provider
+     * Constructor.
      *
-     * @param EmailOwnerProviderInterface $provider
+     * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      */
-    public function addProvider(EmailOwnerProviderInterface $provider)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage)
     {
-        $fieldName = sprintf('_owner%d', count($this->emailOwnerClasses) + 1);
-        $this->emailOwnerClasses[$fieldName] = $provider->getEmailOwnerClass();
-    }
-
-    /**
-     * Handle loadClassMetadata event
-     *
-     * @param LoadClassMetadataEventArgs $event
-     */
-    public function handleLoadClassMetadata(LoadClassMetadataEventArgs $event)
-    {
-        $classMetadata = $event->getClassMetadata();
-        if ($classMetadata->getName() !== 'Oro\Bundle\EmailBundle\Entity\EmailAddress') {
-            return;
-        }
-
-        foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
-            $prefix = strtolower(substr($emailOwnerClass, 0, strpos($emailOwnerClass, '\\')));
-            if ($prefix === 'oro' || $prefix === 'orocrm') {
-                // do not use prefix if email's owner is a part of BAP and CRM
-                $prefix = '';
-            } else {
-                $prefix .= '_';
-            }
-            $suffix = strtolower(substr($emailOwnerClass, strrpos($emailOwnerClass, '\\') + 1));
-
-            $mapping = array(
-                'targetEntity' => $emailOwnerClass,
-                'fieldName' => $fieldName,
-                'joinColumns' => array(
-                    array(
-                        'name' => sprintf('owner_%s%s_id', $prefix, $suffix),
-                        'referencedColumnName' => 'id'
-                    )
-                ),
-            );
-            $classMetadata->mapManyToOne($mapping);
+        foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
+            $fieldName = sprintf('owner%d', count($this->emailOwnerClasses) + 1);
+            $this->emailOwnerClasses[$fieldName] = $provider->getEmailOwnerClass();
         }
     }
 

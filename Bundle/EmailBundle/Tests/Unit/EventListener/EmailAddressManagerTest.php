@@ -8,98 +8,14 @@ use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 
 class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var EmailAddressManager */
-    private $manager;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $emailOwner;
-
-    /** @var string */
-    private $emailOwnerClass;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $loadEventArgs;
-
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $flushEventArgs;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $metadata;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $uow;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $em;
-
-    private function initLoadClassMetadata()
-    {
-        $this->emailOwner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
-
-        $this->emailOwnerClass = 'Oro\Bundle\SomeBundle\Entity\SomeEntity';
-
-        $provider = $this->getMock('Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface');
-        $provider->expects($this->once())
-            ->method('getEmailOwnerClass')
-            ->will($this->returnValue($this->emailOwnerClass));
-
-        $this->manager = new EmailAddressManager();
-        $this->manager->addProvider($provider);
-
-        $this->loadEventArgs = $this->getMockBuilder('Doctrine\ORM\Event\LoadClassMetadataEventArgs')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    public function testHandleLoadClassMetadataNotEmailAddress()
-    {
-        $this->initLoadClassMetadata();
-
-        $this->loadEventArgs->expects($this->once())
-            ->method('getClassMetadata')
-            ->will($this->returnValue($this->metadata));
-        $this->metadata->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('SomeEntity'));
-        $this->metadata->expects($this->never())
-            ->method('mapManyToOne');
-
-        $this->manager->handleLoadClassMetadata($this->loadEventArgs);
-    }
-
-    public function testHandleLoadClassMetadata()
-    {
-        $this->initLoadClassMetadata();
-
-        $this->loadEventArgs->expects($this->once())
-            ->method('getClassMetadata')
-            ->will($this->returnValue($this->metadata));
-        $this->metadata->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('Oro\Bundle\EmailBundle\Entity\EmailAddress'));
-        $this->metadata->expects($this->once())
-            ->method('mapManyToOne')
-            ->with(
-                $this->equalTo(
-                    array(
-                        'targetEntity' => $this->emailOwnerClass,
-                        'fieldName' => '_owner1',
-                        'joinColumns' => array(
-                            array(
-                                'name' => 'owner_someentity_id',
-                                'referencedColumnName' => 'id'
-                            )
-                        )
-                    )
-                )
-            );
-
-        $this->manager->handleLoadClassMetadata($this->loadEventArgs);
-    }
 
     private function initOnFlush()
     {
@@ -114,6 +30,20 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         $this->flushEventArgs = $this->getMockBuilder('Doctrine\ORM\Event\OnFlushEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    private function getEmailOwnerProviderStorageMock()
+    {
+        $provider = $this->getMock('Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface');
+        $provider->expects($this->any())
+            ->method('getProviders')
+            ->will($this->returnValue('SomeEntity'));
+        $storage = $this->getMock('Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage');
+        $storage->expects($this->any())
+            ->method('getProviders')
+            ->will($this->returnValue(array($provider)));
+
+        return $storage;
     }
 
     /**
@@ -135,6 +65,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->em));
 
         $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
+            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
             ->setMethods(array('handleInsertionsOrUpdates', 'handleDeletions'))
             ->getMock();
 
@@ -198,6 +129,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         $this->initOnFlush();
 
         $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
+            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
             ->setMethods(array('processInsertionOrUpdateEntity'))
             ->getMock();
 
@@ -277,6 +209,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         $this->initOnFlush();
 
         $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
+            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
             ->setMethods(array('unbindEmailAddress'))
             ->getMock();
 

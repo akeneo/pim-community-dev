@@ -25,24 +25,10 @@ class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(
-                Events::loadClassMetadata,
                 Events::onFlush,
             ),
             $this->subscriber->getSubscribedEvents()
         );
-    }
-
-    public function testLoadClassMetadata()
-    {
-        $eventArgs = $this->getMockBuilder('Doctrine\ORM\Event\LoadClassMetadataEventArgs')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->emailAddressManager->expects($this->once())
-            ->method('handleLoadClassMetadata')
-            ->with($this->identicalTo($eventArgs));
-
-        $this->subscriber->loadClassMetadata($eventArgs);
     }
 
     public function testOnFlush()
