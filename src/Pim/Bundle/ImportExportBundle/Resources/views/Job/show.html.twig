@@ -1,13 +1,13 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% macro configuration(title, config, stepIndex, violations) %}
+{% macro configuration(title, config, stepIndex, violations, stepType) %}
     <li>{{ ('pim_batch.' ~ title ~ '.title')|trans }}
         <ul>
         {% for field, value in config %}
             <li>
                 <b>{{ ('pim_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
                 <span class="label">{{ value|normalizeValue }}</span>
-                <span class="label label-important">{{ getViolations(violations, stepIndex, title, field) }}</span>
+                <span class="label label-important">{{ getViolations(violations, stepIndex, stepType, field) }}</span>
             </li>
         {% else %}
             <li><i>{{ 'No configuration'|trans }}</i></li>
@@ -48,9 +48,9 @@
             <ul>
                 {% set step = job.jobDefinition.step(stepTitle) %}
                 {% set stepIndex = loop.index - 1 %}
-                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations) }}
-                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations) }}
-                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations) }}
+                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
+                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
+                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
             </ul>
         {% endset %}
 
