@@ -11,9 +11,20 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
+ * @Configurable(
+ *      routeName="oro_user_group_index",
+ *      defaultValues={"entity"={"icon"="group","label"="Group", "plural_label"="Groups"}}
+ * )
+ * @Extend
  */
 class Group
 {
@@ -43,6 +54,30 @@ class Group
      * @Exclude
      */
     protected $roles;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $userOwner;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $businessUnitOwner;
+
+    /**
+     * @var Organization
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Exclude
+     */
+    protected $organizationOwner;
 
     /**
      * @param string $name [optional] Group name
@@ -203,5 +238,53 @@ class Group
         }
 
         return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUserOwnerId()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     */
+    public function setUserOwnerId(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getBusinessUnitOwnerId()
+    {
+        return $this->businessUnitOwner;
+    }
+
+    /**
+     * @param BusinessUnit $businessUnitOwner
+     */
+    public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
+    {
+        $this->businessUnitOwner = $businessUnitOwner;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganizationOwner()
+    {
+        return $this->organizationOwner;
+    }
+
+    /**
+     * @param Organization $organizationOwner
+     */
+    public function setOrganizationOwner(Organization $organizationOwner)
+    {
+        $this->organizationOwner = $organizationOwner;
     }
 }

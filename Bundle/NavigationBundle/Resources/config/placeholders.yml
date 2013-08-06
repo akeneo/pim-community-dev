@@ -46,6 +46,7 @@ placeholders:
         label: Breadcrumbs
         items:
             breadcrumbs:
+                order: 100
 
 items:
    hashNavigation:

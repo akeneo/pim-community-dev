@@ -59,11 +59,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->configValue->getField());
 
         $this->assertFalse($this->configValue->getSerializable());
-        $this->configValue->setSerializable(true);
-        $this->assertEquals(
-            true,
-            $this->configValue->getSerializable()
-        );
+
 
         $this->assertEmpty($this->configValue->getEntity());
         $this->configValue->setEntity($this->configEntity);

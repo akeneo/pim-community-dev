@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 
 use Metadata\Driver\DriverInterface;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 
 class AnnotationDriver implements DriverInterface
@@ -33,12 +34,18 @@ class AnnotationDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        $metadata = new ConfigClassMetadata($class->getName());
+        /** @var Configurable $annot */
+        if ($annot = $this->reader->getClassAnnotation($class, self::CONFIGURABLE)) {
+            $metadata = new ConfigClassMetadata($class->getName());
 
-        if ($this->reader->getClassAnnotation($class, self::CONFIGURABLE)) {
-            $metadata->configurable = true;
+            $metadata->configurable  = true;
+            $metadata->defaultValues = $annot->defaultValues;
+            $metadata->routeName     = $annot->routeName;
+            $metadata->viewMode      = $annot->viewMode;
+
+            return $metadata;
         }
 
-        return $metadata;
+        return null;
     }
 }

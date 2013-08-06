@@ -37,13 +37,18 @@ parameters:
     oro_navigation.breadcrumbs_manager.class:                  Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager
 
 services:
+    oro_menu.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ "oro_menu.cache" ] ]
+
     oro_menu_acl_extension:
         class: %oro_menu.factory.acl_extension.class%
         arguments:
             - @router
             - @oro_user.acl_manager
         calls:
-            - [ setCache, [ @cache ] ]
+            - [ setCache, [ @oro_menu.cache ] ]
 
     oro_menu.factory:
         class: %oro_menu.factory.class%
@@ -181,10 +186,8 @@ services:
           - @translator.default
           - @doctrine.orm.entity_manager
           - @serializer
-          - %oro_navigation.header_delimiter%
-          - %oro_navigation.header_suffix%
+          - @oro_config.user
           - @oro_navigation.breadcrumb_manager
-          - %oro_navigation.breadcrumb_menu%
         calls:
           - [ setTitles, [ %oro_titles% ] ]
 

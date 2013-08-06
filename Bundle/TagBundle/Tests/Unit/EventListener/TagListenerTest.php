@@ -6,19 +6,29 @@ use Oro\Bundle\TagBundle\EventListener\TagListener;
 
 class TagListenerTest extends \PHPUnit_Framework_TestCase
 {
+    const TEST_ID = 1;
+
     /**
      * @var TagListener
      */
     private $listener;
 
     /**
-     * @var \Oro\Bundle\TagBundle\Entity\Taggable
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $resource;
 
     public function setUp()
     {
         $this->resource = $this->getMock('Oro\Bundle\TagBundle\Entity\Taggable');
+        $this->resource->expects($this->once())->method('getTaggableId')
+            ->will($this->returnValue(self::TEST_ID));
+    }
+
+    public function tearDown()
+    {
+        unset($this->listener);
+        unset($this->resource);
     }
 
     /**
@@ -30,8 +40,8 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $manager->expects($this->once())
-            ->method('deleteTagging')
-            ->with($this->resource);
+            ->method('deleteTaggingByParams')
+            ->with(null, get_class($this->resource), self::TEST_ID);
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())

@@ -7,7 +7,7 @@ oro_menu_config:
             label: 'Users'
             route: 'oro_user_index'
             extras:
-                routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+                routes: ['/^oro_user_(?!role\w+|group\w+|security\w+|reset\w+)\w+$/']
                 description: List of all system users
         user_create:
             label: 'Create User'

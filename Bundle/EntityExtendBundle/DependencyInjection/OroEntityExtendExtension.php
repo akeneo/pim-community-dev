@@ -36,8 +36,10 @@ class OroEntityExtendExtension extends Extension
     protected function configBackend(ContainerBuilder $container, $config)
     {
         $backend = $container->getParameterBag()->resolveValue($config['backend']);
+        $path    = $container->getParameterBag()->resolveValue($config['backup']);
 
         $container->setParameter('oro_entity_extend.backend', $backend);
+        $container->setParameter('oro_entity_extend.backup', $path);
 
         // for DoctrineOrmMappingsPass end BackendCompilerPass. Detect with backend should be mapped and loaded
         $container->setParameter('oro_entity_extend.backend.' . strtolower($backend), true);

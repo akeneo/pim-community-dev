@@ -32,7 +32,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @property
      */
     selectors: {
-        links:          'a:not([href^=#],[href^=javascript]),span[data-url]',
+        links:          'a:not([href^=#],[href^=javascript],[href^=mailto]),span[data-url]',
         scrollLinks:    'a[href^=#]',
         forms:          'form',
         content:        '#content',
@@ -335,7 +335,7 @@ Oro.Navigation = Backbone.Router.extend({
         this.clearCacheTimer();
         if (this.useCache && this.url == url) {
             if (!this.notificationMessage) {
-                var message = Translator.get("Content of the page is outdated, please %click here% to refresh the page");
+                var message = _.__("Content of the page is outdated, please %click here% to refresh the page");
                 this.outdatedMessage = message.replace(/%(.*)%/,"<span class='page-refresh'>$1</span>");
             } else {
                 this.notificationMessage.close();
@@ -625,12 +625,12 @@ Oro.Navigation = Backbone.Router.extend({
         );
 
         this.confirmModal = new Oro.BootstrapModal({
-            title: Translator.get('Refresh Confirmation'),
-            content: Translator.get('Your local changes will be lost. Are you sure you want to refresh the page?'),
-            okText: 'Ok, got it.',
+            title: _.__('Refresh Confirmation'),
+            content: _.__('Your local changes will be lost. Are you sure you want to refresh the page?'),
+            okText: _.__('Ok, got it.'),
             className: 'modal modal-primary',
             okButtonClass: 'btn-primary btn-large',
-            cancelText: Translator.get('Cancel')
+            cancelText: _.__('Cancel')
         });
         this.confirmModal.on('ok', _.bind(function() {
             this.refreshPage();

@@ -133,9 +133,14 @@ class Generator
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
-                    $yml[$extendClass]['fields'][$field] = unserialize(
-                        $this->configProvider->getFieldConfig($entityName, $field)->get('doctrine')
-                    );
+                    $yml[$extendClass]['fields'][$field]['code'] = $options->getCode();
+                    $yml[$extendClass]['fields'][$field]['type'] = $options->getType();
+
+                    $fieldConfig =    $this->configProvider->getFieldConfig($entityName, $field);
+
+                    $yml[$extendClass]['fields'][$field]['length'] = $fieldConfig->get('length');
+                    $yml[$extendClass]['fields'][$field]['precision'] = $fieldConfig->get('precision');
+                    $yml[$extendClass]['fields'][$field]['scale'] = $fieldConfig->get('scale');
                 }
             }
         }
@@ -270,14 +275,14 @@ class Generator
             ->setMethod(
                 $this->generateClassMethod(
                     '__proxy__createFromEntity',
-                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value) {$this->$key=$value;}',
+                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value){$this->$key=$value;}',
                     array('entity')
                 )
             )
             ->setMethod(
                 $this->generateClassMethod(
                     '__proxy__cloneToEntity',
-                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value) {$entity->$key=$this->$key;}',
+                    '$proxy=get_object_vars($entity);foreach ($proxy as $key=>$value){$entity->$key=$this->$key;}',
                     array('entity')
                 )
             );

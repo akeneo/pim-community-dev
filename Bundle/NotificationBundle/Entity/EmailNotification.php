@@ -4,8 +4,12 @@ namespace Oro\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * EmailNotification
@@ -38,14 +42,15 @@ class EmailNotification
     protected $event;
 
     /**
-     * @var string
+     * @var EmailTemplate
      *
-     * @ORM\Column(name="template", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $template;
 
     /**
-     * @var string
+     * @var RecipientList
      *
      * @ORM\OneToOne(
      *     targetEntity="Oro\Bundle\NotificationBundle\Entity\RecipientList",
@@ -55,6 +60,27 @@ class EmailNotification
      * @ORM\JoinColumn(name="recipient_list_id", referencedColumnName="id")
      */
     protected $recipientList;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $userOwner;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $businessUnitOwner;
+
+    /**
+     * @var Organization
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organizationOwner;
 
     /**
      * Get id
@@ -115,10 +141,10 @@ class EmailNotification
     /**
      * Set template
      *
-     * @param string $template
+     * @param EmailTemplate $template
      * @return EmailNotification
      */
-    public function setTemplate($template)
+    public function setTemplate(EmailTemplate $template)
     {
         $this->template = $template;
     
@@ -128,7 +154,7 @@ class EmailNotification
     /**
      * Get template
      *
-     * @return string 
+     * @return EmailTemplate
      */
     public function getTemplate()
     {
@@ -198,5 +224,53 @@ class EmailNotification
                 }
             )->toArray()
         );
+    }
+
+    /**
+     * @return User
+     */
+    public function getUserOwnerId()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     */
+    public function setUserOwnerId(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getBusinessUnitOwnerId()
+    {
+        return $this->businessUnitOwner;
+    }
+
+    /**
+     * @param BusinessUnit $businessUnitOwner
+     */
+    public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
+    {
+        $this->businessUnitOwner = $businessUnitOwner;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganizationOwner()
+    {
+        return $this->organizationOwner;
+    }
+
+    /**
+     * @param Organization $organizationOwner
+     */
+    public function setOrganizationOwner(Organization $organizationOwner)
+    {
+        $this->organizationOwner = $organizationOwner;
     }
 }

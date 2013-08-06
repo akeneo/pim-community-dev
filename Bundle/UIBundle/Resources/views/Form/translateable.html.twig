@@ -1,0 +1,57 @@
+{% block a2lix_translations_widget %}
+    <div class="a2lix_translations tabbable">
+        <ul class="a2lix_translationsLocales nav nav-tabs">
+        {% for translationsFields in form %}
+            {% set locale = translationsFields.vars.name %}
+
+            <li {% if (app.request.locale == locale) %}class="active"{% endif %}>
+                <a href=".a2lix_translationsFields-{{ locale }}" data-toggle="tab">
+                   {{ locale|capitalize }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content">
+        {% for translationsFields in form %}
+            {% set locale = translationsFields.vars.name %}
+
+            <div class="a2lix_translationsFields-{{ locale }} tab-pane {% if (app.request.locale == locale) %}active{% endif %}">
+                {{ form_widget(translationsFields) }}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block a2lix_translations_gedmo_widget %}
+    <div class="a2lix_translations tabbable">
+        <ul class="a2lix_translationsLocales nav nav-tabs">
+        {% for translationsLocales in form %}
+            {% set isDefaultLocale = ('defaultLocale' == translationsLocales.vars.name) %}
+
+            {% for translationsFields in translationsLocales %}
+                {% set locale = translationsFields.vars.name %}
+
+                <li {% if (app.request.locale == locale) %}class="active"{% endif %}>
+                    <a href="javascript:void(0);" data-target=".a2lix_translationsFields-{{ locale }}" data-toggle="tab">
+                        {{ locale|capitalize }} {% if isDefaultLocale %}[Default]{% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content">
+        {% for translationsLocales in form %}
+            {% for translationsFields in translationsLocales %}
+                {% set locale = translationsFields.vars.name %}
+
+                <div class="a2lix_translationsFields-{{ locale }} tab-pane {% if (app.request.locale == locale) %}active{% endif %}">
+                    {{ form_widget(translationsFields) }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
