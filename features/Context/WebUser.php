@@ -1272,6 +1272,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the uploaded image$/
+     */
+    public function iShouldSeeTheUploadedImage()
+    {
+        $this->wait(3000, '');
+        if (!$this->getPage('Product edit')->getImagePreview()) {
+            throw $this->createExpectationException('Image preview is not displayed.');
+        }
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
