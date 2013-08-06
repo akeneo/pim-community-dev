@@ -18,11 +18,7 @@ class RestDataAuditApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -36,7 +32,10 @@ class RestDataAuditApiTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         foreach ($result as $audit) {
-            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $this->client->request(
+                'DELETE',
+                $this->client->generate('oro_api_delete_audit', array('id' => $audit['id']))
+            );
             $result = $this->client->getResponse();
             ToolsAPI::assertJsonResponse($result, 204);
         }
@@ -109,7 +108,10 @@ class RestDataAuditApiTest extends WebTestCase
     public function testDeleteAudit($response)
     {
         foreach ($response as $audit) {
-            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $this->client->request(
+                'DELETE',
+                $this->client->generate('oro_api_delete_audit', array('id' => $audit['id']))
+            );
             $result = $this->client->getResponse();
             ToolsAPI::assertJsonResponse($result, 204);
         }

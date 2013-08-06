@@ -83,23 +83,23 @@ class OroAsseticExtension extends Extension
         $container->setParameter(
             'oro_assetic.compiled_assets_groups',
             array(
-                'js' => $config['uncompress_js'],
-                'css' => $config['uncompress_css']
+                'js' => $config['js_debug'],
+                'css' => $config['css_debug']
             )
         );
 
         return array(
-            'css' => $this->getAssetics($css, $config['uncompress_css']),
-            'js' => $this->getAssetics($js, $config['uncompress_js']),
+            'js' => $this->getAssetics($js, $config['js_debug'], $config['js_debug_all']),
+            'css' => $this->getAssetics($css, $config['css_debug'], $config['css_debug_all']),
         );
     }
 
-    protected function getAssetics($assetsArray, $uncompressBlocks)
+    protected function getAssetics($assetsArray, $debugBlocks, $debugAll)
     {
         $compressAssets = array();
         $uncompressAssets = array();
         foreach ($assetsArray as $blockName => $files) {
-            if (in_array($blockName, $uncompressBlocks)) {
+            if ($debugAll || in_array($blockName, $debugBlocks)) {
                 $uncompressAssets = array_merge($uncompressAssets, $files);
             } else {
                 $compressAssets = array_merge($compressAssets, $files);

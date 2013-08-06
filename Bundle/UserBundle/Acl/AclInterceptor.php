@@ -66,10 +66,9 @@ class AclInterceptor implements MethodInterceptorInterface
 
             if (false === $this->accessDecisionManager->decide($token, $accessRoles, $method)) {
                 //check if we have internal action - show blank
-                if ($this->container->get('request')->attributes->get('_route') == '_internal') {
+                if ($this->container->get('request')->attributes->get('_route') == null) {
                     return new Response('');
                 }
-
                 throw new AccessDeniedException('Access denied.');
             }
         }

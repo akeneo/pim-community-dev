@@ -26,15 +26,10 @@ class RestApiUsersACLTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(
-                array(),
-                ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
-            );
-        } else {
-            $this->client->restart();
-        }
-
+        $this->client = static::createClient(
+            array(),
+            ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD)
+        );
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
@@ -71,7 +66,10 @@ class RestApiUsersACLTest extends WebTestCase
     public function testApiGetUser()
     {
         //open user by id
-        $this->client->request('GET', $this->client->generate('oro_api_get_user', array('id' => self::DEFAULT_USER_ID)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_user', array('id' => self::DEFAULT_USER_ID))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }
@@ -100,7 +98,10 @@ class RestApiUsersACLTest extends WebTestCase
 
     public function testApiDeleteUser()
     {
-        $this->client->request('DELETE', $this->client->generate('oro_api_delete_user', array('id' => self::DEFAULT_USER_ID)));
+        $this->client->request(
+            'DELETE',
+            $this->client->generate('oro_api_delete_user', array('id' => self::DEFAULT_USER_ID))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 403);
     }
