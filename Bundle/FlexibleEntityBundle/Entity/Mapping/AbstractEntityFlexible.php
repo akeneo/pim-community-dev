@@ -157,42 +157,40 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $scopeCode
      *
      * @return FlexibleValueInterface
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
         $locale = ($localeCode) ? $localeCode : $this->getLocale();
         $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
-        $values = $this->getValues();
 
-        if (empty($values)) {
-            return false;
-        }
-
-        $values = $values->filter(
-            function ($value) use ($attributeCode, $locale, $scope) {
-                if ($value->getAttribute()->getCode() == $attributeCode) {
-                    if ($value->getAttribute()->getTranslatable() and $value->getLocale() == $locale) {
-                        if ($value->getAttribute()->getScopable() and $value->getScope() == $scope) {
-                            return true;
-                        } elseif (!$value->getAttribute()->getScopable()) {
-                            return true;
-                        }
-                    } elseif (!$value->getAttribute()->getTranslatable()) {
-                        if ($value->getAttribute()->getScopable() and $value->getScope() == $scope) {
-                            return true;
-                        } else if (!$value->getAttribute()->getScopable()) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        );
+        $values = $this->filterValues($attributeCode, $locale, $scope);
         $value = (count($values) == 1) ? $values->first() : false;
 
         return $value;
+    }
+
+    /**
+     * Filter product value per attribute code
+     *
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     */
+    protected function filterValues($attribute, $locale, $scope)
+    {
+        $values = $this->getValues();
+
+        if (empty($values)) {
+            return array();
+        }
+
+        $values = $values->filter(
+            function ($value) use ($attribute, $locale, $scope) {
+                return $value->isMatching($attribute, $locale, $scope);
+            }
+        );
+
+        return $values;
     }
 
     /**
