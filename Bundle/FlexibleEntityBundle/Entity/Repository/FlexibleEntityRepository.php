@@ -39,12 +39,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     protected $scope;
 
     /**
-     * Entity alias
-     * @var string
-     */
-    protected $entityAlias;
-
-    /**
      * Get flexible entity config
      *
      * @return array $config
@@ -76,7 +70,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     public function getLocale()
     {
         if (!$this->locale) {
-            // use default locale
             $this->locale = $this->flexibleConfig['default_locale'];
         }
 
@@ -105,7 +98,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     public function getScope()
     {
         if (!$this->scope) {
-            // use default scope
             $this->scope = $this->flexibleConfig['default_scope'];
         }
 
@@ -168,6 +160,16 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
+     * @param QueryBuilder $qb
+     * @param string       $locale
+     * @param string       $scope
+     */
+    public function getFlexibleQueryBuilder($qb)
+    {
+        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+    }
+
+    /**
      * Find flexible attribute by code
      *
      * @param string $code
@@ -186,55 +188,13 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
-     * TODO : should be remove to use the basic one by default and explicitely use createFlexibleQueryBuilder to add
-     * join to related tables, should be updated in grid
-     *
-     * @param string $alias alias for entity
-     *
-     * @return QueryBuilder $qb
-     */
-    public function createQueryBuilder($alias)
-    {
-        return $this->createFlexibleQueryBuilder($alias);
-    }
-
-    /**
-     * Create a new QueryBuilder instance that allow to automatically join on attribute values and allow doctrine
-     * hydratation as real flexible entity, value, option and attributes
-     *
-     * @param string  $alias          alias for entity
-     * @param boolean $attributeCodes add selects on values only for this attribute codes list
-     *
-     * @return FlexibleQueryBuilder $qb
-     */
-    public function createFlexibleQueryBuilder($alias, $attributeCodes = null)
-    {
-        $this->entityAlias = $alias;
-        $qb = new FlexibleQueryBuilder($this->_em);
-
-        $qb->setLocale($this->getLocale());
-        $qb->setScope($this->getScope());
-
-        $qb->select($alias, 'Value', 'Attribute', 'ValueOption', 'AttributeOptionValue')
-            ->from($this->_entityName, $this->entityAlias);
-        $this->addJoinToValueTables($qb, $alias);
-
-        if (!empty($attributeCodes)) {
-            $qb->where($qb->expr()->in('Attribute.code', $attributeCodes));
-            $qb->orWhere($qb->expr()->isNull('Attribute.code'));
-        }
-
-        return $qb;
-    }
-
-    /**
      * Add join to values tables
      *
      * @param QueryBuilder $qb
      */
     protected function addJoinToValueTables(QueryBuilder $qb)
     {
-        $qb->leftJoin($this->entityAlias.'.values', 'Value')
+        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
             ->leftJoin('Value.attribute', 'Attribute')
             ->leftJoin('Value.options', 'ValueOption')
             ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
@@ -253,31 +213,19 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      */
     public function findByWithAttributesQB(array $attributes = array(), array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
     {
-        $qb = $this->createFlexibleQueryBuilder('Entity', $attributes);
+        $qb = $this->createQueryBuilder('Entity');
+        $this->addJoinToValueTables($qb);
         $codeToAttribute = $this->getCodeToAttributes($attributes);
         $attributes = array_keys($codeToAttribute);
 
-        // add criterias
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
-                if (in_array($attCode, $attributes)) {
-                    $attribute = $codeToAttribute[$attCode];
-                    $qb->addAttributeFilter($attribute, '=', $attValue);
-                } else {
-                    $qb->andWhere($qb->expr()->eq($this->entityAlias.'.'.$attCode, $qb->expr()->literal($attValue)));
-                }
+                $this->applyFilterByAttribute($qb, $attCode, $attValue);
             }
         }
-
-        // add sorts
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
-                if (in_array($attCode, $attributes)) {
-                    $attribute = $codeToAttribute[$attCode];
-                    $qb->addAttributeOrderBy($attribute, $direction);
-                } else {
-                    $qb->addOrderBy($this->entityAlias.'.'.$attCode, $direction);
-                }
+                $this->applySorterByAttribute($qb, $attCode, $direction);
             }
         }
 
@@ -312,7 +260,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
-     * TODO : allow grid integration, grid should directly use query builder
      * Apply a filter by attribute value
      *
      * @param QueryBuilder $qb             query builder to update
@@ -326,16 +273,15 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $qb->addAttributeFilter($attribute, $operator, $attributeValue);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
 
         } else {
-            $field = $this->entityAlias.'.'.$attributeCode;
-            $qb->andWhere($qb->prepareCriteriaCondition($field, $operator, $attributeValue));
+            $field = current($qb->getRootAliases()).'.'.$attributeCode;
+            $qb->andWhere($this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue));
         }
     }
 
     /**
-     * TODO : allow grid integration, grid should directly use query builder
      * Apply a sort by attribute value
      *
      * @param QueryBuilder $qb            query builder to update
@@ -348,9 +294,9 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $qb->addAttributeOrderBy($attribute, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
         } else {
-            $qb->addOrderBy($this->entityAlias.'.'.$attributeCode, $direction);
+            $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
         }
     }
 

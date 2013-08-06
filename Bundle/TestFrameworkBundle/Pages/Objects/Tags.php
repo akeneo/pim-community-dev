@@ -14,7 +14,7 @@ class Tags extends PageFilteredGrid
         parent::__construct($testCase, $redirect);
     }
 
-    public function add()
+    public function add($new = true)
     {
         $this->test->byXPath("//div[@class = 'container-fluid']//a[contains(., 'Create tag')]")->click();
         //due to bug BAP-965
@@ -22,7 +22,7 @@ class Tags extends PageFilteredGrid
         $this->waitPageToLoad();
         $this->waitForAjax();
         $tag = new Tag($this->test);
-        return $tag->init();
+        return $tag->init($new);
     }
 
     public function open($entityData = array())
@@ -58,5 +58,13 @@ class Tags extends PageFilteredGrid
         $this->waitForAjax();
 
         return $this;
+    }
+
+    public function checkContextMenu($tagname, $contextname)
+    {
+        $this->filterBy('Tag', $tagname);
+        $this->byXPath("//td[@class='action-cell']//a[contains(., '...')]")->click();
+        $this->waitForAjax();
+        $this->assertElementNotPresent("//td[@class='action-cell']//a[@title= '{$contextname}']");
     }
 }

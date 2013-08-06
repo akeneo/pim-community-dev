@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
 use PHPUnit_Framework_Assert;
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Users;
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Roles;
@@ -202,5 +203,11 @@ class Page
             $this->keysSpecial('backspace');
             $tx = $element->value();
         }
+    }
+
+    public function logout()
+    {
+        $this->url('/user/logout');
+        return new Login($this->test);
     }
 }

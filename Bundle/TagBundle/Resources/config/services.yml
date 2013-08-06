@@ -13,6 +13,9 @@ parameters:
 
     oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
     oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
+    oro_tag.form.type.tag_autocomplete.class: Oro\Bundle\TagBundle\Form\Type\TagAutocompleteType
+    oro_tag.form.subscriber.tag_select.class: Oro\Bundle\TagBundle\Form\EventSubscriber\TagSubscriber
+    oro_tag.form.transformer.tag_select.class: Oro\Bundle\TagBundle\Form\Transformer\TagTransformer
 
     oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
 
@@ -27,6 +30,8 @@ services:
             - %oro_tag.tagging.entity.class%
             - @oro_search.mapper
             - @security.context
+            - @oro_user.acl_manager
+            - @router
 
     oro_tag.docrine.event.listener:
         class: %oro_tag.tag_listener.class%
@@ -105,21 +110,33 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign_unassign }
 
     # Autocomplete form type
+    oro_tag.form.type.tag_autocomplete:
+        class: %oro_tag.form.type.tag_autocomplete.class%
+        tags:
+            - { name: form.type, alias: oro_tag_autocomplete }
+
     oro_tag.form.type.tag_select:
         class: %oro_tag.form.type.tag_select.class%
         arguments:
-            - @doctrine.orm.entity_manager
-            - @oro_tag.tag.manager
+            - @oro_tag.form.subscriber.tag_select
+            - @oro_tag.form.transformer.tag_select
         tags:
             - { name: form.type, alias: oro_tag_select }
+
+    oro_tag.form.subscriber.tag_select:
+        class: %oro_tag.form.subscriber.tag_select.class%
+        arguments:
+            - @oro_tag.tag.manager
+            - @oro_tag.form.transformer.tag_select
+
+    oro_tag.form.transformer.tag_select:
+        class: %oro_tag.form.transformer.tag_select.class%
+        arguments: [@oro_tag.tag.manager]
 
     # Twig extension
     oro_tag.twig.tag.extension:
         class: %oro_tag.twig.tag.extension.class%
         arguments:
             - @oro_tag.tag.manager
-            - @router
-            - @security.context
-            - @oro_user.acl_manager
         tags:
             - { name: twig.extension }

@@ -4,6 +4,7 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -12,7 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
@@ -46,7 +47,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     protected $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="LAZY")
      */
     protected $tagging;
 
@@ -72,6 +73,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function __construct($name = null)
     {
         $this->setName($name);
+        $this->tagging = new ArrayCollection();
 
         $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));

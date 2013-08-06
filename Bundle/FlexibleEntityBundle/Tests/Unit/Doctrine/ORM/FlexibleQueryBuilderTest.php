@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
 use Doctrine\Tests\OrmTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -27,7 +28,9 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     public function setUp()
     {
         parent::setUp();
-        $this->queryBuilder = new FlexibleQueryBuilder($this->entityManager);
+
+        $qb = new QueryBuilder($this->entityManager);
+        $this->queryBuilder = new FlexibleQueryBuilder($qb, 'en', 'ecommerce');
     }
 
     /**
@@ -98,6 +101,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     {
         $attribute = new Attribute();
         $attribute->setTranslatable(true);
+        $this->queryBuilder->setLocale(null);
         $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
     }
 
@@ -109,6 +113,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     {
         $attribute = new Attribute();
         $attribute->setScopable(true);
+        $this->queryBuilder->setScope(null);
         $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
     }
 
