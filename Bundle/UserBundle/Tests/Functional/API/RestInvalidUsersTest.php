@@ -19,15 +19,13 @@ class RestInvalidUsersTest extends WebTestCase
     /** @var Client */
     protected $client;
 
-    public function tearDown()
+    public function setUp()
     {
-        unset($this->client);
+        $this->client = static::createClient();
     }
 
     public function testInvalidKey()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader(ToolsAPI::USER_NAME, self::USER_PASSWORD));
-
         $request = array(
             "user" => array (
                 "username" => 'user_' . mt_rand(),
@@ -39,15 +37,20 @@ class RestInvalidUsersTest extends WebTestCase
                 "rolesCollection" => array("1")
             )
         );
-        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
+        $this->client->request(
+            'POST',
+            $this->client->generate('oro_api_post_user'),
+            $request,
+            array(),
+            array(),
+            ToolsAPI::generateWsseHeader(ToolsAPI::USER_NAME, self::USER_PASSWORD)
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 401);
     }
 
     public function testInvalidUser()
     {
-        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader(self::USER_NAME, ToolsAPI::USER_PASSWORD));
-
         $request = array(
             "user" => array (
                 "username" => 'user_' . mt_rand(),
@@ -59,7 +62,14 @@ class RestInvalidUsersTest extends WebTestCase
                 "rolesCollection" => array("1")
             )
         );
-        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
+        $this->client->request(
+            'POST',
+            $this->client->generate('oro_api_post_user'),
+            $request,
+            array(),
+            array(),
+            ToolsAPI::generateWsseHeader(self::USER_NAME, ToolsAPI::USER_PASSWORD)
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 401);
     }
