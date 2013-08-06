@@ -39,10 +39,9 @@ class ProductAttributeRepository extends AttributeRepository
 
         $qb
             ->andWhere(
-                $qb->expr()->neq('a.attributeType', '?1')
+                $qb->expr()->neq('a.attributeType', $qb->expr()->literal('pim_product_identifier'))
             )
-            ->orderBy('a.group')
-            ->setParameter(1, 'pim_product_identifier');
+            ->orderBy('a.group');
 
         if (!empty($attributes)) {
             $ids = array_map(
@@ -52,11 +51,9 @@ class ProductAttributeRepository extends AttributeRepository
                 $attributes
             );
 
-            $qb
-                ->andWhere(
-                    $qb->expr()->notIn('a.id', '?2')
-                )
-                ->setParameter(2, $ids);
+            $qb->andWhere(
+                $qb->expr()->notIn('a.id', $ids)
+            );
         }
 
         return $qb;
