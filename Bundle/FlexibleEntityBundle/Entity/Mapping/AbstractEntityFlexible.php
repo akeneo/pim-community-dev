@@ -179,7 +179,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                             return true;
                         }
                     } elseif (!$value->getAttribute()->getTranslatable()) {
-                        return true;
+                        if ($value->getAttribute()->getScopable() and $value->getScope() == $scope) {
+                            return true;
+                        } else if (!$value->getAttribute()->getScopable()) {
+                            return true;
+                        }
                     }
                 }
 
