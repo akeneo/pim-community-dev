@@ -281,7 +281,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product edit')->switchLocale($locale);
+        $this->getCurrentPage()->switchLocale($locale);
+        $this->wait();
     }
 
     /**
@@ -1010,6 +1011,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @Given /^I filter per channel ([^"]*)$/
+     */
+    public function iFilterPerChannel($code)
+    {
+        $this->getPage('Product index')->filterPerChannel($code);
+        $this->wait();
+    }
+
+    /**
      * @param string $products
      *
      * @Then /^I should see products (.*)$/
@@ -1033,6 +1045,31 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         if (!$this->getPage('Product index')->getGridRow($product)) {
             throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
+        }
+    }
+
+    /**
+     * @param string $product
+     * @param string $data
+     *
+     * @Then /^I should see product "([^"]*)" with data (.*)$/
+     */
+    public function iShouldSeeProductWithData($product, $data)
+    {
+        $row = $this->getPage('Product index')->getGridRow($product);
+        $data = $this->listToArray($data);
+
+        if (!$row) {
+            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
+        }
+
+        $rowHtml = $row->getHtml();
+        foreach ($data as $cellData) {
+            if (strpos($rowHtml, $cellData) === false) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see product data %s, not found', $cellData)
+                );
+            }
         }
     }
 
