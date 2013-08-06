@@ -19,14 +19,6 @@ class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInt
     private $executed = false;
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ORM';
-    }
-
-    /**
      * Set query used by the reader
      * @param AbstractQuery $query
      */

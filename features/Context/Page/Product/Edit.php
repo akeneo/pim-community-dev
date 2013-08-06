@@ -31,6 +31,7 @@ class Edit extends Form
                 'Locales selector' => array('css' => '#pim_product_locales'),
                 'Enable switcher'  => array('css' => '#pim_product_enabled'),
                 'Updates grid'     => array('css' => '#history table.grid'),
+                'Image preview'    => array('css' => '#lbImage'),
             )
         );
     }
@@ -198,5 +199,16 @@ class Edit extends Form
     public function countUpdates()
     {
         return count($this->getElement('Updates grid')->findAll('css', 'tbody tr'));
+    }
+
+    public function getImagePreview()
+    {
+        $preview = $this->getElement('Image preview');
+
+        if (!$preview || false === strpos($preview->getAttribute('style'), 'display: block')) {
+            return;
+        }
+
+        return $preview;
     }
 }

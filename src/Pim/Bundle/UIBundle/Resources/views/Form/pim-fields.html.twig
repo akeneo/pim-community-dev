@@ -147,3 +147,22 @@
     {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
 {% endspaceless %}
 {% endblock pim_product_price_widget %}
+
+{% block pim_batch_step_element_configuration_widget %}
+    {% for child in form %}
+        <div id="{{ child.vars.id }}">
+            <div class="control-group">
+                {{ form_label(child, child.vars.label, {label_attr: {class: 'control-label'}}) }}
+                <div class="controls {{ not child.vars.valid ? ' validation-error' : '' }}">
+                    {{ form_widget(child) }}
+                    {{ form_errors(child) }}
+                    {% if child.vars.attr.help is defined %}
+                        <span class="help-inline">{{ child.vars.attr.help|trans }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {{ 'No configuration'|trans }}
+    {% endfor %}
+{% endblock pim_batch_step_element_configuration_widget %}

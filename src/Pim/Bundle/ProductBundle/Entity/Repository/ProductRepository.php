@@ -21,11 +21,15 @@ class ProductRepository extends FlexibleEntityRepository
 
         return $qb
             ->andWhere(
+                $qb->expr()->eq('Entity.enabled', '?1')
+            )
+            ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->eq('Value.scope', '?1'),
+                    $qb->expr()->eq('Value.scope', '?2'),
                     $qb->expr()->isNull('Value.scope')
                 )
             )
-            ->setParameter(1, $scope);
+            ->setParameter(1, true)
+            ->setParameter(2, $scope);
     }
 }

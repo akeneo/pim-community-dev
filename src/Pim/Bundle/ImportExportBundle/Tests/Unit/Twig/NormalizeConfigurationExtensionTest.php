@@ -28,14 +28,6 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_ie_normalize_configuration', $this->extension->getName());
     }
 
-    /**
-     * @dataProvider getNormalizeValuesData
-     */
-    public function testNormalizeValues($value, $expectedValue)
-    {
-        $this->assertEquals($expectedValue, $this->extension->normalizeValueFilter($value));
-    }
-
     public static function getNormalizeValuesData()
     {
         return array(
@@ -48,19 +40,11 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getNormalizeKeysData
+     * @dataProvider getNormalizeValuesData
      */
-    public function testNormalizeKeys($key, $expectedKey)
+    public function testNormalizeValues($value, $expectedValue)
     {
-        $this->assertEquals($expectedKey, $this->extension->normalizeKeyFilter($key));
-    }
-
-    public static function getNormalizeKeysData()
-    {
-        return array(
-            array('name', 'Name'),
-            array('withHeader', 'With header'),
-        );
+        $this->assertEquals($expectedValue, $this->extension->normalizeValueFilter($value));
     }
 
     public function testGetViolationsFunction()
