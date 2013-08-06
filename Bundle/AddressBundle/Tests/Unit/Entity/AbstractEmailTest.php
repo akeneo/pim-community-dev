@@ -28,6 +28,13 @@ class AbstractEmailTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('email@example.com', $this->email->getEmail());
     }
 
+    public function testId()
+    {
+        $this->assertNull($this->email->getId());
+        $this->email->setId(100);
+        $this->assertEquals(100, $this->email->getId());
+    }
+
     public function testEmail()
     {
         $this->assertNull($this->email->getEmail());

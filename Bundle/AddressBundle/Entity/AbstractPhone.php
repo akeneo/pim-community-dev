@@ -12,6 +12,16 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 abstract class AbstractPhone implements PrimaryItem
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Soap\ComplexType("int", nillable=true)
+     */
+    protected $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
@@ -34,6 +44,26 @@ abstract class AbstractPhone implements PrimaryItem
     {
         $this->phone = $phone;
         $this->primary = false;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

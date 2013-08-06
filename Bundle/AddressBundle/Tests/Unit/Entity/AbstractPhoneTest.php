@@ -28,6 +28,13 @@ class AbstractPhoneTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('080011223355', $this->phone->getPhone());
     }
 
+    public function testId()
+    {
+        $this->assertNull($this->phone->getId());
+        $this->phone->setId(100);
+        $this->assertEquals(100, $this->phone->getId());
+    }
+
     public function testPhone()
     {
         $this->assertNull($this->phone->getPhone());
