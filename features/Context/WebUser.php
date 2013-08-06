@@ -1272,6 +1272,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the uploaded image$/
+     */
+    public function iShouldSeeTheUploadedImage()
+    {
+        $this->wait(3000, '');
+        if (!$this->getPage('Product edit')->getImagePreview()) {
+            throw $this->createExpectationException('Image preview is not displayed.');
+        }
+    }
+
+    /**
+     * @Then /^I should see the "([^"]*)" content$/
+     */
+    public function iShouldSeeTheContent($path)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
+            if (is_file($fullPath)) {
+                $path = $fullPath;
+            }
+        }
+
+        $this->assertSession()->responseContains(file_get_contents($path));
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
