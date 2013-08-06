@@ -6,5 +6,5 @@ js:
     'tags':
         - '@OroTagBundle/Resources/public/js/models/tag.js'
         - '@OroTagBundle/Resources/public/js/views/tag.js'
+        - '@OroTagBundle/Resources/public/js/views/tag_update.js'
         - '@OroTagBundle/Resources/public/js/collections/tag.js'
-        - '@OroTagBundle/Resources/public/js/views/select2.js'

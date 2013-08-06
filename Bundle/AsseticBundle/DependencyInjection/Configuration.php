@@ -22,14 +22,16 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->arrayNode('uncompress_js')
-                ->prototype('scalar')
+                ->arrayNode('js_debug')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->booleanNode('js_debug_all')->defaultValue(false)->end()
+                ->arrayNode('css_debug')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->booleanNode('css_debug_all')->defaultValue(false)->end()
             ->end()
-            ->end()
-            ->arrayNode('uncompress_css')
-                ->prototype('scalar')
-            ->end()
-            ->end();
+        ;
 
         return $treeBuilder;
     }
