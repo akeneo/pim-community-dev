@@ -5,7 +5,31 @@ use Oro\Bundle\AsseticBundle\DependencyInjection\OroAsseticExtension;
 
 class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetAssets()
+    /**
+     * Data provider for testGetAssets
+     *
+     * @return array
+     */
+    public function getAssetsDataProvider()
+    {
+        return array(
+            array(
+                array('css_debug' => array(), 'js_debug' => array(), 'css_debug_all' => true, 'js_debug_all' => true),
+                array('compress' => array(array()), 'uncompress' => array(array('first.css', 'second.css'))),
+                array('compress' => array(array()), 'uncompress' => array(array('first.js', 'second.js'))),
+            ),
+            array(
+                array('css_debug' => array(), 'js_debug' => array(), 'css_debug_all' => false, 'js_debug_all' => false),
+                array('compress' => array(array('first.css', 'second.css')), 'uncompress' => array(array())),
+                array('compress' => array(array('first.js', 'second.js')), 'uncompress' => array(array())),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getAssetsDataProvider
+     */
+    public function testGetAssets($config, $expectedCss, $expectedJs)
     {
         $extension = new OroAsseticExtension();
 
@@ -21,12 +45,8 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $assets = $extension->getAssets(
-            $container,
-            array('css_debug' => array(), 'js_debug' => array(), 'css_debug_all' => false, 'js_debug_all' => true)
-        );
-
-        $this->assertEquals('second.css', $assets['css']['compress'][0][1]);
-        $this->assertEquals('first.js', $assets['js']['uncompress'][0][0]);
+        $assets = $extension->getAssets($container, $config);
+        $this->assertEquals($expectedCss, $assets['css']);
+        $this->assertEquals($expectedJs, $assets['js']);
     }
 }
