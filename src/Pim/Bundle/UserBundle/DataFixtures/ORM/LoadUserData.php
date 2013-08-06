@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\UserBundle\DataFixtures\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;

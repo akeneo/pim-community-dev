@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
-use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 
 /**
  * Overriding of Choice filter
@@ -15,7 +15,6 @@ use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
  */
 class ScopeFilter extends ChoiceFilter
 {
-
     /**
      * Override apply method to disable filtering apply in query
      *

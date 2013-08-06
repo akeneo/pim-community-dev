@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Manager;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;

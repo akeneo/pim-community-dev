@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Doctrine\ORM\EntityManager;
@@ -22,7 +23,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  */
 abstract class AbstractFormTypeTest extends TypeTestCase
 {
-
     /**
      * Create an entityManager for testing
      *

@@ -16,7 +16,6 @@ use Symfony\Component\Security\Core\SecurityContext;
  */
 abstract class PimTestCase extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Create mock for locale manager
      *

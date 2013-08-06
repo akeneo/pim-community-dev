@@ -4,7 +4,6 @@ namespace Pim\Bundle\BatchBundle\Tests\Unit\Connector;
 
 use Monolog\Logger;
 use Monolog\Handler\TestHandler;
-
 use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\BatchBundle\Entity\Job;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -14,7 +15,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  */
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test related method
      */
@@ -134,6 +134,24 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $family->addAttribute($phone);
 
         $this->assertEquals(array($name, $address), $family->getAttributeAsLabelChoices());
+    }
+
+    public function testAddAttribute()
+    {
+        $family = new Family();
+        $attribute = $this->getAttributeMock();
+        $family->addAttribute($attribute);
+        $this->assertEquals(array($attribute), $family->getAttributes()->toArray());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testAddIdentifierAttribute()
+    {
+        $family = new Family();
+        $attribute = $this->getAttributeMock('pim_product_identifier');
+        $family->addAttribute($attribute);
     }
 
     /**

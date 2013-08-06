@@ -7,6 +7,7 @@ It can be defined as following, here we use JMS Serializer to easily serialize a
 
 ```php
 <?php
+
 namespace Acme\Bundle\DemoDataFlowBundle\Configuration;
 
 use Oro\Bundle\DataFlowBundle\Configuration\AbstractConfiguration;
@@ -14,7 +15,6 @@ use JMS\Serializer\Annotation\Type;
 
 class CsvConfiguration extends AbstractConfiguration
 {
-
     /**
      * @Type("string")
      * @var string

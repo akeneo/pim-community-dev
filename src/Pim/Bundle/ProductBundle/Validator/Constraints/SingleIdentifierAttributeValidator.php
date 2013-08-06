@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\ConstraintValidator;

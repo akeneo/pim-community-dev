@@ -13,7 +13,6 @@ use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\NotDecimalGuesser;
  */
 class NotDecimalGuesserTest extends ConstraintGuesserTest
 {
-
     /**
      * {@inheritdoc}
      */

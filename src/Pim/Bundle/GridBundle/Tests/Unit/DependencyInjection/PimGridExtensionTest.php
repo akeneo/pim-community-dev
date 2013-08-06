@@ -15,7 +15,6 @@ use Pim\Bundle\GridBundle\DependencyInjection\PimGridExtension;
  */
 class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Symfony\Component\HttpKernel\DependencyInjection\Extension
      */

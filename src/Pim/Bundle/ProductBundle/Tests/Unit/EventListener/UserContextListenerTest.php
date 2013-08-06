@@ -3,9 +3,8 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
-
-use Pim\Bundle\ProductBundle\EventListener\UserContextListener;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Pim\Bundle\ProductBundle\EventListener\UserContextListener;
 
 /**
  * Test related class
@@ -16,7 +15,6 @@ use Symfony\Component\HttpKernel\HttpKernel;
  */
 class UserContextListenerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Symfony\Component\Security\Core\SecurityContextInterface
      */

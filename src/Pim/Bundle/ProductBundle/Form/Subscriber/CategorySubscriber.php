@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
 use Symfony\Component\Form\FormFactoryInterface;
@@ -11,13 +12,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Allow to add field if working with node instead of a tree
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
 class CategorySubscriber implements EventSubscriberInterface
 {
-
     /**
      * Form factory
      * @var FormFactoryInterface

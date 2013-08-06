@@ -25,6 +25,19 @@ Feature: Join an image to a product
     Then I should see "akeneo.jpg"
 
   @javascript
+  Scenario: Succesfully display the image in a popin
+    Given a "Car" product available in english
+    And the following product attribute:
+      | product | label  | type  |
+      | Car     | Visual | image |
+    And I am logged in as "admin"
+    And I am on the "Car" product page
+    When I attach the file "akeneo.jpg" to "Visual"
+    And I save the product
+    And I follow "akeneo.jpg"
+    Then I should see the uploaded image
+
+  @javascript
   Scenario: Successfully remove an image
     Given a "Car" product available in english
     And the following product attribute:

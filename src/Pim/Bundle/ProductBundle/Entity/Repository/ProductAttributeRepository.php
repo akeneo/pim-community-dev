@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
@@ -36,6 +37,13 @@ class ProductAttributeRepository extends AttributeRepository
     {
         $qb = $this->createQueryBuilder('a');
 
+        $qb
+            ->andWhere(
+                $qb->expr()->neq('a.attributeType', '?1')
+            )
+            ->orderBy('a.group')
+            ->setParameter(1, 'pim_product_identifier');
+
         if (!empty($attributes)) {
             $ids = array_map(
                 function ($attribute) {
@@ -44,9 +52,12 @@ class ProductAttributeRepository extends AttributeRepository
                 $attributes
             );
 
-            $qb->where($qb->expr()->notIn('a.id', $ids));
+            $qb
+                ->andWhere(
+                    $qb->expr()->notIn('a.id', '?2')
+                )
+                ->setParameter(2, $ids);
         }
-        $qb->orderBy('a.group');
 
         return $qb;
     }

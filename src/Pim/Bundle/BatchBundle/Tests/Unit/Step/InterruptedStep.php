@@ -15,7 +15,6 @@ use Pim\Bundle\BatchBundle\Step\StepExecution;
  */
 class InterruptedStep extends AbstractStep
 {
-
     /**
      * {@inheritDoc}
      */

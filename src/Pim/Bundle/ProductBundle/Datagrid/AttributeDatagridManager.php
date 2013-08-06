@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;

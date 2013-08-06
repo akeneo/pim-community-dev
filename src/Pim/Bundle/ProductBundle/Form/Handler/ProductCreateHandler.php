@@ -1,10 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
 
 /**
  * Form handler for product creation form type
@@ -16,7 +17,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class ProductCreateHandler
 {
-
     /**
      * @var FormInterface
      */

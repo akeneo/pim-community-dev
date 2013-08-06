@@ -49,6 +49,7 @@ class FixturesContext extends RawMinkContext
         'metric'     => 'pim_product_metric',
         'prices'     => 'pim_product_price_collection',
         'image'      => 'pim_product_image',
+        'file'       => 'pim_product_file',
     );
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Transform\Mapping;
 
 /**
@@ -8,7 +9,6 @@ namespace Pim\Bundle\BatchBundle\Transform\Mapping;
  */
 class ItemMapping
 {
-
     /**
      * List of fields
      * @var multitype:FieldMapping
