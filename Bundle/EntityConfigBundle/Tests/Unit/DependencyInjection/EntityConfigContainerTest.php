@@ -27,51 +27,51 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(key($this->config), $this->container->getScope());
 
-        $this->assertEquals($this->config['field']['items'], $this->container->getFieldItems());
+        $this->assertEquals($this->config['field']['items'], $this->container->getItems(EntityConfigContainer::TYPE_FIELD));
 
         $this->assertEquals($this->config, $this->container->getConfig());
 
-        $this->assertTrue($this->container->hasEntityForm());
-        $this->assertTrue($this->container->hasFieldForm());
+        $this->assertTrue($this->container->hasForm());
+        $this->assertTrue($this->container->hasForm(EntityConfigContainer::TYPE_FIELD));
 
         $this->assertEquals(
             $this->config['field']['form'],
-            $this->container->getFieldFormConfig()
+            $this->container->getFormConfig(EntityConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
             $this->config['entity']['grid_action'],
-            $this->container->getEntityGridActions()
+            $this->container->getGridActions()
         );
 
         $this->assertEquals(
             $this->config['entity']['layout_action'],
-            $this->container->getEntityLayoutActions()
+            $this->container->getLayoutActions()
         );
 
         $this->assertEquals(
             $this->config['field']['grid_action'],
-            $this->container->getFieldGridActions()
+            $this->container->getGridActions(EntityConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
             $this->config['field']['layout_action'],
-            $this->container->getFieldLayoutActions()
+            $this->container->getLayoutActions(EntityConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
             $this->config['entity']['form']['block_config'],
-            $this->container->getEntityFormBlockConfig()
+            $this->container->getFormBlockConfig()
         );
 
         $this->assertEquals(
             array('enabled' => true),
-            $this->container->getEntityDefaultValues()
+            $this->container->getDefaultValues()
         );
 
         $this->assertEquals(
             array('enabled' => true, 'is_searchable' => false, 'is_filtrableble' => false),
-            $this->container->getFieldDefaultValues()
+            $this->container->getDefaultValues(EntityConfigContainer::TYPE_FIELD)
         );
     }
 }

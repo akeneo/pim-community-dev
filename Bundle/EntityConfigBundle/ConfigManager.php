@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
@@ -208,6 +209,19 @@ class ConfigManager
     }
 
     /**
+     * @param $scope
+     * @return array
+     */
+    public function getEntityConfigIds($scope)
+    {
+        $entityConfigRepo = $this->em()->getRepository(EntityConfigModel::ENTITY_NAME);
+
+        return array_map(function (EntityConfigModel $entityModel) use ($scope) {
+            return new EntityConfigId($entityModel->getClassName(), $scope);
+        }, $entityConfigRepo->findAll());
+    }
+
+    /**
      * @param ConfigIdInterface $configId
      * @return bool
      */
@@ -287,7 +301,7 @@ class ConfigManager
             $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getEntityDefaultValues();
+                $defaultValues = $provider->getConfigContainer()->getDefaultValues();
                 if (isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
@@ -326,7 +340,7 @@ class ConfigManager
             $entityModel->addField($fieldModel);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getFieldDefaultValues();
+                $defaultValues = $provider->getConfigContainer()->getDefaultValues(EntityConfigContainer::TYPE_FIELD);
                 $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config        = $provider->createConfig($fieldId, $defaultValues);
 
@@ -382,7 +396,7 @@ class ConfigManager
             //TODO::refactoring
             $serializableValues = $this->getProvider($config->getConfigId()->getScope())
                 ->getConfigContainer()
-                ->getEntitySerializableValues();
+                ->getSerializableValues($config->getConfigId());
             $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
             if ($this->configCache) {

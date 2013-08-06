@@ -41,7 +41,7 @@ class ConfigDatagridManager extends DatagridManager
         $actions = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityLayoutActions() as $config) {
+            foreach ($provider->getConfigContainer()->getLayoutActions() as $config) {
                 $actions[] = $config;
             }
         }
@@ -60,7 +60,7 @@ class ConfigDatagridManager extends DatagridManager
         );
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
+            foreach ($provider->getConfigContainer()->getGridActions() as $config) {
                 $properties[] = new UrlProperty(
                     strtolower($config['name']) . '_link',
                     $this->router,
@@ -112,7 +112,7 @@ class ConfigDatagridManager extends DatagridManager
     {
         $fields = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+            foreach ($provider->getConfigContainer()->getItems() as $code => $item) {
                 if (isset($item['grid'])) {
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
@@ -275,7 +275,7 @@ class ConfigDatagridManager extends DatagridManager
         $actions = array($clickAction, $viewAction, $updateAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
+            foreach ($provider->getConfigContainer()->getGridActions() as $config) {
                 $configItem = array(
                     'name'         => strtolower($config['name']),
                     'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
@@ -316,7 +316,7 @@ class ConfigDatagridManager extends DatagridManager
         $query->setParameter('mode', AbstractConfigModel::MODE_VIEW_HIDDEN);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+            foreach ($provider->getConfigContainer()->getItems() as $code => $item) {
                 $alias = 'cev' . $code;
                 $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
                 $query->addSelect($alias . '.value as ' . $code, true);

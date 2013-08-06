@@ -5,7 +5,8 @@ oro_entity_config:
                 block_config:
                     entity:
                         priority:           20
-            constraints:
+
+            constraints:    ~
 
             items:
                 icon:

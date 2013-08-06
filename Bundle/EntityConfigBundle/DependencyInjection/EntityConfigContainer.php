@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
@@ -9,6 +12,12 @@ namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
  */
 class EntityConfigContainer
 {
+    /**
+     * Type Of Config
+     */
+    const TYPE_ENTITY = 'entity';
+    const TYPE_FIELD  = 'field';
+
     /**
      * @var string
      */
@@ -46,25 +55,31 @@ class EntityConfigContainer
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntityItems()
+    public function getItems($type = self::TYPE_ENTITY)
     {
-        $entityItems = array();
-        if (isset($this->config['entity']) && isset($this->config['entity']['items'])) {
-            $entityItems = $this->config['entity']['items'];
+        $type = $this->getConfigType($type);
+
+        $items = array();
+        if (isset($this->config[$type]) && isset($this->config[$type]['items'])) {
+            $items = $this->config[$type]['items'];
         }
 
-        return $entityItems;
+        return $items;
     }
 
     /**
+     * @param string|ConfigIdInterface $type
      * @return array
      */
-    public function getEntityDefaultValues()
+    public function getDefaultValues($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
         $result = array();
-        foreach ($this->getEntityItems() as $code => $item) {
+        foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['default_value'])) {
                 $result[$code] = $item['options']['default_value'];
             }
@@ -74,12 +89,15 @@ class EntityConfigContainer
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntityInternalValues()
+    public function getInternalValues($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
         $result = array();
-        foreach ($this->getEntityItems() as $code => $item) {
+        foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['internal']) && $item['options']['internal']) {
                 $result[$code] = 0;
             }
@@ -89,12 +107,15 @@ class EntityConfigContainer
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntitySerializableValues()
+    public function getSerializableValues($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
         $result = array();
-        foreach ($this->getEntityItems() as $code => $item) {
+        foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
                 $result[$code] = (bool) $item['options']['serializable'];
             }
@@ -104,108 +125,95 @@ class EntityConfigContainer
     }
 
     /**
+     * @param string $type
      * @return bool
      */
-    public function hasEntityForm()
+    public function hasForm($type = self::TYPE_ENTITY)
     {
-        return (boolean) array_filter($this->getEntityItems(), function ($item) {
+        $type = $this->getConfigType($type);
+
+        return (boolean) array_filter($this->getItems($type), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntityFormBlockConfig()
+    public function getFormConfig($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
+        $fieldFormConfig = array();
+        if (isset($this->config[$type]) && isset($this->config[$type]['form'])) {
+            $fieldFormConfig = $this->config[$type]['form'];
+        }
+
+        return $fieldFormConfig;
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
+    public function getFormBlockConfig($type = self::TYPE_ENTITY)
+    {
+        $type = $this->getConfigType($type);
+
         $entityFormBlockConfig = null;
-        if (isset($this->config['entity'])
-            && isset($this->config['entity']['form'])
-            && isset($this->config['entity']['form']['block_config'])
+        if (isset($this->config[$type])
+            && isset($this->config[$type]['form'])
+            && isset($this->config[$type]['form']['block_config'])
         ) {
-            $entityFormBlockConfig = $this->config['entity']['form']['block_config'];
+            $entityFormBlockConfig = $this->config[$type]['form']['block_config'];
         }
 
         return $entityFormBlockConfig;
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntityGridActions()
+    public function getGridActions($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
         $entityGridActions = array();
-        if (isset($this->config['entity']) && isset($this->config['entity']['grid_action'])) {
-            $entityGridActions = $this->config['entity']['grid_action'];
+        if (isset($this->config[$type]) && isset($this->config[$type]['grid_action'])) {
+            $entityGridActions = $this->config[$type]['grid_action'];
         }
 
         return $entityGridActions;
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getEntityLayoutActions()
+    public function getLayoutActions($type = self::TYPE_ENTITY)
     {
+        $type = $this->getConfigType($type);
+
         $entityLayoutActions = array();
-        if (isset($this->config['entity']) && isset($this->config['entity']['layout_action'])) {
-            $entityLayoutActions = $this->config['entity']['layout_action'];
+        if (isset($this->config[$type]) && isset($this->config[$type]['layout_action'])) {
+            $entityLayoutActions = $this->config[$type]['layout_action'];
         }
 
         return $entityLayoutActions;
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getFieldItems()
+    public function getRequiredPropertyValues($type = self::TYPE_ENTITY)
     {
-        $fieldItems = array();
-        if (isset($this->config['field']) && isset($this->config['field']['items'])) {
-            $fieldItems = $this->config['field']['items'];
-        }
+        $type = $this->getConfigType($type);
 
-        return $fieldItems;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldDefaultValues()
-    {
         $result = array();
-        foreach ($this->getFieldItems() as $code => $item) {
-            if (isset($item['options']['default_value'])) {
-                $result[$code] = $item['options']['default_value'];
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldInternalValues()
-    {
-        $result = array();
-        foreach ($this->getFieldItems() as $code => $item) {
-            if (isset($item['options']['internal']) && $item['options']['internal']) {
-                $result[$code] = true;
-            }
-        }
-
-        return $result;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getFieldRequiredPropertyValues()
-    {
-        $result = array();
-        foreach ($this->getFieldItems() as $code => $item) {
+        foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['required_property'])) {
                 $result[$code] = $item['options']['required_property'];
             }
@@ -215,70 +223,16 @@ class EntityConfigContainer
     }
 
     /**
-     * @return array
+     * @param $type
+     * @return string
      */
-    public function getFieldSerializableValues()
+    protected function getConfigType($type)
     {
-        $result = array();
-        foreach ($this->getFieldItems() as $code => $item) {
-            if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool) $item['options']['serializable'];
-            }
+        if ($type instanceof ConfigIdInterface) {
+            return $type instanceof FieldConfigId ? EntityConfigContainer::TYPE_FIELD : EntityConfigContainer::TYPE_ENTITY;
         }
 
-        return $result;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasFieldForm()
-    {
-        return (boolean) array_filter($this->getFieldItems(), function ($item) {
-            return (isset($item['form']) && isset($item['form']['type']));
-        });
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldFormConfig()
-    {
-        $fieldFormConfig = array();
-        if (isset($this->config['field']) && isset($this->config['field']['form'])) {
-            $fieldFormConfig = $this->config['field']['form'];
-        }
-
-        return $fieldFormConfig;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldFormBlockConfig()
-    {
-        $entityFormBlockConfig = null;
-        if (isset($this->config['field'])
-            && isset($this->config['field']['form'])
-            && isset($this->config['field']['form']['block_config'])
-        ) {
-            $entityFormBlockConfig = $this->config['field']['form']['block_config'];
-        }
-
-        return $entityFormBlockConfig;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldGridActions()
-    {
-        $fieldGridActions = array();
-        if (isset($this->config['field']) && isset($this->config['field']['grid_action'])) {
-            $fieldGridActions = $this->config['field']['grid_action'];
-        }
-
-        return $fieldGridActions;
+        return $type;
     }
 
     /**

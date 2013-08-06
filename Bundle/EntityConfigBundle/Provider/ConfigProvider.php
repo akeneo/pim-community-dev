@@ -119,16 +119,17 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function createConfig(ConfigIdInterface $configId, array $values)
     {
-        $entityConfig = new Config($configId);
-        $values       = array_merge($this->getConfigContainer()->getEntityDefaultValues(), $values);
+        $config = new Config($configId);
+        $type   = $configId instanceof FieldConfigId ? EntityConfigContainer::TYPE_FIELD : EntityConfigContainer::TYPE_ENTITY;
+        $values = array_merge($this->getConfigContainer()->getDefaultValues($type), $values);
 
         foreach ($values as $key => $value) {
-            $entityConfig->set($key, $value);
+            $config->set($key, $value);
         }
 
-        $this->persist($entityConfig);
+        $this->persist($config);
 
-        return $entityConfig;
+        return $config;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -37,20 +38,22 @@ class ConfigType extends AbstractType
         if ($configModel instanceof FieldConfigModel) {
             $className = $configModel->getEntity()->getClassName();
             $fieldName = $configModel->getFieldName();
+            $configType = EntityConfigContainer::TYPE_FIELD;
         } else {
             $className = $configModel->getClassName();
             $fieldName = '';
+            $configType = EntityConfigContainer::TYPE_ENTITY;
         }
 
         $data = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            if ($provider->getConfigContainer()->hasFieldForm()) {
+            if ($provider->getConfigContainer()->hasForm($configType)) {
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigScopeType($provider->getConfigContainer()->getFieldItems()),
+                    new ConfigScopeType($provider->getConfigContainer()->getItems($configType)),
                     array(
-                        'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
+                        'block_config' => (array)$provider->getConfigContainer()->getFormBlockConfig($configType)
                     )
                 );
                 $data[$provider->getScope()] = $provider->getConfig($className, $fieldName)->getValues();
