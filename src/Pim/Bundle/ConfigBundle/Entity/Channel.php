@@ -65,7 +65,7 @@ class Channel
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", inversedBy="channels", cascade={"persist"})
      * @ORM\JoinTable(
      *    name="pim_channel_locale",
      *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ConfigBundle\Validator\Constraints as PimAssert;
@@ -48,6 +50,8 @@ class Locale
      *
      * @ORM\ManyToOne(targetEntity="Currency", inversedBy="locales")
      * @ORM\JoinColumn(name="default_currency_id", referencedColumnName="id")
+     *
+     * TODO : must be removed
      */
     protected $defaultCurrency;
 
@@ -59,11 +63,20 @@ class Locale
     protected $activated;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel", mappedBy="locales")
+     */
+    protected $channels;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->activated = true;
+        $this->activated = false;
+
+        $this->channels = new ArrayCollection();
     }
 
     /**
@@ -176,6 +189,8 @@ class Locale
      * Get default currency
      *
      * @return Currency
+     *
+     * TODO : Must be removed
      */
     public function getDefaultCurrency()
     {
@@ -188,10 +203,36 @@ class Locale
      * @param Currency $currency
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     *
+     * @TODO : must be removed
      */
     public function setDefaultCurrency(Currency $currency)
     {
         $this->defaultCurrency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get channels
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * Set channels
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $channels
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function setChannels($channels)
+    {
+        $this->channels = $channels;
 
         return $this;
     }
