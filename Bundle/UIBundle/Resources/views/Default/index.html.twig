@@ -4,6 +4,8 @@
     <head>
         {% block head %}
             <title>{% trans %}Loading...{% endtrans %}</title>
+            <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+            <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
             <script id="page-title" type="text/html">{{ oro_title_render() }}</script>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block head_style %}
