@@ -205,7 +205,7 @@ class Role implements RoleInterface
     /**
      * @return User
      */
-    public function getUserOwnerId()
+    public function getUserOwner()
     {
         return $this->userOwner;
     }
@@ -213,7 +213,7 @@ class Role implements RoleInterface
     /**
      * @param User $userOwner
      */
-    public function setUserOwnerId(User $userOwner)
+    public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
     }
@@ -221,7 +221,7 @@ class Role implements RoleInterface
     /**
      * @return BusinessUnit
      */
-    public function getBusinessUnitOwnerId()
+    public function getBusinessUnitOwner()
     {
         return $this->businessUnitOwner;
     }

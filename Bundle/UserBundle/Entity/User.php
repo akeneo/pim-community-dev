@@ -1244,7 +1244,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * @return User
      */
-    public function getUserOwnerId()
+    public function getUserOwner()
     {
         return $this->userOwner;
     }
@@ -1252,7 +1252,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * @param User $userOwner
      */
-    public function setUserOwnerId(User $userOwner)
+    public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
     }
@@ -1260,7 +1260,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * @return BusinessUnit
      */
-    public function getBusinessUnitOwnerId()
+    public function getBusinessUnitOwner()
     {
         return $this->businessUnitOwner;
     }
