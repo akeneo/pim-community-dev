@@ -39,7 +39,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $reader,
                         array(
-                            'label' => sprintf('Reader - %s', $reader->getName()),
+                            'label' => sprintf('pim_batch.%s.title', $reader->getName()),
                             'auto_initialize' => false,
                         )
                     )
@@ -51,7 +51,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $processor,
                         array(
-                            'label' => sprintf('Processor - %s', $processor->getName()),
+                            'label' => sprintf('pim_batch.%s.title', $processor->getName()),
                             'auto_initialize' => false,
                         )
                     )
@@ -63,7 +63,7 @@ class StepConfigurationType extends AbstractType
                         new StepElementConfigurationType(),
                         $writer,
                         array(
-                            'label' => sprintf('Writer - %s', $writer->getName()),
+                            'label' => sprintf('pim_batch.%s.title', $writer->getName()),
                             'auto_initialize' => false,
                         )
                     )

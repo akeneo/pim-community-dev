@@ -37,12 +37,4 @@ class AttributeReader extends ORMCursorReader
 
         return parent::read();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'Attributes';
-    }
 }
