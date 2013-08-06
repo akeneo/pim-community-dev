@@ -24,6 +24,9 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
     enabledNow: true,
 
     /** @property */
+    hidden: false,
+
+    /** @property */
     template: _.template(
         '<label class="dib">Page:</label>' +
         '<ul class="icons-holder">' +
@@ -82,6 +85,7 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
         this.listenTo(this.collection, "reset", this.render);
 
         this.enabled = options.enable != false;
+        this.hidden = options.hide == true;
 
         Backbone.View.prototype.initialize.call(this, options);
     },
@@ -215,5 +219,13 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
         })));
 
         return this;
+    },
+
+    hide: function() {
+        this.$el.empty();
+    },
+
+    show: function() {
+        this.render()
     }
 });
