@@ -28,7 +28,9 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
     {
         /** @var \Oro\Bundle\UserBundle\Entity\UserManager $userManager */
         $userManager = $this->container->get('oro_user.manager');
-        $role = $userManager->getStorageManager()->getRepository('OroUserBundle:Role')->findBy(array('role' => 'IS_AUTHENTICATED_ANONYMOUSLY'));
+        $role = $userManager->getStorageManager()
+            ->getRepository('OroUserBundle:Role')
+            ->findBy(array('role' => 'IS_AUTHENTICATED_ANONYMOUSLY'));
 
         $user = $userManager->createUser();
         $api = new UserApi();

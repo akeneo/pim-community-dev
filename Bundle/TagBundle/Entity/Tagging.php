@@ -9,7 +9,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Table(
  *     name="oro_tag_tagging",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "entity_name", "record_id", "created_by"})}
+ *     uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "entity_name", "record_id", "created_by"})
+ *    }
  * )
  * @ORM\Entity
  */
@@ -25,7 +27,7 @@ class Tagging implements ContainAuthorInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging")
+     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging", cascade="ALL")
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $tag;

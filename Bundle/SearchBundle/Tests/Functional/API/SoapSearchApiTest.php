@@ -23,30 +23,20 @@ class SoapSearchApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
 
-            $this->client->soap(
-                "http://localhost/api/soap",
-                array(
-                    'location' => 'http://localhost/api/soap',
-                    'soap_version' => SOAP_1_2
-                )
-            );
-
-        } else {
-            $this->client->restart();
-        }
+        $this->client->soap(
+            "http://localhost/api/soap",
+            array(
+                'location' => 'http://localhost/api/soap',
+                'soap_version' => SOAP_1_2
+            )
+        );
 
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
         self::$hasLoaded = true;
-    }
-
-    public static function tearDownAfterClass()
-    {
-        Client::rollbackTransaction();
     }
 
     /**
@@ -66,7 +56,7 @@ class SoapSearchApiTest extends WebTestCase
         if (is_null($request['max_results'])) {
             $request['max_results'] = self::DEFAULT_VALUE;
         }
-        $result = $this->client->soapClient->search(
+        $result = $this->client->getSoap()->search(
             $request['search'],
             $request['offset'],
             $request['max_results']

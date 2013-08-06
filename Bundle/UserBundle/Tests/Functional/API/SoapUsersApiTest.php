@@ -20,20 +20,14 @@ class SoapUsersApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-
-            $this->client->soap(
-                "http://localhost/api/soap",
-                array(
-                    'location' => 'http://localhost/api/soap',
-                    'soap_version' => SOAP_1_2
-                )
-            );
-
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        $this->client->soap(
+            "http://localhost/api/soap",
+            array(
+                'location' => 'http://localhost/api/soap',
+                'soap_version' => SOAP_1_2
+            )
+        );
     }
 
     /**
@@ -44,9 +38,9 @@ class SoapUsersApiTest extends WebTestCase
      */
     public function testCreateUser($request, $response)
     {
-        $result = $this->client->soapClient->createUser($request);
+        $result = $this->client->getSoap()->createUser($request);
         $result = ToolsAPI::classToArray($result);
-        ToolsAPI::assertEqualsResponse($response, $result, $this->client->soapClient->__getLastResponse());
+        ToolsAPI::assertEqualsResponse($response, $result, $this->client->getSoap()->__getLastResponse());
     }
 
     /**
@@ -59,16 +53,18 @@ class SoapUsersApiTest extends WebTestCase
     public function testUpdateUser($request, $response)
     {
         //get user id
-        $userId = $this->client->soapClient->getUserBy(array('item' => array('key' =>'username', 'value' =>$request['username'])));
+        $userId = $this->client
+            ->getSoap()
+            ->getUserBy(array('item' => array('key' =>'username', 'value' =>$request['username'])));
         $userId = ToolsAPI::classToArray($userId);
 
         $request['username'] = 'Updated_' . $request['username'];
         $request['email'] = 'Updated_' . $request['email'];
         unset($request['plainPassword']);
-        $result = $this->client->soapClient->updateUser($userId['id'], $request);
+        $result = $this->client->getSoap()->updateUser($userId['id'], $request);
         $result = ToolsAPI::classToArray($result);
         ToolsAPI::assertEqualsResponse($response, $result);
-        $user = $this->client->soapClient->getUser($userId['id']);
+        $user = $this->client->getSoap()->getUser($userId['id']);
         $user = ToolsAPI::classToArray($user);
         $this->assertEquals($request['username'], $user['username']);
         $this->assertEquals($request['email'], $user['email']);
@@ -80,7 +76,7 @@ class SoapUsersApiTest extends WebTestCase
      */
     public function testGetUsers($request, $response)
     {
-        $users = $this->client->soapClient->getUsers(1, 1000);
+        $users = $this->client->getSoap()->getUsers(1, 1000);
         $users = ToolsAPI::classToArray($users);
         $result = false;
         foreach ($users as $user) {
@@ -101,7 +97,7 @@ class SoapUsersApiTest extends WebTestCase
     public function testDeleteUser($request)
     {
         //get user id
-        $userId = $this->client->soapClient->getUserBy(
+        $userId = $this->client->getSoap()->getUserBy(
             array(
                 'item' => array(
                     'key' =>'username',
@@ -109,10 +105,10 @@ class SoapUsersApiTest extends WebTestCase
             )
         );
         $userId = ToolsAPI::classToArray($userId);
-        $result = $this->client->soapClient->deleteUser($userId['id']);
+        $result = $this->client->getSoap()->deleteUser($userId['id']);
         $this->assertTrue($result);
         try {
-            $this->client->soapClient->getUserBy(
+            $this->client->getSoap()->getUserBy(
                 array(
                     'item' => array(
                         'key' =>'username',

@@ -117,7 +117,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
 
         $this->requestAttributes->expects($this->once())
             ->method('get')
-            ->will($this->returnValue('_internal'));
+            ->will($this->returnValue(null));
 
         $this->aclManager
             ->expects($this->once())
