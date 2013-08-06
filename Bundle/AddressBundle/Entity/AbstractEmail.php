@@ -25,7 +25,16 @@ abstract class AbstractEmail implements PrimaryItem
      * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      * @Soap\ComplexType("boolean", nillable=true)
      */
-    protected $primary = false;
+    protected $primary;
+
+    /**
+     * @param string|null $email
+     */
+    public function __construct($email = null)
+    {
+        $this->email = $email;
+        $this->primary = false;
+    }
 
     /**
      * Set email

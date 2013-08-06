@@ -25,7 +25,16 @@ abstract class AbstractPhone implements PrimaryItem
      * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      * @Soap\ComplexType("boolean", nillable=true)
      */
-    protected $primary = false;
+    protected $primary;
+
+    /**
+     * @param string|null $phone
+     */
+    public function __construct($phone = null)
+    {
+        $this->phone = $phone;
+        $this->primary = false;
+    }
 
     /**
      * Set phone

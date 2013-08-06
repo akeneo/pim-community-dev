@@ -13,12 +13,19 @@ class AbstractPhoneTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->phone = $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractPhone');
+        $this->phone = $this->createPhone();
     }
 
     protected function tearDown()
     {
         unset($this->phone);
+    }
+
+    public function testConstructor()
+    {
+        $this->phone = $this->createPhone('080011223355');
+
+        $this->assertEquals('080011223355', $this->phone->getPhone());
     }
 
     public function testPhone()
@@ -40,5 +47,18 @@ class AbstractPhoneTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->phone->isPrimary());
         $this->phone->setPrimary(true);
         $this->assertTrue($this->phone->isPrimary());
+    }
+
+    /**
+     * @param string|null $phone
+     * @return AbstractPhone|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createPhone($phone = null)
+    {
+        $arguments = array();
+        if ($phone) {
+            $arguments[] = $phone;
+        }
+        return $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractPhone', $arguments);
     }
 }

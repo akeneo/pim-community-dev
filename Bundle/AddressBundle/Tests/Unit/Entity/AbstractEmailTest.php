@@ -13,12 +13,19 @@ class AbstractEmailTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->email = $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractEmail');
+        $this->email = $this->createEmail();
     }
 
     protected function tearDown()
     {
         unset($this->email);
+    }
+
+    public function testConstructor()
+    {
+        $this->email = $this->createEmail('email@example.com');
+
+        $this->assertEquals('email@example.com', $this->email->getEmail());
     }
 
     public function testEmail()
@@ -40,5 +47,18 @@ class AbstractEmailTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->email->isPrimary());
         $this->email->setPrimary(true);
         $this->assertTrue($this->email->isPrimary());
+    }
+
+    /**
+     * @param string|null $email
+     * @return AbstractEmail|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createEmail($email = null)
+    {
+        $arguments = array();
+        if ($email) {
+            $arguments[] = $email;
+        }
+        return $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractEmail', $arguments);
     }
 }
