@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormEvent;
 /**
  * Locale fallback subscriber
  *
+ * @TODO : Explain the purpose of this class
+ *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -107,6 +109,7 @@ class LocaleSubscriber implements EventSubscriberInterface
             'required'          => true,
             'disabled'          => $data->getId(),
             'read_only'         => $data->getId(),
+            // TODO : use locale manager for preferred choices ? get all locales activated as preferred choices
             'preferred_choices' => array('fr_FR', 'en_US'),
             'label'             => 'Locale',
             'auto_initialize' => false
@@ -152,6 +155,7 @@ class LocaleSubscriber implements EventSubscriberInterface
             'required'          => false,
             'disabled'          => $fallbackDisabled,
             'read_only'         => $fallbackDisabled,
+            // TODO : use locale manager for preferred choices ? get all locales activated as preferred choices
             'preferred_choices' => array('fr_FR', 'en_US'),
             'label'             => 'Inherited locale',
             'attr'              => array('data-placeholder' => $placeholder),
