@@ -272,18 +272,4 @@ class Channel
 
         return $this;
     }
-
-    /**
-     * Set locales
-     *
-     * @param ArrayCollection $locales
-     *
-     * @return Channel
-     */
-//     public function setLocales($locales)
-//     {
-//         $this->locales = $locales;
-
-//         return $this;
-//     }
 }

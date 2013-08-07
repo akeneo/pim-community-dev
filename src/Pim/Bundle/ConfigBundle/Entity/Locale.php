@@ -172,20 +172,6 @@ class Locale
     }
 
     /**
-     * Set activated
-     *
-     * @param boolean $activated
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
-     */
-//     public function setActivated($activated)
-//     {
-//         $this->activated = $activated;
-
-//         return $this;
-//     }
-
-    /**
      * Get default currency
      *
      * @return Currency
