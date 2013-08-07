@@ -5,7 +5,7 @@ oro_menu_config:
             route: 'pim_importexport_import_index'
 
         pim_ie_export:
-            label: 'Reports'
+            label: 'Export profiles'
             route: 'pim_importexport_export_index'
 
         pim_report_import:
@@ -13,7 +13,7 @@ oro_menu_config:
             route: 'pim_importexport_report_import'
 
         pim_report_export:
-            label: 'Export profiles'
+            label: 'Report'
             route: 'pim_importexport_report_export'
 
     tree:
