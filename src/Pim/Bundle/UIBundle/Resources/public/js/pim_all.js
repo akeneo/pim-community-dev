@@ -1,12 +1,19 @@
 $(function() {
-    Oro.Navigation.prototype.bind('route', init);
+    'use strict';
+    Oro.Navigation.prototype.bind('route', runInit);
 });
+
+function runInit() {
+    $(document).off('ajaxStop', init).on('ajaxStop', init);
+}
 
 function init() {
     // Place code that we need to run on every page load here
+    $('.has-sidebar').sidebarize();
 }
 
 $(function() {
+    'use strict';
     // Do global event binding here
 
     // Toogle accordion icon
