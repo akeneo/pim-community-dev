@@ -74,27 +74,39 @@ class FamilyController extends Controller
     public function editAction($id)
     {
         $family   = $this->findOr404('PimProductBundle:Family', $id);
-        $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
         $datagrid = $this->getDataAuditDatagrid($family, 'pim_product_family_edit', array('id' => $family->getId()));
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
         }
 
-        if ($this->get('pim_product.form.handler.family')->process($family)) {
-            $this->addFlash('success', 'Product family successfully updated.');
+        $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
+        $channels = $this->get('pim_config.manager.channel')->getChannels();
+        $form = $this->createForm('pim_family', $family, array(
+            'channels'   => $channels,
+            'attributes' => $family->getAttributes(),
+        ));
 
-            return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+                $this->addFlash('success', 'Product family successfully updated.');
+
+                return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
+            }
         }
 
         return array(
-            'form'           => $this->get('pim_product.form.family')->createView(),
-            'families'       => $families,
             'family'         => $family,
+            'families'       => $families,
+            'channels'       => $channels,
+            'form'           => $form->createView(),
+            'datagrid'       => $datagrid->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
-            'datagrid'       => $datagrid->createView(),
         );
     }
 

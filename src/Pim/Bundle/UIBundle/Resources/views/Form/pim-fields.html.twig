@@ -166,3 +166,15 @@
         {{ 'No configuration'|trans }}
     {% endfor %}
 {% endblock pim_batch_step_element_configuration_widget %}
+
+
+{% block pim_attribute_requirement_widget %}
+    <div class="attribute-requirement">
+        {{ form_widget(form.required) }}
+        {% if form.required.vars.value %}
+        <i class="fa-icon-ok required" data-toggle="tooltip" data-placement="right" title="{{ 'Required'|trans }}"></i>
+        {% else %}
+        <i class="icon-bullet non-required" data-toggle="tooltip" data-placement="right" title="{{ 'Non required'|trans }}"></i>
+        {% endif %}
+    </div>
+{% endblock pim_attribute_requirement_widget %}

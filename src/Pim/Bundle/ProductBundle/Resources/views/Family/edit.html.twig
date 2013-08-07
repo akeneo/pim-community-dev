@@ -27,7 +27,6 @@
             {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
         </div>
         {{ form_row(form._token) }}
-    </form>
 
         <div class="tab-pane" id="attributes">
             <div id="attribute-buttons">
@@ -39,25 +38,32 @@
             <table class="table groups">
                 <thead>
                     <th>{{ 'Label'|upper }}</th>
+                    {% for channel in channels %}
+                        <th style="text-align: center;">{{ channel.name }}</th>
+                    {% endfor %}
                     <th>&nbsp;</th>
                 </thead>
 
                 <tbody>
                     {% if family.attributes|length > 0 %}
                         {% set attributeGroup = family.attributes.first.group %}
+                        {% set colspan = channels|length + 2 %}
                         <tr class="group">
-                            <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
+                            <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
                         </tr>
                         {% for attribute in family.attributes %}
                             {% if attribute.group != attributeGroup %}
                             </tbody>
                             <tbody>
                                 <tr class="group">
-                                    <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                                    <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
                                 </tr>
                             {% endif %}
                             <tr>
                                 <td>{{ attribute.label }}</td>
+                                {% for channel in channels %}
+                                    <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
+                                {% endfor %}
                                 <td>
                                     <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
                                         class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
@@ -77,6 +83,7 @@
         </div>
 
     </div>
+</form>
 {% endblock %}
 
 {% block head_script_component %}
@@ -88,6 +95,23 @@
             $('.group').click(function() {
                 $(this).parent().find('tr:not(.group)').toggle();
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
+            });
+            $('.attribute-requirement i').click(function() {
+                $(this).toggleClass('fa-icon-ok required');
+                $(this).toggleClass('icon-bullet non-required');
+
+                var $input = $(this).siblings('input[type="hidden"]');
+                if ($input.val() == '' || $input.val() == '0') {
+                    $(this)
+                        .tooltip('toggle')
+                        .attr('data-original-title', '{{ 'Required'|trans }}');
+                    $input.val(1);
+                } else {
+                    $(this)
+                        .tooltip('toggle')
+                        .attr('data-original-title', '{{ 'Non required'|trans }}');
+                    $input.val(0);
+                }
             });
         });
     </script>
