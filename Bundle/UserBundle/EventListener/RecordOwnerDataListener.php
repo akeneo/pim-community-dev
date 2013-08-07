@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\EventListener;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class RecordOwnerDataSubscriber implements EventSubscriber
+class RecordOwnerDataListener
 {
     /**
      * @var SecurityContextInterface
@@ -26,16 +25,6 @@ class RecordOwnerDataSubscriber implements EventSubscriber
     public function __construct(ContainerInterface $container)
     {
        $this->container = $container;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscribedEvents()
-    {
-        return array(
-            'prePersist',
-        );
     }
 
     /**

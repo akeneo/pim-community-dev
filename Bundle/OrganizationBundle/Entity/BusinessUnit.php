@@ -116,7 +116,7 @@ class BusinessUnit
     protected $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
+     * @ORM\OneToMany(targetEntity="\Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnit")
      */
     protected $users;
 
