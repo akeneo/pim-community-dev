@@ -3,9 +3,11 @@
 namespace Oro\Bundle\EntityConfigBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -38,10 +40,16 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        $options   = $event->getForm()->getConfig()->getOptions();
-        $className = $options['class_name'];
-        $fieldName = isset($options['field_name']) ? $options['field_name'] : null;
-        $data      = $event->getData();
+        $options     = $event->getForm()->getConfig()->getOptions();
+        $configModel = $options['config_model'];
+
+        $className = $configModel->getClassName();
+        $fieldName = null;
+        if ($configModel instanceof FieldConfigModel) {
+            $fieldName = $configModel->getFieldName();
+        }
+
+        $data = $event->getData();
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {
@@ -53,6 +61,8 @@ class ConfigSubscriber implements EventSubscriberInterface
             }
         }
 
-        $this->configManager->flush();
+        if ($event->getForm()->isValid()) {
+            $this->configManager->flush();
+        }
     }
 }
