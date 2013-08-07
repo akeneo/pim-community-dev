@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 class ConfigProvider implements ConfigProviderInterface
@@ -22,9 +22,9 @@ class ConfigProvider implements ConfigProviderInterface
     protected $configManager;
 
     /**
-     * @var EntityConfigContainer
+     * @var PropertyConfigContainer
      */
-    protected $configContainer;
+    protected $propertyConfigContainer;
 
     /**
      * @var string
@@ -38,17 +38,17 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function __construct(ConfigManager $configManager, $scope, array $config)
     {
-        $this->configManager   = $configManager;
-        $this->configContainer = new EntityConfigContainer($config);
-        $this->scope           = $scope;
+        $this->configManager           = $configManager;
+        $this->propertyConfigContainer = new PropertyConfigContainer($config);
+        $this->scope                   = $scope;
     }
 
     /**
-     * @return EntityConfigContainer
+     * @return PropertyConfigContainer
      */
-    public function getConfigContainer()
+    public function getPropertyConfig()
     {
-        return $this->configContainer;
+        return $this->propertyConfigContainer;
     }
 
     /**
@@ -112,8 +112,10 @@ class ConfigProvider implements ConfigProviderInterface
     public function createConfig(ConfigIdInterface $configId, array $values)
     {
         $config = new Config($configId);
-        $type   = $configId instanceof FieldConfigId ? EntityConfigContainer::TYPE_FIELD : EntityConfigContainer::TYPE_ENTITY;
-        $values = array_merge($this->getConfigContainer()->getDefaultValues($type), $values);
+        $type   = $configId instanceof FieldConfigId
+            ? PropertyConfigContainer::TYPE_FIELD
+            : PropertyConfigContainer::TYPE_ENTITY;
+        $values = array_merge($this->getPropertyConfig()->getDefaultValues($type), $values);
 
         foreach ($values as $key => $value) {
             $config->set($key, $value);
@@ -190,7 +192,9 @@ class ConfigProvider implements ConfigProviderInterface
         }
 
         if (!is_string($className)) {
-            throw new RuntimeException('AbstractAdvancedConfigProvider::getClassName expects Object, PersistentCollection array of entities or string');
+            throw new RuntimeException(
+                'AbstractAdvancedConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
+            );
         }
 
         return $className;

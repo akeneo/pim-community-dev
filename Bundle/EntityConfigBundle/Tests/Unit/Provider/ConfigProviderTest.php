@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Provider;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity;
@@ -33,7 +33,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     protected $configProvider;
 
     /**
-     * @var EntityConfigContainer
+     * @var PropertyConfigContainer
      */
     protected $configContainer;
 
@@ -49,7 +49,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
         $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
-        $this->configContainer = new EntityConfigContainer('test', array());
+        $this->configContainer = new PropertyConfigContainer('test', array());
         $this->configProvider  = new ConfigProvider($this->configManager, $this->configContainer);
     }
 
@@ -60,7 +60,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('test', $this->configProvider->getScope());
 
-        $this->assertEquals($this->configContainer, $this->configProvider->getConfigContainer());
+        $this->assertEquals($this->configContainer, $this->configProvider->getPropertyConfig());
     }
 
     public function testCreateConfig()

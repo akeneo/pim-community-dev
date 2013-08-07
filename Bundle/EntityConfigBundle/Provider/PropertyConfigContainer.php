@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
+namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
-class EntityConfigContainer
+class PropertyConfigContainer
 {
     /**
      * Type Of Config
@@ -234,8 +234,8 @@ class EntityConfigContainer
     {
         if ($type instanceof ConfigIdInterface) {
             return $type instanceof FieldConfigId
-                ? EntityConfigContainer::TYPE_FIELD
-                : EntityConfigContainer::TYPE_ENTITY;
+                ? PropertyConfigContainer::TYPE_FIELD
+                : PropertyConfigContainer::TYPE_ENTITY;
         }
 
         return $type;

@@ -131,7 +131,7 @@ services:
     oro_notification.mailer.transport:
         class: Swift_Transport_SpoolTransport
         arguments:
-            - @swiftmailer.transport.eventdispatcher
+            - @swiftmailer.mailer.default.transport.eventdispatcher
             - @oro_notification.mailer.spool_db
 
     # notification mailer instance

@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
@@ -55,7 +55,7 @@ class EntityFieldsDatagridManager extends DatagridManager
     {
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getLayoutActions(EntityConfigContainer::TYPE_FIELD) as $config) {
+            foreach ($provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 if (isset($config['filter'])
                     && !$provider->getConfig($entity->getClassName())->is($config['filter'])
                 ) {
@@ -82,7 +82,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         );
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getGridActions(EntityConfigContainer::TYPE_FIELD) as $config) {
+            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 $properties[] = new UrlProperty(
                     strtolower($config['name']) . '_link',
                     $this->router,
@@ -160,7 +160,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         $fields = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getItems(EntityConfigContainer::TYPE_FIELD) as $code => $item) {
+            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 if (isset($item['grid'])) {
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
@@ -214,7 +214,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         $actions = array($clickAction, $updateAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getGridActions(EntityConfigContainer::TYPE_FIELD) as $config) {
+            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 $configItem = array(
                     'name'         => strtolower($config['name']),
                     'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
@@ -256,7 +256,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         $query->addSelect('ce.id as entity_id', true);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getItems(EntityConfigContainer::TYPE_FIELD) as $code => $item) {
+            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 //$code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
                 $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");

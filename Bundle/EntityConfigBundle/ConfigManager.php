@@ -13,9 +13,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityConfigBundle\Provider\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -310,7 +310,7 @@ class ConfigManager
             $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getDefaultValues();
+                $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
                 if (isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
@@ -340,7 +340,9 @@ class ConfigManager
         if (!$fieldModel = $this->getConfigModel($className, $fieldName)) {
 
             /** @var EntityConfigModel $entityModel */
-            $entityModel = isset($this->models[$className]) ? $this->models[$className] : $this->getConfigModel($className);
+            $entityModel = isset($this->models[$className])
+                ? $this->models[$className]
+                : $this->getConfigModel($className);
             if (!$entityModel) {
                 throw new LogicException(sprintf('Entity "%" is not found', $className));
             }
@@ -349,14 +351,18 @@ class ConfigManager
             $entityModel->addField($fieldModel);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getDefaultValues(EntityConfigContainer::TYPE_FIELD);
+                $defaultValues = $provider->getPropertyConfig()
+                    ->getDefaultValues(PropertyConfigContainer::TYPE_FIELD);
                 $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config        = $provider->createConfig($fieldId, $defaultValues);
 
                 $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
 
-            $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
+            $this->eventDispatcher->dispatch(
+                Events::NEW_FIELD_CONFIG_MODEL,
+                new NewFieldConfigModelEvent($fieldModel, $this)
+            );
         }
 
         return $fieldModel;
@@ -404,7 +410,7 @@ class ConfigManager
 
             //TODO::refactoring
             $serializableValues = $this->getProvider($config->getConfigId()->getScope())
-                ->getConfigContainer()
+                ->getPropertyConfig()
                 ->getSerializableValues($config->getConfigId());
             $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
