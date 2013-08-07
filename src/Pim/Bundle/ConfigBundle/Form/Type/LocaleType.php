@@ -52,6 +52,7 @@ class LocaleType extends AbstractType
 
         $this->addCurrencyField($builder);
 
+        // TODO : must be removed
         $builder->add('activated', 'hidden');
 
         $this->addSubscriber($builder);

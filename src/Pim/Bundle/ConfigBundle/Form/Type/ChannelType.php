@@ -1,10 +1,13 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Type for channel form
@@ -43,13 +46,24 @@ class ChannelType extends AbstractType
                 'required'      => true,
                 'multiple'      => true,
                 'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => function (CurrencyRepository $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
             )
         );
 
-        $builder->add('locales', 'pim_product_available_locales');
+        $builder->add(
+            'locales',
+            'entity',
+            array(
+                'required'      => true,
+                'multiple'      => true,
+                'class'         => 'Pim\Bundle\ConfigBundle\Entity\Locale',
+                'query_builder' => function (LocaleRepository $repository) {
+                    return $repository->getLocalesQB();
+                }
+            )
+        );
 
         $builder->add(
             'category',
@@ -58,7 +72,7 @@ class ChannelType extends AbstractType
                 'label'         => 'Category tree',
                 'required'      => true,
                 'class'         => 'Pim\Bundle\ProductBundle\Entity\Category',
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => function (CategoryRepository $repository) {
                     return $repository->getTreesQB();
                 }
             )
