@@ -75,14 +75,9 @@ class ConfigController extends Controller
         $entity  = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
 
-        $form = $this->createForm(
-            'oro_entity_config_config_type',
-            null,
-            array(
-                'class_name' => $entity->getClassName(),
-                'entity_id'  => $entity->getId()
-            )
-        );
+        $form = $this->createForm('oro_entity_config_type', null, array(
+            'config_model' => $entity,
+        ));
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);

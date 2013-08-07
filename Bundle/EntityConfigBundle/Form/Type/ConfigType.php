@@ -37,14 +37,14 @@ class ConfigType extends AbstractType
         $configModel = $options['config_model'];
 
         if ($configModel instanceof FieldConfigModel) {
-            $className = $configModel->getEntity()->getClassName();
-            $fieldName = $configModel->getFieldName();
-            $fieldType = $configModel->getType();
+            $className  = $configModel->getEntity()->getClassName();
+            $fieldName  = $configModel->getFieldName();
+            $fieldType  = $configModel->getType();
             $configType = EntityConfigContainer::TYPE_FIELD;
         } else {
-            $className = $configModel->getClassName();
-            $fieldName = null;
-            $fieldType = null;
+            $className  = $configModel->getClassName();
+            $fieldName  = null;
+            $fieldType  = null;
             $configType = EntityConfigContainer::TYPE_ENTITY;
         }
 
@@ -62,6 +62,7 @@ class ConfigType extends AbstractType
                 $data[$provider->getScope()] = $provider->getConfig($className, $fieldName)->getValues();
             }
         }
+
         $builder->setData($data);
 
         $builder->addEventSubscriber(new ConfigSubscriber($this->configManager));

@@ -29,6 +29,10 @@ class ConfigScopeType extends AbstractType
             if (isset($config['form']['type'])) {
                 $options = isset($config['form']['options']) ? $config['form']['options'] : array();
 
+                if (isset($config['constraints'])) {
+                    var_dump($config['constraints']);
+                }
+
                 $builder->add($code, $config['form']['type'], $options);
             }
         }

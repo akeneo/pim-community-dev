@@ -145,14 +145,14 @@ class EntityConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return (boolean)array_filter($this->getItems($type), function ($item) use ($fieldType) {
+        return array_filter($this->getItems($type), function ($item) use ($fieldType) {
             if (!isset($item['form']['type'])) {
                 return false;
             }
 
             if ($fieldType
-                || isset($items['options']['allowed_type'])
-                || in_array($fieldType, $items['options']['allowed_type'])
+                || (isset($item['options']['allowed_type'])
+                    && in_array($fieldType, $item['options']['allowed_type']))
             ) {
                 return false;
             }
