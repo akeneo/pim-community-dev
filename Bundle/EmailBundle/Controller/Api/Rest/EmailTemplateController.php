@@ -4,6 +4,7 @@ namespace Oro\Bundle\EmailBundle\Controller\Api\Rest;
 
 use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations\Get as GetRoute;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
@@ -12,9 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
+use Oro\Bundle\EmailBundle\Provider\VariablesProvider;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
@@ -105,13 +105,17 @@ class EmailTemplateController extends RestController
      *     resource=true
      * )
      * @AclAncestor("oro_email_emailtemplate_update")
+     * @GetRoute(requirements={"entityName"="(.*)"})
      * @return Response
      */
     public function getAvailableVariablesAction($entityName = null)
     {
         $entityName = str_replace('_', '\\', $entityName);
 
-//        $provider = $this->ge
+        /** @var VariablesProvider $provider */
+        $provider = $this->get('oro_email.provider.variable_provider');
+        $allowedData = $provider->getTemplateVariables($entityName);
+        $allowedData['entityName'] = $entityName;
 
         return $this->handleView(
             $this->view($allowedData, Codes::HTTP_OK)
