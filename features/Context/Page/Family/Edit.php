@@ -128,6 +128,22 @@ class Edit extends Creation
 
     public function isAttributeRequired($attribute, $channel)
     {
+        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
+        $requirement = $cell->find('css', 'input');
+
+        return '1' === $requirement->getValue();
+    }
+
+    public function switchAttributeRequirement($attribute, $channel)
+    {
+        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
+        $requirement = $cell->find('css', 'i');
+
+        $requirement->click();
+    }
+
+    private function getAttributeRequirementCell($attribute, $channel)
+    {
         $attributesTable = $this->getElement('Attributes');
         $columnIdx       = 0;
 
@@ -148,8 +164,6 @@ class Edit extends Creation
             throw new \Exception(sprintf('An error occured when trying to get the attributes "%s" row', $attribute));
         }
 
-        $requirement = $cells[$columnIdx]->find('css', 'input');
-
-        return '1' === $requirement->getValue();
+        return $cells[$columnIdx];
     }
 }

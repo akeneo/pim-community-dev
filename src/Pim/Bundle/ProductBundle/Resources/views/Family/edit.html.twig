@@ -113,6 +113,14 @@
                     $input.val(0);
                 }
             });
+
+            $('#{{ form.vars.id }}').on('submit', function() {
+                var hash = $('#form-navbar .nav li.active a').attr('href');
+                if (hash) {
+                    $(this).attr('action', $(this).attr('action') + '?hash=' + hash.substr(1));
+                }
+                return true;
+            });
         });
     </script>
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
