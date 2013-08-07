@@ -34,6 +34,11 @@ class Sync implements WampServerInterface
 
     public function onSubscribe(Conn $conn, $topic)
     {
+        if (!true /* check if user has permission to be subscribed on */) {
+            $topic->remove($conn);
+            return;
+        }
+
         // When a visitor subscribes to a topic link the Topic object in a  lookup array
         if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
             $this->subscribedTopics[$topic->getId()] = $topic;
