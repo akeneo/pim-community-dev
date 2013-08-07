@@ -30,8 +30,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->booleanNode('css_debug_all')->defaultValue(false)->end()
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }
