@@ -19,6 +19,7 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\ChannelRepository")
  * @UniqueEntity("code")
+ * @ORM\HasLifecycleCallbacks
  */
 class Channel
 {
@@ -66,7 +67,11 @@ class Channel
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", inversedBy="channels", cascade={"persist"})
+     * @ORM\ManyToMany(
+     *     targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale",
+     *     inversedBy="channels",
+     *     cascade={"persist"}
+     * )
      * @ORM\JoinTable(
      *    name="pim_channel_locale",
      *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -256,5 +261,17 @@ class Channel
         $locale->deactivate();
 
         return $this;
+    }
+
+    /**
+     * Post remove method to deactivate unusable locales
+     *
+     * @ORM\PreRemove
+     */
+    public function preRemove()
+    {
+        foreach ($this->locales as $locale) {
+            $locale->deactivate();
+        }
     }
 }

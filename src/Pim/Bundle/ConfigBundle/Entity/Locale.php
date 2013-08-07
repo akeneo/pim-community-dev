@@ -60,12 +60,15 @@ class Locale
      *
      * @ORM\Column(name="is_activated", type="boolean")
      */
-    protected $activated;
+    protected $activated = false;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel", mappedBy="locales")
+     * @ORM\ManyToMany(
+     *     targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel",
+     *     mappedBy="locales"
+     * )
      */
     protected $channels;
 
@@ -74,8 +77,6 @@ class Locale
      */
     public function __construct()
     {
-        $this->activated = false;
-
         $this->channels = new ArrayCollection();
     }
 
@@ -243,7 +244,7 @@ class Locale
      */
     public function deactivate()
     {
-        if ($this->getChannels()->count() === 0) {
+        if ($this->getChannels()->count() === 1) {
             $this->activated = false;
         }
 

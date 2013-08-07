@@ -87,6 +87,7 @@ class ChannelType extends AbstractType
             'locales',
             'entity',
             array(
+                'by_reference'  => false,
                 'required'      => true,
                 'multiple'      => true,
                 'class'         => 'Pim\Bundle\ConfigBundle\Entity\Locale',
