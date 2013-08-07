@@ -5,7 +5,6 @@ namespace Oro\Bundle\EmailBundle\Provider;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -32,7 +31,10 @@ class VariablesProvider
     public function getTemplateVariables($entityName)
     {
         $userClassName = $this->getUser() ? get_class($this->getUser()) : false;
-        $allowedData = array();
+        $allowedData = array(
+            'entity' => array(),
+            'user'   => array()
+        );
         /**
          * @TODO Change when new code of entity config will be merged
          */
@@ -71,7 +73,6 @@ class VariablesProvider
 
         return $allowedData;
     }
-
 
     /**
      * Return current user

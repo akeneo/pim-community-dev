@@ -1,9 +1,41 @@
 {% macro renderAvailableVariablesWidget(entityName, dependentFieldId) %}
     <script type="text/javascript">
         $(function() {
+            'use strict';
+
             var availableVariables = {{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}};
 
-            console.log(availableVariables);
+            new Oro.Email.VariablesUpdater.View({
+                el:         $('#oro-email-available-variables'),
+                template:   $('#available-variables-lists-template'),
+                target:     $('#{{ dependentFieldId }}'),
+                model:      new Oro.Email.VariablesUpdater.Variable(availableVariables)
+            });
         })
     </script>
+
+    <script type="text/template" id="available-variables-lists-template">
+        <% if (userVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Logged in user:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(userVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ user.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+        <% if (entityVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Related entity:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(entityVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ entity.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+    </script>
+
+    <div class="well well-small span5" id="oro-email-available-variables"></div>
 {% endmacro %}

@@ -17,6 +17,9 @@ parameters:
     # Entity config event listener
     oro_email.listener.config_subscriber.class: Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber
 
+    # Providers
+    oro_email.provider.variable_provider.class: Oro\Bundle\EmailBundle\Provider\VariablesProvider
+
     # Cache keys
     oro_email.cache.available_in_template_key: 'oro_email.available_in_template_fields'
 
@@ -88,17 +91,24 @@ services:
             - @doctrine.orm.entity_manager
             - @translator
 
-    oro_email.config.available_in_templates:
-        tags:
-            - { name: oro_entity_config.provider, scope: email }
-
     oro_email.cache:
           parent: oro.cache.abstract
           calls:
               - [setNamespace, ['oro_email.cache']]
 
+    # Available variables services
     oro_email.listener.config_subscriber:
         class:      %oro_email.listener.config_subscriber.class%
         arguments:  [@oro_email.cache, %oro_email.cache.available_in_template_key%]
         tags:
             - { name: kernel.event_subscriber}
+
+    oro_email.config.available_in_templates:
+        tags:
+            - { name: oro_entity_config.provider, scope: email }
+
+    oro_email.provider.variable_provider:
+        class: %oro_email.provider.variable_provider.class%
+        arguments:
+            - @security.context
+            - @oro_email.config.available_in_templates
