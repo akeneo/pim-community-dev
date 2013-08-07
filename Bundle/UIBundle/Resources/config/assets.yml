@@ -14,7 +14,7 @@ js:
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.mousewheel.min.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.numeric.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.uniform.min.js'
-        - '@OroUIBundle/Resources/public/lib/jquery/select2.min.js'
+        - '@OroUIBundle/Resources/public/lib/jquery/select2.js'
     'bootstrap':
         - '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'

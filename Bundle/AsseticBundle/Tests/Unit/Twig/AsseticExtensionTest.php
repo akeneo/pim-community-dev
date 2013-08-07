@@ -38,7 +38,12 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->enabledBundles = array('testBundle');
 
-        $this->extension = new AsseticExtension($this->assetsFactory, $this->assets, $this->templateNameParser, $this->enabledBundles);
+        $this->extension = new AsseticExtension(
+            $this->assetsFactory,
+            $this->assets,
+            $this->templateNameParser,
+            $this->enabledBundles
+        );
     }
 
     public function testGetTokenParsers()
