@@ -4,6 +4,7 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
@@ -216,19 +217,17 @@ class EmailTemplateDatagridManager extends DatagridManager
     public function getToolbarOptions()
     {
         return array(
-            'pageSize' => array(
-                'items' => array(
-                    10, 20, 50, 100,
-                    array('size' => 0, 'label' => $this->translate('oro.grid.page_size.all'))
+                //'hide' => true,
+                'pageSize' => array(
+                    'items' => array(
+                        10, 20, 50, 100,
+                        array('size' => 0, 'label' => $this->translate('oro.grid.page_size.all'))
+                    ),
+                    //'hide' => true,
                 ),
-                'enable' => false,
-            ),
-            'pagination' => array(
-                'enable' => false,
-            ),
-            'actionsPanel' => array(
-                'enable' => true,
-            )
+                'pagination' => array(
+                    //'hide' => true,
+                ),
         );
     }
 }

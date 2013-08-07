@@ -407,7 +407,22 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function getDefaultPager()
     {
-        return array();
+        $defaultPager = array();
+        $options = $this->getToolBarOptions();
+
+        switch (true) {
+            case isset($options['hide']) && $options['hide']:
+                $defaultPager['_per_page'] = 0;
+                break;
+            case isset($options['pagination']['hide']) && $options['pagination']['hide']:
+                $defaultPager['_per_page'] = 0;
+                break;
+            case isset($options['pageSize']['hide']) && $options['pageSize']['hide']:
+                $defaultPager['_per_page'] = 0;
+                break;
+        }
+
+        return $defaultPager;
     }
 
     /**

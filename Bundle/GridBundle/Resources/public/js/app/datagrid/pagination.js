@@ -218,14 +218,10 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
             state: state
         })));
 
+        if (this.hidden) {
+            this.$el.hide();
+        }
+
         return this;
-    },
-
-    hide: function() {
-        this.$el.empty();
-    },
-
-    show: function() {
-        this.render()
     }
 });

@@ -43,6 +43,12 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
     /** @property */
     actionsPanel: Oro.Datagrid.ActionsPanel,
 
+    /** @property */
+    hidden: false,
+
+    /** @property */
+    filterSelector: '',
+
     /**
      * Initializer.
      *
@@ -73,6 +79,11 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         if (options.enable == false) {
             this.disable();
         }
+        if (options.hide == true) {
+            this.hide();
+        }
+
+        this.filterSelector = options.filter
 
         Backbone.View.prototype.initialize.call(this, options);
     },
@@ -98,6 +109,16 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.disable();
         this.pageSize.disable();
         this.actionsPanel.disable();
+        return this;
+    },
+
+    /**
+     * Hide toolbar
+     *
+     * @return {*}
+     */
+    hide: function() {
+        this.$el.hide();
         return this;
     },
 

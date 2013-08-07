@@ -251,8 +251,12 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             state.lastPage = firstPage === 0 ? totalPages - 1 : totalPages;
 
             // page out of range
-            if (currentPage > state.lastPage) {
+            if (currentPage > state.lastPage && state.pageSize > 0) {
                 state.currentPage = currentPage = state.lastPage;
+            }
+
+            if (state.pageSize == 0) {
+                state.currentPage = currentPage = 1;
             }
 
             // no results returned

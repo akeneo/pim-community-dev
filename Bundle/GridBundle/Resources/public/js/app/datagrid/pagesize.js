@@ -38,6 +38,9 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
     /** @property */
     enabledNow: true,
 
+    /** @property */
+    hidden: false,
+
     /**
      * Initializer.
      *
@@ -62,6 +65,7 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
         this.listenTo(this.collection, "reset", this.render);
 
         this.enabled = options.enable != false;
+        this.hidden = options.hide == true;
 
         Backbone.View.prototype.initialize.call(this, options);
     },
@@ -97,9 +101,15 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
         e.preventDefault();
         var pageSize = parseInt($(e.target).data('size'));
         if (pageSize !== this.collection.state.pageSize) {
-            this.collection.state.pageSize = pageSize;
-            this.collection.fetch();
+            this.changePageSize(pageSize);
         }
+    },
+
+    changePageSize: function(pageSize) {
+        this.collection.state.pageSize = pageSize;
+        this.collection.fetch();
+
+        return this;
     },
 
     render: function() {
@@ -122,6 +132,10 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
             items: this.items,
             currentSizeLabel: currentSizeLabel
         })));
+
+        if (this.hidden) {
+            this.$el.hide();
+        }
 
         return this;
     }

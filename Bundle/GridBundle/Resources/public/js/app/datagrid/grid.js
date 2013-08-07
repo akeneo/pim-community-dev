@@ -41,7 +41,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         grid:        '.grid',
         toolbar:     '.toolbar',
         noDataBlock: '.no-data',
-        loadingMask: '.loading-mask'
+        loadingMask: '.loading-mask',
+        filterBox:   '.filter-box'
     },
 
     /** @property {Oro.Datagrid.Header} */
@@ -384,10 +385,12 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         if (this.collection.models.length > 0) {
             this.$(this.selectors.toolbar).show();
             this.$(this.selectors.grid).show();
+            this.$(this.selectors.filterBox).show();
             this.$(this.selectors.noDataBlock).hide();
         } else {
             this.$(this.selectors.grid).hide();
             this.$(this.selectors.toolbar).hide();
+            this.$(this.selectors.filterBox).hide();
             this.$(this.selectors.noDataBlock).show();
         }
     },
