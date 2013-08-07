@@ -47,7 +47,7 @@ class ConfigEntityGridController extends Controller
         /** @var ConfigProvider $configProvider */
         $configProvider = $this->get('oro_entity_config.provider.extend');
         $entityConfig   = $configProvider->getConfig($entity->getClassName());
-        $fieldConfigIds = $configProvider->getFieldConfigIds($entity->getClassName());
+        $fieldConfigIds = $configProvider->getConfigIds($entity->getClassName());
 
         $data = $entityConfig->has('unique_key') ? $entityConfig->get('unique_key') : array();
 

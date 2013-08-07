@@ -130,7 +130,7 @@ class Generator
             )
         );
 
-        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+        if ($fieldIds = $this->configProvider->getConfigIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['code'] = $fieldId->getFieldName();
@@ -207,7 +207,7 @@ class Generator
             );
 
         $toArray = '';
-        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+        if ($fieldIds = $this->configProvider->getConfigIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
                     $fieldName = $fieldId->getFieldName();
@@ -287,7 +287,7 @@ class Generator
             );
 
         $toArray = '';
-        if ($fieldIds = $this->configProvider->getFieldConfigIds($entityName)) {
+        if ($fieldIds = $this->configProvider->getConfigIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 $fieldName = $fieldId->getFieldName();
 

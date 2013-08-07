@@ -61,15 +61,6 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param $className
-     * @return FieldConfigId[]
-     */
-    public function getFieldConfigIds($className)
-    {
-        return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
-    }
-
-    /**
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
@@ -131,6 +122,54 @@ class ConfigProvider implements ConfigProviderInterface
         $this->persist($config);
 
         return $config;
+    }
+
+    /**
+     * @param null $className
+     * @return FieldConfigId[]
+     */
+    public function getConfigIds($className = null)
+    {
+        if ($className) {
+            return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
+        } else {
+            return $this->configManager->getEntityConfigIds($this->getScope());
+        }
+    }
+
+    /**
+     * @param null $className
+     * @return array|ConfigInterface[]
+     */
+    public function getConfigs($className = null)
+    {
+        $result = array();
+
+        foreach ($this->getConfigIds($className) as $configId) {
+            $result[] = $this->getConfig($configId);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param callable $map
+     * @param null     $className
+     * @return array|ConfigInterface[]
+     */
+    public function map(\Closure $map, $className = null)
+    {
+        return array_map($map, $this->getConfigs($className));
+    }
+
+    /**
+     * @param callable $filter
+     * @param null     $className
+     * @return array|ConfigInterface[]
+     */
+    public function filter(\Closure $filter, $className = null)
+    {
+        return array_filter($this->getConfigs($className), $filter);
     }
 
     /**

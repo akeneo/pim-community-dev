@@ -10,9 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+
 use Oro\Bundle\EntityExtendBundle\Tools\Schema;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+
 
 /**
  * EntityExtendBundle controller.
@@ -51,7 +55,7 @@ class ApplyController extends Controller
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
-        $extendFieldConfigIds = $extendConfigProvider->getFieldConfigIds($entity->getClassName());
+        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
 
         /** @var Schema $schemaTools */
         $schemaTools = $this->get('oro_entity_extend.tools.schema');
@@ -61,10 +65,8 @@ class ApplyController extends Controller
          */
         $validation = array();
 
-        foreach ($extendFieldConfigIds as $fieldConfigId) {
-            /** @var  $fieldConfig */
-            $fieldConfig = $extendConfigProvider->getConfig($fieldConfigId);
-            //$isSystem = $schemaTools->checkFieldIsSystem($field);
+        /** @var Config $fieldConfig */
+        foreach ($extendFieldConfigs as $fieldConfig) {
             $isSystem = $fieldConfig->get('owner') == 'System' ? true : false;
             if ($isSystem) {
                 continue;
@@ -74,20 +76,20 @@ class ApplyController extends Controller
                 if ($fieldConfig->get('state') == 'New') {
                     $isValid = true;
                 } else {
-                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfigId);
+                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfig->getConfigId());
                 }
 
                 if ($isValid) {
                     $validation['success'][] = sprintf(
                         "Field '%s(%s)' is valid. State -> %s",
-                        $fieldConfigId->getFieldName(),
+                        $fieldConfig->getConfigId()->getFieldName(),
                         $fieldConfig->get('owner'),
                         $fieldConfig->get('state')
                     );
                 } else {
                     $validation['error'][] = sprintf(
                         "Warning. Field '%s(%s)' has data.",
-                        $fieldConfigId->getFieldName(),
+                        $fieldConfig->getConfigId()->getFieldName(),
                         $fieldConfig->get('owner')
                     );
                 }
@@ -146,15 +148,14 @@ class ApplyController extends Controller
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
-        $extendFieldConfigIds = $extendConfigProvider->getFieldConfigIds($entity->getClassName());
+        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
 
-        $extendConfig->set('state', 'Active');
+        $extendConfig->set('state', ExtendManager::STATE_ACTIVE);
         $extendConfigProvider->persist($extendConfig);
 
-        foreach ($extendFieldConfigIds as $fieldId) {
-            $fieldConfig = $extendConfigProvider->getConfigById($fieldId);
-            if ($fieldConfig->get('owner') != 'System') {
-                $fieldConfig->set('state', 'Active');
+        foreach ($extendFieldConfigs as $fieldConfig) {
+            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM) {
+                $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
                 $extendConfigProvider->persist($fieldConfig);
             }
         }
