@@ -20,6 +20,9 @@ parameters:
     # Cache keys
     oro_email.cache.available_in_template_key: 'oro_email.available_in_template_fields'
 
+    # Email renderer, twig instance
+    oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
+
 services:
     # Email template field
     oro_email.form.subscriber.emailtemplate:
@@ -102,3 +105,40 @@ services:
         arguments:  [@oro_email.cache, %oro_email.cache.available_in_template_key%]
         tags:
             - { name: kernel.event_subscriber}
+
+    # email template twig instance
+    oro_email.twig.string_loader:
+        class: Twig_Loader_String
+
+    oro_email.email_renderer:
+        class: %oro_email.email_renderer.class%
+        arguments:
+            - @oro_email.twig.string_loader
+            - [] # twig environment options
+            - @oro_email.config.available_in_templates
+            - @oro_email.cache
+            - %oro_email.cache.available_in_template_key%
+            - @security.context
+        calls:
+            # add extension sandbox using method call and not twig.extension tag cause we need to add sandbox only to this instance
+            - [ addExtension, [@oro_email.twig.email_sandbox] ]
+
+    oro_email.twig.email_security_policy:
+        class: Twig_Sandbox_SecurityPolicy
+        arguments:
+            # tags
+            - [ 'if', 'app' ]
+            # filters
+            - [ 'upper', 'escape' ]
+            # methods
+            - []
+            # properties
+            - []
+            # functions
+            - []
+
+    oro_email.twig.email_sandbox:
+        class: Twig_Extension_Sandbox
+        arguments:
+            - @oro_email.twig.email_security_policy
+            - true # use sandbox globally in instance

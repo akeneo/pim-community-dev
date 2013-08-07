@@ -123,13 +123,19 @@ class EmailTemplateController extends Controller
      *      parent="oro_email_emailtemplate"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
-     * @param EmailTemplate $entity
+     * @param EmailTemplate $emailTemplate
      * @return array
      */
-    public function previewAction(EmailTemplate $entity)
+    public function previewAction(EmailTemplate $emailTemplate)
     {
+        $sampleEntity = '';
+
+        list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
+            ->compileMessage($emailTemplate, array('entity' => $sampleEntity));
+
         return array(
-            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
+            'subject' => $subjectRendered,
+            'content' => $templateRendered,
         );
     }
 }

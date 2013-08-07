@@ -106,15 +106,11 @@ services:
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%
         arguments:
-            - @oro_notification.twig
+            - @oro_email.email_renderer
             - @oro_notification.mailer
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
             - @logger
-            - @security.context
-            - @oro_email.config.available_in_templates
-            - @oro_email.cache
-            - %oro_email.cache.available_in_template_key%
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
@@ -143,34 +139,4 @@ services:
         arguments:
             - @oro_notification.mailer.transport
 
-    # notification twig instance
-    oro_notification.twig.string_loader:
-        class: Twig_Loader_String
 
-    oro_notification.twig:
-        class: Twig_Environment
-        arguments:
-            - @oro_notification.twig.string_loader
-        calls:
-            # add extension sandbox using method call and not twig.extension tag cause we need to add sandbox only to this instance
-            - [ addExtension, [@oro_notification.twig.email_sandbox] ]
-
-    oro_notification.twig.email_security_policy:
-        class: Twig_Sandbox_SecurityPolicy
-        arguments:
-            # tags
-            - [ 'if', 'app' ]
-            # filters
-            - [ 'upper', 'escape' ]
-            # methods
-            - []
-            # properties
-            - []
-            # functions
-            - []
-
-    oro_notification.twig.email_sandbox:
-        class: Twig_Extension_Sandbox
-        arguments:
-            - @oro_notification.twig.email_security_policy
-            - true # use sandbox globally in instance
