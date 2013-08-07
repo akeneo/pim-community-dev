@@ -275,7 +275,9 @@ class FixturesContext extends RawMinkContext
             }
 
             $locale->setFallback($data['fallback']);
-            $locale->setActivated($data['activated'] === 'yes');
+            if ($data['activated'] === 'yes') {
+                $locale->activate();
+            }
 
             $em->persist($locale);
         }
