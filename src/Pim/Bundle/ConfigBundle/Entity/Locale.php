@@ -238,13 +238,13 @@ class Locale
 
     /**
      * Deactivate the locale
-     * Only if it's no more link to a channel
+     * Only if it's no more link to a channel so <= 1 because it's call before persist
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function deactivate()
     {
-        if ($this->getChannels()->count() === 1) {
+        if ($this->getChannels()->count() <= 1) {
             $this->activated = false;
         }
 
