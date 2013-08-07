@@ -10,6 +10,8 @@ function runInit() {
 function init() {
     // Place code that we need to run on every page load here
     $('.has-sidebar').sidebarize();
+
+    $('.switch:not(.has-switch)').bootstrapSwitch();
 }
 
 $(function() {

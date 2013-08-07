@@ -11,12 +11,12 @@
 
     {% set buttons %}
     <div class="btn-group">
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
             <i class="icon-plus icon-white"></i>{{ createBtnLbl }}
         </a>
         <ul class="dropdown-menu pull-right">
             {% for connector, jobs in connectors %}
-            <li class="disabled"><a href="#"><b>{{ connector }}</b></a></li>
+            <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>
                 {% for alias, job in jobs %}
                 <li><a href="{{ path(createRouteName, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
                 {% endfor %}
