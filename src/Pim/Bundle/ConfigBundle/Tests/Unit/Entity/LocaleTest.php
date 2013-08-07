@@ -16,12 +16,27 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
 class LocaleTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var Locale
+     */
+    protected $locale;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->locale = new Locale();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $locale = new Locale();
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Locale', $locale);
+        $this->assertEntity($this->locale);
+        $this->assertFalse($this->locale->isActivated());
     }
 
     /**
@@ -29,13 +44,12 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetId()
     {
-        $locale = new Locale();
-        $this->assertEmpty($locale->getId());
+        $this->assertEmpty($this->locale->getId());
 
         // change value and assert new
         $newId = 5;
-        $locale->setId($newId);
-        $this->assertEquals($newId, $locale->getId());
+        $this->assertEntity($this->locale->setId($newId));
+        $this->assertEquals($newId, $this->locale->getId());
     }
 
     /**
@@ -43,13 +57,12 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCode()
     {
-        $locale = new Locale();
-        $this->assertEmpty($locale->getCode());
+        $this->assertEmpty($this->locale->getCode());
 
         // change value and assert new
         $newCode = 'fr_FR';
-        $locale->setCode($newCode);
-        $this->assertEquals($newCode, $locale->getCode());
+        $this->assertEntity($this->locale->setCode($newCode));
+        $this->assertEquals($newCode, $this->locale->getCode());
     }
 
     /**
@@ -57,13 +70,12 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetFallback()
     {
-        $locale = new Locale();
-        $this->assertEmpty($locale->getFallback());
+        $this->assertEmpty($this->locale->getFallback());
 
         // change value and assert new
         $newFallback = 'fr_FR';
-        $locale->setFallback($newFallback);
-        $this->assertEquals($newFallback, $locale->getFallback());
+        $this->assertEntity($this->locale->setFallback($newFallback));
+        $this->assertEquals($newFallback, $this->locale->getFallback());
     }
 
     /**
@@ -71,15 +83,13 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDefaultCurrency()
     {
-        $locale = new Locale();
-
         $currencyCode = 'USD';
         $currencyUs = $this->createCurrency($currencyCode);
-        $this->assertNull($locale->getDefaultCurrency());
+        $this->assertNull($this->locale->getDefaultCurrency());
 
-        $locale->setDefaultCurrency($currencyUs);
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $locale->getDefaultCurrency());
-        $this->assertEquals($locale->getDefaultCurrency()->getCode(), $currencyCode);
+        $this->assertEntity($this->locale->setDefaultCurrency($currencyUs));
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $this->locale->getDefaultCurrency());
+        $this->assertEquals($this->locale->getDefaultCurrency()->getCode(), $currencyCode);
     }
 
     /**
@@ -97,27 +107,36 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is/setter for activated property
-     */
-    public function testIsSetActivated()
-    {
-        $locale = new Locale();
-        $this->assertTrue($locale->isActivated());
-
-        // change value and assert new
-        $newActivated = false;
-        $locale->setActivated($newActivated);
-        $this->assertFalse($locale->isActivated());
-    }
-
-    /**
      * Test for __toString method
      */
     public function testToString()
     {
-        $locale = new Locale();
         $code = 'en_US';
-        $locale->setCode($code);
-        $this->assertEquals($code, $locale->__toString());
+        $this->locale->setCode($code);
+        $this->assertEquals($code, $this->locale->__toString());
+    }
+
+    /**
+     * Test activate/deactivate locale and chech isActivated method
+     */
+    public function testActivateDeactivate()
+    {
+        $this->assertFalse($this->locale->isActivated());
+
+        $this->assertEntity($this->locale->activate());
+        $this->assertTrue($this->locale->isActivated());
+
+        $this->assertEntity($this->locale->deactivate());
+        $this->assertFalse($this->locale->isActivated());
+    }
+
+    /**
+     * Assert an entity
+     *
+     * @param Locale $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Locale', $entity);
     }
 }

@@ -220,20 +220,6 @@ class Channel
     }
 
     /**
-     * Set currencies
-     *
-     * @param ArrayCollection $currencies
-     *
-     * @return Channel
-     */
-    public function setCurrencies($currencies)
-    {
-        $this->currencies = $currencies;
-
-        return $this;
-    }
-
-    /**
      * Get locales
      *
      * @return ArrayCollection

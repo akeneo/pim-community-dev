@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ConfigBundle\Entity\Locale;
+
+use Pim\Bundle\ConfigBundle\Entity\Currency;
+
+use Pim\Bundle\ProductBundle\Entity\Category;
+
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 
 /**
@@ -15,12 +21,26 @@ use Pim\Bundle\ConfigBundle\Entity\Channel;
 class ChannelTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var Channel
+     */
+    protected $channel;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->channel = new Channel();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $channel = new Channel();
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Channel', $channel);
+        $this->assertEntity($this->channel);
     }
 
     /**
@@ -28,13 +48,12 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetId()
     {
-        $channel = new Channel();
-        $this->assertEmpty($channel->getId());
+        $this->assertEmpty($this->channel->getId());
 
         // change value and assert new
         $newId = 5;
-        $channel->setId($newId);
-        $this->assertEquals($newId, $channel->getId());
+        $this->assertEntity($this->channel->setId($newId));
+        $this->assertEquals($newId, $this->channel->getId());
     }
 
     /**
@@ -42,13 +61,12 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCode()
     {
-        $channel = new Channel();
-        $this->assertEmpty($channel->getCode());
+        $this->assertEmpty($this->channel->getCode());
 
         // change value and assert new
         $newCode = 'ecommerce';
-        $channel->setCode($newCode);
-        $this->assertEquals($newCode, $channel->getCode());
+        $this->assertEntity($this->channel->setCode($newCode));
+        $this->assertEquals($newCode, $this->channel->getCode());
     }
 
     /**
@@ -56,12 +74,130 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetName()
     {
-        $channel = new Channel();
-        $this->assertEmpty($channel->getName());
+        $this->assertEmpty($this->channel->getName());
 
         // change value and assert new
         $newName = 'E-Commerce';
-        $channel->setName($newName);
-        $this->assertEquals($newName, $channel->getName());
+        $this->assertEntity($this->channel->setName($newName));
+        $this->assertEquals($newName, $this->channel->getName());
+    }
+
+    /**
+     * Test getter/setter for category property
+     */
+    public function testGetSetCategory()
+    {
+        $this->assertNull($this->channel->getCategory());
+
+        $expectedCategory = $this->createCategory('test-tree');
+        $this->assertEntity($this->channel->setCategory($expectedCategory));
+        $this->assertEquals($expectedCategory, $this->channel->getCategory());
+    }
+
+    /**
+     * Create a category for testing
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
+     */
+    protected function createCategory($code)
+    {
+        $category = new Category();
+        $category->setCode($code);
+
+        return $category;
+    }
+
+    /**
+     * Test getter/add/remove for currency property
+     */
+    public function testGetAddRemoveCurrency()
+    {
+        $this->assertCount(0, $this->channel->getCurrencies());
+
+        // assert adding the right entity
+        $expectedCurrencyEUR = $this->createCurrency('EUR');
+        $this->assertEntity($this->channel->addCurrency($expectedCurrencyEUR));
+        $this->assertCount(1, $this->channel->getCurrencies());
+
+        $currency = $this->channel->getCurrencies()->first();
+        $this->assertEquals($expectedCurrencyEUR, $currency);
+
+        // assert removing the right entity
+        $expectedCurrencyUSD = $this->createCurrency('USD');
+        $this->channel->addCurrency($expectedCurrencyUSD);
+        $this->assertCount(2, $this->channel->getCurrencies());
+
+        $this->assertEntity($this->channel->removeCurrency($expectedCurrencyEUR));
+        $this->assertCount(1, $this->channel->getCurrencies());
+        $currency = $this->channel->getCurrencies()->first();
+        $this->assertEquals($expectedCurrencyUSD, $currency);
+    }
+
+    /**
+     * Create a currency for testing
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
+     */
+    protected function createCurrency($code)
+    {
+        $currency = new Currency();
+        $currency->setCode($code);
+
+        return $currency;
+    }
+
+    /**
+     * Test getter/add/remove for locale property
+     */
+    public function testGetAddRemoveLocale()
+    {
+        $this->assertCount(0, $this->channel->getLocales());
+
+        // assert adding the right entity
+        $expectedLocaleFR = $this->createLocale('fr_FR');
+        $this->assertEntity($this->channel->addLocale($expectedLocaleFR));
+        $this->assertCount(1, $this->channel->getLocales());
+
+        $locale = $this->channel->getLocales()->first();
+        $this->assertEquals($expectedLocaleFR, $locale);
+
+        // assert removing the right entity
+        $expectedLocaleEN = $this->createLocale('en_US');
+        $this->channel->addLocale($expectedLocaleEN);
+        $this->assertCount(2, $this->channel->getLocales());
+
+        $this->assertEntity($this->channel->removeLocale($expectedLocaleFR));
+        $this->assertCount(1, $this->channel->getLocales());
+        $locale = $this->channel->getLocales()->first();
+        $this->assertEquals($expectedLocaleEN, $locale);
+    }
+
+    /**
+     * Create a locale for testing
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ConfigBundle\Tests\Unit\Entity\Locale
+     */
+    protected function createLocale($code)
+    {
+        $locale = new Locale();
+        $locale->setCode($code);
+
+        return $locale;
+    }
+
+    /**
+     * Assert an entity
+     *
+     * @param Channel $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Channel', $entity);
     }
 }
