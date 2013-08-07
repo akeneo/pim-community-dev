@@ -117,14 +117,14 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
-        /*
+
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',
             array(
                 'id' => $product->getId()
             )
-        );*/
+        );
 
         // Refreshing the history datagrid
         /*
@@ -183,7 +183,7 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
-            //'datagrid'       => $datagrid->createView(),
+            'datagrid'       => $datagrid->createView(),
         );
     }
 
