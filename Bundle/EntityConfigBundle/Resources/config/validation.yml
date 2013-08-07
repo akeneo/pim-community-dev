@@ -12,3 +12,15 @@ Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel:
                 - Choice:
                     choices:  [string, integer, smallint, bigint, boolean, decimal, date, time, datetime, text, float]
                     message:  Choose a valid Data Type.
+
+Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel:
+        constraints:
+            - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [className]
+        properties:
+            className:
+                - NotBlank:     ~
+                - Regex:        "/^[a-zA-Z_]*$/i"
+                - Length:
+                    min:        5
+                    max:        50
+

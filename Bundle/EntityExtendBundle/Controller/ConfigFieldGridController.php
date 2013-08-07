@@ -125,6 +125,10 @@ class ConfigFieldGridController extends Controller
         $configManager = $this->get('oro_entity_config.config_manager');
         $newFieldModel = $configManager->createConfigFieldModel($entity->getClassName(), $fieldName, $fieldType);
 
+        $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
+        $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+        $extendFieldConfig->set('is_extend', true);
+
         $form = $this->createForm('oro_entity_config_type', null, array(
             'config_model' => $newFieldModel,
         ));
@@ -156,7 +160,7 @@ class ConfigFieldGridController extends Controller
                 'field_config'  => $fieldConfig,
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
-                'formAction'    => $this->generateUrl('oro_entityextend_field_update',array('id' => $entity->getId()))
+                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId()))
             ));
     }
 

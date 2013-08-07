@@ -196,6 +196,10 @@ class ConfigManager
      */
     public function isConfigurable($className)
     {
+        if ($this->getConfigModel($className)) {
+            return true;
+        }
+
         /** @var ConfigClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataForClass($className);
 
@@ -298,20 +302,23 @@ class ConfigManager
     }
 
     /**
-     * @param $className
+     * @param      $className
+     * @param bool $passMeta
      * @return EntityConfigModel
      */
-    public function createConfigEntityModel($className)
+    public function createConfigEntityModel($className, $passMeta = false)
     {
         if (!$entityModel = $this->getConfigModel($className)) {
-            /** @var ConfigClassMetadata $metadata */
-            $metadata = $this->metadataFactory->getMetadataForClass($className);
+            if (!$passMeta) {
+                /** @var ConfigClassMetadata $metadata */
+                $metadata = $this->metadataFactory->getMetadataForClass($className);
+            }
 
             $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getConfigContainer()->getDefaultValues();
-                if (isset($metadata->defaultValues[$provider->getScope()])) {
+                if (!$passMeta && isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 

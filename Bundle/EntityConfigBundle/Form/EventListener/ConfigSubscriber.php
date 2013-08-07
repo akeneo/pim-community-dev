@@ -43,7 +43,6 @@ class ConfigSubscriber implements EventSubscriberInterface
         $options     = $event->getForm()->getConfig()->getOptions();
         $configModel = $options['config_model'];
 
-
         if ($configModel instanceof FieldConfigModel) {
             $className = $configModel->getEntity()->getClassName();
             $fieldName = $configModel->getFieldName();

@@ -54,9 +54,14 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function newConfigModel(NewEntityConfigModelEvent $event)
     {
-        /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
-        if ($metadata && $metadata->isExtend) {
+        if ($this->extendManager->getConfigProvider()->hasConfig($event->getClassName())) {
+            $isExtend = $this->extendManager->getConfigProvider()->getConfig($event->getClassName())->is('is_extend');
+        } else {
+            $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
+            $isExtend = $metadata && $metadata->isExtend;
+        }
+
+        if ($isExtend) {
             $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
             $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
 
@@ -81,7 +86,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        $scope = $event->getConfig()->getConfigId()->getScope();
+        $scope     = $event->getConfig()->getConfigId()->getScope();
         $className = $event->getConfig()->getConfigId()->getClassName();
 
         if ($scope == 'extend'
