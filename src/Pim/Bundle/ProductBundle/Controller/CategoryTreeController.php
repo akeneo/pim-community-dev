@@ -276,9 +276,10 @@ class CategoryTreeController extends Controller
             )
         );
 
+        /*
         if ($request->isXmlHttpRequest()) {
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
-        }
+        }*/
 
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
@@ -306,7 +307,7 @@ class CategoryTreeController extends Controller
 
         return array(
             'form'     => $form->createView(),
-            'datagrid' => $datagrid->createView(),
+            //'datagrid' => $datagrid->createView(),
         );
     }
 
