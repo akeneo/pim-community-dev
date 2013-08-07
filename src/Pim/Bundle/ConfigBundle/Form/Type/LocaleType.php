@@ -114,7 +114,7 @@ class LocaleType extends AbstractType
      * Add event subscriber
      * @param FormBuilderInterface $builder
      *
-     * @return void
+     * @TODO : Explain what is the objective of this method
      */
     protected function addSubscriber(FormBuilderInterface $builder)
     {
