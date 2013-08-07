@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
@@ -52,9 +54,6 @@ class LocaleType extends AbstractType
 
         $this->addCurrencyField($builder);
 
-        // TODO : must be removed
-        $builder->add('activated', 'hidden');
-
         $this->addSubscriber($builder);
     }
 
@@ -102,14 +101,8 @@ class LocaleType extends AbstractType
                 'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
                 'property'      => 'code',
                 'multiple'      => false,
-                'query_builder' => function (EntityRepository $repository) {
-                    $query = $repository->createQueryBuilder('c');
-                    $query->andwhere(
-                        $query->expr()->eq('c.activated', true)
-                    )
-                    ->orderBy('c.code');
-
-                    return $query;
+                'query_builder' => function (CurrencyRepository $repository) {
+                    return $repository->getActivatedCurrenciesQB();
                 },
                 'required'      => true,
                 'label'         => 'Default currency (to display)'
