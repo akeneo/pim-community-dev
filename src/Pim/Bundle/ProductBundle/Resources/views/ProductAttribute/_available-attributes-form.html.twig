@@ -2,23 +2,3 @@
     {{ form_widget(form.attributes) }}
     {{ form_widget(form._token) }}
 </form>
-<script>
-$(function() {
-    $('#{{ form.attributes.vars.id }}').select2('destroy');
-
-    $('#{{ form.attributes.vars.id }}').pimMultiselect({
-        title: "{{ 'Add attributes'|trans }}",
-        placeholder: "{{ 'Search'|trans }}",
-        emptyText: "{{ 'There are no more attributes to add'|trans }}",
-        appendTo: '#attribute-buttons',
-        buttons: {
-            "{{ 'Add'|trans }}": function() {
-                $('#{{ form.attributes.vars.id }}').multiselect('close');
-                if ($('#{{ form.attributes.vars.id }}').val() !== null) {
-                    $('#{{ form.vars.id }}').submit();
-                }
-            }
-        }
-    });
-})
-</script>

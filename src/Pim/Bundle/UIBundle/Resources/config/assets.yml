@@ -13,8 +13,9 @@ js:
     - '@PimUIBundle/Resources/public/js/jquery.scopableField.js'
     - '@PimUIBundle/Resources/public/js/jquery.currencyField.js'
     - '@OroUIBundle/Resources/public/lib/jstree/jquery.cookie.js'
-    - '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
-    - '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
+    - '@OroUIBundle/Resources/public/lib/backbone.bootstrap-modal.js'
+    - '@OroUIBundle/Resources/public/lib/jstree/jquery.hotkeys.js'
+    - '@OroUIBundle/Resources/public/lib/jstree/jquery.jstree.js'
 css:
   pim_ui:
     - 'bundles/pimui/css/pim.less'
