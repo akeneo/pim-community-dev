@@ -264,7 +264,7 @@ class Channel
     }
 
     /**
-     * Post remove method to deactivate unusable locales
+     * Pre remove method to deactivate unusable locales
      *
      * @ORM\PreRemove
      */
