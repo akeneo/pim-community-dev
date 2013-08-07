@@ -1,30 +1,34 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Pim\Bundle\ProductBundle\Entity\Product;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
+
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
+use Oro\Bundle\UserBundle\Entity\User;
+
+use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
-* Load products
-*
-* Execute with "php app/console doctrine:fixtures:load"
-*
+ * Load products
+ *
+ * Execute with "php app/console doctrine:fixtures:load"
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-*
-*/
+ *
+ */
 class LoadProductData extends AbstractDemoFixture
 {
     /**
@@ -66,8 +70,10 @@ class LoadProductData extends AbstractDemoFixture
         // get locales, scopes, currencies
         $locales = array();
         foreach (array('en_US', 'fr_FR', 'de_DE') as $localeCode) {
+            // TODO : must be get with reference or activated value
             $locales[$localeCode] = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $localeCode));
         }
+
         $scopes = array();
         foreach (array('ecommerce', 'mobile') as $scopeCode) {
             $scopes[$scopeCode] = $this->getReference('channel.'.$scopeCode);
@@ -77,7 +83,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute color options
         $attColor  = $this->getReference('product-attribute.color');
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attColor)
+                array('attribute' => $attColor)
         );
         $colors = array();
         foreach ($optColors as $option) {
@@ -87,7 +93,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute size options
         $attSize  = $this->getReference('product-attribute.size');
         $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attSize)
+                array('attribute' => $attSize)
         );
         $sizes = array();
         foreach ($optSizes as $option) {
@@ -97,7 +103,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute manufacturer options
         $attManufact = $this->getReference('product-attribute.manufacturer');
         $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attManufact)
+                array('attribute' => $attManufact)
         );
         $manufacturers = array();
         foreach ($optManufact as $option) {
@@ -108,11 +114,6 @@ class LoadProductData extends AbstractDemoFixture
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
             $product = $this->getProductManager()->createFlexible();
-
-            // enable the product on locales
-            foreach ($locales as $locale) {
-                $product->addLocale($locale);
-            }
 
             // sku
             $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
@@ -218,3 +219,4 @@ class LoadProductData extends AbstractDemoFixture
         return 140;
     }
 }
+
