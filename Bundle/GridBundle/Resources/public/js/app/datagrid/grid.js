@@ -65,6 +65,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     defaults: {
         noDataHint: 'No data found.',
+        noResultsHint: 'No items found during search.',
         rowClickActionClass: 'row-click-action',
         rowClassName: '',
         toolbarOptions: {},
@@ -340,8 +341,15 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * Render no data block.
      */
     renderNoDataBlock: function() {
-        this.$(this.selectors.noDataBlock).append($(this.noDataTemplate({
-            hint: this.noDataHint.replace('\n', '<br />')
+        if (this.collection.state.filters.name == undefined) {
+            // no filters
+            var dataHint = this.noDataHint;
+        } else {
+            // some filters exists
+            var dataHint = this.noResultsHint;
+        }
+        this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
+            hint: dataHint.replace('\n', '<br />')
         }))).hide();
         this._updateNoDataBlock();
     },
@@ -367,7 +375,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         if (this.requestsCount == 0) {
             this.loadingMask.hide();
             this.toolbar.enable();
-            this._updateNoDataBlock();
+            // render block instead of update in order to change message depending on filter state
+            this.renderNoDataBlock();
             /**
              * Backbone event. Fired when data for grid has been successfully rendered.
              * @event grid_load:complete
