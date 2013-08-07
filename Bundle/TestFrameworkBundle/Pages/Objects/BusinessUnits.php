@@ -25,6 +25,10 @@ class BusinessUnits extends PageFilteredGrid
         return $businessunit->init();
     }
 
+    /**
+     * @param array $entityData
+     * @return BusinessUnit
+     */
     public function open($entityData = array())
     {
         $contact = $this->getEntity($entityData);
@@ -35,6 +39,11 @@ class BusinessUnits extends PageFilteredGrid
         return new BusinessUnit($this->test);
     }
 
+    /**
+     * @param $unitname
+     * @param $contextname
+     * @return $this
+     */
     public function checkContextMenu($unitname, $contextname)
     {
         $this->filterBy('Name', $unitname);
@@ -42,9 +51,9 @@ class BusinessUnits extends PageFilteredGrid
         if ($this->byXpath("//td[@class='action-cell']//a[contains(., '...')]")->displayed()) {
             $this->byXPath("//td[@class='action-cell']//a[contains(., '...')]")->click();
             $this->waitForAjax();
-            $this->assertElementNotPresent("//td[@class='action-cell']//a[@title= '{$contextname}']");
-        } else {
-            return true;
+            return $this->assertElementNotPresent("//td[@class='action-cell']//a[@title= '{$contextname}']");
         }
+
+        return $this;
     }
 }

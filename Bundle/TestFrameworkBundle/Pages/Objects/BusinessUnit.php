@@ -9,11 +9,6 @@ class BusinessUnit extends AbstractEntity implements Entity
 {
     protected $businessunitname;
 
-    public function __construct($testCase, $redirect = true)
-    {
-        parent::__construct($testCase, $redirect);
-    }
-
     public function init()
     {
         $this->businessunitname = $this->byId('oro_business_unit_form_name');
@@ -21,6 +16,10 @@ class BusinessUnit extends AbstractEntity implements Entity
         return $this;
     }
 
+    /**
+     * @param $accountname
+     * @return $this
+     */
     public function setBusinessUnitName($accountname)
     {
         $this->businessunitname->clear();
@@ -28,6 +27,9 @@ class BusinessUnit extends AbstractEntity implements Entity
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getBusinessUnitName()
     {
         return $this->businessunitname->value();
