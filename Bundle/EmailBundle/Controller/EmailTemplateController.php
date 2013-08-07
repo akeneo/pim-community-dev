@@ -113,4 +113,23 @@ class EmailTemplateController extends Controller
     {
         return $this->updateAction(clone $entity, true);
     }
+
+    /**
+     * @Route("/preview/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
+     * @Acl(
+     *      id="oro_email_emailtemplate_preview",
+     *      name="Preview email template",
+     *      description="Preview email template",
+     *      parent="oro_email_emailtemplate"
+     * )
+     * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
+     * @param EmailTemplate $entity
+     * @return array
+     */
+    public function previewAction(EmailTemplate $entity)
+    {
+        return array(
+            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
+        );
+    }
 }

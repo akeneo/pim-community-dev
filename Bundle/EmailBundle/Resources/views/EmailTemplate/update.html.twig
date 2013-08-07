@@ -17,6 +17,17 @@
 %}
 
 {% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_preview') %}
+        {{ UI.button({
+                'path' :  path('oro_email_emailtemplate_preview', {'id': form.vars.value.id}),
+                'title' : 'Preview',
+                'label' : 'Preview',
+                aClass: 'btn-success',
+                iClass: 'icon-share'
+            })
+        }}
+    {% endif %}
+
     {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_clone') %}
         {{ UI.button({
                 'path' :  path('oro_email_emailtemplate_clone', {'id': form.vars.value.id}),
@@ -28,6 +39,7 @@
         }}
         {{ UI.buttonSeparator() }}
     {% endif %}
+
     {% set cancelButton = UI.button({'path' : path('oro_email_emailtemplate_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) %}
     {% if form.vars.value.isSystem == false %}
         {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_remove') %}
