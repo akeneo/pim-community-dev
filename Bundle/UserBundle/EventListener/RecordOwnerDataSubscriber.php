@@ -21,7 +21,7 @@ class RecordOwnerDataSubscriber implements EventSubscriber
     protected $container;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -63,13 +63,13 @@ class RecordOwnerDataSubscriber implements EventSubscriber
             if(method_exists($entity, 'setUserOwner')) {
                 $entity->setUserOwner($user);
             }
-            $businessUnits = $user->getBusinessUnits();
-            $businessUnit = $businessUnits->first();
-            if(method_exists($entity, 'setBusinessUnitOwner')) {
-                $entity->setBusinessUnitOwner($businessUnit);
-            }
-            if(method_exists($entity, 'setOrganizationOwner')) {
-                $entity->setOrganizationOwner($businessUnit->getOrganization());
+            if ($businessUnit = $user->getBusinessUnit()) {
+                if(method_exists($entity, 'setBusinessUnitOwner')) {
+                    $entity->setBusinessUnitOwner($businessUnit);
+                }
+                if(method_exists($entity, 'setOrganizationOwner') && $organization = $businessUnit->getOrganization()) {
+                    $entity->setOrganizationOwner($organization);
+                }
             }
         }
     }

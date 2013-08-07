@@ -315,15 +315,13 @@ class User extends AbstractEntityFlexible implements
     /**
      * @var BusinessUnit[]
      *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
-     * @ORM\JoinTable(name="oro_user_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users", cascade={"persist"})
+     * @ORM\JoinColumn(name="business_unit_id", referencedColumnName="id")
+     *
      * @Exclude
      * @Oro\Versioned("getName")
      */
-    protected $businessUnits;
+    protected $businessUnit;
 
     public function __construct()
     {
@@ -334,7 +332,6 @@ class User extends AbstractEntityFlexible implements
         $this->groups          = new ArrayCollection();
         $this->statuses        = new ArrayCollection();
         $this->emails          = new ArrayCollection();
-        $this->businessUnits   = new ArrayCollection();
     }
 
     /**
@@ -1197,46 +1194,18 @@ class User extends AbstractEntityFlexible implements
     /**
      * @return ArrayCollection
      */
-    public function getBusinessUnits()
+    public function getBusinessUnit()
     {
-        $this->businessUnits = $this->businessUnits ?: new ArrayCollection();
-
-        return $this->businessUnits;
+        return $this->businessUnit;
     }
 
     /**
-     * @param ArrayCollection $businessUnits
+     * @param BusinessUnit $businessUnit
      * @return User
      */
-    public function setBusinessUnits($businessUnits)
+    public function setBusinessUnit($businessUnit)
     {
-        $this->businessUnits = $businessUnits;
-
-        return $this;
-    }
-
-    /**
-     * @param  BusinessUnit $businessUnit
-     * @return User
-     */
-    public function addBusinessUnit(BusinessUnit $businessUnit)
-    {
-        if (!$this->getBusinessUnits()->contains($businessUnit)) {
-            $this->getBusinessUnits()->add($businessUnit);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param  BusinessUnit $businessUnit
-     * @return User
-     */
-    public function removeBusinessUnit(BusinessUnit $businessUnit)
-    {
-        if ($this->getBusinessUnits()->contains($businessUnit)) {
-            $this->getBusinessUnits()->removeElement($businessUnit);
-        }
+        $this->businessUnit = $businessUnit;
 
         return $this;
     }
