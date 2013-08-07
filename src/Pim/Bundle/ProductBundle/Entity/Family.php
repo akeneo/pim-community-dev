@@ -84,12 +84,22 @@ class Family implements TranslatableInterface
     protected $attributeAsLabel;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeRequirement",
+     *     mappedBy="family",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $attributeRequirements;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->attributes   = new ArrayCollection();
-        $this->translations = new ArrayCollection();
+        $this->attributes            = new ArrayCollection();
+        $this->translations          = new ArrayCollection();
+        $this->attributeRequirements = new ArrayCollection();
     }
 
     /**
@@ -315,5 +325,32 @@ class Family implements TranslatableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+    public function setAttributeRequirements($attributeRequirements)
+    {
+        $this->attributeRequirements = $attributeRequirements;
+
+        return $this;
+    }
+
+    public function getAttributeRequirements()
+    {
+        $result = array();
+
+        foreach ($this->attributeRequirements as $requirement) {
+            $key = $this->getAttributeRequirementKeyFor(
+                $requirement->getAttribute()->getCode(),
+                $requirement->getChannel()->getCode()
+            );
+            $result[$key] = $requirement;
+        }
+
+        return $result;
+    }
+
+    public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
+    {
+        return sprintf('%s_%s', $attributeCode, $channelCode);
     }
 }
