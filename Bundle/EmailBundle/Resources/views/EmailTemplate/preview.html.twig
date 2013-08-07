@@ -1,0 +1,62 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with [
+'OroUIBundle:Form:fields.html.twig',
+]%}
+{% import 'OroEmailBundle::macros.html.twig' as _emailMacros %}
+{% set title = form.vars.value.id
+? 'Preview existing template "%name%"'|trans({'%name%': form.vars.value.name})
+: 'Preview new email template'|trans
+%}
+{% if form.vars.value.id %}
+    {% oro_title_set({params : {"%name%": form.vars.value.name} }) %}
+{% endif %}
+
+{% set formAction = form.vars.value.id
+? path('oro_email_emailtemplate_update', { id: form.vars.value.id })
+: path('oro_email_emailtemplate_create')
+%}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_email_emailtemplate_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('oro_email_emailtemplate_index'),
+        'indexLabel': 'Email Templates',
+        'entityTitle': title
+        }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'emailtemplate-preview' %}
+
+    {% set dataBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.entityName),
+                    form_row(form.type),
+                    form_row(form.name)
+                ]
+            }]
+        }]
+    %}
+
+    {% set data = {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+            'hiddenData': form_rest(form)
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}

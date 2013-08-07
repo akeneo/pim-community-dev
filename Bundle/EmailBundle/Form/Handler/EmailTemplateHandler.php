@@ -82,4 +82,26 @@ class EmailTemplateHandler
 
         return false;
     }
+
+    /**
+     * Submit and validate form but not save anything
+     * used for email template preview
+     *
+     * @param EmailTemplate $entity
+     * @return bool
+     */
+    public function validate(EmailTemplate $entity)
+    {
+        $this->form->setData($entity);
+
+        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+            $this->form->submit($this->request);
+
+            if ($this->form->isValid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
