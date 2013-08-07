@@ -231,19 +231,12 @@ class ConfigController extends Controller
     public function fieldUpdateAction($id)
     {
         /** @var FieldConfigModel $field */
-        $field = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)->find($id);
-
-        $form    = $this->createForm(
-            'oro_entity_config_config_type',
-            null,
-            array(
-                'class_name' => $field->getEntity()->getClassName(),
-                'field_name' => $field->getFieldName(),
-                'field_type' => $field->getType(),
-                'field_id'   => $field->getId(),
-            )
-        );
+        $field   = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
+
+        $form = $this->createForm('oro_entity_config_type', null, array(
+            'config_model' => $field,
+        ));
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);

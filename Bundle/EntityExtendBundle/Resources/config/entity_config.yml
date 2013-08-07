@@ -108,8 +108,9 @@ oro_entity_config:
                         default_value:      255
                         allowed_type:       [string]
                         required_property:
-                            property_type:  field
-                            property_path:  extend.owner
+                            type:           field
+                            scope:          extend
+                            code:           owner
                             value:          Custom
                     form:
                         type:               text

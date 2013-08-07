@@ -125,7 +125,7 @@ class ConfigFieldGridController extends Controller
         $configManager = $this->get('oro_entity_config.config_manager');
         $newFieldModel = $configManager->createConfigFieldModel($entity->getClassName(), $fieldName, $fieldType);
 
-        $form = $this->createForm('oro_entity_config_config_type', null, array(
+        $form = $this->createForm('oro_entity_config_type', null, array(
             'config_model' => $newFieldModel,
         ));
 

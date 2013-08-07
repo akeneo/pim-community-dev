@@ -1,10 +1,6 @@
 <ul>
 {% for val in value %}
-    {% if is_entity %}
-        {% set items = config_manager.getProvider(val.scope).getConfigContainer().getEntityItems() %}
-    {% else %}
-        {% set items = config_manager.getProvider(val.scope).getConfigContainer().getFieldItems() %}
-    {% endif %}
+    {% set items = config_manager.getProvider(val.scope).getConfigContainer().getItems(is_entity ? 'entity' : 'type') %}
 
     {% for key, data in val.diff if (is_entity and val.fieldName() == null) or (is_entity == false and val.fieldName() == field_name) %}
         {% if items[key]['form']['options']['label'] is defined %}

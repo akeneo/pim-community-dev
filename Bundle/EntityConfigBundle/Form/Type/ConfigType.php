@@ -51,7 +51,7 @@ class ConfigType extends AbstractType
         $data = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            if ($provider->getConfigContainer()->hasForm($configType)) {
+            if ($provider->getConfigContainer()->hasForm($configType, $fieldType)) {
                 $builder->add(
                     $provider->getScope(),
                     new ConfigScopeType($provider->getConfigContainer()->getFormItems($configType, $fieldType)),

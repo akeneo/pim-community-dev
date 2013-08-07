@@ -154,6 +154,15 @@ class ConfigManager
     }
 
     /**
+     * @param $scope
+     * @return bool
+     */
+    public function hasProvider($scope)
+    {
+        return isset($this->providers[$scope]);
+    }
+
+    /**
      * @return EventDispatcher
      */
     public function getEventDispatcher()

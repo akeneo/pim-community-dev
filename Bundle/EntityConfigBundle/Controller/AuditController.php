@@ -2,13 +2,14 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager;
 
@@ -85,7 +86,7 @@ class AuditController extends Controller
     {
         /** @var FieldConfigModel $fieldName */
         $fieldName = $this->getDoctrine()
-            ->getRepository('OroEntityConfigBundle:ConfigField')
+            ->getRepository(FieldConfigModel::ENTITY_NAME)
             ->findOneBy(array('id' => $id));
 
         /** @var $datagridManager AuditFieldDatagridManager */
