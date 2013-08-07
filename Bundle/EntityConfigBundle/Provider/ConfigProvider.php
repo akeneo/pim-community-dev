@@ -32,14 +32,15 @@ class ConfigProvider implements ConfigProviderInterface
     protected $scope;
 
     /**
-     * @param ConfigManager         $configManager
-     * @param EntityConfigContainer $configContainer
+     * @param ConfigManager $configManager
+     * @param               $scope
+     * @param array         $config
      */
-    public function __construct(ConfigManager $configManager, EntityConfigContainer $configContainer)
+    public function __construct(ConfigManager $configManager, $scope, array $config)
     {
         $this->configManager   = $configManager;
-        $this->configContainer = $configContainer;
-        $this->scope           = $configContainer->getScope();
+        $this->configContainer = new EntityConfigContainer($config);
+        $this->scope           = $scope;
     }
 
     /**

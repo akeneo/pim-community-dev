@@ -46,10 +46,10 @@ class ApplyController extends Controller
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
         $extendFieldConfigIds = $extendConfigProvider->getFieldConfigIds($entity->getClassName());
 
@@ -144,7 +144,7 @@ class ApplyController extends Controller
         }
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
         $extendFieldConfigIds = $extendConfigProvider->getFieldConfigIds($entity->getClassName());
 

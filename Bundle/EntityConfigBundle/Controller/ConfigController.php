@@ -99,7 +99,7 @@ class ConfigController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         return array(
             'entity'        => $entity,
@@ -161,10 +161,10 @@ class ConfigController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
 
         return array(
@@ -259,7 +259,7 @@ class ConfigController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
         $entityConfig         = $entityConfigProvider->getConfig($field->getEntity()->getClassName());
         $fieldConfig          = $entityConfigProvider->getConfig($field->getEntity()->getClassName(), $field->getFieldName());
 

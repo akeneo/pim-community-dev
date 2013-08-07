@@ -5,11 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
- * @SuppressWarnings(PHPMD.NPathComplexity)
- */
 class EntityConfigContainer
 {
     /**
@@ -19,31 +14,16 @@ class EntityConfigContainer
     const TYPE_FIELD  = 'field';
 
     /**
-     * @var string
-     */
-    protected $scope;
-
-    /**
      * @var array
      */
     protected $config;
 
     /**
-     * @param $scope
      * @param $config
      */
-    public function __construct($scope, $config)
+    public function __construct($config)
     {
         $this->config = $config;
-        $this->scope  = $scope;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->scope;
     }
 
     /**
@@ -253,7 +233,9 @@ class EntityConfigContainer
     protected function getConfigType($type)
     {
         if ($type instanceof ConfigIdInterface) {
-            return $type instanceof FieldConfigId ? EntityConfigContainer::TYPE_FIELD : EntityConfigContainer::TYPE_ENTITY;
+            return $type instanceof FieldConfigId
+                ? EntityConfigContainer::TYPE_FIELD
+                : EntityConfigContainer::TYPE_ENTITY;
         }
 
         return $type;

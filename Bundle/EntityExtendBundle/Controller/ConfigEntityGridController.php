@@ -45,7 +45,7 @@ class ConfigEntityGridController extends Controller
     public function uniqueAction(EntityConfigModel $entity)
     {
         /** @var ConfigProvider $configProvider */
-        $configProvider = $this->get('oro_entity_extend.config.extend_config_provider');
+        $configProvider = $this->get('oro_entity_config.provider.extend');
         $entityConfig   = $configProvider->getConfig($entity->getClassName());
         $fieldConfigIds = $configProvider->getFieldConfigIds($entity->getClassName());
 
@@ -107,7 +107,7 @@ class ConfigEntityGridController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         return array(
             'form'          => $form->createView(),
