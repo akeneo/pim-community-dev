@@ -4,6 +4,7 @@ namespace Pim\Bundle\ConfigBundle\Form\Type;
 use Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +20,19 @@ use Symfony\Component\Form\AbstractType;
  */
 class ChannelType extends AbstractType
 {
+    /**
+     * @var \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * Inject locale manager in the constructor
+     * @param unknown_type $localeManager
+     */
+    public function __construct(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -61,7 +75,8 @@ class ChannelType extends AbstractType
                 'class'         => 'Pim\Bundle\ConfigBundle\Entity\Locale',
                 'query_builder' => function (LocaleRepository $repository) {
                     return $repository->getLocalesQB();
-                }
+                },
+                'preferred_choices' => $this->localeManager->getActiveLocales()
             )
         );
 
