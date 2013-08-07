@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product family controller
@@ -40,19 +41,26 @@ class FamilyController extends Controller
      *
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
         $family   = new Family;
         $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
-        if ($this->get('pim_product.form.handler.family')->process($family)) {
-            $this->addFlash('success', 'Product family successfully created');
+        $form = $this->createForm('pim_family', $family);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($family);
+                $em->flush();
+                $this->addFlash('success', 'Product family successfully created');
 
-            return $this->redirectToFamilyAttributesTab($family->getId());
+                return $this->redirectToFamilyAttributesTab($family->getId());
+            }
         }
 
         return array(
-            'form'     => $this->get('pim_product.form.family')->createView(),
+            'form'     => $form->createView(),
             'families' => $families,
         );
     }
@@ -71,7 +79,7 @@ class FamilyController extends Controller
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimProductBundle:Family', $id);
         $datagrid = $this->getDataAuditDatagrid($family, 'pim_product_family_edit', array('id' => $family->getId()));
@@ -82,12 +90,15 @@ class FamilyController extends Controller
 
         $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
         $channels = $this->get('pim_config.manager.channel')->getChannels();
-        $form = $this->createForm('pim_family', $family, array(
-            'channels'   => $channels,
-            'attributes' => $family->getAttributes(),
-        ));
+        $form = $this->createForm(
+            'pim_family',
+            $family,
+            array(
+                'channels'   => $channels,
+                'attributes' => $family->getAttributes(),
+            )
+        );
 
-        $request = $this->getRequest();
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
