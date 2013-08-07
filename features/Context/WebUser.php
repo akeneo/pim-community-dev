@@ -281,7 +281,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product edit')->switchLocale($locale);
+        $this->getCurrentPage()->switchLocale($locale);
+        $this->wait();
     }
 
     /**
@@ -976,6 +977,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @Given /^I filter per channel ([^"]*)$/
+     */
+    public function iFilterPerChannel($code)
+    {
+        $this->getPage('Product index')->filterPerChannel($code);
+        $this->wait();
+    }
+
+    /**
      * @param string $products
      *
      * @Then /^I should see products (.*)$/
@@ -999,6 +1011,31 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         if (!$this->getPage('Product index')->getGridRow($product)) {
             throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
+        }
+    }
+
+    /**
+     * @param string $product
+     * @param string $data
+     *
+     * @Then /^I should see product "([^"]*)" with data (.*)$/
+     */
+    public function iShouldSeeProductWithData($product, $data)
+    {
+        $row = $this->getPage('Product index')->getGridRow($product);
+        $data = $this->listToArray($data);
+
+        if (!$row) {
+            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
+        }
+
+        $rowHtml = $row->getHtml();
+        foreach ($data as $cellData) {
+            if (strpos($rowHtml, $cellData) === false) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see product data %s, not found', $cellData)
+                );
+            }
         }
     }
 
@@ -1238,6 +1275,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the uploaded image$/
+     */
+    public function iShouldSeeTheUploadedImage()
+    {
+        $this->wait(3000, '');
+        if (!$this->getPage('Product edit')->getImagePreview()) {
+            throw $this->createExpectationException('Image preview is not displayed.');
+        }
+    }
+
+    /**
+     * @Then /^I should see the "([^"]*)" content$/
+     */
+    public function iShouldSeeTheContent($path)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
+            if (is_file($fullPath)) {
+                $path = $fullPath;
+            }
+        }
+
+        $this->assertSession()->responseContains(file_get_contents($path));
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
@@ -1282,10 +1345,34 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function getInvalidValueFor($field)
     {
-        switch ($field) {
-            case 'Family edit.Code':
+        switch (strtolower($field)) {
+            case 'family edit.code':
                 return 'inv@lid';
+            case 'attribute creation.name':
+                return $this->lorem(20);
+            case 'attribute creation.description':
+                return $this->lorem(256);
         }
+    }
+
+    /**
+     * @param integer $length
+     *
+     * @return string
+     */
+    private function lorem($length = 100)
+    {
+        $lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore'
+            .'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut'
+            .'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
+            .'dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui'
+            .'officia deserunt mollit anim id est laborum.';
+
+        while (strlen($lorem) < $length) {
+            $lorem .= ' ' . $lorem;
+        }
+
+        return substr($lorem, 0, $length);
     }
 
     /**

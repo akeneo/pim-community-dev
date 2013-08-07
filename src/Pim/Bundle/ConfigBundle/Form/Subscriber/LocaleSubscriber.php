@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,7 +18,6 @@ use Symfony\Component\Form\FormEvent;
  */
 class LocaleSubscriber implements EventSubscriberInterface
 {
-
     /**
      * Form factory
      * @var FormFactoryInterface

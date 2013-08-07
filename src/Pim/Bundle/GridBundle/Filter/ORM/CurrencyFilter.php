@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
-
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -19,7 +18,6 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
  */
 class CurrencyFilter extends NumberFilter
 {
-
     /**
      * {@inheritdoc}
      */

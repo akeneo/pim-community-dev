@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimGridBundle extends Bundle
 {
-
     /**
      * {@inheritdoc}
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type\AttributeProperty;
 
 use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;

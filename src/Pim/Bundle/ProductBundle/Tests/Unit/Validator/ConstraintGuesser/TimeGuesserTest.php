@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\TimeGuesser;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

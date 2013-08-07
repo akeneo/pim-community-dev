@@ -49,6 +49,7 @@ class FixturesContext extends RawMinkContext
         'metric'     => 'pim_product_metric',
         'prices'     => 'pim_product_price_collection',
         'image'      => 'pim_product_image',
+        'file'       => 'pim_product_file',
     );
 
     /**
@@ -320,7 +321,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingProductAttributes(TableNode $table)
     {
-        foreach ($table->getHash() as $index => $data) {
+        foreach ($table->getHash() as $data) {
             $data = array_merge(
                 array(
                     'position'     => 0,
@@ -390,6 +391,8 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $data = array_merge(array('scope' => null, 'locale' => null), $data);
+            $data['locale']= (empty($data['locale'])) ? null : $data['locale'];
+            $data['scope']= (empty($data['scope'])) ? null : $data['scope'];
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);

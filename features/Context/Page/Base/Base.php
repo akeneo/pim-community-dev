@@ -3,6 +3,7 @@
 namespace Context\Page\Base;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Base page
@@ -17,6 +18,21 @@ class Base extends Page
         'Dialog' => array('css' => 'div.modal'),
         'Title'  => array('css' => '.navbar-title'),
     );
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fillField($locator, $value)
+    {
+        parent::fillField($locator, $value);
+
+        try {
+            $this->getSession()->executeScript(
+                "$('.select2-drop-active input:visible').trigger($.Event('keydown', {which: 9, keyCode: 9}));"
+            );
+        } catch (UnsupportedDriverActionException $e) {
+        }
+    }
 
     /**
      * Get page title

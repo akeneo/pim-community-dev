@@ -10,7 +10,6 @@ use Pim\Bundle\BatchBundle\Entity\FieldMapping;
  */
 class ItemMappingTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ItemMapping
      */

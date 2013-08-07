@@ -28,12 +28,12 @@ class StepElementConfigurationType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory) {
                 $form   = $event->getForm();
-                $reader = $event->getData();
+                $stepElement = $event->getData();
 
-                foreach ($reader->getConfigurationFields() as $field => $config) {
+                foreach ($stepElement->getConfigurationFields() as $field => $config) {
                     $config = array_merge(
                         array(
-                            'type' => 'text',
+                            'type'    => 'text',
                             'options' => array(),
                         ),
                         $config
@@ -42,6 +42,18 @@ class StepElementConfigurationType extends AbstractType
                         array(
                             'auto_initialize' => false,
                             'required'        => false,
+                            'label'           => sprintf(
+                                'pim_batch.%s.%s.label',
+                                $stepElement->getName(),
+                                $field
+                            ),
+                            'attr'            => array(
+                                'help' => sprintf(
+                                    'pim_batch.%s.%s.help',
+                                    $stepElement->getName(),
+                                    $field
+                                )
+                            )
                         ),
                         $config['options']
                     );
@@ -69,6 +81,6 @@ class StepElementConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_batch_reader_configuration';
+        return 'pim_batch_step_element_configuration';
     }
 }

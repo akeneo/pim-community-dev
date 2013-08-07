@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ValidMetricAttributeValidator extends ConstraintValidator
+class ValidMetricValidator extends ConstraintValidator
 {
     /**
      * @var array $measures
@@ -37,15 +38,13 @@ class ValidMetricAttributeValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity->getAttributeType() == 'pim_product_metric') {
-            $type = $entity->getMetricFamily();
-            $unit = $entity->getDefaultMetricUnit();
+        $type = $entity->getMetricFamily();
+        $unit = $entity->getDefaultMetricUnit();
 
-            if (!array_key_exists($type, $this->measures)) {
-                $this->context->addViolation($constraint->invalidFamilyMessage);
-            } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
-                $this->context->addViolation($constraint->invalidMetricUnitMessage);
-            }
+        if (!array_key_exists($type, $this->measures)) {
+            $this->context->addViolationAt('metricFamily', $constraint->invalidFamilyMessage);
+        } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
+            $this->context->addViolationAt('defaultMetricUnit', $constraint->invalidMetricUnitMessage);
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Datagrid;
 
-use Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager;
+use Symfony\Component\Translation\Translator;
 use Oro\Bundle\GridBundle\Tests\Unit\Datagrid\DatagridManagerTest;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-use Symfony\Component\Translation\Translator;
+use Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager;
 
 /**
  * Test related class
@@ -17,7 +17,6 @@ use Symfony\Component\Translation\Translator;
  */
 class JobDatagridManagerTest extends DatagridManagerTest
 {
-
     /**
      * Test related method
      */

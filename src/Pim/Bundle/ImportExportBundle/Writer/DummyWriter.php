@@ -17,14 +17,6 @@ class DummyWriter extends AbstractConfigurableStepElement implements ItemWriterI
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Dummy writer';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function write(array $items)
     {
         return null;

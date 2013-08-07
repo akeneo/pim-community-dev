@@ -1,10 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Validator\Constraints;
 
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Locale fallback validator
@@ -15,7 +16,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidLocaleFallbackValidator extends ConstraintValidator
 {
-
     /**
      * @var EntityManager $em
      */

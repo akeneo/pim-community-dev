@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
@@ -16,7 +17,7 @@ use Oro\Bundle\GridBundle\Property\FieldProperty;
  * Locale datagrid manager
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */

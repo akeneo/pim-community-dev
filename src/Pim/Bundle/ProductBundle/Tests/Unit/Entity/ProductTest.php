@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Product;
@@ -8,7 +9,7 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  * Test related class
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
@@ -89,6 +90,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     public function testAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
+
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, 'bar');
 
@@ -181,12 +183,12 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
-                  ->method('getVirtualGroup')
-                  ->will($this->returnValue($group));
+            ->method('getVirtualGroup')
+            ->will($this->returnValue($group));
 
         $attribute->expects($this->any())
-                  ->method('getAttributeType')
-                  ->will($this->returnValue($type));
+            ->method('getAttributeType')
+            ->will($this->returnValue($type));
 
         return $attribute;
     }
@@ -202,6 +204,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $value->expects($this->any())
               ->method('getData')
               ->will($this->returnValue($data));
+
+        $value->expects($this->any())
+            ->method('isMatching')
+            ->will($this->returnValue(true));
 
         return $value;
     }

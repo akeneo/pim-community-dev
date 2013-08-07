@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Manager;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class ChannelManagerTest extends WebTestCase
 {
-
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */

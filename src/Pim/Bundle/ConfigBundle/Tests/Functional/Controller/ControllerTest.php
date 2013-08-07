@@ -1,24 +1,22 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
 
 use Symfony\Component\DomCrawler\Form;
-
 use Symfony\Component\DomCrawler\Crawler;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Abstract test controller class to avoid duplicated code
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @abstract
  */
 abstract class ControllerTest extends WebTestCase
 {
-
     /**
      * Authentication username
      * @staticvar string

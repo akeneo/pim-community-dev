@@ -11,7 +11,6 @@ namespace Pim\Bundle\TranslationBundle\Factory;
  */
 class TranslationFactory
 {
-
     /**
      * The entity translation class
      *

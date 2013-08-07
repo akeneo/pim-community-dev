@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
 use Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository;
@@ -14,9 +15,8 @@ use Symfony\Component\Form\AbstractType;
  * Type for channel form
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ChannelType extends AbstractType
 {
@@ -27,7 +27,8 @@ class ChannelType extends AbstractType
 
     /**
      * Inject locale manager in the constructor
-     * @param unknown_type $localeManager
+     *
+     * @param \Pim\Bundle\ConfigBundle\Manager\LocaleManager $localeManager
      */
     public function __construct(LocaleManager $localeManager)
     {
@@ -45,14 +46,22 @@ class ChannelType extends AbstractType
 
         $builder->add('code');
 
-        $builder->add(
-            'name',
-            'text',
-            array(
-                'label' => 'Default label'
-            )
-        );
+        $builder->add('name', 'text', array('label' => 'Default label'));
 
+        $this->addCurrencyField($builder);
+
+        $this->addLocaleField($builder);
+
+        $this->addCategoryField($builder);
+    }
+
+    /**
+     * Create a currency field and add it to the form builder
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addCurrencyField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'currencies',
             'entity',
@@ -65,7 +74,15 @@ class ChannelType extends AbstractType
                 }
             )
         );
+    }
 
+    /**
+     * Create a locale field and add it to the form builder
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addLocaleField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'locales',
             'entity',
@@ -79,7 +96,16 @@ class ChannelType extends AbstractType
                 'preferred_choices' => $this->localeManager->getActiveLocales()
             )
         );
+    }
 
+    /**
+     * Create a category field and add it to the form builder
+     * This field only display the tree (channel is linked to tree)
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addCategoryField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'category',
             'entity',

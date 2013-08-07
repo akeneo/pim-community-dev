@@ -4,16 +4,6 @@ Feature: Create an export
   I need to be able to create export jobs
 
   @javascript
-  Scenario: Successfully display the product export into csv configuration form
-    Given I am logged in as "admin"
-    And I am on the exports page
-    And I create a new "Product export in CSV" export
-    And I visit the "Export" tab
-    Then I should see "Reader - Scoped products"
-    And I should see "Processor - CSV Serializer"
-    And I should see "Writer - File"
-
-  @javascript
   Scenario: Successfully create a product export into csv
     Given I am logged in as "admin"
     And I am on the exports page

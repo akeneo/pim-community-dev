@@ -1,15 +1,16 @@
 <?php
+
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ConfigBundle\Entity\Currency;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
  * Load fixtures for currencies
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */

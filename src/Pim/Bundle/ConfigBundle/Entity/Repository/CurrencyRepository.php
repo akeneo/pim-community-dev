@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\SearchBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

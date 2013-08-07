@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,6 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  */
 class FamilyHandler
 {
-
     /**
      * @var FormInterface
      */

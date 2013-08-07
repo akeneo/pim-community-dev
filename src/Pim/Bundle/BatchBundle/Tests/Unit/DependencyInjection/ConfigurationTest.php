@@ -1,8 +1,9 @@
 <?php
+
 namespace Pim\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
 
-use Pim\Bundle\BatchBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Pim\Bundle\BatchBundle\DependencyInjection\Configuration;
 
 /**
  * Test related class
@@ -11,7 +12,6 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test related method
      */

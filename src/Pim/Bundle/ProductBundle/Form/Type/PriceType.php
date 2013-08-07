@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
