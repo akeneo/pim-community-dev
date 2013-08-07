@@ -126,12 +126,9 @@ class ProductController extends Controller
             )
         );
 
-        // Refreshing the history datagrid
-        /*
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
-        */
 
         $channels = $this->getRepository('PimConfigBundle:Channel')->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
