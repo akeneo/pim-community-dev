@@ -1,0 +1,24 @@
+{
+    "name": "oro/sync-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Sync Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/SyncBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "cboden/Ratchet": "master",
+        "react/zmq": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\SyncBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/SyncBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
