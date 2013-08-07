@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\WindowsBundle\EventListener;
+namespace Oro\Bundle\UIBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -66,7 +66,7 @@ class TemplateListener
     protected function getTemplateName(array $parts, $container)
     {
         $partsCount = count($parts);
-        $parts[$partsCount - 1] = $container . '.' . $parts[$partsCount - 1];
+        $parts[$partsCount - 1] = $container . '/' . $parts[$partsCount - 1];
         return implode(self::TEMPLATE_PARTS_SEPARATOR, $parts);
     }
 }

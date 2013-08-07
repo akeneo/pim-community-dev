@@ -75,16 +75,17 @@ Oro.widget.Abstract = Backbone.View.extend({
 
             self.actions['adopted'] = {};
             _.each(actions, function(action, idx) {
-                var actionId = 'form-action-' + idx;
+                var $action = $(action)
+                var actionId = $action.data('action-name') ? $action.data('action-name') : 'adopted_action_' + idx;
                 if (action.type.toLowerCase() == 'submit') {
-                    $(action).click(function() {
+                    $action.click(function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
                         return false;
                     });
                     actionId = 'form_submit';
                 }
                 if (action.type.toLowerCase() == 'reset') {
-                    $(action).click(function() {
+                    $action.click(function() {
                         self.trigger('adoptedFormResetClick', self.form, self);
                     });
                     actionId = 'form_reset';
@@ -168,6 +169,22 @@ Oro.widget.Abstract = Backbone.View.extend({
             });
             return hasAction;
         }
+    },
+
+    getAction: function(key, section) {
+        var action = null;
+        if (this.hasAction(key, section)) {
+            if (section !== undefined) {
+                action = this.actions[section][key];
+            } else {
+                _.each(this.actions, function(actions) {
+                    if (actions.hasOwnProperty(key)) {
+                        action = actions[key];
+                    }
+                });
+            }
+        }
+        return action;
     },
 
     _renderActions: function() {

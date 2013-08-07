@@ -7,13 +7,14 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
             type: 'block',
             titleContainer: '.widget-title',
             actionsContainer: '.widget-actions-container',
-            contentContainer: '.box-content',
+            contentContainer: '.row-fluid',
+            contentClasses: ['box-content'],
             template: _.template('<div class="box-type1">' +
                 '<div class="title">' +
                     '<div class="pull-right widget-actions-container"></div>' +
                     '<span class="widget-title"><%- title %></span>' +
                 '</div>' +
-                '<div class="box-content row-fluid"></div>' +
+                '<div class="row-fluid <%= contentClasses.join(\' \') %>"></div>' +
             '</div>')
         },
         Oro.widget.Abstract.prototype.options
@@ -24,7 +25,8 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
         this.initializeWidget(options);
 
         this.widget = Backbone.$(this.options.template({
-            'title': this.options.title
+            'title': this.options.title,
+            'contentClasses': this.options.contentClasses
         }));
         this.widgetContentContainer = this.widget.find(this.options.contentContainer);
     },
