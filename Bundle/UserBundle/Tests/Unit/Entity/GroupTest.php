@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 class GroupTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_ROLE = 'ROLE_FOO';
@@ -128,5 +132,25 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testSetRolesThrowsInvalidArgumentException()
     {
         $this->group->setRoles('roles');
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->group;
+        $user = new User();
+        $businessUnit = new BusinessUnit();
+        $organization = new Organization();
+
+        $this->assertEmpty($entity->getUserOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwner());
+        $this->assertEmpty($entity->getOrganizationOwner());
+
+        $entity->setUserOwner($user);
+        $entity->setBusinessUnitOwner($businessUnit);
+        $entity->setOrganizationOwner($organization);
+
+        $this->assertEquals($user, $entity->getUserOwner());
+        $this->assertEquals($businessUnit, $entity->getBusinessUnitOwner());
+        $this->assertEquals($organization, $entity->getOrganizationOwner());
     }
 }

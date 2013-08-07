@@ -403,10 +403,13 @@ class EmailTemplate implements Translatable
 
     /**
      * @param User $userOwner
+     * @return EmailTemplate
      */
     public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
+
+        return $this;
     }
 
     /**
@@ -419,10 +422,13 @@ class EmailTemplate implements Translatable
 
     /**
      * @param BusinessUnit $businessUnitOwner
+     * @return EmailTemplate
      */
     public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
     {
         $this->businessUnitOwner = $businessUnitOwner;
+
+        return $this;
     }
 
     /**
@@ -435,9 +441,12 @@ class EmailTemplate implements Translatable
 
     /**
      * @param Organization $organizationOwner
+     * @return EmailTemplate
      */
     public function setOrganizationOwner(Organization $organizationOwner)
     {
         $this->organizationOwner = $organizationOwner;
+
+        return $this;
     }
 }

@@ -5,6 +5,10 @@ namespace Oro\Bundle\NotificationBundle\Tests\Unit\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 class EmailNotificationTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -108,5 +112,25 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
             'Test Name, Test2 Name2',
             $this->entity->getRecipientGroupsList()
         );
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->entity;
+        $user = new User();
+        $businessUnit = new BusinessUnit();
+        $organization = new Organization();
+
+        $this->assertEmpty($entity->getUserOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwner());
+        $this->assertEmpty($entity->getOrganizationOwner());
+
+        $entity->setUserOwner($user);
+        $entity->setBusinessUnitOwner($businessUnit);
+        $entity->setOrganizationOwner($organization);
+
+        $this->assertEquals($user, $entity->getUserOwner());
+        $this->assertEquals($businessUnit, $entity->getBusinessUnitOwner());
+        $this->assertEquals($organization, $entity->getOrganizationOwner());
     }
 }

@@ -236,10 +236,13 @@ class EmailNotification
 
     /**
      * @param User $userOwner
+     * @return EmailNotification
      */
     public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
+
+        return $this;
     }
 
     /**
@@ -252,10 +255,13 @@ class EmailNotification
 
     /**
      * @param BusinessUnit $businessUnitOwner
+     * @return EmailNotification
      */
     public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
     {
         $this->businessUnitOwner = $businessUnitOwner;
+
+        return $this;
     }
 
     /**
@@ -268,9 +274,12 @@ class EmailNotification
 
     /**
      * @param Organization $organizationOwner
+     * @return EmailNotification
      */
     public function setOrganizationOwner(Organization $organizationOwner)
     {
         $this->organizationOwner = $organizationOwner;
+
+        return $this;
     }
 }

@@ -250,10 +250,13 @@ class Group
 
     /**
      * @param User $userOwner
+     * @return Group
      */
     public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
+
+        return $this;
     }
 
     /**
@@ -266,10 +269,13 @@ class Group
 
     /**
      * @param BusinessUnit $businessUnitOwner
+     * @return Group
      */
     public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
     {
         $this->businessUnitOwner = $businessUnitOwner;
+
+        return $this;
     }
 
     /**
@@ -282,9 +288,12 @@ class Group
 
     /**
      * @param Organization $organizationOwner
+     * @return Group
      */
     public function setOrganizationOwner(Organization $organizationOwner)
     {
         $this->organizationOwner = $organizationOwner;
+
+        return $this;
     }
 }

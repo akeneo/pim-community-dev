@@ -11,6 +11,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -432,6 +433,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
             array('loginCount', 11),
             array('created', new \DateTime()),
             array('updated', new \DateTime()),
+            array('userOwner', new User()),
+            array('businessUnitOwner', new BusinessUnit()),
+            array('organizationOwner', new Organization()),
         );
     }
 
