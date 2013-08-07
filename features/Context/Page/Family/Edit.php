@@ -125,4 +125,31 @@ class Edit extends Creation
 
         return $this;
     }
+
+    public function isAttributeRequired($attribute, $channel)
+    {
+        $attributesTable = $this->getElement('Attributes');
+        $columnIdx       = 0;
+
+        foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
+            if ($header->getText() === $channel) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+
+        if (0 === $columnIdx) {
+            throw new \Exception(sprintf('An error occured when trying to get the "%s" header', $channel));
+        }
+
+        $cells = $attributesTable->findAll('css', sprintf('tbody tr:contains("%s") td', $attribute));
+
+        if (count($cells) < $columnIdx) {
+            throw new \Exception(sprintf('An error occured when trying to get the attributes "%s" row', $attribute));
+        }
+
+        $requirement = $cells[$columnIdx]->find('css', 'input');
+
+        return '1' === $requirement->getValue();
+    }
 }

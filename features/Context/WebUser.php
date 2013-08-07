@@ -1335,6 +1335,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^attribute "([^"]*)" should be required in channels (.*)$/
+     */
+    public function attributeShouldBeRequiredInChannels($attribute, $channels)
+    {
+        $channels = $this->listToArray($channels);
+        foreach ($channels as $channel) {
+            if (!$this->getPage('Family edit')->isAttributeRequired($attribute, $channel)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Attribute %s should be required in channel %s',
+                        $attribute,
+                        $channel
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
