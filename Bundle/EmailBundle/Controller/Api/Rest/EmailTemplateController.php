@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
@@ -90,6 +92,29 @@ class EmailTemplateController extends RestController
 
         return $this->handleView(
             $this->view($templates, Codes::HTTP_OK)
+        );
+    }
+
+    /**
+     * REST GET available variables by entity name
+     *
+     * @param string $entityName
+     *
+     * @ApiDoc(
+     *     description="Get available variables by entity name",
+     *     resource=true
+     * )
+     * @AclAncestor("oro_email_emailtemplate_update")
+     * @return Response
+     */
+    public function getAvailableVariablesAction($entityName = null)
+    {
+        $entityName = str_replace('_', '\\', $entityName);
+
+//        $provider = $this->ge
+
+        return $this->handleView(
+            $this->view($allowedData, Codes::HTTP_OK)
         );
     }
 

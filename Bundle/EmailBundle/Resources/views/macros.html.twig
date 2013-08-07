@@ -1,0 +1,9 @@
+{% macro renderAvailableVariablesWidget(entityName, dependentFieldId) %}
+    <script type="text/javascript">
+        $(function() {
+            var availableVariables = {{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}};
+
+            console.log(availableVariables);
+        })
+    </script>
+{% endmacro %}

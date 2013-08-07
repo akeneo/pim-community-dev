@@ -176,7 +176,7 @@ class ConfigManager
     public function getAllConfigurableEntityNames()
     {
         return array_map(
-            function (EntityConfig $config) {
+            function (ConfigEntity $config) {
                 return $config->getClassName();
             },
             $this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findAll()

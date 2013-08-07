@@ -17,6 +17,7 @@ parameters:
     # Entity config event listener
     oro_email.listener.config_subscriber.class: Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber
 
+    # Cache keys
     oro_email.cache.available_in_template_key: 'oro_email.available_in_template_fields'
 
 services:

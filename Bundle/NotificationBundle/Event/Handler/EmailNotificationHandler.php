@@ -85,11 +85,8 @@ class EmailNotificationHandler extends EventHandlerAbstract
         foreach ($matchedNotifications as $notification) {
             $emailTemplate = $notification->getTemplate();
             $templateParams = array(
-                'event'        => $event,
-                'notification' => $notification,
                 'entity'       => $entity,
-                'templateName' => $emailTemplate,
-                'user'         => $this->user,
+                'user'         => $this->user
             );
 
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')

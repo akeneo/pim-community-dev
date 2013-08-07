@@ -2,6 +2,7 @@
 {% form_theme form with [
     'OroUIBundle:Form:fields.html.twig',
 ]%}
+{% import 'OroEmailBundle::macros.html.twig' as _emailMacros %}
 {% set title = form.vars.value.id
     ? 'Edit email template "%name%"'|trans({'%name%': form.vars.value.name})
     : isClone ? 'Clone Email Template'|trans : 'Add Email Template'|trans
@@ -88,6 +89,11 @@
                 'title': '',
                 'data': [
                     form_widget(form.translations)
+                ]
+            },{
+                'title': 'Available variables'|trans,
+                'data': [
+                    _emailMacros.renderAvailableVariablesWidget(form.vars.value.entityName, form.entityName.vars.id)
                 ]
             }]
     }]
