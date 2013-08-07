@@ -23,7 +23,6 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
- * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
  * @Oro\Loggable
  */
