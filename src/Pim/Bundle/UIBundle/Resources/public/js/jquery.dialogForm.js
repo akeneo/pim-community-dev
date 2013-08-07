@@ -90,7 +90,7 @@
             return true;
         }
 
-        $(document).delegate(options.trigger, 'click', function(e) {
+        $(options.trigger).off('click').on('click', function(e) {
             e.preventDefault();
             $.ajax({
                 url: options.url,
