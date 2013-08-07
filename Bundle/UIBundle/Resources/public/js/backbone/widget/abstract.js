@@ -75,22 +75,17 @@ Oro.widget.Abstract = Backbone.View.extend({
 
             self.actions['adopted'] = {};
             _.each(actions, function(action, idx) {
-                var $action = $(action)
+                var $action = $(action);
                 var actionId = $action.data('action-name') ? $action.data('action-name') : 'adopted_action_' + idx;
-                if (action.type.toLowerCase() == 'submit') {
-                    $action.click(function() {
-                        self.trigger('adoptedFormSubmitClick', self.form, self);
-                        return false;
-                    });
-                    actionId = 'form_submit';
+                switch (action.type.toLowerCase()) {
+                    case 'submit':
+                        actionId = 'form_submit';
+                        break;
+                    case 'reset':
+                        actionId = 'form_reset';
+                        break;
                 }
-                if (action.type.toLowerCase() == 'reset') {
-                    $action.click(function() {
-                        self.trigger('adoptedFormResetClick', self.form, self);
-                    });
-                    actionId = 'form_reset';
-                }
-                self.actions['adopted'][actionId] = action;
+                self.actions['adopted'][actionId] = $action;
             });
             adoptedActionsContainer.remove();
         }
@@ -188,16 +183,36 @@ Oro.widget.Abstract = Backbone.View.extend({
     },
 
     _renderActions: function() {
+        var self = this;
         this._clearActionsContainer();
         var container = this.getActionsElement();
 
         _.each(this.actions, function(actions, section) {
             var sectionContainer = $('<div id="' + section + '"/>');
             _.each(actions, function(action) {
+                self._initActionEvents(action);
                 sectionContainer.append(action);
             });
             container.append(sectionContainer);
         });
+    },
+
+    _initActionEvents: function(action) {
+        var self = this;
+        switch (action.attr('type').toLowerCase()) {
+            case 'submit':
+                action.on('click', function() {
+                    self.trigger('adoptedFormSubmitClick', self.form, self);
+                    return false;
+                });
+                break;
+
+            case 'reset':
+                action.on('click', function() {
+                    self.trigger('adoptedFormResetClick', self.form, self);
+                });
+                break;
+        }
     },
 
     _clearActionsContainer: function() {
