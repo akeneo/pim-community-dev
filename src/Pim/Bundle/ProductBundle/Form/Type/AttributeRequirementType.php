@@ -5,22 +5,27 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\ProductBundle\Form\DataTransformer\BooleanToStringTransformer;
 
 /**
- * 
+ * Attribute requirement form type
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeRequirementType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('required', 'hidden');
+        $builder->add(
+            $builder
+                ->create('required', 'hidden')
+                ->addViewTransformer(new BooleanToStringTransformer)
+        );
     }
 
     /**

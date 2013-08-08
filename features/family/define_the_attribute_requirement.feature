@@ -15,8 +15,8 @@ Feature: Define the attribute requirement
     And I am logged in as "admin"
     When I am on the "Smartphone" family page
     And I visit the "Attributes" tab
-    Then attribute "Description" should be required in channels Mobile and Ecommerce
-    And attribute "Name" should be required in channels Mobile and Ecommerce
+    Then attribute "Description" should not be required in channels Mobile and Ecommerce
+    And attribute "Name" should not be required in channels Mobile and Ecommerce
 
   Scenario: Succesfully make an attribute non required for a channel
     Given the following family:
@@ -31,6 +31,6 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     And I switch the attribute "Description" requirement in channel "Mobile"
     And I save the family
-    Then attribute "Description" should not be required in channel Mobile
-    But attribute "Description" should be required in channel Ecommerce
-    And attribute "Name" should be required in channels Mobile and Ecommerce
+    Then attribute "Description" should be required in channel Mobile
+    But attribute "Description" should not be required in channel Ecommerce
+    And attribute "Name" should not be required in channels Mobile and Ecommerce

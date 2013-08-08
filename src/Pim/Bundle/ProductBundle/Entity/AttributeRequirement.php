@@ -41,7 +41,7 @@ class AttributeRequirement
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $required = true;
+    protected $required = false;
 
     public function setFamily(Family $family)
     {
