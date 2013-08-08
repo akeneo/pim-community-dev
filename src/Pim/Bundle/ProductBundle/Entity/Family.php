@@ -186,6 +186,21 @@ class Family implements TranslatableInterface
     }
 
     /**
+     * Get grouped attributes
+     *
+     * @return ArrayCollection
+     */
+    public function getGroupedAttributes()
+    {
+        $result = array();
+        foreach ($this->attributes as $attribute) {
+            $result[$attribute->getVirtualGroup()->getName()][] = $attribute;
+        }
+
+        return $result;
+    }
+
+    /**
      * Check if family has an attribute
      *
      * @param ProductAttribute $attribute

@@ -49,37 +49,28 @@
                     <th>&nbsp;</th>
                 </thead>
 
+                {% set colspan = channels|length + 2 %}
+                {% for groupName, attributes in family.groupedAttributes %}
                 <tbody>
-                    {% if family.attributes|length > 0 %}
-                        {% set attributeGroup = family.attributes.first.group %}
-                        {% set colspan = channels|length + 2 %}
-                        <tr class="group">
-                            <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
-                        </tr>
-                        {% for attribute in family.attributes %}
-                            {% if attribute.group != attributeGroup %}
-                            </tbody>
-                            <tbody>
-                                <tr class="group">
-                                    <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
-                                </tr>
-                            {% endif %}
-                            <tr>
-                                <td>{{ attribute.label }}</td>
-                                {% for channel in channels %}
-                                    <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
-                                {% endfor %}
-                                <td>
-                                    <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
-                                        class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
-                                        <i class="icon-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% set attributeGroup = attribute.group %}
+                    <tr class="group">
+                        <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ groupName }}</td>
+                    </tr>
+                    {% for attribute in attributes %}
+                    <tr>
+                        <td>{{ attribute.label }}</td>
+                        {% for channel in channels %}
+                            <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
                         {% endfor %}
-                    {% endif %}
+                        <td>
+                            <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
+                                class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                <i class="icon-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
+                {% endfor %}
             </table>
         </div>
 
