@@ -180,6 +180,7 @@ class ProductController extends Controller
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
             'datagrid'       => $datagrid->createView(),
+            'locales'        => $this->getLocaleManager()->getActiveCodes()
         );
     }
 
@@ -381,7 +382,7 @@ class ProductController extends Controller
     /**
      * Get locale manager
      *
-     * @return LocaleManager
+     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
