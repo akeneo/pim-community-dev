@@ -39,3 +39,32 @@
 
     <div class="well well-small span5" id="oro-email-available-variables"></div>
 {% endmacro %}
+
+{% macro renderPreviewDialog() %}
+    <script type="text/javascript">
+        $(function () {
+            var showEmailPreviewDialog = function (el) {
+                var iframe = $('<iframe frameborder="0" marginwidth="0" marginheight="0" allowfullscreen width="96%"></iframe>');
+                iframe.attr({'src': $(el).attr('href')});
+
+                new Oro.widget.DialogView({
+                    el: iframe,
+                    url: false,
+                    dialogOptions: {
+                        allowMaximize: true,
+                        allowMinimize: true,
+                        dblclick: 'maximize',
+                        maximizedHeightDecreaseBy: 'minimize-bar',
+                        width: 600,
+                        title: $(el).attr('title')
+                    }
+                }).render();
+            };
+
+            $('.dialog-form-renderer').click(function (e) {
+                showEmailPreviewDialog(this);
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endmacro %}

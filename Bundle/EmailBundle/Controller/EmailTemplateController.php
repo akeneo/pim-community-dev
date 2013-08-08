@@ -138,7 +138,5 @@ class EmailTemplateController extends Controller
             'subject' => $subjectRendered,
             'content' => $templateRendered,
         );
-
-        die('sdf');
     }
 }

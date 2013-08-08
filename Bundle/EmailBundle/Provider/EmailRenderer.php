@@ -30,7 +30,8 @@ class EmailRenderer extends \Twig_Environment
         ConfigProvider $configProvider,
         Cache $cache,
         $cacheKey,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        \Twig_Extension_Sandbox $sandbox
     ) {
         parent::__construct($loader, $options);
 
@@ -39,13 +40,16 @@ class EmailRenderer extends \Twig_Environment
         $this->cacheKey = $cacheKey;
         $this->user = $securityContext->getToken() && !is_string($securityContext->getToken()->getUser())
             ? $securityContext->getToken()->getUser() : false;
+
+        $this->addExtension($sandbox);
+        $this->configureSandbox();
     }
 
     /**
      * Configure sandbox form config data
      *
      */
-    public function configureSandbox()
+    protected function configureSandbox()
     {
         $allowedData = $this->sandBoxConfigCache->fetch($this->cacheKey);
 

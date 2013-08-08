@@ -22,10 +22,11 @@
                 'path' :  path('oro_email_emailtemplate_preview', {'id': form.vars.value.id}),
                 'title' : 'Preview',
                 'label' : 'Preview',
-                aClass: 'btn-success',
+                aClass: 'btn-success dialog-form-renderer no-hash',
                 iClass: 'icon-share'
             })
         }}
+        {{ _emailMacros.renderPreviewDialog() }}
     {% endif %}
 
     {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_clone') %}

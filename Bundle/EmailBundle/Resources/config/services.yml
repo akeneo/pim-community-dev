@@ -121,9 +121,7 @@ services:
             - @oro_email.cache
             - %oro_email.cache.available_in_template_key%
             - @security.context
-        calls:
-            # add extension sandbox using method call and not twig.extension tag cause we need to add sandbox only to this instance
-            - [ addExtension, [@oro_email.twig.email_sandbox] ]
+            - @oro_email.twig.email_sandbox
 
     oro_email.twig.email_security_policy:
         class: %oro_email.twig.email_security_policy.class%
@@ -158,7 +156,7 @@ services:
     oro_email.validator.variables_validator:
         class: Oro\Bundle\EmailBundle\Validator\VariablesValidator
         arguments:
-            - @oro_notification.twig
+            - @oro_email.email_renderer
             - @security.context
         tags:
             - { name: validator.constraint_validator, alias: oro_email.variables_validator }

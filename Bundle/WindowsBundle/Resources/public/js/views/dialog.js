@@ -135,7 +135,7 @@ Oro.widget.DialogView = Backbone.View.extend({
         }
         var saveData = _.omit(this.options, ['dialogOptions', 'el', 'model']);
         if (!saveData.url) {
-            saveData.el = $('<div/>').append(this.$el).html();
+            saveData.el = $('<div/>').append(this.$el.clone ? this.$el.clone() : this.$el).html();
         }
         saveData.dialogOptions = {};
         _.each(this.options.dialogOptions, function(val, key) {

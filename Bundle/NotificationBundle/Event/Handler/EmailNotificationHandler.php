@@ -44,8 +44,6 @@ class EmailNotificationHandler extends EventHandlerAbstract
         $this->em = $em;
         $this->sendFrom = $sendFrom;
         $this->logger = $logger;
-
-        $this->renderer->configureSandbox();
     }
 
     /**
