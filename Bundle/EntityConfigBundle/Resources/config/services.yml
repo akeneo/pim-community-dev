@@ -6,10 +6,11 @@ parameters:
 services:
     oro_entity_config.proxy.entity_manager:
         tags:
-            - { name: oro_entity_config.proxy,  service: doctrine.orm.default_entity_manager}
+            - { name: oro_entity_config.proxy,  service: doctrine.orm.default_entity_manager }
+
     oro_entity_config.proxy.security_context:
         tags:
-            - { name: oro_entity_config.proxy,  service: security.context}
+            - { name: oro_entity_config.proxy,  service: security.context }
 
     oro_entity_config.config_manager:
         class:                                                  %oro_entity_config.config_manager.class%
@@ -22,9 +23,9 @@ services:
             - [setCache, [@oro_entity_config.cache.file_cache]]
 
     oro_entity_config.cache.file_cache:
-        class:                                                  %oro_entity_config.cache.file_cache.class%
-        arguments:                                              [%oro_entity_config.cache_dir.config%]
-        public:                                                 false
+          parent: oro.cache.abstract
+          calls:
+              - [setNamespace, ['oro_entity_config.cache']]
 
     oro_entity_config.command:
         class:                                                  %oro_entity_config.command.setup.class%

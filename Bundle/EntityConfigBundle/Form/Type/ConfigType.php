@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
 
 class ConfigType extends AbstractType
@@ -40,23 +40,23 @@ class ConfigType extends AbstractType
             $className  = $configModel->getEntity()->getClassName();
             $fieldName  = $configModel->getFieldName();
             $fieldType  = $configModel->getType();
-            $configType = EntityConfigContainer::TYPE_FIELD;
+            $configType = PropertyConfigContainer::TYPE_FIELD;
         } else {
             $className  = $configModel->getClassName();
             $fieldName  = null;
             $fieldType  = null;
-            $configType = EntityConfigContainer::TYPE_ENTITY;
+            $configType = PropertyConfigContainer::TYPE_ENTITY;
         }
 
         $data = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            if ($provider->getConfigContainer()->hasForm($configType, $fieldType)) {
+            if ($provider->getPropertyConfig()->hasForm($configType, $fieldType)) {
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigScopeType($provider->getConfigContainer()->getFormItems($configType, $fieldType)),
+                    new ConfigScopeType($provider->getPropertyConfig()->getFormItems($configType, $fieldType)),
                     array(
-                        'block_config' => (array)$provider->getConfigContainer()->getFormBlockConfig($configType)
+                        'block_config' => (array)$provider->getPropertyConfig()->getFormBlockConfig($configType)
                     )
                 );
                 $data[$provider->getScope()] = $provider->getConfig($className, $fieldName)->getValues();

@@ -75,8 +75,14 @@ class ConfigFieldGridController extends Controller
             $form->submit($request);
 
             if ($form->isValid()) {
-                $request->getSession()->set(sprintf(self::SESSION_ID_FIELD_NAME, $entity->getId()), $newFieldModel->getFieldName());
-                $request->getSession()->set(sprintf(self::SESSION_ID_FIELD_TYPE, $entity->getId()), $newFieldModel->getType());
+                $request->getSession()->set(
+                    sprintf(self::SESSION_ID_FIELD_NAME, $entity->getId()),
+                    $newFieldModel->getFieldName()
+                );
+                $request->getSession()->set(
+                    sprintf(self::SESSION_ID_FIELD_TYPE, $entity->getId()),
+                    $newFieldModel->getType()
+                );
 
                 return $this->redirect($this->generateUrl('oro_entityextend_field_update',
                     array(
@@ -88,7 +94,7 @@ class ConfigFieldGridController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         return array(
             'form'          => $form->createView(),
@@ -141,17 +147,25 @@ class ConfigFieldGridController extends Controller
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
                 return $this->get('oro_ui.router')->actionRedirect(
-                    array('route' => 'oro_entityconfig_field_update', 'parameters' => array('id' => $newFieldModel->getId()),),
-                    array('route' => 'oro_entityconfig_view', 'parameters' => array('id' => $entity->getId()))
+                    array(
+                        'route'      => 'oro_entityconfig_field_update',
+                        'parameters' => array('id' => $newFieldModel->getId()),
+                    ),
+                    array(
+                        'route'      => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $entity->getId())
+                    )
                 );
             }
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
         $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
-        $fieldConfig          = $entityConfigProvider->getConfig($entity->getClassName(), $newFieldModel->getFieldName());
-
+        $fieldConfig          = $entityConfigProvider->getConfig(
+            $entity->getClassName(),
+            $newFieldModel->getFieldName()
+        );
 
         return $this->render(
             'OroEntityConfigBundle:Config:fieldUpdate.html.twig',

@@ -7,12 +7,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Symfony\Component\Yaml\Yaml;
 
 class EntityConfigPass implements CompilerPassInterface
 {
-    const TAG_NAME = 'oro_entity_config.provider';
-
     /**
      * {@inheritdoc}
      */
@@ -20,31 +18,26 @@ class EntityConfigPass implements CompilerPassInterface
     {
         $configManagerDefinition = $container->getDefinition('oro_entity_config.config_manager');
 
-        $tags = $container->findTaggedServiceIds(self::TAG_NAME);
-        foreach ($tags as $id => $tag) {
-            /** @var Definition $provider */
-            $provider = $container->getDefinition($id);
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/entity_config.yml')) {
+                $bundleConfig = Yaml::parse(realpath($file));
 
-            if (!isset($tag[0]['scope'])) {
-                throw new RuntimeException(
-                    sprintf("Tag '%s' for service '%s' doesn't have required param 'scope'", self::TAG_NAME, $id)
-                );
+                if (isset($bundleConfig['oro_entity_config']) && count($bundleConfig['oro_entity_config'])) {
+                    foreach ($bundleConfig['oro_entity_config'] as $scope => $config) {
+                        $provider = new Definition('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
+                        $provider->setArguments(array(
+                            new Reference('oro_entity_config.config_manager'),
+                            $scope,
+                            $config
+                        ));
+
+                        $container->setDefinition('oro_entity_config.provider.' . $scope, $provider);
+
+                        $configManagerDefinition->addMethodCall('addProvider', array($provider));
+                    }
+                }
             }
-
-            if (!$container->hasDefinition('oro_entity_config.entity_config.' . $tag[0]['scope'])) {
-                throw new RuntimeException(sprintf(
-                    "Resources/config/entity_config.yml not found or has wrong 'scope'. Service '%s' with tag '%s' and tag-scope '%s' ",
-                    $id, self::TAG_NAME, $tag[0]['scope']
-                ));
-            }
-
-            $provider->setClass('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
-            $provider->setArguments(array(
-                new Reference('oro_entity_config.config_manager'),
-                new Reference('oro_entity_config.entity_config.' . $tag[0]['scope'])
-            ));
-
-            $configManagerDefinition->addMethodCall('addProvider', array($provider));
         }
     }
 }

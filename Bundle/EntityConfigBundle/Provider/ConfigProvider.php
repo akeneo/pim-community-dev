@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 class ConfigProvider implements ConfigProviderInterface
@@ -22,9 +22,9 @@ class ConfigProvider implements ConfigProviderInterface
     protected $configManager;
 
     /**
-     * @var EntityConfigContainer
+     * @var PropertyConfigContainer
      */
-    protected $configContainer;
+    protected $propertyConfigContainer;
 
     /**
      * @var string
@@ -32,22 +32,23 @@ class ConfigProvider implements ConfigProviderInterface
     protected $scope;
 
     /**
-     * @param ConfigManager         $configManager
-     * @param EntityConfigContainer $configContainer
+     * @param ConfigManager $configManager
+     * @param               $scope
+     * @param array         $config
      */
-    public function __construct(ConfigManager $configManager, EntityConfigContainer $configContainer)
+    public function __construct(ConfigManager $configManager, $scope, array $config)
     {
-        $this->configManager   = $configManager;
-        $this->configContainer = $configContainer;
-        $this->scope           = $configContainer->getScope();
+        $this->configManager           = $configManager;
+        $this->propertyConfigContainer = new PropertyConfigContainer($config);
+        $this->scope                   = $scope;
     }
 
     /**
-     * @return EntityConfigContainer
+     * @return PropertyConfigContainer
      */
-    public function getConfigContainer()
+    public function getPropertyConfig()
     {
-        return $this->configContainer;
+        return $this->propertyConfigContainer;
     }
 
     /**
@@ -57,15 +58,6 @@ class ConfigProvider implements ConfigProviderInterface
     public function isConfigurable($className)
     {
         return $this->configManager->isConfigurable($this->getClassName($className));
-    }
-
-    /**
-     * @param $className
-     * @return FieldConfigId[]
-     */
-    public function getFieldConfigIds($className)
-    {
-        return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
     }
 
     /**
@@ -120,8 +112,10 @@ class ConfigProvider implements ConfigProviderInterface
     public function createConfig(ConfigIdInterface $configId, array $values)
     {
         $config = new Config($configId);
-        $type   = $configId instanceof FieldConfigId ? EntityConfigContainer::TYPE_FIELD : EntityConfigContainer::TYPE_ENTITY;
-        $values = array_merge($this->getConfigContainer()->getDefaultValues($type), $values);
+        $type   = $configId instanceof FieldConfigId
+            ? PropertyConfigContainer::TYPE_FIELD
+            : PropertyConfigContainer::TYPE_ENTITY;
+        $values = array_merge($this->getPropertyConfig()->getDefaultValues($type), $values);
 
         foreach ($values as $key => $value) {
             $config->set($key, $value);
@@ -130,6 +124,54 @@ class ConfigProvider implements ConfigProviderInterface
         $this->persist($config);
 
         return $config;
+    }
+
+    /**
+     * @param null $className
+     * @return FieldConfigId[]
+     */
+    public function getConfigIds($className = null)
+    {
+        if ($className) {
+            return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
+        } else {
+            return $this->configManager->getEntityConfigIds($this->getScope());
+        }
+    }
+
+    /**
+     * @param null $className
+     * @return array|ConfigInterface[]
+     */
+    public function getConfigs($className = null)
+    {
+        $result = array();
+
+        foreach ($this->getConfigIds($className) as $configId) {
+            $result[] = $this->getConfig($configId);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param callable $map
+     * @param null     $className
+     * @return array|ConfigInterface[]
+     */
+    public function map(\Closure $map, $className = null)
+    {
+        return array_map($map, $this->getConfigs($className));
+    }
+
+    /**
+     * @param callable $filter
+     * @param null     $className
+     * @return array|ConfigInterface[]
+     */
+    public function filter(\Closure $filter, $className = null)
+    {
+        return array_filter($this->getConfigs($className), $filter);
     }
 
     /**
@@ -150,7 +192,9 @@ class ConfigProvider implements ConfigProviderInterface
         }
 
         if (!is_string($className)) {
-            throw new RuntimeException('AbstractAdvancedConfigProvider::getClassName expects Object, PersistentCollection array of entities or string');
+            throw new RuntimeException(
+                'AbstractAdvancedConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
+            );
         }
 
         return $className;

@@ -3,8 +3,8 @@
 namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
@@ -19,8 +19,6 @@ class OroEntityConfigExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->loadBundleConfig($container);
-
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
@@ -32,26 +30,6 @@ class OroEntityConfigExtension extends Extension
         $loader->load('metadata.yml');
         $loader->load('datagrid.yml');
         $loader->load('form_type.yml');
-    }
-
-    protected function loadBundleConfig(ContainerBuilder $container)
-    {
-        foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/entity_config.yml')) {
-                $bundleConfig = Yaml::parse(realpath($file));
-
-                if (isset($bundleConfig['oro_entity_config']) && count($bundleConfig['oro_entity_config'])) {
-                    foreach ($bundleConfig['oro_entity_config'] as $scope => $config) {
-                        $definition = new Definition(
-                            'Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer',
-                            array($scope, $config)
-                        );
-                        $container->setDefinition('oro_entity_config.entity_config.' . $scope, $definition);
-                    }
-                }
-            }
-        }
     }
 
     /**

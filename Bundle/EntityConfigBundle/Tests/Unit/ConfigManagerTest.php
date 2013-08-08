@@ -17,7 +17,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Metadata\Driver\AnnotationDriver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\Repository\NotFoundEntityConfigRepository;
@@ -85,7 +85,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
         $this->configCache->expects($this->any())->method('putConfigInCache')->will($this->returnValue(null));
 
-        $this->provider = new ConfigProvider($this->configManager, new EntityConfigContainer('test', array()));
+        $this->provider = new ConfigProvider($this->configManager, new PropertyConfigContainer('test', array()));
     }
 
     public function testGetConfigFoundConfigEntity()

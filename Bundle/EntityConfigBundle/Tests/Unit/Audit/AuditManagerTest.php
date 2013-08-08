@@ -8,7 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class AuditManagerTest extends \PHPUnit_Framework_TestCase
@@ -43,7 +43,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $provider = new ConfigProvider($configManager, new EntityConfigContainer('testScope', array()));
+        $provider = new ConfigProvider($configManager, new PropertyConfigContainer('testScope', array()));
 
         $configManager->expects($this->any())->method('em')->will($this->returnValue($em));
 

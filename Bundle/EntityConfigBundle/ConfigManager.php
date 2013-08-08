@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle;
 
+use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -13,8 +14,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
-use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -53,9 +54,9 @@ class ConfigManager
     protected $eventDispatcher;
 
     /**
-     * @var CacheInterface
+     * @var CacheProvider
      */
-    protected $configCache;
+    protected $cache;
 
     /**
      * @var AuditManager
@@ -113,11 +114,11 @@ class ConfigManager
     }
 
     /**
-     * @param CacheInterface $cache
+     * @param CacheProvider $cache
      */
-    public function setCache(CacheInterface $cache)
+    public function setCache(CacheProvider $cache)
     {
-        $this->configCache = $cache;
+        $this->cache = $cache;
     }
 
     /**
@@ -244,13 +245,13 @@ class ConfigManager
             return true;
         }
 
-        if (null !== $this->configCache
-            && $config = $this->configCache->loadConfigFromCache($configId)
+        if (null !== $this->cache
+            && $config = $this->loadConfigFromCache($configId)
         ) {
             return true;
         }
 
-        return (bool) $this->getConfigModelByConfigId($configId);
+        return (bool)$this->getConfigModelByConfigId($configId);
     }
 
     /**
@@ -275,7 +276,7 @@ class ConfigManager
             throw new RuntimeException(sprintf('Entity "%s" is not Configurable', $configId->getClassName()));
         }
 
-        if (null !== $this->configCache && $config = $this->configCache->loadConfigFromCache($configId)) {
+        if (null !== $this->cache && $config = $this->loadConfigFromCache($configId)) {
             $resultConfig = $config;
         } else {
             if (!$model = $this->getConfigModelByConfigId($configId)) {
@@ -285,8 +286,8 @@ class ConfigManager
             $config = new Config($configId);
             $config->setValues($model->toArray($configId->getScope()));
 
-            if (null !== $this->configCache) {
-                $this->configCache->putConfigInCache($config);
+            if (null !== $this->cache) {
+                $this->putConfigInCache($config);
             }
 
             $resultConfig = $config;
@@ -317,7 +318,7 @@ class ConfigManager
             $this->models[$className] = $entityModel = new EntityConfigModel($className);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getDefaultValues();
+                $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
                 if (!$passMeta && isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
@@ -347,7 +348,9 @@ class ConfigManager
         if (!$fieldModel = $this->getConfigModel($className, $fieldName)) {
 
             /** @var EntityConfigModel $entityModel */
-            $entityModel = isset($this->models[$className]) ? $this->models[$className] : $this->getConfigModel($className);
+            $entityModel = isset($this->models[$className])
+                ? $this->models[$className]
+                : $this->getConfigModel($className);
             if (!$entityModel) {
                 throw new LogicException(sprintf('Entity "%" is not found', $className));
             }
@@ -356,14 +359,18 @@ class ConfigManager
             $entityModel->addField($fieldModel);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getConfigContainer()->getDefaultValues(EntityConfigContainer::TYPE_FIELD);
+                $defaultValues = $provider->getPropertyConfig()
+                    ->getDefaultValues(PropertyConfigContainer::TYPE_FIELD);
                 $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config        = $provider->createConfig($fieldId, $defaultValues);
 
                 $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
 
-            $this->eventDispatcher->dispatch(Events::NEW_FIELD_CONFIG_MODEL, new NewFieldConfigModelEvent($fieldModel, $this));
+            $this->eventDispatcher->dispatch(
+                Events::NEW_FIELD_CONFIG_MODEL,
+                new NewFieldConfigModelEvent($fieldModel, $this)
+            );
         }
 
         return $fieldModel;
@@ -374,8 +381,8 @@ class ConfigManager
      */
     public function clearCache(ConfigIdInterface $configId)
     {
-        if ($this->configCache) {
-            $this->configCache->removeConfigFromCache($configId);
+        if ($this->cache) {
+            $this->removeConfigFromCache($configId);
         }
     }
 
@@ -411,12 +418,12 @@ class ConfigManager
 
             //TODO::refactoring
             $serializableValues = $this->getProvider($config->getConfigId()->getScope())
-                ->getConfigContainer()
+                ->getPropertyConfig()
                 ->getSerializableValues($config->getConfigId());
             $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
-            if ($this->configCache) {
-                $this->configCache->removeConfigFromCache($config->getConfigId());
+            if ($this->cache) {
+                $this->cache->removeConfigFromCache($config->getConfigId());
             }
         }
 
@@ -556,5 +563,32 @@ class ConfigManager
         }
 
         return $config;
+    }
+
+    /**
+     * @param ConfigIdInterface $configId
+     * @return bool|ConfigInterface
+     */
+    private function loadConfigFromCache(ConfigIdInterface $configId)
+    {
+        return unserialize($this->cache->fetch($configId->getId()));
+    }
+
+    /**
+     * @param ConfigIdInterface $configId
+     * @return bool
+     */
+    private function removeConfigFromCache(ConfigIdInterface $configId)
+    {
+        return $this->cache->delete($configId->getId());
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @return bool
+     */
+    private function putConfigInCache(ConfigInterface $config)
+    {
+        return $this->cache->save($config->getConfigId()->getId(), serialize($config));
     }
 }

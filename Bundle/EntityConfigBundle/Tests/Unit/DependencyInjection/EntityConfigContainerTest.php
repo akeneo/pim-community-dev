@@ -3,11 +3,11 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\Yaml\Yaml;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  EntityConfigContainer */
+    /** @var  PropertyConfigContainer */
     private $container;
 
     private $config = array();
@@ -20,23 +20,23 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
 
         $scope = key($this->config);
 
-        $this->container = new EntityConfigContainer($scope, $this->config);
+        $this->container = new PropertyConfigContainer($scope, $this->config);
     }
 
     public function testContainer()
     {
         $this->assertEquals(key($this->config), $this->container->getScope());
 
-        $this->assertEquals($this->config['field']['items'], $this->container->getItems(EntityConfigContainer::TYPE_FIELD));
+        $this->assertEquals($this->config['field']['items'], $this->container->getItems(PropertyConfigContainer::TYPE_FIELD));
 
         $this->assertEquals($this->config, $this->container->getConfig());
 
         $this->assertTrue($this->container->hasForm());
-        $this->assertTrue($this->container->hasForm(EntityConfigContainer::TYPE_FIELD));
+        $this->assertTrue($this->container->hasForm(PropertyConfigContainer::TYPE_FIELD));
 
         $this->assertEquals(
             $this->config['field']['form'],
-            $this->container->getFormConfig(EntityConfigContainer::TYPE_FIELD)
+            $this->container->getFormConfig(PropertyConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
@@ -51,12 +51,12 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $this->config['field']['grid_action'],
-            $this->container->getGridActions(EntityConfigContainer::TYPE_FIELD)
+            $this->container->getGridActions(PropertyConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
             $this->config['field']['layout_action'],
-            $this->container->getLayoutActions(EntityConfigContainer::TYPE_FIELD)
+            $this->container->getLayoutActions(PropertyConfigContainer::TYPE_FIELD)
         );
 
         $this->assertEquals(
@@ -71,7 +71,7 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('enabled' => true, 'is_searchable' => false, 'is_filtrableble' => false),
-            $this->container->getDefaultValues(EntityConfigContainer::TYPE_FIELD)
+            $this->container->getDefaultValues(PropertyConfigContainer::TYPE_FIELD)
         );
     }
 }
