@@ -26,6 +26,7 @@ parameters:
     oro_notification.mailer.transport.spool_db.class: Oro\Bundle\NotificationBundle\Provider\Mailer\DbSpool
     oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
 
+    swiftmailer.mailer.db_spool_mailer.spool.enabled: true
 services:
     # Email notification form services
     oro_notification.form.email_notification:
@@ -107,7 +108,7 @@ services:
         class: %oro_notification.email_handler.class%
         arguments:
             - @oro_email.email_renderer
-            - @oro_notification.mailer
+            - @swiftmailer.mailer.db_spool_mailer
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
             - @logger
@@ -124,19 +125,26 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
 
-    swiftmailer.spool.db:
-        alias: oro_notification.mailer.spool_db
+
+    oro_notification.mailer.transport.eventdispatcher:
+        parent: swiftmailer.transport.eventdispatcher.abstract
 
     oro_notification.mailer.transport:
-        class: Swift_Transport_SpoolTransport
+        parent: swiftmailer.transport.spool.abstract
         arguments:
-            - @swiftmailer.transport.eventdispatcher
+            - @oro_notification.mailer.transport.eventdispatcher
             - @oro_notification.mailer.spool_db
 
     # notification mailer instance
-    oro_notification.mailer:
+    swiftmailer.mailer.db_spool_mailer:
         class: %swiftmailer.class%
         arguments:
             - @oro_notification.mailer.transport
 
+    swiftmailer.mailer.db_spool_mailer.transport.real:
+        alias: swiftmailer.transport.real
+
+    # notification twig instance
+    oro_notification.twig.string_loader:
+        class: Twig_Loader_String
 

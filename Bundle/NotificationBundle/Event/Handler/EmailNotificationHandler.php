@@ -12,7 +12,7 @@ use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
-    const SEND_COMMAND       = 'oro:spool:send';
+    const SEND_COMMAND = 'swiftmailer:spool:send';
 
     /** @var EmailRenderer */
     protected $renderer;
@@ -132,14 +132,15 @@ class EmailNotificationHandler extends EventHandlerAbstract
     {
         $commandArgs = array_merge(
             array(
-                'message-limit' => $this->messageLimit,
-                'env'           => $this->env,
+                '--message-limit=' . $this->messageLimit,
+                '--env=' . $this->env,
+                '--mailer=db_spool_mailer',
             ),
             $commandArgs
         );
 
-        if ($commandArgs['env'] == 'prod') {
-            $commandArgs['no-debug'] = true;
+        if ($this->env == 'prod') {
+            $commandArgs[] = '--no-debug';
         }
 
         return parent::addJob($command, $commandArgs);
