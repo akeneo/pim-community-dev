@@ -99,7 +99,7 @@ class MediaManager
 
     /**
      * Read a file
-     * @param Media  $media
+     * @param Media $media
      *
      * @return content
      */

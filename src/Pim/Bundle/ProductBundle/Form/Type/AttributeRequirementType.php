@@ -38,4 +38,3 @@ class AttributeRequirementType extends AbstractType
         return 'pim_attribute_requirement';
     }
 }
-

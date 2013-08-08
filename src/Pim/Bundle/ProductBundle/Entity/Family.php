@@ -257,7 +257,6 @@ class Family implements TranslatableInterface
         $locale = ($locale) ? $locale : $this->locale;
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
-
                 return $translation;
             }
         }

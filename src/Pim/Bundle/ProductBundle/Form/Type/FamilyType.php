@@ -5,11 +5,7 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 

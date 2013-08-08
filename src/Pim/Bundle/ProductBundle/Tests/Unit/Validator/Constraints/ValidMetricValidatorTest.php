@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
