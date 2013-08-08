@@ -64,11 +64,11 @@ class AddressHandler
     /**
      * "Success" form handler
      *
-     * @param AbstractAddress $entity
+     * @param AbstractAddress $address
      */
-    protected function onSuccess(AbstractAddress $entity)
+    protected function onSuccess(AbstractAddress $address)
     {
-        $this->manager->persist($entity);
+        $this->manager->persist($address);
         $this->manager->flush();
     }
 }

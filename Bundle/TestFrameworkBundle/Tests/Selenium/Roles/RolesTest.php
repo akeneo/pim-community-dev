@@ -66,7 +66,12 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
                 if (is_null($id)) {
                     $id = trim($content);
                 }
-                $this->assertArrayHasKey($content, $this->defaultRoles[$id]);
+                $checks = 0;
+                if (array_key_exists($id, $this->defaultRoles)) {
+                    $this->assertArrayHasKey($this->defaultRoles[$id], $content);
+                    $checks = $checks + 1;
+                }
+                $this->assertEquals(count($this->defaultRoles), $checks);
             }
         }
 
