@@ -1,14 +1,6 @@
 <script type="text/javascript">
 'use strict';
 
-
-var assetsPath  = "{{ asset('bundles/pimproduct/') }}";
-var tree_id     = "#tree";
-var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
-var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
-var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}".replace(0, '#ID#');
-var urlIndex    = "{{ path('pim_product_categorytree_index') }}";
-
 // Message used by the tree-management.jstree.js file when not tree in DB
 var no_tree_message = "{{ 'No tree available' | trans }}";
 
@@ -50,7 +42,7 @@ $(function() {
         
         "tree_selector" : {
             "ajax" : {
-                "url" : urlListTree,
+                "url" : "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}",
                 "parameters" : {"select_node_id" : window.preselect_node_id}
             },
             "auto_open_root" : true,
@@ -62,11 +54,11 @@ $(function() {
             "dots" : true,
             "icons" : true,
             "themes" : "bap",
-            "url" : assetsPath + "/css/style.css"
+            "url" : "{{ asset('bundles/pimproduct/') }}" + "/css/style.css"
         },
         "json_data" : {
             "ajax" : {
-                "url" : urlChildren,
+                "url" : "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}",
                 "data" : function (node) {
                     // the result is fed to the AJAX request `data` option
                     var id = null;
@@ -136,12 +128,14 @@ $(function() {
     .bind("remove.jstree", function (event, data) {
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
-            var url = urlRemove.replace("#ID#", id);
+            var url = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}".replace(0, '#ID#');
+            url = url.replace("#ID#", id);
             PimAjax.ajaxDelete(url, '');
             if (PimAjax.isSuccessfull() == true) {
                 var parentNode = data.inst._get_parent();
                 id = parentNode.attr("id").replace('node_', '');
             }
+            var urlIndex = "{{ path('pim_product_categorytree_index') }}";
             window.location = urlIndex+"?node="+id;
         });
     })
@@ -182,69 +176,28 @@ $(function() {
             }
         );
     });
-    
-    ;
 
-    // define buttons
-    var createBtn = $('<div>', { 'class': 'btn-group' }).html(
-        $('<button class="dropdown-toggle" data-toggle="dropdown"></button>').html(
-            $('<i>', { 'class': 'icon-plus-sign' })
-        ).append($('<span>', { 'class': 'caret' }))
-    ).append(
-        $('<ul>', { 'class': 'dropdown-menu' }).append(
-            $('<li>').html($('<a>', { id: 'tree-create', html: '{{ "Create tree"|trans }}' }).on(
-                'click', function() {
-                    window.location = "{{ path('pim_product_categorytree_create') }}";
-                }
-            ))
-        ).append(
-            $('<li>').html($('<a>', { id: 'category-create', html: '{{ "Create category"|trans }}' }).on(
-                'click', function() {
-                    var node = $.jstree._focused().get_selected();
-                    if(!$.jstree._focused()._get_node()) {
-                        PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
-                    } else {
-                        var parentId = node.attr("id").replace('node_', '');
-                        window.location = "{{ path('pim_product_categorytree_create') }}/"+parentId;
-                    }
-                }
-            ))
-        )
-    );
-
-    var editBtn = $('<button>', { id: 'category-edit' }).html(
-        $('<i>', { 'class': 'icon-edit' })
+    var createBtn = $('<button>', { id: 'tree-create' }).html(
+        $('<i>', { 'class': 'icon-plus-sign' })
     ).on('click', function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node(node)) {
-            PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var categoryId = node.attr("id").replace('node_', '');
-            window.location = "{{ path('pim_product_categorytree_edit') }}/"+categoryId;
-        }
-
-    });
-
-    var removeBtn = $('<button>', { id: 'category-remove' }).html(
-        $('<i>', { 'class': 'icon-trash' })
-    ).on('click', function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
-            PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var doRemove = function() {
-                $(tree_id).jstree("remove");
-            };
-            PimDialog.confirm(
-                "{{ 'Are you sure you want to delete the category' | trans }}",
-                "{{ 'Delete Confirmation' | trans }}",
-                doRemove
-            );
-        }
+        $.get(
+            "{{ path('pim_product_categorytree_myedit') }}", 
+            { 
+                "operation" : "edit_node", 
+                "id" : 0
+            }, 
+            function (r) {
+                try {
+                    JSON.parse(r);
+                } catch (e) {
+                    $('#category-edit-form').html(r);
+                }
+            }
+        );
     });
 
     // Instantiate sidebar
-    $('#category-tree-container').sidebarize({ buttons: [ createBtn, editBtn, removeBtn ] });
+    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
 });
 </script>
 

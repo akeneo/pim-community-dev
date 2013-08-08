@@ -217,6 +217,7 @@ class CategoryTreeController extends Controller
         /** @var Category */
         $category = $this->getTreeManager()->getSegmentInstance();
         $category->setParent($parent);
+        // TODO : deal with code already exists case
         $category->setCode($code);
         // TODO : could be remove after locale refactoring
         $categoryTranslation = $category->getTranslation('default');
@@ -295,24 +296,11 @@ class CategoryTreeController extends Controller
     public function myeditAction()
     {
         $request  = $this->getRequest();
-
         $categoryId = $request->get('id');
         $category   = $this->getTreeManager()->getEntityRepository()->find($categoryId);
-
-        /*
-        $datagrid = $this->getDataAuditDatagrid(
-            $category,
-            'pim_product_categorytree_edit',
-            array(
-                    'id' => $category->getId()
-            )
-        );*/
-
-        /*
-         if ($request->isXmlHttpRequest()) {
-        return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
-        }*/
-
+        if (!$category) {
+            $category = $this->getTreeManager()->getSegmentInstance();
+        }
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
         if ($request->isMethod('POST')) {
@@ -328,19 +316,11 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_categorytree_edit',
-                        array('id'=> $category->getId(), 'node' => $category->getId())
-                    )
-                );
+                return array('form' => $form->createView(),);
             }
         }
 
-        return array(
-            'form'     => $form->createView(),
-            //'datagrid' => $datagrid->createView(),
-        );
+        return array('form' => $form->createView(),);
     }
 
     /**
