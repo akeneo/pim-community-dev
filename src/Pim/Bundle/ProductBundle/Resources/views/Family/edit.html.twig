@@ -1,7 +1,14 @@
 {% extends 'PimProductBundle:Family:index.html.twig' %}
 
 {% block familyTab %}
+
+{% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+'form': attributesForm,
+'action': path('pim_product_family_addproductattributes', {'id': family.id})
+} %}
+
 {{ JSFV(form) }}
+
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
@@ -29,12 +36,9 @@
         {{ form_row(form._token) }}
 
         <div class="tab-pane" id="attributes">
-            <div id="attribute-buttons">
-                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-                    'form': attributesForm,
-                    'action': path('pim_product_family_addproductattributes', {'id': family.id})
-                } %}
-            </div>
+
+            <div id="attribute-buttons">{# Add available attribute widget #}</div>
+
             <table class="table groups">
                 <thead>
                     <th>{{ 'Label'|upper }}</th>
@@ -114,7 +118,7 @@
                 }
             });
 
-            $('#{{ form.vars.id }}').on('submit', function() {
+            $('form').on('submit', function() {
                 var hash = $('#form-navbar .nav li.active a').attr('href');
                 if (hash) {
                     $(this).attr('action', $(this).attr('action') + '?hash=' + hash.substr(1));
