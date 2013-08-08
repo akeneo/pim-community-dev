@@ -123,6 +123,6 @@ abstract class AbstractEmail implements PrimaryItem, EmptyItem
      */
     public function isEmpty()
     {
-        return empty($this->getPhone);
+        return empty($this->email);
     }
 }
