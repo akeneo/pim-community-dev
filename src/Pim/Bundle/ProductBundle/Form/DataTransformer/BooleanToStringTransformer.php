@@ -33,7 +33,7 @@ class BooleanToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!in_array($value, array(0, 1, '0', '1'), true)) {
+        if (!in_array($value, array(0, 1, '0', '1', ''), true)) {
             throw new TransformationFailedException('Expected a 0 or a 1.');
         }
 

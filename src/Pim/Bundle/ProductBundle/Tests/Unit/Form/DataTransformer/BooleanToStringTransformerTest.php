@@ -26,9 +26,10 @@ class BooleanToStringTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testReverseTransform()
     {
+        $this->assertEquals(false, $this->transformer->reverseTransform(''));
         $this->assertEquals(false, $this->transformer->reverseTransform('0'));
-        $this->assertEquals(true, $this->transformer->reverseTransform('1'));
         $this->assertEquals(false, $this->transformer->reverseTransform(0));
+        $this->assertEquals(true, $this->transformer->reverseTransform('1'));
         $this->assertEquals(true, $this->transformer->reverseTransform(1));
     }
 
