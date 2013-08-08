@@ -64,20 +64,28 @@ class Group
     protected $userOwner;
 
     /**
-     * @var BusinessUnit
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Exclude
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinTable(name="oro_owner_group_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
      */
-    protected $businessUnitOwner;
+    protected $businessUnitOwners;
 
     /**
-     * @var Organization
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Exclude
+     * @var Organization[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinTable(name="oro_owner_group_organization",
+     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
      */
-    protected $organizationOwner;
+    protected $organizationOwners;
 
     /**
      * @param string $name [optional] Group name
@@ -250,41 +258,50 @@ class Group
 
     /**
      * @param User $userOwner
+     * @return Group
      */
     public function setUserOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
+
+        return $this;
     }
 
     /**
-     * @return BusinessUnit
+     * @return BusinessUnit[]
      */
-    public function getBusinessUnitOwner()
+    public function getBusinessUnitOwners()
     {
-        return $this->businessUnitOwner;
+        return $this->businessUnitOwners;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param ArrayCollection $businessUnitOwners
+     * @return Group
      */
-    public function setBusinessUnitOwner(BusinessUnit $businessUnitOwner)
+    public function setBusinessUnitOwners($businessUnitOwners)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->businessUnitOwners = $businessUnitOwners;
+
+        return $this;
     }
 
     /**
-     * @return Organization
+     * @return Organization[]
      */
-    public function getOrganizationOwner()
+    public function getOrganizationOwners()
     {
-        return $this->organizationOwner;
+        return $this->organizationOwners;
     }
 
     /**
-     * @param Organization $organizationOwner
+     * @param ArrayCollection $organizationOwners
+     * @return Group
      */
-    public function setOrganizationOwner(Organization $organizationOwner)
+    public function setOrganizationOwners($organizationOwners)
     {
-        $this->organizationOwner = $organizationOwner;
+        $this->organizationOwners = $organizationOwners;
+
+        return $this;
     }
 }

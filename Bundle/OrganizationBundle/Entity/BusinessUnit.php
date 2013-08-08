@@ -116,9 +116,40 @@ class BusinessUnit
     protected $tags;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
      */
     protected $users;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $userOwner;
+
+    /**
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinTable(name="oro_owner_bu_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
+     */
+    protected $businessUnitOwners;
+
+    /**
+     * @var Organization[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinTable(name="oro_owner_business_unit_organization",
+     *      joinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
+     */
+    protected $organizationOwners;
 
     /**
      * Get id
@@ -383,6 +414,63 @@ class BusinessUnit
         if ($this->getUsers()->contains($user)) {
             $this->getUsers()->removeElement($user);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUserOwner()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     * @return BusinessUnit
+     */
+    public function setUserOwner(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit[]
+     */
+    public function getBusinessUnitOwners()
+    {
+        return $this->businessUnitOwners;
+    }
+
+    /**
+     * @param ArrayCollection $businessUnitOwners
+     * @return BusinessUnit
+     */
+    public function setBusinessUnitOwners($businessUnitOwners)
+    {
+        $this->businessUnitOwners = $businessUnitOwners;
+
+        return $this;
+    }
+
+    /**
+     * @return Organization[]
+     */
+    public function getOrganizationOwners()
+    {
+        return $this->organizationOwners;
+    }
+
+    /**
+     * @param ArrayCollection $organizationOwners
+     * @return BusinessUnit
+     */
+    public function setOrganizationOwners($organizationOwners)
+    {
+        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }

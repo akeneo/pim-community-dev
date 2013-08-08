@@ -1,0 +1,11 @@
+orocrm.business_unit.datagrid.business_unit_id: ID
+orocrm.business_unit.datagrid.name: Name
+orocrm.business_unit.datagrid.email: Email
+orocrm.business_unit.datagrid.phone: Phone
+orocrm.business_unit.datagrid.parent: Parent
+orocrm.business_unit.datagrid.organization: Organization
+orocrm.business_unit.datagrid.created_at: Created At
+
+orocrm.business_unit.datagrid.view: View
+orocrm.business_unit.datagrid.update: Update
+orocrm.business_unit.datagrid.delete: Delete

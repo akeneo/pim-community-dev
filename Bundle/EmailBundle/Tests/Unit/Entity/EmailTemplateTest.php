@@ -5,6 +5,10 @@ namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Tests\Unit\Form\Type\EmailTemplateTranslationTypeTest;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 class EmailTemplateTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -61,5 +65,25 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($clone->getParent(), $this->emailTemplate->getId());
 
         $this->assertEquals($this->emailTemplate->getName(), (string)$this->emailTemplate);
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->emailTemplate;
+        $user = new User();
+        $businessUnit = new BusinessUnit();
+        $organization = new Organization();
+
+        $this->assertEmpty($entity->getUserOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwner());
+        $this->assertEmpty($entity->getOrganizationOwner());
+
+        $entity->setUserOwner($user);
+        $entity->setBusinessUnitOwner($businessUnit);
+        $entity->setOrganizationOwner($organization);
+
+        $this->assertEquals($user, $entity->getUserOwner());
+        $this->assertEquals($businessUnit, $entity->getBusinessUnitOwner());
+        $this->assertEquals($organization, $entity->getOrganizationOwner());
     }
 }
