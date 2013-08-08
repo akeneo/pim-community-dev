@@ -30,7 +30,7 @@
     <div id="category-tree-container" class="row-fluid">
         <div id="tree"></div>
 
-        <div>
+        <div id="category-edit-form">
             {{ JSFV(form) }}
             <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :

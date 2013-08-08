@@ -226,7 +226,7 @@ class CategoryTreeController extends Controller
         $sm->persist($category);
         $sm->flush();
 
-        return new JsonResponse(array('status' => 1));
+        return new JsonResponse(array('status' => 1, 'id' => $category->getId()));
     }
 
     /**
@@ -279,6 +279,67 @@ class CategoryTreeController extends Controller
 
         return array(
             'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Edit tree action
+     *
+     * @param Category $category The category to manage
+     *
+     * @Route("/myedit")
+     * @Template("PimProductBundle:CategoryTree:form.html.twig")
+     *
+     * @return array
+     */
+    public function myeditAction()
+    {
+        $request  = $this->getRequest();
+
+        $categoryId = $request->get('id');
+        $category   = $this->getTreeManager()->getEntityRepository()->find($categoryId);
+
+        /*
+        $datagrid = $this->getDataAuditDatagrid(
+            $category,
+            'pim_product_categorytree_edit',
+            array(
+                    'id' => $category->getId()
+            )
+        );*/
+
+        /*
+         if ($request->isXmlHttpRequest()) {
+        return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }*/
+
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
+
+                $this->addFlash(
+                    'success',
+                    sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
+                );
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_categorytree_edit',
+                        array('id'=> $category->getId(), 'node' => $category->getId())
+                    )
+                );
+            }
+        }
+
+        return array(
+            'form'     => $form->createView(),
+            //'datagrid' => $datagrid->createView(),
         );
     }
 

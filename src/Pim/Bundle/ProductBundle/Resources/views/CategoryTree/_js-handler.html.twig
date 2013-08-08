@@ -21,13 +21,26 @@ $(function() {
         "plugins" : [
              "tree_selector", "themes", "json_data", "ui", "crrm", "types", "dnd", "contextmenu"
         ],
-        
-        
         contextmenu : {
             items : {
                 "edit" : {
-                    "label" : "Edit category",
-                    "action" : function (obj) { alert("edit category"); }
+                    "label" : "Edit",
+                    "action" : function (obj) {
+                        $.get(
+                            "{{ path('pim_product_categorytree_myedit') }}", 
+                            { 
+                                "operation" : "edit_node", 
+                                "id" : obj.attr("id").replace('node_', '')
+                            }, 
+                            function (r) {
+                                try {
+                                    JSON.parse(r);
+                                } catch (e) {
+                                    $('#category-edit-form').html(r);
+                                }
+                            }
+                        );
+                    }
                 },
                 "ccp" : false,
                 "rename" : false,
@@ -89,7 +102,6 @@ $(function() {
     .bind("move_node.jstree", function (e, data) {
         var this_jstree = $.jstree._focused();
         data.rslt.o.each(function (i) {
-
             $.ajax({
                 async : false,
                 type: 'POST',
@@ -133,11 +145,6 @@ $(function() {
             window.location = urlIndex+"?node="+id;
         });
     })
-    /*
-    .bind("select_node.jstree", function (event, data) {
-        alert(data.rslt.obj.attr("id"));
-    })*/
-    
     .bind("create.jstree", function (e, data) {
         $.post(
             "{{ path('pim_product_categorytree_add') }}", 
@@ -158,6 +165,23 @@ $(function() {
             }
         );
     })
+    .bind("edit.jstree", function (e, data) {
+        $.post(
+            "{{ path('pim_product_categorytree_myedit') }}", 
+            { 
+                "operation" : "edit_node", 
+                "id" : data.rslt.id
+            }, 
+            function (r) {
+                if(r.status) {
+                    $(data.rslt.obj).attr("id", "node_" + r.id);
+                }
+                else {
+                    $.jstree.rollback(data.rlbk);
+                }
+            }
+        );
+    });
     
     ;
 
