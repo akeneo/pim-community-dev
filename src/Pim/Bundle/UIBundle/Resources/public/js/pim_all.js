@@ -73,7 +73,6 @@ var FormUpdateListener = function(formId, message) {
         });
     };
 
-    $('#updated').hide();
     $(document).on('change', 'form#' + formId, this.formUpdated);
     $(document).on('click', 'form#' + formId + ' ins.jstree-checkbox', this.formUpdated);
 };
