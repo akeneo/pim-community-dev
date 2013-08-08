@@ -1,7 +1,7 @@
 js:
   pim_ui:
     - '@PimUIBundle/Resources/public/js/jquery.actual.min.js'
-    - '@PimUIBundle/Resources/public/js/pim_all.js'
+    # - '@PimUIBundle/Resources/public/js/pim_all.js'
     - '@PimUIBundle/Resources/public/js/select2.js'
     - '@PimUIBundle/Resources/public/js/jquery.sidebarize.js'
     - '@PimUIBundle/Resources/public/js/slimbox2.js'
