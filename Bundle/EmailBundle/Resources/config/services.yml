@@ -154,3 +154,11 @@ services:
         arguments:
             - @security.context
             - @oro_email.config.available_in_templates
+
+    oro_email.validator.variables_validator:
+        class: Oro\Bundle\EmailBundle\Validator\VariablesValidator
+        arguments:
+            - @oro_notification.twig
+            - @security.context
+        tags:
+            - { name: validator.constraint_validator, alias: oro_email.variables_validator }
