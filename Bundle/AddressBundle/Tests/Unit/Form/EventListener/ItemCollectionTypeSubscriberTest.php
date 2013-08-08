@@ -147,9 +147,15 @@ class ItemCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
                 'check_is_new' => true,
                 'parent_data_id' => null
             ),
-            'not_set_primary_for_not_new_data' => array(
+            'set_primary_for_one_item' => array(
                 'data' => array(array('k' => 'v')),
-                'expected' => array(array('k' => 'v')),
+                'expected' => array(array('k' => 'v', 'primary' => true)),
+                'check_is_new' => true,
+                'parent_data_id' => 1
+            ),
+            'not_set_primary_for_not_new_data' => array(
+                'data' => array(array('k' => 'v'), array('k2' => 'v2')),
+                'expected' => array(array('k' => 'v'), array('k2' => 'v2')),
                 'check_is_new' => true,
                 'parent_data_id' => 1
             ),

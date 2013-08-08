@@ -72,7 +72,7 @@ class ItemCollectionTypeSubscriber implements EventSubscriberInterface
         $items = $notEmptyItems;
 
         // Set first non empty address for new item as primary
-        if ($items && !$hasPrimary && $this->isParentFormDataNew($event->getForm())) {
+        if ($items && !$hasPrimary && $this->isParentFormDataNew($event->getForm()) || count($items) == 1) {
             $items[current(array_keys($items))]['primary'] = true;
         }
 
