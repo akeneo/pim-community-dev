@@ -155,8 +155,9 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
             }
             $columnOrder = $dateArray;
         }
-            $sortedColumnOrder = $columnOrder;
-            rsort($sortedColumnOrder, SORT_NATURAL);
+        $sortedColumnOrder = $columnOrder;
+        natcasesort($sortedColumnOrder);
+        $sortedColumnOrder = array_reverse($sortedColumnOrder);
 
         $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
 
@@ -171,8 +172,8 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
             }
             $columnOrder = $dateArray;
         }
-            $sortedColumnOrder = $columnOrder;
-            sort($sortedColumnOrder, SORT_NATURAL);
+        $sortedColumnOrder = $columnOrder;
+        natcasesort ($sortedColumnOrder);
 
         $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
     }

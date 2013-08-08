@@ -67,7 +67,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
                 }
                 $checks = 0;
                 if (array_key_exists($id, $this->defaultGroups)) {
-                    $this->assertArrayHasKey($this->defaultGroups[$id], $content);
+                    $this->assertArrayHasKey($content, $this->defaultGroups[$id]);
                     $checks = $checks + 1;
                 }
                 $this->assertEquals(count($this->defaultGroups), $checks);
