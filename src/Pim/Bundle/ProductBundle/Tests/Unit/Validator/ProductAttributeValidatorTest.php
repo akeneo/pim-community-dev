@@ -272,8 +272,8 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test case with invalid default value
-     * @param string  $attributeType
-     * @param array   $properties
+     * @param string $attributeType
+     * @param array  $properties
      *
      * @dataProvider providerDefaultValueInvalid
      */

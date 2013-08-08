@@ -13,7 +13,7 @@ use Context\Page\Family\Creation;
  */
 class Edit extends Creation
 {
-    protected $path = '/enrich/family/edit/{id}';
+    protected $path = '/enrich/family/{id}/edit';
 
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class Edit extends Creation
             $this->elements,
             array(
                 'Attributes'                      => array('css' => '#attributes table'),
-                'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
+                'Attribute as label choices'      => array('css' => '#pim_family_attributeAsLabel'),
             )
         );
     }
@@ -124,5 +124,46 @@ class Edit extends Creation
         $this->getElement('Attribute as label choices')->selectOption($attribute);
 
         return $this;
+    }
+
+    public function isAttributeRequired($attribute, $channel)
+    {
+        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
+        $requirement = $cell->find('css', 'input');
+
+        return $requirement->isChecked();
+    }
+
+    public function switchAttributeRequirement($attribute, $channel)
+    {
+        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
+        $requirement = $cell->find('css', 'i');
+
+        $requirement->click();
+    }
+
+    private function getAttributeRequirementCell($attribute, $channel)
+    {
+        $attributesTable = $this->getElement('Attributes');
+        $columnIdx       = 0;
+
+        foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
+            if ($header->getText() === strtoupper($channel)) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+
+        if (0 === $columnIdx) {
+            throw new \Exception(sprintf('An error occured when trying to get the "%s" header', $channel));
+        }
+
+        $cells = $attributesTable->findAll('css', sprintf('tbody tr:contains("%s") td', $attribute));
+
+        if (count($cells) < $columnIdx) {
+            throw new \Exception(sprintf('An error occured when trying to get the attributes "%s" row', $attribute));
+        }
+
+        return $cells[$columnIdx];
     }
 }

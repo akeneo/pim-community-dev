@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
-use Pim\Bundle\ProductBundle\Tests\Entity\AttributeGroupTestEntity;
 
 /**
  * Test related class

@@ -291,7 +291,6 @@ class CategoryHelper
         foreach ($categories as $category) {
             $state = 'leaf';
 
-
             if (count($category['__children']) > 0) {
                 $state = 'open';
             } else {

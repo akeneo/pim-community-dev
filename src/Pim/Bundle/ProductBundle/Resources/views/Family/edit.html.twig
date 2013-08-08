@@ -1,7 +1,14 @@
 {% extends 'PimProductBundle:Family:index.html.twig' %}
 
 {% block familyTab %}
+
+{% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+'form': attributesForm,
+'action': path('pim_product_family_addproductattributes', {'id': family.id})
+} %}
+
 {{ JSFV(form) }}
+
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
@@ -27,48 +34,43 @@
             {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
         </div>
         {{ form_row(form._token) }}
-    </form>
 
         <div class="tab-pane" id="attributes">
-            <div id="attribute-buttons">
-                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-                    'form': attributesForm,
-                    'action': path('pim_product_family_addproductattributes', {'id': family.id})
-                } %}
-            </div>
+
+            <div id="attribute-buttons">{# Add available attribute widget #}</div>
+
+            {% set columnWidth = 100/(channels|length + 1) %}
             <table class="table groups">
                 <thead>
-                    <th>{{ 'Label'|upper }}</th>
+                    <th width="{{ columnWidth }}%">{{ 'Label'|upper }}</th>
+                    {% for channel in channels %}
+                        <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
+                    {% endfor %}
                     <th>&nbsp;</th>
                 </thead>
 
+                {% set colspan = channels|length + 2 %}
+                {% for groupName, attributes in family.groupedAttributes %}
                 <tbody>
-                    {% if family.attributes|length > 0 %}
-                        {% set attributeGroup = family.attributes.first.group %}
-                        <tr class="group">
-                            <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
-                        </tr>
-                        {% for attribute in family.attributes %}
-                            {% if attribute.group != attributeGroup %}
-                            </tbody>
-                            <tbody>
-                                <tr class="group">
-                                    <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
-                                </tr>
-                            {% endif %}
-                            <tr>
-                                <td>{{ attribute.label }}</td>
-                                <td>
-                                    <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
-                                        class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
-                                        <i class="icon-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% set attributeGroup = attribute.group %}
+                    <tr class="group">
+                        <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ groupName }}</td>
+                    </tr>
+                    {% for attribute in attributes %}
+                    <tr>
+                        <td>{{ attribute.label }}</td>
+                        {% for channel in channels %}
+                            <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
                         {% endfor %}
-                    {% endif %}
+                        <td>
+                            <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
+                                class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                <i class="icon-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
+                {% endfor %}
             </table>
         </div>
 
@@ -77,6 +79,7 @@
         </div>
 
     </div>
+</form>
 {% endblock %}
 
 {% block head_script_component %}
@@ -88,6 +91,41 @@
             $('.group').click(function() {
                 $(this).parent().find('tr:not(.group)').toggle();
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
+            });
+
+            $('.attribute-requirement i')
+                .each(function() {
+                    var $input = $(this).siblings('input[type="checkbox"]');
+                    if ($input.attr('checked')) {
+                        $(this).attr('data-original-title', $(this).parent().data('required-title'));
+                    } else {
+                        $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
+                    }
+                })
+                .click(function() {
+                    $(this).toggleClass('fa-icon-ok required');
+                    $(this).toggleClass('fa-icon-circle non-required');
+
+                    var $input = $(this).siblings('input[type="checkbox"]');
+                    if ($input.attr('checked')) {
+                        $(this)
+                            .attr('data-original-title', $(this).parent().data('not-required-title'))
+                            .tooltip('show');
+                        $input.removeAttr('checked');
+                    } else {
+                        $(this)
+                            .attr('data-original-title', $(this).parent().data('required-title'))
+                            .tooltip('show');
+                        $input.attr('checked', 'checked');
+                    }
+                });
+
+            $('form').on('submit', function() {
+                var hash = $('#form-navbar .nav li.active a').attr('href');
+                if (hash) {
+                    $(this).attr('action', $(this).attr('action') + '?hash=' + hash.substr(1));
+                }
+                return true;
             });
         });
     </script>

@@ -49,22 +49,22 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if ($data and $data->getId()) {
-            // TODO New in version 2.2: The ability to pass a string into FormInterface::add was added in Symfony 2.2.
-            $field = $this->factory->createNamed(
-                'attributeAsLabel',
-                'entity',
-                $data->getAttributeAsLabel(),
-                array(
-                    'required'        => false,
-                    'empty_value'     => 'Id',
-                    'label'           => 'Attribute used as label',
-                    'class'           => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-                    'choices'         => $data->getAttributeAsLabelChoices(),
-                    'auto_initialize' => false
+        if ($data && $data->getId()) {
+            $form->add(
+                $this->factory->createNamed(
+                    'attributeAsLabel',
+                    'entity',
+                    $data->getAttributeAsLabel(),
+                    array(
+                        'required'        => false,
+                        'empty_value'     => 'Id',
+                        'label'           => 'Attribute used as label',
+                        'class'           => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+                        'choices'         => $data->getAttributeAsLabelChoices(),
+                        'auto_initialize' => false,
+                    )
                 )
             );
-            $form->add($field);
         }
     }
 }

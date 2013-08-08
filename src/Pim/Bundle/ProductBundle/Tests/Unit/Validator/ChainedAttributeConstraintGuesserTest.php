@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator;
 
-use Symfony\Component\Validator\Constraints;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser\ConstraintGuesserTest;
 use Pim\Bundle\ProductBundle\Validator\ChainedAttributeConstraintGuesser;
 
