@@ -26,7 +26,7 @@ class Edit extends Creation
             $this->elements,
             array(
                 'Attributes'                      => array('css' => '#attributes table'),
-                'Attribute as label choices'      => array('css' => '#pim_family_form_attributeAsLabel'),
+                'Attribute as label choices'      => array('css' => '#pim_family_attributeAsLabel'),
             )
         );
     }

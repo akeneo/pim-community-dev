@@ -61,7 +61,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'label'           => 'Attribute used as label',
                         'class'           => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
                         'choices'         => $data->getAttributeAsLabelChoices(),
-                        'auto_initialize' => false
+                        'auto_initialize' => false,
                     )
                 )
             );
