@@ -127,7 +127,7 @@ class VariableProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $result['user']);
         $this->assertInternalType('array', $result['entity']);
-        
+
         if ($entityIsUser) {
             $this->assertEquals($result['user'], $result['entity']);
         }
