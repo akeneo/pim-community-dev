@@ -1,24 +1,19 @@
-$(function() {
-    'use strict';
-    Oro.Navigation.prototype.bind('route', runInit);
-});
-
-function runInit() {
-    $(document).off('ajaxStop', init).on('ajaxStop', init);
-}
-
 function init() {
+    // Place code that we need to run on every page load here
+
     // Prevent UniformJS from breaking our stuff
     $(document).uniform.restore();
 
-    // Place code that we need to run on every page load here
+    // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 
     // Apply Select2
     $('form select').select2({ allowClear: true });
 
     // Apply Select2 multiselect
-    $('form input.multiselect').select2({ tags: $(this).val() });
+    $('form input.multiselect').each(function() {
+        $(this).select2({ tags: $(this).val() });
+    });
 
     // Apply bootstrapSwitch
     $('.switch:not(.has-switch)').bootstrapSwitch();
@@ -41,6 +36,24 @@ function init() {
     $('form[data-updated]').each(function() {
         new FormUpdateListener($(this).attr('id'), $(this).data('updated'));
     });
+
+    // Instantiate the tree
+    $('[data-tree]').each(function() {
+        switch ($(this).attr('data-tree')) {
+            case 'associate':
+                Pim.tree.associate($(this).attr('id'));
+                break;
+            default:
+                break;
+        }
+    });
+
+    // Unbind to prevent this function being triggered repeatedly
+    $(document).off('ajaxStop');
+}
+
+function runInit() {
+    $(document).off('ajaxStop').on('ajaxStop', init);
 }
 
 $(function() {
@@ -51,8 +64,13 @@ $(function() {
     $(document).on('show hide', '.accordion', function(e) {
         $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
     });
+
+    // Execute the init function on first page load and bind reexecution upon navigation
+    init();
+    Oro.Navigation.prototype.bind('route', runInit);
 });
 
+// Listener for form update events (used in product edit form)
 var FormUpdateListener = function(formId, message) {
     this.updated = false;
 
