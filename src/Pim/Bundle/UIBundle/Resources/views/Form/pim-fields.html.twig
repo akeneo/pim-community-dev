@@ -160,12 +160,12 @@
 
 
 {% block pim_attribute_requirement_widget %}
-    <div class="attribute-requirement">
-        {{ form_widget(form.required) }}
-        {% if form.required.vars.value %}
-        <i class="fa-icon-ok required" data-toggle="tooltip" data-placement="right" title="{{ 'Required'|trans }}"></i>
+    <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Non required'|trans }}">
+        <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
+        {% if form.required.vars.checked %}
+        <i class="fa-icon-ok required" data-toggle="tooltip" data-placement="right"></i>
         {% else %}
-        <i class="icon-bullet non-required" data-toggle="tooltip" data-placement="right" title="{{ 'Non required'|trans }}"></i>
+        <i class="fa-icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
         {% endif %}
     </div>
 {% endblock pim_attribute_requirement_widget %}

@@ -131,7 +131,7 @@ class Edit extends Creation
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'input');
 
-        return '1' === $requirement->getValue();
+        return $requirement->isChecked();
     }
 
     public function switchAttributeRequirement($attribute, $channel)

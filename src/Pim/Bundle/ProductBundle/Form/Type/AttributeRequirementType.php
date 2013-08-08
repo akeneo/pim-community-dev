@@ -21,11 +21,7 @@ class AttributeRequirementType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            $builder
-                ->create('required', 'hidden')
-                ->addViewTransformer(new BooleanToStringTransformer)
-        );
+        $builder->add('required', 'checkbox');
     }
 
     /**

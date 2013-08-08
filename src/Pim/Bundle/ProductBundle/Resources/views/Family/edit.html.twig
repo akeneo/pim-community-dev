@@ -92,23 +92,33 @@
                 $(this).parent().find('tr:not(.group)').toggle();
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
             });
-            $('.attribute-requirement i').click(function() {
-                $(this).toggleClass('fa-icon-ok required');
-                $(this).toggleClass('icon-bullet non-required');
 
-                var $input = $(this).siblings('input[type="hidden"]');
-                if ($input.val() == '' || $input.val() == '0') {
-                    $(this)
-                        .tooltip('toggle')
-                        .attr('data-original-title', '{{ 'Required'|trans }}');
-                    $input.val(1);
-                } else {
-                    $(this)
-                        .tooltip('toggle')
-                        .attr('data-original-title', '{{ 'Non required'|trans }}');
-                    $input.val(0);
-                }
-            });
+            $('.attribute-requirement i')
+                .each(function() {
+                    var $input = $(this).siblings('input[type="checkbox"]');
+                    if ($input.attr('checked')) {
+                        $(this).attr('data-original-title', $(this).parent().data('required-title'));
+                    } else {
+                        $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
+                    }
+                })
+                .click(function() {
+                    $(this).toggleClass('fa-icon-ok required');
+                    $(this).toggleClass('fa-icon-circle non-required');
+
+                    var $input = $(this).siblings('input[type="checkbox"]');
+                    if ($input.attr('checked')) {
+                        $(this)
+                            .attr('data-original-title', $(this).parent().data('not-required-title'))
+                            .tooltip('show');
+                        $input.removeAttr('checked');
+                    } else {
+                        $(this)
+                            .attr('data-original-title', $(this).parent().data('required-title'))
+                            .tooltip('show');
+                        $input.attr('checked', 'checked');
+                    }
+                });
 
             $('form').on('submit', function() {
                 var hash = $('#form-navbar .nav li.active a').attr('href');
