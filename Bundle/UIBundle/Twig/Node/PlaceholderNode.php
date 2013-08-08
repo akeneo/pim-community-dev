@@ -27,7 +27,8 @@ class PlaceholderNode extends \Twig_Node
      */
     public function __construct(array $placeholder, $variables, $wrapClassName, $line, $tag)
     {
-        parent::__construct(array(), array('value' => $placeholder['items']), $line, $tag);
+        $items = isset($placeholder['items']) ?: array();
+        parent::__construct(array(), array('value' => $items), $line, $tag);
         $this->placeholder = $placeholder;
         $this->wrapClassName = $wrapClassName;
         $this->variables = $variables;

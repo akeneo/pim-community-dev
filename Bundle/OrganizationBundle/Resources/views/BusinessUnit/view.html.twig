@@ -1,0 +1,85 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% oro_title_set({params : {"%business_unit.name%": entity.name|default('N/A') }}) %}
+{% set gridId = 'users-grid' %}
+{% block head_script %}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+{% endblock %}
+{% set entityClass = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
+
+{% block navButtons %}
+    {% if resource_granted('oro_business_unit_update') %}
+        {{ UI.button({'path' : path('oro_business_unit_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit business unit', 'label' : 'Edit'}) }}
+    {% endif %}
+    {% if resource_granted('oro_business_unit_delete') %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_businessunit', {'id': entity.id}),
+            'dataRedirect': path('oro_business_unit_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-business_unit',
+            'dataId': entity.id,
+            'dataMessage': 'Are you sure you want to delete this business unit?',
+            'title': 'Delete business unit',
+            'label': 'Delete'
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_business_unit_index'),
+        'indexLabel': 'Business Units',
+        'entityTitle': entity.name|default('N/A'),
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'business-unit-profile' %}
+
+    {% set dataSubBlocks = [] %}
+
+    {% set dataBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'Basic Information',
+                    'data': [
+                        UI.attibuteRow('Name', entity.name),
+                        UI.attibuteRow('Phone', entity.phone),
+                        UI.attibuteRow('Organization', entity.organization),
+                        UI.attibuteRow('Parent', entity.parent),
+                        UI.attibuteRow('Website', entity.website),
+                        UI.attibuteRow('Email', entity.email),
+                        UI.attibuteRow('Fax', entity.fax),
+                    ]
+                },
+            ]
+        }]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(
+        [{
+            'title' : 'Users',
+            'subblocks':
+            [
+                {
+                    'title' : null,
+                    'useSpan': false,
+                    'data' : [UI.gridBlock(gridId)]
+                }
+            ]
+        }]
+    )
+    %}
+
+    {% set data =
+        {
+            'dataBlocks': dataBlocks,
+        }
+    %}
+
+    {{ parent() }}
+{% endblock content_data %}

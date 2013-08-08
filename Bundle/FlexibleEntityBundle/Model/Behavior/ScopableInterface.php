@@ -1,14 +1,12 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model\Behavior;
 
 /**
  * Scopable interface, implemented by class which can be scoped
- *
- *
  */
 interface ScopableInterface
 {
-
     /**
      * Get used scope
      * @return string $scope

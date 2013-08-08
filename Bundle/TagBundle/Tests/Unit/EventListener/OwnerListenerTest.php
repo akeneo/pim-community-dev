@@ -12,11 +12,24 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
     private $listener;
 
     /**
-     * @var \Oro\Bundle\TagBundle\Entity\Taggable
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $resource;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $securityContext;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $user;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $container;
 
     public function setUp()
     {
@@ -39,6 +52,23 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(3))
             ->method('getToken')
             ->will($this->returnValue($token));
+
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('security.context'))
+            ->will($this->returnValue($this->securityContext));
+
+        $this->listener = new OwnerListener();
+        $this->listener->setContainer($this->container);
+    }
+
+    public function tearDown()
+    {
+        unset($this->listener);
+        unset($this->resource);
+        unset($this->securityContext);
+        unset($this->user);
     }
 
     /**
@@ -69,18 +99,9 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->with(get_class($this->resource))
             ->will($this->returnValue($meta));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('security.context'))
-            ->will($this->returnValue($this->securityContext));
-
         $this->resource->expects($this->once())
             ->method('setUpdatedBy')
             ->with($this->user);
-
-        $this->listener = new OwnerListener();
-        $this->listener->setContainer($container);
 
         $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
@@ -97,6 +118,23 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->preUpdate($args);
     }
 
+    public function testSkipNotNeededEntitiesOnPreUpdate()
+    {
+        $this->resource = $this->getMock('Oro\Bundle\TagBundle\Tests\Unit\Fixtures\Entity');
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $args->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($this->resource));
+
+        $this->resource->expects($this->never())
+            ->method('setUpdatedBy');
+
+        $this->listener->preUpdate($args);
+    }
+
     public function testPrePersist()
     {
         $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
@@ -108,18 +146,27 @@ class OwnerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntity')
             ->will($this->returnValue($resource));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('security.context'))
-            ->will($this->returnValue($this->securityContext));
-
         $resource->expects($this->once())
             ->method('setCreatedBy')
             ->with($this->user);
 
-        $this->listener = new OwnerListener();
-        $this->listener->setContainer($container);
+        $this->listener->prePersist($args);
+    }
+
+    public function testSkipNotNeededEntitiesOnPrePersist()
+    {
+        $this->resource = $this->getMock('Oro\Bundle\TagBundle\Tests\Unit\Fixtures\Entity');
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $args->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($this->resource));
+
+        $this->resource->expects($this->never())
+            ->method('setCreatedBy');
+
         $this->listener->prePersist($args);
     }
 }

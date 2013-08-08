@@ -36,7 +36,7 @@ class ConfigEntity extends AbstractConfig
 
     /**
      * @var string
-     * @ORM\Column(name="class_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="class_name", type="string", length=255)
      */
     protected $className;
 
@@ -45,6 +45,7 @@ class ConfigEntity extends AbstractConfig
         $this->className = $className;
         $this->fields    = new ArrayCollection();
         $this->values    = new ArrayCollection();
+        $this->mode      = self::MODE_VIEW_DEFAULT;
     }
 
     /**
@@ -98,12 +99,12 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param  callable                      $filter
+     * @param  callable $filter
      * @return ConfigField[]|ArrayCollection
      */
     public function getFields(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->fields->toArray(), $filter) : $this->fields;
+        return $filter ? $this->fields->filter($filter) : $this->fields;
     }
 
     /**
@@ -112,10 +113,10 @@ class ConfigEntity extends AbstractConfig
      */
     public function getField($code)
     {
-        $values = $this->getFields(function (ConfigField $field) use ($code) {
+        $fields = $this->getFields(function (ConfigField $field) use ($code) {
             return $field->getCode() == $code;
         });
 
-        return reset($values);
+        return $fields->first();
     }
 }

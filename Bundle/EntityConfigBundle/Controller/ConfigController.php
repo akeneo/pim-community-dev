@@ -2,12 +2,14 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -21,12 +23,23 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 /**
  * EntityConfig controller.
  * @Route("/oro_entityconfig")
+ * @Acl(
+ *      id="oro_entityconfig",
+ *      name="Entity config manipulation",
+ *      description="Entity config manipulation"
+ * )
  */
 class ConfigController extends Controller
 {
     /**
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")
+     * @Acl(
+     *      id="oro_entityconfig_index",
+     *      name="View entities",
+     *      description="View configurable entities",
+     *      parent="oro_entityconfig"
+     * )
      * @Template()
      */
     public function indexAction(Request $request)
@@ -49,6 +62,12 @@ class ConfigController extends Controller
 
     /**
      * @Route("/update/{id}", name="oro_entityconfig_update")
+     * @Acl(
+     *      id="oro_entityconfig_update",
+     *      name="Update entity",
+     *      description="Update configurable entity",
+     *      parent="oro_entityconfig"
+     * )
      * @Template()
      */
     public function updateAction($id)
@@ -59,7 +78,10 @@ class ConfigController extends Controller
         $form = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,
-            array('class_name' => $entity->getClassName())
+            array(
+                'class_name' => $entity->getClassName(),
+                'entity_id'  => $entity->getId()
+            )
         );
 
         if ($request->getMethod() == 'POST') {
@@ -69,7 +91,15 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+                return $this->get('oro_ui.router')->actionRedirect(
+                    array(
+                        'route' => 'oro_entityconfig_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_index'
+                    )
+                );
             }
         }
 
@@ -86,6 +116,12 @@ class ConfigController extends Controller
     /**
      * View Entity
      * @Route("/view/{id}", name="oro_entityconfig_view")
+     * @Acl(
+     *      id="oro_entityconfig_view",
+     *      name="View entity",
+     *      description="View configurable entity",
+     *      parent="oro_entityconfig"
+     * )
      * @Template()
      */
     public function viewAction(ConfigEntity $entity)
@@ -117,9 +153,16 @@ class ConfigController extends Controller
         /**
          * generate link for Entity grid
          */
-        $link = $this->get('router')->match('/' . strtolower($entityName));
-        if (is_array($link)) {
-            $link = $this->generateUrl($link['_route']);
+
+        /** @var \Oro\Bundle\EntityConfigBundle\ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        /** @var ConfigClassMetadata $metadata */
+        $metadata = $configManager->getClassMetadata($entity->getClassName());
+
+        $link = '';
+        if ($metadata->routeName) {
+            $link = $this->generateUrl($metadata->routeName);
         }
 
         /** @var ConfigProvider $entityConfigProvider */
@@ -128,6 +171,12 @@ class ConfigController extends Controller
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+
+        /*
+        var_dump($this->getRequest()->headers->get('referer'));
+        if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
+            $this->get('session')->getFlashBag()->add('success', 'Schema successfully updated.');
+        }*/
 
         return array(
             'entity'        => $entity,
@@ -182,16 +231,28 @@ class ConfigController extends Controller
 
     /**
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
+     * @Acl(
+     *      id="oro_entityconfig_field_update",
+     *      name="Update entity field",
+     *      description="Update configurable entity field",
+     *      parent="oro_entityconfig"
+     * )
      * @Template()
      */
     public function fieldUpdateAction($id)
     {
         $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
 
-        $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
-            'class_name' => $field->getEntity()->getClassName(),
-            'field_name' => $field->getCode(),
-        ));
+        $form  = $this->createForm(
+            'oro_entity_config_config_field_type',
+            null,
+            array(
+                'class_name' => $field->getEntity()->getClassName(),
+                'field_name' => $field->getCode(),
+                'field_type' => $field->getType(),
+                'field_id'   => $field->getId(),
+            )
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
@@ -201,11 +262,16 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_view',
+                return $this->get('oro_ui.router')->actionRedirect(
                     array(
-                        'id' => $field->getEntity()->getId()
+                        'route' => 'oro_entityconfig_field_update',
+                        'parameters' => array('id' => $id),
+                    ),
+                    array(
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $field->getEntity()->getId())
                     )
-                ));
+                );
             }
         }
 

@@ -1,0 +1,88 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with [
+    'OroUIBundle:Form:fields.html.twig',
+    'OroUserBundle:Form:fields.html.twig',
+    'OroNotificationBundle:Form:fields.html.twig',
+    'OroEmailBundle:Form:fields.html.twig'
+]%}
+{% set title = form.vars.value.id ? 'Edit notification rule #%id%'|trans({'%id%': form.vars.value.id}) : 'Add Notification Rule'|trans %}
+{% if form.vars.value.id %}
+    {% oro_title_set({params : {"%id%": form.vars.value.id} }) %}
+{% endif %}
+
+{% set formAction = form.vars.value.id
+    ? path('oro_notification_emailnotification_update', { id: form.vars.value.id })
+    : path('oro_notification_emailnotification_create')
+%}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_notification_emailnotification_remove') %}
+        {{
+            UI.deleteButton({
+                'dataUrl': path('oro_api_delete_emailnotication', {'id': form.vars.value.id}),
+                'dataRedirect': path('oro_notification_emailnotification_index'),
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-emailnotification',
+                'dataId': form.vars.value.id,
+                'dataMessage': 'Are you sure you want to delete this notification rule?',
+                'title': 'Delete notification rule',
+                'label': 'Delete'
+            })
+        }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.button({'path' : path('oro_notification_emailnotification_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+                'entity':      form.vars.value,
+                'indexPath':   path('oro_notification_emailnotification_index'),
+                'indexLabel': 'Transactional Emails',
+                'entityTitle': title
+            }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'emailnotificaton-edit' %}
+
+    {% set dataBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.entityName),
+                    form_row(form.event),
+                    form_row(form.template),
+                ]
+            }]
+        },
+        {
+            'title': 'Recipient List',
+            'class': '',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.children.recipientList),
+                ]
+            }]
+        }]
+    %}
+    {% set data = {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+            'hiddenData': form_rest(form)
+        }
+    %}
+
+    {{ parent() }}
+{% endblock content_data %}

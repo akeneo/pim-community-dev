@@ -18,7 +18,8 @@ oro_entity_config:
             items:                                                  # config block for Entity properties
 
                 label:                                              # property code
-                    priority:               20                      # default sort order (will be used in grid and form if not specified)
+                    options:
+                        priority:           20                      # default sort order (will be used in grid and form if not specified)
 
                     grid:                                           # config for GridBundle (same as in DatagridManager)
                         type:               string
@@ -47,7 +48,8 @@ Below just an example of scope configurations:
         entity:
             items:
                 auditable:
-                    priority:               60
+                    options:
+                        priority:           60
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -66,11 +68,9 @@ Below just an example of scope configurations:
         field:
             items:
                 auditable:
-                    priority:               60
-                    #serializable:           true
-                    parent_value:                                           #enabled or not by parent value
-                        name:               auditable                       #name of parent field, by default similar with child field name
-                        value:              true                            #comparison conditions
+                    options:
+                        priority:           60
+                        serializable:       true
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -96,8 +96,8 @@ Below just an example of scope configurations:
                             base:           ~
             items:
                 is_searchable:
-                    default_value:          false
-                    entity_grid:            false
+                    options:
+                        default_value:      false
                     grid:
                         type:               boolean
                         label:              'Datagrid search'

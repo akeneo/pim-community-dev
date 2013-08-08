@@ -1,5 +1,4 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with ['OroUIBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
@@ -7,6 +6,22 @@
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
 {% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
+{% block head_script %}
+    <script type="text/javascript">
+        $(function() {
+            $('#business_units_tree').jstree({
+                "checkbox": {
+                    real_checkboxes: true,
+                    real_checkboxes_names: function (n) {
+                        return ['businessUnits[' + n.data('id') + ']', 1]
+                    },
+                    two_state: true
+                },
+                "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
@@ -74,7 +89,7 @@
                     'data': [
                         form_row(form.email),
                         UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
-                        _tag.tagInputField('Tags', form)
+                        form_row(form.tags),
                     ]
                 }
             ]
@@ -120,6 +135,27 @@
             }]
         ) %}
     {% endif %}
+
+    {% macro businessUnitsTree(form, businessUnits) %}
+        <div id="business_units_tree">
+            {% include 'OroOrganizationBundle:BusinessUnit:businessUnitsTree.html.twig' with {'businessUnits': businessUnits, 'hasId': form.vars.value.id ? true : false} %}
+        </div>
+    {% endmacro %}
+    {% set dataBlocks = dataBlocks|merge(
+        [{
+            'title': 'Business Units',
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        _self.businessUnitsTree(form, businessUnits)
+                    ]
+                }
+            ]
+        }]
+        )
+    %}
 
     {% set data =
         {

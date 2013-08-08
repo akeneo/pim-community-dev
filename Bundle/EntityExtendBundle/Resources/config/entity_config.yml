@@ -3,8 +3,10 @@ oro_entity_config:
         entity:
             items:
                 owner:
-                    priority:               40
-                    default_value:          'System'
+                    options:
+                        priority:           40
+                        internal:           true
+                        default_value:      'System'
                     grid:
                         type:               string
                         label:              'Type'
@@ -25,15 +27,33 @@ oro_entity_config:
                         stats:              false
                         block:
                 is_extend:
-                    default_value:          false
-
-                extend_class:               ~
-
+                    options:
+                        default_value:      false
+                        internal:           true
+                state:
+                    options:
+                        priority:           25
+                        default_value:      'Active'
+                        label:              'Status'
+                    grid:
+                        type:               string
+                        label:              'Status'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Updated', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                extend_class:
+                    options:
+                        internal:           true
                 unique_key:
-                    serializable:           true
-
-
-                proxy_class:                ~
+                    options:
+                        internal:           true
+                        serializable:       true
+                proxy_class:
+                    options:
+                        internal:           true
 
         field:
             grid_action:
@@ -41,10 +61,13 @@ oro_entity_config:
             layout_action:
                 -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
                 -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
+                -                           {'name':'Update schema', 'route':'oro_entityextend_update', 'entity_id':true, 'aClass':'btn-danger entity-extend-apply', 'void':true}
             items:
                 owner:
-                    priority:               20
-                    default_value:          'System'
+                    options:
+                        priority:           20
+                        default_value:      'System'
+                        internal:           true
                     grid:
                         type:               string
                         label:              'Type'
@@ -53,15 +76,32 @@ oro_entity_config:
                         sortable:           true
                         filterable:         false
                         show_filter:        false
-                    form:
-                        type:               text
-                        options:
-                            read_only:      true
-                            required:       false
-                            label:          'Type'
+
+                constraint:
+                    options:
+                        internal:           true
+
+                state:
+                    options:
+                        priority:           25
+                        default_value:      'Active'
+                        label:              'Status'
+                    grid:
+                        type:               string
+                        label:              'Status'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            { new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
 
                 is_extend:
-                    default_value:          false
+                    options:
+                        priority:           40
+                        default_value:      false
+                        is_bool:            true
+                        internal:           true
 #                    grid:
 #                        type:               boolean
 #                        label:              'Is Extend Field'
@@ -70,11 +110,56 @@ oro_entity_config:
 #                        sortable:           true
 #                        filterable:         false
 #                        show_filter:        false
+#                    form:
+#                        type:               choice
+#                        block:              entity
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            read_only:      true
+#                            required:       false
+#                            label:          "Is Extend Field"
+
+                length:
+                    options:
+                        default_value:      255
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custom
                     form:
-                        type:               choice
-                        block:              entity
+                        type:               text
                         options:
-                            choices:        ['No', 'Yes']
-                            read_only:      true
                             required:       false
-                            label:          "Is Extend Field"
+                            label:          'Length'
+                            allowed_type:   'string'
+                            block:          entity
+                            subblock:       properties
+
+                precision:
+                    options:
+                        default_value:      2
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custom
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Precision'
+                            allowed_type:   'decimal'
+                            block:          entity
+                            subblock:       properties
+
+                scale:
+                    options:
+                        default_value:      2
+                        required_property:
+                            property_path:  extend.owner
+                            value:          Custom
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Scale'
+                            allowed_type:   'decimal'
+                            block:          entity
+                            subblock:       properties

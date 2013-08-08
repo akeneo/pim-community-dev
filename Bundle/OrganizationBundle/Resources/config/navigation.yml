@@ -1,0 +1,19 @@
+oro_menu_config:
+    items:
+        oro_business_unit_list:
+            label: 'Business Units'
+            route: 'oro_business_unit_index'
+            extras:
+                routes: ['oro_business_unit_*']
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_business_unit_list: ~
+
+oro_titles:
+    oro_business_unit_index:  ~
+    oro_business_unit_update: %%business_unit.name%%
+    oro_business_unit_create: Create Business Unit
+    oro_business_unit_view: %%business_unit.name%%

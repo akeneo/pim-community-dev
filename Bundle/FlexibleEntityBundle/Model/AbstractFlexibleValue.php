@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
@@ -8,8 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 
 /**
  * Abstract entity value, independent of storage
- *
- *
  */
 abstract class AbstractFlexibleValue implements FlexibleValueInterface, TranslatableInterface, ScopableInterface
 {

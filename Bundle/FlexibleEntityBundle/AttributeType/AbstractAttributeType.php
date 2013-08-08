@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Symfony\Component\Validator\Constraints;
@@ -10,8 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type
- *
- *
  */
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
@@ -27,19 +26,20 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @var string
      */
-    const BACKEND_TYPE_DATE          = 'date';
-    const BACKEND_TYPE_DATETIME      = 'datetime';
-    const BACKEND_TYPE_DECIMAL       = 'decimal';
-    const BACKEND_TYPE_BOOLEAN       = 'boolean';
-    const BACKEND_TYPE_INTEGER       = 'integer';
-    const BACKEND_TYPE_OPTIONS       = 'options';
-    const BACKEND_TYPE_OPTION        = 'option';
-    const BACKEND_TYPE_TEXT          = 'text';
-    const BACKEND_TYPE_VARCHAR       = 'varchar';
-    const BACKEND_TYPE_MEDIA         = 'media';
-    const BACKEND_TYPE_METRIC        = 'metric';
-    const BACKEND_TYPE_PRICE         = 'price';
-    const BACKEND_TYPE_COLLECTION    = 'collections';
+    const BACKEND_TYPE_DATE       = 'date';
+    const BACKEND_TYPE_DATETIME   = 'datetime';
+    const BACKEND_TYPE_DECIMAL    = 'decimal';
+    const BACKEND_TYPE_BOOLEAN    = 'boolean';
+    const BACKEND_TYPE_INTEGER    = 'integer';
+    const BACKEND_TYPE_OPTIONS    = 'options';
+    const BACKEND_TYPE_OPTION     = 'option';
+    const BACKEND_TYPE_TEXT       = 'text';
+    const BACKEND_TYPE_VARCHAR    = 'varchar';
+    const BACKEND_TYPE_MEDIA      = 'media';
+    const BACKEND_TYPE_METRIC     = 'metric';
+    const BACKEND_TYPE_PRICE      = 'price';
+    const BACKEND_TYPE_COLLECTION = 'collections';
+    const BACKEND_TYPE_ENTITY     = 'entity';
 
     /**
      * Field backend type, "varchar" by default, the doctrine mapping field, getter / setter to use for binding
@@ -58,8 +58,9 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string $backendType the backend type
-     * @param string $formType    the form type
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the form type
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
@@ -146,6 +147,10 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
 
     /**
      * Guess the constraints to apply on the form
+     *
+     * @param FlexibleValueInterface $value
+     *
+     * @return multitype:NULL |multitype:
      */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {
@@ -195,6 +200,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             if (!isset($options['required'])) {
                 $options['required'] = false;
             }
+            $options['auto_initialize']= false;
 
             $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
         }

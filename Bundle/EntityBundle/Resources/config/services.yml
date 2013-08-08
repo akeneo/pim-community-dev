@@ -1,4 +1,4 @@
-parameters: ~
+parameters:
 
 services:
     oro_entity.config.entity_config_provider:

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -10,8 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Base Doctrine ORM entity attribute value
- *
- *
  */
 abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
 {
@@ -480,6 +479,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Set collections data from value object
      *
      * @param AbstractEntityFlexibleValue $value
+     *
      * @return $this
      */
     public function setCollections(AbstractEntityFlexibleValue $value = null)
@@ -493,6 +493,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Set collection attribute values
      *
      * @param Collection[] $collection
+     *
      * @return $this
      */
     public function setCollection($collection)
@@ -526,6 +527,6 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
             return $data->__toString();
         }
 
-        return $data;
+        return (string) $data;
     }
 }

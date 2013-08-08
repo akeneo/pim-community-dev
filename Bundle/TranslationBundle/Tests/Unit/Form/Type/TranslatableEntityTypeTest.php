@@ -172,7 +172,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $choices
+     * @param  array $choices
      * @return array
      */
     protected function getTestChoiceEntities($choices)
@@ -316,7 +316,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $options
+     * @param  array                 $options
      * @return callable|QueryBuilder
      */
     protected function getQueryBuilderOption(array $options)
@@ -331,6 +331,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
             case 'closure':
                 return function (EntityRepository $entityRepository) use ($test) {
                     $test->assertEquals($test->getEntityRepository(), $entityRepository);
+
                     return $test->getQueryBuilder();
                 };
             case 'object':
@@ -389,8 +390,8 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param callback $choiceList
-     * @param array $options
-     * @param array $expectedChoices
+     * @param array    $options
+     * @param array    $expectedChoices
      */
     public function assertChoiceList($choiceList, $options, $expectedChoices)
     {
@@ -402,7 +403,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $options
+     * @param  array   $options
      * @return Options
      */
     protected function getResolverOptions($options)

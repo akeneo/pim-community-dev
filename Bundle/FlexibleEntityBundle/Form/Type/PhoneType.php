@@ -1,9 +1,13 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Phone type
+ */
 class PhoneType extends CollectionItemAbstract
 {
     const TYPE_OFFICE = 1;

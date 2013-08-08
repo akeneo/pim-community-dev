@@ -5,6 +5,9 @@ namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Twig;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension;
 
+/**
+ * Test related class
+ */
 class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**

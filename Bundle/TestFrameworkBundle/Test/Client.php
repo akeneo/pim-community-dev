@@ -14,7 +14,7 @@ class Client extends BaseClient
     const LOCAL_URL = 'http://localhost';
 
     /** @var  SoapClient */
-    public $soapClient;
+    static protected $soapClient;
 
     /**
      * @var \Symfony\Component\Routing\RouterInterface
@@ -26,6 +26,12 @@ class Client extends BaseClient
 
     protected $hasPerformedRequest;
 
+    /**
+     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @param array $server
+     * @param null $history
+     * @param null $cookieJar
+     */
     public function __construct($kernel, array $server = array(), $history = null, $cookieJar = null)
     {
         parent::__construct($kernel, $server, $history, $cookieJar);
@@ -37,17 +43,16 @@ class Client extends BaseClient
 
     public function __destruct()
     {
-        if (isset($this->soapClient)) {
-            unset($this->soapClient);
-        }
-        if (!is_null(self::$connection)) {
-            if (self::$connection->getTransactionNestingLevel()>0) {
-                self::$connection->rollback();
-            }
-            self::$connection = null;
-        }
+        $this->setSoapClient(null);
     }
 
+    /**
+     * @param null|SoapClient $value
+     */
+    public function setSoapClient($value)
+    {
+        self::$soapClient = $value;
+    }
     /**
      * @param $name
      * @param array $parameters
@@ -59,41 +64,70 @@ class Client extends BaseClient
         return $this->router->generate($name, $parameters, $absolute);
     }
 
-    public function request($method, $uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
-    {
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $parameters
+     * @param array $files
+     * @param array $server
+     * @param null $content
+     * @param bool $changeHistory
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function request(
+        $method,
+        $uri,
+        array $parameters = array(),
+        array $files = array(),
+        array $server = array(),
+        $content = null,
+        $changeHistory = true
+    ) {
         if (strpos($uri, 'http://') === false) {
             $uri = self::LOCAL_URL . $uri;
         }
         return parent::request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
     }
+
     /**
      * @param null $wsdl
      * @param array $options
+     * @param bool $new
      * @throws \Exception
      */
-    public function soap($wsdl = null, array $options = null)
+    public function soap($wsdl = null, array $options = null, $new = false)
     {
-        if (is_null($wsdl)) {
-            throw new \Exception('wsdl should not be NULL');
+        if (!self::$soapClient || $new) {
+            if (is_null($wsdl)) {
+                throw new \Exception('wsdl should not be NULL');
+            }
+
+            $this->request('GET', $wsdl);
+            $status = $this->getResponse()->getStatusCode();
+            $statusText = Response::$statusTexts[$status];
+            if ($status >= 400) {
+                throw new \Exception($statusText, $status);
+            }
+
+            $wsdl = $this->getResponse()->getContent();
+            //save to file
+            $file=tempnam(sys_get_temp_dir(), date("Ymd") . '_') . '.xml';
+            $fl = fopen($file, "w");
+            fwrite($fl, $wsdl);
+            fclose($fl);
+
+            self::$soapClient = new SoapClient($file, $options, $this);
+
+            unlink($file);
         }
+    }
 
-        $this->request('GET', $wsdl);
-        $status = $this->getResponse()->getStatusCode();
-        $statusText = Response::$statusTexts[$status];
-        if ($status >= 400) {
-            throw new \Exception($statusText, $status);
-        }
-
-        $wsdl = $this->getResponse()->getContent();
-        //save to file
-        $file=tempnam(sys_get_temp_dir(), date("Ymd") . '_') . '.xml';
-        $fl = fopen($file, "w");
-        fwrite($fl, $wsdl);
-        fclose($fl);
-
-        $this->soapClient = new SoapClient($file, $options, $this);
-
-        unlink($file);
+    /**
+     * @return SoapClient
+     */
+    public function getSoap()
+    {
+        return self::$soapClient;
     }
 
     /**
@@ -128,10 +162,14 @@ class Client extends BaseClient
     {
         $loader = new \Doctrine\Common\DataFixtures\Loader;
         $fixtures = $loader->loadFromDirectory($folder);
+
         foreach ($fixtures as $fixture) {
             $fixture->setContainer($this->getContainer());
         }
-        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->getContainer()->get('doctrine.orm.entity_manager'));
+
+        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger(
+            $this->getContainer()->get('doctrine.orm.entity_manager')
+        );
         $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor(
             $this->getContainer()->get('doctrine.orm.entity_manager'),
             $purger
@@ -143,9 +181,7 @@ class Client extends BaseClient
     {
         self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
 
-        if (self::$connection->getTransactionNestingLevel()<1) {
-            self::$connection->beginTransaction();
-        }
+        self::$connection->beginTransaction();
     }
 
     public static function getTransactionLevel()
@@ -153,7 +189,7 @@ class Client extends BaseClient
         return self::$connection->getTransactionNestingLevel();
     }
 
-    public static function rollbackTransaction()
+    public function rollbackTransaction()
     {
         if (!is_null(self::$connection)) {
             self::$connection->rollback();

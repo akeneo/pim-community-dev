@@ -173,8 +173,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
      */
     _onExecuteRefreshAction: function(action, options) {
         this._confirmAction(action, options, 'refresh', {
-            title: 'Refresh Confirmation',
-            content: 'Your local changes will be lost. Are you sure you want to refresh grid?'
+            title: _.__('Refresh Confirmation'),
+            content: _.__('Your local changes will be lost. Are you sure you want to refresh grid?')
         });
     },
 
@@ -187,8 +187,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
      */
     _onExecuteResetAction: function(action, options) {
         this._confirmAction(action, options, 'reset', {
-            title: 'Reset Confirmation',
-            content: 'Your local changes will be lost. Are you sure you want to reset grid?'
+            title: _.__('Reset Confirmation'),
+            content: _.__('Your local changes will be lost. Are you sure you want to reset grid?')
         });
     },
 
@@ -233,8 +233,8 @@ Oro.Datagrid.Listener.ColumnFormListener = Oro.Datagrid.Listener.AbstractListene
         this.confirmModal = this.confirmModal || {};
         if (!this.confirmModal[type]) {
             this.confirmModal[type] = new Oro.BootstrapModal(_.extend({
-                title: 'Confirmation',
-                okText: 'Ok, got it.',
+                title: _.__('Confirmation'),
+                okText: _.__('Ok, got it.'),
                 className: 'modal modal-primary',
                 okButtonClass: 'btn-primary btn-large'
             }, options));

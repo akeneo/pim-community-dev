@@ -6,13 +6,22 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
+/**
+ * Attribute constraint guesser
+ */
 class AttributeConstraintGuesser implements ConstraintGuesserInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function supportAttribute(AbstractAttribute $attribute)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function guessConstraints(AbstractAttribute $attribute)
     {
         $constraints = array();

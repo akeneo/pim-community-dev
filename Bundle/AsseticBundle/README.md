@@ -1,9 +1,13 @@
 OroAsseticBundle
 ========================
 
-To implement hashtag navigation all basic javascript and css files should be loaded in main template.
-Each bundle can have a config file assets.yml with the list of js and css files.
+OroAssetic enables expandable and optimized way to manage CSS and JS assets that are distributed across many bundles.
+With OroAssetic developer can define CSS and JavaScript files groups in assets.yml configuration of the bundle. Defined
+files will be automatically merged and optimized for web presentation. For development and debug purposes some files can
+be excluded from optimization process.
 
+
+Example of assets.yml file:
 ```yaml
 js:
     'some_group'
@@ -17,23 +21,37 @@ css:
         - 'Assets/Path/To/Css/third.css'
 ```
 
-Js and css sections contain groups of files. This groups can be uncompressed for debugging.
+Js and css sections contain groups of files. This groups can be excluded from optimization process debugging purposes.
 
-The path to file can be in @BundleName/Resources/puclic/path/to/file.ext or bundles/bundle/path/to/file.ext. If the file path
-contains @, then in uncompiled mode it will be taken via controller. If path doesn't contain @, then file will be taken
-via request to web folder.
+The path to file can be defined as @BundleName/Resources/puclic/path/to/file.ext or bundles/bundle/path/to/file.ext.
+If the file path contains @, then in debug mode it will be taken via controller. If path doesn't contain @, then file
+will be taken via request to web folder.
 
-For example, to turn off compression of css files from 'css_group' the next configuration mut be added in config.yml file:
+For example, to turn off compression of css files in 'css_group' group the following configuration should be added
+to app/config/config.yml (or app/config/config_{mode}.yml) file:
 
 ```yaml
 oro_assetic:
-    uncompress_js: ~
-    uncompress_css: [css_group]
+    js_debug: ~
+    css_debug: [css_group]
+```
+In order to anable debug mode for all CSS and JS files following configuration can be applied:
+
+```yaml
+oro_assetic:
+    js_debug_all: true
+    css_debug_all: true
 ```
 
-and cache must be cleaned.
+Cache cleanup and Oro assetics dump required after:
 
-To get list of all available assets groups next command should be used:
+```php
+php app/console cache:clear
+php app/console oro:assetic:dump
+```
+
+
+To get list of all available asset groups next command should be used:
 
 ```php
 php app/console oro:assetic:dump show-groups

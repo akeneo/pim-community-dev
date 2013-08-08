@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -10,8 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Base flexible form type
- *
- *
  */
 class FlexibleType extends AbstractType
 {
@@ -66,6 +65,7 @@ class FlexibleType extends AbstractType
      * Add entity fieldsto form builder
      *
      * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
     {

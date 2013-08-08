@@ -18,7 +18,7 @@ Oro.Filter.TextFilter = Oro.Filter.AbstractFilter.extend({
             '<%= label %>: <strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
             '<span class="caret"></span>' +
         '</button>' +
-        '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text">Close</i></a>' +
+        '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>' +
         '<div class="filter-criteria dropdown-menu" />'
     ),
 
@@ -34,7 +34,7 @@ Oro.Filter.TextFilter = Oro.Filter.AbstractFilter.extend({
             '</div>' +
             '<div class="oro-action">' +
                 '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-primary filter-update">Update</button>' +
+                    '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
                 '</div>' +
             '</div>' +
         '</div>'

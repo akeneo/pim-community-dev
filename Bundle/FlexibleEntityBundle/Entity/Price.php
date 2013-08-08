@@ -1,11 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Price backend type entity
- *
  *
  * @ORM\Table(name="oro_flexibleentity_price")
  * @ORM\Entity
@@ -87,7 +87,7 @@ class Price
 
     /**
      * Get used currency
-     * 
+     *
      * @return string $currency
      */
     public function getCurrency()

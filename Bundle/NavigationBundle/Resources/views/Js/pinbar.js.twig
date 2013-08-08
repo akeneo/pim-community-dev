@@ -1,10 +1,10 @@
 <script type="text/html" id="template-no-pins-message">
-    <a class="pin-bar-empty"  href="{{ path('oro_pinbar_help')|raw }}">Learn how to use this space</a>
+    <a class="pin-bar-empty"  href="{{ path('oro_pinbar_help')|raw }}">{{ 'Learn how to use this space'|trans|raw }}</a>
 </script>
 
 <script type="text/html" id="template-list-pin-item">
     <div class="pin-holder">
-        <a class="btn-close" href="#">close</a>
+        <a class="btn-close" href="#">{{ 'close'|trans|raw }}</a>
         <div><a href="#" title="<%- title_rendered %>"><%- title_rendered %></a></div>
     </div>
 </script>

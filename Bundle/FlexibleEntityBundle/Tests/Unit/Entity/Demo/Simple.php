@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
 
 use Doctrine\ORM\Mapping as ORM;

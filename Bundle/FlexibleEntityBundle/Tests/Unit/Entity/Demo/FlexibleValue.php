@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
@@ -7,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * A concret flexible attribue value class
- *
  *
  * @ORM\Entity()
  */

@@ -24,25 +24,18 @@ class ConfigFactory
         $values = array();
 
         $values['is_extend'] = true;
-        $values['owner']     = 'Custom';
-        $values['doctrine']  = serialize($data);
+        $values['owner']     = ExtendManager::OWNER_CUSTOM;
+        $values['state']     = ExtendManager::STATE_NEW;
 
         $constraint = array(
             'property'   => array(),
             'constraint' => array()
         );
 
-        if ($data['nullable'] == false) {
-            $constraint['property']['Symfony\Component\Validator\Constraints\NotBlank'] = array();
-        }
-
-        if ($data['unique'] == true) {
-            $constraint['constraint']['Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity'] = array($data['code']);
-        }
-
         if ($data['type'] == 'string') {
-            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => $data['length']);
+            $constraint['property']['Symfony\Component\Validator\Constraints\Length'] = array('max' => 255);
         }
+
 
         if ($data['type'] == 'datetime') {
             $constraint['property']['Symfony\Component\Validator\Constraints\DateTime'] = array();
@@ -53,6 +46,10 @@ class ConfigFactory
         }
 
         $values['constraint'] = serialize($constraint);
+
+        $entityConfig = $this->extendManager->getConfigProvider()->getConfig($className);
+        $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+        $this->extendManager->getConfigProvider()->persist($entityConfig);
 
         $this->extendManager->getConfigProvider()->createFieldConfig(
             $className,

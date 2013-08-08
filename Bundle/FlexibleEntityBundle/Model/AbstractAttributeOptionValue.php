@@ -1,11 +1,11 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 
 /**
  * Abstract entity attribute option value, independent of storage
- *
  */
 abstract class AbstractAttributeOptionValue implements TranslatableInterface
 {

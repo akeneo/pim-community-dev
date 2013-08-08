@@ -1,0 +1,6 @@
+{% set valueArray = value|split(',') %}
+<ul>
+    {% for recipient in valueArray if recipient is not empty %}
+        <li>{{ recipient }}</li>
+    {% endfor %}
+</ul>

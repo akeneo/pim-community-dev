@@ -184,9 +184,19 @@ class OroJquerySelect2HiddenType extends AbstractType
         parent::buildView($view, $form, $options);
 
         $vars = array('configs' => $options['configs']);
+
         if ($form->getData()) {
+            $result = array();
+            if (isset($options['configs']['multiple']) && $options['configs']['multiple']) {
+                foreach ($form->getData() as $item) {
+                    $result[] = $options['converter']->convertItem($item);
+                }
+            } else {
+                $result[] = $options['converter']->convertItem($form->getData());
+            }
+
             $vars['attr'] = array(
-                'data-entity' => json_encode($options['converter']->convertItem($form->getData()))
+                'data-entities' => json_encode($result)
             );
         }
 

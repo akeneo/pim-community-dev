@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
@@ -7,8 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 /**
  * Abstract entity, independent of storage
- *
- *
  */
 abstract class AbstractFlexible implements FlexibleInterface, TimestampableInterface,
 TranslatableInterface, ScopableInterface

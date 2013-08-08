@@ -111,7 +111,8 @@ class ResponseHistoryListener
         return !($response->getStatusCode() != 200
             || $request->getRequestFormat() != 'html'
             || $request->getMethod() != 'GET'
-            || ($request->isXmlHttpRequest() && !$request->headers->get('x-oro-hash-navigation'))
+            || ($request->isXmlHttpRequest()
+                && !$request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER))
             || $route[0] == '_'
             || $route == 'oro_default'
             || is_null($this->user));

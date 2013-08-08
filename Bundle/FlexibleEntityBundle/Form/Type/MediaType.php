@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -9,8 +10,6 @@ use Symfony\Component\Form\AbstractType;
 
 /**
  * Form type linked to Media entity
- *
- *
  */
 class MediaType extends AbstractType
 {
@@ -20,8 +19,7 @@ class MediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden')
-            ->add('file', 'file', array('required' => false,))
+            ->add('file', 'file', array('required' => false))
             ->add(
                 'removed',
                 'checkbox',

@@ -10,7 +10,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Flexible entity extension
- *
  */
 class OroFlexibleEntityExtension extends Extension
 {

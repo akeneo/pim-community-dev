@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -6,7 +7,6 @@ use Doctrine\ORM\AbstractQuery;
 
 /**
  * Attribute repository
- *
  */
 class AttributeRepository extends EntityRepository
 {

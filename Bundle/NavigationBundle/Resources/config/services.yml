@@ -34,14 +34,21 @@ parameters:
     oro_navigation.form.type.pagestate.class:                  Oro\Bundle\NavigationBundle\Form\Type\PageStateType
     oro_navigation.form.handler.pagestate.class:               Oro\Bundle\NavigationBundle\Form\Handler\PageStateHandler
 
+    oro_navigation.breadcrumbs_manager.class:                  Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager
+
 services:
+    oro_menu.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ "oro_menu.cache" ] ]
+
     oro_menu_acl_extension:
         class: %oro_menu.factory.acl_extension.class%
         arguments:
             - @router
             - @oro_user.acl_manager
         calls:
-            - [ setCache, [ @cache ] ]
+            - [ setCache, [ @oro_menu.cache ] ]
 
     oro_menu.factory:
         class: %oro_menu.factory.class%
@@ -68,6 +75,7 @@ services:
         arguments:
             - @knp_menu.helper
             - @oro_menu.builder_chain
+            - @oro_navigation.breadcrumb_manager
             - @service_container
         tags:
             - { name: twig.extension }
@@ -178,6 +186,8 @@ services:
           - @translator.default
           - @doctrine.orm.entity_manager
           - @serializer
+          - @oro_config.user
+          - @oro_navigation.breadcrumb_manager
         calls:
           - [ setTitles, [ %oro_titles% ] ]
 
@@ -211,8 +221,6 @@ services:
         tags:
             - { name: translation.extractor, alias: navigation_translation_extractor }
 
-
-
     oro_navigation.form.pagestate:
         class:                        Symfony\Component\Form\Form
         factory_method:               createNamed
@@ -240,3 +248,10 @@ services:
         tags:
             - { name: twig.extension }
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    oro_navigation.breadcrumb_manager:
+        class: %oro_navigation.breadcrumbs_manager.class%
+        arguments:
+            - @oro_menu.builder_chain
+            - @knp_menu.matcher
+            - @router

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
@@ -7,8 +8,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
  * Test related class
- *
- *
  */
 class MediaTypeTest extends TypeTestCase
 {
@@ -28,7 +27,6 @@ class MediaTypeTest extends TypeTestCase
      */
     public function testFormCreate()
     {
-        $this->assertField('id', 'hidden');
         $this->assertField('file', 'file');
         $this->assertField('removed', 'checkbox');
 
