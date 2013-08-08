@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class RecordOwnerDataListener
 {
@@ -52,12 +53,23 @@ class RecordOwnerDataListener
             if(method_exists($entity, 'setUserOwner')) {
                 $entity->setUserOwner($user);
             }
-            if ($businessUnit = $user->getBusinessUnit()) {
-                if(method_exists($entity, 'setBusinessUnitOwner')) {
-                    $entity->setBusinessUnitOwner($businessUnit);
+            /**
+             * @var $businessUnits ArrayCollection
+             */
+            $businessUnits = $user->getBusinessUnits();
+            if ($businessUnits->count()) {
+                if(method_exists($entity, 'setBusinessUnitsOwner')) {
+                    $entity->setBusinessUnitOwners($businessUnits);
                 }
-                if(method_exists($entity, 'setOrganizationOwner') && $organization = $businessUnit->getOrganization()) {
-                    $entity->setOrganizationOwner($organization);
+                if(method_exists($entity, 'setOrganizationOwner')) {
+                    $organizations = new ArrayCollection();
+                    foreach ($businessUnits as $businessUnit) {
+                        $organization = $businessUnit->getOrganization();
+                        if (!$organizations->contains($organization)) {
+                            $organizations->add($organization);
+                        }
+                    }
+                    $entity->setOrganizationOwners($organization);
                 }
             }
         }
