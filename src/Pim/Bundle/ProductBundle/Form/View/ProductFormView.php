@@ -10,9 +10,13 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 /**
  * Custom form view for Product form
  *
+ * @TODO : develop the goal of this class
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @TODO : Set all method scopes to protected
  */
 class ProductFormView
 {
@@ -77,6 +81,8 @@ class ProductFormView
      * @param ProductAttribute $attribute
      *
      * @return array
+     *
+     * @TODO : set protected ?! What happened if another type is added and need some specific redefinition
      */
     private function getAttributeClasses(ProductAttribute $attribute)
     {
