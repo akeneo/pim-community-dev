@@ -8,6 +8,8 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
     },
     target: null,
 
+    lastElement: null,
+
     /**
      * Constructor
      *
@@ -19,6 +21,7 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
         this.listenTo(this.model, 'sync', this.render);
         this.target.on('change', _.bind(this.selectionChanged, this));
 
+        $('input[name*="subject"], textarea[name*="content"]').on('blur', _.bind(this._updateElementsMetaData, this));
         this.render();
     },
 
@@ -45,7 +48,25 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
         $(this.el).html(html);
     },
 
+    /**
+     * Add variable to last element
+     *
+     * @param e
+     */
     addVariable: function(e) {
-        console.log(e);
+        if (_.isNull(this.lastElement)) {
+            return false;
+        }
+        this.lastElement.val(this.lastElement.val() + $(e.currentTarget).html());
+    },
+
+    /**
+     * Update elements metadata
+     *
+     * @param e
+     * @private
+     */
+    _updateElementsMetaData: function(e) {
+        this.lastElement = $(e.currentTarget);
     }
 });
