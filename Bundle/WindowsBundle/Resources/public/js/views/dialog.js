@@ -27,9 +27,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         options = options || {}
         this.initializeWidget(options);
 
-        this.on('adoptedFormResetClick', _.bind(function() {
-            this.widget.dialog('close')
-        }, this));
+        this.on('adoptedFormResetClick', _.bind(this.remove, this));
 
         this.options.dialogOptions = this.options.dialogOptions || {};
         this.options.dialogOptions.title = this.options.dialogOptions.title || this.options.title;
@@ -125,8 +123,9 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         this.model.save({data: saveData});
     },
 
-    close: function() {
+    remove: function() {
         this.widget.dialog('close');
+        Oro.widget.Abstract.prototype.remove.apply(this);
     },
 
     getWidget: function() {
