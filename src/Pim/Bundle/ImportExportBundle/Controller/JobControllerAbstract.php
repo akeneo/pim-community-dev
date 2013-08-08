@@ -214,6 +214,7 @@ abstract class JobControllerAbstract extends Controller
 
         if (count($this->getValidator()->validate($job)) === 0) {
             $jobExecution = new JobExecution;
+            $jobExecution->setJob($job);
             $definition = $job->getJobDefinition();
             $definition->execute($jobExecution);
 
