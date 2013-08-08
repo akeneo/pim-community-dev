@@ -5,6 +5,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,9 +38,10 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $businessUnit = new BusinessUnit();
         $organization = new Organization();
+        $businessUnits = new ArrayCollection(array($businessUnit));
 
         $businessUnit->setOrganization($organization);
-        $user->setBusinessUnit($businessUnit);
+        $user->setBusinessUnits($businessUnits);
 
         $token->expects($this->once())
             ->method('getUser')
@@ -58,8 +60,8 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->prePersist($listenerArguments);
 
-        $this->assertEquals($businessUnit, $user->getBusinessUnitOwner());
+        $this->assertEquals($businessUnit, $user->getBusinessUnitOwners()->first());
         $this->assertEquals($user, $user->getUserOwner());
-        $this->assertEquals($organization, $user->getOrganizationOwner());
+        $this->assertEquals($organization, $user->getOrganizationOwners()->first());
     }
 }

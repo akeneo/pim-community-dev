@@ -58,18 +58,23 @@ class RecordOwnerDataListener
              */
             $businessUnits = $user->getBusinessUnits();
             if ($businessUnits->count()) {
-                if(method_exists($entity, 'setBusinessUnitsOwner')) {
-                    $entity->setBusinessUnitOwners($businessUnits);
+                if(method_exists($entity, 'setBusinessUnitOwners')) {
+                    $bu = new ArrayCollection(array());
+                    foreach ($businessUnits as $businessUnit) {
+                        $bu->add($businessUnit);
+                    }
+                    $entity->setBusinessUnitOwners($bu);
                 }
-                if(method_exists($entity, 'setOrganizationOwner')) {
-                    $organizations = new ArrayCollection();
+
+                if(method_exists($entity, 'setOrganizationOwners')) {
+                    $organizations = new ArrayCollection(array());
                     foreach ($businessUnits as $businessUnit) {
                         $organization = $businessUnit->getOrganization();
                         if (!$organizations->contains($organization)) {
                             $organizations->add($organization);
                         }
                     }
-                    $entity->setOrganizationOwners($organization);
+                    $entity->setOrganizationOwners($organizations);
                 }
             }
         }

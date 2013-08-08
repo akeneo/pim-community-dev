@@ -451,7 +451,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user  = new User;
         $businessUnit = new BusinessUnit();
 
-        $user->setBusinessUnit($businessUnit);
-        $this->assertEquals($businessUnit, $user->getBusinessUnit());
+        $user->setBusinessUnits(new ArrayCollection(array($businessUnit)));
+
+        $this->assertContains($businessUnit, $user->getBusinessUnits());
+
+        $user->removeBusinessUnit($businessUnit);
+
+        $this->assertNotContains($businessUnit, $user->getBusinessUnits());
+
+        $user->addBusinessUnit($businessUnit);
+
+        $this->assertContains($businessUnit, $user->getBusinessUnits());
     }
 }
