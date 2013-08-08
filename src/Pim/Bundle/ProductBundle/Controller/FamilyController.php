@@ -50,9 +50,7 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
-                $em->persist($family);
-                $em->flush();
+                $this->persist($family);
                 $this->addFlash('success', 'Product family successfully created');
 
                 return $this->redirectToFamilyAttributesTab($family->getId());
@@ -102,7 +100,7 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
+                $this->flush();
                 $this->addFlash('success', 'Product family successfully updated.');
 
                 return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
