@@ -434,8 +434,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             array('created', new \DateTime()),
             array('updated', new \DateTime()),
             array('userOwner', new User()),
-            array('businessUnitOwner', new BusinessUnit()),
-            array('organizationOwner', new Organization()),
+            array('businessUnitOwners', new ArrayCollection(array(new BusinessUnit()))),
+            array('organizationOwners', new ArrayCollection(array(new Organization()))),
         );
     }
 

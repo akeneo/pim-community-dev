@@ -1,11 +1,11 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class BusinessUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -117,5 +117,25 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
         $businessUnit->addUser($user);
 
         $this->assertContains($user, $businessUnit->getUsers());
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->unit;
+        $user = new User();
+        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
+        $organizations = new ArrayCollection(array(new Organization()));
+
+        $this->assertEmpty($entity->getUserOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwners());
+        $this->assertEmpty($entity->getOrganizationOwners());
+
+        $entity->setUserOwner($user);
+        $entity->setBusinessUnitOwners($businessUnits);
+        $entity->setOrganizationOwners($organizations);
+
+        $this->assertEquals($user, $entity->getUserOwner());
+        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
+        $this->assertEquals($organizations, $entity->getOrganizationOwners());
     }
 }

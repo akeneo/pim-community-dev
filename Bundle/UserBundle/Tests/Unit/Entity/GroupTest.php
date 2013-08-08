@@ -138,19 +138,19 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         $entity = $this->group;
         $user = new User();
-        $businessUnit = new BusinessUnit();
-        $organization = new Organization();
+        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
+        $organizations = new ArrayCollection(array(new Organization()));
 
         $this->assertEmpty($entity->getUserOwner());
-        $this->assertEmpty($entity->getBusinessUnitOwner());
-        $this->assertEmpty($entity->getOrganizationOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwners());
+        $this->assertEmpty($entity->getOrganizationOwners());
 
         $entity->setUserOwner($user);
-        $entity->setBusinessUnitOwner($businessUnit);
-        $entity->setOrganizationOwner($organization);
+        $entity->setBusinessUnitOwners($businessUnits);
+        $entity->setOrganizationOwners($organizations);
 
         $this->assertEquals($user, $entity->getUserOwner());
-        $this->assertEquals($businessUnit, $entity->getBusinessUnitOwner());
-        $this->assertEquals($organization, $entity->getOrganizationOwner());
+        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
+        $this->assertEquals($organizations, $entity->getOrganizationOwners());
     }
 }
