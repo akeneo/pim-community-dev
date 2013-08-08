@@ -13,6 +13,7 @@ use Pim\Bundle\ConfigBundle\Entity\Channel;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity
+ * @ORM\Table(name="pim_attribute_requirement")
  */
 class AttributeRequirement
 {
