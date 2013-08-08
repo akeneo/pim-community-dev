@@ -2,7 +2,12 @@
 
 namespace Oro\Bundle\TagBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\TagBundle\Entity\Tag;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class TagTest extends \PHPUnit_Framework_TestCase
 {
@@ -66,5 +71,25 @@ class TagTest extends \PHPUnit_Framework_TestCase
     public function testGetTagging()
     {
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->tag->getTagging());
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->tag;
+        $user = new User();
+        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
+        $organizations = new ArrayCollection(array(new Organization()));
+
+        $this->assertEmpty($entity->getUserOwner());
+        $this->assertEmpty($entity->getBusinessUnitOwners());
+        $this->assertEmpty($entity->getOrganizationOwners());
+
+        $entity->setUserOwner($user);
+        $entity->setBusinessUnitOwners($businessUnits);
+        $entity->setOrganizationOwners($organizations);
+
+        $this->assertEquals($user, $entity->getUserOwner());
+        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
+        $this->assertEquals($organizations, $entity->getOrganizationOwners());
     }
 }
