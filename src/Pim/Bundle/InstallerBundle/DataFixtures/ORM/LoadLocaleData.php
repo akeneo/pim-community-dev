@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 
@@ -21,35 +20,16 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $activatedLocales = Yaml::parse(realpath($this->getFilePath()));
+        $allLocales = $this->container->getParameter('pim_config.locales');
 
-        foreach ($activatedLocales['locales'] as $code => $data) {
-            $locale = $this->createLocale($code, $data['fallback'], $data['currency']);
+        foreach (array_keys($allLocales['locales']) as $localeCode) {
+            $locale = new Locale();
+            $locale->setCode($localeCode);
+            $this->setReference('locale.'. $localeCode, $locale);
             $manager->persist($locale);
         }
 
         $manager->flush();
-    }
-
-    /**
-     * Create locale entity and persist it
-     * @param string  $code         Locale code
-     * @param string  $fallback     Locale fallback
-     * @param string  $currencyCode Currencies used
-     * @param boolean $activated    Define if locale is activated or not
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
-     */
-    protected function createLocale($code, $fallback, $currencyCode, $activated = true)
-    {
-        $locale = new Locale();
-        $locale->setCode($code);
-        $locale->setFallback($fallback);
-        $locale->setActivated($activated);
-        $locale->setDefaultCurrency($this->getReference('currency.'. $currencyCode));
-        $this->setReference('locale.'. $code, $locale);
-
-        return $locale;
     }
 
     /**

@@ -5,8 +5,8 @@ Feature: Display the product history
 
   @javascript
   Scenario: Display product updates
-    Given a "Camera" product available in english
-    And a "Bike" product available in english
+    Given a "Camera" product
+    And a "Bike" product
     And the following product attributes:
       | product | label        |
       | Camera  | Brand        |

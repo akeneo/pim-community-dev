@@ -1,7 +1,10 @@
+parameters:
+    pim_config.event_listener.user_preferences.class:  Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
+    
 services:
     # Subscriber
     pim_config.event_listener.user_preferences:
-        class: Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
+        class: %pim_config.event_listener.user_preferences.class%
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:

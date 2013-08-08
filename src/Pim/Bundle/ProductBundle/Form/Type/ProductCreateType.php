@@ -24,14 +24,7 @@ class ProductCreateType extends FlexibleType
 
         $builder
             ->add('values', 'collection')
-            ->add('family')
-            ->add(
-                'locales',
-                'pim_product_available_locales',
-                array(
-                    'label' => 'Activated locales'
-                )
-            );
+            ->add('family');
     }
 
     /**

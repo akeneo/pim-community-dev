@@ -20,6 +20,11 @@ use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
  */
 class ProductType extends FlexibleType
 {
+    /**
+     * TODO : comment !!!
+     *
+     * @var ProductFormView $productFormView
+     */
     protected $productFormView;
 
     /**
@@ -56,32 +61,6 @@ class ProductType extends FlexibleType
                     'data-off-label' => 'Disabled',
                     'size'           => null
                 )
-            )
-        );
-
-        $this->addLocaleField($builder);
-    }
-
-    /**
-     * Add locale field
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return ProductType
-     */
-    protected function addLocaleField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'locales',
-            'entity',
-            array(
-                'required' => true,
-                'multiple' => true,
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                'by_reference' => false,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-                }
             )
         );
     }

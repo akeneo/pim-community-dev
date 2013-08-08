@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ProductBundle\Form\Type\AttributeProperty;
 
+use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Form type related to availableLocales property of ProductAttribute
@@ -33,7 +33,7 @@ class AvailableLocalesType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => function (LocaleRepository $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
             )

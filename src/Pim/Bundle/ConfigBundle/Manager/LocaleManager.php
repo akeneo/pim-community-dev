@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ConfigBundle\Manager;
 
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -21,16 +21,17 @@ class LocaleManager
     protected $objectManager;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
+     * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
     protected $securityContext;
 
     /**
      * Constructor
-     * @param ObjectManager   $objectManager   the storage manager
-     * @param SecurityContext $securityContext the security context
+     *
+     * @param ObjectManager            $objectManager   the storage manager
+     * @param SecurityContextInterface $securityContext the security context
      */
-    public function __construct(ObjectManager $objectManager, SecurityContext $securityContext)
+    public function __construct(ObjectManager $objectManager, SecurityContextInterface $securityContext)
     {
         $this->objectManager = $objectManager;
         $this->securityContext = $securityContext;

@@ -5,6 +5,11 @@
 
     {% block content %}
 
+
+    {% for key, variable in form.vars.value %}
+        {{ dump(key) }}
+    {% endfor %}
+
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
@@ -27,16 +32,16 @@
                     <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
-                    {% for locale in form.vars.value.getLocales() %}
-                        <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
-                                {% if locale.code == dataLocale %}
+                    {% for locale in locales %}
+                        <li class="{{ locale == dataLocale ? 'activeLocale' : '' }}">
+                            <a href="?dataLocale={{ locale }}" title="{{ localeLabel(locale) }}">
+                                {% if locale == dataLocale %}
                                     <span class="icon">
                                         <i class="icon-bullet"></i>
                                     </span>
                                 {% endif %}
-                                {{ locale.code|flag }}
-                                <span class="title">{{ product.label(locale.code) }}</span>
+                                {{ locale|flag }}
+                                <span class="title">{{ product.label(locale) }}</span>
                             </a>
                         </li>
                     {% endfor %}
@@ -62,7 +67,7 @@
 
         <div class="layout-content">
 
-            {{ elements.form_navbar(['Attributes', 'Categories', 'Localisations', 'History']) }}
+            {{ elements.form_navbar(['Attributes', 'Categories', 'History']) }}
 
             <div class="row-fluid tab-content">
 
@@ -73,10 +78,6 @@
                 </div>
 
                 <div class="tab-pane" id="associations"></div>
-
-                <div class="tab-pane buffer-top" id="localisations">
-                    {{ form_row(form.locales) }}
-                </div>
 
                 <div class="tab-pane" id="categories">
                    {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}

@@ -320,7 +320,8 @@ class ProductManager extends FlexibleManager
                 }
             }
         } elseif ($attribute->getTranslatable()) {
-            foreach ($product->getLocales() as $locale) {
+            $locales = $this->getLocales();
+            foreach ($locales as $locale) {
                 $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
             }
         } else {
@@ -338,6 +339,16 @@ class ProductManager extends FlexibleManager
     protected function getChannels()
     {
         return $this->storageManager->getRepository('PimConfigBundle:Channel')->findAll();
+    }
+
+    /**
+     * Return available locales
+     *
+     * @return ArrayCollection
+     */
+    protected function getLocales()
+    {
+        return $this->storageManager->getRepository('PimConfigBundle:Locale')->getActivatedLocales();
     }
 
     /**

@@ -11,9 +11,7 @@
 
     {% set title = 'Locales overview'|trans %}
 
-    {% set buttons = elements.createBtn('New locale', path('pim_config_locale_create')) %}
-
-    {{ elements.page_header(title, buttons) }}
+    {{ elements.page_header(title) }}
 
     <div id="locale-grid"></div>
 
