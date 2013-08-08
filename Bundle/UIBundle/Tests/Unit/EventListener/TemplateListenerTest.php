@@ -142,7 +142,7 @@ class TemplateListenerTest extends \PHPUnit_Framework_TestCase
     protected function getTemplateLogicalName($container = null)
     {
         if ($container) {
-            $container .= '.';
+            $container .= '/';
         }
 
         return 'TestBundle:Default:' . $container . 'test.html.twig';
