@@ -36,7 +36,7 @@ var jsfv = new function () {
         $tabs.find('a').each(
             function() {
                 var target = $(this).attr('href');
-                if (!target || target == '#') {
+                if (!target || target == '#' || target == 'javascript:void(0);') {
                     return;
                 }
 

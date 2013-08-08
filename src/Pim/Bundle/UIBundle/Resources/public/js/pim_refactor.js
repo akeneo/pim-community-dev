@@ -64,28 +64,8 @@ $(document).on('click', 'a[data-dialog]', function(event) {
         }
     });
 
-    var updated = false;
-    $('#updated').hide();
-
-    function formUpdated() {
-        updated = true;
-        $('#updated').show();
-        $('form [id^="{{ form.vars.id }}"]').off('change', formUpdated);
-        $('form#{{ form.vars.id }}').off('click', 'ins.jstree-checkbox', formUpdated);
-    }
-
-    $('form [id^="{{ form.vars.id }}"]').on('change', formUpdated);
-    $('form#{{ form.vars.id }}').on('click', 'ins.jstree-checkbox', formUpdated);
-
-    $(window).on('beforeunload', function(){
-        if (updated) {
-            return "{{ 'You will lose changes to the product if you leave the page.'|trans }}";
-        }
-    });
-
     $('button[type="submit"]').click(function() {
         $('#pim_available_product_attributes_attributes').removeAttr('required');
-        $(window).unbind('beforeunload');
     });
 
     $('#attribute-buttons .dropdown-menu').click(function (e) {
