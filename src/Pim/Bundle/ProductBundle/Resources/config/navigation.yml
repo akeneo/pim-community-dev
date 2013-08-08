@@ -23,7 +23,7 @@ oro_menu_config:
             route: 'pim_product_attributegroup_index'
         pim_enrich_categorytree:
             label: 'Categories'
-            route: 'pim_product_categorytree_index'
+            route: 'pim_product_categorytree_create'
 
     tree:
         application_menu:

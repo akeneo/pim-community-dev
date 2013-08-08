@@ -1,5 +1,7 @@
 <script type="text/javascript">
 'use strict';
+
+
 var assetsPath  = "{{ asset('bundles/pimproduct/') }}";
 var tree_id     = "#tree";
 var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
@@ -11,6 +13,154 @@ var urlIndex    = "{{ path('pim_product_categorytree_index') }}";
 var no_tree_message = "{{ 'No tree available' | trans }}";
 
 $(function() {
+    
+    $('#tree').jstree({
+        "core" : {
+            "animation" : 200
+        },
+        "plugins" : [
+             "tree_selector", "themes", "json_data", "ui", "crrm", "types", "dnd", "contextmenu"
+        ],
+        
+        
+        contextmenu : {
+            items : {
+                "edit" : {
+                    "label" : "Edit category",
+                    "action" : function (obj) { alert("edit category"); }
+                },
+                "ccp" : false,
+                "rename" : false,
+                "remove" : false
+            }
+        },
+        
+        "tree_selector" : {
+            "ajax" : {
+                "url" : urlListTree,
+                "parameters" : {"select_node_id" : window.preselect_node_id}
+            },
+            "auto_open_root" : true,
+            "node_label_field" : "title",
+            "no_tree_message" : window.no_tree_message,
+            "preselect_node_id" : window.preselect_node_id
+        },
+        "themes" : {
+            "dots" : true,
+            "icons" : true,
+            "themes" : "bap",
+            "url" : assetsPath + "/css/style.css"
+        },
+        "json_data" : {
+            "ajax" : {
+                "url" : urlChildren,
+                "data" : function (node) {
+                    // the result is fed to the AJAX request `data` option
+                    var id = null;
+    
+                    if (node && node != -1) {
+                        id = node.attr("id").replace('node_','');
+                    } else{
+                        id = -1;
+                    }
+                    return {
+                        "id" : id,
+                        "select_node_id" : window.preselect_node_id,
+                        "with_products_count" : "true"
+                    };
+                }
+            }
+        },
+        "types" : {
+            "max_depth" : -2,
+            "max_children" : -2,
+            "valid_children" : [ "folder" ],
+            "types" : {
+                "default" : {
+                    "valid_children" : "folder"
+                }
+            }
+        },
+        "ui" : {
+            "select_limit": 1,
+            "select_multiple_modifier" : false
+        }
+    })
+    .bind("move_node.jstree", function (e, data) {
+        var this_jstree = $.jstree._focused();
+        data.rslt.o.each(function (i) {
+
+            $.ajax({
+                async : false,
+                type: 'POST',
+                url: "move-node",
+                data : {
+                    "id" : $(this).attr("id").replace('node_',''),
+                    "parent" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id").replace('node_',''),
+                    "prev_sibling" : this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_','') : null,
+                    "position" : data.rslt.cp + i,
+                    "code" : data.rslt.name,
+                    "copy" : data.rslt.cy ? 1 : 0
+                },
+                success : function (r) {
+                    if(!r.status) {
+                        this_jstree.rollback(data.rlbk);
+                    }
+                    else {
+                        $(data.rslt.oc).attr("id", r.id);
+                        if(data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                            data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                        }
+                    }
+                }
+            });
+        });
+    })
+    .bind('loaded.jstree', function(event, data) {
+        if (event.namespace == 'jstree') {
+            data.inst.get_tree_select().select2({ width: '100%' });
+        }
+    })
+    .bind("remove.jstree", function (event, data) {
+        data.rslt.obj.each(function () {
+            var id = $(this).attr("id").replace('node_', '');
+            var url = urlRemove.replace("#ID#", id);
+            PimAjax.ajaxDelete(url, '');
+            if (PimAjax.isSuccessfull() == true) {
+                var parentNode = data.inst._get_parent();
+                id = parentNode.attr("id").replace('node_', '');
+            }
+            window.location = urlIndex+"?node="+id;
+        });
+    })
+    /*
+    .bind("select_node.jstree", function (event, data) {
+        alert(data.rslt.obj.attr("id"));
+    })*/
+    
+    .bind("create.jstree", function (e, data) {
+        $.post(
+            "{{ path('pim_product_categorytree_add') }}", 
+            { 
+                "operation" : "create_node", 
+                "id" : data.rslt.parent.attr("id").replace("node_",""), 
+                "position" : data.rslt.position,
+                "title" : data.rslt.name,
+                "type" : data.rslt.obj.attr("rel")
+            }, 
+            function (r) {
+                if(r.status) {
+                    $(data.rslt.obj).attr("id", "node_" + r.id);
+                }
+                else {
+                    $.jstree.rollback(data.rlbk);
+                }
+            }
+        );
+    })
+    
+    ;
+
     // define buttons
     var createBtn = $('<div>', { 'class': 'btn-group' }).html(
         $('<button class="dropdown-toggle" data-toggle="dropdown"></button>').html(
@@ -73,4 +223,4 @@ $(function() {
     $('#category-tree-container').sidebarize({ buttons: [ createBtn, editBtn, removeBtn ] });
 });
 </script>
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
+

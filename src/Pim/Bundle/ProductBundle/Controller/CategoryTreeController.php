@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Category Tree Controller
@@ -196,6 +197,36 @@ class CategoryTreeController extends Controller
         $categories = $this->getTreeManager()->getTreeCategories($treeRoot);
 
         return array('categories' => $categories);
+    }
+
+    /**
+     * Add a node
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/add")
+     */
+    public function addAction(Request $request)
+    {
+        $code     = $request->get('title');
+        $parentId = $request->get('id');
+        $parent   = $this->getTreeManager()->getEntityRepository()->find($parentId);
+
+        /** @var Category */
+        $category = $this->getTreeManager()->getSegmentInstance();
+        $category->setParent($parent);
+        $category->setCode($code);
+        // TODO : could be remove after locale refactoring
+        $categoryTranslation = $category->getTranslation('default');
+        $categoryTranslation->setTitle($code);
+
+        $sm = $this->getTreeManager()->getStorageManager();
+        $sm->persist($category);
+        $sm->flush();
+
+        return new JsonResponse(array('status' => 1));
     }
 
     /**
