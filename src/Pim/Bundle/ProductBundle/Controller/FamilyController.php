@@ -71,7 +71,7 @@ class FamilyController extends Controller
      * @param integer $id
      *
      * @Route(
-     *     "/edit/{id}",
+     *     "/{id}/edit",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0}
      * )
