@@ -2,23 +2,21 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory;
 
-use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\ReportProxyQuery;
 
-class QueryFactory extends AbstractQueryFactory
+class ReportQueryFactory extends QueryFactory
 {
     /**
-     * @param QueryBuilder $queryBuilder
+     * @return ProxyQueryInterface
+     * @throws \LogicException
      */
-    public function __construct(QueryBuilder $queryBuilder = null)
+    public function createQuery()
     {
-        $this->queryBuilder = $queryBuilder;
-    }
+        if (!$this->queryBuilder) {
+            throw new \LogicException('Can\'t create datagrid query. Query builder is not configured.');
+        }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
-    public function setQueryBuilder(QueryBuilder $queryBuilder)
-    {
-        $this->queryBuilder = $queryBuilder;
+        return new ReportProxyQuery($this->queryBuilder);
     }
 }
