@@ -9,15 +9,6 @@ if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
 // Disable the oro scrollable container
 $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
-// Prevent UniformJS from breaking our stuff
-$(document).uniform.restore();
-
-// Apply Select2
-$('select').select2({ allowClear: true });
-
-// Apply Select2 multiselect
-$('input.multiselect').select2({ tags: $(this).val() });
-
 // Remove bap 'Loading Application' progressbar and partially fix page title regression issue
 document.title = $('#page-title').text();
 if ($('#progressbar').is(':visible')) {
@@ -72,9 +63,6 @@ $(document).on('click', 'a[data-dialog]', function(event) {
         e.stopPropagation();
     });
 
-    // Destroy Select2 where it's not necessary
-    $('#default_channel').select2('destroy');
-
     $('#default_channel').change(function() {
         $('.scopable').scopableField({ defaultScope: $(this).val() });
     });
@@ -83,18 +71,6 @@ $(document).on('click', 'a[data-dialog]', function(event) {
         e.preventDefault();
         $('.scopable').scopableField($(this).data('action'));
     });
-
-    $('li.tab.active a').each(function() {
-        var paneId = $(this).attr('href');
-        $(paneId).addClass('active');
-    });
-
-    $('.remove-attribute').each(function() {
-        var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
-        $(this).insertAfter(target).css('margin-left', 20).attr('tabIndex', -1);
-    });
-
-    $('.wysihtml5-toolbar a').attr('tabIndex', -1);
 
 /* End product edit form js */
 
