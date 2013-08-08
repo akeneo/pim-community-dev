@@ -2,14 +2,15 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config\Id;
 
+/**
+ * Id of Config
+ */
 interface ConfigIdInterface extends \Serializable
 {
     /**
      * @return string
      */
     public function getId();
-
-    public function getEntityId();
 
     /**
      * @return string

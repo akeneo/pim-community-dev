@@ -212,7 +212,7 @@ class ConfigEntityGridController extends Controller
         }
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         return array(
             'entity'        => $newEntityModel,

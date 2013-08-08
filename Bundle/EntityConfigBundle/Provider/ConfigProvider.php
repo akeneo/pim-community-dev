@@ -64,15 +64,13 @@ class ConfigProvider implements ConfigProviderInterface
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
-     * @return EntityConfigId|FieldConfigId
+     * @return ConfigInterface
      */
     public function getConfigId($className, $fieldName = null, $fieldType = null)
     {
-        if ($fieldName) {
-            return new FieldConfigId($this->getClassName($className), $this->getScope(), $fieldName, $fieldType);
-        } else {
-            return new EntityConfigId($this->getClassName($className), $this->getScope());
-        }
+        return $fieldName
+            ? new FieldConfigId($this->getClassName($className), $this->getScope(), $fieldName, $fieldType)
+            : new EntityConfigId($this->getClassName($className), $this->getScope());
     }
 
     /**
@@ -128,15 +126,13 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * @param null $className
-     * @return FieldConfigId[]
+     * @return array|ConfigIdInterface[]
      */
     public function getConfigIds($className = null)
     {
-        if ($className) {
-            return $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope());
-        } else {
-            return $this->configManager->getEntityConfigIds($this->getScope());
-        }
+        return $className
+            ? $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope())
+            : $this->configManager->getEntityConfigIds($this->getScope());
     }
 
     /**

@@ -42,15 +42,7 @@ class EntityConfigId implements EntityConfigIdInterface
      */
     public function getId()
     {
-        return 'entity_' . $this->scope . '_' . strtr($this->className, '\\', '-');
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityId()
-    {
-        return sprintf('ConfigEntity Entity "%s"', $this->getClassName());
+        return sprintf('entity_%s_%s', $this->scope, strtr($this->className, '\\', '-'));
     }
 
     /**

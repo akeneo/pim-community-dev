@@ -110,7 +110,6 @@ oro_entity_config:
                         default_value:      255
                         allowed_type:       [string]
                         required_property:
-                            type:           field
                             scope:          extend
                             code:           owner
                             value:          Custom

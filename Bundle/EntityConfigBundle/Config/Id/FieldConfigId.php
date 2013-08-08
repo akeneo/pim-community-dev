@@ -87,19 +87,7 @@ class FieldConfigId implements FieldConfigIdInterface
      */
     public function getId()
     {
-        return 'field_' . $this->scope . '_' . strtr($this->className, '\\', '-') . '_' . $this->fieldName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityId()
-    {
-        return sprintf(
-            'ConfigEntity Field "%s" in Entity "%s"',
-            $this->getFieldName(),
-            $this->getClassName()
-        );
+        return sprintf('field_%s_%s_%s', $this->scope, strtr($this->className, '\\', '-'), $this->fieldName);
     }
 
     /**

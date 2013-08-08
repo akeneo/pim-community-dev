@@ -42,12 +42,13 @@ oro_entity_config:
 
                 plural_label:
                     options:
-                        priority:           30
+                        priority:           35
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
+
 
                 description:
                     options:

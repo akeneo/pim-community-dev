@@ -280,7 +280,7 @@ class ConfigManager
             $resultConfig = $config;
         } else {
             if (!$model = $this->getConfigModelByConfigId($configId)) {
-                throw new RuntimeException(sprintf('%s is not found', $configId->getEntityId()));
+                throw new RuntimeException(sprintf('ConfigEntity Entity "%s" is not found ', $configId->getClassName()));
             }
 
             $config = new Config($configId);

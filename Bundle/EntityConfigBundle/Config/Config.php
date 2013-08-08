@@ -5,6 +5,9 @@ namespace Oro\Bundle\EntityConfigBundle\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
+/**
+ * Object of this class contain meta properties for Configurable Entities and his fields
+ */
 class Config implements ConfigInterface
 {
     /**
@@ -77,7 +80,7 @@ class Config implements ConfigInterface
      */
     public function is($code)
     {
-        return (bool)$this->get($code);
+        return (bool) $this->get($code);
     }
 
     /**
@@ -133,11 +136,7 @@ class Config implements ConfigInterface
     {
         $this->id     = clone $this->id;
         $this->values = array_map(function ($value) {
-            if (is_object($value)) {
-                return clone $value;
-            } else {
-                return $value;
-            }
+            return is_object($value) ? clone $value : $value;
         }, $this->values);
     }
 }
