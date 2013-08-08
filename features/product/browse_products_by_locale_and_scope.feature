@@ -11,7 +11,7 @@ Feature: Browse products by locale and scope
     And the following products:
       | sku    | family    |
       | postit | furniture |
-    And a "postit" product available in german and french
+    And a "postit" product
     And the following product attributes:
       | label       | required | translatable | scopable |
       | SKU         | yes      | no           | no       |
