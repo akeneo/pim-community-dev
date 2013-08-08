@@ -148,7 +148,7 @@ class Edit extends Creation
         $columnIdx       = 0;
 
         foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === $channel) {
+            if ($header->getText() === strtoupper($channel)) {
                 $columnIdx = $index;
                 break;
             }

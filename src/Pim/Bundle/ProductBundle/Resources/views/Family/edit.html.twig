@@ -39,11 +39,12 @@
 
             <div id="attribute-buttons">{# Add available attribute widget #}</div>
 
+            {% set columnWidth = 100/(channels|length + 1) %}
             <table class="table groups">
                 <thead>
-                    <th>{{ 'Label'|upper }}</th>
+                    <th width="{{ columnWidth }}%">{{ 'Label'|upper }}</th>
                     {% for channel in channels %}
-                        <th style="text-align: center;">{{ channel.name }}</th>
+                        <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
                     {% endfor %}
                     <th>&nbsp;</th>
                 </thead>
