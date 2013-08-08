@@ -9,7 +9,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractPhone implements PrimaryItem
+abstract class AbstractPhone implements PrimaryItem, EmptyItem
 {
     /**
      * @var integer
@@ -114,5 +114,15 @@ abstract class AbstractPhone implements PrimaryItem
     public function __toString()
     {
         return (string)$this->getPhone();
+    }
+
+    /**
+     * Check if entity is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->getPhone);
     }
 }
