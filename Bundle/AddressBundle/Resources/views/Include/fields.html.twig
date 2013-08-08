@@ -52,7 +52,7 @@
 {% endblock oro_region_widget %}
 
 {% block oro_email_widget %}
-    <div class="controls{% if form.email.vars.errors|length > 0 %} validation-error{% endif %}">
+    <div class="email-holder {% if form.email.vars.errors|length > 0 %} validation-error{% endif %}">
         <div class="input-append">
             {{ form_widget(form.email) }}
             <label class="add-on">
@@ -65,7 +65,7 @@
 {%  endblock %}
 
 {% block oro_phone_widget %}
-    <div class="controls{% if form.phone.vars.errors|length > 0 %} validation-error{% endif %}">
+    <div class="email-holder {% if form.phone.vars.errors|length > 0 %} validation-error{% endif %}">
         <div class="input-append">
             {{ form_widget(form.phone) }}
             {{ form_errors(form.phone) }}
