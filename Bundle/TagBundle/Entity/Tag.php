@@ -7,6 +7,8 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Tag
@@ -64,6 +66,37 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $updatedBy;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $userOwner;
+
+    /**
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinTable(name="oro_owner_tag_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
+     */
+    protected $businessUnitOwners;
+
+    /**
+     * @var Organization[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinTable(name="oro_owner_tag_organization",
+     *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
+     *      onDelete="CASCADE")}
+     * )
+     */
+    protected $organizationOwners;
 
     /**
      * Constructor
@@ -221,5 +254,62 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function doUpdate()
     {
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return User
+     */
+    public function getUserOwner()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     * @return Tag
+     */
+    public function setUserOwner(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit[]
+     */
+    public function getBusinessUnitOwners()
+    {
+        return $this->businessUnitOwners;
+    }
+
+    /**
+     * @param ArrayCollection $businessUnitOwners
+     * @return Tag
+     */
+    public function setBusinessUnitOwners($businessUnitOwners)
+    {
+        $this->businessUnitOwners = $businessUnitOwners;
+
+        return $this;
+    }
+
+    /**
+     * @return Organization[]
+     */
+    public function getOrganizationOwners()
+    {
+        return $this->organizationOwners;
+    }
+
+    /**
+     * @param ArrayCollection $organizationOwners
+     * @return Tag
+     */
+    public function setOrganizationOwners($organizationOwners)
+    {
+        $this->organizationOwners = $organizationOwners;
+
+        return $this;
     }
 }
