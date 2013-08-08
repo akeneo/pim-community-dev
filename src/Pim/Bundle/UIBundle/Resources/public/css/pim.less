@@ -36,9 +36,7 @@ a {
 
 /* Header ***********************************************************************************************************/
 
-header,
-.header-search .dropdown-toggle,
-.header-search .btn-group.open .btn.dropdown-toggle {
+header {
   #gradient .vertical(@color-header_top, @color-header_bottom);
   border-bottom: @border-purple;
 }
@@ -51,23 +49,15 @@ header .extra-divider, .navbar .small-divider {
   background: transparent;
 }
 
-/* Search ***********************************************************************************************************/
+header h1.logo a img { margin-top: 1px;}
 
-.header-search {
-  input[type="text"] {
-    background-color: @color-purple_dark - #171328;
-    background-image: none;
-  }
-  .btn-search {
-    background-color: @color-purple_dark - #171328;
-    .icon-search();
-    &:hover,
-    &:active,
-    &:focus {
-      .icon-search-important();
-      background-color: darken(@color-purple_dark - #171328, 5%) !important;
-    }
-  }
+.navbar-inner .logo, header .logo {padding: 0px; margin: 0px;}
+.navbar-inner .logo a, header .logo a { background: none; }
+.navbar-inner .logo:after, header .logo:after {border-bottom: none; border-top: none;}
+.navbar-inner .shortcuts .dropdown>a, header .shortcuts .dropdown>a { margin: 1px 0px 0 0; outline: none; }
+
+.navbar-responsive-collapse .top-search .dropdown-search.open>span, .navbar-responsive-collapse .top-search .dropdown-search:hover>span {
+    background-position: 0 -343px;
 }
 
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
