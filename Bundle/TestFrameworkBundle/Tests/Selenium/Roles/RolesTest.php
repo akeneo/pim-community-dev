@@ -73,7 +73,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             }
             $checks = $checks + 1;
         }
-        $this->assertEquals(count($this->defaultRoles)-1, $checks);
+        $this->assertGreaterThanOrEqual(count($this->defaultRoles)-1, $checks);
     }
 
     public function testRolesAdd()

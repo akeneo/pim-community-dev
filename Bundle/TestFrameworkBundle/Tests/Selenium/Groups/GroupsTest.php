@@ -72,7 +72,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             }
             $checks = $checks + 1;
         }
-        $this->assertEquals(count($this->defaultGroups)-1, $checks);
+        $this->assertGreaterThanOrEqual(count($this->defaultGroups)-1, $checks);
     }
 
     public function testGroupAdd()
