@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Pim\Bundle\ConfigBundle\Helper\LocaleHelper;
+
+use Symfony\Component\Form\FormInterface;
+
+use Symfony\Component\Form\FormView;
+
 use Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;
@@ -26,13 +32,19 @@ class ChannelType extends AbstractType
     protected $localeManager;
 
     /**
+     * @var \Pim\Bundle\ConfigBundle\Helper\LocaleHelper
+     */
+    protected $localeHelper;
+
+    /**
      * Inject locale manager in the constructor
      *
      * @param \Pim\Bundle\ConfigBundle\Manager\LocaleManager $localeManager
      */
-    public function __construct(LocaleManager $localeManager)
+    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
     {
         $this->localeManager = $localeManager;
+        $this->localeHelper  = $localeHelper;
     }
 
     /**
@@ -101,7 +113,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create a category field and add it to the form builder
-     * This field only display the tree (channel is linked to tree)
+     * This field only display trees (channel is linked to tree)
      *
      * @param FormBuilderInterface $builder
      */
@@ -119,6 +131,29 @@ class ChannelType extends AbstractType
                 }
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO : ADD comment
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        if (!isset($view['locales'])) {
+            return;
+        }
+
+        $locales = $view['locales'];
+        foreach ($locales->vars['choices'] as $localeView) {
+            $localeView->label = $this->localeHelper->getLocalizedLabel($localeView->label);
+        }
+        foreach ($locales->vars['preferred_choices'] as $localeView) {
+            $localeView->label = $this->localeHelper->getLocalizedLabel($localeView->label);
+        }
+
+        $locales->vars['choices'] = $this->localeHelper->reorderLocales($locales->vars['choices']);
+        $locales->vars['preferred_choices'] = $this->localeHelper->reorderLocales($locales->vars['preferred_choices']);
     }
 
     /**
