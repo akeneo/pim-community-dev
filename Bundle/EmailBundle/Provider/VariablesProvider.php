@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Provider;
 
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
@@ -13,10 +13,10 @@ class VariablesProvider
     /** @var ConfigProvider  */
     protected $configProvider;
 
-    /** @var SecurityContext  */
+    /** @var SecurityContextInterface  */
     protected $securityContext;
 
-    public function __construct(SecurityContext $securityContext, ConfigProvider $provider)
+    public function __construct(SecurityContextInterface $securityContext, ConfigProvider $provider)
     {
         $this->securityContext = $securityContext;
         $this->configProvider = $provider;

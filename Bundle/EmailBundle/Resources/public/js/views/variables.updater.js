@@ -38,6 +38,8 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
 
     /**
      * Renders target element
+     *
+     * @returns {*}
      */
     render: function() {
         var html = _.template(this.options.template.html(), {
@@ -46,18 +48,22 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
         });
 
         $(this.el).html(html);
+
+        return this;
     },
 
     /**
      * Add variable to last element
      *
      * @param e
+     * @returns {*}
      */
     addVariable: function(e) {
-        if (_.isNull(this.lastElement)) {
-            return false;
+        if (!_.isNull(this.lastElement) && this.lastElement.is(':visible')) {
+            this.lastElement.val(this.lastElement.val() + $(e.currentTarget).html());
         }
-        this.lastElement.val(this.lastElement.val() + $(e.currentTarget).html());
+
+        return this;
     },
 
     /**
@@ -65,8 +71,11 @@ Oro.Email.VariablesUpdater.View = Backbone.View.extend({
      *
      * @param e
      * @private
+     * @returns {*}
      */
     _updateElementsMetaData: function(e) {
         this.lastElement = $(e.currentTarget);
+
+        return this;
     }
 });

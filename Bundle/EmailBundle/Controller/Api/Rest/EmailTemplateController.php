@@ -115,7 +115,6 @@ class EmailTemplateController extends RestController
         /** @var VariablesProvider $provider */
         $provider = $this->get('oro_email.provider.variable_provider');
         $allowedData = $provider->getTemplateVariables($entityName);
-        $allowedData['entityName'] = $entityName;
 
         return $this->handleView(
             $this->view($allowedData, Codes::HTTP_OK)
