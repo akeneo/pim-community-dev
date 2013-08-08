@@ -22,7 +22,6 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Assert\Callback(methods={"haveAtLeastOneActivatedLocale"})
  * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
@@ -49,19 +48,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $family;
 
     /**
-     * @var ArrayCollection $locales
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
-     * @ORM\JoinTable(
-     *    name="pim_product_locale",
-     *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     * @Oro\Versioned("getCode")
-     */
-    protected $locales;
-
-    /**
      * @var ArrayCollection $categories
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", mappedBy="products")
@@ -70,19 +56,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
-     *  @Oro\Versioned
+     * @Oro\Versioned
      */
     protected $enabled = true;
-
-    /**
-     * Redefine constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->locales = new ArrayCollection();
-    }
 
     /**
      * Get product family
@@ -104,76 +80,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function setFamily($family)
     {
         $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * Get locales
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getLocales()
-    {
-        return $this->locales;
-    }
-
-    /**
-     * Add locale
-     *
-     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function addLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
-    {
-        $this->locales[] = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Remove locale
-     *
-     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
-    {
-        $this->locales->removeElement($locale);
-
-        return $this;
-    }
-
-    /**
-     * Check if product is activated on that locale
-     *
-     * @param string $localeCode
-     *
-     * @return boolean
-     */
-    public function isEnabledForLocale($localeCode)
-    {
-        $locales = $this->locales->filter(
-            function ($locale) use ($localeCode) {
-                return ($locale->getCode() === $localeCode);
-            }
-        );
-
-        return $locales->count() > 0;
-    }
-
-    /**
-     * Set locales
-     *
-     * @param ArrayCollection $locales
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function setLocales($locales)
-    {
-        $this->locales = $locales;
 
         return $this;
     }
@@ -286,21 +192,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         );
 
         return $groups;
-    }
-
-    /**
-     * Make sure that at least one locale has been added to the product
-     *
-     * @param ExecutionContext $context Execution Context
-     */
-    public function haveAtLeastOneActivatedLocale(ExecutionContext $context)
-    {
-        if ($this->locales->count() == 0) {
-            $context->addViolationAtPath(
-                $context->getPropertyPath() . '.locales',
-                'Please specify at least one activated locale'
-            );
-        }
     }
 
     /**

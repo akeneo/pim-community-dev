@@ -5,7 +5,7 @@ Feature: Add metric attribute to a product
   I need to be able to add a metric attribute to a product
 
   Background:
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | type   | label  | metric family | default metric unit |
       | metric | Weight | Weight        | KILOGRAM            |
