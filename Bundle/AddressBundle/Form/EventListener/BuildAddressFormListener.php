@@ -41,7 +41,7 @@ class BuildAddressFormListener implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_BIND     => 'preBind'
+            FormEvents::PRE_SUBMIT   => 'preSubmit'
         );
     }
 
@@ -98,7 +98,7 @@ class BuildAddressFormListener implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function preBind(FormEvent $event)
+    public function preSubmit(FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ExecutionContext;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  */
-abstract class AbstractAddress
+abstract class AbstractAddress implements EmptyItem
 {
     /**
      * @var integer

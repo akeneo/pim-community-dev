@@ -14,7 +14,7 @@ OroAddressBundle provides form types to render address entities on forms.
 ### Classes Description
 
 * **Form \ Type \ AddressType** - base form for Address, includes form fields for address attributes;
-* **Form \ Type \ AbstractTypedAddressType** - extends AddressType, adds functionality to work with address types;
+* **Form \ Type \ TypedAddressType** - extends AddressType, adds functionality to work with address types;
 * **Form \ Type \ AddressType** - implementation of AbstractAddressType, name is "oro_address";
 * **Form \ Type \ AddressApiType** - extends AddressType, used in API, name is "address";
 * **Form \ Type\ AddressCollectionType** - provides functionality to work with address collections,

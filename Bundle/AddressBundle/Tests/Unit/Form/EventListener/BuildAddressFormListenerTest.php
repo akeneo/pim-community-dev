@@ -184,7 +184,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->listener->preSetData($eventMock));
     }
 
-    public function testPreBindData()
+    public function testPreSubmitData()
     {
         $eventMock = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
             ->disableOriginalConstructor()
@@ -243,6 +243,6 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($formMock));
 
-        $this->assertEquals(null, $this->listener->preBind($eventMock));
+        $this->assertEquals(null, $this->listener->preSubmit($eventMock));
     }
 }

@@ -15,7 +15,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
  *
  * @ORM\MappedSuperclass
  */
-abstract class AbstractTypedAddress extends AbstractAddress
+abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryItem
 {
     /**
      * Many-to-many relation field, relation parameters must be in specific class

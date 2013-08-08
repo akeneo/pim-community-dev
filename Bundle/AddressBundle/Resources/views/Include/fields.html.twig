@@ -51,7 +51,35 @@
     </style>
 {% endblock oro_region_widget %}
 
+{% block oro_email_widget %}
+    <div class="controls{% if form.email.vars.errors|length > 0 %} validation-error{% endif %}">
+        <div class="input-append">
+            {{ form_widget(form.email) }}
+            <label class="add-on">
+                {{ form_widget(form.primary) }}
+            </label>
+        </div>
+        {{ form_errors(form.email) }}
+    </div>
+    {{ form_rest(form) }}
+{%  endblock %}
+
+{% block oro_phone_widget %}
+    <div class="controls{% if form.phone.vars.errors|length > 0 %} validation-error{% endif %}">
+        <div class="input-append">
+            {{ form_widget(form.phone) }}
+            {{ form_errors(form.phone) }}
+            <label class="add-on">
+                {{ form_widget(form.primary) }}
+            </label>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{%  endblock %}
+
 {% block oro_address_widget %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
     {{ form_row(form.label) }}
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
@@ -62,9 +90,16 @@
     {{ form_row(form.state) }}
     {{ form_row(form.country) }}
     {{ form_row(form.postalCode) }}
-{%  endblock oro_address_widget %}
+    {{ form_rest(form) }}
+{%  endblock %}
 
-{% macro address_collection_prototype(widget) %}
+{% block oro_typed_address_widget %}
+    {{ form_row(form.types) }}
+    {{ form_row(form.primary) }}
+    {{ block('oro_address_widget') }}
+{%  endblock %}
+
+{% macro oro_collection_item_prototype(widget) %}
     {% if 'prototype' in widget.vars|keys %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.prototype.vars.name %}
@@ -74,52 +109,78 @@
     {% endif %}
     <div data-content="{{ name }}">
         <div class="row-oro oro-multiselect-holder">
-            {{ form_errors(form) }}
-            {{ form_row(form.id) }}
-            {{ form_row(form.types) }}
-            {{ form_row(form.primary) }}
-            {{ block('oro_address_widget') }}
+            {{ form_widget(form) }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
         </div>
     </div>
 {% endmacro %}
 
-{% block oro_address_collection_widget %}
+{% block oro_item_collection_widget %}
     {% spaceless %}
         <div class="row-oro">
-            <div class="oro-address-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
+            <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.oro_collection_item_prototype(form)|escape }}">
                 {% for field in form.children %}
-                    {{ _self.address_collection_prototype(field) }}
+                    {{ _self.oro_collection_item_prototype(field) }}
                 {% endfor %}
             </div>
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
+        {{ _self.oro_item_collection_validate_primary_js(_context) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% macro oro_item_collection_validate_primary_js(context) %}
+    {% set form = context.form %}
+    {% set show_form_when_empty = context.show_form_when_empty %}
+    {% set id = context.id %}
+    {% set has_primary = form.vars.prototype.primary is defined %}
+    {% set has_types = form.vars.prototype.types is defined %}
+    {% if has_primary or has_types or show_form_when_empty %}
         <script type="text/javascript">
             $(function() {
                 var container = $('#{{ id }}_collection');
+
                 /**
                  * Allow only 1 primary checkbox to be checked.
                  * This logic convert checkbox logic to logic used in radiobutton
                  */
-                container.on('click', '[name$="[primary]"]', function() {
-                    container.find('[name$="[primary]"]').each(function (idx, el) {
-                        el.checked = false;
-                    });
-                    this.checked = true;
-                });
-
-                /**
-                 * Allow only 1 address with selected type
-                 */
-                container.on('click', '[name$="[types][]"]', function() {
-                    if (this.checked) {
-                        container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
+                {% if has_primary %}
+                    container.on('click', '[name$="[primary]"]', function() {
+                        container.find('[name$="[primary]"]').each(function (idx, el) {
                             el.checked = false;
                         });
                         this.checked = true;
+                    });
+                {% endif %}
+
+                /**
+                 * Allow only 1 item with selected type
+                 */
+                {% if has_types %}
+                    container.on('click', '[name$="[types][]"]', function() {
+                        if (this.checked) {
+                            container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
+                                el.checked = false;
+                            });
+                            this.checked = true;
+                        }
+                    });
+                {% endif %}
+
+                /**
+                 * Add empty form if it's empty
+                 */
+                {% if show_form_when_empty %}
+                    var childrenCount = container.children().length;
+                    if (!childrenCount) {
+                        var widget = container.attr('data-prototype').replace(/__name__/g, childrenCount++);
+                        var data = $('<div/>').html(widget);
+                        data.children().appendTo(container);
+                        // Temporary solution need add init only for new created row
+                        Oro.styleForm(data);
                     }
-                });
+                {% endif %}
             });
         </script>
-    {% endspaceless %}
-{% endblock oro_address_collection_widget %}
+    {% endif %}
+{% endmacro %}

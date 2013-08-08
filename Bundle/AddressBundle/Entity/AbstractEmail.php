@@ -24,7 +24,7 @@ abstract class AbstractEmail implements PrimaryItem
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $email;

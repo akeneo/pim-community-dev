@@ -24,7 +24,7 @@ abstract class AbstractPhone implements PrimaryItem
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=false)
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $phone;

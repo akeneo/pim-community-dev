@@ -4,7 +4,7 @@ namespace Oro\Bundle\AddressBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 
-class AddressCollectionType extends AbstractType
+class PhoneCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -19,6 +19,6 @@ class AddressCollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_address_collection';
+        return 'oro_phone_collection';
     }
 }

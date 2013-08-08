@@ -4,9 +4,8 @@ namespace Oro\Bundle\AddressBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-abstract class AbstractTypedAddressType extends AbstractType
+class TypedAddressType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -38,27 +37,16 @@ abstract class AbstractTypedAddressType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getParent()
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => $this->getDataClass()
-            )
-        );
+        return 'oro_address';
     }
-
-    /**
-     * Get value for option "data_class"
-     *
-     * @return string
-     */
-    abstract protected function getDataClass();
 
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getName()
     {
-        return 'oro_address';
+        return 'oro_typed_address';
     }
 }
