@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+use Pim\Bundle\ProductBundle\Entity\Family;
 
 /**
  * Ensure that all attribute requirements are displayed for a family
@@ -45,10 +46,9 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $form   = $event->getForm();
         $family = $event->getData();
 
-        if (null === $family) {
+        if (null === $family || !$family instanceof Family) {
             return;
         }
 
