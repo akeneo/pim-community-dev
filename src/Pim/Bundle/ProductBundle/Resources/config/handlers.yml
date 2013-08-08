@@ -15,9 +15,3 @@ services:
         class: %pim_product.handler.attribute_group.class%
         scope: request
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
-
-    pim_product.form.handler.family:
-        class: %pim_product.handler.family.class%
-        scope: request
-        arguments: [@pim_product.form.family, @request, @doctrine.orm.entity_manager]
-

@@ -23,7 +23,7 @@ class Creation extends Form
      */
     public function getFieldLocator($name, $locale)
     {
-        return sprintf('pim_family_form_%s_%s', strtolower($name), $locale);
+        return sprintf('pim_family_%s_%s', strtolower($name), $locale);
     }
 
     /**

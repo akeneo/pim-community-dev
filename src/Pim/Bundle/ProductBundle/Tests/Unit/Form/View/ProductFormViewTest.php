@@ -304,7 +304,6 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
-
         $attribute->expects($this->any())
             ->method('getId')
             ->will($this->returnValue($options['id']));

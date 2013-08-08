@@ -15,7 +15,7 @@
             name:                   code
             target_type:            text
             target_fields:          [code]
-            
+
 %pim_product.entity.product.class%:
     alias:                          pim_product
     route:

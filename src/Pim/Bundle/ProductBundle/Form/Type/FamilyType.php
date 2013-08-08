@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeRequirementType;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 
 /**
  * Type for product family form
@@ -22,6 +24,10 @@ class FamilyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $factory = $builder->getFormFactory();
+        $channels   = $options['channels'];
+        $attributes = $options['attributes'];
+
         $builder
             ->add('code')
             ->add(
@@ -33,9 +39,10 @@ class FamilyType extends AbstractType
                     'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Family',
                     'property_path'     => 'translations'
                 )
-            );
-        $builder->addEventSubscriber(new AddAttributeAsLabelSubscriber($builder->getFormFactory()));
-
+            )
+            ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType))
+            ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
+            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($options['channels'], $options['attributes']));
     }
 
     /**
@@ -45,7 +52,9 @@ class FamilyType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Family'
+                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Family',
+                'channels'   => array(),
+                'attributes' => array(),
             )
         );
     }
