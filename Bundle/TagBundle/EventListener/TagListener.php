@@ -31,7 +31,11 @@ class TagListener implements ContainerAwareInterface
         }
 
         if (($resource = $args->getEntity()) and $resource instanceof Taggable) {
-            $this->manager->deleteTagging($resource);
+            $this->manager->deleteTaggingByParams(
+                null,
+                get_class($resource),
+                $resource->getTaggableId()
+            );
         }
     }
 

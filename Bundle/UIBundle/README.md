@@ -68,3 +68,26 @@ Additional options can be passed to all placeholder child items using 'with' e.g
 ```html
 {% placeholder <placeholder_name> with {'form' : form} %}
 ```
+
+## Templates Hinting
+
+UIBundle allows to enable templates hinting and in such a way helps to frontend developer to find proper template.
+This option can be enabled in application configuration with redefining base template class for twig:
+
+ ```yaml
+ twig:
+     base_template_class: Oro\Bundle\UIBundle\Twig\Template
+ ```
+
+As e result of such change user can find HTML comments on the page
+```html
+<!-- Start Template: BundleName:template_name.html.twig -->
+...
+<!-- End Template: BundleName:template_name.html.twig -->
+```
+or see "template_name" variable for AJAX requests that expecting JSON
+```json
+"template_name":"BundleName:template_name.html.twig"
+```
+
+Templates hinting is enabled by default in development mode.
