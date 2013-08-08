@@ -85,7 +85,6 @@ class EmailOwnerConfigurationPassTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('oro_email.entity.cache_namespace'))
             ->will($this->returnValue('SomeNamespace'));
 
-
         $doctrineTargetEntityResolver->expects($this->once())
             ->method('addMethodCall')
             ->with(

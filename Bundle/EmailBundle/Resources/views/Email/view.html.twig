@@ -2,76 +2,54 @@
     Available variables:
     * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
 #}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-
 {% set format = oro_config_value('oro_user.name_format') %}
-{% set itemFormat = '<p class="control-label">%s</p>' %}
+{% oro_title_set({params : {"%subject%": entity.subject} }) %}
 
-{% block page_container %}
-<div class="container-fluid email-body-holder">
-    {% block content %}
-        <div class="form-horizontal">
-            <div class="control-group">
-                {{ _self.renderRow('Sent', 'email-sent', _self.text(UI.time(entity.sentAt), itemFormat)) }}
-                {{ _self.renderRow('From', 'email-from', EA.email_address(entity.fromEmailAddress, entity.fromName, format, itemFormat)) }}
-                {{ _self.renderRow('To', 'email-to', EA.recipient_email_addresses(entity.recipients('to'), format, itemFormat)) }}
-                {{ _self.renderRow('Cc', 'email-cc', EA.recipient_email_addresses(entity.recipients('cc'), format, itemFormat)) }}
-                {{ _self.renderRow('Bcc', 'email-bcc', EA.recipient_email_addresses(entity.recipients('bcc'), format, itemFormat)) }}
-                {{ _self.renderRow('Subject', 'email-subject', _self.text(entity.subject, itemFormat)) }}
-                {% if entity.emailBody.hasAttachments %}
-                    {{ _self.renderAttachmentsRow('Attachments', entity.emailBody.attachments) }}
-                {% endif %}
-                {% if entity.emailBody.bodyIsText %}
-                    <pre class="email-body scrollable-container">{{ entity.emailBody.content }}</pre>
-                {% else %}
-                    <iframe class="email-body scrollable-container" src="{{ path('oro_email_body', {id:entity.emailBody.id}) }}">
-                    </iframe>
-                {% endif %}
-            </div>
-        </div>
-    {% endblock %}
-</div>
-{% endblock %}
+{% block pageHeader %}
+    {% set breadcrumbs = {'entity': entity, 'indexLabel': 'Emails', 'entityTitle': entity.subject } %}
+    {{ parent() }}
+{% endblock pageHeader %}
 
-{% macro renderRow(title, iClass, value) %}
-    {% macro row_data(value) %}
-        <div class="clearfix-oro">
-            {{ value|raw }}
-        </div>
-    {% endmacro %}
-    <div class="{{ iClass }}">
-        <label class="control-label">{{ title|trans }}</label>
+{% block stats %}
+    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+{% endblock stats %}
 
-        <div class="controls">
-            {{ _self.row_data(value)|raw }}
-        </div>
-    </div>
-{% endmacro %}
+{% block content_data %}
+    {% set id = 'email-profile' %}
 
-{% macro renderAttachmentsRow(title, value) %}
-    {% macro attachments_row_data(value) %}
-        <div class="clearfix-oro well-small">
-            <ul class="inline">
-                {% for val in value %}
-                    <li>
-                        <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
-                            <span class="label label-info">{{ val.fileName }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endmacro %}
-    <div class="email-attachments">
-        <label class="control-label">{{ title|trans }}</label>
+    {% set attributes = [
+            UI.attibuteRow('Sent', UI.time(entity.sentAt)),
+            UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format)),
+            UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format)),
+            UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format)),
+            UI.attibuteRow('Bcc', EA.recipient_email_addresses(entity.recipients('bcc'), format)),
+            UI.attibuteRow('Subject', entity.subject)
+        ]
+    %}
+    {% if entity.emailBody.hasAttachments %}
+        {% set attributes = attributes | merge([UI.attibuteRow('Attachments', EA.attachments(entity.emailBody.attachments))]) %}
+    {% endif %}
+    {% set attributes = attributes | merge([EA.body(entity.emailBody)]) %}
 
-        <div class="controls">
-            {{ _self.attachments_row_data(value)|raw }}
-        </div>
-    </div>
-{% endmacro %}
-
-{% macro text(val, itemFormat) -%}
-    {{ itemFormat|format(val)|raw }}
-{%- endmacro %}
+    {% set data = {
+        'dataBlocks':
+            [
+                {
+                    'title': 'General',
+                    'class': 'active',
+                    'subblocks': [
+                        {
+                            'title': null,
+                            'useSpan': false,
+                            'data': attributes
+                        }
+                    ]
+                }
+            ]
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}

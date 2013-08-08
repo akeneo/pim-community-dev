@@ -16,7 +16,6 @@ class EmailOwnerProviderTest extends \PHPUnit_Framework_TestCase
         return $storage;
     }
 
-
     public function testFindEmailOwner1()
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')

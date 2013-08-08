@@ -8,10 +8,9 @@
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
 
 {% set format = oro_config_value('oro_user.name_format') %}
-{% set showImage = false %}
+{% set iconType = 'envelope' %}
 
 {% set recordUrl = indexer_item.recordUrl %}
-{% set recordUrlCssClass = 'no-hash view-email-entity-btn' %}
 {% set title = entity ? entity.subject : indexer_item.recordTitle %}
 
 {% set entityType = 'Email'|trans %}

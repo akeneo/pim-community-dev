@@ -1,0 +1,29 @@
+{#
+    Available variables:
+    * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
+#}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+
+{% set format = oro_config_value('oro_user.name_format') %}
+
+{% block page_container %}
+<div class="container-fluid email-body-holder">
+    {% block content %}
+        <div class="form-horizontal">
+            <div class="control-group">
+                {{ UI.attibuteRow('Sent', UI.time(entity.sentAt)) }}
+                {{ UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format, true)) }}
+                {{ UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format, true)) }}
+                {{ UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format, true)) }}
+                {{ UI.attibuteRow('Bcc', EA.recipient_email_addresses(entity.recipients('bcc'), format, true)) }}
+                {{ UI.attibuteRow('Subject', entity.subject) }}
+                {% if entity.emailBody.hasAttachments %}
+                    {{ UI.attibuteRow('Attachments', EA.attachments(entity.emailBody.attachments)) }}
+                {% endif %}
+                {{ EA.body(entity.emailBody, 'scrollable-container') }}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+{% endblock %}

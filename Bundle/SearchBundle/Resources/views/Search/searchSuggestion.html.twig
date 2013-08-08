@@ -3,7 +3,7 @@
     {% if data is defined %}
         {% for item in data %}
         <li>
-            <a href="{{ item.record_url }}" class="view-{{ item.entity_name|split('\\')|last|lower }}-entity-btn">
+            <a href="{{ item.record_url }}">
                 <span class="name"><strong>{{ item.record_string }}</strong></span>
                 {{ oro_config_entity(item.entity_name).name|trans({}, 'config') }}
             </a>

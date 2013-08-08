@@ -6,6 +6,8 @@ oro:
                     message: "Template sucessfully saved"
         form:
             choose_template: "Choose a template..."
+"%subject% - Email": "%subject% - Email"
+"Emails": "Emails"
 "Email": "Email"
 "Subject": "Subject"
 "Sent": "Sent"

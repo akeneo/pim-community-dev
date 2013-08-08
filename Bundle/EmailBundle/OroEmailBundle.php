@@ -21,7 +21,6 @@ class OroEmailBundle extends Bundle
 
         $container->addCompilerPass(new EmailOwnerConfigurationPass());
         $this->addDoctrineOrmMappingsPass($container);
-
     }
 
     /**
