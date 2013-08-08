@@ -117,11 +117,16 @@
 
 {% block oro_item_collection_widget %}
     {% spaceless %}
+        {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
         <div class="row-oro">
-            <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.oro_collection_item_prototype(form)|escape }}">
-                {% for field in form.children %}
-                    {{ _self.oro_collection_item_prototype(field) }}
-                {% endfor %}
+            <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _self.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
             </div>
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
@@ -165,20 +170,6 @@
                             this.checked = true;
                         }
                     });
-                {% endif %}
-
-                /**
-                 * Add empty form if it's empty
-                 */
-                {% if show_form_when_empty %}
-                    var childrenCount = container.children().length;
-                    if (!childrenCount) {
-                        var widget = container.attr('data-prototype').replace(/__name__/g, childrenCount++);
-                        var data = $('<div/>').html(widget);
-                        data.children().appendTo(container);
-                        // Temporary solution need add init only for new created row
-                        Oro.styleForm(data);
-                    }
                 {% endif %}
             });
         </script>
