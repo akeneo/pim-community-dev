@@ -1,24 +1,20 @@
 oro_menu_config:
     items:
         pim_ie_import:
-            label: 'Imports'
+            label: 'Import profiles'
             route: 'pim_importexport_import_index'
+
         pim_ie_export:
-            label: 'Exports'
+            label: 'Export profiles'
             route: 'pim_importexport_export_index'
 
-        pim_report_tab:
-            label: 'Reports'
-            uri: '#'
-            extras:
-                position: 40
-        pim_report_export:
-            label: 'Exports'
-            route: 'pim_importexport_report_export'
-
         pim_report_import:
-            label: 'Imports'
+            label: 'Reports'
             route: 'pim_importexport_report_import'
+
+        pim_report_export:
+            label: 'Report'
+            route: 'pim_importexport_report_export'
 
     tree:
         application_menu:
@@ -26,13 +22,11 @@ oro_menu_config:
                 pim_import_tab:
                     children:
                         pim_ie_import: ~
+                        pim_report_import: ~
                 pim_export_tab:
                     children:
                         pim_ie_export: ~
-                pim_report_tab:
-                    children:
                         pim_report_export: ~
-                        pim_report_import: ~
 
 oro_titles:
     pim_importexport_import_index: Import management

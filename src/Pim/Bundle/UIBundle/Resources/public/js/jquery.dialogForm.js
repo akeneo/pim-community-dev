@@ -90,7 +90,8 @@
             return true;
         }
 
-        $(document).delegate(options.trigger, 'click', function(e) {
+        $(options.trigger).removeAttr('href');
+        $(document).on('click', options.trigger, function(e) {
             e.preventDefault();
             $.ajax({
                 url: options.url,

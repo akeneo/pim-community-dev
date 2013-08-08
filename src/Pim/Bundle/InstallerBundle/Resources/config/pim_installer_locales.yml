@@ -5,3 +5,6 @@ locales:
     'fr_FR':
         'fallback': 'en_US'
         'currency': 'EUR'
+    'de_DE':
+        'fallback': 'en_US'
+        'currency': 'EUR'

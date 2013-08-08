@@ -19,6 +19,7 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\ChannelRepository")
  * @UniqueEntity("code")
+ * @ORM\HasLifecycleCallbacks
  */
 class Channel
 {
@@ -66,7 +67,11 @@ class Channel
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
+     * @ORM\ManyToMany(
+     *     targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale",
+     *     inversedBy="channels",
+     *     cascade={"persist"}
+     * )
      * @ORM\JoinTable(
      *    name="pim_channel_locale",
      *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -219,20 +224,6 @@ class Channel
     }
 
     /**
-     * Set currencies
-     *
-     * @param ArrayCollection $currencies
-     *
-     * @return Channel
-     */
-    public function setCurrencies($currencies)
-    {
-        $this->currencies = $currencies;
-
-        return $this;
-    }
-
-    /**
      * Get locales
      *
      * @return ArrayCollection
@@ -252,6 +243,7 @@ class Channel
     public function addLocale(Locale $locale)
     {
         $this->locales[] = $locale;
+        $locale->activate();
 
         return $this;
     }
@@ -266,21 +258,20 @@ class Channel
     public function removeLocale(Locale $locale)
     {
         $this->locales->removeElement($locale);
+        $locale->deactivate();
 
         return $this;
     }
 
     /**
-     * Set locales
+     * Pre remove method to deactivate unusable locales
      *
-     * @param ArrayCollection $locales
-     *
-     * @return Channel
+     * @ORM\PreRemove
      */
-    public function setLocales($locales)
+    public function preRemove()
     {
-        $this->locales = $locales;
-
-        return $this;
+        foreach ($this->locales as $locale) {
+            $locale->deactivate();
+        }
     }
 }

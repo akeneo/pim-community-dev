@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -84,7 +86,7 @@ class LocaleDatagridManager extends DatagridManager
         $field->setName('activated');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Activated'),
                 'field_name'  => 'activated',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
@@ -93,6 +95,10 @@ class LocaleDatagridManager extends DatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimConfigBundle:Currency:_field_activated.html.twig')
         );
         $fieldsCollection->add($field);
     }

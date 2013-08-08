@@ -13,7 +13,7 @@ Feature: Expose product data via a REST API
     Then the response code should be 200
 
   Scenario: Successfully retrieve a product
-    Given a "Car" product available in english and french
+    Given a "Car" product
     And the following product attributes:
       | type   | label             | scopable | translatable |
       | prices | Price             | no       | no           |

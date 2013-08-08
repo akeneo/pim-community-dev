@@ -119,13 +119,6 @@
 'Edit product family': '__Edit product family'
 'Add product family': '__Add product family'
 
-# Locales
-'de_DE': '__Deutsch (de_DE)'
-'en_US': '__English (en_US)'
-'en_GB': '__English (en_GB)'
-'fr_FR': '__French (fr_FR)'
-'fr_CA': '__French (fr_CA)'
-
 # Category
 'Category successfully saved': '__Category successfully saved'
 'Category successfully removed': '__Category successfully removed'

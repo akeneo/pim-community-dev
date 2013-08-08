@@ -4,7 +4,7 @@ Feature: Switch product locale
   I need to be able to switch product locale
 
   Background:
-    Given a "Computer" product available in english and french
+    Given a "Computer" product
     And the "Computer" product has the following translations:
       | locale  | attribute | value      |
       | english | name      | computer   |

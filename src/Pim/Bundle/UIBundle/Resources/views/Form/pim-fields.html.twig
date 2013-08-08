@@ -20,15 +20,6 @@
 
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
-    <script type="text/javascript">
-        $('#{{ form.vars.id }}').wysihtml5({
-            events: {
-                change: function() {
-                   $('#{{ form.vars.id }}').trigger('change');
-                }
-            }
-        });
-    </script>
 {% endblock %}
 
 {% block pim_translatable_field_row %}
