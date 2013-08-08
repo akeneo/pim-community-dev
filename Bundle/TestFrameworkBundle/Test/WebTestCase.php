@@ -48,6 +48,18 @@ class WebTestCase extends BaseWebTestCase
                 }
 
                 $client->startTransaction();
+                $pdoConnection = Client::getPdoConnection();
+                if ($pdoConnection) {
+                    //set transaction level to 1 for entityManager
+                    $connection = $client->createConnection($pdoConnection);
+                    $client->getContainer()->set('doctrine.dbal.default_connection', $connection);
+
+                    //set transaction level to 1 for entityManager
+                    $connection = $client->getContainer()->get('doctrine.orm.entity_manager')->getConnection();
+                    $reflection = new \ReflectionProperty('Doctrine\DBAL\Connection', '_transactionNestingLevel');
+                    $reflection->setAccessible(true);
+                    $reflection->setValue($connection, 1);
+                }
             }
         }
 

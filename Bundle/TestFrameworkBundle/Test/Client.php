@@ -7,6 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\SoapClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\PDOConnection;
 
 class Client extends BaseClient
 {
@@ -21,8 +22,8 @@ class Client extends BaseClient
      */
     protected $router = null;
 
-    /** @var  \Doctrine\DBAL\Connection shared doctrine connection */
-    static protected $connection = null;
+    /** @var \Doctrine\DBAL\Driver\PDOConnection shared PDO connection */
+    static protected $pdoConnection = null;
 
     protected $hasPerformedRequest;
 
@@ -35,9 +36,6 @@ class Client extends BaseClient
     public function __construct($kernel, array $server = array(), $history = null, $cookieJar = null)
     {
         parent::__construct($kernel, $server, $history, $cookieJar);
-        if (is_null(self::$connection)) {
-            self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
-        }
         $this->router = $this->getContainer()->get('router');
     }
 
@@ -143,8 +141,10 @@ class Client extends BaseClient
             $this->hasPerformedRequest = true;
         }
 
-        if (!is_null(self::$connection)) {
-            $this->getContainer()->set('doctrine.dbal.default_connection', self::$connection);
+        if (self::$pdoConnection) {
+            /** @var \Doctrine\DBAL\Connection $connection */
+            $connection = $this->createConnection(self::$pdoConnection);
+            $this->getContainer()->set('doctrine.dbal.default_connection', $connection);
         }
 
         $response = $this->kernel->handle($request);
@@ -179,21 +179,57 @@ class Client extends BaseClient
 
     public function startTransaction()
     {
-        self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
-
-        self::$connection->beginTransaction();
+        self::$pdoConnection = $this->getContainer()->get('doctrine.dbal.default_connection')->getWrappedConnection();
+        self::$pdoConnection->beginTransaction();
     }
 
+    /**
+     * @return PDOConnection|null
+     */
+    public static function getPdoConnection()
+    {
+        return self::$pdoConnection;
+    }
+
+    /**
+     * @param PDOConnection $pdoConnection
+     * @return Connection
+     */
+    public function createConnection($pdoConnection)
+    {
+        /** @var \Doctrine\DBAL\Connection $conn */
+        $dbalConnection =  $this->getContainer()->get('doctrine.dbal.default_connection');
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = new Connection(
+            array_merge($dbalConnection->getParams(), array('pdo' => $pdoConnection)),
+            $dbalConnection->getDriver(),
+            $dbalConnection->getConfiguration(),
+            $dbalConnection->getEventManager()
+        );
+
+        $dbalConnection = null;
+        //set transaction level to 1
+        $reflection = new \ReflectionProperty('Doctrine\DBAL\Connection', '_transactionNestingLevel');
+        $reflection->setAccessible(true);
+        $reflection->setValue($connection, 1);
+
+        return $connection;
+    }
+
+    /**
+     * @return integer
+     */
     public static function getTransactionLevel()
     {
-        return self::$connection->getTransactionNestingLevel();
+        return self::$pdoConnection->getTransactionNestingLevel();
     }
 
     public function rollbackTransaction()
     {
-        if (!is_null(self::$connection)) {
-            self::$connection->rollback();
-            self::$connection = null;
+        if (!is_null(self::$pdoConnection)) {
+            self::$pdoConnection->rollback();
+            self::$pdoConnection = null;
         }
     }
 }
