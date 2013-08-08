@@ -40,15 +40,15 @@
     <div class="well well-small span5" id="oro-email-available-variables"></div>
 {% endmacro %}
 
-{% macro renderPreviewDialog() %}
+{% macro renderPreviewDialog(title) %}
     <script type="text/javascript">
         $(function () {
             var showEmailPreviewDialog = function (el) {
-                var iframe = $('<iframe frameborder="0" marginwidth="0" marginheight="0" allowfullscreen width="96%"></iframe>');
+                var iframe = $('<iframe frameborder="0" marginwidth="0" marginheight="0" allowfullscreen width="100%"></iframe>');
                 iframe.attr({'src': $(el).attr('href')});
 
                 new Oro.widget.DialogView({
-                    el: iframe,
+                    el: $('<div/>').append(iframe),
                     url: false,
                     dialogOptions: {
                         allowMaximize: true,
@@ -56,7 +56,7 @@
                         dblclick: 'maximize',
                         maximizedHeightDecreaseBy: 'minimize-bar',
                         width: 600,
-                        title: $(el).attr('title')
+                        title: {{ title|json_encode|raw }}
                     }
                 }).render();
             };

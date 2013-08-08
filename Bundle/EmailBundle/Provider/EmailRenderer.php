@@ -106,7 +106,7 @@ class EmailRenderer extends \Twig_Environment
      *
      * @return array first element is email subject, second - message
      */
-    public function compileMessage(EmailTemplate $entity, array $templateParams)
+    public function compileMessage(EmailTemplate $entity, array $templateParams = array())
     {
         // ensure we have no html tags in txt template
         $content = $entity->getContent();
@@ -114,8 +114,8 @@ class EmailRenderer extends \Twig_Environment
 
         $templateParams['user'] = $this->user;
 
-        $templateRendered = $this->render($content, $templateParams);
-        $subjectRendered  = $this->render($entity->getSubject(), $templateParams);
+        $templateRendered = $this->render('{% verbatim %}'.$content.'{% endverbatim %}', $templateParams);
+        $subjectRendered  = $this->render('{% verbatim %}'.$entity->getSubject().'{% endverbatim %}', $templateParams);
 
         return array($subjectRendered, $templateRendered);
     }

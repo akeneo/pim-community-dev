@@ -128,11 +128,8 @@ class EmailTemplateController extends Controller
      */
     public function previewAction(EmailTemplate $emailTemplate)
     {
-        $sampleEntity = $emailTemplate->getEntityName();
-        $sampleEntity = new $sampleEntity();
-
         list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
-            ->compileMessage($emailTemplate, array('entity' => $sampleEntity));
+            ->compileMessage($emailTemplate);
 
         return array(
             'subject' => $subjectRendered,
