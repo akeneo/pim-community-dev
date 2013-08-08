@@ -4,7 +4,6 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
@@ -75,7 +74,7 @@ class EmailTemplateDatagridManager extends DatagridManager
         $fieldEntityName->setName('entityName');
         $fieldEntityName->setOptions(
             array(
-                'type'                => FieldDescriptionInterface::TYPE_TEXT,
+                'type'                => FieldDescriptionInterface::TYPE_HTML,
                 'label'               => $this->translate('oro.email.datagrid.emailtemplate.column.entity_name'),
                 'field_name'          => 'entityName',
                 'filter_type'         => FilterInterface::TYPE_CHOICE,
@@ -181,9 +180,6 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
 
-        /**
-         * @TODO hide icon in datagrid when it'll be possible for non system templates and delete icon for another one
-         */
         $cloneAction = array(
             'name'         => 'clone',
             'type'         => ActionInterface::TYPE_REDIRECT,
