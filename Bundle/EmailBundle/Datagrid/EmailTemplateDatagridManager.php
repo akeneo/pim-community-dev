@@ -65,7 +65,7 @@ class EmailTemplateDatagridManager extends DatagridManager
         $fieldEntityName->setName('entityName');
         $fieldEntityName->setOptions(
             array(
-                'type'                => FieldDescriptionInterface::TYPE_TEXT,
+                'type'                => FieldDescriptionInterface::TYPE_HTML,
                 'label'               => $this->translate('oro.email.datagrid.emailtemplate.column.entity_name'),
                 'field_name'          => 'entityName',
                 'filter_type'         => FilterInterface::TYPE_CHOICE,

@@ -13,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 class EmailRenderer extends \Twig_Environment
 {
     /** @var  Cache|null */
-    protected $cache;
+    protected $sandBoxConfigCache;
 
     /** @var  ConfigProvider */
     protected $configProvider;
@@ -35,7 +35,7 @@ class EmailRenderer extends \Twig_Environment
         parent::__construct($loader, $options);
 
         $this->configProvider = $configProvider;
-        $this->cache = $cache;
+        $this->sandBoxConfigCache = $cache;
         $this->cacheKey = $cacheKey;
         $this->user = $securityContext->getToken() && !is_string($securityContext->getToken()->getUser())
             ? $securityContext->getToken()->getUser() : false;
@@ -47,11 +47,11 @@ class EmailRenderer extends \Twig_Environment
      */
     public function configureSandbox()
     {
-        $allowedData = $this->cache->fetch($this->cacheKey);
+        $allowedData = $this->sandBoxConfigCache->fetch($this->cacheKey);
 
         if (false === $allowedData) {
             $allowedData = $this->prepareConfiguration();
-            $this->cache->save($this->cacheKey, serialize($allowedData));
+            $this->sandBoxConfigCache->save($this->cacheKey, serialize($allowedData));
         } else {
             $allowedData = unserialize($allowedData);
         }

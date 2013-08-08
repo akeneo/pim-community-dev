@@ -25,6 +25,8 @@ parameters:
 
     # Email renderer, twig instance
     oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
+    #oro_email.twig.email_security_policy.class: Oro\Bundle\EmailBundle\Provider\TwigSecurityPolicy
+    oro_email.twig.email_security_policy.class: Twig_Sandbox_SecurityPolicy
 
 services:
     # Email template field
@@ -124,7 +126,7 @@ services:
             - [ addExtension, [@oro_email.twig.email_sandbox] ]
 
     oro_email.twig.email_security_policy:
-        class: Twig_Sandbox_SecurityPolicy
+        class: %oro_email.twig.email_security_policy.class%
         arguments:
             # tags
             - [ 'if', 'app' ]

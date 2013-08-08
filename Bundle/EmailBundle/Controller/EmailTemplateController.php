@@ -128,19 +128,17 @@ class EmailTemplateController extends Controller
      */
     public function previewAction(EmailTemplate $emailTemplate)
     {
-        $sampleEntity = '';
-        if ($this->get('oro_email.form.handler.emailtemplate')->validate($emailTemplate)) {
-            list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
-                ->compileMessage($emailTemplate, array('entity' => $sampleEntity));
+        $sampleEntity = $emailTemplate->getEntityName();
+        $sampleEntity = new $sampleEntity();
 
-            return array(
-                'subject' => $subjectRendered,
-                'content' => $templateRendered,
-            );
-        }
+        list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
+            ->compileMessage($emailTemplate, array('entity' => $sampleEntity));
 
         return array(
-            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
+            'subject' => $subjectRendered,
+            'content' => $templateRendered,
         );
+
+        die('sdf');
     }
 }
