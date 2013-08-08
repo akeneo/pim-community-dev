@@ -34,12 +34,23 @@ class Configurable
 
         if (!is_array($this->defaultValues)) {
             throw new AnnotationException(
-                sprintf('Annotation "Configurable" parameter "defaultValues" expect "array" but "%s" given', gettype($this->defaultValues))
+                sprintf(
+                    'Annotation "Configurable" parameter "defaultValues" expect "array" but "%s" given',
+                    gettype($this->defaultValues)
+                )
             );
         }
 
-        if (!in_array($this->viewMode, array(AbstractConfigModel::MODE_VIEW_DEFAULT, AbstractConfigModel::MODE_VIEW_HIDDEN, AbstractConfigModel::MODE_VIEW_READONLY))) {
-            throw new AnnotationException(sprintf('Annotation "Configurable" give invalid parameter "viewMode" : "%s"', $this->viewMode));
+        $availableMode = array(
+            AbstractConfigModel::MODE_VIEW_DEFAULT,
+            AbstractConfigModel::MODE_VIEW_HIDDEN,
+            AbstractConfigModel::MODE_VIEW_READONLY
+        );
+
+        if (!in_array($this->viewMode, $availableMode)) {
+            throw new AnnotationException(
+                sprintf('Annotation "Configurable" give invalid parameter "viewMode" : "%s"', $this->viewMode)
+            );
         }
     }
 }

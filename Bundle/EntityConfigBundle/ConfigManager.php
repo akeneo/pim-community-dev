@@ -8,16 +8,16 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
+
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
@@ -423,7 +423,7 @@ class ConfigManager
             $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
             if ($this->cache) {
-                $this->cache->removeConfigFromCache($config->getConfigId());
+                $this->removeConfigFromCache($config->getConfigId());
             }
         }
 
