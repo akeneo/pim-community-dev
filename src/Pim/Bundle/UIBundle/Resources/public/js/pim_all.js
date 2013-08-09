@@ -71,6 +71,25 @@ function init() {
 
     // Clean up multiselect plugin generated content that is appended to body
     $('body>.ui-multiselect-menu').appendTo($('#container'));
+
+    // DELETE request for delete buttons
+    $('a[data-dialog]').on('click', function() {
+        $el = $(this);
+        var message = $el.data('message');
+        var title = $el.data('title');
+        if ($el.data('dialog') ==  'confirm') {
+            var doAction = function() {
+                $el.off('click');
+                var $form = $('<form>', { method: 'POST', action: $el.attr('data-url')});
+                $('<input>', { type: 'hidden', name: '_method', value: $el.data('method')}).appendTo($form);
+                $form.appendTo('body').submit();
+            };
+
+            PimDialog.confirm(message, title, doAction);
+        } else {
+            PimDialog.alert(message, title);
+        }
+    });
 }
 
 $(function() {
