@@ -25,7 +25,6 @@ parameters:
 
     # Email renderer, twig instance
     oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
-    #oro_email.twig.email_security_policy.class: Oro\Bundle\EmailBundle\Provider\TwigSecurityPolicy
     oro_email.twig.email_security_policy.class: Twig_Sandbox_SecurityPolicy
 
 services:
