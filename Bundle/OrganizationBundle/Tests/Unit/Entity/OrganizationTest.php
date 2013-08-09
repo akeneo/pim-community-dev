@@ -3,8 +3,6 @@ namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationTest extends \PHPUnit_Framework_TestCase
@@ -49,23 +47,15 @@ class OrganizationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($precision, $this->organization->getPrecision());
     }
 
-    public function testOwners()
+    public function testOwner()
     {
         $entity = $this->organization;
-        $user = new User();
-        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
-        $organizations = new ArrayCollection(array(new Organization()));
+        $organization = new Organization();
 
-        $this->assertEmpty($entity->getUserOwner());
-        $this->assertEmpty($entity->getBusinessUnitOwners());
-        $this->assertEmpty($entity->getOrganizationOwners());
+        $this->assertEmpty($entity->getOwner());
 
-        $entity->setUserOwner($user);
-        $entity->setBusinessUnitOwners($businessUnits);
-        $entity->setOrganizationOwners($organizations);
+        $entity->setOwner($organization);
 
-        $this->assertEquals($user, $entity->getUserOwner());
-        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
-        $this->assertEquals($organizations, $entity->getOrganizationOwners());
+        $this->assertEquals($organization, $entity->getOwner());
     }
 }

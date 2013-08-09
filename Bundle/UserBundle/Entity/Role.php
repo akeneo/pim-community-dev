@@ -56,16 +56,11 @@ class Role implements RoleInterface
     protected $label;
 
     /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_role_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $businessUnitOwners;
+    protected $businessUnitOwner;
 
     /**
      * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
@@ -195,20 +190,20 @@ class Role implements RoleInterface
     }
 
     /**
-     * @return BusinessUnit[]
+     * @return BusinessUnit
      */
     public function getOwner()
     {
-        return $this->businessUnitOwners;
+        return $this->businessUnitOwner;
     }
 
     /**
-     * @param ArrayCollection $businessUnitOwners
+     * @param BusinessUnit $businessUnitOwner
      * @return Role
      */
-    public function setOwner($businessUnitOwners)
+    public function setOwner(BusinessUnit $businessUnitOwner)
     {
-        $this->businessUnitOwners = $businessUnitOwners;
+        $this->businessUnitOwner = $businessUnitOwner;
 
         return $this;
     }

@@ -48,16 +48,11 @@ class Organization
     protected $precision;
 
     /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_organization_organization",
-     *      joinColumns={@ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
+     * @var Organization
+     * @ORM\ManyToOne(targetEntity="Organization")
+     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $organizationOwners;
+    protected $organizationOwner;
 
     /**
      * Get id
@@ -147,7 +142,7 @@ class Organization
     }
 
     /**
-     * @return Organization[]
+     * @return Organization
      */
     public function getOwner()
     {
@@ -155,12 +150,12 @@ class Organization
     }
 
     /**
-     * @param ArrayCollection $organizationOwners
+     * @param Organization $organizationOwner
      * @return Organization
      */
-    public function setOwner($organizationOwners)
+    public function setOwner(Organization $organizationOwner)
     {
-        $this->organizationOwners = $organizationOwners;
+        $this->organizationOwner = $organizationOwner;
 
         return $this;
     }

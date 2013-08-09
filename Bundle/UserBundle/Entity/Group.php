@@ -55,16 +55,11 @@ class Group
     protected $roles;
 
     /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_group_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $businessUnitOwners;
+    protected $businessUnitOwner;
 
     /**
      * @param string $name [optional] Group name
@@ -228,20 +223,20 @@ class Group
     }
 
     /**
-     * @return BusinessUnit[]
+     * @return BusinessUnit
      */
     public function getOwner()
     {
-        return $this->businessUnitOwners;
+        return $this->businessUnitOwner;
     }
 
     /**
-     * @param ArrayCollection $businessUnitOwners
+     * @param BusinessUnit $businessUnitOwner
      * @return Group
      */
-    public function setOwner($businessUnitOwners)
+    public function setOwner(BusinessUnit $businessUnitOwner)
     {
-        $this->businessUnitOwners = $businessUnitOwners;
+        $this->businessUnitOwner = $businessUnitOwner;
 
         return $this;
     }

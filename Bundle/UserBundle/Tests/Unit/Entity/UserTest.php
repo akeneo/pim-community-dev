@@ -11,7 +11,6 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -433,9 +432,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
             array('loginCount', 11),
             array('created', new \DateTime()),
             array('updated', new \DateTime()),
-            array('userOwner', new User()),
-            array('businessUnitOwners', new ArrayCollection(array(new BusinessUnit()))),
-            array('organizationOwners', new ArrayCollection(array(new Organization()))),
         );
     }
 
@@ -462,5 +458,17 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user->addBusinessUnit($businessUnit);
 
         $this->assertContains($businessUnit, $user->getBusinessUnits());
+    }
+
+    public function testOwners()
+    {
+        $entity = new User();
+        $businessUnit = new BusinessUnit();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($businessUnit);
+
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }

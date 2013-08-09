@@ -122,20 +122,12 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
     public function testOwners()
     {
         $entity = $this->unit;
-        $user = new User();
-        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
-        $organizations = new ArrayCollection(array(new Organization()));
+        $businessUnit = new BusinessUnit();
 
-        $this->assertEmpty($entity->getUserOwner());
-        $this->assertEmpty($entity->getBusinessUnitOwners());
-        $this->assertEmpty($entity->getOrganizationOwners());
+        $this->assertEmpty($entity->getOwner());
 
-        $entity->setUserOwner($user);
-        $entity->setBusinessUnitOwners($businessUnits);
-        $entity->setOrganizationOwners($organizations);
+        $entity->setOwner($businessUnit);
 
-        $this->assertEquals($user, $entity->getUserOwner());
-        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
-        $this->assertEquals($organizations, $entity->getOrganizationOwners());
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }
