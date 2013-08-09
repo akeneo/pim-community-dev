@@ -32,7 +32,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @property
      */
     selectors: {
-        links:          'a:not([href^=#],[href^=javascript],[href^=mailto]),span[data-url]',
+        links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype]),span[data-url]',
         scrollLinks:    'a[href^=#]',
         forms:          'form',
         content:        '#content',
