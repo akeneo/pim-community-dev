@@ -173,7 +173,7 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
             $columnOrder = $dateArray;
         }
         $sortedColumnOrder = $columnOrder;
-        natcasesort ($sortedColumnOrder);
+        natcasesort($sortedColumnOrder);
 
         $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
     }
