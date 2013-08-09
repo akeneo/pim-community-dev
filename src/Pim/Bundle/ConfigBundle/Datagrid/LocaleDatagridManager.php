@@ -64,9 +64,6 @@ class LocaleDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
-        $field->setProperty(
-            new TwigTemplateProperty($field, 'PimConfigBundle:Locale:_field_locale.html.twig')
-        );
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
@@ -82,9 +79,6 @@ class LocaleDatagridManager extends DatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
             )
-        );
-        $field->setProperty(
-            new TwigTemplateProperty($field, 'PimConfigBundle:Locale:_field_locale.html.twig')
         );
         $fieldsCollection->add($field);
 
