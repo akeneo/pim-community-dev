@@ -84,7 +84,7 @@ class FlexibleOptionsFilter extends AbstractFlexibleFilter
                 if ($optionValue) {
                     $this->valueOptions[$option->getId()] = $optionValue->getValue();
                 } else {
-                    $this->valueOptions[$option->getId()] = $option->getDefaultValue();
+                    $this->valueOptions[$option->getId()] = '['.$option->getCode().']';
                 }
             }
         }
