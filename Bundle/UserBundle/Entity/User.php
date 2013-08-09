@@ -19,6 +19,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
@@ -40,6 +41,7 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Configurable(defaultValues={"entity"={"label"="User", "plural_label"="Users"}})
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
@@ -208,13 +210,6 @@ class User extends AbstractEntityFlexible implements
     protected $loginCount;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
      * @var BusinessUnit[]
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
@@ -225,18 +220,6 @@ class User extends AbstractEntityFlexible implements
      * )
      */
     protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_user_organization",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * Set name formatting using "%first%" and "%last%" placeholders
@@ -1249,28 +1232,9 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return User
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
      * @return BusinessUnit[]
      */
-    public function getBusinessUnitOwners()
+    public function getOwner()
     {
         return $this->businessUnitOwners;
     }
@@ -1279,28 +1243,9 @@ class User extends AbstractEntityFlexible implements
      * @param ArrayCollection $businessUnitOwners
      * @return User
      */
-    public function setBusinessUnitOwners($businessUnitOwners)
+    public function setOwner($businessUnitOwners)
     {
         $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return User
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }

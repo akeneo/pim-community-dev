@@ -15,7 +15,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
@@ -56,14 +55,6 @@ class Group
     protected $roles;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Exclude
-     */
-    protected $userOwner;
-
-    /**
      * @var BusinessUnit[]
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
@@ -74,18 +65,6 @@ class Group
      * )
      */
     protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_group_organization",
-     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * @param string $name [optional] Group name
@@ -249,28 +228,9 @@ class Group
     }
 
     /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return Group
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
      * @return BusinessUnit[]
      */
-    public function getBusinessUnitOwners()
+    public function getOwner()
     {
         return $this->businessUnitOwners;
     }
@@ -279,28 +239,9 @@ class Group
      * @param ArrayCollection $businessUnitOwners
      * @return Group
      */
-    public function setBusinessUnitOwners($businessUnitOwners)
+    public function setOwner($businessUnitOwners)
     {
         $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return Group
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }

@@ -7,8 +7,7 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 /**
  * Tag
@@ -16,6 +15,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
+ * @Configurable(defaultValues={"entity"={"label"="Tag", "plural_label"="Tags"}})
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
@@ -73,30 +73,6 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $userOwner;
-
-    /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_tag_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_tag_organization",
-     *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * Constructor
@@ -259,7 +235,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     /**
      * @return User
      */
-    public function getUserOwner()
+    public function getOwner()
     {
         return $this->userOwner;
     }
@@ -268,47 +244,9 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @param User $userOwner
      * @return Tag
      */
-    public function setUserOwner(User $userOwner)
+    public function setOwner(User $userOwner)
     {
         $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
-     * @return BusinessUnit[]
-     */
-    public function getBusinessUnitOwners()
-    {
-        return $this->businessUnitOwners;
-    }
-
-    /**
-     * @param ArrayCollection $businessUnitOwners
-     * @return Tag
-     */
-    public function setBusinessUnitOwners($businessUnitOwners)
-    {
-        $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return Tag
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }
