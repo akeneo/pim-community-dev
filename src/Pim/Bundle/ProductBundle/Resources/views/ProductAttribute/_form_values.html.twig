@@ -13,7 +13,6 @@
                 <tr>
                     <th></th>
                     <th>{{ "Code"|trans }}</th>
-                    <th>{{ "Default value"|trans }}</th>
                     {% for locale in locales %}
                         <th>{{ locale.code|trans }}</th>
                     {% endfor %}
@@ -29,9 +28,6 @@
                     </td>
                     <td>
                         {{ form_row(option.code) }}
-                    </td>
-                    <td>
-                        {{ form_row(option.defaultValue) }}
                     </td>
                     {% for locale in locales %}
                     <td>

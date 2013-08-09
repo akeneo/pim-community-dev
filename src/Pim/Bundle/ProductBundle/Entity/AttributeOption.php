@@ -44,15 +44,6 @@ class AttributeOption extends AbstractEntityAttributeOption
     protected $optionValues;
 
     /**
-     * Default value is mandatory
-     *
-     * @var string $defaultValue
-     *
-     * @ORM\Column(name="default_value", type="string", length=255, nullable=false)
-     */
-    protected $defaultValue;
-
-    /**
      * Specifies whether this AttributeOption is the default option for the attribute
      *
      * @var boolean $default
@@ -117,6 +108,6 @@ class AttributeOption extends AbstractEntityAttributeOption
     {
         $value = $this->getOptionValue();
 
-        return ($value and $value->getValue()) ? $value->getValue() : (string) $this->getDefaultValue();
+        return ($value and $value->getValue()) ? $value->getValue() : '['.$this->getCode().']';
     }
 }

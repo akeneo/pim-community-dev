@@ -35,7 +35,7 @@ class AttributeOptionType extends FlexibleAttributeOptionType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code');
+        $builder->add('code', 'text', array('required' => true));
     }
 
     /**
