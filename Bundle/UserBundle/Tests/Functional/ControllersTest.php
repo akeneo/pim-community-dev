@@ -92,7 +92,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[groups][1]'] = 3;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
         $form['oro_user_user_form[values][company][varchar]'] = 'company_update';
-        $form['oro_user_user_form[values][gender][option]'] = 6;
+        //$form['oro_user_user_form[values][gender][option]'] = 6;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
