@@ -1,0 +1,6 @@
+oro:
+    grid:
+        datagrid:
+            page_size:
+                all: "All"
+
