@@ -150,6 +150,7 @@ class EmailAddressManager
     {
         /** @var EmailAddress $emailAddress */
         $result = false;
+        /* TODO: Quick fix
         $repository = $em->getRepository('OroEmailBundle:EmailAddress');
 
         if (!empty($newEmail)) {
@@ -169,6 +170,7 @@ class EmailAddressManager
                 $result = true;
             }
         }
+        */
 
         return $result;
     }
@@ -185,6 +187,7 @@ class EmailAddressManager
     {
         /** @var EmailAddress $emailAddress */
         $result = false;
+        /* TODO: Quick fix
         $repository = $em->getRepository('OroEmailBundle:EmailAddress');
         foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
             $condition = array($fieldName => $owner);
@@ -196,6 +199,7 @@ class EmailAddressManager
                 $result = true;
             }
         }
+        */
 
         return $result;
     }
