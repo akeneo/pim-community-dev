@@ -4,11 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
-
-    <script type="text/javascript">
-    </script>
 {% endblock %}
 
 {% block content %}

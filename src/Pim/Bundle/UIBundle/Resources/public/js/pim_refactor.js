@@ -6,8 +6,7 @@ if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
     }
 }
 
-// Remove bap 'Loading Application' progressbar and partially fix page title regression issue
-document.title = $('#page-title').text();
+// Remove bap 'Loading Application' progressbar
 if ($('#progressbar').is(':visible')) {
     $('#progressbar').hide();
     $('#page').show();
@@ -70,22 +69,3 @@ $(document).on('click', 'a[data-dialog]', function(event) {
     });
 
 /* End product edit form js */
-
-/* Available attributes form js */
-    $('#{{ form.attributes.vars.id }}').select2('destroy');
-
-    $('#{{ form.attributes.vars.id }}').pimMultiselect({
-        title: "{{ 'Add attributes'|trans }}",
-        placeholder: "{{ 'Search'|trans }}",
-        emptyText: "{{ 'There are no more attributes to add'|trans }}",
-        appendTo: '#attribute-buttons',
-        buttons: {
-            "{{ 'Add'|trans }}": function() {
-                $('#{{ form.attributes.vars.id }}').multiselect('close');
-                if ($('#{{ form.attributes.vars.id }}').val() !== null) {
-                    $('#{{ form.vars.id }}').submit();
-                }
-            }
-        }
-    });
-/* End vailable attributes form js */
