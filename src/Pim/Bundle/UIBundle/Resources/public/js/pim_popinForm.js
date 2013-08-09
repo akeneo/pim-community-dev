@@ -16,7 +16,8 @@ Pim.popinForm = function(elementId) {
         classes: 'pimmultiselect',
         position: {
             my: 'right top',
-            at: 'right bottom'
+            at: 'right bottom',
+            collision: 'none'
         }
     };
     opts.selectedText = opts.title;
