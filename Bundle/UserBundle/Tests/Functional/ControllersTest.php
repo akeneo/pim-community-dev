@@ -62,7 +62,7 @@ class ControllersTest extends WebTestCase
         $this->client->request(
             'GET',
             $this->client->generate('oro_user_index', array('_format' =>'json')) .
-                    '?users[_filter][username][value]=testUser1',
+            '?users[_filter][username][value]=testUser1',
             array(
                 'users[_pager][_page]' => 1,
                 'users[_pager][_per_page]' => 10,
