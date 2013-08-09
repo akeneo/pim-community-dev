@@ -131,6 +131,13 @@ class LocaleManager
      */
     public function getUserLocaleCode()
     {
+        if ($this->securityContext->getToken() === null) {
+            return null;
+        }
+
+        if ($this->securityContext->getToken()->getUser() === null) {
+            return null;
+        }
         $user = $this->securityContext->getToken()->getUser();
 
         return (string) $user->getValue('cataloglocale');
