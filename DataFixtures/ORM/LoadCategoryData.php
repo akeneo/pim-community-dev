@@ -40,25 +40,25 @@ class LoadCategoryData extends AbstractDemoFixture
 
         // create trees
         $treeCatalog     = $this->createCategory('Master Catalog');
-        $treeCollections = $this->createCategory('Collections (default)');
-        $treeColors      = $this->createCategory('Colors (default)');
-        $treeSales       = $this->createCategory('Europe Sales Catalog (default)');
+        $treeCollections = $this->createCategory('Collections');
+        $treeColors      = $this->createCategory('Colors');
+        $treeSales       = $this->createCategory('Europe Sales Catalog');
 
         // enrich master catalog with categories
-        $nodeBooks       = $this->createCategory('Books (default)', $treeCatalog);
-        $nodeComputers   = $this->createCategory('Computers (default)', $treeCatalog);
-        $nodeDesktops    = $this->createCategory('Desktops (default)', $nodeComputers);
-        $nodeNotebooks   = $this->createCategory('Notebooks (default)', $nodeComputers);
-        $nodeAccessories = $this->createCategory('Accessories (default)', $nodeComputers);
-        $nodeGames       = $this->createCategory('Games (default)', $nodeComputers);
-        $nodeSoftware    = $this->createCategory('Software (default)', $nodeComputers);
-        $nodeClothing    = $this->createCategory('Apparels & Shoes (default)', $treeCatalog);
+        $nodeBooks       = $this->createCategory('Books', $treeCatalog);
+        $nodeComputers   = $this->createCategory('Computers', $treeCatalog);
+        $nodeDesktops    = $this->createCategory('Desktops', $nodeComputers);
+        $nodeNotebooks   = $this->createCategory('Notebooks', $nodeComputers);
+        $nodeAccessories = $this->createCategory('Accessories', $nodeComputers);
+        $nodeGames       = $this->createCategory('Games', $nodeComputers);
+        $nodeSoftware    = $this->createCategory('Software', $nodeComputers);
+        $nodeClothing    = $this->createCategory('Apparels & Shoes', $treeCatalog);
 
-        $nodeShirts = $this->createCategory('Shirts (default)', $nodeClothing, array($product5));
-        $nodeJeans  = $this->createCategory('Jeans (default)', $nodeClothing, array($product3, $product4));
-        $nodeShoes  = $this->createCategory('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
-        $nodeFShoes  = $this->createCategory('Shoes Male (default)', $nodeShoes, array($product3));
-        $nodeMShoes  = $this->createCategory('Shoes Female (default)', $nodeShoes, array($product2));
+        $nodeShirts = $this->createCategory('Shirts', $nodeClothing, array($product5));
+        $nodeJeans  = $this->createCategory('Jeans', $nodeClothing, array($product3, $product4));
+        $nodeShoes  = $this->createCategory('Shoes', $nodeClothing, array($product1, $product2, $product3));
+        $nodeFShoes  = $this->createCategory('Shoes Male', $nodeShoes, array($product3));
+        $nodeMShoes  = $this->createCategory('Shoes Female', $nodeShoes, array($product2));
 
         $nodeClothingEu  = $this->createCategory('Apparels & Shoes (eu sales)', $treeSales);
         $nodeShirtsEu = $this->createCategory('Shirts (eu sales)', $nodeClothingEu, array($product5));
