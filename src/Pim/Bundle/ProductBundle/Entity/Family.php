@@ -62,7 +62,7 @@ class Family implements TranslatableInterface
      *
      * @var string $locale
      */
-    protected $locale = self::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -270,6 +270,9 @@ class Family implements TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
@@ -322,9 +325,9 @@ class Family implements TranslatableInterface
      */
     public function getLabel()
     {
-        $translated = $this->getTranslation()->getLabel();
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+        return ($translated != '') ? $translated : '['.$this->getCode().']';
     }
 
     /**

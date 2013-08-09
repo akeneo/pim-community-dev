@@ -1,5 +1,5 @@
 'groups':
     'general':
         'labels':
-            'default': 'General'
+            'en_US': 'General'
             'fr_FR':   'Général'

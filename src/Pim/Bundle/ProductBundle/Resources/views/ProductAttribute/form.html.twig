@@ -29,7 +29,7 @@
 
         {{ elements.page_header(title, buttons, subtitle, left) }}
 
-        {% set tabs = form.vars.value.id ? ['Parameters', 'Values', 'History'] : ['Parameters', 'Values'] %}
+        {% set tabs = form.vars.value.id ? ['Properties', 'Values', 'History'] : ['Properties', 'Values'] %}
 
         {{ elements.form_navbar(tabs) }}
 

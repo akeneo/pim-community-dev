@@ -274,7 +274,7 @@ class AttributeDatagridManager extends DatagridManager
             ->from('PimProductBundle:ProductAttribute', 'attribute')
             ->addSelect('translation')
             ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', TranslatableInterface::FALLBACK_LOCALE);
+            ->setParameter('locale', $this->productManager->getLocale());
         $this->queryFactory->setQueryBuilder($queryBuilder);
         $query = $this->queryFactory->createQuery();
 

@@ -14,13 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface TranslatableInterface
 {
     /**
-     * Fallback locale code used when there is no translated value
-     *
-     * @var string
-     */
-    const FALLBACK_LOCALE = 'default';
-
-    /**
      * Get translations
      *
      * @return ArrayCollection
@@ -60,7 +53,7 @@ interface TranslatableInterface
     public function getTranslationFQCN();
 
     /**
-     * Set the locale used by default for translation
+     * Set the locale used for translation
      *
      * @param string $locale
      *

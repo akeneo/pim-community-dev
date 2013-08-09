@@ -55,28 +55,11 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item'
                 )
             ),
-            'miss_default_locale' => array(
-                array(
-                    'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-                    'field'             => 'name'
-                )
-            ),
-            'miss_only_default' => array(
-                array(
-                    'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-                    'field'             => 'name',
-                    'default_locale'    => 'default'
-                )
-            ),
             'miss_locales' => array(
                 array(
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-                    'field'             => 'name',
-                    'default_locale'    => 'default',
-                    'only_default'      => false
+                    'field'             => 'name'
                 )
             ),
             'miss_widget' => array(
@@ -84,8 +67,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
                     'field'             => 'name',
-                    'default_locale'    => 'default',
-                    'only_default'      => false,
                     'locales'           => array('fr_FR', 'en_US')
                 )
             ),
@@ -94,8 +75,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
                     'field'             => 'name',
-                    'default_locale'    => 'default',
-                    'only_default'      => false,
                     'locales'           => array('fr_FR', 'en_US'),
                     'widget'            => 'text'
                 )
@@ -228,27 +207,13 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     public static function preSetDataProvider()
     {
         return array(
-            'not_only_default' => array(
+            'classic' => array(
                 array(
                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'field'             => 'name',
-                    'required_locale'   => array('default'),
+                    'required_locale'   => array(),
                     'locales'           => array('en_US', 'fr_FR'),
-                    'default_locale'    => 'default',
-                    'only_default'      => false,
-                    'widget'            => 'text'
-                )
-            ),
-            'only_default' => array(
-                array(
-                    'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-                    'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
-                    'field'             => 'name',
-                    'required_locale'   => array('default'),
-                    'locales'           => array('default', 'en_US', 'fr_FR'),
-                    'default_locale'    => 'default',
-                    'only_default'      => true,
                     'widget'            => 'text'
                 )
             )
@@ -270,13 +235,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $event = $this->getEventMock($this->form, $translatableEntity, array());
 
-        if ($options['only_default']) {
-            $locales = array('default');
-            $requiredLocales = array('default');
-        } else {
-            $locales = $options['locales'];
-            $requiredLocales = $options['required_locale'];
-        }
+        $locales = $options['locales'];
+        $requiredLocales = $options['required_locale'];
 
         foreach ($locales as $index => $locale) {
             $translation = $this->getTranslationMock($options['field'], $locale);
@@ -329,31 +289,20 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $target                = $this->getTargetedClass($options);
         $translatableEntity    = $this->getTranslatableEntityMock();
 
-        if ($options['only_default']) {
-            $this->form->expects($this->at(0))
+        $locales = $options['locales'];
+
+        foreach ($locales as $index => $locale) {
+            $this->form->expects($this->at($index))
                  ->method('get')
-                 ->with($options['default_locale'])
+                 ->with($locale)
                  ->will($this->returnValue($defaultField = $this->getFormMock()));
 
             $defaultField->expects($this->any())
                          ->method('getData')
                          ->will($this->returnValue(null));
-        } else {
-            $locales = $options['locales'];
-
-            foreach ($locales as $index => $locale) {
-                $this->form->expects($this->at($index))
-                     ->method('get')
-                     ->with($locale)
-                     ->will($this->returnValue($defaultField = $this->getFormMock()));
-
-                $defaultField->expects($this->any())
-                             ->method('getData')
-                             ->will($this->returnValue(null));
-            }
         }
 
-        $event = $this->getEventMock($this->form, $translatableEntity, array('default'));
+        $event = $this->getEventMock($this->form, $translatableEntity, array());
 
         $target->bind($event);
     }

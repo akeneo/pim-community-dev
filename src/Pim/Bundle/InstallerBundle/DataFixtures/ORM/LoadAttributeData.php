@@ -131,7 +131,7 @@ class LoadAttributeData extends AbstractInstallerFixture
             $option->setCode($code);
             $option->setTranslatable(true);
             $labels = $optionData['labels'];
-            $option->setDefaultValue($labels['default']);
+            $option->setDefaultValue(current($labels));
             foreach ($labels as $locale => $translated) {
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($translated);
