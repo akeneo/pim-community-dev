@@ -17,9 +17,6 @@ Oro.Datagrid.ActionsPanel = Backbone.View.extend({
     /** @property {Oro.Datagrid.Action.Launcher[]} */
     launchers: [],
 
-    /** @property */
-    enabled: true,
-
     /**
      * Initialize view
      *

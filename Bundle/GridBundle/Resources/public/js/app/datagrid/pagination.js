@@ -21,9 +21,6 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
     enabled: true,
 
     /** @property */
-    enabledNow: true,
-
-    /** @property */
     hidden: false,
 
     /** @property */
@@ -96,7 +93,7 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
      * @return {*}
      */
     disable: function() {
-        this.enabledNow = false;
+        this.enabled = false;
         this.render();
         return this;
     },
@@ -106,12 +103,8 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
      *
      * @return {*}
      */
-    enable: function(force) {
-        if (force == undefined && !this.enabled) {
-            return false;
-        }
-
-        this.enabledNow = true;
+    enable: function() {
+        this.enabled = true;
         this.render();
         return this;
     },
