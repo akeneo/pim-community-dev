@@ -119,6 +119,7 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
+
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',
@@ -127,9 +128,8 @@ class ProductController extends Controller
             )
         );
 
-        // Refreshing the history datagrid
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
 
         $channels = $this->getRepository('PimConfigBundle:Channel')->findAll();

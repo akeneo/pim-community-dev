@@ -2,6 +2,7 @@
 
 {% block head_script %}
     {{ parent() }}
+    <script src="{{ asset('/bundles/pimui/js/pim_all.js') }}"></script>
     {{ block('head_script_component') }}
 {% endblock %}
 
