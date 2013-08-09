@@ -8,6 +8,10 @@ use Symfony\Component\Locale\Locale;
 /**
  * LocaleHelper essentially allow to translate locale code to localized locale label
  *
+ * Static locales are not initialized on the constructor because
+ * when LocaleHelper is constructed, the user is not yet initialized
+ * and by the way don't have locale code
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,24 +29,45 @@ class LocaleHelper
     protected static $locales = array();
 
     /**
-     * Constructor defining the locales and associated translations
-     * from the current user locale
+     * @var \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * Constructor
      *
      * @param LocaleManager $localeManager
      */
     public function __construct(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
-        self::$locales = Locale::getDisplayLocales($this->getUserLocale());
     }
 
     /**
+     * Returns the list of displayed locales with the current user locale
+     * and initialized it if needed
      *
-     * @param unknown_type $code
-     * @return Ambigous <>|unknown
+     * @return array
+     */
+    protected function getLocales()
+    {
+        if (empty(static::$locales)) {
+            static::$locales = Locale::getDisplayLocales($this->getUserLocale());
+        }
+
+        return static::$locales;
+    }
+
+    /**
+     * Initialized the locales list (if needed) and get the localized label
+     *
+     * @param string $code
+     *
+     * @return string
      */
     public function getLocalizedLabel($code)
     {
+        $this->getLocales();
         if (isset(static::$locales[$code])) {
             return static::$locales[$code];
         }
