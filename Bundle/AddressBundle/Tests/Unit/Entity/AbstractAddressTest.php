@@ -245,10 +245,45 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider isEqualDataProvider
+     *
+     * @param AbstractAddress $one
+     * @param mixed $two
+     * @param bool $expectedResult
+     */
+    public function testIsEqual(AbstractAddress $one, $two, $expectedResult)
+    {
+        $this->assertEquals($expectedResult, $one->isEqual($two));
+    }
+
+    /**
+     * @return array
+     */
+    public function isEqualDataProvider()
+    {
+        $one = $this->createAddress();
+
+        return array(
+            array($one, $one, true),
+            array($this->createAddress(100), $this->createAddress(100), true),
+            array($this->createAddress(), $this->createAddress(), false),
+            array($this->createAddress(100), $this->createAddress(), false),
+            array($this->createAddress(), null, false),
+        );
+    }
+
+    /**
+     * @param int|null $id
      * @return AbstractAddress|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createAddress()
+    protected function createAddress($id = null)
     {
-        return $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractAddress');
+        $result = $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractAddress');
+
+        if (null !== $id) {
+            $result->setId($id);
+        }
+
+        return $result;
     }
 }

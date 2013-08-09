@@ -514,7 +514,7 @@ abstract class AbstractAddress implements EmptyItem
             return $this->getId() == $other->getId();
         }
 
-        if (!$this->getId() || $other->getId()) {
+        if ($this->getId() || $other->getId()) {
             return false;
         }
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Address
  *
  * @ORM\Table("oro_address")
- * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressRepository")
+ * @ORM\Entity
  */
 class Address extends AbstractAddress
 {

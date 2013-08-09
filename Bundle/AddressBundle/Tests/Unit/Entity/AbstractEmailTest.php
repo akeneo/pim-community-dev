@@ -56,6 +56,12 @@ class AbstractEmailTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->email->isPrimary());
     }
 
+    public function testIsEmpty()
+    {
+        $this->assertTrue($this->createEmail()->isEmpty());
+        $this->assertFalse($this->createEmail('foo@example.com')->isEmpty());
+    }
+
     /**
      * @param string|null $email
      * @return AbstractEmail|\PHPUnit_Framework_MockObject_MockObject

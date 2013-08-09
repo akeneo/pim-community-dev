@@ -37,6 +37,7 @@ abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryIt
     public function __construct()
     {
         $this->types = new ArrayCollection();
+        $this->primary = false;
     }
 
     /**
@@ -137,7 +138,7 @@ abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryIt
      */
     public function setPrimary($primary)
     {
-        $this->primary = $primary;
+        $this->primary = (bool)$primary;
 
         return $this;
     }
@@ -147,7 +148,7 @@ abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryIt
      */
     public function isPrimary()
     {
-        return $this->primary;
+        return (bool)$this->primary;
     }
 
     /**
@@ -157,6 +158,6 @@ abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryIt
     {
         return parent::isEmpty()
             && $this->types->isEmpty()
-            && empty($this->primary);
+            && !$this->primary;
     }
 }

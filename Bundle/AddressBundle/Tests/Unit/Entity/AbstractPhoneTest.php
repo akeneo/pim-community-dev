@@ -56,6 +56,12 @@ class AbstractPhoneTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->phone->isPrimary());
     }
 
+    public function testIsEmpty()
+    {
+        $this->assertTrue($this->createPhone()->isEmpty());
+        $this->assertFalse($this->createPhone('00110011')->isEmpty());
+    }
+
     /**
      * @param string|null $phone
      * @return AbstractPhone|\PHPUnit_Framework_MockObject_MockObject
