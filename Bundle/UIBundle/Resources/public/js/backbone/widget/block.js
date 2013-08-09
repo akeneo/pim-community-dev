@@ -51,8 +51,8 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
     },
 
     show: function() {
-        if (!this.widgetContent.data('wid')) {
-            if (this.widgetContent.parent().length) {
+        if (!this.$el.data('wid')) {
+            if (this.$el.parent().length) {
                 this._showStatic();
             } else {
                 this._showRemote();
@@ -64,13 +64,13 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
     _showStatic: function() {
         var anchorDiv = Backbone.$('<div/>');
         anchorDiv.insertAfter(this.$el);
-        this.widgetContentContainer.append(this.widgetContent);
+        this.widgetContentContainer.append(this.$el);
         anchorDiv.replaceWith(Backbone.$(this.widget));
     },
 
     _showRemote: function() {
         this.widgetContentContainer.empty();
-        this.widgetContentContainer.append(this.widgetContent);
+        this.widgetContentContainer.append(this.$el);
     }
 });
 

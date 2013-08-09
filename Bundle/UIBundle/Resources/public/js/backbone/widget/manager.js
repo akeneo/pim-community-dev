@@ -17,5 +17,9 @@ Oro.widget.Manager = {
 
     getWidgetInstance: function(wid) {
         return this.widgets[wid];
+    },
+
+    removeWidget: function(wid) {
+        delete this.widgets[wid];
     }
 };
