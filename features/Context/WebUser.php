@@ -362,6 +362,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSave()
     {
         $this->getCurrentPage()->save();
+        $this->wait();
     }
 
     /**
@@ -826,7 +827,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Default value'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
         }
     }
 
