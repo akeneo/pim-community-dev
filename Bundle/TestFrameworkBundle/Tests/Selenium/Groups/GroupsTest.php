@@ -57,6 +57,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             $this->assertArrayHasKey($content, $this->defaultGroups['header']);
         }
 
+        $checks = 0;
         foreach ($records as $row) {
             $columns = $row->elements($this->using('xpath')->value("td[not(contains(@style, 'display: none;'))]"));
             $id = null;
@@ -65,14 +66,13 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
                 if (is_null($id)) {
                     $id = $content;
                 }
-                $checks = 0;
                 if (array_key_exists($id, $this->defaultGroups)) {
-                    $this->assertArrayHasKey($this->defaultGroups[$id], $content);
-                    $checks = $checks + 1;
+                    $this->assertArrayHasKey($content, $this->defaultGroups[$id]);
                 }
-                $this->assertEquals(count($this->defaultGroups), $checks);
             }
+            $checks = $checks + 1;
         }
+        $this->assertGreaterThanOrEqual(count($this->defaultGroups)-1, $checks);
     }
 
     public function testGroupAdd()
