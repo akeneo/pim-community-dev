@@ -81,7 +81,6 @@ Oro.Datagrid.Pagination = Backbone.View.extend({
         this.listenTo(this.collection, "remove", this.render);
         this.listenTo(this.collection, "reset", this.render);
 
-        this.enabled = options.enable != false;
         this.hidden = options.hide == true;
 
         Backbone.View.prototype.initialize.call(this, options);
