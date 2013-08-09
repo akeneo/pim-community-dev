@@ -9,7 +9,7 @@
 
         {% set title = 'Locale'|trans %}
 
-        {% set subtitle = form.vars.value.id ? localizedLabel(form.vars.value.code) : 'New locale'|trans %}
+        {% set subtitle = form.vars.value.code %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_config_locale_index')) }}
