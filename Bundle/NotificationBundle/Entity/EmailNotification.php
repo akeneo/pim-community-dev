@@ -5,18 +5,17 @@ namespace Oro\Bundle\NotificationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
-
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * EmailNotification
  *
  * @ORM\Table("oro_notification_emailnotification")
  * @ORM\Entity(repositoryClass="Oro\Bundle\NotificationBundle\Entity\Repository\EmailNotificationRepository")
+ * @Configurable(defaultValues={"entity"={"label"="Email Notification", "plural_label"="Email Notifications"}})
  */
 class EmailNotification
 {
@@ -61,37 +60,6 @@ class EmailNotification
      * @ORM\JoinColumn(name="recipient_list_id", referencedColumnName="id")
      */
     protected $recipientList;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_email_notification_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="notification_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_email_notification_organization",
-     *      joinColumns={@ORM\JoinColumn(name="notification_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * Get id
@@ -235,62 +203,5 @@ class EmailNotification
                 }
             )->toArray()
         );
-    }
-
-    /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return EmailNotification
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
-     * @return BusinessUnit[]
-     */
-    public function getBusinessUnitOwners()
-    {
-        return $this->businessUnitOwners;
-    }
-
-    /**
-     * @param ArrayCollection $businessUnitOwners
-     * @return EmailNotification
-     */
-    public function setBusinessUnitOwners($businessUnitOwners)
-    {
-        $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return EmailNotification
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
-
-        return $this;
     }
 }

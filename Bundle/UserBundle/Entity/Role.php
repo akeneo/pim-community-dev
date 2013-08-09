@@ -15,13 +15,14 @@ use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 /**
  * Role Entity
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
  * @ORM\Table(name="oro_access_role")
+ * @Configurable(defaultValues={"entity"={"label"="Role", "plural_label"="Roles"}})
  */
 class Role implements RoleInterface
 {
@@ -55,13 +56,6 @@ class Role implements RoleInterface
     protected $label;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
      * @var BusinessUnit[]
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
@@ -72,18 +66,6 @@ class Role implements RoleInterface
      * )
      */
     protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_role_organization",
-     *      joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
@@ -213,28 +195,9 @@ class Role implements RoleInterface
     }
 
     /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return Role
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
      * @return BusinessUnit[]
      */
-    public function getBusinessUnitOwners()
+    public function getOwner()
     {
         return $this->businessUnitOwners;
     }
@@ -243,28 +206,9 @@ class Role implements RoleInterface
      * @param ArrayCollection $businessUnitOwners
      * @return Role
      */
-    public function setBusinessUnitOwners($businessUnitOwners)
+    public function setOwner($businessUnitOwners)
     {
         $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return Role
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }

@@ -10,9 +10,7 @@ use Gedmo\Translatable\Translatable;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 /**
  * EmailTemplate
@@ -24,6 +22,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
  * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")*
+ * @Configurable(defaultValues={"entity"={"label"="Email Template", "plural_label"="Email Templates"}})
  */
 class EmailTemplate implements Translatable
 {
@@ -104,37 +103,6 @@ class EmailTemplate implements Translatable
      * @Assert\Valid(deep = true)
      */
     private $translations;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_email_template_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_email_template_organization",
-     *      joinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * @param $name
@@ -401,62 +369,5 @@ class EmailTemplate implements Translatable
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return EmailTemplate
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
-     * @return BusinessUnit[]
-     */
-    public function getBusinessUnitOwners()
-    {
-        return $this->businessUnitOwners;
-    }
-
-    /**
-     * @param ArrayCollection $businessUnitOwners
-     * @return EmailTemplate
-     */
-    public function setBusinessUnitOwners($businessUnitOwners)
-    {
-        $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return EmailTemplate
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
-
-        return $this;
     }
 }

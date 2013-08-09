@@ -5,6 +5,7 @@ namespace Oro\Bundle\OrganizationBundle\Entity;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
@@ -17,6 +18,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Configurable(defaultValues={"entity"={"label"="Business Unit", "plural_label"="Business Units"}})
  */
 class BusinessUnit
 {
@@ -121,13 +123,6 @@ class BusinessUnit
     protected $users;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
      * @var BusinessUnit[]
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
@@ -138,18 +133,6 @@ class BusinessUnit
      * )
      */
     protected $businessUnitOwners;
-
-    /**
-     * @var Organization[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinTable(name="oro_owner_business_unit_organization",
-     *      joinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $organizationOwners;
 
     /**
      * Get id
@@ -419,28 +402,9 @@ class BusinessUnit
     }
 
     /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return BusinessUnit
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
      * @return BusinessUnit[]
      */
-    public function getBusinessUnitOwners()
+    public function getOwner()
     {
         return $this->businessUnitOwners;
     }
@@ -449,28 +413,9 @@ class BusinessUnit
      * @param ArrayCollection $businessUnitOwners
      * @return BusinessUnit
      */
-    public function setBusinessUnitOwners($businessUnitOwners)
+    public function setOwner($businessUnitOwners)
     {
         $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization[]
-     */
-    public function getOrganizationOwners()
-    {
-        return $this->organizationOwners;
-    }
-
-    /**
-     * @param ArrayCollection $organizationOwners
-     * @return BusinessUnit
-     */
-    public function setOrganizationOwners($organizationOwners)
-    {
-        $this->organizationOwners = $organizationOwners;
 
         return $this;
     }

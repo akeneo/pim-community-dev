@@ -3,6 +3,7 @@
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="oro_organization")
  * @ORM\Entity
+ * @Configurable(defaultValues={"entity"={"label"="Organization", "plural_label"="Organizations"}})
  */
 class Organization
 {
@@ -44,25 +46,6 @@ class Organization
      * @ORM\Column(name="currency_precision", type="string", length=10)
      */
     protected $precision;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $userOwner;
-
-    /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_organization_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
-     */
-    protected $businessUnitOwners;
 
     /**
      * @var Organization[]
@@ -164,47 +147,9 @@ class Organization
     }
 
     /**
-     * @return User
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
-    }
-
-    /**
-     * @param User $userOwner
-     * @return Organization
-     */
-    public function setUserOwner(User $userOwner)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
-     * @return BusinessUnit[]
-     */
-    public function getBusinessUnitOwners()
-    {
-        return $this->businessUnitOwners;
-    }
-
-    /**
-     * @param ArrayCollection $businessUnitOwners
-     * @return Organization
-     */
-    public function setBusinessUnitOwners($businessUnitOwners)
-    {
-        $this->businessUnitOwners = $businessUnitOwners;
-
-        return $this;
-    }
-
-    /**
      * @return Organization[]
      */
-    public function getOrganizationOwners()
+    public function getOwner()
     {
         return $this->organizationOwners;
     }
@@ -213,7 +158,7 @@ class Organization
      * @param ArrayCollection $organizationOwners
      * @return Organization
      */
-    public function setOrganizationOwners($organizationOwners)
+    public function setOwner($organizationOwners)
     {
         $this->organizationOwners = $organizationOwners;
 
