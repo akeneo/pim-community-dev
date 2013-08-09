@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     /**
+     * @Assert\NotBlank(groups={"Execution"})
      * @Assert\File(groups={"Execution"})
      */
     protected $filePath;
