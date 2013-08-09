@@ -309,7 +309,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
             $group->setCode($this->camelize($data['name']));
-            $group->setName($data['name']);
+            //$group->setName($data['name']); TODO translation refactoring
             $group->setSortOrder($index);
 
             $this->persist($group);
@@ -471,7 +471,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setCode($data['code']);
-            $category->setTitle($data['title']);
+            //$category->setTitle($data['title']);  TODO translation refactoring
 
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
@@ -723,7 +723,7 @@ class FixturesContext extends RawMinkContext
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
-        $attribute->setLabel($label);
+        //$attribute->setLabel($label);  TODO translation refactoring
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
