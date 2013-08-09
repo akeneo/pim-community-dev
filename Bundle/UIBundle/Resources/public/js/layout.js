@@ -175,7 +175,7 @@ function initLayout() {
                 dateFormat: el.attr('data-dateformat') ? el.attr('data-dateformat') : 'm/d/y',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: '-50:+1',
+                yearRange: '-80:+1',
                 showButtonPanel: true,
                 currentText: _.__('Now')
             });
@@ -191,7 +191,7 @@ function initLayout() {
                 timeFormat: el.attr('data-timeformat') ? el.attr('data-timeformat') : 'hh:mm tt',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: '-50:+1',
+                yearRange: '-80:+1',
                 showButtonPanel: true,
                 currentText: _.__('Now')
             });
