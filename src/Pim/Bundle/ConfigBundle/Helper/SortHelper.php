@@ -48,16 +48,7 @@ class SortHelper
      */
     public static function sort(array $values)
     {
-        uasort(
-            $values,
-            function ($a, $b) {
-                if ($a === $b) {
-                    return 0;
-                }
-
-                return ($a < $b) ? -1 : 1;
-            }
-        );
+        asort($values);
 
         return $values;
     }
