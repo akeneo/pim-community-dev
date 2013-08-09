@@ -23,3 +23,11 @@ services:
         class: Pim\Bundle\ConfigBundle\Helper\LocaleHelper
         arguments:
             - @pim_config.manager.locale
+            
+    # Twig extension
+    pim_config.twig.locale_extension:
+        class: Pim\Bundle\ConfigBundle\Twig\LocaleExtension
+        arguments:
+            - @pim_config.helper.locale
+        tags:
+            - { name: twig.extension }
