@@ -56,7 +56,6 @@
                             width: "100%"
                         });
 
-                $('body').append(iframe);
                 var form = $('#{{ formName }}');
                 var formAction = form.attr('action');
 
@@ -64,6 +63,7 @@
                     // prevent hash navigation form processing
                     new Oro.widget.DialogView({
                         el: $('<div id="inject-content"></div>'),
+                        //el: iframe,
                         url: false,
                         dialogOptions: {
                             allowMaximize: true,
