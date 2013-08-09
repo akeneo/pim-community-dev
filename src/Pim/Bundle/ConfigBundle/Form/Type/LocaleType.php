@@ -2,6 +2,16 @@
 
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Pim\Bundle\ConfigBundle\Form\Subscriber\LocaleFallbackSubscriber;
+
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+
+use Pim\Bundle\ConfigBundle\Helper\LocaleHelper;
+
+use Symfony\Component\Form\FormInterface;
+
+use Symfony\Component\Form\FormView;
+
 use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -27,20 +37,21 @@ class LocaleType extends AbstractType
     protected $em;
 
     /**
-     * List of existing locales
-     * @var array
+     * @var \Pim\Bundle\ConfigBundle\Helper\LocaleHelper
      */
-    protected $locales;
+    protected $localeHelper;
 
     /**
      * Constructor
      * @param EntityManager $em     Entity manager
      * @param array         $config Locales config
+     *
+     * TODO
      */
-    public function __construct(EntityManager $em, $config = array())
+    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
     {
-        $this->em = $em;
-        $this->locales = $config['locales'];
+        $this->localeManager = $localeManager;
+        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -52,10 +63,56 @@ class LocaleType extends AbstractType
 
         $builder->add('id', 'hidden');
 
+        $builder->add('code', 'text', array('disabled' => true, 'required' => true));
+
+        $this->addFallbackField($builder);
+
+        // TODO : in the subscriber we must remove the current locale
+
         $this->addCurrencyField($builder);
 
-        $this->addSubscriber($builder);
+//         $this->addSubscriber($builder);
     }
+
+    protected function addFallbackField(FormBuilderInterface $builder)
+    {
+        $formFactory = $builder->getFormFactory();
+        $fallbackSubscriber = new LocaleFallbackSubscriber($formFactory, $this->localeManager, $this->localeHelper);
+        $builder->addEventSubscriber($fallbackSubscriber);
+
+
+//         $fallbackCodes = $this->localeManager->getFallbackCodes();
+//         $builder->add(
+//             'fallback',
+//             'choice',
+//             array(
+//                 'choices' => $fallbackCodes
+//             )
+//         );
+    }
+
+//     public function finishView(FormView $view, FormInterface $form, array $options)
+//     {
+//         if (!isset($view['code']) && !isset($view['fallback'])) {
+//             return;
+//         }
+
+//         if (isset($view['code'])) {
+//             /** @var FormView $localeCode */
+//             $localeCode = $view['code'];
+//             $localeCode->vars['value'] = $this->localeHelper->getLocalizedLabel($localeCode->vars['value']);
+//         }
+
+//         if (isset($view['fallback'])) {
+//             /** @var ChoiceView $localeFallback */
+//             $localeFallbacks = $view['fallback'];
+//             foreach ($localeFallbacks->vars['choices'] as $locale) {
+//                 $locale->label = $this->localeHelper->getLocalizedLabel($locale->label);
+//             }
+//         }
+//     }
+
+
 
     /**
      * Prepare locale list

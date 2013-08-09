@@ -133,11 +133,11 @@ class LocaleSubscriber implements EventSubscriberInterface
             if (!in_array($code, $this->existingLocales)) {
                 unset($choices[$code]);
             }
-        }
+        } // DONE
 
         foreach ($this->localesWithFallback as $locale) {
             unset($choices[$locale->getCode()]);
-        }
+        } // DONE
 
         $fallbackLocales = array_map(
             function ($locale) {

@@ -109,6 +109,23 @@ class LocaleManager
     }
 
     /**
+     * Get the list of available fallback locales
+     *
+     * @return array
+     */
+    public function getFallbackCodes()
+    {
+        $locales = $this->getObjectRepository()->getAvailableFallbacks();
+
+        $codes = array();
+        foreach ($locales as $locale) {
+            $codes[] = $locale->getCode();
+        }
+
+        return $codes;
+    }
+
+    /**
      * Get active codes with user locale code in first
      *
      * @return multitype:string
