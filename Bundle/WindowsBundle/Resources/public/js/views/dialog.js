@@ -6,7 +6,8 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
         {
             type: 'dialog',
             dialogOptions: null,
-            stateEnabled: true
+            stateEnabled: true,
+            incrementalPosition: true
         },
         Oro.widget.Abstract.prototype.options
     ),
@@ -180,6 +181,12 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
      * @private
      */
     _getWindowPlacement: function() {
+        if (!this.options.incrementalPosition) {
+            return {
+                my: 'center center',
+                at: Oro.widget.DialogView.prototype.defaultPos
+            };
+        }
         var offset = 'center+' + Oro.widget.DialogView.prototype.windowX + ' center+' + Oro.widget.DialogView.prototype.windowY;
 
         Oro.widget.DialogView.prototype.openedWindows++;
