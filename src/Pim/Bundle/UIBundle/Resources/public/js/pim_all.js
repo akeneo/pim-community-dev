@@ -27,6 +27,11 @@ function init() {
         $(paneId).addClass('active');
     });
 
+    // Toogle accordion icon
+    $('.accordion').on('show hide', function(e) {
+        $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
+    });
+
     $('.remove-attribute').each(function() {
         var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
         $(this).insertAfter(target).css('margin-left', 20).attr('tabIndex', -1);
@@ -43,54 +48,45 @@ function init() {
             case 'associate':
                 Pim.tree.associate($(this).attr('id'));
                 break;
+            case 'view':
+                Pim.tree.view($(this).attr('id'));
+                break;
             default:
                 break;
         }
     });
 
-    // Unbind to prevent this function being triggered repeatedly
-    $(document).off('ajaxStop');
-}
-
-function runInit() {
-    $(document).off('ajaxStop').on('ajaxStop', init);
 }
 
 $(function() {
     'use strict';
-    // Do global event binding here
 
-    // Toogle accordion icon
-    $(document).on('show hide', '.accordion', function(e) {
-        $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
-    });
-
-    // Execute the init function on first page load and bind reexecution upon navigation
+    // Execute the init function on page load
     init();
-    Oro.Navigation.prototype.bind('route', runInit);
 });
 
 // Listener for form update events (used in product edit form)
 var FormUpdateListener = function(formId, message) {
+    var self = this;
     this.updated = false;
 
     this.formUpdated = function() {
         this.updated = true;
         $('#updated').show();
-        $(document).off('change', 'form#' + formId, this.formUpdated);
-        $(document).off('click', 'form#' + formId + ' ins.jstree-checkbox', this.formUpdated);
+        $('form#' + formId).off('change', this.formUpdated);
+        $('form#' + formId + ' ins.jstree-checkbox').off('click', this.formUpdated);
 
         // This will not work with backbone navigation
         $(window).on('beforeunload', function() {
-            if (this.updated) {
+            if (self.updated) {
                 return message;
             }
         });
-        $(document).on('form#' + formId + ' button[type="submit"]', 'click', function() {
-            this.updated = false;
+        $('form#' + formId + ' button[type="submit"]').on('click', function() {
+            self.updated = false;
         });
     };
 
-    $(document).on('change', 'form#' + formId, this.formUpdated);
-    $(document).on('click', 'form#' + formId + ' ins.jstree-checkbox', this.formUpdated);
+    $('form#' + formId).on('change', this.formUpdated);
+    $('form#' + formId + ' ins.jstree-checkbox').on('click', this.formUpdated);
 };

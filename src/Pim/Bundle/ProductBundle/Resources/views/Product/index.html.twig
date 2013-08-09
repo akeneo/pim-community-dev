@@ -9,14 +9,7 @@
 
     <script type="text/javascript">
         $(document).dialogForm({ trigger: '#create-product', url: '{{ path("pim_product_product_create") }}' });
-
-        var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-        var tree_id = "#tree";
-        var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-        var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-        var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
     </script>
-    <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +44,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree"></div>
+        <div id="tree" data-tree="view" data-assets-path="{{ asset('bundles/pimproduct/') }}" data-list-tree-url="{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-children-url="{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-unclassified-title="{{ 'Unclassified node' | trans }}"></div>
         <div id="product-grid"></div>
     </div>
 
