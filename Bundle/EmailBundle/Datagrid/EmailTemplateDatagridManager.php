@@ -4,6 +4,7 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\GridBundle\Field\MassActionFieldDescription;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -142,6 +143,18 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldIsSystem);
+
+        $fieldMassAction = new MassActionFieldDescription();
+        $fieldMassAction->setName('massAction');
+        $fieldMassAction->setOptions(
+            array(
+                'type'               => FieldDescriptionInterface::TYPE_MASS_ACTION,
+                'filterable'         => true,
+                'show_filter'        => true,
+                'filter_type'        => FilterInterface::TYPE_SELECT,
+            )
+        );
+        $fieldsCollection->add($fieldMassAction);
     }
 
     /**

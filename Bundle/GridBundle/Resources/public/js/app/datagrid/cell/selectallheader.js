@@ -167,7 +167,7 @@
                     <span class="caret"></span>\
                 </button>\
                 <ul class="dropdown-menu">\
-                    <li><a href="#" data-select-all-visible>All visiable</a></li>\
+                    <li><a href="#" data-select-all-visible>All visible</a></li>\
                 </ul>\
             </div>');
             this.$el.find('[data-select-all]').on('click', _.bind(function (e) {

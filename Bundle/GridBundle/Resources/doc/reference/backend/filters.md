@@ -82,6 +82,12 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_choice }
 
+    oro_grid.orm.filter.type.select:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\SelectFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_select }
+
     oro_grid.orm.filter.type.boolean:
         class:     Oro\Bundle\GridBundle\Filter\ORM\BooleanFilter
         arguments: ["@translator"]

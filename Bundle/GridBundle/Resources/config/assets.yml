@@ -40,7 +40,6 @@ js:
       - '@OroGridBundle/Resources/public/js/app/datagrid/toolbar.js'
 
       - '@OroGridBundle/Resources/public/js/app/datagrid/filter/list.js'
-      - '@OroGridBundle/Resources/public/js/app/datagrid/filter/selectrowfilter.js'
 
       - '@OroGridBundle/Resources/public/js/app/loadingmask.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/grid.js'

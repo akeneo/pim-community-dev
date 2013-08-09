@@ -138,6 +138,8 @@ class FieldDescription implements FieldDescriptionInterface
         // set the field_name if provided
         if (isset($options['field_name'])) {
             $this->setFieldName($options['field_name']);
+        } else {
+            $options['field_name'] = $this->getFieldName();
         }
 
         // remove property value

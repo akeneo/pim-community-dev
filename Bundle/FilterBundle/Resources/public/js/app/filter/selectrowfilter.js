@@ -9,17 +9,16 @@
     }
 }(function (Oro, $, _, Backbone, SelectFilter) {
     "use strict";
-    Oro.Datagrid = Oro.Datagrid || {};
-    Oro.Datagrid.Filter = Oro.Datagrid.Filter || {};
+    Oro.Filter = Oro.Filter || {};
 
     /**
      * Fetches information of rows selection
      * and implements filter by selected/Not selected rows
      *
-     * @class   Oro.Datagrid.Filter.SelectRowFilter
+     * @class   Oro.Filter.SelectRowFilter
      * @extends Oro.Filter.SelectFilter
      */
-    Oro.Datagrid.Filter.SelectRowFilter = SelectFilter.extend({
+    Oro.Filter.SelectRowFilter = SelectFilter.extend({
 
         /**
          * Converts a display value into raw format. Adds to value 'in' or 'out' property
@@ -100,5 +99,5 @@
         }
     });
 
-    return Oro.Datagrid.Filter.SelectRowFilter;
+    return Oro.Filter.SelectRowFilter;
 }));
