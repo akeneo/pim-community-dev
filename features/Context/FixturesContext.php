@@ -214,7 +214,8 @@ class FixturesContext extends RawMinkContext
         $family = $this->getFamily($family);
 
         foreach ($table->getHash() as $data) {
-            $attribute = $this->getAttribute($data['label']);
+            $code = $this->camelize($data['label']);
+            $attribute = $this->getAttribute($code);
             $family->addAttribute($attribute);
             if ('yes' === $data['attribute as label']) {
                 $family->setAttributeAsLabel($attribute);
@@ -309,7 +310,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
             $group->setCode($this->camelize($data['name']));
-            $group->setName($data['name']);
+            $group->setLocale('en_US')->setName($data['name']); // TODO translation refactoring
             $group->setSortOrder($index);
 
             $this->persist($group);
@@ -340,7 +341,8 @@ class FixturesContext extends RawMinkContext
             );
 
             try {
-                $attribute = $this->getAttribute($data['label']);
+                $code = $this->camelize($data['label']);
+                $attribute = $this->getAttribute($code);
             } catch (\InvalidArgumentException $e) {
                 $attribute = $this->createAttribute($data['label'], false, $data['type']);
             }
@@ -420,7 +422,8 @@ class FixturesContext extends RawMinkContext
                     }
                 }
             } else {
-                $attribute = $this->getAttribute($data['attribute']);
+                $code = $this->camelize($data['attribute']);
+                $attribute = $this->getAttribute($code);
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
@@ -437,7 +440,8 @@ class FixturesContext extends RawMinkContext
      */
     public function theAttributeHasBeenRemovedFromTheFamily($attribute, $family)
     {
-        $attribute = $this->getAttribute($attribute);
+        $code      = $this->camelize($attribute);
+        $attribute = $this->getAttribute($code);
         $family    = $this->getFamily($family);
 
         $family->removeAttribute($attribute);
@@ -453,7 +457,8 @@ class FixturesContext extends RawMinkContext
      */
     public function theAttributeHasBeenChosenAsTheFamilyLabel($attribute, $family)
     {
-        $attribute = $this->getAttribute($attribute);
+        $code      = $this->camelize($attribute);
+        $attribute = $this->getAttribute($code);
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
@@ -471,7 +476,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setCode($data['code']);
-            $category->setTitle($data['title']);
+            $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
 
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
@@ -633,16 +638,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $label
+     * @param string $code
      *
      * @return ProductAttribute
      */
-    public function getAttribute($label)
+    public function getAttribute($code)
     {
         return $this->getEntityOrException(
             'PimProductBundle:ProductAttribute',
             array(
-                'code' => $this->camelize($label)
+                'code' => $code
             )
         );
     }
@@ -723,7 +728,7 @@ class FixturesContext extends RawMinkContext
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
-        $attribute->setLabel($label);
+        $attribute->setLocale('en_US')->setLabel($label); //TODO translation refactoring
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);

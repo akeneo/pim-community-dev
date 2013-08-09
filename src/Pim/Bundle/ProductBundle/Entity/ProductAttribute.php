@@ -251,7 +251,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      *
      * @var string $locale
      */
-    protected $locale = self::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -514,7 +514,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
         $group = new AttributeGroup;
         $group->setId(0);
         $group->setCode('other');
-        $group->setName('Other');
         $group->setSortOrder(-1);
 
         return $group;
@@ -1090,6 +1089,9 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
@@ -1150,9 +1152,9 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function getLabel()
     {
-        $translated = $this->getTranslation()->getLabel();
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+        return ($translated != '') ? $translated : '['.$this->getCode().']';
     }
 
     /**

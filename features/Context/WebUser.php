@@ -434,7 +434,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $group = $this->getGroup($group) ?: 'Other';
 
-
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
                 sprintf(

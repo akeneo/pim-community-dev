@@ -36,11 +36,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * @staticvar string
      */
-    const DEFAULT_LOCALE = 'default';
-
-    /**
-     * @staticvar string
-     */
     const OPT_NAME = 'name';
 
     /**
@@ -71,8 +66,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
             ->addType(
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-                    $this->getLocaleManagerMock(),
-                    self::DEFAULT_LOCALE
+                    $this->getLocaleManagerMock()
                 )
             )
             ->getFormFactory();
@@ -80,8 +74,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         // Create form type
         $this->type = new TranslatableFieldType(
             $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-            $this->getLocaleManagerMock(),
-            self::DEFAULT_LOCALE
+            $this->getLocaleManagerMock()
         );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
@@ -142,11 +135,10 @@ class TranslatableFieldTypeTest extends TypeTestCase
         // Assert default options
         $options = $this->type->getDefaultOptions();
         $expectedOptions = array(
-            'default_locale'    => self::DEFAULT_LOCALE,
             'entity_class'      => false,
             'field'             => false,
-            'locales'           => array(self::DEFAULT_LOCALE, 'en_US', 'fr_FR'),
-            'required_locale'   => array(self::DEFAULT_LOCALE),
+            'locales'           => array('en_US', 'fr_FR'),
+            'required_locale'   => array(),
             'translation_class' => false,
             'widget'            => 'text'
         );

@@ -20,7 +20,7 @@ class AddLocaleListener implements EventSubscriber
      *
      * @var string
      */
-    protected $locale = TranslatableInterface::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * Specifies the list of events to listen

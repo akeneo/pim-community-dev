@@ -71,7 +71,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @var string $locale
      */
-    protected $locale = self::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -300,6 +300,9 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
@@ -352,9 +355,9 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      */
     public function getName()
     {
-        $translated = $this->getTranslation()->getName();
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getName() : null;
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getName();
+        return ($translated != '') ? $translated : '['.$this->getCode().']';
     }
 
     /**

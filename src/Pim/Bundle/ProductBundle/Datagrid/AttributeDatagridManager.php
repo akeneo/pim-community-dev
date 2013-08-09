@@ -64,6 +64,22 @@ class AttributeDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
+        $field->setName('Code');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Code'),
+                'field_name'   => 'code',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
         $field->setName('label');
         $field->setOptions(
             array(
@@ -258,7 +274,7 @@ class AttributeDatagridManager extends DatagridManager
             ->from('PimProductBundle:ProductAttribute', 'attribute')
             ->addSelect('translation')
             ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', TranslatableInterface::FALLBACK_LOCALE);
+            ->setParameter('locale', $this->productManager->getLocale());
         $this->queryFactory->setQueryBuilder($queryBuilder);
         $query = $this->queryFactory->createQuery();
 

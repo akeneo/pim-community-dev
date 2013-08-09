@@ -53,9 +53,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     public function testGetSetLabel()
     {
         $family = new Family();
-        $this->assertEmpty($family->getLabel());
 
         // Change value and assert new
+        $family->setCode('code');
+        $this->assertEquals('[code]', $family->getLabel());
         $newLabel = 'test-label';
         $family->setLocale('en_US');
         $family->setLabel($newLabel);
@@ -94,7 +95,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $family = new Family();
         $string = 'test-string';
         $family->setCode($string);
-        $this->assertEquals($string, $family->__toString());
+        $this->assertEquals('['.$string.']', $family->__toString());
     }
 
     /**

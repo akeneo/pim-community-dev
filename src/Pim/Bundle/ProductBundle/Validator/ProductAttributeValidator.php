@@ -15,16 +15,16 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 class ProductAttributeValidator
 {
     /**
-     * Violation message for missing default value of attribute option
+     * Violation message for missing code of attribute option
      * @staticvar string
      */
-    const VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED = 'Default value must be specified for all options';
+    const VIOLATION_OPTION_CODE_REQUIRED = 'Code must be specified for all options';
 
     /**
-     * Violation message for duplicate default value of attribute option
+     * Violation message for duplicate code of attribute option
      * @staticvar string
      */
-    const VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE = 'Default value must be different for each option';
+    const VIOLATION_DUPLICATE_OPTION_CODE = 'Code must be different for each option';
 
     /**
      * Violation message for invalid default value
@@ -44,19 +44,19 @@ class ProductAttributeValidator
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {
-            if (in_array($option->getDefaultValue(), $existingValues)) {
-                $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE);
+            if (in_array($option->getCode(), $existingValues)) {
+                $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_CODE);
             }
-            if ($option->getDefaultValue() === null) {
-                $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
+            if ($option->getCode() === null) {
+                $context->addViolation(self::VIOLATION_OPTION_CODE_REQUIRED);
             } else {
-                $existingValues[] = $option->getDefaultValue();
+                $existingValues[] = $option->getCode();
             }
         }
     }
 
     /**
-     * Validation rule for defaultValue
+     * Validation rule for code
      *
      * @param ProductAttribute $attribute
      * @param ExecutionContext $context
