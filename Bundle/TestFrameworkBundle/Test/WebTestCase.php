@@ -4,6 +4,7 @@ namespace Oro\Bundle\TestFrameworkBundle\Test;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
+use Doctrine\ORM\EntityManager;
 
 class WebTestCase extends BaseWebTestCase
 {
@@ -54,11 +55,13 @@ class WebTestCase extends BaseWebTestCase
                     $connection = $client->createConnection($pdoConnection);
                     $client->getContainer()->set('doctrine.dbal.default_connection', $connection);
 
-                    //set transaction level to 1 for entityManager
-                    $connection = $client->getContainer()->get('doctrine.orm.entity_manager')->getConnection();
-                    $reflection = new \ReflectionProperty('Doctrine\DBAL\Connection', '_transactionNestingLevel');
-                    $reflection->setAccessible(true);
-                    $reflection->setValue($connection, 1);
+                    /** @var EntityManager $entityManager */
+                    $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+                    if (spl_object_hash($entityManager->getConnection()) != spl_object_hash($connection)) {
+                        $reflection = new \ReflectionProperty('Doctrine\ORM\EntityManager', 'conn');
+                        $reflection->setAccessible(true);
+                        $reflection->setValue($entityManager, $connection);
+                    }
                 }
             }
         }

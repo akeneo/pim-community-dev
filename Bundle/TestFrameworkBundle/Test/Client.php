@@ -200,19 +200,19 @@ class Client extends BaseClient
         /** @var \Doctrine\DBAL\Connection $conn */
         $dbalConnection =  $this->getContainer()->get('doctrine.dbal.default_connection');
 
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = new Connection(
-            array_merge($dbalConnection->getParams(), array('pdo' => $pdoConnection)),
-            $dbalConnection->getDriver(),
-            $dbalConnection->getConfiguration(),
-            $dbalConnection->getEventManager()
-        );
+        $connection =  $this->getContainer()->get('doctrine.dbal.connection_factory')
+            ->createConnection(
+                array_merge($dbalConnection->getParams(), array('pdo' => $pdoConnection)),
+                $dbalConnection->getConfiguration(),
+                $dbalConnection->getEventManager()
+            );
 
-        $dbalConnection = null;
-        //set transaction level to 1
+        //increment transaction level
         $reflection = new \ReflectionProperty('Doctrine\DBAL\Connection', '_transactionNestingLevel');
         $reflection->setAccessible(true);
-        $reflection->setValue($connection, 1);
+        $reflection->setValue($connection, $dbalConnection->getTransactionNestingLevel()+1);
+
+        $dbalConnection = null;
 
         return $connection;
     }
