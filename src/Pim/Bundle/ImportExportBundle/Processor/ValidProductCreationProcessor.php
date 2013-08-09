@@ -22,6 +22,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $formFactory;
     protected $productManager;
 
+    protected $enabled = true;
+
     private $attributes;
 
     public function __construct(EntityManager $em, FormFactoryInterface $formFactory, ProductManager $productManager)
@@ -30,6 +32,17 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $this->formFactory = $formFactory;
         $this->productManager = $productManager;
     }
+
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
     /**
      * Goal is to create an array structured like this:
      * array(
@@ -72,7 +85,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             'csrf_protection' => false
         ));
         $form->submit(array(
-            'enabled' => '1',
+            'enabled' => (string) (int) $this->enabled,
             'values'  => $values
         ));
 
@@ -85,7 +98,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
     public function getConfigurationFields()
     {
-        return array();
+        return array(
+            'enabled' => array(
+                'type' => 'checkbox',
+            )
+        );
     }
 
     private function getAttribute($code)
