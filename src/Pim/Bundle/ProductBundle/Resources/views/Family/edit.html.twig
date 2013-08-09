@@ -62,8 +62,7 @@
                             <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
                         {% endfor %}
                         <td>
-                            <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
-                                class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                            <a href="javascript:void(0);" data-url="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
                                 <i class="icon-trash"></i>
                             </a>
                         </td>

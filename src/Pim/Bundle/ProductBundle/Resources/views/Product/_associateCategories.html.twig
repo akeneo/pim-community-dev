@@ -8,7 +8,7 @@
                 {% set iClass = "icon-tick" %}
             {% endif %}
             <li>
-                <a class="{{ aClass }}" href="#" id="tree-link-{{ tree['tree'].id }}">
+                <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}">
                     <i class="{{ iClass }}"></i>{{ tree['tree'].title }} ({{ tree['productsCount'] }})
                 </a>
             </li>
@@ -17,7 +17,11 @@
 </div>
 
 <div class="tab-content">
-    <div id="trees">
+    {% if trees %}
+        {% set firstTree = trees|first %}
+        {% set selectedTree = firstTree['tree'].id %}
+    {% endif %}
+    <div id="trees" data-tree="associate" data-assets-path="{{ asset('bundles/pimproduct/') }}" data-checked-categories-url="{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json', 'dataLocale': dataLocale }) }}" data-children-url="{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}"{% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
         {% for tree in trees %}
             <div class="tree" data-tree-id="{{ tree['tree'].id }}">
                 <h3>{{ tree['tree'].title }}</h3>
@@ -27,15 +31,3 @@
         {% endfor %}
     </div>
 </div>
-
-<script type="text/javascript">
-    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-    var urlCheckedCategories = "{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json', 'dataLocale': dataLocale }) }}";
-    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}"
-    {% if trees %}
-        {% set firstTree = trees|first %}
-        var preSelectedTree = '{{ firstTree['tree'].id }}' ;
-    {% endif %}
-</script>
-
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-associate.jstree.js') }}"></script>

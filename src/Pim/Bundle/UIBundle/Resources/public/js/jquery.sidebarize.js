@@ -255,8 +255,3 @@
         buttons: []
     };
 })(jQuery);
-
-$(function () {
-    "use strict";
-    $('.has-sidebar').sidebarize();
-});

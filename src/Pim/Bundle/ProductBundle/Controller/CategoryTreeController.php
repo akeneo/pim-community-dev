@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Category Tree Controller
@@ -199,6 +200,37 @@ class CategoryTreeController extends Controller
     }
 
     /**
+     * Add a node
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/add")
+     */
+    public function addAction(Request $request)
+    {
+        $code     = $request->get('title');
+        $parentId = $request->get('id');
+        $parent   = $this->getTreeManager()->getEntityRepository()->find($parentId);
+
+        /** @var Category */
+        $category = $this->getTreeManager()->getSegmentInstance();
+        $category->setParent($parent);
+        // TODO : deal with code already exists case
+        $category->setCode($code);
+        // TODO : could be remove after locale refactoring
+        $categoryTranslation = $category->getTranslation('default');
+        $categoryTranslation->setTitle($code);
+
+        $sm = $this->getTreeManager()->getStorageManager();
+        $sm->persist($category);
+        $sm->flush();
+
+        return new JsonResponse(array('status' => 1, 'id' => $category->getId()));
+    }
+
+    /**
      * Create category action
      *
      * @param Category $parent
@@ -256,6 +288,46 @@ class CategoryTreeController extends Controller
      *
      * @param Category $category The category to manage
      *
+     * @Route("/myedit")
+     * @Template("PimProductBundle:CategoryTree:form.html.twig")
+     *
+     * @return array
+     */
+    public function myeditAction()
+    {
+        $request  = $this->getRequest();
+        $categoryId = $request->get('id');
+        $category   = $this->getTreeManager()->getEntityRepository()->find($categoryId);
+        if (!$category) {
+            $category = $this->getTreeManager()->getSegmentInstance();
+        }
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $sm = $this->getTreeManager()->getStorageManager();
+                $sm->persist($category);
+                $sm->flush();
+
+                $this->addFlash(
+                    'success',
+                    sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
+                );
+
+                return array('form' => $form->createView(),);
+            }
+        }
+
+        return array('form' => $form->createView(),);
+    }
+
+    /**
+     * Edit tree action
+     *
+     * @param Category $category The category to manage
+     *
      * @Route(
      *     "/edit/{id}",
      *     requirements={"id"="\d+"},
@@ -276,9 +348,10 @@ class CategoryTreeController extends Controller
             )
         );
 
+        /*
         if ($request->isXmlHttpRequest()) {
             return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
-        }
+        }*/
 
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
@@ -306,7 +379,7 @@ class CategoryTreeController extends Controller
 
         return array(
             'form'     => $form->createView(),
-            'datagrid' => $datagrid->createView(),
+            //'datagrid' => $datagrid->createView(),
         );
     }
 

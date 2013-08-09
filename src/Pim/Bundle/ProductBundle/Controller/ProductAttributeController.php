@@ -101,13 +101,12 @@ class ProductAttributeController extends Controller
         $datagrid = $this->getDataAuditDatagrid(
             $attribute,
             'pim_product_productattribute_edit',
-            array(
-                'id' => $attribute->getId()
-            )
+            array('id' => $attribute->getId())
         );
+        $datagridView = $datagrid->createView();
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
         }
 
         return array(
@@ -115,7 +114,7 @@ class ProductAttributeController extends Controller
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config'),
-            'datagrid'        => $datagrid->createView(),
+            'datagrid'        => $datagridView,
         );
     }
 

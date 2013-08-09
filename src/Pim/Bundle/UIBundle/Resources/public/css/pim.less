@@ -78,12 +78,18 @@ header .shortcuts .dropdown > a {
 
 /* Logo *************************************************************************************************************/
 
-header h1.logo {
-  padding: 0px;
-  a {
+header {
+  border-bottom: 1px solid #e7e7e7;
+  .navbar-inner h1.logo {
     padding: 0px;
-    img {
-      vertical-align: top;
+    a {
+      padding: 0px;
+      margin-left: -30px;
+      img {
+        height: 41px;
+        margin-top: 0;
+        vertical-align: top;
+      }
     }
   }
 }
@@ -401,9 +407,11 @@ div.btn-group > .has-switch {
 .select2-container.input-large {
   width: 250px;
 }
-.select2-container { border: none; }
 
-#attribute-buttons { float: right; }
+#attribute-buttons {
+  margin-right: 10px;
+  float: right;
+}
 
 /* Collapsable sidebar **********************************************************************************************/
 
@@ -865,7 +873,6 @@ div.product-updated {
 
 .scopablefield .input-prepend label, .currencyfield .input-prepend label { padding-right: 10px; border-right-width: 0px;}
 .currencyfield>.control-group .control-group:first-of-type .input-prepend { margin-left: 20px; }
-.pimmultiselect.ui-multiselect-menu .ui-multiselect-footer a {margin: 5px;}
 
 /* Product edit form - categories tab */
 
@@ -924,6 +931,7 @@ button.pimmultiselect {
     border-top: 1px solid #ccc;
     a {
       float: right;
+      margin: 5px;
     }
   }
 }
@@ -1043,3 +1051,23 @@ ul.medias label.remove-media {
         color: #b9b9b9;
     }
 }
+
+/** Dashboard ********************************************************************************************************/
+.dashboard {
+  background: @backgroundColor
+}
+
+.dashboard .row {margin-top:20px;}
+
+.dashboard #container > .container {
+  padding-top: 30px;
+}
+
+.dashboard-widget > div {
+  height: 190px;
+  border: 1px solid #b6b6b6;
+  overflow: hidden;
+  .border-radius(5px);
+  .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+}
+
