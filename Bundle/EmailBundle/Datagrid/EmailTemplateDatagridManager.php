@@ -180,17 +180,6 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
 
-        $cloneAction = array(
-            'name'         => 'clone',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_email_emailtemplate_clone',
-            'options'      => array(
-                'label' => $this->translate('oro.email.datagrid.emailtemplate.action.clone'),
-                'icon'  => 'share',
-                'link'  => 'clone_link',
-            )
-        );
-
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
@@ -202,7 +191,7 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $updateAction, $cloneAction, $deleteAction);
+        return array($clickAction, $updateAction, $deleteAction);
     }
 
     /**
@@ -217,7 +206,10 @@ class EmailTemplateDatagridManager extends DatagridManager
                 'pageSize' => array(
                     'items' => array(
                         10, 20, 50, 100,
-                        array('size' => 0, 'label' => $this->translate('oro.grid.page_size.all'))
+                        array(
+                            'size' => 0,
+                            'label' => $this->translate('oro.email.datagrid.emailtemplate.page_size.all')
+                        )
                     ),
                     //'hide' => true,
                 ),

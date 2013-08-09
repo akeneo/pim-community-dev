@@ -341,7 +341,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * Render no data block.
      */
     renderNoDataBlock: function() {
-        if (this.collection.state.filters.name == undefined) {
+        if (_.isEmpty(this.collection.state.filters)) {
             // no filters
             var dataHint = this.noDataHint;
         } else {

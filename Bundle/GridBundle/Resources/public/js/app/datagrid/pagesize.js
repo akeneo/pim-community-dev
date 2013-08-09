@@ -18,7 +18,7 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
             '<ul class="dropdown-menu pull-right">' +
                 '<% _.each(items, function (item) { %>' +
                     '<li><a href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
-                    '<% if (item.label == undefined) { %><%= item %><% } else { %><%= _.__(item.label) %><% } %></a></li>' +
+                    '<% if (item.label == undefined) { %><%= item %><% } else { %><%= item.label %><% } %></a></li>' +
                 '<% }); %>' +
             '</ul>' +
         '</div>'
@@ -34,9 +34,6 @@ Oro.Datagrid.PageSize = Backbone.View.extend({
 
     /** @property */
     enabled: true,
-
-    /** @property */
-    enabledNow: true,
 
     /** @property */
     hidden: false,

@@ -112,7 +112,7 @@ class Datagrid implements DatagridInterface
     protected $rowActions;
 
     /**
-     * @var
+     * @var associative array
      */
     protected $toolbarOptions;
 
