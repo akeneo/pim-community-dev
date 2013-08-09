@@ -143,8 +143,3 @@ services:
 
     swiftmailer.mailer.db_spool_mailer.transport.real:
         alias: swiftmailer.transport.real
-
-    # notification twig instance
-    oro_notification.twig.string_loader:
-        class: Twig_Loader_String
-

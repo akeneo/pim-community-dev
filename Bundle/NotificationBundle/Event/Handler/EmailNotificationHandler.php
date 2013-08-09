@@ -60,9 +60,6 @@ class EmailNotificationHandler extends EventHandlerAbstract
         foreach ($matchedNotifications as $notification) {
             $emailTemplate = $notification->getTemplate();
 
-            $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
-                ->getRecipientEmails($notification->getRecipientList(), $entity);
-
             try {
                 list ($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
                     $emailTemplate,
@@ -78,8 +75,11 @@ class EmailNotificationHandler extends EventHandlerAbstract
                     )
                 );
 
-                break;
+                continue;
             }
+
+            $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
+                ->getRecipientEmails($notification->getRecipientList(), $entity);
 
             // TODO: use locale for subject and body
             $params = new ParameterBag(
