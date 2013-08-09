@@ -25,7 +25,7 @@ class AttributeRequirement
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", inversedBy="AttributeRequirements")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", inversedBy="attributeRequirements")
      */
     protected $family;
 
