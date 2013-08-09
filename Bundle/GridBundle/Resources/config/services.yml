@@ -4,7 +4,6 @@ parameters:
 
     oro_grid.orm.query_factory.entity.class: Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory
     oro_grid.orm.query_factory.query.class:  Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\QueryFactory
-    oro_grid.orm.query_factory.report.class: Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\ReportQueryFactory
 
     oro_grid.builder.datagrid.class:         Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder
     oro_grid.builder.list.class:             Oro\Bundle\GridBundle\Builder\ListBuilder
@@ -53,7 +52,3 @@ services:
         arguments: ["@oro_grid.renderer"]
         tags:
             - { name: twig.extension }
-
-    oro_grid.orm.query_factory.report:
-        class:     %oro_grid.orm.query_factory.report.class%
-        public:    false
