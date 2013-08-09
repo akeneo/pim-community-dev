@@ -180,6 +180,9 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
 
+        /**
+         * @TODO hide icon in datagrid when it'll be possible for non system templates and delete icon for another one
+         */
         $cloneAction = array(
             'name'         => 'clone',
             'type'         => ActionInterface::TYPE_REDIRECT,

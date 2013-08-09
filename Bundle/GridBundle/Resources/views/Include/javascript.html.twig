@@ -96,7 +96,7 @@
                 entityHint : {{ datagrid.entityHint|capitalize|json_encode|raw }},
                 noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }},
                 noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }},
-                toolbarOptions: _.extend({'filterSelector': {{ ("#" ~ filtersElId)|json_encode|raw }}}, {{ datagrid.toolbarOptions|json_encode|raw }}),
+                toolbarOptions: {{ datagrid.toolbarOptions|json_encode|raw }},
             },
             collection: {
                 inputName: {{ datagrid.name|json_encode|raw }},
