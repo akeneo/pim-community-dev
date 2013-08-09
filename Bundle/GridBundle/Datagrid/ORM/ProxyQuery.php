@@ -105,8 +105,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Returns TRUE if $dql contains usage of parameter with $parameterName
      *
-     * @param string $dql
-     * @param string $parameterName
+     * @param  string $dql
+     * @param  string $parameterName
      * @return bool
      */
     protected function dqlContainsParameter($dql, $parameterName)
@@ -117,13 +117,13 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
             $pattern = sprintf('/\:%s[^\w]/', preg_quote($parameterName));
         }
 
-        return (bool)preg_match($pattern, $dql . ' ');
+        return (bool) preg_match($pattern, $dql . ' ');
     }
 
     /**
      * Apply order by part
      *
-     * @param QueryBuilder $queryBuilder
+     * @param  QueryBuilder $queryBuilder
      * @return QueryBuilder
      */
     protected function applyOrderByParameters(QueryBuilder $queryBuilder)
@@ -137,7 +137,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      * Apply sorting
      *
      * @param QueryBuilder $queryBuilder
-     * @param array $sortOrder
+     * @param array        $sortOrder
      */
     protected function applySortOrderParameters(QueryBuilder $queryBuilder, array $sortOrder)
     {
@@ -150,8 +150,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Checks if select DQL part already has select expression with name
      *
-     * @param QueryBuilder $queryBuilder
-     * @param string $name
+     * @param  QueryBuilder $queryBuilder
+     * @param  string       $name
      * @return bool
      */
     protected function hasSelectItem(QueryBuilder $queryBuilder, $name)
@@ -175,8 +175,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Check whether provided expression already in select clause
      *
-     * @param QueryBuilder $qb
-     * @param string $selectString
+     * @param  QueryBuilder $qb
+     * @param  string       $selectString
      * @return bool
      */
     protected function isInSelectExpression(QueryBuilder $qb, $selectString)
@@ -290,8 +290,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Get fields fully qualified name
      *
-     * @param string $fieldName
-     * @param string|null $parentAlias
+     * @param  string      $fieldName
+     * @param  string|null $parentAlias
      * @return string
      */
     protected function getFieldFQN($fieldName, $parentAlias = null)
@@ -306,8 +306,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Proxy of QueryBuilder::addSelect with flag that specified whether add select to internal whitelist
      *
-     * @param string $select
-     * @param bool $addToWhitelist
+     * @param  string     $select
+     * @param  bool       $addToWhitelist
      * @return ProxyQuery
      */
     public function addSelect($select = null, $addToWhitelist = false)
@@ -346,8 +346,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Set query parameter
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string     $name
+     * @param  mixed      $value
      * @return ProxyQuery
      */
     public function setParameter($name, $value)
@@ -360,8 +360,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Sets a query hint
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string     $name
+     * @param  mixed      $value
      * @return ProxyQuery
      */
     public function setQueryHint($name, $value)

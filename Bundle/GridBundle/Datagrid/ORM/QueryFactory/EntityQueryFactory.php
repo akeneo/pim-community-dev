@@ -28,8 +28,8 @@ class EntityQueryFactory extends AbstractQueryFactory
 
     /**
      * @param RegistryInterface $registry
-     * @param string $className
-     * @param string $alias
+     * @param string            $className
+     * @param string            $alias
      */
     public function __construct(RegistryInterface $registry, $className, $alias = 'o')
     {
