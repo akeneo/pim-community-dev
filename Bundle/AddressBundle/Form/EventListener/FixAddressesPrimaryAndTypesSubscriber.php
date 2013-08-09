@@ -64,6 +64,9 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
                     $otherAddresses->setPrimary(false);
                 }
             }
+            $address->setPrimary(true);
+        } elseif (count($allAddresses) == 1) {
+            $address->setPrimary(true);
         }
 
         /**
