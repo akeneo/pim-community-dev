@@ -440,7 +440,8 @@ abstract class DatagridManager implements DatagridManagerInterface
             }
 
             if ($notExists) {
-                $options['pageSize']['items'] = is_array($options['pageSize']['items'])
+                $options['pageSize'] = isset($options['pageSize']) ? $options['pageSize'] : array();
+                $options['pageSize']['items'] = isset($options['pageSize']['items']) && is_array($options['pageSize']['items'])
                     ? $options['pageSize']['items']
                     : array();
                 $options['pageSize']['items'][] = array(
