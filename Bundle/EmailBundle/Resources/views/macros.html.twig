@@ -40,25 +40,55 @@
     <div class="well well-small span5" id="oro-email-available-variables"></div>
 {% endmacro %}
 
-{% macro renderPreviewDialog(title) %}
+{% macro renderPreviewDialog(formName, title) %}
     <script type="text/javascript">
         $(function () {
             var showEmailPreviewDialog = function (el) {
-                var iframe = $('<iframe frameborder="0" marginwidth="0" marginheight="0" allowfullscreen width="100%"></iframe>');
-                iframe.attr({'src': $(el).attr('href')});
+                var iframe = $('<iframe />',
+                        {
+                            name: "preview-frame",
+                            id: "preview-frame",
+                            'class': "scrollable-container",
+                            frameborder: 0,
+                            marginwidth: 0,
+                            marginheight: 0,
+                            allowfullscreen: true,
+                            width: "100%"
+                        });
 
-                new Oro.widget.DialogView({
-                    el: $('<div/>').append(iframe),
-                    url: false,
-                    dialogOptions: {
-                        allowMaximize: true,
-                        allowMinimize: true,
-                        dblclick: 'maximize',
-                        maximizedHeightDecreaseBy: 'minimize-bar',
-                        width: 600,
-                        title: {{ title|json_encode|raw }}
-                    }
-                }).render();
+                $('body').append(iframe);
+                var form = $('#{{ formName }}');
+                var formAction = form.attr('action');
+
+                form.bindFirst('submit', function(e) {
+                    // prevent hash navigation form processing
+                    new Oro.widget.DialogView({
+                        el: $('<div id="inject-content"></div>'),
+                        url: false,
+                        dialogOptions: {
+                            allowMaximize: true,
+                            allowMinimize: true,
+                            dblclick: 'maximize',
+                            maximizedHeightDecreaseBy: 'minimize-bar',
+                            minWidth: 600,
+                            minHeight: 400,
+                            title: $(el).attr('title')
+                        }
+                    }).render();
+
+                    $('#inject-content').append(iframe);
+                    form.attr('target', 'preview-frame');
+                    form.attr('action', $(el).attr('href'));
+                    e.stopImmediatePropagation();
+                });
+
+                iframe.load(function() {
+                    $(this).show();
+                    form.attr('action', formAction);
+                    form.removeAttr('target');
+                });
+
+                form.submit();
             };
 
             $('.dialog-form-renderer').click(function (e) {

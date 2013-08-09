@@ -26,7 +26,8 @@
                 iClass: 'icon-share'
             })
         }}
-        {{ _emailMacros.renderPreviewDialog(form.vars.value.subject) }}
+
+        {{ _emailMacros.renderPreviewDialog(form.vars.id, form.vars.value.subject) }}
     {% endif %}
 
     {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_clone') %}

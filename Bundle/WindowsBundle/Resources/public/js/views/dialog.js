@@ -256,6 +256,9 @@ Oro.widget.DialogView = Backbone.View.extend({
 
     adjustHeight: function() {
         var content = this.widget.find('.scrollable-container');
+        if (content.length == 0) {
+            return;
+        }
 
         // first execute
         if (_.isNull(this.contentTop)) {

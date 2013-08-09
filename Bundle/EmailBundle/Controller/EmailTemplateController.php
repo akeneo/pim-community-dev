@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @Route("/emailtemplate")
@@ -128,6 +129,15 @@ class EmailTemplateController extends Controller
      */
     public function previewAction(EmailTemplate $emailTemplate)
     {
+        /** @var FormInterface $form */
+        $form = $this->get('oro_email.form.emailtemplate');
+        $form->setData($emailTemplate);
+        $request = $this->get('request');
+
+        if (in_array($request->getMethod(), array('POST', 'PUT'))) {
+            $form->submit($request);
+        }
+
         list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
             ->compileMessage($emailTemplate);
 
