@@ -1,6 +1,6 @@
-{% macro createBtn(text, url, id) %}
+{% macro createBtn(text, url, id, attr) %}
 {% spaceless %}
-    <a{% if id %} id="{{ id }}"{% endif %} class="btn btn-primary pull-right" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ text|trans }}">{{ text|trans }}</a>
+    <a{% if id %} id="{{ id }}"{% endif %} class="btn btn-primary pull-right" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ text|trans }}"{% if attr %}{% for key, value in attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>{{ text|trans }}</a>
 {% endspaceless %}
 {% endmacro %}
 

@@ -8,14 +8,13 @@
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
 
     <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: '{{ path("pim_product_product_create") }}' });
     </script>
 {% endblock %}
 
 {% block content %}
 
     {% set buttons %}
-        {{ elements.createBtn('New product', null, 'create-product') }}
+        {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_product_product_create') }) }}
     {% endset %}
 
     {% set subtitle %}

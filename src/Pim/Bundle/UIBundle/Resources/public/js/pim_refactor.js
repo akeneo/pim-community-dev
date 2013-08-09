@@ -6,9 +6,6 @@ if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
     }
 }
 
-// Disable the oro scrollable container
-$('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
-
 // Remove bap 'Loading Application' progressbar and partially fix page title regression issue
 document.title = $('#page-title').text();
 if ($('#progressbar').is(':visible')) {

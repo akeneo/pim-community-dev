@@ -1,6 +1,9 @@
 function init() {
     // Place code that we need to run on every page load here
 
+    // Disable the oro scrollable container
+    $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
+
     // Prevent UniformJS from breaking our stuff
     $(document).uniform.restore();
 
@@ -56,6 +59,10 @@ function init() {
         }
     });
 
+    // Instantiate dialogForm
+    $('[data-form="dialog"]').each(function() {
+        $(this).dialogForm();
+    });
 }
 
 $(function() {
