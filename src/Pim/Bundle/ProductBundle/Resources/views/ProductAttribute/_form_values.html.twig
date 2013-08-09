@@ -12,11 +12,12 @@
             <thead>
                 <tr>
                     <th></th>
+                    <th>{{ "Code"|trans }}</th>
                     <th>{{ "Default value"|trans }}</th>
                     {% for locale in locales %}
                         <th>{{ locale.code|trans }}</th>
                     {% endfor %}
-                    <th>{{ "Default value"|trans }}</th>
+                    <th>{{ "Default"|trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,9 @@
                     <td class="handle">
                         <i class="fa-icon-reorder"></i>
                         {{ form_row(option.sort_order) }}
+                    </td>
+                    <td>
+                        {{ form_row(option.code) }}
                     </td>
                     <td>
                         {{ form_row(option.defaultValue) }}

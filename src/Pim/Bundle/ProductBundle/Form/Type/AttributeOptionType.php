@@ -24,7 +24,18 @@ class AttributeOptionType extends FlexibleAttributeOptionType
     {
         parent::buildForm($builder, $options);
 
+        $this->addFieldCode($builder);
+
         $this->addFieldIsDefault($builder);
+    }
+
+    /**
+     * Add option code
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldCode(FormBuilderInterface $builder)
+    {
+        $builder->add('code');
     }
 
     /**
