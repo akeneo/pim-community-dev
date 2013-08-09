@@ -4,7 +4,7 @@
 {% block content %}
 <div class="layout-content">
     {{ block('content_navigation') }}
-    <div class="layout-content scrollable-container">
+    <div class="layout-content">
         {% block content_data %}
             {{ UI.scrollData(id, data) }}
         {% endblock content_data %}
