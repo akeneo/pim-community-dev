@@ -1,7 +1,7 @@
 'attributes':
     'sku':
         'labels':
-            'default': 'SKU'
+            'en_US': 'SKU'
             'fr_FR':   'SKU'
         'type': 'pim_product_identifier'
         'description': 'the product sku'
@@ -14,7 +14,7 @@
             'sortOrder': 1
     'name':
         'labels':
-            'default': 'Name'
+            'en_US': 'Name'
             'fr_FR':   'Nom'
         'type': 'pim_product_text'
         'description': 'the product name'
@@ -26,7 +26,7 @@
             'sortOrder': 2
     'price':
         'labels':
-            'default': 'Price'
+            'en_US': 'Price'
             'fr_FR':   'Prix'
         'type': 'pim_product_price_collection'
         'description': 'the product price'
@@ -39,7 +39,7 @@
             'sortOrder': 1
     'short_description':
         'labels':
-            'default': 'Short Description'
+            'en_US': 'Short Description'
             'fr_FR':   'Description courte'
         'type': 'pim_product_textarea'
         'description': 'the product short description'
@@ -53,7 +53,7 @@
             'sortOrder': 3
     'long_description':
         'labels':
-            'default': 'Long Description'
+            'en_US': 'Long Description'
             'fr_FR':   'Description longue'
         'type': 'pim_product_textarea'
         'description': 'the product long description'
@@ -67,7 +67,7 @@
             'sortOrder': 4
     'release_date':
         'labels':
-            'default': 'Release date'
+            'en_US': 'Release date'
             'fr_FR':   'Date de sortie'
         'type': 'pim_product_date'
         'description': 'the product date'
@@ -80,7 +80,7 @@
             'sortOrder': 5
     'file_upload':
         'labels':
-            'default': 'File upload'
+            'en_US': 'File upload'
             'fr_FR':   'Fichier téléchargé'
         'type': 'pim_product_file'
         'description': 'File upload'
@@ -90,7 +90,7 @@
             'sortOrder': 1
     'image_upload':
         'labels':
-            'default': 'Image upload'
+            'en_US': 'Image upload'
             'fr_FR':   'Image téléchargée'
         'type': 'pim_product_image'
         'description': 'File upload'
@@ -99,7 +99,7 @@
             'sortOrder': 2
     'size':
         'labels':
-            'default': 'Size'
+            'en_US': 'Size'
             'fr_FR':   'Taille'
         'type': 'pim_product_simpleselect'
         'description': 'Size'
@@ -112,27 +112,27 @@
         'options':
             'XS':
                 labels:
-                    'default': 'XS'
+                    'fr_FR': 'XS'
                     'en_US': 'XS'
             'S':
                 labels:
-                    'default': 'S'
+                    'fr_FR': 'S'
                     'en_US': 'S'
             'M':
                 labels:
-                    'default': 'M'
+                    'fr_FR': 'M'
                     'en_US': 'M'
             'L':
                 labels:
-                    'default': 'L'
+                    'fr_FR': 'L'
                     'en_US': 'L'
             'XL':
                 labels:
-                    'default': 'XL'
+                    'fr_FR': 'XL'
                     'en_US': 'XL'
     'color':
         'labels':
-            'default': 'Color'
+            'en_US': 'Color'
             'fr_FR':   'Couleur'
         'type': 'pim_product_multiselect'
         'description': 'Couleur'
@@ -144,32 +144,27 @@
         'options':
             'Red':
                 labels:
-                    'default': 'Red'
                     'en_US': 'Red'
                     'fr_FR': 'Rouge'
             'Blue':
                 labels:
-                    'default': 'Blue'
                     'en_US': 'Blue'
                     'fr_FR': 'Bleu'
             'Green':
                 labels:
-                    'default': 'Green'
                     'en_US': 'Green'
                     'fr_FR': 'Vert'
             'Purple':
                 'labels':
-                    'default': 'Purple'
                     'en_US': 'Purple'
                     'fr_FR': 'Violet'
             'Orange':
                 'labels':
-                    'default': 'Orange'
                     'en_US': 'Orange'
                     'fr_FR': 'Orange'
     'manufacturer':
         'labels':
-            'default': 'Manufacturer'
+            'en_US': 'Manufacturer'
             'fr_FR':   'Fabriquant'
         'type': 'pim_product_simpleselect'
         'description': 'Manufacturer'
@@ -181,10 +176,10 @@
         'options':
             'MyMug':
                 labels:
-                    'default': 'MyMug'
+                    'en_US': 'MyMug'
                     'en_US': 'MyMug'
             'MugStore':
                 labels:
-                    'default': 'MugStore'
+                    'en_US': 'MugStore'
                     'en_US': 'MugStore'
 

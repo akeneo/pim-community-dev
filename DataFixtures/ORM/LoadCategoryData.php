@@ -39,7 +39,7 @@ class LoadCategoryData extends AbstractDemoFixture
         $product5 = $this->getReference('product.sku-005');
 
         // create trees
-        $treeCatalog     = $this->createCategory('Master Catalog (default)');
+        $treeCatalog     = $this->createCategory('Master Catalog');
         $treeCollections = $this->createCategory('Collections (default)');
         $treeColors      = $this->createCategory('Colors (default)');
         $treeSales       = $this->createCategory('Europe Sales Catalog (default)');
@@ -159,21 +159,17 @@ class LoadCategoryData extends AbstractDemoFixture
     /**
      * Create a Category entity
      *
-     * @param string   $title    Title of the category
+     * @param string   $code     Code of the category
      * @param Category $parent   Parent category
      * @param array    $products Products that should be associated to this category
      *
      * @return Category
      */
-    protected function createCategory($title, $parent = null, $products = array())
+    protected function createCategory($code, $parent = null, $products = array())
     {
         $category = new Category();
-        $category->setCode($title);
-        $category->setTitle($title);
+        $category->setCode($code);
         $category->setParent($parent);
-
-        $translation = $this->createTranslation($category, 'default', $title);
-        $category->addTranslation($translation);
 
         foreach ($products as $product) {
             $category->addProduct($product);
