@@ -170,14 +170,14 @@ class ConfigEntityGridController extends Controller
 
         $className = $request->getSession()->get(self::SESSION_ID_CREATE_ENTITY);
 
-        if (!$className ) {
+        if (!$className) {
             return $this->redirect($this->generateUrl('oro_entityextend_entity_create'));
         }
 
         /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
+        $configManager  = $this->get('oro_entity_config.config_manager');
         $newEntityModel = $configManager->createConfigEntityModel($className, true);
-        $extendConfig = $configManager->getProvider('extend')->getConfig($className);
+        $extendConfig   = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('is_extend', true);
         $form = $this->createForm('oro_entity_config_type', null, array(
@@ -189,10 +189,11 @@ class ConfigEntityGridController extends Controller
 
             if ($form->isValid()) {
                 $newEntityModel = $configManager->createConfigFieldModel($className, 'id', 'integer');
-                $extendFieldConfig = $configManager->getProvider('extend')->getConfig($className, 'id');
-                $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
-                $extendFieldConfig->set('is_extend', true);
-                $configManager->persist($extendFieldConfig);
+                $entityConfig   = $configManager->getProvider('extend')->getConfig($className, 'id');
+                $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+                $entityConfig->set('state', ExtendManager::STATE_NEW);
+                $entityConfig->set('is_extend', true);
+                $configManager->persist($entityConfig);
 
                 $configManager->flush();
 
