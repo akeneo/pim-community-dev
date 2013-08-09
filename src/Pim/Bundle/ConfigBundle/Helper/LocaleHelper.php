@@ -64,27 +64,4 @@ class LocaleHelper
     {
         return $this->localeManager->getUserLocaleCode();
     }
-
-    /**
-     *
-     * @param array $localesArray of ChoiceView
-     * @return number|unknown
-     *
-     * TODO : Maybe create a ChoiceViewHelper to sort the values
-     */
-    public function reorderLocales(array $locales)
-    {
-        uasort(
-            $locales,
-            function ($a, $b) {
-                if ($a->label == $b->label) {
-                    return 0;
-                }
-
-                return ($a->label < $b->label) ? -1 : 1;
-            }
-        );
-
-        return $locales;
-    }
 }

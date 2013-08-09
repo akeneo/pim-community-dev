@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Pim\Bundle\ConfigBundle\Helper\ChoiceViewHelper;
+
 use Pim\Bundle\ConfigBundle\Helper\LocaleHelper;
 
 use Symfony\Component\Form\FormInterface;
@@ -152,8 +154,8 @@ class ChannelType extends AbstractType
             $localeView->label = $this->localeHelper->getLocalizedLabel($localeView->label);
         }
 
-        $locales->vars['choices'] = $this->localeHelper->reorderLocales($locales->vars['choices']);
-        $locales->vars['preferred_choices'] = $this->localeHelper->reorderLocales($locales->vars['preferred_choices']);
+        $locales->vars['choices'] = ChoiceViewHelper::reorder($locales->vars['choices']);
+        $locales->vars['preferred_choices'] = ChoiceViewHelper::reorder($locales->vars['preferred_choices']);
     }
 
     /**
