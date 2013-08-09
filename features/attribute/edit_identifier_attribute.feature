@@ -25,11 +25,11 @@ Feature: Edit an identifier attribute
     When I am on the attribute creation page
     And I select the attribute type "Identifier"
     And I fill in the following information:
-      | Name           | mySecondId |
+      | Code           | mySecondId |
       | Max characters | 100        |
     And I visit the "Values" tab
     And I fill in the following information:
-      | Default     | Sku2              |
+      | en_US       | Sku2              |
       | Description | My 2nd identifier |
     And I press the "Save" button
     Then I should see "An identifier attribute already exists"

@@ -75,10 +75,11 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetLabel()
     {
-        $this->assertEmpty($this->attribute->getLabel());
-
         // Change value and assert new
+        $this->attribute->setCode('code');
+        $this->assertEquals('[code]', $this->attribute->getLabel());
         $newName = 'test-label';
+        $this->attribute->setLocale('en_US');
         $this->assertEntity($this->attribute->setLabel($newName));
         $this->assertEquals($newName, $this->attribute->getLabel());
     }
@@ -127,9 +128,9 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVirtualGroup()
     {
-        $this->attribute->getVirtualGroup()->setLocale('default');
+        $this->attribute->getVirtualGroup()->setLocale('en_US');
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
-        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getName());
+        $this->assertEquals('[other]', $this->attribute->getVirtualGroup()->getName());
 
         $attributeGroup = new AttributeGroup();
         $this->assertEntity($this->attribute->setGroup($attributeGroup));

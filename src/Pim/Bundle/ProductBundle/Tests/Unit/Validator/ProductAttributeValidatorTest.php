@@ -42,20 +42,20 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test case with invalid attribute option default values
+     * Test case with invalid attribute option codes
      * @param string $attributeType
-     * @param array  $optionValues
+     * @param array  $optionCodes
      * @param string $expectedViolation
      *
      * @dataProvider providerAttributeOptionsInvalid
      */
-    public function testAttributeOptionsInvalid($attributeType, $optionValues, $expectedViolation)
+    public function testAttributeOptionsInvalid($attributeType, $optionCodes, $expectedViolation)
     {
         $attribute = $this->createAttribute($attributeType);
 
-        foreach ($optionValues as $value) {
+        foreach ($optionCodes as $code) {
             $attributeOption = new AttributeOption();
-            $attributeOption->setDefaultValue($value);
+            $attributeOption->setCode($code);
             $attribute->addOption($attributeOption);
         }
 
@@ -67,7 +67,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provider for attribute option default value constraint violation
+     * Provider for attribute option code constraint violation
      * @return array
      *
      * @static
@@ -78,17 +78,17 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array(
                 'pim_product_multiselect',
                 array('a', 'b', null),
-                ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED
+                ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
                 'pim_product_simpleselect',
                 array(1, null, 3),
-                ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED
+                ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
                 'pim_product_simpleselect',
                 array('a', 'a', 'b'),
-                ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE
+                ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_CODE
             ),
         );
     }

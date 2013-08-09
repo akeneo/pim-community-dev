@@ -19,6 +19,13 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
 class AttributeOption extends AbstractEntityAttributeOption
 {
     /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    protected $code;
+
+    /**
      * Overrided to change target entity name
      *
      * @var Attribute $attribute
@@ -37,15 +44,6 @@ class AttributeOption extends AbstractEntityAttributeOption
     protected $optionValues;
 
     /**
-     * Default value is mandatory
-     *
-     * @var string $defaultValue
-     *
-     * @ORM\Column(name="default_value", type="string", length=255, nullable=false)
-     */
-    protected $defaultValue;
-
-    /**
      * Specifies whether this AttributeOption is the default option for the attribute
      *
      * @var boolean $default
@@ -55,15 +53,27 @@ class AttributeOption extends AbstractEntityAttributeOption
     protected $default = false;
 
     /**
-     * Override to use default value
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return AttributeOption
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
      *
      * @return string
      */
-    public function __toString()
+    public function getCode()
     {
-        $value = $this->getOptionValue();
-
-        return ($value and $value->getValue()) ? $value->getValue() : (string) $this->getDefaultValue();
+        return $this->code;
     }
 
     /**
@@ -87,5 +97,17 @@ class AttributeOption extends AbstractEntityAttributeOption
     public function isDefault()
     {
         return $this->default;
+    }
+
+    /**
+     * Override to use default value
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $value = $this->getOptionValue();
+
+        return ($value and $value->getValue()) ? $value->getValue() : '['.$this->getCode().']';
     }
 }

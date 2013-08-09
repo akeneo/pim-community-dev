@@ -8,7 +8,6 @@ Feature: Create a category
     And I am on the category tree creation page
     When I fill in the following information:
       | Code    | shoe |
-      | Default | Shoe |
     And I save the category
     Then I should be on the category "shoe" edit page
     And I should see "Tree successfully created"
@@ -21,7 +20,6 @@ Feature: Create a category
     And I am on the category "shoe" node creation page
     When I fill in the following information:
       | Code    | flipflap |
-      | Default | FlipFlap |
     And I save the category
     Then I should be on the category "flipflap" edit page
     And I should see "Category successfully created"
