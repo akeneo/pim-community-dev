@@ -70,7 +70,7 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
         /**
          * Two addresses must not have same types
          */
-        $types = $address->getTypes();
+        $types = $address->getTypes()->toArray();
         if (count($types)) {
             foreach ($allAddresses as $otherAddresses) {
                 foreach ($types as $type) {
