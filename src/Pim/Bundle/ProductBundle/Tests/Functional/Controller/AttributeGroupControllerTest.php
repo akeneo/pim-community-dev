@@ -95,7 +95,6 @@ class AttributeGroupControllerTest extends ControllerTest
             'pim_attribute_group_form[sort_order]'    => self::GROUP_ORDER
         );
 
-
         $this->submitFormAndAssertFlashbag($form, $values, self::GROUP_SAVED_MSG);
 
         // assert entity well inserted

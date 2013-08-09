@@ -2,6 +2,8 @@ services:
     # Types
     pim_config.form.type.channel:
         class: %pim_config.form.type.channel.class%
+        arguments:
+            - @pim_config.manager.locale
         tags:
             - { name: form.type, alias: pim_config_channel }
 

@@ -133,21 +133,11 @@ class FixturesContext extends RawMinkContext
      * @param languages $languages
      *
      * @return Product
-     * @Given /^a "([^"]*)" product available in (.*)$/
+     * @Given /^a "([^"]*)" product$/
      */
-    public function aProductAvailableIn($sku, $languages)
+    public function aProduct($sku)
     {
         $product   = $this->theProductWithTheFollowingTranslations($sku);
-        $languages = $this->listToArray($languages);
-
-        foreach ($languages as $language) {
-            $language = $this->getLocale($this->getLocaleCode($language));
-            $locale = $product->getLocale($language);
-            if (!$locale) {
-                $product->addLocale($language);
-            }
-        }
-
         $this->getProductManager()->save($product);
 
         return $product;
@@ -162,9 +152,9 @@ class FixturesContext extends RawMinkContext
     {
         $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('languages' => 'english', 'family' => null), $data);
+            $data = array_merge(array('family' => null), $data);
 
-            $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
+            $product = $this->aProduct($data['sku']);
             if ($data['family']) {
                 $product->setFamily($this->getFamily($data['family']));
             }
@@ -180,7 +170,7 @@ class FixturesContext extends RawMinkContext
      */
     public function anEnabledProduct($sku)
     {
-        $this->aProductAvailableIn($sku, 'english')->setEnabled(true);
+        $this->aProduct($sku)->setEnabled(true);
     }
 
     /**
@@ -190,7 +180,7 @@ class FixturesContext extends RawMinkContext
      */
     public function aDisabledProduct($sku)
     {
-        $this->aProductAvailableIn($sku, 'english')->setEnabled(false);
+        $this->aProduct($sku)->setEnabled(false);
     }
 
     /**
@@ -285,7 +275,9 @@ class FixturesContext extends RawMinkContext
             }
 
             $locale->setFallback($data['fallback']);
-            $locale->setActivated($data['activated'] === 'yes');
+            if ($data['activated'] === 'yes') {
+                $locale->activate();
+            }
 
             $em->persist($locale);
         }

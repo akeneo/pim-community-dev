@@ -57,21 +57,6 @@ class LocaleController extends Controller
     }
 
     /**
-     * Create locale
-     *
-     * @Route("/create")
-     * @Template("PimConfigBundle:Locale:edit.html.twig")
-     *
-     * @return array
-     */
-    public function createAction()
-    {
-        $locale = new Locale();
-
-        return $this->editAction($locale);
-    }
-
-    /**
      * Edit locale
      *
      * @param Locale $locale

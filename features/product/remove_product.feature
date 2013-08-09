@@ -5,7 +5,7 @@ Feature: Remove a product
   I need to be able to remove a product
 
   Background:
-    Given a "CD player" product available in english
+    Given a "CD player" product
     And I am logged in as "admin"
 
   Scenario: Successfully delete a product from the grid

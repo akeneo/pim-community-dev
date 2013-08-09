@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ConfigBundle\Validator\Constraints as PimAssert;
@@ -48,6 +50,8 @@ class Locale
      *
      * @ORM\ManyToOne(targetEntity="Currency", inversedBy="locales")
      * @ORM\JoinColumn(name="default_currency_id", referencedColumnName="id")
+     *
+     * TODO : must be removed
      */
     protected $defaultCurrency;
 
@@ -56,14 +60,24 @@ class Locale
      *
      * @ORM\Column(name="is_activated", type="boolean")
      */
-    protected $activated;
+    protected $activated = false;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel",
+     *     mappedBy="locales"
+     * )
+     */
+    protected $channels;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->activated = true;
+        $this->channels = new ArrayCollection();
     }
 
     /**
@@ -159,23 +173,11 @@ class Locale
     }
 
     /**
-     * Set activated
-     *
-     * @param boolean $activated
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
-     */
-    public function setActivated($activated)
-    {
-        $this->activated = $activated;
-
-        return $this;
-    }
-
-    /**
      * Get default currency
      *
      * @return Currency
+     *
+     * TODO : Must be removed
      */
     public function getDefaultCurrency()
     {
@@ -188,10 +190,63 @@ class Locale
      * @param Currency $currency
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     *
+     * @TODO : must be removed
      */
     public function setDefaultCurrency(Currency $currency)
     {
         $this->defaultCurrency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get channels
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * Set channels
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $channels
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function setChannels($channels)
+    {
+        $this->channels = $channels;
+
+        return $this;
+    }
+
+    /**
+     * Activate the locale
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function activate()
+    {
+        $this->activated = true;
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the locale
+     * Only if it's no more link to a channel so <= 1 because it's call before persist
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
+     */
+    public function deactivate()
+    {
+        if ($this->getChannels()->count() <= 1) {
+            $this->activated = false;
+        }
 
         return $this;
     }

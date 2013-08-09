@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 

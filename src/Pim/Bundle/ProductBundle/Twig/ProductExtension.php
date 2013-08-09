@@ -16,8 +16,14 @@ use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
  */
 class ProductExtension extends \Twig_Extension
 {
+    /**
+     * @var SecurityContextInterface
+     */
     protected $securityContext;
 
+    /**
+     * @var LocaleManager
+     */
     protected $localeManager;
 
     /**

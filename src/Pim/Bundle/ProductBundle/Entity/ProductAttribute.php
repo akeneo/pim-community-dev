@@ -24,7 +24,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
- * @ORM\HasLifecycleCallbacks
  * @Oro\Loggable
  * @Assert\GroupSequenceProvider
  */

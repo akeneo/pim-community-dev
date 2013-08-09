@@ -4,7 +4,7 @@ Feature: Join an image to a product
   I need to be able to upload it and preview it
 
   Scenario: Succesfully leave the image empty
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |
@@ -14,7 +14,7 @@ Feature: Join an image to a product
     Then I should see "Product successfully saved"
 
   Scenario: Succesfully upload an image
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |
@@ -26,7 +26,7 @@ Feature: Join an image to a product
 
   @javascript
   Scenario: Succesfully display the image in a popin
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |
@@ -39,7 +39,7 @@ Feature: Join an image to a product
 
   @javascript
   Scenario: Successfully remove an image
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |
@@ -53,7 +53,7 @@ Feature: Join an image to a product
 
   @javascript
   Scenario: Successfully replace an image
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |
@@ -68,7 +68,7 @@ Feature: Join an image to a product
 
   @javascript
   Scenario: Successfully replace and remove an image
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |

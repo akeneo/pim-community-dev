@@ -5,7 +5,7 @@ Feature: Order product attributes
 
   @javascript
   Scenario: Successfully update an attribute position
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following attribute group:
       | name    |
       | General |
@@ -25,7 +25,7 @@ Feature: Order product attributes
     And the attribute "Color" should be in position 3
 
   Scenario: Display a produt attribute fields ordered by their position
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following attribute groups:
       | name    |
       | General |

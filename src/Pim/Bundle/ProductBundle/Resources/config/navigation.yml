@@ -65,5 +65,4 @@ oro_titles:
     pim_config_channel_edit:                 Channels | Edit
     pim_config_currency_index:               Currencies
     pim_config_locale_index:                 Locales
-    pim_config_locale_create:                Locales | Create
     pim_config_locale_edit:                  Locales | Edit

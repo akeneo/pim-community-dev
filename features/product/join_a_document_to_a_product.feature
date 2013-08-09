@@ -4,7 +4,7 @@ Feature: Join a document to a product
   I need to be able to upload it and preview it
 
   Scenario: Succesfully leave the documet empty
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |
@@ -14,7 +14,7 @@ Feature: Join a document to a product
     Then I should see "Product successfully saved"
 
   Scenario: Succesfully upload a document
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |
@@ -26,7 +26,7 @@ Feature: Join a document to a product
 
   @javascript
   Scenario: Succesfully display the document
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |
@@ -39,7 +39,7 @@ Feature: Join a document to a product
 
   @javascript
   Scenario: Successfully remove a document
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |
@@ -53,7 +53,7 @@ Feature: Join a document to a product
 
   @javascript
   Scenario: Successfully replace a document
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |
@@ -68,7 +68,7 @@ Feature: Join a document to a product
 
   @javascript
   Scenario: Successfully replace and remove a document
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label       | type |
       | Car     | Description | file |

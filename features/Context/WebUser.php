@@ -357,40 +357,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $languages
-     *
-     * @Then /^I should see that the product is available in (.*)$/
-     */
-    public function iShouldSeeLanguages($languages)
-    {
-        $languages = $this->listToArray($languages);
-        foreach ($languages as $language) {
-            if (null === $this->getPage('Product edit')->findLocaleLink($language)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see a locale link for "%s", but didn\'t',
-                        $language
-                    )
-                );
-            }
-        }
-
-    }
-
-    /**
-     * @param string $languages
-     *
-     * @When /^I add the (.*) languages?$/
-     */
-    public function iAddTheLanguages($languages)
-    {
-        $languages = $this->listToArray($languages);
-        foreach ($languages as $language) {
-            $this->getPage('Product edit')->selectLanguage($language);
-        }
-    }
-
-    /**
      * @Given /^I save the (.*)$/
      */
     public function iSave()
@@ -1332,6 +1298,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->assertSession()->responseContains(file_get_contents($path));
+    }
+
+    /**
+     * @Then /^attribute "([^"]*)" should( not)? be required in channels? (.*)$/
+     */
+    public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
+    {
+        $channels = $this->listToArray($channels);
+        $expectation = $not === '';
+        foreach ($channels as $channel) {
+            if ($expectation !== $this->getPage('Family edit')->isAttributeRequired($attribute, $channel)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Attribute %s should be%s required in channel %s',
+                        $attribute,
+                        $not,
+                        $channel
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^I switch the attribute "([^"]*)" requirement in channel "([^"]*)"$/
+     */
+    public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
+    {
+        $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
     }
 
     /**

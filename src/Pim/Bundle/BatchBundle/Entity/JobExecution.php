@@ -39,14 +39,14 @@ class JobExecution
      * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
-    private $job = null;
+    private $job;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="integer")
      */
-    private $status = null;
+    private $status;
 
     /**
      * @var DateTime
@@ -80,31 +80,31 @@ class JobExecution
     private $executionContext;
 
     /* @var ExitStatus $existStatus */
-    private $exitStatus = null;
+    private $exitStatus;
 
     /**
      * @var string
      *
      * @ORM\Column(name="exit_code", type="string", length=255, nullable=true)
      */
-    private $exitCode = null;
+    private $exitCode;
 
     /**
      * @var string
      *
      * @ORM\Column(name="exit_description", type="text", nullable=true)
      */
-    private $exitDescription = null;
+    private $exitDescription;
 
     /* @var array */
-    private $failureExceptionsObjects = null;
+    private $failureExceptionsObjects;
 
     /**
      * @var string
      *
      * @ORM\Column(name="failure_exceptions", type="text", nullable=true)
      */
-    private $failureExceptions = null;
+    private $failureExceptions;
 
     /**
      * Constructor
@@ -457,7 +457,6 @@ class JobExecution
         return $this->job;
     }
 
-
     /**
      * To string
      * @return string
@@ -477,7 +476,7 @@ class JobExecution
                 $this->exitStatus,
                 $this->job
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $string = $e->getMessage();
         }
 

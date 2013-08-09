@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Manager;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 
 /**
