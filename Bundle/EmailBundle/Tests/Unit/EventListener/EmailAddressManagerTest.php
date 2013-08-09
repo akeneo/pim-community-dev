@@ -64,8 +64,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->will($this->returnValue($this->em));
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailAddressManagerMockBuilder()
             ->setMethods(array('handleInsertionsOrUpdates', 'handleDeletions'))
             ->getMock();
 
@@ -128,8 +127,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
     ) {
         $this->initOnFlush();
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailAddressManagerMockBuilder()
             ->setMethods(array('processInsertionOrUpdateEntity'))
             ->getMock();
 
@@ -208,8 +206,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
     ) {
         $this->initOnFlush();
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailAddressManagerMockBuilder()
             ->setMethods(array('unbindEmailAddress'))
             ->getMock();
 
@@ -281,5 +278,14 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($obj, $args);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     */
+    private function createEmailAddressManagerMockBuilder()
+    {
+        return $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
+            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock(), 'SomeNamespace', 'ProxyFor%s'));
     }
 }

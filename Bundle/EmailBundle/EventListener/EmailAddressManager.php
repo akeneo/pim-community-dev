@@ -24,16 +24,30 @@ class EmailAddressManager
     protected $emailOwnerClasses = array();
 
     /**
+     * @var string
+     */
+    private $entityCacheNamespace;
+
+    /**
+     * @var string
+     */
+    private $entityProxyNameTemplate;
+
+    /**
      * Constructor.
      *
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
+     * @param string $entityCacheNamespace
+     * @param string $entityProxyNameTemplate
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheNamespace, $entityProxyNameTemplate)
     {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $fieldName = sprintf('owner%d', count($this->emailOwnerClasses) + 1);
             $this->emailOwnerClasses[$fieldName] = $provider->getEmailOwnerClass();
         }
+        $this->entityCacheNamespace = $entityCacheNamespace;
+        $this->entityProxyNameTemplate = $entityProxyNameTemplate;
     }
 
     /**
@@ -150,7 +164,7 @@ class EmailAddressManager
     {
         /** @var EmailAddress $emailAddress */
         $result = false;
-        $repository = $em->getRepository('OroEmailBundle:EmailAddress');
+        $repository = $this->getEmailAddressRepository($em);
 
         if (!empty($newEmail)) {
             $emailAddress = $this->findEmailAddress($newEmail, $repository);
@@ -185,7 +199,7 @@ class EmailAddressManager
     {
         /** @var EmailAddress $emailAddress */
         $result = false;
-        $repository = $em->getRepository('OroEmailBundle:EmailAddress');
+        $repository = $this->getEmailAddressRepository($em);
         foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
             $condition = array($fieldName => $owner);
             if ($email !== null) {
@@ -221,11 +235,34 @@ class EmailAddressManager
      */
     protected function createEmailAddress($email, EmailOwnerInterface $owner)
     {
-        $emailAddress = new EmailAddress();
+        $emailAddressClass = $this->getEmailAddressProxyClass();
+        /** @var EmailAddress $emailAddress */
+        $emailAddress = new $emailAddressClass();
         $emailAddress
             ->setEmail($email)
             ->setOwner($owner);
 
         return $emailAddress;
+    }
+
+    /**
+     * Get a repository for EmailAddress entity
+     *
+     * @param EntityManager $em
+     * @return EntityRepository
+     */
+    protected function getEmailAddressRepository(EntityManager $em)
+    {
+        return $em->getRepository($this->getEmailAddressProxyClass());
+    }
+
+    /**
+     * Get full class name of a proxy of EmailAddress entity
+     *
+     * @return string
+     */
+    protected function getEmailAddressProxyClass()
+    {
+        return sprintf('%s\%s', $this->entityCacheNamespace, sprintf($this->entityProxyNameTemplate, 'EmailAddress'));
     }
 }

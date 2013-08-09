@@ -32,6 +32,7 @@ services:
             - @oro_email.email.owner.provider.storage
             - %oro_email.entity.cache_dir%
             - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
         tags:
             - { name: kernel.cache_warmer, priority: 30 }
 
@@ -65,6 +66,8 @@ services:
         class: %oro_email.email.address.manager.class%
         arguments:
             - @oro_email.email.owner.provider.storage
+            - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
 
     oro_email.listener.entity_subscriber:
         public: false

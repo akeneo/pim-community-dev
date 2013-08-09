@@ -128,25 +128,4 @@ class EmailAddress
     {
         return $this;
     }
-
-    /**
-     * Pre persist event listener
-     *
-     * @ORM\PrePersist
-     */
-    public function beforeSave()
-    {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
-     * Pre update event listener
-     *
-     * @ORM\PreUpdate
-     */
-    public function beforeUpdate()
-    {
-        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
 }

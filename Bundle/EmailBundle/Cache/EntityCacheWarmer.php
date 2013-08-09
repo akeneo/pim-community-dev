@@ -26,13 +26,19 @@ class EntityCacheWarmer extends CacheWarmer
     private $entityCacheNamespace;
 
     /**
+     * @var string
+     */
+    private $entityProxyNameTemplate;
+
+    /**
      * Constructor.
      *
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param string $entityCacheDir
      * @param string $entityCacheNamespace
+     * @param string $entityProxyNameTemplate
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheDir, $entityCacheNamespace)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheDir, $entityCacheNamespace, $entityProxyNameTemplate)
     {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $this->emailOwnerClasses[count($this->emailOwnerClasses) + 1] = $provider->getEmailOwnerClass();
@@ -40,6 +46,7 @@ class EntityCacheWarmer extends CacheWarmer
 
         $this->entityCacheDir = $entityCacheDir;
         $this->entityCacheNamespace = $entityCacheNamespace;
+        $this->entityProxyNameTemplate = $entityProxyNameTemplate;
     }
 
     /**
@@ -95,7 +102,7 @@ class EntityCacheWarmer extends CacheWarmer
             );
         }
 
-        $className = 'EmailAddressProxy';
+        $className = sprintf($this->entityProxyNameTemplate, 'EmailAddress');
         $content = $twig->render(
             'EmailAddress.php.twig',
             array(
