@@ -93,8 +93,8 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
                 }
             }, this)
         });
-        this.widgetContent.remove();
         this.widget.remove();
+        Oro.widget.Abstract.prototype.remove.call(this);
     },
 
     handleStateChange: function(e, data) {
@@ -124,8 +124,8 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
     },
 
     remove: function() {
+        // Close will trigger call of closeHandler where Backbone.View.remove will be called
         this.widget.dialog('close');
-        Oro.widget.Abstract.prototype.remove.apply(this);
     },
 
     getWidget: function() {
@@ -166,9 +166,9 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
                 this.options.dialogOptions.position = this._getWindowPlacement();
             }
             this.options.dialogOptions.stateChange = _.bind(this.handleStateChange, this);
-            this.widget = this.widgetContent.dialog(this.options.dialogOptions);
+            this.widget = Backbone.$('<div/>').append(this.$el).dialog(this.options.dialogOptions);
         } else {
-            this.widget.html(this.widgetContent);
+            this.widget.html(this.$el);
         }
         Oro.widget.Abstract.prototype.show.apply(this);
     },

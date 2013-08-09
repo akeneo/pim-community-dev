@@ -940,6 +940,9 @@ footer{
     cursor: move;
   }
 }
+.ui-dialog #adopted button.btn{
+  margin-left: 5px;
+}
 .ui-dialog .ui-resizable-se{
   height: 14px;
   width: 14px;
@@ -4339,10 +4342,17 @@ button.btn.minimize-button i.icon-minimize-active{
   .map-address-list:hover{
     overflow: auto;
   }
-  .map-visual{
+  .map-visual-frame {
     float: left;
     width: 60%;
     height: 420px;
+  }
+  .map-visual{
+    border: 1px solid silver;
+    height: 250px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
     img{
       max-width:none;
     }
@@ -4375,4 +4385,13 @@ button.btn.minimize-button i.icon-minimize-active{
       padding: 0 6px;
     }
   }
+}
+.email-holder{
+  float: left;
+  .removeRow{
+    margin: 0;
+  }
+}
+#orocrm_contact_form .removeRow{
+  margin: 0 0 0 15px;
 }

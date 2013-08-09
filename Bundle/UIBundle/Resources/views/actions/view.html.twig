@@ -3,6 +3,16 @@
 {% set format = oro_config_value('oro_user.name_format') %}
 {% block content %}
 <div class="layout-content">
+    {{ block('content_navigation') }}
+    <div class="layout-content scrollable-container">
+        {% block content_data %}
+            {{ UI.scrollData(id, data) }}
+        {% endblock content_data %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block content_navigation %}
     <div class="navigation clearfix navbar-extra navbar-extra-right">
         <div class="row">
             <div class="pull-right">
@@ -54,10 +64,4 @@
             </div>
         </div>
     </div>
-    <div class="layout-content">
-        {% block content_data %}
-            {{ UI.scrollData(id, data) }}
-        {% endblock content_data %}
-    </div>
-</div>
-{% endblock content %}
+{% endblock content_navigation %}

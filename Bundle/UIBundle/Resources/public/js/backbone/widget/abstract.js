@@ -19,6 +19,11 @@ Oro.widget.Abstract = Backbone.View.extend({
         console.warn('Implement getActionsElement');
     },
 
+    remove: function() {
+        Oro.widget.Manager.removeWidget(this.getWid());
+        Backbone.View.prototype.remove.call(this);
+    },
+
     /**
      * Initialize
      */
@@ -26,7 +31,6 @@ Oro.widget.Abstract = Backbone.View.extend({
         if (this.options.wid) {
             this._wid = this.options.wid;
         }
-        this.widgetContent = this.$el;
 
         this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
         this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
@@ -94,7 +98,7 @@ Oro.widget.Abstract = Backbone.View.extend({
     _getAdoptedActionsContainer: function() {
         if (this.options.actionsEl !== undefined) {
             if (typeof this.options.actionsEl == 'string') {
-                return this.widgetContent.find(this.options.actionsEl);
+                return this.$el.find(this.options.actionsEl);
             } else if (_.isElement(this.options.actionsEl )) {
                 return this.options.actionsEl;
             }
@@ -261,7 +265,7 @@ Oro.widget.Abstract = Backbone.View.extend({
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
-                this.widgetContent = $('<div/>').html(content);
+                this.setElement($(content));
                 this._show();
             } catch (error) {
                 // Remove state with unrestorable content
@@ -278,9 +282,13 @@ Oro.widget.Abstract = Backbone.View.extend({
     },
 
     show: function() {
-        this.widgetContent.attr('data-wid', this.getWid());
+        this.$el.attr('data-wid', this.getWid());
         this._renderActions();
-        this.widgetContent.trigger('widgetize', this);
-        this.trigger('widgetRender', this.widgetContent, this);
+        if (this.$el.hasClass('widget-content')) {
+            this.$el.trigger('widgetize', this);
+        } else {
+            this.$el.find('.widget-content').trigger('widgetize', this);
+        }
+        this.trigger('widgetRender', this.$el, this);
     }
 });
