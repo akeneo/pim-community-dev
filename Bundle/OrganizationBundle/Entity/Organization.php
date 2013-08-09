@@ -13,7 +13,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="oro_organization")
  * @ORM\Entity
- * @Configurable(defaultValues={"entity"={"label"="Organization", "plural_label"="Organizations"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Organization", "plural_label"="Organizations"},
+ *      "acl"={"owner_type"="ORGANIZATION"}
+ *  }
+ * )
  */
 class Organization
 {
@@ -146,7 +151,7 @@ class Organization
      */
     public function getOwner()
     {
-        return $this->organizationOwners;
+        return $this->organizationOwner;
     }
 
     /**

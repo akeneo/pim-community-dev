@@ -20,8 +20,10 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
  * @Configurable(
- *      routeName="oro_user_group_index",
- *      defaultValues={"entity"={"icon"="group","label"="Group", "plural_label"="Groups"}}
+ *  defaultValues={
+ *      "entity"={"icon"="group","label"="Group","owner_type"="BUSINESS_UNIT","plural_label"="Groups"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
  * )
  * @Extend
  */

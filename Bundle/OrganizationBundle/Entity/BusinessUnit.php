@@ -18,7 +18,12 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(defaultValues={"entity"={"label"="Business Unit", "plural_label"="Business Units"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class BusinessUnit
 {

@@ -15,7 +15,12 @@ use Oro\Bundle\UserBundle\Entity\User;
  *
  * @ORM\Table("oro_notification_emailnotification")
  * @ORM\Entity(repositoryClass="Oro\Bundle\NotificationBundle\Entity\Repository\EmailNotificationRepository")
- * @Configurable(defaultValues={"entity"={"label"="Email Notification", "plural_label"="Email Notifications"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Email Notification", "plural_label"="Email Notifications"},
+ *      "acl"={"owner_type"="NONE"}
+ *  }
+ * )
  */
 class EmailNotification
 {

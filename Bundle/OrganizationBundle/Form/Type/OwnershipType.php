@@ -10,10 +10,10 @@ class OwnershipType extends AbstractType
 {
     const NAME = 'oro_type_choice_ownership_type';
 
-    const OWNERSHIP_TYPE_NONE = 0;
-    const OWNERSHIP_TYPE_USER = 1;
-    const OWNERSHIP_TYPE_BUSINESS_UNIT = 2;
-    const OWNERSHIP_TYPE_ORGANIZATION = 3;
+    const OWNERSHIP_TYPE_NONE = 'NONE';
+    const OWNERSHIP_TYPE_USER = 'USER';
+    const OWNERSHIP_TYPE_BUSINESS_UNIT = 'BUSINESS_UNIT';
+    const OWNERSHIP_TYPE_ORGANIZATION = 'ORGANIZATION';
 
     /**
      * @param TranslatorInterface $translator

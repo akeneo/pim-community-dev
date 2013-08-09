@@ -22,7 +22,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
  * @ORM\Table(name="oro_access_role")
- * @Configurable(defaultValues={"entity"={"label"="Role", "plural_label"="Roles"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Role", "plural_label"="Roles"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class Role implements RoleInterface
 {

@@ -41,7 +41,12 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(defaultValues={"entity"={"label"="User", "plural_label"="Users"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="User", "plural_label"="Users"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
