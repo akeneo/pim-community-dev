@@ -25,6 +25,7 @@ use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
@@ -49,7 +50,8 @@ class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
-    Taggable
+    Taggable,
+    EmailOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -360,6 +362,26 @@ class User extends AbstractEntityFlexible implements
     public function eraseCredentials()
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * Get entity class name.
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return 'Oro\Bundle\UserBundle\Entity\User';
+    }
+
+    /**
+     * Get name of field contains the primary email address
+     *
+     * @return string
+     */
+    public function getPrimaryEmailField()
+    {
+        return 'email';
     }
 
     /**

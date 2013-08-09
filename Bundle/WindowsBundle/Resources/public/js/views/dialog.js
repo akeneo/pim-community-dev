@@ -11,6 +11,7 @@ Oro.widget.DialogView = Backbone.View.extend({
     },
     actions: null,
     firstRun: true,
+    contentTop: null,
 
     // Windows manager global variables
     windowsPerRow: 10,
@@ -25,7 +26,7 @@ Oro.widget.DialogView = Backbone.View.extend({
      * Initialize dialog
      */
     initialize: function(options) {
-        options = options || {}
+        options = options || {};
         options.dialogOptions = options.dialogOptions || {};
         options.dialogOptions.limitTo = options.dialogOptions.limitTo || '#container';
 
@@ -179,6 +180,11 @@ Oro.widget.DialogView = Backbone.View.extend({
      * Render dialog
      */
     render: function() {
+        // Arrange navigation before an dialog opens
+        if (!_.isUndefined(Oro.hashNavigationInstance) && Oro.hashNavigationEnabled()) {
+            Oro.hashNavigationInstance.hideActiveDropdowns();
+        }
+
         var loadAllowed = this.$el.html().length == 0 || !this.options.elementFirst || (this.options.elementFirst && !this.firstRun);
         if (loadAllowed && this.options.url !== false) {
             this.loadContent();
@@ -240,6 +246,39 @@ Oro.widget.DialogView = Backbone.View.extend({
         }
 
         this.adoptActions();
+        this.adjustHeight();
+
+        // Processing links in dialog
+        if (!_.isUndefined(Oro.hashNavigationInstance) && Oro.hashNavigationEnabled()) {
+            Oro.hashNavigationInstance.processClicks($(this.dialogContent).find(Oro.hashNavigationInstance.selectors.links));
+        }
+    },
+
+    adjustHeight: function() {
+        var content = this.widget.find('.scrollable-container');
+
+        // first execute
+        if (_.isNull(this.contentTop)) {
+            content.css('overflow', 'auto');
+
+            var parentEl = content.parent();
+            var topPaddingOffset = parentEl.is(this.widget)?0:parentEl.position().top;
+            this.contentTop = content.position().top + topPaddingOffset;
+            var widgetHeight = this.widget.height();
+            content.outerHeight(this.widget.height() - this.contentTop);
+            if (widgetHeight != this.widget.height()) {
+                // there is some unpredictable offset
+                this.contentTop += this.widget.height() - this.contentTop - content.outerHeight();
+                content.outerHeight(this.widget.height() - this.contentTop);
+            }
+            this.widget.on("dialogresize", _.bind(this.adjustHeight, this));
+
+        }
+
+        content.each(_.bind(function(i, el){
+            var $el = $(el);
+            $el.outerHeight(this.widget.height() - this.contentTop);
+        },this));
     },
 
     /**
