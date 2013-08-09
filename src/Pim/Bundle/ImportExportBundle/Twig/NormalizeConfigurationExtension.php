@@ -52,7 +52,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             return $value ? 'Yes' : 'No';
         }
 
-        if (!$value) {
+        if (null === $value) {
             return 'N/A';
         }
 

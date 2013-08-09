@@ -34,7 +34,9 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
             array(true, 'Yes'),
             array(false, 'No'),
             array('foo', 'foo'),
+            array(0, 0),
             array(1, 1),
+            array(2, 2),
             array(null, 'N/A')
         );
     }
