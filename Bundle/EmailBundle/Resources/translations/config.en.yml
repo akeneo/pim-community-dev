@@ -1,0 +1,4 @@
+entity:
+    email:
+        name:           Email
+        description:    Email message

@@ -4142,3 +4142,23 @@ button.btn.minimize-button i.icon-minimize-active{
 #pin-button-div{
   float:right;
 }
+
+pre.email-body {
+  width: 99%;
+  min-height: 5em;
+}
+iframe.email-body {
+  width: 99%;
+  min-height: 5em;
+  height: 25em;
+  #font > #family > .monospace;
+  color: @grayDark;
+  padding: (@baseLineHeight - 1) / 2;
+  margin: 0 0 @baseLineHeight / 2;
+  font-size: @baseFontSize - 1; // 14px to 13px
+  line-height: @baseLineHeight;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc; // fallback for IE7-8
+  border: 1px solid rgba(0,0,0,.15);
+  .border-radius(@baseBorderRadius);
+}
