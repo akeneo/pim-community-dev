@@ -2,7 +2,6 @@ js:
   pim_ui:
     - '@PimUIBundle/Resources/public/js/jquery.actual.min.js'
     # - '@PimUIBundle/Resources/public/js/pim_all.js'
-    - '@PimUIBundle/Resources/public/js/select2.js'
     - '@PimUIBundle/Resources/public/js/jquery.sidebarize.js'
     - '@PimUIBundle/Resources/public/js/slimbox2.js'
     - '@PimUIBundle/Resources/public/js/jquery.dialogForm.js'
@@ -21,7 +20,6 @@ css:
   pim_ui:
     - 'bundles/pimui/css/pim.less'
     - 'bundles/pimui/css/bootstrap-datetimepicker.min.css'
-    - 'bundles/pimui/css/select2.css'
     - 'bundles/pimui/css/slimbox2.css'
     - 'bundles/pimui/css/font-awesome/font-awesome.min.css'
     - 'bundles/pimui/css/flags.css'
