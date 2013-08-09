@@ -15,9 +15,9 @@ class AddressTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $buildAddressFormListener = $this->getMockBuilder('Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $buildAddressFormListener = $this->getMockBuilder(
+            'Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber'
+        )->disableOriginalConstructor()->getMock();
 
         $this->type = new AddressType($buildAddressFormListener);
     }

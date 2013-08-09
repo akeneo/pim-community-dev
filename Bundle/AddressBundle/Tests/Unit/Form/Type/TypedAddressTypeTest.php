@@ -19,13 +19,32 @@ class TypedAddressTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new TypedAddressType();
     }
 
-    public function testBuildForm()
+    /**
+     * @dataProvider buildFormDataProvider
+     *
+     * @param array $options
+     * @param bool $expectAddSubscriber
+     */
+    public function testBuildForm(array $options, $expectAddSubscriber)
     {
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->at(0))
+        $at = 0;
+
+        if ($expectAddSubscriber) {
+            $builder->expects($this->at($at++))
+                ->method('addEventSubscriber')
+                ->with(
+                    $this->isInstanceOf(
+                        'Oro\Bundle\AddressBundle\Form\EventListener\FixAddressesPrimaryAndTypesSubscriber'
+                    )
+                )
+                ->will($this->returnSelf());
+        }
+
+        $builder->expects($this->at($at++))
             ->method('add')
             ->with(
                 'types',
@@ -40,7 +59,7 @@ class TypedAddressTypeTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnSelf());
 
-        $builder->expects($this->at(1))
+        $builder->expects($this->at($at++))
             ->method('add')
             ->with(
                 'primary',
@@ -52,7 +71,34 @@ class TypedAddressTypeTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnSelf());
 
-        $this->type->buildForm($builder, array());
+        $this->type->buildForm($builder, $options);
+    }
+
+    public function buildFormDataProvider()
+    {
+        return array(
+            array(
+                'options' => array(
+                    'single_form' => false,
+                    'all_addresses_property_path' => null,
+                ),
+                'expectAddSubscriber' => false
+            ),
+            array(
+                'options' => array(
+                    'single_form' => true,
+                    'all_addresses_property_path' => null,
+                ),
+                'expectAddSubscriber' => false
+            ),
+            array(
+                'options' => array(
+                    'single_form' => true,
+                    'all_addresses_property_path' => 'owner.addresses',
+                ),
+                'expectAddSubscriber' => true
+            )
+        );
     }
 
     public function testGetParent()
