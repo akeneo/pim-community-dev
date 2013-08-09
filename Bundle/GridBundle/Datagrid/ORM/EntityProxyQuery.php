@@ -8,7 +8,7 @@ use Doctrine\ORM\Query;
 class EntityProxyQuery extends ProxyQuery
 {
     /**
-     * Get records total count
+     * Get the total number of records
      *
      * @return int
      */

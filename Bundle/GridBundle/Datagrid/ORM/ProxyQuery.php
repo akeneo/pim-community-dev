@@ -57,7 +57,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
-     * Get total records count
+     * Get the total number of records
      *
      * @return int
      */
