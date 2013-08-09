@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -63,7 +64,7 @@ class ConfigEntityGridController extends Controller
         $form = $this->createForm(
             new UniqueKeyCollectionType(
                 array_filter($fieldConfigIds,
-                    function (FieldConfigId $fieldConfigId) {
+                    function (FieldConfigIdInterface $fieldConfigId) {
                         return $fieldConfigId->getFieldType() != 'ref-many';
                     }
                 )
@@ -135,9 +136,21 @@ class ConfigEntityGridController extends Controller
      */
     public function createAction()
     {
-        $entityModel = new EntityConfigModel;
-        $form        = $this->createForm(new EntityType(), $entityModel);
-        $request     = $this->getRequest();
+        $request = $this->getRequest();
+
+        /** @var ConfigManager $configManager */
+        $configManager  = $this->get('oro_entity_config.config_manager');
+        $entityModel = $configManager->createConfigEntityModel('', true);
+        $extendConfig   = $configManager->getProvider('extend')->getConfig('');
+        $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+        $extendConfig->set('is_extend', true);
+
+        $form = $this->createForm('oro_entity_config_type', null, array(
+            'config_model' => $entityModel,
+        ));
+
+        var_dump($form->get('className')->getConfig()->getOptions());
+        die;
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);

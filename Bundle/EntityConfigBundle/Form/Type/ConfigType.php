@@ -35,6 +35,7 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $configModel = $options['config_model'];
+        $data        = array();
 
         if ($configModel instanceof FieldConfigModel) {
             $className  = $configModel->getEntity()->getClassName();
@@ -46,9 +47,14 @@ class ConfigType extends AbstractType
             $fieldName  = null;
             $fieldType  = null;
             $configType = PropertyConfigContainer::TYPE_ENTITY;
-        }
 
-        $data = array();
+            $builder->add('className', 'text', array(
+                'read_only' => true,
+                'block'     => 'entity',
+                'required'  => false
+            ));
+            $data['className'] = $className;
+        }
 
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getPropertyConfig()->hasForm($configType, $fieldType)) {
@@ -56,7 +62,7 @@ class ConfigType extends AbstractType
                     $provider->getScope(),
                     new ConfigScopeType($provider->getPropertyConfig()->getFormItems($configType, $fieldType)),
                     array(
-                        'block_config' => (array)$provider->getPropertyConfig()->getFormBlockConfig($configType)
+                        'block_config' => (array) $provider->getPropertyConfig()->getFormBlockConfig($configType)
                     )
                 );
                 $data[$provider->getScope()] = $provider->getConfig($className, $fieldName)->getValues();

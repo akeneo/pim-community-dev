@@ -9,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
@@ -110,7 +111,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function createConfig(ConfigIdInterface $configId, array $values)
     {
         $config = new Config($configId);
-        $type   = $configId instanceof FieldConfigId
+        $type   = $configId instanceof FieldConfigIdInterface
             ? PropertyConfigContainer::TYPE_FIELD
             : PropertyConfigContainer::TYPE_ENTITY;
         $values = array_merge($this->getPropertyConfig()->getDefaultValues($type), $values);
@@ -189,7 +190,7 @@ class ConfigProvider implements ConfigProviderInterface
 
         if (!is_string($className)) {
             throw new RuntimeException(
-                'AbstractAdvancedConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
+                'ConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
             );
         }
 

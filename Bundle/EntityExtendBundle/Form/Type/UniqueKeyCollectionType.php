@@ -5,13 +5,14 @@ namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyType;
 
 class UniqueKeyCollectionType extends AbstractType
 {
     /**
-     * @var FieldConfigId[]
+     * @var FieldConfigIdInterface[]
      */
     protected $fields;
 

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 class PropertyConfigContainer
 {
@@ -233,7 +233,7 @@ class PropertyConfigContainer
     protected function getConfigType($type)
     {
         if ($type instanceof ConfigIdInterface) {
-            return $type instanceof FieldConfigId
+            return $type instanceof FieldConfigIdInterface
                 ? PropertyConfigContainer::TYPE_FIELD
                 : PropertyConfigContainer::TYPE_ENTITY;
         }

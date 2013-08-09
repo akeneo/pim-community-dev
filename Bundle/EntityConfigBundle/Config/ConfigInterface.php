@@ -12,27 +12,26 @@ interface ConfigInterface extends \Serializable
     public function getConfigId();
 
     /**
-     * @param       $code
-     * @param  bool $strict
-     * @return string
+     * @param  string $code
+     * @param  bool   $strict
+     * @return mixed
      */
     public function get($code, $strict = false);
 
     /**
-     * @param $code
-     * @param $value
-     * @return string
+     * @param string $code
+     * @param mixed  $value
      */
     public function set($code, $value);
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function has($code);
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function is($code);

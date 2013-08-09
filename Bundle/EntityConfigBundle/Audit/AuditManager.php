@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Audit;
 
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
@@ -10,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 class AuditManager
@@ -52,7 +53,7 @@ class AuditManager
         }
 
         if ($log->getDiffs()->count()) {
-            $this->configManager->em()->persist($log);
+            $this->configManager->getEntityManager()->persist($log);
         }
     }
 
@@ -79,7 +80,7 @@ class AuditManager
         $diff->setDiff($changes);
         $diff->setClassName($configId->getClassName());
 
-        if ($configId instanceof FieldConfigId) {
+        if ($configId instanceof FieldConfigIdInterface) {
             $diff->setFieldName($configId->getFieldName());
         }
 
@@ -91,10 +92,12 @@ class AuditManager
      */
     protected function getUser()
     {
-        if (!$this->security->getService()->getToken() || !$this->security->getService()->getToken()->getUser()) {
+        /** @var SecurityContext $security */
+        $security = $this->security->getService();
+        if (!$security->getToken() || !$security->getToken()->getUser()) {
             return false;
         }
 
-        return $this->security->getService()->getToken()->getUser();
+        return $security->getToken()->getUser();
     }
 }

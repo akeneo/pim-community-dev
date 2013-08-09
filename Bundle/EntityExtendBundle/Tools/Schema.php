@@ -5,8 +5,8 @@ namespace Oro\Bundle\EntityExtendBundle\Tools;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -64,10 +64,10 @@ class Schema
     }
 
     /**
-     * @param $fieldId FieldConfigId
+     * @param $fieldId FieldConfigIdInterface
      * @return bool
      */
-    public function checkFieldIsSystem(FieldConfigId $fieldId)
+    public function checkFieldIsSystem(FieldConfigIdInterface $fieldId)
     {
         $isSystem = false;
         $metadata = $this->em->getClassMetadata($fieldId->getClassName());
@@ -79,10 +79,10 @@ class Schema
     }
 
     /**
-     * @param $fieldId FieldConfigId
+     * @param $fieldId FieldConfigIdInterface
      * @return bool
      */
-    public function checkFieldCanDelete(FieldConfigId $fieldId)
+    public function checkFieldCanDelete(FieldConfigIdInterface $fieldId)
     {
         $canDelete = false;
 

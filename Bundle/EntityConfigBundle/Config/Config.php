@@ -37,16 +37,18 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param                   $code
-     * @param  bool             $strict
+     * @param string $code
+     * @param bool   $strict
      * @throws RuntimeException
-     * @return string
+     * @return mixed|null
      */
     public function get($code, $strict = false)
     {
         if (isset($this->values[$code])) {
             return $this->values[$code];
-        } elseif ($strict) {
+        }
+
+        if ($strict) {
             throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getConfigId()));
         }
 
@@ -54,9 +56,9 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param $code
-     * @param $value
-     * @return string
+     * @param string $code
+     * @param mixed  $value
+     * @return $this
      */
     public function set($code, $value)
     {
@@ -66,7 +68,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function has($code)
@@ -75,7 +77,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function is($code)
@@ -89,11 +91,7 @@ class Config implements ConfigInterface
      */
     public function getValues(\Closure $filter = null)
     {
-        if ($filter) {
-            return array_filter($this->values, $filter);
-        }
-
-        return $this->values;
+        return $filter ? array_filter($this->values, $filter) : $this->values;
     }
 
     /**
@@ -112,10 +110,7 @@ class Config implements ConfigInterface
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->id,
-            $this->values,
-        ));
+        return serialize(array($this->id, $this->values));
     }
 
     /**
@@ -123,10 +118,7 @@ class Config implements ConfigInterface
      */
     public function unserialize($serialized)
     {
-        list(
-            $this->id,
-            $this->values,
-            ) = unserialize($serialized);
+        list($this->id, $this->values) = unserialize($serialized);
     }
 
     /**
@@ -135,8 +127,11 @@ class Config implements ConfigInterface
     public function __clone()
     {
         $this->id     = clone $this->id;
-        $this->values = array_map(function ($value) {
-            return is_object($value) ? clone $value : $value;
-        }, $this->values);
+        $this->values = array_map(
+            function ($value) {
+                return is_object($value) ? clone $value : $value;
+            },
+            $this->values
+        );
     }
 }

@@ -2,17 +2,16 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 class UniqueKeyType extends AbstractType
 {
     /**
-     * @var FieldConfigId[]
+     * @var FieldConfigIdInterface[]
+
      */
     protected $fields;
 
@@ -24,7 +23,7 @@ class UniqueKeyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array_map(
-            function (FieldConfigId $field) {
+            function (FieldConfigIdInterface $field) {
                 return ucfirst($field->getFieldName());
             },
             $this->fields

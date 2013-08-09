@@ -124,7 +124,7 @@ class ConfigManager
     /**
      * @return EntityManager
      */
-    public function em()
+    public function getEntityManager()
     {
         return $this->proxyEm->getService();
     }
@@ -185,8 +185,8 @@ class ConfigManager
      */
     public function checkDatabase()
     {
-        $tables = $this->em()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->em()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
+        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames();
+        $table  = $this->getEntityManager()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
 
         return in_array($table, $tables);
     }
@@ -228,7 +228,7 @@ class ConfigManager
      */
     public function getEntityConfigIds($scope)
     {
-        $entityConfigRepo = $this->em()->getRepository(EntityConfigModel::ENTITY_NAME);
+        $entityConfigRepo = $this->getEntityManager()->getRepository(EntityConfigModel::ENTITY_NAME);
 
         return array_map(function (EntityConfigModel $entityModel) use ($scope) {
             return new EntityConfigId($entityModel->getClassName(), $scope);
@@ -329,7 +329,10 @@ class ConfigManager
                 $this->configs[$config->getConfigId()->getId()] = clone $config;
             }
 
-            $this->eventDispatcher->dispatch(Events::NEW_ENTITY_CONFIG_MODEL, new NewEntityConfigModelEvent($entityModel, $this));
+            $this->eventDispatcher->dispatch(
+                Events::NEW_ENTITY_CONFIG_MODEL,
+                new NewEntityConfigModelEvent($entityModel, $this)
+            );
         }
 
         return $entityModel;
@@ -430,10 +433,10 @@ class ConfigManager
         $this->auditManager->log();
 
         foreach ($models as $model) {
-            $this->em()->persist($model);
+            $this->getEntityManager()->persist($model);
         }
 
-        $this->em()->flush();
+        $this->getEntityManager()->flush();
 
         $this->persistConfigs =
         $this->originalConfigs =
@@ -533,8 +536,8 @@ class ConfigManager
             return $this->models[$id];
         }
 
-        $entityConfigRepo = $this->em()->getRepository(EntityConfigModel::ENTITY_NAME);
-        $fieldConfigRepo  = $this->em()->getRepository(FieldConfigModel::ENTITY_NAME);
+        $entityConfigRepo = $this->getEntityManager()->getRepository(EntityConfigModel::ENTITY_NAME);
+        $fieldConfigRepo  = $this->getEntityManager()->getRepository(FieldConfigModel::ENTITY_NAME);
 
         $result = $entity = $entityConfigRepo->findOneBy(array('className' => $className));
 
