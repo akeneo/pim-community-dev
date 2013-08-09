@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Csv reader
@@ -14,6 +15,9 @@ use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
  */
 class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
+    /**
+     * @Assert\File(groups={"Execution"})
+     */
     protected $filePath;
     protected $lineLength = 0;
     protected $delimiter = ';';
