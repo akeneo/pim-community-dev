@@ -13,6 +13,8 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class AbstractAddress implements EmptyItem
 {
@@ -493,5 +495,29 @@ abstract class AbstractAddress implements EmptyItem
             && empty($this->stateText)
             && empty($this->country)
             && empty($this->postalCode);
+    }
+
+    /**
+     * @param mixed $other
+     * @return bool
+     */
+    public function isEqual($other)
+    {
+        $class = get_class($this);
+
+        if (!$other instanceof $class) {
+            return false;
+        }
+
+        /** @var AbstractAddress $other */
+        if ($this->getId() && $other->getId()) {
+            return $this->getId() == $other->getId();
+        }
+
+        if (!$this->getId() || $other->getId()) {
+            return false;
+        }
+
+        return $this === $other;
     }
 }

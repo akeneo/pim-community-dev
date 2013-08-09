@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\AddressBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener;
+use Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber;
 use Symfony\Component\Form\FormEvents;
 
-class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
+class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Doctrine\Common\Persistence\ObjectManager */
     protected $om;
@@ -14,9 +14,9 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
     protected $formBuilder;
 
     /**
-     * @var BuildAddressFormListener
+     * @var AddressCountryAndRegionSubscriber
      */
-    protected $listener;
+    protected $subscriber;
 
     /**
      * SetUp test environment
@@ -26,12 +26,12 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->formBuilder = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
 
-        $this->listener = new BuildAddressFormListener($this->om, $this->formBuilder);
+        $this->subscriber = new AddressCountryAndRegionSubscriber($this->om, $this->formBuilder);
     }
 
     public function testGetSubscribedEvents()
     {
-        $result = $this->listener->getSubscribedEvents();
+        $result = $this->subscriber->getSubscribedEvents();
 
         $this->assertInternalType('array', $result);
         $this->assertArrayHasKey(FormEvents::PRE_SET_DATA, $result);
@@ -50,7 +50,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $eventMock->expects($this->once())
             ->method('getForm');
 
-        $this->assertEquals(null, $this->listener->preSetData($eventMock));
+        $this->assertEquals(null, $this->subscriber->preSetData($eventMock));
     }
 
     public function testPreSetDataEmptyCountry()
@@ -70,7 +70,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
         $eventMock->expects($this->once())
             ->method('getForm');
 
-        $this->assertEquals(null, $this->listener->preSetData($eventMock));
+        $this->assertEquals(null, $this->subscriber->preSetData($eventMock));
     }
 
     public function testPreSetDataHasState()
@@ -133,7 +133,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($formMock));
 
-        $this->assertNull($this->listener->preSetData($eventMock));
+        $this->assertNull($this->subscriber->preSetData($eventMock));
     }
 
     public function testPreSetDataNoState()
@@ -181,7 +181,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($formMock));
 
-        $this->assertNull($this->listener->preSetData($eventMock));
+        $this->assertNull($this->subscriber->preSetData($eventMock));
     }
 
     public function testPreSubmitData()
@@ -243,6 +243,6 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($formMock));
 
-        $this->assertEquals(null, $this->listener->preSubmit($eventMock));
+        $this->assertEquals(null, $this->subscriber->preSubmit($eventMock));
     }
 }

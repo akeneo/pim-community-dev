@@ -21,8 +21,10 @@ OroAddressBundle provides form types to render address entities on forms.
 name is "oro_address_collection";
 * **Form \ Type \ CountryType** - form type for Country entity, name is "oro_country";
 * **Form \ Type \ RegionType** - form type fot Region entity, name is "oro_region";
-* **Form \ EventListener \ BuildAddressFormListener** - responsible for processing relation
+* **Form \ EventListener \ AddressCountryAndRegionSubscriber** - responsible for processing relation
 between countries and regions on address form;
+* **Form \ EventListener \ FixAddressPrimaryAndTypesSubscriber** - responsible for processing single address submit
+to respect rules of single primary address and uniqueness types of addresses;
 * **Form \ EventListener \ AddressCollectionTypeSubscriber** - responsible for processing
 of address elements at address collection form;
 * **Form \ Handler \ AddressHandler** - processes save for Address entity using specified form.

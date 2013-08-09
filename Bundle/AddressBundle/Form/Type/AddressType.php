@@ -6,21 +6,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener;
+use Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber;
 
 class AddressType extends AbstractType
 {
     /**
-     * @var BuildAddressFormListener
+     * @var AddressCountryAndRegionSubscriber
      */
-    private $eventListener;
+    private $countryAndRegionSubscriber;
 
     /**
-     * @param BuildAddressFormListener $eventListener
+     * @param AddressCountryAndRegionSubscriber $eventListener
      */
-    public function __construct(BuildAddressFormListener $eventListener)
+    public function __construct(AddressCountryAndRegionSubscriber $eventListener)
     {
-        $this->eventListener = $eventListener;
+        $this->countryAndRegionSubscriber = $eventListener;
     }
 
     /**
@@ -28,7 +28,7 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber($this->eventListener);
+        $builder->addEventSubscriber($this->countryAndRegionSubscriber);
 
         $builder
             ->add('id', 'hidden')
@@ -54,6 +54,7 @@ class AddressType extends AbstractType
                 'data_class'           => 'Oro\Bundle\AddressBundle\Entity\Address',
                 'intention'            => 'address',
                 'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+                'single_form'          => true
             )
         );
     }

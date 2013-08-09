@@ -1,5 +1,5 @@
 parameters:
-    oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener
+    oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber
 
     oro_address.form.type.item_collection.class: Oro\Bundle\AddressBundle\Form\Type\ItemCollectionType
 

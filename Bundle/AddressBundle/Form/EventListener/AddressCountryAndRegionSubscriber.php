@@ -5,13 +5,12 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
 
-class BuildAddressFormListener implements EventSubscriberInterface
+class AddressCountryAndRegionSubscriber implements EventSubscriberInterface
 {
     private $om;
 
