@@ -19,17 +19,6 @@
 
 {% block head_script_component %}
     {{ parent() }}
-
-    {% javascripts
-        '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
-        '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-
-        filter='?yui_js'
-        output='js/pim.multiselect.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
     <script type="text/javascript">
     $(function() {
         "use strict";
