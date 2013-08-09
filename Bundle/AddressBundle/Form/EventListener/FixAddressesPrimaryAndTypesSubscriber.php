@@ -60,9 +60,7 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
          */
         if ($address->isPrimary()) {
             foreach ($allAddresses as $otherAddresses) {
-                if (!$address->isEqual($otherAddresses)) {
-                    $otherAddresses->setPrimary(false);
-                }
+                $otherAddresses->setPrimary(false);
             }
             $address->setPrimary(true);
         } elseif (count($allAddresses) == 1) {
@@ -75,11 +73,12 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
         $types = $address->getTypes();
         if (count($types)) {
             foreach ($allAddresses as $otherAddresses) {
-                if (!$address->isEqual($otherAddresses)) {
-                    foreach ($types as $type) {
-                        $otherAddresses->removeType($type);
-                    }
+                foreach ($types as $type) {
+                    $otherAddresses->removeType($type);
                 }
+            }
+            foreach ($types as $type) {
+                $address->addType($type);
             }
         }
     }
