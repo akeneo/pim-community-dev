@@ -38,9 +38,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $subscriber  = new AddAttributeRequirementsSubscriber($channels, $attributes);
 
         $existingRequirement = $this->getAttributeRequirementMock($name, $mobile);
-        $family->setAttributeRequirements(array(
-            $existingRequirement
-        ));
+        $family->setAttributeRequirements(array($existingRequirement));
 
         $subscriber->preSetData($event);
 

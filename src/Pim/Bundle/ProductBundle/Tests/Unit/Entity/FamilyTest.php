@@ -165,27 +165,36 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     public function testGetAttributeRequirements()
     {
         $family               = new Family();
-        $mobileName           = $this->getAttributeRequirementMock('mobile',    'name');
-        $mobileDescription    = $this->getAttributeRequirementMock('mobile',    'description');
+        $mobileName           = $this->getAttributeRequirementMock('mobile', 'name');
+        $mobileDescription    = $this->getAttributeRequirementMock('mobile', 'description');
         $ecommerceName        = $this->getAttributeRequirementMock('ecommerce', 'name');
         $ecommerceDescription = $this->getAttributeRequirementMock('ecommerce', 'description');
 
-        $family->setAttributeRequirements(array(
-            $mobileName, $mobileDescription, $ecommerceName, $ecommerceDescription
-        ));
+        $family->setAttributeRequirements(
+            array(
+                $mobileName,
+                $mobileDescription,
+                $ecommerceName,
+                $ecommerceDescription
+            )
+        );
 
-        $this->assertEquals(array(
-            'name_mobile'           => $mobileName,
-            'description_mobile'    => $mobileDescription,
-            'name_ecommerce'        => $ecommerceName,
-            'description_ecommerce' => $ecommerceDescription,
-        ), $family->getAttributeRequirements());
+        $this->assertEquals(
+            array(
+                'name_mobile'           => $mobileName,
+                'description_mobile'    => $mobileDescription,
+                'name_ecommerce'        => $ecommerceName,
+                'description_ecommerce' => $ecommerceDescription,
+            ),
+            $family->getAttributeRequirements()
+        );
     }
 
     /**
      * Get product attribute mock with attribute type
      *
      * @param string $type
+     * @param string $code
      *
      * @return Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
