@@ -546,7 +546,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $value = $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field));
 
-        return $this->getSession()->getPage()->fillField($field, $value);
+        return $this->getCurrentPage()->fillField($field, $value);
     }
 
     /**
@@ -1379,10 +1379,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         switch (strtolower($field)) {
             case 'family edit.code':
                 return 'inv@lid';
-            case 'attribute creation.name':
+            case 'attribute creation.code':
                 return $this->lorem(20);
             case 'attribute creation.description':
                 return $this->lorem(256);
+            default:
+                return '!@#-?_'.$this->lorem(250);
         }
     }
 
