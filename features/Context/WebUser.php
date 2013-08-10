@@ -1090,6 +1090,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewExport($exportTitle)
     {
         $this->getPage('Export index')->clickExportCreationLink($exportTitle);
+        $this->wait();
         $this->currentPage = 'Export creation';
     }
 
