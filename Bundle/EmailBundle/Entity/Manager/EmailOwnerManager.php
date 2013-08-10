@@ -1,20 +1,20 @@
 <?php
 
-namespace Oro\Bundle\EmailBundle\EventListener;
+namespace Oro\Bundle\EmailBundle\Entity\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
 /**
- * This class responsible for configuration of EmailAddress entity and binging it to owner entities
+ * This class responsible for binging EmailAddress to owner entities
  */
-class EmailAddressManager
+class EmailOwnerManager
 {
     /**
      * A list of class names of all email owners
@@ -24,30 +24,23 @@ class EmailAddressManager
     protected $emailOwnerClasses = array();
 
     /**
-     * @var string
+     * @var EmailAddressManager
      */
-    private $entityCacheNamespace;
-
-    /**
-     * @var string
-     */
-    private $entityProxyNameTemplate;
+    private $emailAddressManager;
 
     /**
      * Constructor.
      *
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
-     * @param string $entityCacheNamespace
-     * @param string $entityProxyNameTemplate
+     * @param EmailAddressManager $emailAddressManager
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheNamespace, $entityProxyNameTemplate)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, EmailAddressManager $emailAddressManager)
     {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $fieldName = sprintf('owner%d', count($this->emailOwnerClasses) + 1);
             $this->emailOwnerClasses[$fieldName] = $provider->getEmailOwnerClass();
         }
-        $this->entityCacheNamespace = $entityCacheNamespace;
-        $this->entityProxyNameTemplate = $entityProxyNameTemplate;
+        $this->emailAddressManager = $emailAddressManager;
     }
 
     /**
@@ -162,12 +155,11 @@ class EmailAddressManager
      */
     protected function bindEmailAddress(EntityManager $em, EmailOwnerInterface $owner, $newEmail, $oldEmail)
     {
-        /** @var EmailAddress $emailAddress */
         $result = false;
-        $repository = $this->getEmailAddressRepository($em);
+        $repository = $this->emailAddressManager->getEmailAddressRepository($em);
 
         if (!empty($newEmail)) {
-            $emailAddress = $this->findEmailAddress($newEmail, $repository);
+            $emailAddress = $repository->findOneBy(array('email' => $newEmail));
             if ($emailAddress === null) {
                 $em->persist($this->createEmailAddress($newEmail, $owner));
                 $result = true;
@@ -177,7 +169,7 @@ class EmailAddressManager
             }
         }
         if (!empty($oldEmail)) {
-            $emailAddress = $this->findEmailAddress($oldEmail, $repository);
+            $emailAddress = $repository->findOneBy(array('email' => $oldEmail));
             if ($emailAddress !== null) {
                 $emailAddress->setOwner(null);
                 $result = true;
@@ -197,14 +189,14 @@ class EmailAddressManager
      */
     protected function unbindEmailAddress(EntityManager $em, EmailOwnerInterface $owner, EmailInterface $email = null)
     {
-        /** @var EmailAddress $emailAddress */
         $result = false;
-        $repository = $this->getEmailAddressRepository($em);
+        $repository = $this->emailAddressManager->getEmailAddressRepository($em);
         foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
             $condition = array($fieldName => $owner);
             if ($email !== null) {
                 $condition['email'] = $email->getEmail();
             }
+            /** @var EmailAddress $emailAddress */
             foreach ($repository->findBy($condition) as $emailAddress) {
                 $emailAddress->setOwner(null);
                 $result = true;
@@ -212,18 +204,6 @@ class EmailAddressManager
         }
 
         return $result;
-    }
-
-    /**
-     * Find EmailAddress entity by email address
-     *
-     * @param string $email
-     * @param EntityRepository $repository
-     * @return EmailAddress
-     */
-    protected function findEmailAddress($email, EntityRepository $repository)
-    {
-        return $repository->findOneBy(array('email' => $email));
     }
 
     /**
@@ -235,34 +215,8 @@ class EmailAddressManager
      */
     protected function createEmailAddress($email, EmailOwnerInterface $owner)
     {
-        $emailAddressClass = $this->getEmailAddressProxyClass();
-        /** @var EmailAddress $emailAddress */
-        $emailAddress = new $emailAddressClass();
-        $emailAddress
+        return $this->emailAddressManager->newEmailAddress()
             ->setEmail($email)
             ->setOwner($owner);
-
-        return $emailAddress;
-    }
-
-    /**
-     * Get a repository for EmailAddress entity
-     *
-     * @param EntityManager $em
-     * @return EntityRepository
-     */
-    protected function getEmailAddressRepository(EntityManager $em)
-    {
-        return $em->getRepository($this->getEmailAddressProxyClass());
-    }
-
-    /**
-     * Get full class name of a proxy of EmailAddress entity
-     *
-     * @return string
-     */
-    protected function getEmailAddressProxyClass()
-    {
-        return sprintf('%s\%s', $this->entityCacheNamespace, sprintf($this->entityProxyNameTemplate, 'EmailAddress'));
     }
 }

@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\MappedSuperclass
  */
-class EmailAddress
+abstract class EmailAddress
 {
     /**
      * @var integer
