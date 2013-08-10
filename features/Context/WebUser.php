@@ -1110,6 +1110,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewImport($importTitle)
     {
         $this->getPage('Import index')->clickImportCreationLink($importTitle);
+        $this->wait();
         $this->currentPage = 'Import creation';
     }
 

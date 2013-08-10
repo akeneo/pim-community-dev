@@ -11,7 +11,7 @@ Feature: View an import detail page
     Given I am logged in as "admin"
     And I am on the imports page
     When I click on the "acme_product_import" row
-    Then I should be on the "acme_product_import" import job page
+    Then I should see "Import / Product import for Acme.com"
 
   Scenario: Fail to show a job for which job definition does not exist anymore
     Given the following job:
