@@ -230,15 +230,11 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
 
         $requirement->expects($this->any())
             ->method('getChannel')
-            ->will($this->returnValue(
-                $this->getChannelMock($channelCode)
-            ));
+            ->will($this->returnValue($this->getChannelMock($channelCode)));
 
         $requirement->expects($this->any())
             ->method('getAttribute')
-            ->will($this->returnValue(
-                $this->getAttributeMock('pim_product_text', $attributeCode)
-            ));
+            ->will($this->returnValue($this->getAttributeMock('pim_product_text', $attributeCode)));
 
         return $requirement;
     }
