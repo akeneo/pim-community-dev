@@ -229,6 +229,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should see activated locales? (.*)$/
      */
     public function iShouldSeeActivatedLocales($locales)
@@ -243,6 +245,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should see deactivated locales? (.*)$/
      */
     public function iShouldSeeDeactivatedLocales($locales)
@@ -257,6 +261,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should not see locales? (.*)$/
      */
     public function iShouldNotSeeLocales($locales)
@@ -1288,12 +1294,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $path
+     *
      * @Then /^I should see the "([^"]*)" content$/
      */
     public function iShouldSeeTheContent($path)
     {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
+        if ($filesPath = $this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($filesPath), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
             if (is_file($fullPath)) {
                 $path = $fullPath;
             }
@@ -1303,6 +1311,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $not
+     * @param string $channels
+     *
      * @Then /^attribute "([^"]*)" should( not)? be required in channels? (.*)$/
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
@@ -1324,6 +1336,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $channel
+     *
      * @Given /^I switch the attribute "([^"]*)" requirement in channel "([^"]*)"$/
      */
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
