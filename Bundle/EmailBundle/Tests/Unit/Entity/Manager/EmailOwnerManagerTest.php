@@ -54,8 +54,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
         $handleInsertionsOrUpdatesReturnValue,
         $handleDeletionsReturnValue,
         $expectComputeChangeSets
-    )
-    {
+    ) {
         $this->initOnFlush();
 
         $this->em->expects($this->once())
@@ -126,8 +125,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
         $processInsertionOrUpdateEntityCall,
         $processInsertionOrUpdateEntityReturnValue,
         $returnValue
-    )
-    {
+    ) {
         $this->initOnFlush();
 
         $manager = $this->createEmailOwnerManagerMockBuilder()
@@ -207,8 +205,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
         $unbindEmailAddressCall,
         $unbindEmailAddressReturnValue,
         $returnValue
-    )
-    {
+    ) {
         $this->initOnFlush();
 
         $manager = $this->createEmailOwnerManagerMockBuilder()

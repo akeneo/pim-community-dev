@@ -21,5 +21,4 @@ class EmailOwnerProviderStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($provider1 === $result[0]);
         $this->assertTrue($provider2 === $result[1]);
     }
-
 }
