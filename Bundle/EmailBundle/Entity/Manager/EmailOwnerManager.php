@@ -157,7 +157,6 @@ class EmailOwnerManager
     {
         $result = false;
         $repository = $this->emailAddressManager->getEmailAddressRepository($em);
-
         if (!empty($newEmail)) {
             $emailAddress = $repository->findOneBy(array('email' => $newEmail));
             if ($emailAddress === null) {
