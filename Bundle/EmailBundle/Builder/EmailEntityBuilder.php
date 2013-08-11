@@ -20,27 +20,24 @@ use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 class EmailEntityBuilder
 {
     /**
+     * @var EmailEntityBatchCooker
+     */
+    private $batch;
+
+    /**
      * @var EmailAddressManager
      */
     private $emailAddressManager;
 
     /**
-     * @var Email
-     */
-    protected $email;
-
-    /**
-     * @var EmailOwnerInterface[]
-     */
-    protected $owners;
-
-    /**
      * Constructor
      *
+     * @param EmailEntityBatchCooker $batch
      * @param EmailAddressManager $emailAddressManager
      */
-    public function __construct(EmailAddressManager $emailAddressManager)
+    public function __construct(EmailEntityBatchCooker $batch, EmailAddressManager $emailAddressManager)
     {
+        $this->batch = $batch;
         $this->emailAddressManager = $emailAddressManager;
     }
 
@@ -69,8 +66,8 @@ class EmailEntityBuilder
             ->setImportance($importance);
 
         $this->addRecipients($result, EmailRecipient::TO, $to);
-        $this->addRecipients($result, EmailRecipient::CC, $to);
-        $this->addRecipients($result, EmailRecipient::BCC, $to);
+        $this->addRecipients($result, EmailRecipient::CC, $cc);
+        $this->addRecipients($result, EmailRecipient::BCC, $bcc);
 
         return $result;
     }
@@ -103,8 +100,15 @@ class EmailEntityBuilder
      */
     public function address($email)
     {
-        return $this->emailAddressManager->newEmailAddress()
-            ->setEmail(EmailUtil::extractPureEmailAddress($email));
+        $pureEmail = EmailUtil::extractPureEmailAddress($email);
+        $result = $this->batch->getAddress($pureEmail);
+        if ($result === null) {
+            $result = $this->emailAddressManager->newEmailAddress()
+                ->setEmail($pureEmail);
+            $this->batch->addAddress($result);
+        }
+
+        return $result;
     }
 
     /**
@@ -225,10 +229,14 @@ class EmailEntityBuilder
      */
     protected function folder($type, $name)
     {
-        $result = new EmailFolder();
-        $result
-            ->setType($type)
-            ->setName($name);
+        $result = $this->batch->getFolder($type, $name);
+        if ($result === null) {
+            $result = new EmailFolder();
+            $result
+                ->setType($type)
+                ->setName($name);
+            $this->batch->addFolder($result);
+        }
 
         return $result;
     }
@@ -241,8 +249,12 @@ class EmailEntityBuilder
      */
     public function origin($name)
     {
-        $result = new EmailOrigin();
-        $result->setName($name);
+        $result = $this->batch->getOrigin($name);
+        if ($result === null) {
+            $result = new EmailOrigin();
+            $result->setName($name);
+            $this->batch->addOrigin($result);
+        }
 
         return $result;
     }
@@ -295,5 +307,15 @@ class EmailEntityBuilder
             ->setType($type)
             ->setName($email)
             ->setEmailAddress($this->address($email));
+    }
+
+    /**
+     * Get built batch contains all entities managed by this builder
+     *
+     * @return EmailEntityBatchInterface
+     */
+    public function getBatch()
+    {
+        return $this->batch;
     }
 }

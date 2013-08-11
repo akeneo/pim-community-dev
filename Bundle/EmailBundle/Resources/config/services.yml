@@ -6,6 +6,7 @@ parameters:
     oro_email.email.owner.provider.storage.class: Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage
     oro_email.email.owner.manager.class:          Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager
     oro_email.email.entity.builder.class:         Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder
+    oro_email.email.entity.batch_cooker.class:    Oro\Bundle\EmailBundle\Builder\EmailEntityBatchCooker
     oro_email.listener.entity_subscriber.class:   Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
@@ -68,7 +69,6 @@ services:
         class: %oro_email.email.owner.provider.class%
         arguments:
             - @oro_email.email.owner.provider.storage
-            - @doctrine.orm.entity_manager
 
     oro_email.email.owner.manager:
         public: false
@@ -79,8 +79,18 @@ services:
 
     oro_email.email.entity.builder:
         class: %oro_email.email.entity.builder.class%
+        scope: prototype
+        arguments:
+            - @oro_email.email.entity.batch_cooker
+            - @oro_email.email.address.manager
+
+    oro_email.email.entity.batch_cooker:
+        class: %oro_email.email.entity.batch_cooker.class%
+        public: false
+        scope: prototype
         arguments:
             - @oro_email.email.address.manager
+            - @oro_email.email.owner.provider
 
     oro_email.listener.entity_subscriber:
         public: false
