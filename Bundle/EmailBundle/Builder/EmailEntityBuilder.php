@@ -2,9 +2,6 @@
 
 namespace Oro\Bundle\EmailBundle\Builder;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
@@ -13,7 +10,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailRecipient;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
@@ -49,12 +45,13 @@ class EmailEntityBuilder
      * @param string|string[]|null $to The TO email address(es). Example of email address see in description of $from parameter
      * @param \DateTime $sentAt The date/time when email sent
      * @param \DateTime $receivedAt The date/time when email received
+     * @param \DateTime $internalDate The date/time an email server returned in INTERNALDATE field
      * @param integer $importance The email importance flag. Can be one of *_IMPORTANCE constants of Email class
      * @param string|string[]|null $cc The CC email address(es). Example of email address see in description of $from parameter
      * @param string|string[]|null $bcc The BCC email address(es). Example of email address see in description of $from parameter
      * @return Email
      */
-    public function email($subject, $from, $to, $sentAt, $receivedAt, $importance = Email::NORMAL_IMPORTANCE, $cc = null, $bcc = null)
+    public function email($subject, $from, $to, $sentAt, $receivedAt, $internalDate, $importance = Email::NORMAL_IMPORTANCE, $cc = null, $bcc = null)
     {
         $result = new Email();
         $result
@@ -63,6 +60,7 @@ class EmailEntityBuilder
             ->setFromEmailAddress($this->address($from))
             ->setSentAt($sentAt)
             ->setReceivedAt($receivedAt)
+            ->setInternalDate($internalDate)
             ->setImportance($importance);
 
         $this->addRecipients($result, EmailRecipient::TO, $to);
@@ -173,7 +171,7 @@ class EmailEntityBuilder
      */
     public function folderInbox($name = null)
     {
-        return $this->folder(EmailFolder::INBOX, $name !== null ? 'Inbox' : $name);
+        return $this->folder(EmailFolder::INBOX, $name !== null ? $name : 'Inbox');
     }
 
     /**
@@ -184,7 +182,7 @@ class EmailEntityBuilder
      */
     public function folderSent($name = null)
     {
-        return $this->folder(EmailFolder::SENT, $name !== null ? 'Sent' : $name);
+        return $this->folder(EmailFolder::SENT, $name !== null ? $name : 'Sent');
     }
 
     /**
@@ -195,7 +193,7 @@ class EmailEntityBuilder
      */
     public function folderTrash($name = null)
     {
-        return $this->folder(EmailFolder::TRASH, $name !== null ? 'Trash' : $name);
+        return $this->folder(EmailFolder::TRASH, $name !== null ? $name : 'Trash');
     }
 
     /**
@@ -206,7 +204,7 @@ class EmailEntityBuilder
      */
     public function folderDrafts($name = null)
     {
-        return $this->folder(EmailFolder::DRAFTS, $name !== null ? 'Drafts' : $name);
+        return $this->folder(EmailFolder::DRAFTS, $name !== null ? $name : 'Drafts');
     }
 
     /**
@@ -265,7 +263,7 @@ class EmailEntityBuilder
      * @param string $email The email address, for example: john@example.com or "John Smith" <john@example.com>
      * @return EmailRecipient
      */
-    public function toRecipient($email)
+    public function recipientTo($email)
     {
         return $this->recipient(EmailRecipient::TO, $email);
     }
@@ -276,7 +274,7 @@ class EmailEntityBuilder
      * @param string $email The email address, for example: john@example.com or "John Smith" <john@example.com>
      * @return EmailRecipient
      */
-    public function ccRecipient($email)
+    public function recipientCc($email)
     {
         return $this->recipient(EmailRecipient::CC, $email);
     }

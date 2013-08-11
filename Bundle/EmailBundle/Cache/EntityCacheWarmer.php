@@ -54,16 +54,15 @@ class EntityCacheWarmer extends CacheWarmer
      */
     public function warmUp($cacheDir)
     {
+        $fs = $this->createFilesystem();
+        $twig = $this->createTwigEnvironment();
+
         $entityCacheDir = sprintf('%s/%s', $this->entityCacheDir, str_replace('\\', '/', $this->entityCacheNamespace));
 
         // Ensure the cache directory exists
-        $fs = new Filesystem();
-        if (!is_dir($entityCacheDir)) {
+        if (!$fs->exists($entityCacheDir)) {
             $fs->mkdir($entityCacheDir, 0777);
         }
-
-        $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
 
         $this->processEmailAddressTemplate($entityCacheDir, $twig);
     }
@@ -74,6 +73,27 @@ class EntityCacheWarmer extends CacheWarmer
     public function isOptional()
     {
         return false;
+    }
+
+    /**
+     * Create Filesystem object
+     *
+     * @return Filesystem
+     */
+    protected function createFilesystem()
+    {
+        return new Filesystem();
+    }
+
+    /**
+     * Create Twig_Environment object
+     *
+     * @return \Twig_Environment
+     */
+    protected function createTwigEnvironment()
+    {
+        $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
+        return new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
     }
 
     /**

@@ -134,7 +134,7 @@ class EmailEntityBatchCooker implements EmailEntityBatchInterface
      */
     public function addOrigin(EmailOrigin $obj)
     {
-        $key = $obj->getName();
+        $key = strtolower($obj->getName());
         if (isset($this->origins[$key])) {
             throw new \LogicException(sprintf('The origin "%s" already exists in the batch.', $obj->getName()));
         }
@@ -149,8 +149,10 @@ class EmailEntityBatchCooker implements EmailEntityBatchInterface
      */
     public function getOrigin($name)
     {
-        return isset($this->origins[$name])
-            ? $this->origins[$name]
+        $key = strtolower($name);
+
+        return isset($this->origins[$key])
+            ? $this->origins[$key]
             : null;
     }
 
