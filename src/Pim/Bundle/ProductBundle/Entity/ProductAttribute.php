@@ -371,8 +371,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
             $this->defaultValue = null;
 
             return $this;
-        } elseif ($defaultValue instanceof ArrayCollection &&
-            $defaultValue->isEmpty()) {
+        } elseif ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty()) {
             $this->defaultOption = null;
 
             return $this;

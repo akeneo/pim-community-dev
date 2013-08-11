@@ -1,5 +1,5 @@
-{% set actionRoute = form.vars.value.id ? 
-    path('pim_importexport_export_edit', { 'id': form.vars.value.id }) : 
+{% set actionRoute = form.vars.value.id ?
+    path('pim_importexport_export_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_export_create', { 'connector': connector, 'alias': alias }) %}
 
 {% set title = form.vars.value.id ? 'Edit export'|trans : 'Create export'|trans %}

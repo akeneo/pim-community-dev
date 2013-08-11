@@ -5,7 +5,7 @@
 var no_tree_message = "{{ 'No tree available' | trans }}";
 
 $(function() {
-    
+
     $('#tree').jstree({
         "core" : {
             "animation" : 200
@@ -19,11 +19,11 @@ $(function() {
                     "label" : "Edit",
                     "action" : function (obj) {
                         $.get(
-                            "{{ path('pim_product_categorytree_myedit') }}", 
-                            { 
-                                "operation" : "edit_node", 
+                            "{{ path('pim_product_categorytree_myedit') }}",
+                            {
+                                "operation" : "edit_node",
                                 "id" : obj.attr("id").replace('node_', '')
-                            }, 
+                            },
                             function (r) {
                                 try {
                                     JSON.parse(r);
@@ -39,7 +39,7 @@ $(function() {
                 "remove" : false
             }
         },
-        
+
         "tree_selector" : {
             "ajax" : {
                 "url" : "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}",
@@ -62,7 +62,7 @@ $(function() {
                 "data" : function (node) {
                     // the result is fed to the AJAX request `data` option
                     var id = null;
-    
+
                     if (node && node != -1) {
                         id = node.attr("id").replace('node_','');
                     } else{
@@ -141,14 +141,14 @@ $(function() {
     })
     .bind("create.jstree", function (e, data) {
         $.post(
-            "{{ path('pim_product_categorytree_add') }}", 
-            { 
-                "operation" : "create_node", 
-                "id" : data.rslt.parent.attr("id").replace("node_",""), 
+            "{{ path('pim_product_categorytree_add') }}",
+            {
+                "operation" : "create_node",
+                "id" : data.rslt.parent.attr("id").replace("node_",""),
                 "position" : data.rslt.position,
                 "title" : data.rslt.name,
                 "type" : data.rslt.obj.attr("rel")
-            }, 
+            },
             function (r) {
                 if(r.status) {
                     $(data.rslt.obj).attr("id", "node_" + r.id);
@@ -161,11 +161,11 @@ $(function() {
     })
     .bind("edit.jstree", function (e, data) {
         $.post(
-            "{{ path('pim_product_categorytree_myedit') }}", 
-            { 
-                "operation" : "edit_node", 
+            "{{ path('pim_product_categorytree_myedit') }}",
+            {
+                "operation" : "edit_node",
                 "id" : data.rslt.id
-            }, 
+            },
             function (r) {
                 if(r.status) {
                     $(data.rslt.obj).attr("id", "node_" + r.id);
@@ -181,11 +181,11 @@ $(function() {
         $('<i>', { 'class': 'icon-plus-sign' })
     ).on('click', function() {
         $.get(
-            "{{ path('pim_product_categorytree_myedit') }}", 
-            { 
-                "operation" : "edit_node", 
+            "{{ path('pim_product_categorytree_myedit') }}",
+            {
+                "operation" : "edit_node",
                 "id" : 0
-            }, 
+            },
             function (r) {
                 try {
                     JSON.parse(r);

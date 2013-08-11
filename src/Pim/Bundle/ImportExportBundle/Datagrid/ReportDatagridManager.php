@@ -2,19 +2,15 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Pim\Bundle\BatchBundle\Job\BatchStatus;
-
 use Doctrine\ORM\EntityRepository;
-
 use Doctrine\ORM\QueryBuilder;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
-use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Field\FieldDescription;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Report datagrid manager
@@ -52,9 +48,8 @@ class ReportDatagridManager extends DatagridManager
                 'show_filter'     => true,
                 'class'           => 'PimBatchBundle:Job',
                 'property'        => 'code',
-                'query_builder'   => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('j')
-                        ->orderBy('j.code', 'ASC');
+                'query_builder'   => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
                 },
                 'filter_by_where' => true,
             )
@@ -90,8 +85,8 @@ class ReportDatagridManager extends DatagridManager
                 'show_filter'     => true,
                 'class'           => 'PimBatchBundle:Job',
                 'property'        => 'alias',
-                'query_builder'   => function (EntityRepository $er) use ($jobType) {
-                    $qb = $er->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
+                'query_builder'   => function (EntityRepository $repository) use ($jobType) {
+                    $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
                     if ($jobType !== null) {
                         $qb->where('j.type = :job_type')
                            ->setParameter('job_type', $jobType);

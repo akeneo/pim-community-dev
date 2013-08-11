@@ -33,9 +33,3 @@
         </div>
     </form>
 {% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
-{% endblock %}

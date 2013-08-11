@@ -130,7 +130,6 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string    $sku
-     * @param languages $languages
      *
      * @return Product
      * @Given /^a "([^"]*)" product$/
@@ -150,7 +149,6 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingProduct(TableNode $table)
     {
-        $pm = $this->getProductManager();
         foreach ($table->getHash() as $data) {
             $data = array_merge(array('family' => null), $data);
 
@@ -159,7 +157,7 @@ class FixturesContext extends RawMinkContext
                 $product->setFamily($this->getFamily($data['family']));
             }
 
-            $pm->save($product);
+            $this->getProductManager()->save($product);
         }
     }
 
@@ -263,6 +261,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following locales:$/
      */
     public function theFollowingLocales(TableNode $table)
@@ -612,10 +612,10 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $pm   = $this->getProductManager();
-        $repo = $pm->getFlexibleRepository();
-        $qb   = $repo->createQueryBuilder('p');
-        $repo->applyFilterByAttribute($qb, $pm->getIdentifierAttribute()->getCode(), $sku);
+        $manager    = $this->getProductManager();
+        $repository = $manager->getFlexibleRepository();
+        $qb         = $repository->createQueryBuilder('p');
+        $repository->applyFilterByAttribute($qb, $manager->getIdentifierAttribute()->getCode(), $sku);
         $product = $qb->getQuery()->getOneOrNullResult();
 
         return $product ?: $this->createProduct($sku);
@@ -757,9 +757,9 @@ class FixturesContext extends RawMinkContext
      */
     private function createValue(ProductAttribute $attribute, $data = null, $locale = null, $scope = null)
     {
-        $pm = $this->getProductManager();
+        $manager = $this->getProductManager();
 
-        $value = $pm->createFlexibleValue();
+        $value = $manager->createFlexibleValue();
         $value->setAttribute($attribute);
         if ($attribute->getAttributeType() == $this->attributeTypes['prices']) {
             $prices = $this->createPricesFromString($data);

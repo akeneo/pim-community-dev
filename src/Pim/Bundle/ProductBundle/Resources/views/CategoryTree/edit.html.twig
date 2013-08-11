@@ -11,13 +11,8 @@
 
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
 
-{#
-    <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
-#}
     {#
     {% if form.vars.value.id %}
         {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
@@ -70,7 +65,7 @@
             </form>
         </div>
     </div>
-    
+
     {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
 {% endblock %}
 

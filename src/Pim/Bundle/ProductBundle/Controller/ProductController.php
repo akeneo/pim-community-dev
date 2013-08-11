@@ -363,10 +363,10 @@ class ProductController extends Controller
      */
     protected function getProductManager()
     {
-        $pm = $this->container->get('pim_product.manager.product');
-        $pm->setLocale($this->getDataLocale());
+        $manager = $this->container->get('pim_product.manager.product');
+        $manager->setLocale($this->getDataLocale());
 
-        return $pm;
+        return $manager;
     }
 
     /**

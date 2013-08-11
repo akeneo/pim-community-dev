@@ -11,9 +11,9 @@
 {% block categoryform %}
 
     {{ JSFV(form) }}
-    
+
     {{ elements.form_errors(form) }}
-    
+
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_product_categorytree_myedit', { id: form.vars.value.id }) :
         path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
@@ -39,15 +39,15 @@
             </span>
 
         {% endset %}
-    
+
         {{ elements.page_header(title|trans, buttons) }}
-    
+
         {% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
         {{ elements.form_navbar(tabs) }}
-    
+
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
-    
+
             <div class="tab-pane active" id="properties">
                 {% set generalProperties %}
                     {{ form_row(form.code) }}
@@ -55,10 +55,10 @@
                         {{ form_row(form.dynamic) }}
                     {% endif %}
                 {% endset %}
-    
+
                 {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': form_row(form.title) }) }}
             </div>
-    
+
             <div class="tab-pane" id="history">
                 <div id="history-grid"></div>
             </div>

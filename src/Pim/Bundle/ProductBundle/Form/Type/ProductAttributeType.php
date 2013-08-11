@@ -237,7 +237,6 @@ class ProductAttributeType extends AttributeType
     {
     }
 
-
     /**
      * Return available frontend type
      *

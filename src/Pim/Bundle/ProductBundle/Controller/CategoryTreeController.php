@@ -223,9 +223,9 @@ class CategoryTreeController extends Controller
         $categoryTranslation = $category->getTranslation('default');
         $categoryTranslation->setTitle($code);
 
-        $sm = $this->getTreeManager()->getStorageManager();
-        $sm->persist($category);
-        $sm->flush();
+        $manager = $this->getTreeManager()->getStorageManager();
+        $manager->persist($category);
+        $manager->flush();
 
         return new JsonResponse(array('status' => 1, 'id' => $category->getId()));
     }
@@ -260,9 +260,9 @@ class CategoryTreeController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $sm = $this->getTreeManager()->getStorageManager();
-                $sm->persist($category);
-                $sm->flush();
+                $manager = $this->getTreeManager()->getStorageManager();
+                $manager->persist($category);
+                $manager->flush();
 
                 $this->addFlash(
                     'success',
@@ -286,8 +286,6 @@ class CategoryTreeController extends Controller
     /**
      * Edit tree action
      *
-     * @param Category $category The category to manage
-     *
      * @Route("/myedit")
      * @Template("PimProductBundle:CategoryTree:form.html.twig")
      *
@@ -307,9 +305,9 @@ class CategoryTreeController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $sm = $this->getTreeManager()->getStorageManager();
-                $sm->persist($category);
-                $sm->flush();
+                $manager = $this->getTreeManager()->getStorageManager();
+                $manager->persist($category);
+                $manager->flush();
 
                 $this->addFlash(
                     'success',
@@ -359,9 +357,9 @@ class CategoryTreeController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $sm = $this->getTreeManager()->getStorageManager();
-                $sm->persist($category);
-                $sm->flush();
+                $manager = $this->getTreeManager()->getStorageManager();
+                $manager->persist($category);
+                $manager->flush();
 
                 $this->addFlash(
                     'success',
