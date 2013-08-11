@@ -380,6 +380,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iChangeTheAttributePositionTo($attribute, $position)
     {
         $this->getCurrentPage()->dragAttributeToPosition($attribute, $position)->save();
+        $this->wait();
     }
 
     /**
