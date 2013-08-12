@@ -39,7 +39,7 @@
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
                         <li class="{{ locale == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="?dataLocale={{ locale }}" title="{{ localeLabel(locale) }}">
+                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale}) }}" title="{{ localeLabel(locale) }}">
                                 {% if locale == dataLocale %}
                                     <span class="icon">
                                         <i class="icon-bullet"></i>
