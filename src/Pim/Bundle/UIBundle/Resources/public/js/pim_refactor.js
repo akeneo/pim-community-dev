@@ -35,17 +35,4 @@ if ($('#progressbar').is(':visible')) {
         $('#pim_available_product_attributes_attributes').removeAttr('required');
     });
 
-    $('#attribute-buttons .dropdown-menu').click(function (e) {
-        e.stopPropagation();
-    });
-
-    $('#default_channel').change(function() {
-        $('.scopable').scopableField({ defaultScope: $(this).val() });
-    });
-
-    $('.dropdown-menu.channel a').click(function (e) {
-        e.preventDefault();
-        $('.scopable').scopableField($(this).data('action'));
-    });
-
 /* End product edit form js */

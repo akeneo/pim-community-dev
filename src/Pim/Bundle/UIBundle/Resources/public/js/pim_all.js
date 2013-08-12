@@ -5,7 +5,9 @@ function init() {
     $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
     // Prevent UniformJS from breaking our stuff
-    $(document).uniform.restore();
+    $(document).off('uniformInit').on('uniformInit', function() {
+        $(document).uniform.restore();
+    });
 
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
@@ -38,6 +40,22 @@ function init() {
     $('.remove-attribute').each(function() {
         var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
         $(this).insertAfter(target).css('margin-left', 20).attr('tabIndex', -1);
+    });
+
+    $('form div.scopable').scopableField();
+    $('form div.currency').currencyField();
+
+    $('#attribute-buttons .dropdown-menu').click(function (e) {
+        e.stopPropagation();
+    });
+
+    $('#default_channel').change(function() {
+        $('.scopable').scopableField({ defaultScope: $(this).val() });
+    });
+
+    $('.dropdown-menu.channel a').click(function (e) {
+        e.preventDefault();
+        $('.scopable').scopableField($(this).data('action'));
     });
 
     // Add form update listener

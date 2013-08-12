@@ -7,9 +7,9 @@
  */
 
 (function ($) {
-    "use strict";
+    'use strict';
 
-    function showTitle(el, opts) {
+    function showTitle(el) {
         var $originalLabel = $(el).find('label').first();
         var $title = $('<label>').addClass($originalLabel.attr('class')).html($originalLabel.html());
         $originalLabel.remove();
@@ -33,7 +33,7 @@
         return $fields;
     }
 
-    function prepareLabels(el, opts) {
+    function prepareLabels(el) {
 
         var $fields = prepareFields(el);
 
@@ -115,14 +115,14 @@
             var el = this;
             if (!$(el).hasClass('currencyfield')) {
                 $(el).addClass('currencyfield');
-                showTitle(el, opts);
+                showTitle(el);
             }
 
-            prepareLabels(el, opts);
+            prepareLabels(el);
 
             if (getFields(el, opts).length > 1) {
                 bindEvents(el, opts);
-                if (!$(el).hasClass('scopablefield')) {
+                if (!$(el).hasClass('currencyfield')) {
                     toggleOpen(el, opts);
                 } else {
                     collapse(el, opts);
@@ -135,7 +135,7 @@
                 });
             }
         });
-    }
+    };
 
     $.fn.currencyField.defaults = {
         expandIcon: 'fa-icon-caret-right',
@@ -143,9 +143,3 @@
     };
 
 }(jQuery));
-
-$(function() {
-    "use strict";
-
-    $('form div.currency').currencyField();
-});

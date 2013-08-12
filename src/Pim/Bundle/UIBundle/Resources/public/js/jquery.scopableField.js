@@ -7,7 +7,7 @@
  */
 
 (function ($) {
-    "use strict";
+    'use strict';
 
     function showTitle(el, opts) {
         var $originalLabel = $(el).find('label').first();
@@ -47,17 +47,12 @@
             if (i !== 0 && scope === opts.defaultScope) {
                 $field.insertBefore($fields[0].field);
 
-                if ($field.find('.wysihtml5-sandbox').length !== 0) {
-                    var $el = $field.find('textarea').first();
-                    reinitWysihtml5($el);
-                }
-
                 break;
             }
         }
     }
 
-    function prepareLabels(el, opts) {
+    function prepareLabels(el) {
         var $fields = prepareFields(el);
 
         for (var i = 0; i < $fields.length; i++) {
@@ -65,14 +60,7 @@
             var $label = $fields[i].label;
             var scope = $fields[i].scope;
 
-            $label.html(scope).addClass('add-on');
-
-            if ($field.find('iframe.wysihtml5-sandbox').length > 0) {
-                $field.find('iframe.wysihtml5-sandbox, textarea').width(opts.wysihtml5.width);
-                $label.height(opts.wysihtml5.height);
-            } else {
-                $label.height($field.children().first().actual('height') - 10);
-            }
+            $label.html(scope).addClass('add-on').height($field.children().first().actual('height') - 10);
 
             var $controls = $field.find('.controls').first();
             $controls.addClass('input-prepend').prepend($label);
@@ -118,17 +106,6 @@
         }
     }
 
-    function reinitWysihtml5(el) {
-        $(el).show().siblings('.wysihtml5-toolbar, .wysihtml5-sandbox, input[name="_wysihtml5_mode"]').remove();
-        $(el).wysihtml5({
-            events: {
-                change: function() {
-                    $el.trigger('change');
-                }
-            }
-        });
-    }
-
     $.fn.scopableField = function(options) {
         var opts;
         if (typeof(options) === 'string' && options !== '') {
@@ -160,10 +137,10 @@
             }
 
             if (getFields(el, opts).length < 2) {
-                prepareLabels(el, opts);
+                prepareLabels(el);
             } else {
                 sortFields(el, opts);
-                prepareLabels(el, opts);
+                prepareLabels(el);
                 bindEvents(el, opts);
                 if (!$(el).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
                     toggleOpen(el, opts);
@@ -180,24 +157,14 @@
 
             $(el).addClass('scopablefield');
         });
-    }
+    };
 
     $.fn.scopableField.defaults = {
         toggleOnUpdate: false,
         defaultScope: null,
         title: null,
         expandIcon: 'fa-icon-caret-right',
-        collapseIcon: 'fa-icon-caret-down',
-        wysihtml5: {
-            width: 523,
-            height: 192
-        }
+        collapseIcon: 'fa-icon-caret-down'
     };
 
 }(jQuery));
-
-$(function() {
-    "use strict";
-
-    $('form div.scopable').scopableField();
-});
