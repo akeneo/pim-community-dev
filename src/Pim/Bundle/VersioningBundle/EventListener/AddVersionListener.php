@@ -2,20 +2,15 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
-use Pim\Bundle\ProductBundle\Entity\Family;
-
-use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
-
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-
+use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Pim\Bundle\ConfigBundle\Entity\Channel;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Pim\Bundle\VersioningBundle\Model\Versionable;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Doctrine\ORM\Event\OnFlushEventArgs;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -99,30 +94,26 @@ class AddVersionListener implements EventSubscriber
 
         foreach ($uow->getScheduledEntityInsertions() AS $entity) {
             if ($entity instanceof Versionable) {
-                $this->_makeSnapshot($entity);
+                $this->_makeSnapshot($em, $entity);
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() AS $entity) {
             if ($entity instanceof Versionable) {
-                $this->_makeSnapshot($entity);
+                $this->_makeSnapshot($em, $entity);
             }
         }
     }
 
     /**
+     * @param EntityManager        $em
      * @param VersionableInterface $entity
      */
-    private function _makeSnapshot(Versionable $entity)
+    private function _makeSnapshot(EntityManager $em, Versionable $entity)
     {
-        return;
-        var_dump($entity->getVersionedData());
-
-        die();
         $resourceVersion = new Version($entity);
-        $class = $this->_em->getClassMetadata(get_class($resourceVersion));
-
-        $this->_em->persist($resourceVersion);
-        $this->_em->getUnitOfWork()->computeChangeSet($class, $resourceVersion);
+        $class = $em->getClassMetadata(get_class($resourceVersion));
+        $em->persist($resourceVersion);
+        $em->getUnitOfWork()->computeChangeSet($class, $resourceVersion);
     }
 }

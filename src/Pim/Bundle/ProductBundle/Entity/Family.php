@@ -34,6 +34,14 @@ class Family implements TranslatableInterface, Versionable
     protected $id;
 
     /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
+    /**
      * @var string $code
      *
      * @ORM\Column(unique=true)
@@ -116,6 +124,16 @@ class Family implements TranslatableInterface, Versionable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**

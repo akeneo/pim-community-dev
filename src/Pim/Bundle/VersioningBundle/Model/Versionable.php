@@ -13,9 +13,9 @@ interface Versionable
 {
     /**
      * @return int
-     *
-    public function getCurrentVersion();
-*/
+     */
+    public function getVersion();
+
     /**
      * @return array
      */

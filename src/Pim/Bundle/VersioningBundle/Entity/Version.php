@@ -12,6 +12,7 @@ use Pim\Bundle\VersioningBundle\Model\Versionable;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @ORM\Entity
  * @ORM\Table(name="pim_versioning_version")
  */
 class Version
@@ -39,7 +40,7 @@ class Version
     protected $versionedData;
 
     /**
-     * @Column(type="integer") */
+     * @ORM\Column(type="integer") */
     protected $version;
 
     /**
@@ -56,7 +57,7 @@ class Version
         $this->resourceName  = get_class($resource);
         $this->resourceId    = $resource->getId();
         $this->versionedData = $resource->getVersionedData();
-        $this->version       = 1;//$resource->getCurrentVersion();
+        $this->version       = $resource->getVersion();
         $this->snapshotDate  = new \DateTime("now");
     }
 }
