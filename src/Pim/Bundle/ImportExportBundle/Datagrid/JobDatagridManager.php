@@ -60,8 +60,6 @@ class JobDatagridManager extends DatagridManager
         $editLink   = sprintf('pim_importexport_%s_edit', $this->jobType);
         $showLink   = sprintf('pim_importexport_%s_show', $this->jobType);
         $deleteLink = sprintf('pim_importexport_%s_remove', $this->jobType);
-        $reportLink = sprintf('pim_importexport_%s_report', $this->jobType);
-        $launchLink = sprintf('pim_importexport_%s_launch', $this->jobType);
 
         return array(
             new FieldProperty($fieldId),
