@@ -1,3 +1,9 @@
+var Pim = Pim || {};
+
+Pim.navigate = function(route) {
+    Oro.hashNavigationInstance.setLocation(route);
+};
+
 function init() {
     // Place code that we need to run on every page load here
 
@@ -71,6 +77,9 @@ function init() {
                 break;
             case 'view':
                 Pim.tree.view($(this).attr('id'));
+                break;
+            case 'manage':
+                Pim.tree.manage($(this).attr('id'));
                 break;
             default:
                 break;
