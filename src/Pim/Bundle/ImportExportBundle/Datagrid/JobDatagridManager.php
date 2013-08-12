@@ -67,9 +67,7 @@ class JobDatagridManager extends DatagridManager
             new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, $editLink, array('id')),
             new UrlProperty('show_link', $this->router, $showLink, array('id')),
-            new UrlProperty('delete_link', $this->router, $deleteLink, array('id')),
-            new UrlProperty('report_link', $this->router, $reportLink, array('id')),
-            new UrlProperty('launch_link', $this->router, $launchLink, array('id'))
+            new UrlProperty('delete_link', $this->router, $deleteLink, array('id'))
         );
     }
 
@@ -113,18 +111,6 @@ class JobDatagridManager extends DatagridManager
             )
         );
 
-        $reportAction = array(
-            'name'         => 'report',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'   => $this->translate('View report'),
-                'icon'    => 'picture',
-                'link'    => 'report_link',
-                'backUrl' => true
-            )
-        );
-
         $launchAction = array(
             'name'        => 'launch',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -132,12 +118,12 @@ class JobDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translate('Launch'),
                 'icon'    => 'play',
-                'link'    => 'launch_link',
+                'link'    => 'show_link',
                 'backUrl' => true
             )
         );
 
-        return array($clickAction, $editAction, $deleteAction, $reportAction, $launchAction);
+        return array($clickAction, $editAction, $deleteAction, $launchAction);
     }
 
     /**
