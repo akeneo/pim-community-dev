@@ -39,7 +39,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $securityProxy->expects($this->any())->method('getService')->will($this->returnValue($securityContext));
 
-        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
+        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -81,7 +81,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $securityProxy->expects($this->any())->method('getService')->will($this->returnValue($securityContext));
 
-        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
+        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
 

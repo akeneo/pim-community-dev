@@ -14,7 +14,7 @@ use FOS\Rest\Util\Codes;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 

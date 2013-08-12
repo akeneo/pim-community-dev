@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {

@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Metadata\Driver\AnnotationDriver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;

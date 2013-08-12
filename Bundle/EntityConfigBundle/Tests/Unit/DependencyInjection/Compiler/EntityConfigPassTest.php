@@ -88,7 +88,7 @@ class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
 
     protected function setDefinitions()
     {
-        $defRegistry_0 = new Definition('Oro\Bundle\EntityConfigBundle\ConfigManager');
+        $defRegistry_0 = new Definition('Oro\Bundle\EntityConfigBundle\Config\ConfigManager');
         $defRegistry_1 = new Definition('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
         $definitions = array(
             'oro_entity_config.config_manager'          => $defRegistry_0,

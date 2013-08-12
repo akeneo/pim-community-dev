@@ -19,7 +19,7 @@ Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel:
         properties:
             className:
                 - NotBlank:     ~
-                - Regex:        "/^[a-zA-Z_]*$/i"
+                - Regex:        "/^[a-zA-Z0-9_]*$/i"
                 - Length:
                     min:        5
                     max:        50

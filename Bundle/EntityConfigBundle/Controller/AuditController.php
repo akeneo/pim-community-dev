@@ -28,7 +28,7 @@ class AuditController extends Controller
      * @Route(
      *      "/audit/{entity}/{id}/{_format}",
      *      name="oro_entityconfig_audit",
-     *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
+     *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
      * @Acl(

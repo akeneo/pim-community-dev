@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class NewFieldConfigModelEvent extends Event
 {

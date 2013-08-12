@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
@@ -65,7 +65,7 @@ class ConfigProvider implements ConfigProviderInterface
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
-     * @return ConfigInterface
+     * @return ConfigIdInterface
      */
     public function getConfigId($className, $fieldName = null, $fieldType = null)
     {
@@ -131,9 +131,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfigIds($className = null)
     {
-        return $className
-            ? $this->configManager->getFieldConfigIds($this->getClassName($className), $this->getScope())
-            : $this->configManager->getEntityConfigIds($this->getScope());
+        return $this->configManager->getConfigIds($this->getScope(), $className);
     }
 
     /**

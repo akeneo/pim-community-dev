@@ -145,7 +145,7 @@ class ConfigController extends Controller
             }
         }
 
-        /** @var \Oro\Bundle\EntityConfigBundle\ConfigManager $configManager */
+        /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
         // generate link for Entity grid

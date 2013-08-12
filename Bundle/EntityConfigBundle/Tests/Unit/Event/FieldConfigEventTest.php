@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Event;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 
 class FieldConfigEventTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +17,7 @@ class FieldConfigEventTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
+        $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
 

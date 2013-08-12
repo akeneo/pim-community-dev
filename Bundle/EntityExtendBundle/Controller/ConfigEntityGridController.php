@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,13 +10,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 
@@ -139,20 +136,27 @@ class ConfigEntityGridController extends Controller
         $request = $this->getRequest();
 
         /** @var ConfigManager $configManager */
-        $configManager  = $this->get('oro_entity_config.config_manager');
-        $entityModel = $configManager->createConfigEntityModel('', true);
-        $extendConfig   = $configManager->getProvider('extend')->getConfig('');
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $className = '';
+        if ($request->getMethod() == 'POST') {
+            $className = $request->request->get('oro_entity_config_type[className]', null, true);
+        }
+
+        $entityModel   = $configManager->createConfigEntityModel($className, true);
+        $extendConfig  = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('is_extend', true);
 
         $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model' => $entityModel,
+            'config_model'         => $entityModel,
+            'class_name_read_only' => false
         ));
 
-        var_dump($form->get('className')->getConfig()->getOptions());
-        die;
-
         if ($request->getMethod() == 'POST') {
+
+
+
             $form->submit($request);
 
             if ($form->isValid()) {

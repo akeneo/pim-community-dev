@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class PersistConfigEvent extends Event
 {

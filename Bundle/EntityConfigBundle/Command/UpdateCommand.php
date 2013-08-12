@@ -31,7 +31,10 @@ class UpdateCommand extends BaseCommand
 
         /** @var ClassMetadataInfo $doctrineMetadata */
         foreach ($this->getConfigManager()->getEntityManager()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
-            if ($this->getConfigManager()->isConfigurable($doctrineMetadata->getName())) {
+            if (($metadata = $this->getConfigManager()->getClassMetadata($doctrineMetadata->getName()))
+                && $metadata->name == $doctrineMetadata->getName()
+                && $metadata->configurable
+            ) {
                 $this->getConfigManager()->createConfigEntityModel($doctrineMetadata->getName());
 
                 foreach ($doctrineMetadata->getFieldNames() as $fieldName) {

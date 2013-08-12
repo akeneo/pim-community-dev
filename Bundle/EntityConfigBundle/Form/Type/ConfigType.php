@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -10,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
 
@@ -49,9 +50,12 @@ class ConfigType extends AbstractType
             $configType = PropertyConfigContainer::TYPE_ENTITY;
 
             $builder->add('className', 'text', array(
-                'read_only' => true,
-                'block'     => 'entity',
-                'required'  => false
+                'read_only'   => $options['class_name_read_only'],
+                'block'       => 'entity',
+                'required'    => false,
+                'constraints' => array(
+                    new UniqueEntity(array('fields' => 'className'))
+                )
             ));
             $data['className'] = $className;
         }
@@ -79,6 +83,7 @@ class ConfigType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setDefaults(array('class_name_read_only' => true));
         $resolver->setRequired(array('config_model'));
 
         $resolver->setAllowedTypes(
