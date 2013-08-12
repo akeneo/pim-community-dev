@@ -61,9 +61,6 @@
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_BOOLEAN') %}
                             cell: Oro.Datagrid.Cell.BooleanCell,
                             width: 10
-                        {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_MASS_ACTION') %}
-                            cell: Oro.Datagrid.Cell.SelectRowCell,
-                            headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_HTML') %}
                             cell: Oro.Datagrid.Cell.HtmlCell
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_OPTIONS') and column.getOption('choices') %}
@@ -93,6 +90,12 @@
                             {% set currentOptions = currentOptions|merge({'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
                             Oro.Datagrid.Action.NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
+                        {% if not loop.last %},{% endif %}
+                    {% endfor %}
+                },
+                massActions: {
+                    {% for action in datagrid.massActions %}
+                        {{ action.name|json_encode|raw }}: Oro.Datagrid.Action.MassAction.extend({{ action.options|json_encode|raw }})
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
@@ -142,7 +145,7 @@
             var datagridParameters = _.extend({
                 collection: datagridCollection.collection,
                 loadingMask: Oro.LoadingMask.extend({
-                    loadingHint: {{ 'oro_grid.label_loading_mask'|trans({}, 'OroGridBundle')|json_encode|raw }}
+                    loadingHint: {{ 'oro_grid.label_loading_mask'|trans|json_encode|raw }}
                 })
             }, datagridOptions.grid);
             var datagrid = new Oro.Datagrid.Grid(datagridParameters);
@@ -162,7 +165,7 @@
 
             // Filters
             var filterListParameters = _.extend({
-                addButtonHint: {{ 'oro_grid.label_add_filter'|trans({}, 'OroGridBundle')|json_encode|raw }},
+                addButtonHint: {{ 'oro_grid.label_add_filter'|trans|json_encode|raw }},
                 collection: datagridCollection.collection
             }, datagridOptions.grid);
             var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);

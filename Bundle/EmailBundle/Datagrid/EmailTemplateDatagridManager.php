@@ -218,7 +218,7 @@ class EmailTemplateDatagridManager extends DatagridManager
             array(
                 'name'         => 'delete',
                 'acl_resource' => 'oro_email_emailtemplate_remove',
-                'label'        => 'Delete',
+                'label'        => $this->translate('oro.email.datagrid.emailtemplate.action.delete'),
                 'handler'      => 'mass.delete.service.id'
             )
         );

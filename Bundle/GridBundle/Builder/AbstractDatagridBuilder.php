@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Builder;
 
-use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,6 +17,7 @@ use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
 use Oro\Bundle\UserBundle\Acl\ManagerInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
 {

@@ -61,7 +61,7 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'route_name' => 'user_grid_route'
                                 )
                             )
-                        )
+                        ),
                     )
                 ),
                 'expectedDefinitions' => array(
