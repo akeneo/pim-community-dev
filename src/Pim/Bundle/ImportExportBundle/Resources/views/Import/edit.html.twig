@@ -7,6 +7,7 @@
 {% set indexRoute = path('pim_importexport_import_index') %}
 {% if form.vars.value.id %}
     {% set removeRoute = path('pim_importexport_import_remove', { 'id': form.vars.value.id }) %}
+    {% set removeMessage = 'Are you sure you want to delete the import profile %import% ?'|trans({'%import%': form.vars.value.label}) %}
 {% endif %}
 
 {% include 'PimImportExportBundle:Job:edit.html.twig' %}

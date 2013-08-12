@@ -13,8 +13,10 @@
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
     {% set buttons %}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(path('pim_product_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
+        {% endif %}
         {{ elements.submitBtn }}
-        {{ elements.deleteLink(path('pim_product_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

@@ -33,7 +33,7 @@
 
                 {% set buttons %}
                     {% if form.vars.value.id %}
-                        {{ elements.deleteLink(path('pim_product_categorytree_remove', { id: form.vars.value.id })) }}
+                        {{ elements.deleteLink(path('pim_product_categorytree_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this category ?'|trans) }}
                     {% endif %}
                     {{ elements.submitBtn }}
                 {% endset %}

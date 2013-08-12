@@ -8,7 +8,7 @@
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}
             {% if form.vars.value.id %}
-                {{ elements.deleteLink(removeRoute) }}
+                {{ elements.deleteLink(removeRoute, removeMessage) }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}
