@@ -7,6 +7,8 @@ use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 
 /**
  * Product form processor
@@ -36,31 +38,61 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $this->productManager = $productManager;
     }
 
+    /**
+     * Set wether or not the created product should be activated or not
+     *
+     * @param bool $enabled
+     */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
     }
 
+    /**
+     * Wether or not the created product should be activated or not
+     *
+     * @return bool
+     */
     public function isEnabled()
     {
         return $this->enabled;
     }
 
+    /**
+     * Set the categories column
+     *
+     * @param string $categoriesColumn
+     */
     public function setCategoriesColumn($categoriesColumn)
     {
         $this->categoriesColumn = $categoriesColumn;
     }
 
+    /**
+     * Get the categories delimiter
+     *
+     * @return string
+     */
     public function getCategoriesColumn()
     {
         return $this->categoriesColumn;
     }
 
+    /**
+     * Set the categories delimiter
+     *
+     * @param string $categoriesDelimiter
+     */
     public function setCategoriesDelimiter($categoriesDelimiter)
     {
         $this->categoriesDelimiter = $categoriesDelimiter;
     }
 
+    /**
+     * Get the categories delimiter
+     *
+     * @return string
+     */
     public function getCategoriesDelimiter()
     {
         return $this->categoriesDelimiter;
@@ -74,24 +106,73 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *        'sku' => array(
      *            'varchar' => 'sku-001',
      *         )
-     *     )
+     *     ),
+     *     'categories' => array(1, 2, 3)
      * )
-     * and to bind it to the ProductType
+     * and to bind it to the ProductType.
+     *
+     * @param mixed $item item to be processed
+     *
+     * @return null|Product
+     *
+     * @throw Exception when validation errors happenned
      */
     public function process($item)
     {
         if (!$this->attributes) {
-            // First processed item is the attributes
-            foreach ($item as $index => $code) {
-                if ($this->categoriesColumn === $code) {
-                    $this->categoriesColumnIndex = $index;
-                }
-                $this->attributes[] = $this->getAttribute($code);
-            }
+            $this->initializeAttributes($item);
 
             return;
         }
 
+        $product = $this->createProduct($item);
+        $form    = $this->createAndSubmitForm($product, $item);
+
+        if (!$form->isValid()) {
+            throw new InvalidObjectException($form);
+        }
+
+        return $product;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array(
+            'enabled' => array(
+                'type' => 'checkbox',
+            ),
+            'categoriesColumn' => array(),
+            'categoriesDelimiter' => array(),
+        );
+    }
+
+    /**
+     * Initialize the attributes using the first processed item
+     *
+     * @param array $item the processed item
+     */
+    private function initializeAttributes(array $item)
+    {
+        foreach ($item as $index => $code) {
+            if ($this->categoriesColumn === $code) {
+                $this->categoriesColumnIndex = $index;
+            }
+            $this->attributes[] = $this->getAttribute($code);
+        }
+    }
+
+    /**
+     * Create a product using the initialized attributes
+     *
+     * @param array $item
+     *
+     * @return Product
+     */
+    private function createProduct(array $item)
+    {
         $product = $this->productManager->createFlexible();
 
         foreach ($this->attributes as $attribute) {
@@ -102,6 +183,19 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $this->productManager->addAttributeToProduct($product, $attribute);
         }
 
+        return $product;
+    }
+
+    /**
+     * Create and submit the product form
+     *
+     * @param Product     the product to which bind the data
+     * @param array $item the processed item
+     *
+     * @return FormInterface
+     */
+    private function createAndSubmitForm(Product $product, array $item)
+    {
         $values = array();
         $categories = array();
         foreach ($item as $index => $value) {
@@ -112,7 +206,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             }
         }
 
-        // $form = $this->createAndSubmitForm($product, $values, $categories);
         $form = $this->formFactory->create(
             'pim_product',
             $product,
@@ -130,22 +223,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             )
         );
 
-        if (!$form->isValid()) {
-            throw new \Exception($form->getErrorsAsString());
-        }
-
-        return $product;
-    }
-
-    public function getConfigurationFields()
-    {
-        return array(
-            'enabled' => array(
-                'type' => 'checkbox',
-            ),
-            'categoriesColumn' => array(),
-            'categoriesDelimiter' => array(),
-        );
+        return $form;
     }
 
     private function getCategoryIds($codes)

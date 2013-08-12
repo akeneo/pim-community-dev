@@ -100,6 +100,60 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException
+     */
+    public function testInvalidProcess()
+    {
+        $attributeRepository = $this->getRepositoryMock();
+        $categoryRepository  = $this->getRepositoryMock();
+        $repoMap = array(
+            array('PimProductBundle:ProductAttribute', $attributeRepository),
+            array('PimProductBundle:Category', $categoryRepository),
+        );
+
+        $this->em
+            ->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValueMap($repoMap));
+
+        $attributesMap = array(
+            array(array('code' => 'sku'), null, $this->getAttributeMock('sku', 'varchar')),
+            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar')),
+            array(array('code' => 'description'), null, $this->getAttributeMock('description', 'longtext')),
+        );
+        $attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValueMap($attributesMap));
+
+        $categoriesMap = array(
+            array(array('code' => 'cat_1'), null, $this->getCategoryMock(1)),
+            array(array('code' => 'cat_2'), null, $this->getCategoryMock(2)),
+            array(array('code' => 'cat_3'), null, $this->getCategoryMock(3)),
+        );
+        $categoryRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValueMap($categoriesMap));
+
+        $product = $this->getProductMock();
+        $this->productManager
+            ->expects($this->any())
+            ->method('createFlexible')
+            ->will($this->returnValue($product));
+
+        $form = $this->getFormMock(false);
+        $this->formFactory
+            ->expects($this->any())
+            ->method('create')
+            ->with('pim_product', $product, array('csrf_protection' => false, 'withCategories' => true))
+            ->will($this->returnValue($form));
+
+        $this->processor->process(array('sku', 'name', 'description', 'categories'));
+        $this->processor->process(array('foo-1', 'foo', 'A foo product', 'cat_1,cat_2,cat_3'));
+    }
+
     protected function getFormFactoryMock()
     {
         return $this
@@ -118,6 +172,10 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->any())
             ->method('isValid')
             ->will($this->returnValue($valid));
+
+        $form->expects($this->any())
+            ->method('getErrors')
+            ->will($this->returnValue(array()));
 
         return $form;
     }
