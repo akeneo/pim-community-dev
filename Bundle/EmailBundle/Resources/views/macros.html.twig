@@ -44,7 +44,7 @@
     <script type="text/javascript">
         $(function () {
             var showEmailPreviewDialog = function (el) {
-                var iframeId = 'preview-frame' + _.uniqueId();
+                var iframeId = 'preview-frame';
                 var iframe = $('<iframe />',
                         {
                             name: iframeId,
@@ -64,23 +64,25 @@
                         return;
                     }
 
-                    var dialog = new Oro.widget.DialogView({
-                        el: iframe,
-                        url: false,
-                        dialogOptions: {
-                            allowMaximize: true,
-                            allowMinimize: true,
-                            dblclick: 'maximize',
-                            maximizedHeightDecreaseBy: 'minimize-bar',
-                            minWidth: 600,
-                            minHeight: 400,
-                            title: $(el).attr('title')
-                        }
-                    });
-                    dialog.render();
+                    if ($('#'+iframeId).length == 0) {
+                        var dialog = new Oro.widget.DialogView({
+                            el: iframe,
+                            url: false,
+                            dialogOptions: {
+                                allowMaximize: true,
+                                allowMinimize: true,
+                                dblclick: 'maximize',
+                                maximizedHeightDecreaseBy: 'minimize-bar',
+                                minWidth: 600,
+                                minHeight: 400,
+                                title: $(el).attr('title')
+                            }
+                        });
+                        dialog.render();
 
-                    var width = dialog.widget.parent('.ui-dialog').width() - 2*parseInt(dialog.widget.css('padding'));
-                    dialog.widget.width(width);
+                        var width = dialog.widget.parent('.ui-dialog').width() - 2*parseInt(dialog.widget.css('padding'));
+                        dialog.widget.width(width);
+                    }
 
                     form.attr('target', iframeId);
                     form.attr('action', $(el).attr('href'));
