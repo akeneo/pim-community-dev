@@ -501,10 +501,26 @@ class FixturesContext extends RawMinkContext
             $channel->setCode($data['code']);
             $channel->setName($data['name']);
 
+            if (isset($data['locales'])) {
+                $locales = explode(', ', $data['locales']);
+                foreach ($locales as $localeCode) {
+                    $locale = $this->getLocale($localeCode);
+                    $channel->addLocale($locale);
+                }
+            }
+
             if (isset($data['category'])) {
                 $category = $this->getCategory($data['category']);
                 $channel->setCategory($category);
             }
+
+            if (isset($data['currencies'])) {
+                foreach ($data['currencies'] as $currencyCode) {
+                    $currency = $this->getCurrency($currencyCode);
+                    $channel->addCurrency($currency);
+                }
+            }
+
             $this->persist($channel);
         }
     }
@@ -789,6 +805,18 @@ class FixturesContext extends RawMinkContext
         }
 
         return $lang;
+    }
+
+    /**
+     * Get currency
+     *
+     * @param string $code
+     *
+     * @return Currency
+     */
+    public function getCurrency($code)
+    {
+        return $this->getEntityOrException('PimConfigBundle:Currency', array('code' => $code));
     }
 
     /**

@@ -4,6 +4,7 @@ services:
         class: %pim_config.form.type.channel.class%
         arguments:
             - @pim_config.manager.locale
+            - @pim_config.helper.locale
         tags:
             - { name: form.type, alias: pim_config_channel }
 
@@ -16,8 +17,5 @@ services:
 
     pim_config.form.type.locale:
         class: %pim_config.form.type.locale.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-            - %pim_config.locales%
         tags:
             - { name: form.type, alias: pim_config_locale }

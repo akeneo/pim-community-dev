@@ -15,14 +15,14 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidLocaleFallback extends Constraint
 {
-    /*
+    /**
      * Violation message for the same fallback as the locale
      *
      * @var string
      */
     public $fallbackTwinLocale = 'Inherited locale must not be the same as the locale';
 
-    /*
+    /**
      * Violation message for not allowed fallback
      *
      * @var string
