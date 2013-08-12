@@ -67,22 +67,6 @@ class LocaleDatagridManager extends DatagridManager
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
-        $field->setName('fallback');
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Fallback'),
-                'field_name'  => 'fallback',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($field);
-
-        $field = new FieldDescription();
         $field->setName('activated');
         $field->setOptions(
             array(
