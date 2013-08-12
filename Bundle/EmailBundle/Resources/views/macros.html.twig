@@ -44,10 +44,11 @@
     <script type="text/javascript">
         $(function () {
             var showEmailPreviewDialog = function (el) {
+                var iframeId = 'preview-frame' + _.uniqueId();
                 var iframe = $('<iframe />',
                         {
-                            name: "preview-frame",
-                            id: "preview-frame",
+                            name: iframeId,
+                            id: iframeId,
                             class: "scrollable-container",
                             frameborder: 0,
                             marginwidth: 0,
@@ -59,6 +60,10 @@
                 var formAction = form.attr('action');
 
                 form.bindFirst('submit', function(e) {
+                    if (!$(this).data('preview')) {
+                        return;
+                    }
+
                     var dialog = new Oro.widget.DialogView({
                         el: iframe,
                         url: false,
@@ -77,18 +82,19 @@
                     var width = dialog.widget.parent('.ui-dialog').width() - 2*parseInt(dialog.widget.css('padding'));
                     dialog.widget.width(width);
 
-                    $('#inject-content').append(iframe);
-                    form.attr('target', 'preview-frame');
+                    form.attr('target', iframeId);
                     form.attr('action', $(el).attr('href'));
 
                     // prevent hash navigation form processing
                     e.stopImmediatePropagation();
                 });
+                form.data('preview', true);
 
                 iframe.load(function() {
                     $(this).show();
                     form.attr('action', formAction);
                     form.removeAttr('target');
+                    form.data('preview', false);
                 });
 
                 form.submit();
