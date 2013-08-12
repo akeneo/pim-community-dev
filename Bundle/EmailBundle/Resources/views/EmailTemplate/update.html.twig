@@ -17,9 +17,9 @@
 %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_preview') %}
+    {% if resource_granted('oro_email_emailtemplate_preview') %}
         {{ UI.button({
-                'path' :  path('oro_email_emailtemplate_preview', {'id': form.vars.value.id}),
+                'path' :  path('oro_email_emailtemplate_preview', {'id': form.vars.value.id }),
                 'title' : 'Preview',
                 'label' : 'Preview',
                 aClass: 'btn-success dialog-form-renderer no-hash',

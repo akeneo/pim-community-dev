@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -124,11 +125,19 @@ class EmailTemplateController extends Controller
      *      parent="oro_email_emailtemplate"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
-     * @param EmailTemplate $emailTemplate
+     * @param bool|int $emailTemplateId
      * @return array
      */
-    public function previewAction(EmailTemplate $emailTemplate)
+    public function previewAction($emailTemplateId = false)
     {
+        if (!$emailTemplateId) {
+            $emailTemplate = new EmailTemplate();
+        } else {
+            /** @var EntityManager $em */
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->getRepository('Oro\Bundle\EmailBundle\Entity\EmailTemplate')->find($emailTemplateId);
+        }
+
         /** @var FormInterface $form */
         $form = $this->get('oro_email.form.emailtemplate');
         $form->setData($emailTemplate);
