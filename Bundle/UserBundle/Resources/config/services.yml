@@ -341,6 +341,6 @@ services:
 
     oro_user.entity_ownership.listener:
         class:                        %oro_user.entity_ownership.listener.class%
-        arguments:                    ["@service_container"]
+        arguments:                    ["@service_container", "@oro_entity.config.acl_config_provider"]
         tags:
              - { name: doctrine.event_listener, event: prePersist }
