@@ -78,7 +78,6 @@ class TransactionEmailsTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testDeleteTransactionEmail($email)
     {
-//        $this->markTestSkipped('BAP-726');
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
