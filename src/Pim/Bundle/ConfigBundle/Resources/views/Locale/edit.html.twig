@@ -3,13 +3,11 @@
 {% block content %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_config_locale_edit', { id: form.vars.value.id }) :
-        path('pim_config_locale_create') }}" method="POST">
+    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_config_locale_edit', { id: form.vars.value.id }) }}" method="POST">
 
         {% set title = 'Locale'|trans %}
 
-        {% set subtitle = form.vars.value.code %}
+        {% set subtitle = localizedLabel(form.vars.value.code) %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_config_locale_index')) }}

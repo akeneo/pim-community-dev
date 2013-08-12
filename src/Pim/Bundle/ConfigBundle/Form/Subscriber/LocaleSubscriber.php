@@ -39,7 +39,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::POST_SET_DATA => 'preSetData',
         );
     }
 

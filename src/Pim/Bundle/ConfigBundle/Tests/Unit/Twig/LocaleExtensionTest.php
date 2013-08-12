@@ -60,7 +60,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $localeManager
             ->expects($this->any())
             ->method('getUserLocaleCode')
-            ->will($this->returnValue('en_US'));
+            ->will($this->returnValue('fr_FR'));
 
         return $localeManager;
     }
@@ -75,11 +75,11 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     public static function dataProviderForLocalizedLabel()
     {
         return array(
-            'EN' => array(
+            'FR' => array(
                 array(
-                    'en_US' => 'English (United States)',
-                    'en_EN' => 'English',
-                    'fr_FR' => 'French'
+                    'en_US' => 'anglais (États-Unis)',
+                    'en_EN' => 'anglais',
+                    'fr_FR' => 'français'
                 )
             )
         );

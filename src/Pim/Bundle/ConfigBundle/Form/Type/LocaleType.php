@@ -20,24 +20,6 @@ use Symfony\Component\Form\AbstractType;
  */
 class LocaleType extends AbstractType
 {
-
-    /**
-     * @var \Pim\Bundle\ConfigBundle\Helper\LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
-     * Constructor
-     * @param EntityManager $em     Entity manager
-     * @param array         $config Locales config
-     *
-     * TODO
-     */
-    public function __construct(LocaleHelper $localeHelper)
-    {
-        $this->localeHelper = $localeHelper;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,9 +32,6 @@ class LocaleType extends AbstractType
         $builder->add('code', 'text', array('disabled' => true, 'required' => true));
 
         $this->addCurrencyField($builder);
-
-        $localeSubscriber = new LocaleSubscriber($this->localeHelper);
-        $builder->addEventSubscriber($localeSubscriber);
     }
 
     /**
