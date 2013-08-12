@@ -8,6 +8,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
+
 class RecordOwnerDataListener
 {
     /**
@@ -21,11 +26,18 @@ class RecordOwnerDataListener
     protected $container;
 
     /**
-     * @param ContainerInterface $container
+     * @var ConfigProvider
      */
-    public function __construct(ContainerInterface $container)
+    protected $configProvider;
+
+    /**
+     * @param ContainerInterface $container
+     * @param ConfigProvider $configProvider
+     */
+    public function __construct(ContainerInterface $container, ConfigProvider $configProvider)
     {
-       $this->container = $container;
+        $this->container = $container;
+        $this->configProvider = $configProvider;
     }
 
     /**
@@ -47,36 +59,33 @@ class RecordOwnerDataListener
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $user = $this->getSecurityContext()->getToken()->getUser();
-        if ($user) {
-            $entity = $args->getEntity();
-            if(method_exists($entity, 'setUserOwner')) {
-                $entity->setUserOwner($user);
-            }
-            /**
-             * @var $businessUnits ArrayCollection
-             */
-            $businessUnits = $user->getBusinessUnits();
-            if ($businessUnits->count()) {
-                if(method_exists($entity, 'setBusinessUnitOwners')) {
-                    $bu = new ArrayCollection(array());
-                    foreach ($businessUnits as $businessUnit) {
-                        $bu->add($businessUnit);
-                    }
-                    $entity->setBusinessUnitOwners($bu);
-                }
+        $token = $this->getSecurityContext()->getToken();
+        if ($token) {
+            $user = $token->getUser();
+            if ($user) {
+                $entity = $args->getEntity();
+                if ($this->configProvider->hasConfig(get_class($entity))) {
+                    /** @var $config EntityConfig */
+                    $config = $this->configProvider->getConfig(get_class($entity));
+                    $entityValues = $config->getValues();
 
-                if(method_exists($entity, 'setOrganizationOwners')) {
-                    $organizations = new ArrayCollection(array());
-                    foreach ($businessUnits as $businessUnit) {
-                        $organization = $businessUnit->getOrganization();
-                        if (!$organizations->contains($organization)) {
-                            $organizations->add($organization);
-                        }
+                    $owner = null;
+                    if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
+                        $owner = $user;
+                    } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
+                        $businessUnits = $user->getBusinessUnits();
+                        $owner = $businessUnits->first();
+                    } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
+                        $businessUnits = $user->getBusinessUnits();
+                        $owner = $businessUnits->first()->getOrganization();
                     }
-                    $entity->setOrganizationOwners($organizations);
+
+                    if($owner && method_exists($entity, 'setOwner')) {
+                        $entity->setOwner($owner);
+                    }
                 }
             }
         }
+
     }
 }
