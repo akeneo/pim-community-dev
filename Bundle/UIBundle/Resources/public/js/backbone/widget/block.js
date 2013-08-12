@@ -3,6 +3,7 @@ Oro.widget = Oro.widget || {};
 
 Oro.widget.Block = Oro.widget.Abstract.extend({
     options: _.extend(
+        _.extend({}, Oro.widget.Abstract.prototype.options),
         {
             type: 'block',
             titleContainer: '.widget-title',
@@ -16,8 +17,7 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
                 '</div>' +
                 '<div class="row-fluid <%= contentClasses.join(\' \') %>"></div>' +
             '</div>')
-        },
-        Oro.widget.Abstract.prototype.options
+        }
     ),
 
     initialize: function(options) {

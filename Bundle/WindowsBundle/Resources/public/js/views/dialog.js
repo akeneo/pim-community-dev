@@ -3,13 +3,13 @@ Oro.widget = Oro.widget || {};
 
 Oro.widget.DialogView = Oro.widget.Abstract.extend({
     options: _.extend(
+        _.extend({}, Oro.widget.Abstract.prototype.options),
         {
             type: 'dialog',
             dialogOptions: null,
             stateEnabled: true,
             incrementalPosition: true
-        },
-        Oro.widget.Abstract.prototype.options
+        }
     ),
 
     // Windows manager global variables

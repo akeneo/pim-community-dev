@@ -55,10 +55,20 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
         /** @var AbstractTypedAddress[] $allAddresses */
         $allAddresses = $this->addressesAccess->getValue($address, $this->addressesProperty);
 
-        /**
-         * Only one address must be primary
-         */
+        $this->handlePrimary($address, $allAddresses);
+        $this->handleType($address, $allAddresses);
+    }
+
+    /**
+     * Only one address must be primary.
+     *
+     * @param AbstractTypedAddress $address
+     * @param AbstractTypedAddress[] $allAddresses
+     */
+    protected function handlePrimary(AbstractTypedAddress $address, $allAddresses)
+    {
         if ($address->isPrimary()) {
+            /** @var AbstractTypedAddress[] $allAddresses */
             foreach ($allAddresses as $otherAddresses) {
                 $otherAddresses->setPrimary(false);
             }
@@ -66,10 +76,16 @@ class FixAddressesPrimaryAndTypesSubscriber implements EventSubscriberInterface
         } elseif (count($allAddresses) == 1) {
             $address->setPrimary(true);
         }
+    }
 
-        /**
-         * Two addresses must not have same types
-         */
+    /**
+     * Two addresses must not have same types
+     *
+     * @param AbstractTypedAddress $address
+     * @param AbstractTypedAddress[] $allAddresses
+     */
+    protected function handleType(AbstractTypedAddress $address, $allAddresses)
+    {
         $types = $address->getTypes()->toArray();
         if (count($types)) {
             foreach ($allAddresses as $otherAddresses) {
