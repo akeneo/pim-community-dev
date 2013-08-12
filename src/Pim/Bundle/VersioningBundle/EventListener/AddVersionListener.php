@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
+use Pim\Bundle\ProductBundle\Entity\Family;
+
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
@@ -10,6 +12,10 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
+
+use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\Version;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -47,8 +53,11 @@ class AddVersionListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+                /*
             'prePersist',
-            'preUpdate'
+            'preUpdate',
+            */
+            'onFlush'
         );
     }
 
@@ -62,7 +71,7 @@ class AddVersionListener implements EventSubscriber
         $entity = $args->getEntity();
 
         if ($entity instanceof ProductInterface) {
-die('toto');
+//die('toto');
         }
     }
 
@@ -75,8 +84,45 @@ die('toto');
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof ProductValueInterface) {
-            die('titi');
+        if ($entity instanceof Family) {
+            //die('titi');
         }
+    }
+
+    /**
+     * @param OnFlushEventArgs $args
+     */
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $em = $args->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        foreach ($uow->getScheduledEntityInsertions() AS $entity) {
+            if ($entity instanceof Versionable) {
+                $this->_makeSnapshot($entity);
+            }
+        }
+
+        foreach ($uow->getScheduledEntityUpdates() AS $entity) {
+            if ($entity instanceof Versionable) {
+                $this->_makeSnapshot($entity);
+            }
+        }
+    }
+
+    /**
+     * @param VersionableInterface $entity
+     */
+    private function _makeSnapshot(Versionable $entity)
+    {
+        return;
+        var_dump($entity->getVersionedData());
+
+        die();
+        $resourceVersion = new Version($entity);
+        $class = $this->_em->getClassMetadata(get_class($resourceVersion));
+
+        $this->_em->persist($resourceVersion);
+        $this->_em->getUnitOfWork()->computeChangeSet($class, $resourceVersion);
     }
 }

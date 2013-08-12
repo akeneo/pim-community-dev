@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Model\Versionable;
 
 /**
  * Product family
@@ -21,7 +22,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
  */
-class Family implements TranslatableInterface
+class Family implements TranslatableInterface, Versionable
 {
     /**
      * @var integer $id
@@ -31,12 +32,6 @@ class Family implements TranslatableInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @ORM\Version
-     * @ORM\Column(type="integer")
-     */
-    protected $version;
 
     /**
      * @var string $code
@@ -370,5 +365,25 @@ class Family implements TranslatableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
+    }
+
+    public function getVersionedData()
+    {
+        $attributes = array();
+        foreach ($this->getAttributes() as $attribute) {
+            $attributes[]= $attribute->getCode();
+        }
+
+        $data = array(
+            'code'       => $this->getCode(),
+            'attributes' => implode(',', $attributes),
+        );
+
+        $translations = array();
+        foreach ($this->getTranslations() as $translation) {
+            $data['label_'.$translation->getLocale()]= $translation->getLabel();
+        }
+
+        return $data;
     }
 }
