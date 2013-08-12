@@ -5,8 +5,6 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
-use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
-use Oro\Bundle\GridBundle\Field\MassActionFieldDescription;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -211,7 +209,7 @@ class EmailTemplateDatagridManager extends DatagridManager
             array(
                 'name'         => 'delete',
                 'acl_resource' => 'oro_email_emailtemplate_remove',
-                'label'        => 'Delete',
+                'label'        => $this->translate('oro.email.datagrid.emailtemplate.action.delete'),
                 'handler'      => 'mass.delete.service.id'
             )
         );

@@ -13,6 +13,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
     template:_.template(
         '<div class="grid-toolbar">' +
             '<div class="pull-left">' +
+                '<div class="mass-actions-panel btn-group icons-holder"></div>' +
                 '<div class="btn-group icons-holder" style="display: none;">' +
                     '<button class="btn"><i class="icon-edit hide-text"><%- _.__("edit") %></i></button>' +
                     '<button class="btn"><i class="icon-copy hide-text"><%- _.__("copy") %></i></button>' +
@@ -42,6 +43,9 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
 
     /** @property */
     actionsPanel: Oro.Datagrid.ActionsPanel,
+
+    /** @property */
+    massActionsPanel: Oro.Datagrid.ActionsPanel,
 
     /**
      * Initializer.
@@ -73,6 +77,11 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
             this.actionsPanel.setActions(options.actions);
         }
 
+        this.massActionsPanel = new this.massActionsPanel();
+        if (options.massActions) {
+            this.massActionsPanel.setActions(options.massActions);
+        }
+
         Backbone.View.prototype.initialize.call(this, options);
     },
 
@@ -85,6 +94,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.enable();
         this.pageSize.enable();
         this.actionsPanel.enable();
+        this.massActionsPanel.enable();
         return this;
     },
 
@@ -97,6 +107,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.disable();
         this.pageSize.disable();
         this.actionsPanel.disable();
+        this.massActionsPanel.disable();
         return this;
     },
 
@@ -110,6 +121,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.$('.pagination').replaceWith(this.pagination.render().$el);
         this.$('.page-size').append(this.pageSize.render().$el);
         this.$('.actions-panel').append(this.actionsPanel.render().$el);
+        this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 
         return this;
     }

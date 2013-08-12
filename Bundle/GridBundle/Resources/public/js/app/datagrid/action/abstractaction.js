@@ -47,6 +47,9 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
      */
     createLauncher: function(options) {
         options = options || {};
+        if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
+            options.icon = this.icon;
+        }
         _.defaults(options, this.launcherOptions);
         return new (this.launcherPrototype)(options);
     },

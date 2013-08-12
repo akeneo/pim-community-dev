@@ -15,13 +15,7 @@ use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
-use Oro\Bundle\GridBundle\Field\MassActionFieldDescription;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * TODO: This class should be refactored  (BAP-969).
- */
 abstract class DatagridManager implements DatagridManagerInterface
 {
     /**
@@ -235,7 +229,7 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         // add mass actions
-        foreach ($this->extractMassActions() as $massAction) {
+        foreach ($this->getMassActions() as $massAction) {
             $this->datagridBuilder->addMassAction($datagrid, $massAction);
         }
 
@@ -285,9 +279,6 @@ abstract class DatagridManager implements DatagridManagerInterface
     {
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
-            if ($this->extractMassActions()) {
-                $this->addMassActionField($this->fieldsCollection);
-            }
             $this->configureFields($this->fieldsCollection);
         }
 
@@ -301,27 +292,6 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function configureFields(FieldDescriptionCollection $fieldCollection)
     {
-    }
-
-    /**
-     * Add mass action field to field collection
-     *
-     * @param FieldDescriptionCollection $fieldCollection
-     */
-    protected function addMassActionField(FieldDescriptionCollection $fieldCollection)
-    {
-        $fieldMassAction = new MassActionFieldDescription();
-        $fieldMassAction->setName('mass_action');
-        $fieldMassAction->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_MASS_ACTION,
-                'label'       => $this->translate('Selected Rows'),
-                'filterable'  => true,
-                'show_filter' => true,
-                'filter_type' => FilterInterface::TYPE_BOOLEAN,
-            )
-        );
-        $fieldCollection->add($fieldMassAction);
     }
 
     /**
@@ -398,20 +368,6 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected function getRowActions()
     {
         return array();
-    }
-
-    /**
-     * Extracts mass actions and put them into internal cache to prevent excessive instantiation
-     *
-     * @return MassActionInterface[]
-     */
-    private function extractMassActions()
-    {
-        if (null === $this->massActions) {
-            $this->massActions = $this->getMassActions();
-        }
-
-        return $this->massActions;
     }
 
     /**

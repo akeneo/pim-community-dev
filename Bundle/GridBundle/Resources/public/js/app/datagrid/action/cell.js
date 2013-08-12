@@ -107,11 +107,6 @@ Oro.Datagrid.Action.Cell = Backgrid.Cell.extend({
 
         _.each(this.actions, function(action) {
             var options = {};
-            if (action.icon) {
-                options = {
-                    icon: action.icon
-                };
-            }
             var launcher = action.createLauncher(options);
             result.push(launcher);
         }, this);

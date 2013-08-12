@@ -70,7 +70,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         addResetAction: true,
         addRefreshAction: true,
         rowClickAction: undefined,
-        rowActions: []
+        rowActions: [],
+        massActions: []
     },
 
     /**
@@ -86,6 +87,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * @param {Boolean} [options.addResetAction] If TRUE reset action will be added in toolbar
      * @param {Boolean} [options.addRefreshAction] If TRUE refresh action will be added in toolbar
      * @param {Oro.Datagrid.Action.AbstractAction[]} [options.rowActions] Array of row actions prototypes
+     * @param {Oro.Datagrid.Action.AbstractAction[]} [options.massActions] Array of mass actions prototypes
      * @param {Oro.Datagrid.Action.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
      * @throws {TypeError} If mandatory options are undefined
      */
@@ -113,6 +115,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         }
 
         options.columns.push(this._createActionsColumn());
+        options.columns.unshift(this._createMassActionsColumn());
 
         this.loadingMask = this._createLoadingMask();
         this.toolbar = this._createToolbar(this.toolbarOptions);
@@ -156,6 +159,24 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     },
 
     /**
+     * Creates mass actions column
+     *
+     * @return {Backgrid.Column}
+     * @private
+     */
+    _createMassActionsColumn: function() {
+        return {
+            name: "massAction",
+            label: _.__("Selected Rows"),
+            renderable: !_.isEmpty(this.massActions),
+            sortable: false,
+            editable: false,
+            cell: Oro.Datagrid.Cell.SelectRowCell,
+            headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
+        };
+    },
+
+    /**
      * Creates loading mask
      *
      * @return {Oro.LoadingMask}
@@ -175,7 +196,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     _createToolbar: function(toolbarOptions) {
         return new this.toolbar(_.extend({}, toolbarOptions, {
             collection: this.collection,
-            actions: this._getToolbarActions()
+            actions: this._getToolbarActions(),
+            massActions: this._getToolbarMassActions()
         }));
     },
 
@@ -194,6 +216,36 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
             result.push(this.getResetAction());
         }
         return result;
+    },
+
+    /**
+     * Get mass actions of toolbar
+     *
+     * @return {Array}
+     * @private
+     */
+    _getToolbarMassActions: function() {
+        var result = [];
+        _.each(this.massActions, function(action) {
+            result.push(this.createMassAction(action));
+        }, this);
+
+        return result;
+    },
+
+    /**
+     * Creates action
+     *
+     * @param {Function} actionPrototype
+     * @protected
+     */
+    createMassAction: function(actionPrototype) {
+        return new actionPrototype({
+            datagrid: this,
+            launcherOptions: {
+                className: 'btn'
+            }
+        });
     },
 
     /**

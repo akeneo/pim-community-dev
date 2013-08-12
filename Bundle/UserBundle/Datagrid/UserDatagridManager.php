@@ -8,6 +8,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
 class UserDatagridManager extends FlexibleDatagridManager
@@ -37,6 +38,23 @@ class UserDatagridManager extends FlexibleDatagridManager
         $this->addFieldCreated($fieldsCollection);
         $this->addFieldUpdated($fieldsCollection);
         $this->addFieldStatus($fieldsCollection);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getMassActions()
+    {
+        $deleteMassAction = new DefaultMassAction(
+            array(
+                'name'         => 'delete',
+                'acl_resource' => 'oro_user_user_delete',
+                'label'        => $this->translate('oro.grid.mass_action.delete.label'),
+                'icon'         => 'trash'
+            )
+        );
+
+        return array($deleteMassAction);
     }
 
     /**

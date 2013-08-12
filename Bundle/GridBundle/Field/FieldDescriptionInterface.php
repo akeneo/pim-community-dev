@@ -17,7 +17,6 @@ interface FieldDescriptionInterface
     const TYPE_TEXT           = 'text';
     const TYPE_HTML           = 'html';
     const TYPE_BOOLEAN        = 'boolean';
-    const TYPE_MASS_ACTION    = 'massAction';
 
     /**
      * set the field name
