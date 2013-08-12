@@ -80,12 +80,11 @@ class RecordOwnerDataListener
                         $owner = $businessUnits->first()->getOrganization();
                     }
 
-                    if($owner && method_exists($entity, 'setOwner')) {
+                    if ($owner && method_exists($entity, 'setOwner')) {
                         $entity->setOwner($owner);
                     }
                 }
             }
         }
-
     }
 }
