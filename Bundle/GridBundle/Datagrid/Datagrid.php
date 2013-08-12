@@ -112,6 +112,11 @@ class Datagrid implements DatagridInterface
     protected $rowActions;
 
     /**
+     * @var associative array
+     */
+    protected $toolbarOptions;
+
+    /**
      * @param ProxyQueryInterface $query
      * @param FieldDescriptionCollection $columns
      * @param PagerInterface $pager
@@ -333,7 +338,7 @@ class Datagrid implements DatagridInterface
 
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
-        $this->pager->setMaxPerPage(!empty($pagerParameters['_per_page']) ? $pagerParameters['_per_page'] : 10);
+        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int)$pagerParameters['_per_page'] : 10);
         $this->pager->init();
 
         $this->pagerApplied = true;
@@ -472,5 +477,22 @@ class Datagrid implements DatagridInterface
     public function createView()
     {
         return new DatagridView($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getToolbarOptions()
+    {
+        return $this->toolbarOptions;
+    }
+
+    /**
+     * @param $options
+     * @return $this
+     */
+    public function setToolbarOptions($options)
+    {
+        $this->toolbarOptions = $options;
     }
 }

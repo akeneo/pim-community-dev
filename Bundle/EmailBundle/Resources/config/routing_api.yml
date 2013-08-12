@@ -1,0 +1,7 @@
+oro_email_api:
+    resource: Oro\Bundle\EmailBundle\Controller\Api\Rest\EmailController
+    type: rest
+
+oro_email_emailtemplate_api:
+    resource: Oro\Bundle\EmailBundle\Controller\Api\Rest\EmailTemplateController
+    type: rest
