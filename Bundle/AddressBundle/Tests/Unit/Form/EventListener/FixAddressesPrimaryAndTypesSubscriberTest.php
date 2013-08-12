@@ -28,6 +28,6 @@ class FixAddressesPrimaryAndTypesSubscriberTest extends \PHPUnit_Framework_TestC
 
     public function testPostSubmit()
     {
-
+        $this->markTestIncomplete('Implement tests for primary and types');
     }
 }
