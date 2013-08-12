@@ -43,8 +43,11 @@ class VariablesValidator extends ConstraintValidator
             }
         }
 
-        $className = class_exists($emailTemplate->getEntityName()) ? $emailTemplate->getEntityName() : false;
-        $relatedEntity = $className ? new $className() : false;
+        $relatedEntity = false;
+        if (class_exists($emailTemplate->getEntityName())) {
+            $className = $emailTemplate->getEntityName();
+            $relatedEntity = new $className;
+        }
 
         $errors = array();
         foreach ($fieldsToValidate as $field => $value) {
