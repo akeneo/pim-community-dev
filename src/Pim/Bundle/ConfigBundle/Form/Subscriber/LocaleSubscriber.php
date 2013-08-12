@@ -53,7 +53,6 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
         if (null === $data) {
             return;
