@@ -42,6 +42,7 @@ parameters:
     oro_user.form.type.user_multiselect.class: Oro\Bundle\UserBundle\Form\Type\UserMultiSelectType
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.autocomplete.user.search_handler: Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
+    oro_user.entity_ownership.listener.class: Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener
 
 services:
     oro_user.manager.flexible:
@@ -337,3 +338,9 @@ services:
             - ["username", "firstName", "lastName", "email"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_list }
+
+    oro_user.entity_ownership.listener:
+        class:                        %oro_user.entity_ownership.listener.class%
+        arguments:                    ["@service_container"]
+        tags:
+             - { name: doctrine.event_listener, event: prePersist }
