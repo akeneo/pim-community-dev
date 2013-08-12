@@ -19,7 +19,7 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->batch = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchCooker')
+        $this->batch = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor')
             ->disableOriginalConstructor()
             ->getMock();
         $addrManager = new EmailAddressManager('Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures', 'Test%sProxy');
@@ -31,14 +31,22 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
         $storage = array();
         $this->batch->expects($this->any())
             ->method('getAddress')
-            ->will($this->returnCallback(function ($email) use (&$storage) {
-                return isset($storage[$email]) ? $storage[$email] : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($email) use (&$storage) {
+                        return isset($storage[$email]) ? $storage[$email] : null;
+                    }
+                )
+            );
         $this->batch->expects($this->any())
             ->method('addAddress')
-            ->will($this->returnCallback(function ($obj) use (&$storage) {
-                $storage[$obj->getEmail()] = $obj;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($obj) use (&$storage) {
+                        $storage[$obj->getEmail()] = $obj;
+                    }
+                )
+            );
     }
 
     public function testEmail()
@@ -54,7 +62,8 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
             $date,
             $date,
             Email::NORMAL_IMPORTANCE,
-            array('"Test2" <test2@example.com>', 'test1@example.com'));
+            array('"Test2" <test2@example.com>', 'test1@example.com')
+        );
 
         $this->assertEquals('testSubject', $email->getSubject());
         $this->assertEquals('"Test" <test@example.com>', $email->getFromName());
@@ -110,14 +119,22 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
         $storage = array();
         $this->batch->expects($this->exactly(2))
             ->method('getOrigin')
-            ->will($this->returnCallback(function ($name) use (&$storage) {
-                return isset($storage[$name]) ? $storage[$name] : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($name) use (&$storage) {
+                        return isset($storage[$name]) ? $storage[$name] : null;
+                    }
+                )
+            );
         $this->batch->expects($this->once())
             ->method('addOrigin')
-            ->will($this->returnCallback(function ($obj) use (&$storage) {
-                $storage[$obj->getName()] = $obj;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($obj) use (&$storage) {
+                        $storage[$obj->getName()] = $obj;
+                    }
+                )
+            );
 
         $result = $this->builder->origin('test');
 
@@ -130,14 +147,22 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
         $storage = array();
         $this->batch->expects($this->exactly(10))
             ->method('getFolder')
-            ->will($this->returnCallback(function ($type, $name) use (&$storage) {
-                return isset($storage[$type . $name]) ? $storage[$type . $name] : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($type, $name) use (&$storage) {
+                        return isset($storage[$type . $name]) ? $storage[$type . $name] : null;
+                    }
+                )
+            );
         $this->batch->expects($this->exactly(5))
             ->method('addFolder')
-            ->will($this->returnCallback(function ($obj) use (&$storage) {
-                $storage[$obj->getType() . $obj->getName()] = $obj;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($obj) use (&$storage) {
+                        $storage[$obj->getType() . $obj->getName()] = $obj;
+                    }
+                )
+            );
 
         $inbox = $this->builder->folderInbox('test');
         $sent = $this->builder->folderSent('test');

@@ -3,13 +3,14 @@
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 
 class EmailAddressTest extends \PHPUnit_Framework_TestCase
 {
     public function testIdGetter()
     {
         $entity = new EmailAddress();
-        self::setId($entity, 1);
+        ReflectionUtil::setId($entity, 1);
         $this->assertEquals(1, $entity->getId());
     }
 
@@ -34,14 +35,5 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
 
         $entity = new EmailAddress($date);
         $this->assertEquals($date, $entity->getUpdatedAt());
-    }
-
-    private static function setId($obj, $val)
-    {
-        $class = new \ReflectionClass($obj);
-        $prop = $class->getProperty('id');
-        $prop->setAccessible(true);
-
-        $prop->setValue($obj, $val);
     }
 }

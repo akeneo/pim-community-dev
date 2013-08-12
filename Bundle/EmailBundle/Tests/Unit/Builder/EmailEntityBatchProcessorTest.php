@@ -2,18 +2,19 @@
 
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Builder;
 
-use Oro\Bundle\EmailBundle\Builder\EmailEntityBatchCooker;
+use Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\EmailRecipient;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 
-class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
+class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EmailEntityBatchCooker
+     * @var EmailEntityBatchProcessor
      */
     private $batch;
 
@@ -30,20 +31,23 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
         $this->ownerProvider = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->addrManager = new EmailAddressManager('Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures', 'Test%sProxy');
-        $this->batch = new EmailEntityBatchCooker($this->addrManager, $this->ownerProvider);
+        $this->addrManager = new EmailAddressManager(
+            'Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures',
+            'Test%sProxy'
+        );
+        $this->batch = new EmailEntityBatchProcessor($this->addrManager, $this->ownerProvider);
     }
 
     public function testAddEmail()
     {
         $this->batch->addEmail(new Email());
-        $this->assertCount(1, $this->getProtectedProperty($this->batch, 'emails'));
+        $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'emails'));
     }
 
     public function testAddAddress()
     {
         $this->batch->addAddress($this->addrManager->newEmailAddress()->setEmail('Test@example.com'));
-        $this->assertCount(1, $this->getProtectedProperty($this->batch, 'addresses'));
+        $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'addresses'));
 
         $this->assertEquals('Test@example.com', $this->batch->getAddress('TeST@example.com')->getEmail());
         $this->assertNull($this->batch->getAddress('Another@example.com'));
@@ -58,7 +62,7 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
         $folder->setType('sent');
         $folder->setName('Test');
         $this->batch->addFolder($folder);
-        $this->assertCount(1, $this->getProtectedProperty($this->batch, 'folders'));
+        $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'folders'));
 
         $this->assertEquals('Test', $this->batch->getFolder('sent', 'TeST')->getName());
         $this->assertNull($this->batch->getFolder('sent', 'Another'));
@@ -67,7 +71,7 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
         $folder1->setType('trash');
         $folder1->setName('Test');
         $this->batch->addFolder($folder1);
-        $this->assertCount(2, $this->getProtectedProperty($this->batch, 'folders'));
+        $this->assertCount(2, ReflectionUtil::getProtectedProperty($this->batch, 'folders'));
 
         $this->assertEquals('Test', $this->batch->getFolder('trash', 'TeST')->getName());
         $this->assertNull($this->batch->getFolder('trash', 'Another'));
@@ -84,7 +88,7 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
         $origin = new EmailOrigin();
         $origin->setName('Test');
         $this->batch->addOrigin($origin);
-        $this->assertCount(1, $this->getProtectedProperty($this->batch, 'origins'));
+        $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'origins'));
 
         $this->assertEquals('Test', $this->batch->getOrigin('TeST')->getName());
         $this->assertNull($this->batch->getOrigin('Another'));
@@ -166,39 +170,55 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $em->expects($this->exactly(3))
             ->method('getRepository')
-            ->will($this->returnValueMap(
-                array(
-                    array('OroEmailBundle:EmailOrigin', $originRepo),
-                    array('OroEmailBundle:EmailFolder', $folderRepo),
-                    array('Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\TestEmailAddressProxy', $addrRepo),
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('OroEmailBundle:EmailOrigin', $originRepo),
+                        array('OroEmailBundle:EmailFolder', $folderRepo),
+                        array('Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\TestEmailAddressProxy', $addrRepo),
+                    )
                 )
-            ));
+            );
 
         $originRepo->expects($this->exactly(2))
             ->method('findOneBy')
-            ->will($this->returnCallback(function ($c) use (&$dbOrigin) {
-                return $c['name'] === 'Exist' ? $dbOrigin : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($c) use (&$dbOrigin) {
+                        return $c['name'] === 'Exist' ? $dbOrigin : null;
+                    }
+                )
+            );
         $folderRepo->expects($this->exactly(2))
             ->method('findOneBy')
-            ->will($this->returnCallback(function ($c) use (&$dbFolder) {
-                return $c['name'] === 'Exist' ? $dbFolder : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($c) use (&$dbFolder) {
+                        return $c['name'] === 'Exist' ? $dbFolder : null;
+                    }
+                )
+            );
         $addrRepo->expects($this->exactly(2))
             ->method('findOneBy')
-            ->will($this->returnCallback(function ($c) use (&$dbAddr) {
-                return $c['email'] === 'Exist' ? $dbAddr : null;
-            }));
+            ->will(
+                $this->returnCallback(
+                    function ($c) use (&$dbAddr) {
+                        return $c['email'] === 'Exist' ? $dbAddr : null;
+                    }
+                )
+            );
 
         $em->expects($this->exactly(5))
             ->method('persist')
-            ->with($this->logicalOr(
-                $this->identicalTo($newOrigin),
-                $this->identicalTo($newFolder),
-                $this->identicalTo($newAddr),
-                $this->identicalTo($email1),
-                $this->identicalTo($email2)
-            ));
+            ->with(
+                $this->logicalOr(
+                    $this->identicalTo($newOrigin),
+                    $this->identicalTo($newFolder),
+                    $this->identicalTo($newAddr),
+                    $this->identicalTo($email1),
+                    $this->identicalTo($email2)
+                )
+            );
 
         $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
@@ -216,23 +236,16 @@ class EmailEntityBatchCookerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($email1->getFromEmailAddress()->getOwner());
         $this->assertTrue($newAddr === $email2->getFromEmailAddress());
         $this->assertTrue($owner === $email2->getFromEmailAddress()->getOwner());
-        $this->assertTrue($dbAddr === $email1->getRecipients()[0]->getEmailAddress());
-        $this->assertNull($email1->getRecipients()[0]->getEmailAddress()->getOwner());
-        $this->assertTrue($newAddr ===$email1->getRecipients()[1]->getEmailAddress());
-        $this->assertTrue($owner === $email1->getRecipients()[1]->getEmailAddress()->getOwner());
-        $this->assertTrue($dbAddr === $email2->getRecipients()[0]->getEmailAddress());
-        $this->assertNull($email2->getRecipients()[0]->getEmailAddress()->getOwner());
-        $this->assertTrue($newAddr === $email2->getRecipients()[1]->getEmailAddress());
-        $this->assertTrue($owner === $email2->getRecipients()[1]->getEmailAddress()->getOwner());
+        $email1Recipients = $email1->getRecipients();
+        $this->assertTrue($dbAddr === $email1Recipients[0]->getEmailAddress());
+        $this->assertNull($email1Recipients[0]->getEmailAddress()->getOwner());
+        $this->assertTrue($newAddr === $email1Recipients[1]->getEmailAddress());
+        $this->assertTrue($owner === $email1Recipients[1]->getEmailAddress()->getOwner());
+        $email2Recipients = $email2->getRecipients();
+        $this->assertTrue($dbAddr === $email2Recipients[0]->getEmailAddress());
+        $this->assertNull($email2Recipients[0]->getEmailAddress()->getOwner());
+        $this->assertTrue($newAddr === $email2Recipients[1]->getEmailAddress());
+        $this->assertTrue($owner === $email2Recipients[1]->getEmailAddress()->getOwner());
 
-    }
-
-    private function getProtectedProperty($obj, $propName)
-    {
-        $class = new \ReflectionClass($obj);
-        $prop = $class->getProperty($propName);
-        $prop->setAccessible(true);
-
-        return $prop->getValue($obj);
     }
 }

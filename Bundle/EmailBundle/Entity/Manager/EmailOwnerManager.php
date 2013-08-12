@@ -34,8 +34,10 @@ class EmailOwnerManager
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param EmailAddressManager $emailAddressManager
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, EmailAddressManager $emailAddressManager)
-    {
+    public function __construct(
+        EmailOwnerProviderStorage $emailOwnerProviderStorage,
+        EmailAddressManager $emailAddressManager
+    ) {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $fieldName = sprintf('owner%d', count($this->emailOwnerClasses) + 1);
             $this->emailOwnerClasses[$fieldName] = $provider->getEmailOwnerClass();

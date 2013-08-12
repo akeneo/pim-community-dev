@@ -6,7 +6,7 @@ parameters:
     oro_email.email.owner.provider.storage.class: Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage
     oro_email.email.owner.manager.class:          Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager
     oro_email.email.entity.builder.class:         Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder
-    oro_email.email.entity.batch_cooker.class:    Oro\Bundle\EmailBundle\Builder\EmailEntityBatchCooker
+    oro_email.email.entity.batch_processor.class: Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor
     oro_email.listener.entity_subscriber.class:   Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
@@ -45,6 +45,7 @@ services:
         arguments:
             - %oro_email.entity.cache_dir%
             - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
         tags:
             - { name: kernel.cache_clearer }
 
@@ -81,11 +82,11 @@ services:
         class: %oro_email.email.entity.builder.class%
         scope: prototype
         arguments:
-            - @oro_email.email.entity.batch_cooker
+            - @oro_email.email.entity.batch_processor
             - @oro_email.email.address.manager
 
-    oro_email.email.entity.batch_cooker:
-        class: %oro_email.email.entity.batch_cooker.class%
+    oro_email.email.entity.batch_processor:
+        class: %oro_email.email.entity.batch_processor.class%
         public: false
         scope: prototype
         arguments:

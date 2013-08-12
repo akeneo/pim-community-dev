@@ -11,7 +11,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider;
 
-class EmailEntityBatchCooker implements EmailEntityBatchInterface
+class EmailEntityBatchProcessor implements EmailEntityBatchInterface
 {
     /**
      * @var EmailAddressManager
@@ -105,7 +105,9 @@ class EmailEntityBatchCooker implements EmailEntityBatchInterface
     {
         $key = strtolower(sprintf('%s_%s', $obj->getType(), $obj->getName()));
         if (isset($this->folders[$key])) {
-            throw new \LogicException(sprintf('The folder "%s" (type: %s) already exists in the batch.', $obj->getName(), $obj->getType()));
+            throw new \LogicException(
+                sprintf('The folder "%s" (type: %s) already exists in the batch.', $obj->getName(), $obj->getType())
+            );
         }
         $this->folders[$key] = $obj;
     }

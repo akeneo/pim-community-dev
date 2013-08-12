@@ -16,7 +16,7 @@ use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 class EmailEntityBuilder
 {
     /**
-     * @var EmailEntityBatchCooker
+     * @var EmailEntityBatchProcessor
      */
     private $batch;
 
@@ -28,10 +28,10 @@ class EmailEntityBuilder
     /**
      * Constructor
      *
-     * @param EmailEntityBatchCooker $batch
+     * @param EmailEntityBatchProcessor $batch
      * @param EmailAddressManager $emailAddressManager
      */
-    public function __construct(EmailEntityBatchCooker $batch, EmailAddressManager $emailAddressManager)
+    public function __construct(EmailEntityBatchProcessor $batch, EmailAddressManager $emailAddressManager)
     {
         $this->batch = $batch;
         $this->emailAddressManager = $emailAddressManager;
