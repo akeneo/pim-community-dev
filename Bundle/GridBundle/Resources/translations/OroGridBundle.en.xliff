@@ -4,8 +4,13 @@
         <body>
             <trans-unit id="oro_grid.no_data_hint">
                 <source>oro_grid.no_data_hint %entityHint%</source>
+                <target>No %entityHint% exists yet.
+                    Try creating new ...</target>
+            </trans-unit>
+            <trans-unit id="oro_grid.not_found_hint">
+                <source>oro_grid.not_found_hint %entityHint%</source>
                 <target>No %entityHint% were found to match your search.
-                    Try modifying your search criteria or creating a new ...</target>
+                    Try modifying your search criteria ...</target>
             </trans-unit>
             <trans-unit id="oro_grid.label_add_filter">
                 <source>oro_grid.label_add_filter</source>

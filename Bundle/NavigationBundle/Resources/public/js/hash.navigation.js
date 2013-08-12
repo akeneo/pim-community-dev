@@ -92,6 +92,8 @@ Oro.Navigation = Backbone.Router.extend({
 
     skipAjaxCall: false,
 
+    skipGridStateChange: false,
+
     maxCachedPages: 10,
 
     contentCache: [],
@@ -198,10 +200,23 @@ Oro.Navigation = Backbone.Router.extend({
                 this.afterRequest();
             } else {
                 var pageUrl = this.baseUrl + this.url;
+
+                if (this.encodedStateData) {
+                    var state = Oro.PageableCollection.prototype.decodeStateData(this.encodedStateData);
+                    var collection = new Oro.PageableCollection({}, {inputName: state.gridName});
+
+                    var stringState = collection.processQueryParams({}, state);
+                    this.skipGridStateChange = true;
+                } else {
+                    var stringState = [];
+                    this.skipGridStateChange = false;
+                }
+
                 var useCache = this.useCache;
                 $.ajax({
                     url: pageUrl,
                     headers: this.headerObject,
+                    data: stringState,
                     beforeSend: function( xhr ) {
                         //remove standard ajax header because we already have a custom header sent
                         xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
@@ -586,7 +601,9 @@ Oro.Navigation = Backbone.Router.extend({
             "grid_route:loaded",
             function (route) {
                 this.gridRoute = route;
-                this.gridChangeState();
+                if (!this.skipGridStateChange) {
+                    this.gridChangeState();
+                }
             },
             this
         );

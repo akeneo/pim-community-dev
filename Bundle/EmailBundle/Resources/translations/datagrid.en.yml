@@ -18,4 +18,6 @@ oro:
                     isSystem:
                         yes: "Yes"
                         no:  "No"
+                page_size:
+                    all: "All"
 

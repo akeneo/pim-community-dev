@@ -4,35 +4,16 @@ namespace Oro\Bundle\SoapBundle\Controller\Api\Soap;
 
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\SoapApiCrudInterface;
-use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormAwareInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormHandlerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 
-abstract class SoapController extends ContainerAware implements
+abstract class SoapController extends SoapGetController implements
      FormAwareInterface,
      FormHandlerAwareInterface,
-     EntityManagerAwareInterface,
      SoapApiCrudInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function handleGetListRequest($page = 1, $limit = 10)
-    {
-        return $this->getManager()->getList($limit, $page);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function handleGetRequest($id)
-    {
-        return $this->getEntity($id);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -61,24 +42,6 @@ abstract class SoapController extends ContainerAware implements
         $em->flush();
 
         return true;
-    }
-
-    /**
-     * Get entity by identifier.
-     *
-     * @param mixed $id
-     * @return object
-     * @throws \SoapFault
-     */
-    protected function getEntity($id)
-    {
-        $entity = $this->getManager()->find($id);
-
-        if (!$entity) {
-            throw new \SoapFault('NOT_FOUND', sprintf('Record #%u can not be found', $id));
-        }
-
-        return $entity;
     }
 
     /**
