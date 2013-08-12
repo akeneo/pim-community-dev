@@ -14,16 +14,6 @@ use Pim\Bundle\ConfigBundle\Helper\LocaleHelper;
 class LocaleHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * Data provider for the localizedLabel method
      * Can only test for a user locale because locale helper use static property
      *
