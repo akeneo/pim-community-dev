@@ -22,6 +22,16 @@
     Oro.Datagrid.Filter.SelectRowFilter = SelectFilter.extend({
 
         /**
+         * Fetches raw format value on getting current value
+         * in order to give always actual information about selected rows
+         *
+         * @return {Object}
+         */
+        getValue: function() {
+            return this._formatRawValue(_.omit(this.value, 'in', 'out'));
+        },
+
+        /**
          * Converts a display value into raw format. Adds to value 'in' or 'out' property
          * with comma-separated string of ids, e.g. {'in': '4,35,23,65'} or {'out': '7,31,63,12'}
          *
@@ -37,7 +47,7 @@
             if (value.value !== '') {
                 var ids = this._getSelection(),
                     scope;
-                if (_.isArray(ids.selected) && ids.selected.length) {
+                if (_.isArray(ids.selected)) {
                     scope = (ids.inset === Boolean(parseInt(value.value, 10)) ? 'in' : 'out');
                     value[scope] = ids.selected.join(',');
                 }
