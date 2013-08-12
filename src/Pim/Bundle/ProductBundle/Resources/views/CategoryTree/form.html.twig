@@ -1,0 +1,69 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
+{% set type = parentId ? 'category' : 'tree' %}
+{% set action = form.vars.value.id ? 'Edit' : 'Add' %}
+{% set title = action|trans ~ ' ' ~ type|trans %}
+{% if form.vars.value.id %}
+    {% set title = title ~ ' - ' ~ form.vars.value.title %}
+{% endif %}
+
+{% block categoryform %}
+
+    {{ JSFV(form) }}
+
+    {{ elements.form_errors(form) }}
+
+    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
+        path('pim_product_categorytree_myedit', { id: form.vars.value.id }) :
+        path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
+
+        {% set buttons %}
+
+            {% if form.vars.value.id %}
+                {{ elements.deleteLink(path('pim_product_categorytree_remove', { id: form.vars.value.id })) }}
+            {% endif %}
+
+            {% set text = 'Save' %}
+            <span onclick="
+                $.ajax({
+                    url: $('#pim_category').attr('action'),
+                    type: $('#pim_category').attr('method'),
+                    data: $('#pim_category').serialize(),
+                    success: function(html) {
+                        $('#category-edit-form').html(html);
+                    }
+                });
+            ">
+                {{ text|trans }}
+            </span>
+
+        {% endset %}
+
+        {{ elements.page_header(title|trans, buttons) }}
+
+        {% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
+        {{ elements.form_navbar(tabs) }}
+
+        <div class="row-fluid tab-content">
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {% if form.dynamic is defined %}
+                        {{ form_row(form.dynamic) }}
+                    {% endif %}
+                {% endset %}
+
+                {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': form_row(form.title) }) }}
+            </div>
+
+            <div class="tab-pane" id="history">
+                <div id="history-grid"></div>
+            </div>
+        </div>
+        {{ form_row(form._token) }}
+    </form>
+{% endblock %}
+

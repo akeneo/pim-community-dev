@@ -92,7 +92,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         }
 
         $entity = $form->getParent()->getData();
-        $entity->setLocale($this->getOption('default_locale'));
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
@@ -111,9 +110,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     )
                 )
             );
-            if ($this->getOption('only_default')) {
-                return;
-            }
         }
     }
 
@@ -165,7 +161,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
 
         $entity = $form->getParent()->getData();
-        $entity->setLocale($this->getOption('default_locale'));
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
@@ -227,13 +222,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     {
         $collection = array();
 
-        if ($this->getOption('only_default')) {
-            $defaultLocale = $this->getOption('default_locale');
-            $collection[$defaultLocale] = $defaultLocale;
-        } else {
-            foreach ($this->getOption('locales') as $locale) {
-                $collection[$locale] = $locale;
-            }
+        foreach ($this->getOption('locales') as $locale) {
+            $collection[$locale] = $locale;
         }
 
         return $collection;

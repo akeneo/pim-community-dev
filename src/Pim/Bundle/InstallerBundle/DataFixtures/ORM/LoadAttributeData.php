@@ -126,11 +126,11 @@ class LoadAttributeData extends AbstractInstallerFixture
     public function prepareOptions($data)
     {
         $options = array();
-        foreach ($data as $code => $data) {
+        foreach ($data as $code => $optionData) {
             $option = $this->getProductManager()->createAttributeOption();
+            $option->setCode($code);
             $option->setTranslatable(true);
-            $labels = $data['labels'];
-            $option->setDefaultValue($labels['default']);
+            $labels = $optionData['labels'];
             foreach ($labels as $locale => $translated) {
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($translated);

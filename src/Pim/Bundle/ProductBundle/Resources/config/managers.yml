@@ -41,4 +41,3 @@ services:
     pim_product.manager.attribute_type:
         class:     %pim_product.manager.attribute_type.class%
         arguments: [@pim_product.manager.product, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
-

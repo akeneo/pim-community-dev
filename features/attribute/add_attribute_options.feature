@@ -30,26 +30,21 @@ Feature: Add attribute options
     And I am on the attribute creation page
     And I select the attribute type "Simple select"
     And I fill in the following information:
-     | Name    | color |
-    And I visit the "Values" tab
-    And I fill in the following information:
-     | Default | Color |
+     | Code    | color |
     And I save the attribute
-    Then I should see "Default value must be specified for all options"
+    Then I should see "Code must be specified for all options"
 
   Scenario: Successfully create a select attribute with some options
     Given I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Simple select"
     And I fill in the following information:
-     | Name    | color |
+     | Code    | color |
     And I visit the "Values" tab
-    And I fill in the following information:
-     | Default | Color |
     And I create the following attribute options:
-      | Default value | Selected by default |
-      | red           | no                  |
-      | blue          | yes                 |
-      | green         | no                  |
+      | Code  | Selected by default |
+      | red   | no                  |
+      | blue  | yes                 |
+      | green | no                  |
     And I save the attribute
     Then I should see "Attribute successfully created"

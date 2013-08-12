@@ -24,7 +24,7 @@ class Login extends Page
      * @param string $username
      * @param string $password
      */
-    public function login($username, $password)
+    public function authenticate($username, $password)
     {
         $element = $this->getElement('Login form');
         $element->fillField('_username', $username);

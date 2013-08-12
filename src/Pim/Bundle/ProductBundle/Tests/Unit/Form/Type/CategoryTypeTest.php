@@ -4,8 +4,6 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\ProductBundle\Form\Type\CategoryType;
 
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-
 /**
  * Test related class
  *

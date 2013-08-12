@@ -26,7 +26,7 @@ Feature: Join an image to a product
 
   @javascript
   Scenario: Succesfully display the image in a popin
-    Given a "Car" product available in english
+    Given a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |

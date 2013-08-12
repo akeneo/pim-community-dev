@@ -171,23 +171,23 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
         usort(
             $groups,
-            function ($a, $b) {
-                $a = $a->getSortOrder();
-                $b = $b->getSortOrder();
+            function ($first, $second) {
+                $first  = $first->getSortOrder();
+                $second = $second->getSortOrder();
 
-                if ($a === $b) {
+                if ($first === $second) {
                     return 0;
                 }
 
-                if ($a < $b && $a < 0) {
+                if ($first < $second && $first < 0) {
                     return 1;
                 }
 
-                if ($a > $b && $b < 0) {
+                if ($first > $second && $second < 0) {
                     return -1;
                 }
 
-                return $a < $b ? -1 : 1;
+                return $first < $second ? -1 : 1;
             }
         );
 

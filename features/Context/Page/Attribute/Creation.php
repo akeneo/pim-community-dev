@@ -68,8 +68,8 @@ class Creation extends Form
         $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
 
         foreach ($rows as $key => $row) {
-            if (!$row->find('css', '[id*="_defaultValue"]')->getValue()) {
-                $row->find('css', '[id*="_defaultValue"]')->setValue($name);
+            if (!$row->find('css', '[id*="_code"]')->getValue()) {
+                $row->find('css', '[id*="_code"]')->setValue($name);
                 if ($selectedByDefault) {
                     $row->find('css', 'input[name="default"]')->click();
                 }
@@ -82,7 +82,7 @@ class Creation extends Form
         $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
         $row = end($rows);
 
-        $row->find('css', '[id*="_defaultValue"]')->setValue($name);
+        $row->find('css', '[id*="_code"]')->setValue($name);
         if ($selectedByDefault) {
             $row->find('css', 'input[name="default"]')->click();
         }

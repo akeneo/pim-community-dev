@@ -53,9 +53,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     public function testGetSetLabel()
     {
         $family = new Family();
-        $this->assertEmpty($family->getLabel());
 
         // Change value and assert new
+        $family->setCode('code');
+        $this->assertEquals('[code]', $family->getLabel());
         $newLabel = 'test-label';
         $family->setLocale('en_US');
         $family->setLabel($newLabel);
@@ -94,7 +95,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $family = new Family();
         $string = 'test-string';
         $family->setCode($string);
-        $this->assertEquals($string, $family->__toString());
+        $this->assertEquals('['.$string.']', $family->__toString());
     }
 
     /**
@@ -154,21 +155,87 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $family->addAttribute($attribute);
     }
 
+    public function testGetAttributeRequirementKeyFor()
+    {
+        $family = new Family();
+
+        $this->assertEquals('foo_bar', $family->getAttributeRequirementKeyFor('foo', 'bar'));
+    }
+
+    public function testGetAttributeRequirements()
+    {
+        $family               = new Family();
+        $mobileName           = $this->getAttributeRequirementMock('mobile', 'name');
+        $mobileDescription    = $this->getAttributeRequirementMock('mobile', 'description');
+        $ecommerceName        = $this->getAttributeRequirementMock('ecommerce', 'name');
+        $ecommerceDescription = $this->getAttributeRequirementMock('ecommerce', 'description');
+
+        $family->setAttributeRequirements(
+            array(
+                $mobileName,
+                $mobileDescription,
+                $ecommerceName,
+                $ecommerceDescription
+            )
+        );
+
+        $this->assertEquals(
+            array(
+                'name_mobile'           => $mobileName,
+                'description_mobile'    => $mobileDescription,
+                'name_ecommerce'        => $ecommerceName,
+                'description_ecommerce' => $ecommerceDescription,
+            ),
+            $family->getAttributeRequirements()
+        );
+    }
+
     /**
      * Get product attribute mock with attribute type
      *
      * @param string $type
+     * @param string $code
      *
      * @return Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    protected function getAttributeMock($type = 'pim_product_text')
+    protected function getAttributeMock($type = 'pim_product_text', $code = null)
     {
-        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getAttributeType'));
+        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
                   ->method('getAttributeType')
                   ->will($this->returnValue($type));
 
+        $attribute->expects($this->any())
+                  ->method('getCode')
+                  ->will($this->returnValue($code));
+
         return $attribute;
+    }
+
+    protected function getChannelMock($code)
+    {
+        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
+
+        $channel->expects($this->any())
+                  ->method('getCode')
+                  ->will($this->returnValue($code));
+
+        return $channel;
+    }
+
+    protected function getAttributeRequirementMock($channelCode, $attributeCode)
+    {
+        $requirement = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeRequirement');
+
+        $requirement->expects($this->any())
+            ->method('getChannel')
+            ->will($this->returnValue($this->getChannelMock($channelCode)));
+
+        $requirement->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($this->getAttributeMock('pim_product_text', $attributeCode)));
+
+        return $requirement;
     }
 }

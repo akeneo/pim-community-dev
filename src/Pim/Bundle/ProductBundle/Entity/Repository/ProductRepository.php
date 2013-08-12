@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
-use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**

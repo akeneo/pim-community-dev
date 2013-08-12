@@ -56,7 +56,7 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - NotBlank: ~
             - Regex:
                 pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Attribute name may contain only letters, numbers and underscores"
+                message: "Attribute code may contain only letters, numbers and underscores"
             - Length:
                 max: 255
         description:
@@ -154,3 +154,14 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
         allowedFileExtensions:
             - NotNull:
                 groups: [pim_product_file, pim_product_image]
+Pim\Bundle\ProductBundle\Entity\AttributeOption:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Option code may contain only letters, numbers and underscores"
+            - Length:
+                max: 255

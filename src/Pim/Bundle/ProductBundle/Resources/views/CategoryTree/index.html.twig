@@ -2,10 +2,7 @@
 
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -22,5 +19,4 @@
         </div>
     </div>
 
-    {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
 {% endblock %}

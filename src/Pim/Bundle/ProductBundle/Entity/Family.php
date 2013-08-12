@@ -62,7 +62,7 @@ class Family implements TranslatableInterface
      *
      * @var string $locale
      */
-    protected $locale = self::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -84,12 +84,22 @@ class Family implements TranslatableInterface
     protected $attributeAsLabel;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeRequirement",
+     *     mappedBy="family",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $attributeRequirements;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->attributes   = new ArrayCollection();
-        $this->translations = new ArrayCollection();
+        $this->attributes            = new ArrayCollection();
+        $this->translations          = new ArrayCollection();
+        $this->attributeRequirements = new ArrayCollection();
     }
 
     /**
@@ -176,6 +186,21 @@ class Family implements TranslatableInterface
     }
 
     /**
+     * Get grouped attributes
+     *
+     * @return ArrayCollection
+     */
+    public function getGroupedAttributes()
+    {
+        $result = array();
+        foreach ($this->attributes as $attribute) {
+            $result[$attribute->getVirtualGroup()->getName()][] = $attribute;
+        }
+
+        return $result;
+    }
+
+    /**
      * Check if family has an attribute
      *
      * @param ProductAttribute $attribute
@@ -245,9 +270,11 @@ class Family implements TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
-
                 return $translation;
             }
         }
@@ -298,9 +325,9 @@ class Family implements TranslatableInterface
      */
     public function getLabel()
     {
-        $translated = $this->getTranslation()->getLabel();
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getLabel();
+        return ($translated != '') ? $translated : '['.$this->getCode().']';
     }
 
     /**
@@ -315,5 +342,32 @@ class Family implements TranslatableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+    public function setAttributeRequirements($attributeRequirements)
+    {
+        $this->attributeRequirements = $attributeRequirements;
+
+        return $this;
+    }
+
+    public function getAttributeRequirements()
+    {
+        $result = array();
+
+        foreach ($this->attributeRequirements as $requirement) {
+            $key = $this->getAttributeRequirementKeyFor(
+                $requirement->getAttribute()->getCode(),
+                $requirement->getChannel()->getCode()
+            );
+            $result[$key] = $requirement;
+        }
+
+        return $result;
+    }
+
+    public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
+    {
+        return sprintf('%s_%s', $attributeCode, $channelCode);
     }
 }

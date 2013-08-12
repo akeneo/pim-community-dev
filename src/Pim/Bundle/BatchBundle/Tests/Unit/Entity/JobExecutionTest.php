@@ -111,7 +111,6 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedExecutionContext, $this->jobExecution->getExecutionContext());
     }
 
-
     /**
      * Assert the entity tested
      *

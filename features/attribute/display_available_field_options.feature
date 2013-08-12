@@ -29,6 +29,6 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type          | fields        |
-      | Multi select  | Default value |
-      | Simple select | Default value |
+      | type          | fields |
+      | Multi select  | Code   |
+      | Simple select | Code   |

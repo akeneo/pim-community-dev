@@ -71,9 +71,11 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     public function testName()
     {
         $group = new AttributeGroup();
-        $this->assertEmpty($group->getName());
 
         // Change value and assert new
+        $group->setCode('code');
+        $this->assertEquals('[code]', $group->getName());
+        $group->setLocale('en_US');
         $newName = 'test-name';
         $this->assertEntity($group->setName($newName));
         $this->assertEquals($newName, $group->getName());

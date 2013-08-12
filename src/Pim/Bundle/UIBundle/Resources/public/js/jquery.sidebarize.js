@@ -6,9 +6,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 (function ($) {
-    "use strict";
+    'use strict';
 
-    function getAvailableHeight($element, opts) {
+    function getAvailableHeight($element) {
         var height = $(window).height() - $element.offset().top;
         // @todo: remove in production environment
         if ($('.sf-toolbar').length) {
@@ -38,8 +38,8 @@
         $element.find('.separator i.' + opts.expandIcon).hide();
     }
 
-    function adjustHeight($element, opts) {
-        var height = getAvailableHeight($element, opts);
+    function adjustHeight($element) {
+        var height = getAvailableHeight($element);
         $element.outerHeight(height);
     }
 
@@ -199,11 +199,11 @@
             }
 
             $(window).on('resize', function () {
-                adjustHeight($element, opts);
+                adjustHeight($element);
                 adjustWidth($element, opts);
             });
             $(document).ajaxSuccess(function () {
-                adjustHeight($element, opts);
+                adjustHeight($element);
                 adjustWidth($element, opts);
             });
 
@@ -255,8 +255,3 @@
         buttons: []
     };
 })(jQuery);
-
-$(function () {
-    "use strict";
-    $('.has-sidebar').sidebarize();
-});

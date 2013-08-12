@@ -4,29 +4,13 @@
 
 {% block head_script %}
     {{ parent() }}
-
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
-
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-
-    <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: '{{ path("pim_product_product_create") }}' });
-
-        var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-        var tree_id = "#tree";
-        var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-        var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}";
-        var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
     {% set buttons %}
-        {{ elements.createBtn('New product', null, 'create-product') }}
+        {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_product_product_create') }) }}
     {% endset %}
 
     {% set subtitle %}
@@ -38,10 +22,10 @@
             <ul class="dropdown-menu">
                 {% for locale in locales %}
                     <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
-                        <a href="?dataLocale={{ locale.code }}" title="{{ locale.code }}">
+                        <a href="{{ path('pim_product_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale.code }}">
                             {% if locale.code == dataLocale %}
                             <span class="icon">
-                                    <i class="icon-bullet"></i>
+                                <i class="icon-bullet"></i>
                             </span>
                             {% endif %}
                             {{ locale.code|flag }}
@@ -55,7 +39,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree"></div>
+        <div id="tree" data-tree="view" data-assets-path="{{ asset('bundles/pimproduct/') }}" data-list-tree-url="{{ path('pim_product_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-children-url="{{ path('pim_product_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-unclassified-title="{{ 'Unclassified node' | trans }}"></div>
         <div id="product-grid"></div>
     </div>
 

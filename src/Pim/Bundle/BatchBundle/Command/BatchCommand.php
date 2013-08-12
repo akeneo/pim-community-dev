@@ -51,6 +51,7 @@ class BatchCommand extends ContainerAwareCommand
             throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
         $jobExecution = new JobExecution;
+        $jobExecution->setJob($job);
         $definition->execute($jobExecution);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {

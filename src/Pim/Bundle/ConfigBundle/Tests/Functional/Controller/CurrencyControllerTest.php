@@ -12,6 +12,11 @@ namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
  */
 class CurrencyControllerTest extends ControllerTest
 {
+    protected function setup()
+    {
+        $this->markTestSkipped('Due to locale refactoring PIM-861, to replace by behat scenario');
+    }
+
     /**
      * Test related action
      */

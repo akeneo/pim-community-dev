@@ -11,7 +11,7 @@ Feature: Browse products by locale and scope
     And the following products:
       | sku    | family    |
       | postit | furniture |
-    And a "postit" product available in german and french
+    And a "postit" product
     And the following product attributes:
       | label       | required | translatable | scopable |
       | SKU         | yes      | no           | no       |
@@ -43,8 +43,4 @@ Feature: Browse products by locale and scope
     Then I should see product "postit" with data postit, Etiquette, large.jpeg and Ma description ecommerce
     When I filter per channel Mobile
     Then I should see product "postit" with data postit, Etiquette, small.jpeg and Ma description mobile
-    When I switch the locale to "de_DE"
-    And I filter per channel Ecommerce
-    Then I should see product "postit" with data postit, large.jpeg
-    When I filter per channel Mobile
-    Then I should see product "postit" with data postit, small.jpeg
+

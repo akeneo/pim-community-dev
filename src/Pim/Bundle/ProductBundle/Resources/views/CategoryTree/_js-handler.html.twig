@@ -1,76 +1,203 @@
 <script type="text/javascript">
 'use strict';
-var assetsPath  = "{{ asset('bundles/pimproduct/') }}";
-var tree_id     = "#tree";
-var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
-var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
-var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}".replace(0, '#ID#');
-var urlIndex    = "{{ path('pim_product_categorytree_index') }}";
 
 // Message used by the tree-management.jstree.js file when not tree in DB
 var no_tree_message = "{{ 'No tree available' | trans }}";
 
 $(function() {
-    // define buttons
-    var createBtn = $('<div>', { 'class': 'btn-group' }).html(
-        $('<button class="dropdown-toggle" data-toggle="dropdown"></button>').html(
-            $('<i>', { 'class': 'icon-plus-sign' })
-        ).append($('<span>', { 'class': 'caret' }))
-    ).append(
-        $('<ul>', { 'class': 'dropdown-menu' }).append(
-            $('<li>').html($('<a>', { id: 'tree-create', html: '{{ "Create tree"|trans }}' }).on(
-                'click', function() {
-                    window.location = "{{ path('pim_product_categorytree_create') }}";
+
+    $('#tree').jstree({
+        "core" : {
+            "animation" : 200
+        },
+        "plugins" : [
+             "tree_selector", "themes", "json_data", "ui", "crrm", "types", "dnd", "contextmenu"
+        ],
+        contextmenu : {
+            items : {
+                "edit" : {
+                    "label" : "Edit",
+                    "action" : function (obj) {
+                        $.get(
+                            "{{ path('pim_product_categorytree_myedit') }}",
+                            {
+                                "operation" : "edit_node",
+                                "id" : obj.attr("id").replace('node_', '')
+                            },
+                            function (r) {
+                                try {
+                                    JSON.parse(r);
+                                } catch (e) {
+                                    $('#category-edit-form').html(r);
+                                }
+                            }
+                        );
+                    }
+                },
+                "ccp" : false,
+                "rename" : false,
+                "remove" : false
+            }
+        },
+
+        "tree_selector" : {
+            "ajax" : {
+                "url" : "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}",
+                "parameters" : {"select_node_id" : window.preselect_node_id}
+            },
+            "auto_open_root" : true,
+            "node_label_field" : "title",
+            "no_tree_message" : window.no_tree_message,
+            "preselect_node_id" : window.preselect_node_id
+        },
+        "themes" : {
+            "dots" : true,
+            "icons" : true,
+            "themes" : "bap",
+            "url" : "{{ asset('bundles/pimproduct/') }}" + "/css/style.css"
+        },
+        "json_data" : {
+            "ajax" : {
+                "url" : "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}",
+                "data" : function (node) {
+                    // the result is fed to the AJAX request `data` option
+                    var id = null;
+
+                    if (node && node != -1) {
+                        id = node.attr("id").replace('node_','');
+                    } else{
+                        id = -1;
+                    }
+                    return {
+                        "id" : id,
+                        "select_node_id" : window.preselect_node_id,
+                        "with_products_count" : "true"
+                    };
                 }
-            ))
-        ).append(
-            $('<li>').html($('<a>', { id: 'category-create', html: '{{ "Create category"|trans }}' }).on(
-                'click', function() {
-                    var node = $.jstree._focused().get_selected();
-                    if(!$.jstree._focused()._get_node()) {
-                        PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
-                    } else {
-                        var parentId = node.attr("id").replace('node_', '');
-                        window.location = "{{ path('pim_product_categorytree_create') }}/"+parentId;
+            }
+        },
+        "types" : {
+            "max_depth" : -2,
+            "max_children" : -2,
+            "valid_children" : [ "folder" ],
+            "types" : {
+                "default" : {
+                    "valid_children" : "folder"
+                }
+            }
+        },
+        "ui" : {
+            "select_limit": 1,
+            "select_multiple_modifier" : false
+        }
+    })
+    .bind("move_node.jstree", function (e, data) {
+        var this_jstree = $.jstree._focused();
+        data.rslt.o.each(function (i) {
+            $.ajax({
+                async : false,
+                type: 'POST',
+                url: "move-node",
+                data : {
+                    "id" : $(this).attr("id").replace('node_',''),
+                    "parent" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id").replace('node_',''),
+                    "prev_sibling" : this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_','') : null,
+                    "position" : data.rslt.cp + i,
+                    "code" : data.rslt.name,
+                    "copy" : data.rslt.cy ? 1 : 0
+                },
+                success : function (r) {
+                    if(!r.status) {
+                        this_jstree.rollback(data.rlbk);
+                    }
+                    else {
+                        $(data.rslt.oc).attr("id", r.id);
+                        if(data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                            data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                        }
                     }
                 }
-            ))
-        )
-    );
-
-    var editBtn = $('<button>', { id: 'category-edit' }).html(
-        $('<i>', { 'class': 'icon-edit' })
-    ).on('click', function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node(node)) {
-            PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var categoryId = node.attr("id").replace('node_', '');
-            window.location = "{{ path('pim_product_categorytree_edit') }}/"+categoryId;
+            });
+        });
+    })
+    .bind('loaded.jstree', function(event, data) {
+        if (event.namespace == 'jstree') {
+            data.inst.get_tree_select().select2({ width: '100%' });
         }
-
+    })
+    .bind("remove.jstree", function (event, data) {
+        data.rslt.obj.each(function () {
+            var id = $(this).attr("id").replace('node_', '');
+            var url = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}".replace(0, '#ID#');
+            url = url.replace("#ID#", id);
+            PimAjax.ajaxDelete(url, '');
+            if (PimAjax.isSuccessfull() == true) {
+                var parentNode = data.inst._get_parent();
+                id = parentNode.attr("id").replace('node_', '');
+            }
+            var urlIndex = "{{ path('pim_product_categorytree_index') }}";
+            window.location = urlIndex+"?node="+id;
+        });
+    })
+    .bind("create.jstree", function (e, data) {
+        $.post(
+            "{{ path('pim_product_categorytree_add') }}",
+            {
+                "operation" : "create_node",
+                "id" : data.rslt.parent.attr("id").replace("node_",""),
+                "position" : data.rslt.position,
+                "title" : data.rslt.name,
+                "type" : data.rslt.obj.attr("rel")
+            },
+            function (r) {
+                if(r.status) {
+                    $(data.rslt.obj).attr("id", "node_" + r.id);
+                }
+                else {
+                    $.jstree.rollback(data.rlbk);
+                }
+            }
+        );
+    })
+    .bind("edit.jstree", function (e, data) {
+        $.post(
+            "{{ path('pim_product_categorytree_myedit') }}",
+            {
+                "operation" : "edit_node",
+                "id" : data.rslt.id
+            },
+            function (r) {
+                if(r.status) {
+                    $(data.rslt.obj).attr("id", "node_" + r.id);
+                }
+                else {
+                    $.jstree.rollback(data.rlbk);
+                }
+            }
+        );
     });
 
-    var removeBtn = $('<button>', { id: 'category-remove' }).html(
-        $('<i>', { 'class': 'icon-trash' })
+    var createBtn = $('<button>', { id: 'tree-create' }).html(
+        $('<i>', { 'class': 'icon-plus-sign' })
     ).on('click', function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
-            PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var doRemove = function() {
-                $(tree_id).jstree("remove");
-            };
-            PimDialog.confirm(
-                "{{ 'Are you sure you want to delete the category' | trans }}",
-                "{{ 'Delete Confirmation' | trans }}",
-                doRemove
-            );
-        }
+        $.get(
+            "{{ path('pim_product_categorytree_myedit') }}",
+            {
+                "operation" : "edit_node",
+                "id" : 0
+            },
+            function (r) {
+                try {
+                    JSON.parse(r);
+                } catch (e) {
+                    $('#category-edit-form').html(r);
+                }
+            }
+        );
     });
 
     // Instantiate sidebar
-    $('#category-tree-container').sidebarize({ buttons: [ createBtn, editBtn, removeBtn ] });
+    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
 });
 </script>
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
+

@@ -26,7 +26,7 @@ class FileValidator extends BaseFileValidator
             $file = !$value instanceof FileObject ? new FileObject($value) : $value;
             if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
-                    $constraint->allowedExtensionsMessage,
+                    $constraint->extensionsMessage,
                     array('{{ extensions }}' => $constraint->allowedExtensions)
                 );
             }

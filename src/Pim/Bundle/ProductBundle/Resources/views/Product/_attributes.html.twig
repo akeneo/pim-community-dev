@@ -10,7 +10,7 @@
 <div class="tab-content">
     <div id="attribute-buttons">
         <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
                 <i class="icon-cog"></i>
                 <span class="caret"></span>
             </a>
@@ -25,8 +25,8 @@
                             {% endfor %}
                         </select>
                     </span>
-                    <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                    <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
+                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -49,11 +49,7 @@
                     </div>
             {% endif %}
             {% if attributeView.isRemovable %}
-                <a href="{{ path('pim_product_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}"
-                        class="btn btn-action btn-link remove-attribute"
-                        title="Remove this attribute"
-                        data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" 
-                        data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
+                <a href="javascript:void(0);" data-url="{{ path('pim_product_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}" class="btn btn-action btn-link remove-attribute" title="{{ 'Remove this attribute'|trans }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
             {% endif %}
             </div>
         {% endfor %}
