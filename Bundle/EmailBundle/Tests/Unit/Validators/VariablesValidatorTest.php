@@ -72,9 +72,26 @@ class VariablesValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->template->setContent(self::TEST_CONTENT)
             ->setSubject(self::TEST_SUBJECT);
+        $this->template->setEntityName('Oro\Bundle\EmailBundle\Tests\Unit\Fixtures\Entity\SomeEntity');
 
-        $this->twig->expects($this->at(0))->method('render')->with(self::TEST_SUBJECT);
-        $this->twig->expects($this->at(1))->method('render')->with(self::TEST_CONTENT);
+        $phpUnit = $this;
+        $user = $this->user;
+        $callback = function ($template, $params) use ($phpUnit, $user) {
+            $phpUnit->assertInternalType('string', $template);
+
+            $phpUnit->assertArrayHasKey('entity', $params);
+            $phpUnit->assertArrayHasKey('user', $params);
+
+            $phpUnit->assertInstanceOf(
+                'Oro\Bundle\EmailBundle\Tests\Unit\Fixtures\Entity\SomeEntity',
+                $params['entity']
+            );
+            $phpUnit->assertInstanceOf(get_class($user), $params['user']);
+        };
+        $this->twig->expects($this->at(0))->method('render')->with(self::TEST_SUBJECT)
+            ->will($this->returnCallback($callback));
+        $this->twig->expects($this->at(1))->method('render')->with(self::TEST_CONTENT)
+            ->will($this->returnCallback($callback));
 
         $this->context->expects($this->never())->method('addViolation');
 
