@@ -46,9 +46,9 @@ class SoapGroupsApiTest extends WebTestCase
      */
     public function testCreateGroup($request, $response)
     {
-        $result = $this->client->getSoap()->createGroup($request);
-        $result = ToolsAPI::classToArray($result);
-        ToolsAPI::assertEqualsResponse($response, $result);
+        $id = $this->client->getSoap()->createGroup($request);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**

@@ -3,65 +3,26 @@ parameters:
     oro_address.address.type.entity.class: Oro\Bundle\AddressBundle\Entity\AddressType
 
     oro_address.address.manager.class: Oro\Bundle\AddressBundle\Entity\Manager\AddressManager
-    oro_address.address.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager
-    oro_address.address.manager.flexible.class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-
-    oro_address.address.entity.value.class: Oro\Bundle\AddressBundle\Entity\Value\AddressValue
+    oro_address.address.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
     oro_address.provider.address.class: Oro\Bundle\AddressBundle\Provider\AddressProvider
-    oro_address.entity.value.class: Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue
-
-    oro_address.attribute.address.class: Oro\Bundle\AddressBundle\AttributeType\AddressType
-
-    oro_address.twig.hasAddress.extension.class: Oro\Bundle\AddressBundle\Twig\HasAddressExtension
 
 services:
     oro_address.address.provider:
         class: %oro_address.provider.address.class%
-
-    #####       STORAGE DEFINITION        ######
-    oro_address.address.manager.flexible:
-        class: %oro_address.address.manager.flexible.class%
-        arguments:
-            - %oro_address.address.entity.class%
-            - %oro_flexibleentity.flexible_config%
-            - @doctrine.orm.entity_manager
-            - @event_dispatcher
-            - @oro_flexibleentity.attributetype.factory
-        tags:
-            - { name: oro_flexibleentity_manager, entity: %oro_address.address.entity.class%}
-        calls:
-            - [ addAttributeType, ['oro_flexibleentity_text'] ]
 
     oro_address.address.manager:
         class: %oro_address.address.manager.class%
         arguments:
             - %oro_address.address.entity.class%
             - @doctrine.orm.entity_manager
-            - @oro_address.address.manager.flexible
         tags:
-            - { name: oro_address.storage}
+            - { name: oro_address.storage }
 
     oro_address.address.manager.api:
         class: %oro_address.address.manager.api.class%
         arguments:
             - %oro_address.address.entity.class%
             - @doctrine.orm.entity_manager
-            - @oro_address.address.manager.flexible
-    #####   END OF STORAGE DEFINITION      ######
 
-    # Flexible attribute
-    oro_address.attribute_type.address:
-        class: %oro_address.attribute.address.class%
-        arguments:
-            - "address"
-            - "oro_address"
-            - @oro_flexibleentity.validator.attribute_constraint_guesser
-        tags:
-            - { name: oro_flexibleentity.attributetype, alias: oro_address }
-
-    oro_address.twig.hasAddress.extension:
-        class: %oro_address.twig.hasAddress.extension.class%
-        tags:
-            - { name: twig.extension }
 

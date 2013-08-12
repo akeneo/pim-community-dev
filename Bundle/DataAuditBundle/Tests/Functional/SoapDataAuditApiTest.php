@@ -58,8 +58,10 @@ class SoapDataAuditApiTest extends WebTestCase
             "lastName" => "lastName",
             "rolesCollection" => array("1")
         );
-        $result = $this->client->getSoap()->createUser($request);
-        $this->assertTrue($result, $this->client->getSoap()->__getLastResponse());
+
+        $id = $this->client->getSoap()->createUser($request);
+        $this->assertInternalType('int', $id, $this->client->getSoap()->__getLastResponse());
+        $this->assertGreaterThan(0, $id);
 
         return $request;
     }

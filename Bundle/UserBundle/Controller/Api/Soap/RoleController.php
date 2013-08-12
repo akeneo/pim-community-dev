@@ -36,7 +36,7 @@ class RoleController extends SoapController
     /**
      * @Soap\Method("createRole")
      * @Soap\Param("role", phpType="Oro\Bundle\UserBundle\Entity\Role")
-     * @Soap\Result(phpType="boolean")
+     * @Soap\Result(phpType="int")
      * @AclAncestor("oro_user_role_create")
      */
     public function createAction($role)

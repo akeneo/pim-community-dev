@@ -29,7 +29,6 @@ class WebTestCase extends BaseWebTestCase
      */
     protected static function createClient(array $options = array(), array $server = array())
     {
-
         if (!self::$internalClient) {
             self::$internalClient = parent::createClient($options, $server);
 
