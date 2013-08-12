@@ -73,10 +73,12 @@
     </div>
 </form>
 
-{% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-    'form': attributesForm,
-    'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
-} %}
+{% if form.vars.value.id %}
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
+    } %}
+{% endif %}
 
 {% include 'PimProductBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
     'list': '#attributes-sortable',
