@@ -48,22 +48,19 @@
                         {
                             name: "preview-frame",
                             id: "preview-frame",
-                            'class': "scrollable-container",
+                            class: "scrollable-container",
                             frameborder: 0,
                             marginwidth: 0,
                             marginheight: 0,
-                            allowfullscreen: true,
-                            width: "100%"
+                            allowfullscreen: true
                         });
 
                 var form = $('#{{ formName }}');
                 var formAction = form.attr('action');
 
                 form.bindFirst('submit', function(e) {
-                    // prevent hash navigation form processing
-                    new Oro.widget.DialogView({
-                        el: $('<div id="inject-content"></div>'),
-                        //el: iframe,
+                    var dialog = new Oro.widget.DialogView({
+                        el: iframe,
                         url: false,
                         dialogOptions: {
                             allowMaximize: true,
@@ -74,11 +71,17 @@
                             minHeight: 400,
                             title: $(el).attr('title')
                         }
-                    }).render();
+                    });
+                    dialog.render();
+
+                    var width = dialog.widget.parent('.ui-dialog').width() - 2*parseInt(dialog.widget.css('padding'));
+                    dialog.widget.width(width);
 
                     $('#inject-content').append(iframe);
                     form.attr('target', 'preview-frame');
                     form.attr('action', $(el).attr('href'));
+
+                    // prevent hash navigation form processing
                     e.stopImmediatePropagation();
                 });
 
