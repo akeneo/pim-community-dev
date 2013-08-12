@@ -53,6 +53,6 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'locale_extension';
+        return 'pim_locale_extension';
     }
 }

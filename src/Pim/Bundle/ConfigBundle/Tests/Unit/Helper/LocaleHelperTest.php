@@ -59,9 +59,10 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      */
     protected function createLocaleManager($userLocaleCode)
     {
-        $localeManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
-             ->disableOriginalConstructor()
-             ->getMock(array('getUserLocaleCode'));
+        $localeManager = $this
+            ->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock(array('getUserLocaleCode'));
 
         $localeManager
             ->expects($this->any())
