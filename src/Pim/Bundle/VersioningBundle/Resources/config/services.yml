@@ -1,0 +1,8 @@
+services:
+
+    pim_versioning.event_listener.audit:
+        class: %pim_versioning.event_listener.addversion.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }

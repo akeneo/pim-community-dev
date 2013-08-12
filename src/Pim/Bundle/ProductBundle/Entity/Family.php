@@ -6,7 +6,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
@@ -21,7 +20,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
- * @Oro\Loggable
  */
 class Family implements TranslatableInterface
 {
@@ -35,11 +33,16 @@ class Family implements TranslatableInterface
     protected $id;
 
     /**
+     * @ORM\Version
+     * @ORM\Column(type="integer")
+     */
+    protected $version;
+
+    /**
      * @var string $code
      *
      * @ORM\Column(unique=true)
      * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
-     * @Oro\Versioned
      */
     protected $code;
 
@@ -52,7 +55,6 @@ class Family implements TranslatableInterface
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @Oro\Versioned("getCode")
      */
     protected $attributes;
 
@@ -79,7 +81,6 @@ class Family implements TranslatableInterface
     /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @ORM\JoinColumn(name="label_attribute_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned("getCode")
      */
     protected $attributeAsLabel;
 
