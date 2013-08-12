@@ -14,6 +14,8 @@ use Oro\Bundle\GridBundle\DependencyInjection\OroGridExtension;
 
 class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
 {
+    const REGISTRY_SERVICE             = 'oro_grid.datagrid_manager.registry';
+
     const QUERY_FACTORY_ATTRIBUTE      = 'query_factory';
     const ROUTE_GENERATOR_ATTRIBUTE    = 'route_generator';
     const DATAGRID_BUILDER_ATTRIBUTE   = 'datagrid_builder';
@@ -26,10 +28,17 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     const ENTITY_HINT_ATTRIBUTE        = 'entity_hint';
 
     /**
+     * @var Definition
+     */
+    protected $registryDefinition;
+
+    /**
      * {@inheritDoc}
      */
     public function processDatagrid()
     {
+        $this->registryDefinition = $this->container->getDefinition(self::REGISTRY_SERVICE);
+
         $this->applyConfigurationFromAttributes();
         $this->applyDefaults();
     }
@@ -39,7 +48,11 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
      */
     protected function applyConfigurationFromAttributes()
     {
-        $this->definition->addMethodCall('setName', array($this->getMandatoryAttribute('datagrid_name')));
+        $datagridName = $this->getMandatoryAttribute('datagrid_name');
+        $this->definition->addMethodCall('setName', array($datagridName));
+
+        // add service to datagrid manager registry
+        $this->registryDefinition->addMethodCall('addDatagridManagerService', array($datagridName, $this->serviceId));
 
         // add services
         $serviceKeys = array(

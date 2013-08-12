@@ -5,18 +5,22 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\DeleteAction;
 
-class DeleteActionTest extends AbstractActionTestCase
+class DeleteActionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Prepare redirect action model
-     *
-     * @param array $arguments
+     * @var DeleteAction
      */
-    protected function initializeAbstractActionMock($arguments = array())
+    protected $model;
+
+    protected function setUp()
     {
-        $arguments = $this->getAbstractActionArguments($arguments);
-        $this->model = new DeleteAction($arguments['aclManager']);
+        $this->model = new DeleteAction();
         $this->model->setName('delete');
+    }
+
+    protected function tearDown()
+    {
+        unset($this->model);
     }
 
     /**
@@ -25,19 +29,16 @@ class DeleteActionTest extends AbstractActionTestCase
      */
     public function testSetOptionsError()
     {
-        $this->initializeAbstractActionMock();
         $this->model->setOptions(array());
     }
 
     public function testGetType()
     {
-        $this->initializeAbstractActionMock();
         $this->assertEquals(ActionInterface::TYPE_DELETE, $this->model->getType());
     }
 
     public function testSetOptions()
     {
-        $this->initializeAbstractActionMock();
         $options = array('link' => '/delete_link');
         $this->model->setOptions($options);
         $this->assertEquals($options, $this->model->getOptions());

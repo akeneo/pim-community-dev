@@ -2,20 +2,22 @@ parameters:
     oro_grid.datagrid.class:                 Oro\Bundle\GridBundle\Datagrid\Datagrid
     oro_grid.datagrid.parameters.class:      Oro\Bundle\GridBundle\Datagrid\RequestParameters
 
-    oro_grid.orm.query_factory.entity.class: Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory
-    oro_grid.orm.query_factory.query.class:  Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\QueryFactory
+    oro_grid.orm.query_factory.entity.class:  Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory
+    oro_grid.orm.query_factory.query.class:   Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\QueryFactory
 
-    oro_grid.builder.datagrid.class:         Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder
-    oro_grid.builder.list.class:             Oro\Bundle\GridBundle\Builder\ListBuilder
+    oro_grid.builder.datagrid.class:          Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder
+    oro_grid.builder.list.class:              Oro\Bundle\GridBundle\Builder\ListBuilder
 
-    oro_grid.filter.factory.class:           Oro\Bundle\GridBundle\Filter\FilterFactory
-    oro_grid.sorter.factory.class:           Oro\Bundle\GridBundle\Sorter\SorterFactory
-    oro_grid.action.factory.class:           Oro\Bundle\GridBundle\Action\ActionFactory
+    oro_grid.filter.factory.class:            Oro\Bundle\GridBundle\Filter\FilterFactory
+    oro_grid.sorter.factory.class:            Oro\Bundle\GridBundle\Sorter\SorterFactory
+    oro_grid.action.factory.class:            Oro\Bundle\GridBundle\Action\ActionFactory
 
-    oro_grid.route.default_generator.class:  Oro\Bundle\GridBundle\Route\DefaultRouteGenerator
+    oro_grid.datagrid_manager.registry.class: Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry
 
-    oro_grid.renderer.class:                 Oro\Bundle\GridBundle\Renderer\GridRenderer
-    oro_grid.twig.extension.class:           Oro\Bundle\GridBundle\Twig\GridRendererExtension
+    oro_grid.route.default_generator.class:   Oro\Bundle\GridBundle\Route\DefaultRouteGenerator
+
+    oro_grid.renderer.class:                  Oro\Bundle\GridBundle\Renderer\GridRenderer
+    oro_grid.twig.extension.class:            Oro\Bundle\GridBundle\Twig\GridRendererExtension
 
 services:
     oro_grid.builder.datagrid:
@@ -43,6 +45,10 @@ services:
     oro_grid.action.factory:
         class:     %oro_grid.action.factory.class%
         arguments: ["@service_container", ~]
+
+    oro_grid.datagrid_manager.registry:
+        class:     %oro_grid.datagrid_manager.registry.class%
+        arguments: ["@service_container"]
 
     oro_grid.renderer:
         class:     %oro_grid.renderer.class%
