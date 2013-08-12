@@ -5,11 +5,15 @@ namespace Pim\Bundle\ConfigBundle\Form\Type;
 use Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\ConfigBundle\Helper\LocaleHelper;
+use Pim\Bundle\ConfigBundle\Helper\SortHelper;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for channel form
@@ -26,13 +30,19 @@ class ChannelType extends AbstractType
     protected $localeManager;
 
     /**
+     * @var \Pim\Bundle\ConfigBundle\Helper\LocaleHelper
+     */
+    protected $localeHelper;
+
+    /**
      * Inject locale manager in the constructor
      *
      * @param \Pim\Bundle\ConfigBundle\Manager\LocaleManager $localeManager
      */
-    public function __construct(LocaleManager $localeManager)
+    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
     {
         $this->localeManager = $localeManager;
+        $this->localeHelper  = $localeHelper;
     }
 
     /**
@@ -101,7 +111,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create a category field and add it to the form builder
-     * This field only display the tree (channel is linked to tree)
+     * This field only display trees (channel is linked to tree)
      *
      * @param FormBuilderInterface $builder
      */
@@ -118,6 +128,37 @@ class ChannelType extends AbstractType
                     return $repository->getTreesQB();
                 }
             )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Translate the locale codes to labels in the current user locale
+     * and sort them alphabetically
+     *
+     * This part is done here because of the choices query is executed just before
+     * so we can't access to these properties from form events
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        if (!isset($view['locales'])) {
+            return;
+        }
+
+        /** @var array<ChoiceView> $locales */
+        $locales = $view['locales'];
+        foreach ($locales->vars['choices'] as $locale) {
+            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label);
+        }
+        foreach ($locales->vars['preferred_choices'] as $locale) {
+            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label);
+        }
+
+        $locales->vars['choices'] = SortHelper::sortByProperty($locales->vars['choices'], 'label');
+        $locales->vars['preferred_choices'] = SortHelper::sortByProperty(
+            $locales->vars['preferred_choices'],
+            'label'
         );
     }
 

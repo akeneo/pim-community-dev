@@ -130,7 +130,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $this->attribute->getVirtualGroup()->setLocale('en_US');
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
-        $this->assertEquals('[other]', $this->attribute->getVirtualGroup()->getName());
+        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getName());
 
         $attributeGroup = new AttributeGroup();
         $this->assertEntity($this->attribute->setGroup($attributeGroup));
