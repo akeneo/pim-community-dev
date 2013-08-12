@@ -149,9 +149,10 @@ class EmailTemplateDatagridManager extends DatagridManager
         $fieldMassAction->setOptions(
             array(
                 'type'               => FieldDescriptionInterface::TYPE_MASS_ACTION,
+                'label'              => $this->translate('Selected Rows'),
                 'filterable'         => true,
                 'show_filter'        => true,
-                'filter_type'        => FilterInterface::TYPE_SELECT,
+                'filter_type'        => FilterInterface::TYPE_SELECT_ROW,
             )
         );
         $fieldsCollection->add($fieldMassAction);

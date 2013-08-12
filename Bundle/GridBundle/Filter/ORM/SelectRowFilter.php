@@ -3,12 +3,11 @@
 namespace Oro\Bundle\GridBundle\Filter\ORM;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\Common\Collections\Collection;
-
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
-class SelectFilter extends AbstractFilter
+use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
+
+class SelectRowFilter extends AbstractFilter
 {
     /**
      * {@inheritdoc}
@@ -83,7 +82,7 @@ class SelectFilter extends AbstractFilter
     public function getDefaultOptions()
     {
         return array(
-            'form_type' => ChoiceFilterType::NAME
+            'form_type' => SelectRowFilterType::NAME
         );
     }
 

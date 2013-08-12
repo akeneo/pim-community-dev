@@ -153,15 +153,6 @@
                 className: 'navigation container-fluid'
             }, datagridOptions.grid);
 
-//            // Extra filter by selected rows
-//            datagridOptions.grid.filters['selected'] = new (Oro.Datagrid.Filter.SelectRowFilter.extend({
-//                name:    'selected',
-//                label:   'Rows',
-//                enabled: true,
-//                options: ['Not selected', 'Selected'],
-//                collection: datagridCollection.collection
-//            }));
-
             // Filters
             var filterListParameters = _.extend({
                 addButtonHint: {{ 'oro_grid.label_add_filter'|trans({}, 'OroGridBundle')|json_encode|raw }},

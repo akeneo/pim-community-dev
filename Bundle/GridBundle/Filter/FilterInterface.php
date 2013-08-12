@@ -16,7 +16,7 @@ interface FilterInterface extends BaseFilterInterface
     const TYPE_CHOICE            = 'oro_grid_orm_choice';
     const TYPE_BOOLEAN           = 'oro_grid_orm_boolean';
     const TYPE_ENTITY            = 'oro_grid_orm_entity';
-    const TYPE_SELECT            = 'oro_grid_orm_select';
+    const TYPE_SELECT_ROW        = 'oro_grid_orm_select_row';
     const TYPE_FLEXIBLE_DATE     = 'oro_grid_orm_flexible_date_range';
     const TYPE_FLEXIBLE_DATETIME = 'oro_grid_orm_flexible_datetime_range';
     const TYPE_FLEXIBLE_NUMBER   = 'oro_grid_orm_flexible_number';
