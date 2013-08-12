@@ -356,6 +356,14 @@ class EmailTemplate implements Translatable
         $this->parent = $this->id;
         $this->id = null;
         $this->isSystem = false;
+
+        if ($this->getTranslations() instanceof ArrayCollection) {
+            $clonedTranslations = new ArrayCollection();
+            foreach ($this->getTranslations() as $translation) {
+                $clonedTranslations->add(clone $translation);
+            }
+            $this->setTranslations($clonedTranslations);
+        }
     }
 
     /**
