@@ -2,6 +2,11 @@
 
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FixedProperty;
+
+use Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository;
+
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -217,25 +222,24 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createFamilyField()
     {
-        $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
-
         $field = new FieldDescription();
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Family'),
-                'field_name'  => 'family',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices'  => $choices,
-                    'multiple' => true
-                ),
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Family'),
+                'field_name'    => 'familyCode',
+                'expression'    => 'family',
+                'filter_type'   => FilterInterface::TYPE_ENTITY,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                // entity filter options
+                'multiple'      => true,
+                'class'         => 'PimProductBundle:Family',
+                'property'      => 'label',
+                'filter_by_where' => true,
             )
         );
 
@@ -341,8 +345,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function prepareQuery(ProxyQueryInterface $query)
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        $proxyQuery
+            ->addSelect(
+                'ft.label as familyCode',
+                true
+            )
+            ->leftJoin($rootAlias .'.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+
+        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+
         /**
          * @var FlexibleQueryBuilder
          */
@@ -352,14 +368,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
             if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $query->expr()->in($query->getRootAlias().'.id', $productIds);
-                $query->where($expression);
-
+                $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+                $proxyQuery->andWhere($expression);
             } else {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $query->expr()->notIn($query->getRootAlias().'.id', $productIds);
-                $query->where($expression);
+                $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
+                $proxyQuery->andWhere($expression);
             }
         }
     }
