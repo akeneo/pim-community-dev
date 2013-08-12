@@ -325,7 +325,7 @@ abstract class DatagridManager implements DatagridManagerInterface
                 'label'       => $this->translate('Selected Rows'),
                 'filterable'  => true,
                 'show_filter' => true,
-                'filter_type' => FilterInterface::TYPE_BOOLEAN,
+                'filter_type' => FilterInterface::TYPE_SELECT_ROW,
             )
         );
         $fieldCollection->add($fieldMassAction);

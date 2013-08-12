@@ -3,78 +3,75 @@
 namespace Oro\Bundle\GridBundle\Filter\ORM;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
 
 class SelectRowFilter extends AbstractFilter
 {
+    const NOT_SELECTED_VALUE = 0;
+    const SELECTED_VALUE     = 1;
+
     /**
      * {@inheritdoc}
      */
     public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
     {
-        if (!$data) {
+        $data = $this->parseData($data);
+
+        if ($data['value'] === null) {
             return;
         }
 
-        /**
-        $operator  = $this->getOperator($data['type']);
-        $parameter = $this->getName() . '_choices';
+        if ($data['in'] === null && $data['out'] !== null && empty($data['out'])) {
+            $expression = $this->getExpressionFactory()->eq(1, 1);
+        }
 
-        if ('IN' == $operator) {
-            $expression = $this->getExpressionFactory()->in(
-                $this->createFieldExpression($field, $alias),
-                ':' . $parameter
-            );
-        } else {
-            $expression = $this->getExpressionFactory()->notIn(
-                $this->createFieldExpression($field, $alias),
-                ':' . $parameter
-            );
+        if ($data['out'] === null && $data['in'] !== null && empty($data['in'])) {
+            $expression = $this->getExpressionFactory()->eq(0, 1);
         }
 
         $this->applyFilterToClause($queryBuilder, $expression);
-        $queryBuilder->setParameter($parameter, $data['value']);**/
     }
 
     /**
-    public function parseData($data)
+     * Transform submitted filter data to correct format
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function parseData($data)
     {
-        if (!is_array($data)
-            || !array_key_exists('value', $data)
-            || $data['value'] === ''
-            || is_null($data['value'])
-            || ((is_array($data['value']) || $data['value'] instanceof Collection) && !count($data['value']))
-        ) {
-            return false;
+        $value = null;
+        if (isset($data['value']) && in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE))) {
+            $value = $data['value'];
         }
 
-        $value = $data['value'];
-
-        if ($value instanceof Collection) {
-            $value = $value->getValues();
+        $dataIn = null;
+        if (isset($data['in'])) {
+            if (!empty($data['in'])) {
+                $dataIn = explode(',', $data['in']);
+            } else {
+                $dataIn = array();
+            }
         }
-        if (!is_array($value)) {
-            $value = array($value);
+
+        $dataOut = null;
+        if (isset($data['out'])) {
+            if (!empty($data['out'])) {
+                $dataOut = explode(',', $data['out']);
+            } else {
+                $dataOut = array();
+            }
         }
 
-        $data['type']  = isset($data['type']) ? $data['type'] : null;
-        $data['value'] = $value;
-
-        return $data;
-    }
-    public function getOperator($type)
-    {
-        $type = (int)$type;
-
-        $operatorTypes = array(
-            ChoiceFilterType::TYPE_CONTAINS     => 'IN',
-            ChoiceFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
+        return array(
+            'value' => $value,
+            'in'    => $dataIn,
+            'out'   => $dataOut,
         );
-
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
-    } **/
+    }
 
     /**
      * {@inheritdoc}
@@ -98,8 +95,8 @@ class SelectRowFilter extends AbstractFilter
             $formOptions['field_options']['choices'] = $choices;
         } else {
             $formOptions['field_options']['choices'] = array(
-                0 => 'Not selected',
-                1 => 'Selected'
+                self::NOT_SELECTED_VALUE => 'Not selected',
+                self::SELECTED_VALUE     => 'Selected'
             );
         }
         $formOptions['field_options']['multiple'] = false;
@@ -109,5 +106,15 @@ class SelectRowFilter extends AbstractFilter
         }
 
         return array($formType, $formOptions);
+    }
+
+    /**
+     * @TODO should be refactored to use listeners in collection
+     *
+     * @return bool
+     */
+    public function needCollection()
+    {
+        return true;
     }
 }

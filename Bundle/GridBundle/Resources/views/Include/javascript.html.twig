@@ -149,6 +149,11 @@
             $(datagridBodySelector).html(datagrid.render().$el);
             Oro.Registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
 
+            {# @TODO Filter should not know anything about collection. #}
+            {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}
+                datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
+            {% endfor %}
+
             // Title
             var titleParameters = _.extend({
                 tagName: 'div',
