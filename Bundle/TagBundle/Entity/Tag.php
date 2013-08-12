@@ -15,7 +15,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
- * @Configurable(defaultValues={"entity"={"label"="Tag", "plural_label"="Tags"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Tag", "plural_label"="Tags"},
+ *      "acl"={"owner_type"="USER"}
+ *  }
+ * )
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {

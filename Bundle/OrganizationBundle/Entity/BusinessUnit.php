@@ -18,7 +18,12 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(defaultValues={"entity"={"label"="Business Unit", "plural_label"="Business Units"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class BusinessUnit
 {
@@ -123,16 +128,11 @@ class BusinessUnit
     protected $users;
 
     /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_bu_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $businessUnitOwners;
+    protected $businessUnitOwner;
 
     /**
      * Get id
@@ -402,20 +402,20 @@ class BusinessUnit
     }
 
     /**
-     * @return BusinessUnit[]
+     * @return BusinessUnit
      */
     public function getOwner()
     {
-        return $this->businessUnitOwners;
+        return $this->businessUnitOwner;
     }
 
     /**
-     * @param ArrayCollection $businessUnitOwners
+     * @param BusinessUnit $businessUnitOwner
      * @return BusinessUnit
      */
-    public function setOwner($businessUnitOwners)
+    public function setOwner(BusinessUnit $businessUnitOwner)
     {
-        $this->businessUnitOwners = $businessUnitOwners;
+        $this->businessUnitOwner = $businessUnitOwner;
 
         return $this;
     }

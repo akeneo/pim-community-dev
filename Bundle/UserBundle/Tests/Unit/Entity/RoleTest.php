@@ -7,9 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class RoleTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,20 +67,12 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testOwners()
     {
         $entity = $this->getRole();
-        $user = new User();
-        $businessUnits = new ArrayCollection(array(new BusinessUnit()));
-        $organizations = new ArrayCollection(array(new Organization()));
+        $businessUnit = new BusinessUnit();
 
-        $this->assertEmpty($entity->getUserOwner());
-        $this->assertEmpty($entity->getBusinessUnitOwners());
-        $this->assertEmpty($entity->getOrganizationOwners());
+        $this->assertEmpty($entity->getOwner());
 
-        $entity->setUserOwner($user);
-        $entity->setBusinessUnitOwners($businessUnits);
-        $entity->setOrganizationOwners($organizations);
+        $entity->setOwner($businessUnit);
 
-        $this->assertEquals($user, $entity->getUserOwner());
-        $this->assertEquals($businessUnits, $entity->getBusinessUnitOwners());
-        $this->assertEquals($organizations, $entity->getOrganizationOwners());
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }

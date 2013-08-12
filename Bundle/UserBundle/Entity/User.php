@@ -41,7 +41,12 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(defaultValues={"entity"={"label"="User", "plural_label"="Users"}})
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="User", "plural_label"="Users"},
+ *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
@@ -210,16 +215,11 @@ class User extends AbstractEntityFlexible implements
     protected $loginCount;
 
     /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @ORM\JoinTable(name="oro_owner_user_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id",
-     *      onDelete="CASCADE")}
-     * )
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $businessUnitOwners;
+    protected $businessUnitOwner;
 
     /**
      * Set name formatting using "%first%" and "%last%" placeholders
@@ -1232,20 +1232,20 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * @return BusinessUnit[]
+     * @return BusinessUnit
      */
     public function getOwner()
     {
-        return $this->businessUnitOwners;
+        return $this->businessUnitOwner;
     }
 
     /**
-     * @param ArrayCollection $businessUnitOwners
+     * @param BusinessUnit $businessUnitOwner
      * @return User
      */
-    public function setOwner($businessUnitOwners)
+    public function setOwner(BusinessUnit $businessUnitOwner)
     {
-        $this->businessUnitOwners = $businessUnitOwners;
+        $this->businessUnitOwner = $businessUnitOwner;
 
         return $this;
     }
