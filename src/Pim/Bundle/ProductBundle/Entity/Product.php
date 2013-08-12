@@ -7,11 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 
 /**
  * Flexible product
@@ -22,10 +23,17 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Oro\Loggable
  */
-class Product extends AbstractEntityFlexible implements ProductInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, Versionable
 {
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
     /**
      * @var Value
      *
@@ -34,7 +42,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *     mappedBy="entity",
      *     cascade={"persist", "remove"}
      * )
-     * @Oro\Versioned
      */
     protected $values;
 
@@ -43,7 +50,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned("getCode")
      */
     protected $family;
 
@@ -56,9 +62,18 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
-     * @Oro\Versioned
      */
     protected $enabled = true;
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
 
     /**
      * Get product family
@@ -295,5 +310,18 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function __toString()
     {
         return (string) $this->getLabel();
+    }
+
+    /**
+     * @return array
+     */
+    public function getVersionedData()
+    {
+        return array('my' => 'data');
+
+        /*
+        $normalizer = new ProductNormalizer();
+
+        return $normalizer->normalize($this);*/
     }
 }

@@ -121,14 +121,16 @@ class ProductNormalizer implements NormalizerInterface
 
         $identifier = $product->getIdentifier();
 
-        $data['resource'] = $this->router->generate(
-            'oro_api_get_product',
-            array(
-                'scope' => $this->channel->getCode(),
-                'identifier' => $identifier->getData()
-            ),
-            true
-        );
+        if ($this->router) {
+            $data['resource'] = $this->router->generate(
+                'oro_api_get_product',
+                array(
+                    'scope' => $this->channel->getCode(),
+                    'identifier' => $identifier->getData()
+                ),
+                true
+            );
+        }
 
         return array($identifier->getData() => $data);
     }
