@@ -124,7 +124,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ),
         );
         $family  = $this->getFamilyMock('garden-tool');
-        $product = $this->getProductMock(null, $values, $family, 'cat1, cat2, cat3');
+        $product = $this->getProductMock(null, $values, $family, 'cat1,cat2,cat3');
 
         $this->normalizer->normalize($product, 'csv');
     }
@@ -151,7 +151,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($family));
 
         $product->expects($this->any())
-            ->method('getCategoryTitlesAsString')
+            ->method('getCategoryCodes')
             ->will($this->returnValue($categories));
 
         return $product;

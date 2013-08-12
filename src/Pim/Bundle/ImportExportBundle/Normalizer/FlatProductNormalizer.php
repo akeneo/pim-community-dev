@@ -45,7 +45,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $this->normalizeValue($value);
         }
 
-        $this->normalizeCategories($object->getCategoryTitlesAsString());
+        $this->normalizeCategories($object->getCategoryCodes());
 
         return $this->results;
     }

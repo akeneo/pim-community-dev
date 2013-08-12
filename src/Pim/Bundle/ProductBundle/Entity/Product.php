@@ -244,14 +244,14 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @return string
      */
-    public function getCategoryTitlesAsString()
+    public function getCategoryCodes()
     {
-        $titles = array();
+        $codes = array();
         foreach ($this->getCategories() as $category) {
-            $titles[] = $category->getTitle();
+            $codes[] = $category->getCode();
         }
 
-        return implode(', ', $titles);
+        return implode(',', $codes);
     }
 
     /**
