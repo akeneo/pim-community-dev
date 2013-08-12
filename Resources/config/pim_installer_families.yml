@@ -1,7 +1,7 @@
 'families':
     'mug':
         'labels':
-            'default': 'Mug'
+            'en_US': 'Mug'
             'fr_FR': 'Tasse'
         'attributes' :
             - 'name'
@@ -11,7 +11,7 @@
         'attributeAsLabel': 'name'
     'shirt':
         'labels':
-            'default': 'Shirt'
+            'en_US': 'Shirt'
             'fr_FR': 'Chemise'
         'attributes' :
             - 'name'
@@ -21,7 +21,7 @@
         'attributeAsLabel': 'name'
     'shoe':
         'labels':
-            'default': 'Shoe'
+            'en_US': 'Shoe'
             'fr_FR': 'Chaussure'
         'attributes' :
             - 'name'

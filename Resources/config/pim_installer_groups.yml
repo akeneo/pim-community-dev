@@ -1,21 +1,21 @@
 'groups':
     'general':
         'labels':
-            'default': 'General'
+            'en_US': 'General'
             'fr_FR':   'Général'
     'seo':
         'labels':
-            'default': 'SEO'
+            'en_US': 'SEO'
             'fr_FR':   'SEO'
     'marketing':
         'labels':
-            'default': 'Marketing'
+            'en_US': 'Marketing'
             'fr_FR':   'Commercial'
     'sizes':
         'labels':
-            'default': 'Sizes'
+            'en_US': 'Sizes'
             'fr_FR':   'Tailles'
     'colors':
         'labels':
-            'default': 'Colors'
+            'en_US': 'Colors'
             'fr_FR':   'Couleurs'
