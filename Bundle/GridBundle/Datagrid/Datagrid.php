@@ -17,6 +17,7 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 class Datagrid implements DatagridInterface
 {
@@ -109,7 +110,12 @@ class Datagrid implements DatagridInterface
     /**
      * @var ActionInterface[]
      */
-    protected $rowActions;
+    protected $rowActions = array ();
+
+    /**
+     * @var MassActionInterface[]
+     */
+    protected $massActions = array();
 
     /**
      * @param ProxyQueryInterface $query
@@ -165,7 +171,7 @@ class Datagrid implements DatagridInterface
     /**
      * Get properties
      *
-     * @return PropertyCollection
+     * @return array
      */
     public function getProperties()
     {
@@ -459,11 +465,28 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @param MassActionInterface $action
+     * @return void
+     */
+    public function addMassAction(MassActionInterface $action)
+    {
+        $this->massActions[] = $action;
+    }
+
+    /**
      * @return ActionInterface[]
      */
     public function getRowActions()
     {
         return $this->rowActions;
+    }
+
+    /**
+     * @return MassActionInterface[]
+     */
+    public function getMassActions()
+    {
+        return $this->massActions;
     }
 
     /**

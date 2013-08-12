@@ -4,6 +4,8 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 use Oro\Bundle\GridBundle\Field\MassActionFieldDescription;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
@@ -143,19 +145,6 @@ class EmailTemplateDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldIsSystem);
-
-        $fieldMassAction = new MassActionFieldDescription();
-        $fieldMassAction->setName('massAction');
-        $fieldMassAction->setOptions(
-            array(
-                'type'               => FieldDescriptionInterface::TYPE_MASS_ACTION,
-                'label'              => $this->translate('Selected Rows'),
-                'filterable'         => true,
-                'show_filter'        => true,
-                'filter_type'        => FilterInterface::TYPE_SELECT_ROW,
-            )
-        );
-        $fieldsCollection->add($fieldMassAction);
     }
 
     /**
@@ -211,5 +200,22 @@ class EmailTemplateDatagridManager extends DatagridManager
         );
 
         return array($clickAction, $updateAction, $cloneAction, $deleteAction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getMassActions()
+    {
+        $deleteMassAction = new DefaultMassAction(
+            array(
+                'name'         => 'delete',
+                'acl_resource' => 'oro_email_emailtemplate_remove',
+                'label'        => 'Delete',
+                'handler'      => 'mass.delete.service.id'
+            )
+        );
+
+        return array($deleteMassAction);
     }
 }

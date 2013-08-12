@@ -23,6 +23,7 @@ services:
         arguments:
             - @form.factory
             - @event_dispatcher
+            - @oro_user.acl_manager
             - @oro_grid.filter.factory
             - @oro_grid.sorter.factory
             - @oro_grid.action.factory

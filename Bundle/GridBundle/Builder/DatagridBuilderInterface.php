@@ -9,6 +9,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 interface DatagridBuilderInterface
 {
@@ -44,6 +45,12 @@ interface DatagridBuilderInterface
      * @return void
      */
     public function addRowAction(DatagridInterface $datagrid, array $parameters);
+
+    /**
+     * @param DatagridInterface $datagrid
+     * @param MassActionInterface $massAction
+     */
+    public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction);
 
     /**
      * @param ProxyQueryInterface $query

@@ -8,6 +8,7 @@ use Oro\Bundle\GridBundle\Property\PropertyInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 interface DatagridInterface extends BaseDatagridInterface
 {
@@ -28,6 +29,12 @@ interface DatagridInterface extends BaseDatagridInterface
      * @return void
      */
     public function addRowAction(ActionInterface $action);
+
+    /**
+     * @param MassActionInterface $action
+     * @return void
+     */
+    public function addMassAction(MassActionInterface $action);
 
     /**
      * @return SorterInterface[]
