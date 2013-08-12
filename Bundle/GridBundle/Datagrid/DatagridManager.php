@@ -302,27 +302,6 @@ abstract class DatagridManager implements DatagridManagerInterface
     }
 
     /**
-     * Add mass action field to field collection
-     *
-     * @param FieldDescriptionCollection $fieldCollection
-     */
-    protected function addMassActionField(FieldDescriptionCollection $fieldCollection)
-    {
-        $fieldMassAction = new MassActionFieldDescription();
-        $fieldMassAction->setName('mass_action');
-        $fieldMassAction->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_MASS_ACTION,
-                'label'       => $this->translate('Selected Rows'),
-                'filterable'  => true,
-                'show_filter' => true,
-                'filter_type' => FilterInterface::TYPE_SELECT_ROW,
-            )
-        );
-        $fieldCollection->add($fieldMassAction);
-    }
-
-    /**
      * Get Route generator
      *
      * @return RouteGeneratorInterface
