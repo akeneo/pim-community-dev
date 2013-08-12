@@ -14,4 +14,4 @@ Feature: Add metric attribute to a product
   Scenario: Successfully add a metric attribute to a product
     Given I am on the "Car" product page
     And I add available attribute Weight
-    Then attributes in group "[other]" should be SKU and Weight
+    Then attributes in group "Other" should be SKU and Weight

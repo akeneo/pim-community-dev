@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
@@ -146,7 +148,7 @@ class ProductAttributeType extends AttributeType
                 'class' => 'Pim\Bundle\ProductBundle\Entity\AttributeGroup',
                 'required' => false,
                 'multiple' => false,
-                'empty_value' => 'Other'
+                'empty_value' => AttributeGroup::DEFAULT_GROUP_CODE
             )
         );
     }

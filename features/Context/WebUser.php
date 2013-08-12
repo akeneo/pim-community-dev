@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
@@ -440,7 +442,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getGroup($group) ?: 'Other';
+        $group = $this->getGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(

@@ -21,6 +21,11 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class AttributeGroup implements TimestampableInterface, TranslatableInterface
 {
     /**
+     * @var string
+     */
+    const DEFAULT_GROUP_CODE = 'Other';
+
+    /**
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
@@ -355,6 +360,10 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      */
     public function getName()
     {
+        if ($this->getCode() === self::DEFAULT_GROUP_CODE) {
+            return self::DEFAULT_GROUP_CODE;
+        }
+
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getName() : null;
 
         return ($translated != '') ? $translated : '['.$this->getCode().']';
