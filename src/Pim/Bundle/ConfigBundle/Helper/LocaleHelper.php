@@ -85,7 +85,7 @@ class LocaleHelper
      *
      * @return string
      */
-    protected function getUserLocale()
+    public function getUserLocale()
     {
         return $this->localeManager->getUserLocaleCode();
     }
