@@ -1,0 +1,11 @@
+{#
+    Available variables:
+    * entity - email entity Oro\Bundle\EmailBundle\Entity\Email
+#}
+{# TODO: This is a demo template. It need to be replaced with a real one #}
+<tr>
+    <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
+    <td class="string-cell">{{ EA.email_address(entity.fromEmailAddress, entity.fromName, format) }}</td>
+    <td class="string-cell"><a class="view-email-entity-btn no-hash" title="{{ entity.subject }}" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+    <td class="datetime-cell">{{ UI.time(entity.sentAt) }}</td>
+</tr>

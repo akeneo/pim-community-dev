@@ -1,0 +1,75 @@
+{#
+    Render email address name, owner name or a link to owner view page can be rendered depends on given parameters
+    Parameters:
+        emailAddress - email address entity Oro\Bundle\EmailBundle\Entity\EmailAddress
+        emailAddressName - a string contains an email address. It is used if the email address has no owner
+        nameFormat - a format string used to render the owner full name
+        noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+#}
+{% macro email_address(emailAddress, emailAddressName, nameFormat, noLink) -%}
+    {% macro email_address_text(emailAddress, nameFormat) -%}
+        {{ emailAddress.owner.fullname(nameFormat)|default('N/A')|raw }}
+    {%- endmacro -%}
+    {% macro email_address_link(emailAddress, nameFormat) -%}
+        {#- TODO: we need EntityConfig to get view url for an entity -#}
+        <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress, nameFormat) }}</a>
+    {%- endmacro -%}
+    {% if emailAddress.owner is null -%}
+        {{ emailAddressName|raw }}
+    {%- else -%}
+        {% if noLink|default(false) -%}
+            {{ _self.email_address_text(emailAddress, nameFormat)|raw }}
+        {%- else -%}
+            {{ _self.email_address_link(emailAddress, nameFormat)|raw }}
+        {%- endif %}
+    {%- endif %}
+{%- endmacro %}
+
+{#
+    Render the given email recipients
+    Parameters:
+        recipients - an array of Oro\Bundle\EmailBundle\Entity\EmailRecipients
+        nameFormat - a format string used to render the owner full name
+        noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+#}
+{% macro recipient_email_addresses(recipients, nameFormat, noLink) -%}
+    {% set addreses = {} -%}
+    {% for recipient in recipients -%}
+        {{ _self.email_address(recipient.emailAddress, recipient.name, nameFormat, noLink) }}
+        {%- if not loop.last %}; {% endif %}
+    {%- endfor %}
+{%- endmacro %}
+
+{#
+    Render the given email attachments
+    Parameters:
+        attachments - an array of Oro\Bundle\EmailBundle\Entity\EmailAttachment
+#}
+{% macro attachments(attachments) -%}
+    {% macro attachment_row_data(values) -%}
+        <ul class="inline">
+            {%- for val in values -%}
+            <li>
+                <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
+                    <span class="label label-info">{{ val.fileName }}</span>
+                </a>
+            </li>
+            {%- endfor -%}
+        </ul>
+    {%- endmacro -%}
+    {{ _self.attachment_row_data(attachments)|raw }}
+{%- endmacro %}
+
+{#
+    Render email body
+    Parameters:
+        emailBody - email body entity Oro\Bundle\EmailBundle\Entity\EmailBody
+        cssClass - used to specify an additional CSS class for email body container HTML element
+#}
+{% macro body(emailBody, cssClass) -%}
+    {% if emailBody.bodyIsText -%}
+        <pre class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}">{{ emailBody.content }}</pre>
+    {%- else -%}
+        <iframe class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}" src="{{ path('oro_email_body', {id:emailBody.id}) }}"></iframe>
+    {%- endif %}
+{%- endmacro %}

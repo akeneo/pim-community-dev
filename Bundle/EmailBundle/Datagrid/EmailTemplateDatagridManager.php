@@ -5,8 +5,8 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
-use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
-use Oro\Bundle\GridBundle\Field\MassActionFieldDescription;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
+use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -42,6 +42,13 @@ class EmailTemplateDatagridManager extends DatagridManager
             new UrlProperty('update_link', $this->router, 'oro_email_emailtemplate_update', array('id')),
             new UrlProperty('clone_link', $this->router, 'oro_email_emailtemplate_clone', array('id')),
             new UrlProperty('delete_link', $this->router, 'oro_api_delete_emailtemplate', array('id')),
+            new ActionConfigurationProperty(
+                function (ResultRecordInterface $record) {
+                    if ($record->getValue('isSystem')) {
+                        return array('delete' => false);
+                    }
+                }
+            )
         );
     }
 
@@ -68,7 +75,7 @@ class EmailTemplateDatagridManager extends DatagridManager
         $fieldEntityName->setName('entityName');
         $fieldEntityName->setOptions(
             array(
-                'type'                => FieldDescriptionInterface::TYPE_TEXT,
+                'type'                => FieldDescriptionInterface::TYPE_HTML,
                 'label'               => $this->translate('oro.email.datagrid.emailtemplate.column.entity_name'),
                 'field_name'          => 'entityName',
                 'filter_type'         => FilterInterface::TYPE_CHOICE,
