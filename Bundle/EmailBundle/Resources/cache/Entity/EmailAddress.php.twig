@@ -1,0 +1,59 @@
+<?php
+
+namespace {{ namespace }};
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Exclude;
+use Oro\Bundle\EmailBundle\Entity\EmailAddress;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="oro_email_address",
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email"})},
+ *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email"})})
+ * @ORM\HasLifecycleCallbacks
+ */
+class {{ className }} extends EmailAddress
+{
+{% for owner in owners %}
+    /**
+     * @var EmailOwnerInterface
+     * @ORM\ManyToOne(targetEntity="{{ owner.targetEntity }}")
+     * @ORM\JoinColumn(name="{{ owner.columnName }}", referencedColumnName="id")
+     * @Exclude
+     */
+    private ${{ owner.fieldName }};
+{% endfor %}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner()
+    {
+{% for owner in owners %}
+        if ($this->{{ owner.fieldName }} !== null) {
+            return $this->{{ owner.fieldName }};
+        }
+{% endfor %}
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOwner(EmailOwnerInterface $owner = null)
+    {
+{% for owner in owners %}
+        if (is_a($owner, '{{ owner.targetEntity }}')) {
+            $this->{{ owner.fieldName }} = $owner;
+        } else {
+            $this->{{ owner.fieldName }} = null;
+        }
+{% endfor %}
+
+        return $this;
+    }
+}
