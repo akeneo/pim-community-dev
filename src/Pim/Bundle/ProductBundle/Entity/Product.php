@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
@@ -60,6 +58,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     protected $enabled = true;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->categories = new ArrayCollection;
+    }
     /**
      * Get product family
      *
@@ -230,19 +234,24 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         return $this->categories;
     }
 
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+
     /**
      * Get a string with categories linked to product
      *
      * @return string
      */
-    public function getCategoryTitlesAsString()
+    public function getCategoryCodes()
     {
-        $titles = array();
+        $codes = array();
         foreach ($this->getCategories() as $category) {
-            $titles[] = $category->getTitle();
+            $codes[] = $category->getCode();
         }
 
-        return implode(', ', $titles);
+        return implode(',', $codes);
     }
 
     /**

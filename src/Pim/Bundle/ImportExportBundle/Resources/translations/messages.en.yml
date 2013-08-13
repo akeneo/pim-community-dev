@@ -43,6 +43,39 @@ pim_batch.category_reader:
 pim_batch.attribute_reader:
     title: 'Attribute extraction'
 
+pim_batch.csv_reader:
+    title: 'CSV Reader'
+    filePath:
+        label: 'File'
+        help: 'The csv file to import'
+    lineLength:
+        label: 'Line length'
+        help: 'It must be greater than the longest line (in characters) to be found in the CSV file. By setting it to 0, the maximum line length is not limited, which is slightly slower'
+    delimiter:
+        label: 'Delimiter'
+        help: 'One character used to set the field delimiter'
+    enclosure:
+        label: 'Enclosure'
+        help: 'One character used to set the field enclosure'
+    escape:
+        label: 'Escape'
+        help: 'One character used to set the field escape'
+
+pim_batch.valid_product_creation_processor:
+    title: 'Product creation'
+    enabled:
+        label: 'Enable the product?'
+        help: 'Wether or not imported product should be enabled'
+    categoriesColumn:
+        label: 'Categories column'
+        help: 'Name of the categories column'
+    categoriesDelimiter:
+        label: 'Categories delimiter'
+        help: 'Character used to separate the category codes'
+    channel:
+        label: 'Channel'
+        help: 'The channel in which create the imported value'
+
 pim_batch.heterogeneous_csv_serializer_processor:
     title: 'CSV configuration'
     delimiter:

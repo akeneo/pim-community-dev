@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
-use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Pim\Bundle\ProductBundle\Validator\Constraints\File;
 use Pim\Bundle\ProductBundle\Validator\Constraints\FileValidator;
 
@@ -13,13 +12,24 @@ use Pim\Bundle\ProductBundle\Validator\Constraints\FileValidator;
  */
 class FileValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    public static function getValidateData()
+    public static function getValidData()
+    {
+        return array(
+            array(''),
+            array(null),
+            array(__DIR__.'/../../../fixtures/akeneo.jpg'),
+            array(new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')),
+        );
+    }
+
+    public static function getInvalidData()
     {
         return array(
             array(__DIR__.'/../../../fixtures/akeneo.jpg'),
-            array(new FileObject(__DIR__.'/../../../fixtures/akeneo.jpg')),
+            array(new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')),
         );
     }
+
 
     public function setUp()
     {
@@ -32,7 +42,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getValidateData
+     * @dataProvider getValidData
      */
     public function testValidValue($file)
     {
@@ -53,7 +63,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getValidateData
+     * @dataProvider getInvalidData
      */
     public function testInvalidValue($file)
     {
@@ -70,7 +80,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('addViolation')
             ->with(
                 $constraint->extensionsMessage,
-                array('{{ extensions }}' => array('gif', 'png'))
+                array('{{ extensions }}' => 'gif, png')
             );
 
         $this->target->initialize($context);
@@ -78,7 +88,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getValidateData
+     * @dataProvider getValidData
      */
     public function testEmptyAllowedExtensions($file)
     {

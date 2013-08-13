@@ -115,11 +115,9 @@ class ProductController extends Controller
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $product  = $this->findProductOr404($id);
-        $request  = $this->getRequest();
-
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',
@@ -128,7 +126,7 @@ class ProductController extends Controller
             )
         );
 
-        if ('json' == $this->getRequest()->getRequestFormat()) {
+        if ('json' === $request->getRequestFormat()) {
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
 

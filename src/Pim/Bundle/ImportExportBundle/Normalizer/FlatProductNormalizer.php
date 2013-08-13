@@ -45,7 +45,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $this->normalizeValue($value);
         }
 
-        $this->normalizeCategories($object->getCategoryTitlesAsString());
+        $this->normalizeCategories($object->getCategoryCodes());
 
         return $this->results;
     }
@@ -72,7 +72,7 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $suffix = '';
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix = sprintf('_%s', $value->getLocale());
+            $suffix = sprintf('-%s', $value->getLocale());
         }
         $data = $value->getData();
 
