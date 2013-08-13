@@ -203,9 +203,7 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                return $this->redirect(
-                    $this->generateUrl('pim_product_categorytree_edit', array('id' => $category->getId()))
-                );
+                return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
             }
         }
 
@@ -295,14 +293,12 @@ class CategoryTreeController extends Controller
             $parent = $category->getParent();
             $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-            return $this->redirect($this->generateUrl('pim_product_categorytree_create', $params));
+            return $this->redirectToRoute('pim_product_categorytree_create', $params);
         }
 
         $this->addFlash('error', $message);
 
-        return $this->redirect(
-            $this->generateUrl('pim_product_categorytree_edit', array('id' => $category->getId()))
-        );
+        return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
     }
 
     /**

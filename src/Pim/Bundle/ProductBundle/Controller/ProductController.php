@@ -76,7 +76,7 @@ class ProductController extends Controller
     public function createAction($dataLocale)
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->redirect($this->generateUrl('pim_product_product_index'));
+            return $this->redirectToRoute('pim_product_product_index');
         }
 
         $entity = $this->getProductManager()->createFlexible(true);
@@ -153,16 +153,9 @@ class ProductController extends Controller
                 $this->addFlash('success', 'Product successfully saved');
 
                 // TODO : Check if the locale exists and is activated
+                $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
-                return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_product_edit',
-                        array(
-                            'id' => $product->getId(),
-                            'dataLocale' => $this->getDataLocale()
-                        )
-                    )
-                );
+                return $this->redirectToRoute('pim_product_product_edit', $params);
             } else {
                 $this->addFlash('error', 'Please check your entry and try again.');
             }
@@ -213,7 +206,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attributes are added to the product form.');
 
-        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $product->getId())));
+        return $this->redirectToRoute('pim_product_product_edit', array('id' => $product->getId()));
     }
 
     /**
@@ -233,7 +226,7 @@ class ProductController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_product_index'));
+            return $this->redirectToRoute('pim_product_product_index');
         }
     }
 
@@ -266,7 +259,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
-        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
+        return $this->redirectToRoute('pim_product_product_edit', array('id' => $productId));
     }
 
     /**
@@ -304,21 +297,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Custom method to always generate an url with a datalocale paramater
-     * @param string  $route      The name of the route
-     * @param mixed   $parameters An array of parameters
-     * @param Boolean $absolute   Whether to generate an absolute URL
-     * @param string  $hash       The hash to prepend to the URL
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
+    protected function redirectToRoute($route, $parameters = array(), $status = 302)
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocale();
         }
 
-        return parent::generateUrl($route, $parameters, $absolute);
+        return parent::redirectToRoute($route, $parameters, $status);
     }
 
     /**

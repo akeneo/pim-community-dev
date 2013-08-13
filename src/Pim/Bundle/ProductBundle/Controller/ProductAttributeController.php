@@ -62,9 +62,7 @@ class ProductAttributeController extends Controller
         if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully created');
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_productattribute_edit', array('id' => $attribute->getId()))
-            );
+            return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
         }
 
         $localeManager = $this->get('pim_config.manager.locale');
@@ -92,9 +90,7 @@ class ProductAttributeController extends Controller
         if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully saved');
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_productattribute_edit', array('id' => $attribute->getId()))
-            );
+            return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
         }
 
         $localeManager = $this->get('pim_config.manager.locale');
@@ -132,9 +128,7 @@ class ProductAttributeController extends Controller
     {
         $data = $request->request->all();
         if (!isset($data['pim_product_attribute_form'])) {
-            return $this->redirect(
-                $this->generateUrl('pim_product_productattribute_create')
-            );
+            return $this->redirectToRoute('pim_product_productattribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
@@ -181,7 +175,7 @@ class ProductAttributeController extends Controller
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
-            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+            return $this->redirectToRoute('pim_product_productattribute_index');
         }
 
         $data = $request->request->all();
@@ -218,7 +212,7 @@ class ProductAttributeController extends Controller
             if ($this->getRequest()->isXmlHttpRequest()) {
                 return new Response('', 403);
             } else {
-                return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+                return $this->redirectToRoute('pim_product_productattribute_index');
             }
         }
 
@@ -227,7 +221,7 @@ class ProductAttributeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+            return $this->redirectToRoute('pim_product_productattribute_index');
         }
     }
 }

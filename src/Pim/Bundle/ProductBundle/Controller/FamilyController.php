@@ -30,11 +30,13 @@ class FamilyController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('pim_product_family_create'));
+        return $this->redirectToRoute('pim_product_family_create');
     }
 
     /**
      * Create product family
+     *
+     * @param Request $request
      *
      * @Route("/create")
      * @Template()
@@ -53,7 +55,7 @@ class FamilyController extends Controller
                 $this->persist($family);
                 $this->addFlash('success', 'Product family successfully created');
 
-                return $this->redirectToFamilyAttributesTab($family->getId());
+                return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
             }
         }
 
@@ -66,6 +68,7 @@ class FamilyController extends Controller
     /**
      * Edit product family
      *
+     * @param Request $request
      * @param integer $id
      *
      * @Route(
@@ -104,7 +107,7 @@ class FamilyController extends Controller
                 $this->flush();
                 $this->addFlash('success', 'Product family successfully updated.');
 
-                return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
+                return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
         }
 
@@ -136,7 +139,7 @@ class FamilyController extends Controller
 
         $this->addFlash('success', 'Product family successfully removed');
 
-        return $this->redirect($this->generateUrl('pim_product_family_index'));
+        return $this->redirectToRoute('pim_product_family_index');
     }
 
     /**
@@ -166,7 +169,7 @@ class FamilyController extends Controller
 
         $this->flush();
 
-        return $this->redirectToFamilyAttributesTab($family->getId());
+        return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
     }
 
     /**
@@ -200,18 +203,6 @@ class FamilyController extends Controller
             $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
         }
 
-        return $this->redirectToFamilyAttributesTab($family->getId());
-    }
-
-    /**
-     * Return to attributes tab
-     *
-     * @param integer $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectToFamilyAttributesTab($id)
-    {
-        return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id), false, 'attributes'));
+        return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
     }
 }

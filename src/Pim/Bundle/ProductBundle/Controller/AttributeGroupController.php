@@ -31,7 +31,7 @@ class AttributeGroupController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('pim_product_attributegroup_create'));
+        return $this->redirectToRoute('pim_product_attributegroup_create');
     }
 
     /**
@@ -66,7 +66,7 @@ class AttributeGroupController extends Controller
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
-            return $this->redirectToAttributeGroupAttributesTab($group->getId());
+            return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
         }
 
         return array(
@@ -89,7 +89,7 @@ class AttributeGroupController extends Controller
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
-            return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
+            return $this->redirectToRoute('pim_product_attributegroup_index');
         }
 
         $data = $request->request->all();
@@ -135,7 +135,7 @@ class AttributeGroupController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
+        return $this->redirectToRoute('pim_product_attributegroup_index');
     }
 
     /**
@@ -166,7 +166,7 @@ class AttributeGroupController extends Controller
 
         $this->flush();
 
-        return $this->redirectToAttributeGroupAttributesTab($group->getId());
+        return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
     }
 
     /**
@@ -196,21 +196,8 @@ class AttributeGroupController extends Controller
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 
-        return $this->redirectToAttributeGroupAttributesTab($group->getId());
-    }
+        return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
 
-    /**
-     * Redirect to attribute tab
-     *
-     * @param integer $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function redirectToAttributeGroupAttributesTab($id)
-    {
-        $url = $this->generateUrl('pim_product_attributegroup_edit', array('id' => $id), false, 'attributes');
-
-        return $this->redirect($url);
     }
 
     /**
