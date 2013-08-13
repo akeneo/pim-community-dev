@@ -47,7 +47,7 @@ class MassActionController extends Controller
         $successful = $massActionDispatcher->dispatch($gridName, $actionName, $inset, $values, $filters);
         if (!$successful) {
             throw new \LogicException(
-                sprintf('Error is occurred during procession of mass action "%s"', $actionName)
+                sprintf('Error is occurred during dispatching of mass action "%s"', $actionName)
             );
         }
 

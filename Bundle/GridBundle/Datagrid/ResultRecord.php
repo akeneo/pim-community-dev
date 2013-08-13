@@ -5,6 +5,11 @@ namespace Oro\Bundle\GridBundle\Datagrid;
 class ResultRecord implements ResultRecordInterface
 {
     /**
+     * @var mixed
+     */
+    private $data;
+
+    /**
      * @var array
      */
     private $valueContainers;
@@ -14,6 +19,8 @@ class ResultRecord implements ResultRecordInterface
      */
     public function __construct($data)
     {
+        $this->data = $data;
+
         $this->valueContainers = array();
         if (is_array($data)) {
             $arrayData = array();
@@ -80,5 +87,23 @@ class ResultRecord implements ResultRecordInterface
             array("strtoupper('\\2')", "'_'.strtoupper('\\1')"),
             $property
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRootEntity()
+    {
+        // if only entity was selected
+        if (is_object($this->data)) {
+            return $this->data;
+        }
+
+        // if array is returned root entity must be under 0 key
+        if (is_array($this->data) && array_key_exists(0, $this->data) && is_object($this->data[0])) {
+            return $this->data[0];
+        }
+
+        return null;
     }
 }
