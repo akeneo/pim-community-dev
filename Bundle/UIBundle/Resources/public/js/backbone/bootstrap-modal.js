@@ -56,12 +56,12 @@ var Oro = Oro || {};
             Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
         },
 
-        /**
-         * Closes the modal
-         */
-        close: function() {
-            Backbone.BootstrapModal.prototype.close.apply(this, arguments);
-            this.remove();
+        open: function() {
+            Backbone.BootstrapModal.prototype.open.apply(this, arguments);
+            
+            this.once('cancel', _.bind(function() {
+                this.$el.trigger('hidden');
+            }, this));
         }
     });
 })(jQuery, _, Backbone);

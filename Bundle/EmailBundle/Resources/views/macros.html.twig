@@ -66,23 +66,21 @@
                         return;
                     }
 
-
                     var confirmModal = new Oro.BootstrapModal({
                         title: _.__('Preview'),
                         content: '<div class="loading-content">Loading...</div>',
                         okText: _.__('Ok'),
                         className: 'modal oro-modal-normal',
-                        template: _.template('\
-            <% if (title) { %>\
-              <div class="modal-header">\
-                <% if (allowCancel) { %>\
-                  <a class="close">×</a>\
-                <% } %>\
-                <h3><%- title %></h3>\
-              </div>\
-            <% } %>\
-            <div class="modal-body"><%= content %></div>\
-        ')
+                        template: _.template('<% if (title) { %>' +
+                            '<div class="modal-header">' +
+                                '<% if (allowCancel) { %>' +
+                                '<a class="close">×</a>' +
+                                '<% } %>' +
+                                '<h3><%- title %></h3>' +
+                            '</div>' +
+                            '<% } %>' +
+                            '<div class="modal-body"><%= content %></div>'
+                        )
                     });
                     confirmModal.open();
                     confirmModal.$content.append(iframe)
