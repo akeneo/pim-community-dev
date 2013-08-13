@@ -60,17 +60,21 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
 
         this.collection = options.collection;
 
-        this.pagination = new this.pagination({
-            collection: this.collection
-        });
+        this.pagination = new this.pagination(_.extend({}, options.pagination, { collection: this.collection }));
 
-        this.pageSize = new this.pageSize({
-            collection: this.collection
-        });
+        options.pageSize = options.pageSize || {};
+        this.pageSize = new this.pageSize(_.extend({}, options.pageSize, { collection: this.collection }));
 
-        this.actionsPanel = new this.actionsPanel();
+        this.actionsPanel = new this.actionsPanel(_.extend({}, options.actionsPanel));
         if (options.actions) {
             this.actionsPanel.setActions(options.actions);
+        }
+
+        if (options.enable == false) {
+            this.disable();
+        }
+        if (options.hide == true) {
+            this.hide();
         }
 
         Backbone.View.prototype.initialize.call(this, options);
@@ -97,6 +101,16 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.disable();
         this.pageSize.disable();
         this.actionsPanel.disable();
+        return this;
+    },
+
+    /**
+     * Hide toolbar
+     *
+     * @return {*}
+     */
+    hide: function() {
+        this.$el.hide();
         return this;
     },
 

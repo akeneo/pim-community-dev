@@ -1,0 +1,55 @@
+{#
+    Available variables:
+    * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
+#}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+{% set format = oro_config_value('oro_user.name_format') %}
+{% oro_title_set({params : {"%subject%": entity.subject} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {'entity': entity, 'indexLabel': 'Emails', 'entityTitle': entity.subject } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'email-profile' %}
+
+    {% set attributes = [
+            UI.attibuteRow('Sent', UI.time(entity.sentAt)),
+            UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format)),
+            UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format)),
+            UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format)),
+            UI.attibuteRow('Bcc', EA.recipient_email_addresses(entity.recipients('bcc'), format)),
+            UI.attibuteRow('Subject', entity.subject)
+        ]
+    %}
+    {% if entity.emailBody.hasAttachments %}
+        {% set attributes = attributes | merge([UI.attibuteRow('Attachments', EA.attachments(entity.emailBody.attachments))]) %}
+    {% endif %}
+    {% set attributes = attributes | merge([EA.body(entity.emailBody)]) %}
+
+    {% set data = {
+        'dataBlocks':
+            [
+                {
+                    'title': 'General',
+                    'class': 'active',
+                    'subblocks': [
+                        {
+                            'title': null,
+                            'useSpan': false,
+                            'data': attributes
+                        }
+                    ]
+                }
+            ]
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}

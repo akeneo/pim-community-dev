@@ -1,0 +1,22 @@
+{#
+    Available variables:
+    * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+{% import 'OroUserBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+
+{% set format = oro_config_value('oro_user.name_format') %}
+{% set iconType = 'envelope' %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set title = entity ? entity.subject : indexer_item.recordTitle %}
+
+{% set entityType = 'Email'|trans %}
+
+{% set entityInfo = [
+{'title': 'Sent', 'value': UI.time(entity.sentAt)},
+{'title': 'From', 'value': EA.email_address(entity.fromEmailAddress, entity.fromName, format)},
+{'title': 'To', 'value': EA.recipient_email_addresses(entity.recipients('to'), format)},
+] %}

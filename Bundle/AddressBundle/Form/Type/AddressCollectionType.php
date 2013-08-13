@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
 
 class AddressCollectionType extends AbstractType
 {
@@ -14,33 +13,17 @@ class AddressCollectionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
+        $resolver->setNormalizers(
             array(
-                'allow_add'      => true,
-                'allow_delete'   => true,
-                'by_reference'   => false,
-                'prototype'      => true,
-                'prototype_name' => '__name__',
-                'label'          => ' ',
-                'validation_groups' => function (FormInterface $form) {
-                    /** @var AbstractAddress[] $data */
-                    $data = $form->getData();
-                    $hasAddress = false;
-                    foreach ($data as $item) {
-                        if (!$item->isEmpty()) {
-                            $hasAddress = true;
-                            break;
-                        }
+                'options' => function (Options $options, $options) {
+                    if (!$options) {
+                        $options = array();
                     }
-                    if ($hasAddress) {
-                        return array('Default');
-                    } else {
-                        return array();
-                    }
-                },
+                    $options['single_form'] = false;
+                    return $options;
+                }
             )
         );
-        $resolver->setRequired(array('type'));
     }
 
     /**
@@ -48,7 +31,7 @@ class AddressCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return 'collection';
+        return 'oro_item_collection';
     }
 
     /**

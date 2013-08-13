@@ -39,7 +39,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->basePath = $input->getArgument('write_to') ?: $this->getContainer()->getParameter('assetic.write_to');
+        $this->basePath = $input->getArgument('write_to') ? : $this->getContainer()->getParameter('assetic.write_to');
         $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
         $this->cache = $this->getContainer()->get('oro_assetic.cache');
     }
@@ -77,15 +77,19 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     {
         foreach ($groups as $group) {
             if (in_array($group, $compiledGroups)) {
-                $output->writeln(sprintf(
-                    '<comment>%s</comment> (compiled)',
-                    $group
-                ));
+                $output->writeln(
+                    sprintf(
+                        '<comment>%s</comment> (compiled)',
+                        $group
+                    )
+                );
             } else {
-                $output->writeln(sprintf(
-                    '<info>%s</info>',
-                    $group
-                ));
+                $output->writeln(
+                    sprintf(
+                        '<info>%s</info>',
+                        $group
+                    )
+                );
             }
         }
     }
@@ -114,30 +118,34 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
             $asset->setValues($combination);
 
             // resolve the target path
-            $target = rtrim($this->basePath, '/').'/'.$asset->getTargetPath();
+            $target = rtrim($this->basePath, '/') . '/' . $asset->getTargetPath();
             $target = str_replace('_controller/', '', $target);
             $target = VarUtils::resolve($target, $asset->getVars(), $asset->getValues());
 
             if (!is_dir($dir = dirname($target))) {
-                $output->writeln(sprintf(
-                    '<comment>%s</comment> <info>[dir+]</info> %s',
-                    date('H:i:s'),
-                    $dir
-                ));
+                $output->writeln(
+                    sprintf(
+                        '<comment>%s</comment> <info>[dir+]</info> %s',
+                        date('H:i:s'),
+                        $dir
+                    )
+                );
 
                 if (false === @mkdir($dir, 0777, true)) {
-                    throw new \RuntimeException('Unable to create directory '.$dir);
+                    throw new \RuntimeException('Unable to create directory ' . $dir);
                 }
             }
 
-            $output->writeln(sprintf(
-                '<comment>%s</comment> <info>[file+]</info> %s',
-                date('H:i:s'),
-                $target
-            ));
+            $output->writeln(
+                sprintf(
+                    '<comment>%s</comment> <info>[file+]</info> %s',
+                    date('H:i:s'),
+                    $target
+                )
+            );
 
             if (false === @file_put_contents($target, $asset->dump())) {
-                throw new \RuntimeException('Unable to write file '.$target);
+                throw new \RuntimeException('Unable to write file ' . $target);
             }
         }
     }

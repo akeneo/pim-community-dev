@@ -39,6 +39,7 @@ table.grid tbody tr.row-click-action {
     font-size: 16px;
     padding: 10px;
     border: 1px solid #dddddd;
+    margin-top: 20px;
 }
 
 .loading-mask .loading-frame .box {

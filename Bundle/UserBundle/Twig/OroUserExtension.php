@@ -8,17 +8,28 @@ use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Oro\Bundle\UserBundle\Provider\GenderProvider;
 
 class OroUserExtension extends \Twig_Extension
 {
     /**
-     * @var \Oro\Bundle\UserBundle\Acl\ManagerInterface
+     * @var ManagerInterface
      */
-    private $manager;
+    protected $manager;
 
-    public function __construct(ManagerInterface $manager)
+    /**
+     * @var GenderProvider
+     */
+    protected $genderProvider;
+
+    /**
+     * @param ManagerInterface $manager
+     * @param GenderProvider $genderProvider
+     */
+    public function __construct(ManagerInterface $manager, GenderProvider $genderProvider)
     {
         $this->manager = $manager;
+        $this->genderProvider = $genderProvider;
     }
 
     /**
@@ -30,6 +41,7 @@ class OroUserExtension extends \Twig_Extension
     {
         return array(
             'resource_granted' => new \Twig_Function_Method($this, 'checkResourceIsGranted'),
+            'oro_gender'       => new \Twig_Function_Method($this, 'getGenderLabel'),
         );
     }
 
@@ -55,6 +67,19 @@ class OroUserExtension extends \Twig_Extension
     public function checkResourceIsGranted($aclId)
     {
         return $this->manager->isResourceGranted($aclId);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getGenderLabel($name)
+    {
+        if (!$name) {
+            return null;
+        }
+
+        return $this->genderProvider->getLabelByName($name);
     }
 
     /**
