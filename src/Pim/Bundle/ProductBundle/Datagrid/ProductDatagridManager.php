@@ -350,18 +350,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $rootAlias = $proxyQuery->getRootAlias();
 
         $proxyQuery
-            ->addSelect(
-                'ft.label as familyCode',
-                true
-            )
+            ->addSelect('ft.label as familyCode', true)
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
 
-        /**
-         * @var FlexibleQueryBuilder
-         */
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
 
