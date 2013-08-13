@@ -2,13 +2,17 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Doctrine\ORM\EntityManager;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
+use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 
 /**
  * Product form processor
@@ -23,19 +27,31 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $em;
     protected $formFactory;
     protected $productManager;
+    protected $channelManager;
 
     protected $enabled             = true;
     protected $categoriesColumn    = 'categories';
     protected $categoriesDelimiter = ',';
 
+    /**
+     * @Assert\NotBlank
+     * @Channel
+     */
+    protected $channel;
+
     private $categories = array();
     private $attributes = array();
 
-    public function __construct(EntityManager $em, FormFactoryInterface $formFactory, ProductManager $productManager)
-    {
+    public function __construct(
+        EntityManager $em,
+        FormFactoryInterface $formFactory,
+        ProductManager $productManager,
+        ChannelManager $channelManager
+    ) {
         $this->em             = $em;
         $this->formFactory    = $formFactory;
         $this->productManager = $productManager;
+        $this->channelManager = $channelManager;
     }
 
     /**
@@ -99,6 +115,24 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
+     * Set channel
+     * @param string $channel
+     */
+    public function setChannel($channel)
+    {
+        $this->channel = $channel;
+    }
+
+    /**
+     * Get channel
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
      * Goal is to transform an array like this:
      * array(
      *     'sku'        => 'sku-001',
@@ -159,6 +193,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn' => array(),
             'categoriesDelimiter' => array(),
+            'channel' => array(
+                'type' => 'choice',
+                'options' => array(
+                    'choices' => $this->channelManager->getChannelChoices(),
+                    'required' => true
+                )
+            )
         );
     }
 
@@ -184,6 +225,57 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         return $product;
     }
 
+    private function getValue(ProductAttribute $attribute, $value)
+    {
+        switch ($attribute->getBackendType()) {
+            case 'prices':
+                foreach (explode(',', $value) as $price) {
+                    list($data, $currency) = explode(' ', $price);
+                    $prices[] = array(
+                        'data'     => $data,
+                        'currency' => $currency,
+                    );
+                }
+
+                return array(
+                    'prices' => $prices
+                );
+
+            case 'date':
+                $date = new \DateTime($value);
+
+                return array($attribute->getBackendType() => $date->format('m/d/Y'));
+
+            case 'option':
+                if ($option = $this->getOption($value)) {
+                    return array($attribute->getBackendType() => $option->getId());
+                }
+
+                return array();
+
+            case 'options':
+                $options = array();
+                foreach (explode(',', $value) as $val) {
+                    if ($option = $this->getOption($value)) {
+                        $options[] = $option->getId();
+                    }
+                }
+
+                return array($attribute->getBackendType() => $options);
+
+            default:
+                return array($attribute->getBackendType() => $value);
+        }
+    }
+
+    private function getAttributeCode(array $attributes, $code)
+    {
+        $attribute = $attributes[$code];
+        $suffix = $attribute->getScopable() ? sprintf('_%s', $this->channel) : '';
+
+        return str_replace('-', '_', $code).$suffix;
+    }
+
     /**
      * Create and submit the product form
      *
@@ -198,9 +290,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $categories = array();
         foreach ($item as $code => $value) {
             if (isset($attributes[$code])) {
-                $attribute = $attributes[$code];
-                $key = str_replace('-', '_', $code);
-                $values[$key][$attribute->getBackendType()] = $value;
+                $values[$this->getAttributeCode($attributes, $code)] = $this->getValue($attributes[$code], $value);
             } elseif ($code === $this->categoriesColumn) {
                 $categories = $this->getCategoryIds($value);
             }
@@ -215,13 +305,12 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             )
         );
 
-        $form->submit(
-            array(
-                'enabled'    => (string) (int) $this->enabled,
-                'values'     => $values,
-                'categories' => $categories,
-            )
+        $data = array(
+            'enabled'    => (string) (int) $this->enabled,
+            'values'     => $values,
+            'categories' => $categories,
         );
+        $form->submit($data);
 
         return $form;
     }
@@ -260,5 +349,12 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return $this->categories[$code];
+    }
+
+    private function getOption($defaultValue)
+    {
+        return $this->em
+            ->getRepository('PimProductBundle:AttributeOption')
+            ->findOneBy(array('defaultValue' => $defaultValue));
     }
 }
