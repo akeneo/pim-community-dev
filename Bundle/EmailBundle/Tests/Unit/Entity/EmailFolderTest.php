@@ -3,13 +3,14 @@
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 
 class EmailFolderTest extends \PHPUnit_Framework_TestCase
 {
     public function testIdGetter()
     {
         $entity = new EmailFolder();
-        self::setId($entity, 1);
+        ReflectionUtil::setId($entity, 1);
         $this->assertEquals(1, $entity->getId());
     }
 
@@ -49,14 +50,5 @@ class EmailFolderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $emails);
         $this->assertCount(1, $emails);
         $this->assertTrue($email === $emails[0]);
-    }
-
-    private static function setId($obj, $val)
-    {
-        $class = new \ReflectionClass($obj);
-        $prop = $class->getProperty('id');
-        $prop->setAccessible(true);
-
-        $prop->setValue($obj, $val);
     }
 }

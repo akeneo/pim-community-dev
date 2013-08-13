@@ -35,4 +35,14 @@ class EmailUtil
 
         return substr($fullEmailAddress, $startPos + 1, $endPos - $startPos - 1);
     }
+
+    /**
+     * Return current UTC date/time
+     *
+     * @return \DateTime
+     */
+    public static function currentUTCDateTime()
+    {
+        return new \DateTime('now', new \DateTimeZone('UTC'));
+    }
 }

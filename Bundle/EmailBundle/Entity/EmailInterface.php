@@ -4,13 +4,6 @@ namespace Oro\Bundle\EmailBundle\Entity;
 interface EmailInterface
 {
     /**
-     * Get entity class name.
-     *
-     * @return string
-     */
-    public function getClass();
-
-    /**
      * Get name of field contains an email address
      *
      * @return string

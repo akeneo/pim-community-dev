@@ -26,13 +26,19 @@ class EntityCacheWarmer extends CacheWarmer
     private $entityCacheNamespace;
 
     /**
+     * @var string
+     */
+    private $entityProxyNameTemplate;
+
+    /**
      * Constructor.
      *
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param string $entityCacheDir
      * @param string $entityCacheNamespace
+     * @param string $entityProxyNameTemplate
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheDir, $entityCacheNamespace)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheDir, $entityCacheNamespace, $entityProxyNameTemplate)
     {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $this->emailOwnerClasses[count($this->emailOwnerClasses) + 1] = $provider->getEmailOwnerClass();
@@ -40,6 +46,7 @@ class EntityCacheWarmer extends CacheWarmer
 
         $this->entityCacheDir = $entityCacheDir;
         $this->entityCacheNamespace = $entityCacheNamespace;
+        $this->entityProxyNameTemplate = $entityProxyNameTemplate;
     }
 
     /**
@@ -47,16 +54,15 @@ class EntityCacheWarmer extends CacheWarmer
      */
     public function warmUp($cacheDir)
     {
+        $fs = $this->createFilesystem();
+        $twig = $this->createTwigEnvironment();
+
         $entityCacheDir = sprintf('%s/%s', $this->entityCacheDir, str_replace('\\', '/', $this->entityCacheNamespace));
 
         // Ensure the cache directory exists
-        $fs = new Filesystem();
-        if (!is_dir($entityCacheDir)) {
+        if (!$fs->exists($entityCacheDir)) {
             $fs->mkdir($entityCacheDir, 0777);
         }
-
-        $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
 
         $this->processEmailAddressTemplate($entityCacheDir, $twig);
     }
@@ -67,6 +73,27 @@ class EntityCacheWarmer extends CacheWarmer
     public function isOptional()
     {
         return false;
+    }
+
+    /**
+     * Create Filesystem object
+     *
+     * @return Filesystem
+     */
+    protected function createFilesystem()
+    {
+        return new Filesystem();
+    }
+
+    /**
+     * Create Twig_Environment object
+     *
+     * @return \Twig_Environment
+     */
+    protected function createTwigEnvironment()
+    {
+        $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
+        return new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
     }
 
     /**
@@ -95,7 +122,7 @@ class EntityCacheWarmer extends CacheWarmer
             );
         }
 
-        $className = 'EmailAddressProxy';
+        $className = sprintf($this->entityProxyNameTemplate, 'EmailAddress');
         $content = $twig->render(
             'EmailAddress.php.twig',
             array(
