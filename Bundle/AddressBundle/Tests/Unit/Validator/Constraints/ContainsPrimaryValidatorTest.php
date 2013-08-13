@@ -18,10 +18,10 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider validAddressesDataProvider
-     * @param array $addresses
+     * @dataProvider validItemsDataProvider
+     * @param array $items
      */
-    public function testValidateValid(array $addresses)
+    public function testValidateValid(array $items)
     {
         $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
@@ -33,89 +33,84 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new ContainsPrimaryValidator();
         $validator->initialize($context);
 
-        $validator->validate($addresses, $constraint);
+        $validator->validate($items, $constraint);
     }
 
     /**
      * @return array
      */
-    public function validAddressesDataProvider()
+    public function validItemsDataProvider()
     {
         return array(
-            'no addresses' => array(
+            'no items' => array(
                 array()
             ),
-            'one address primary' => array(
-                array($this->getTypedAddressMock(true))
+            'one item primary' => array(
+                array($this->getPrimaryItemMock(true))
             ),
-            'more than one address with primary' => array(
-                array($this->getTypedAddressMock(false), $this->getTypedAddressMock(true))
+            'more than one item with primary' => array(
+                array($this->getPrimaryItemMock(false), $this->getPrimaryItemMock(true))
             ),
-            'empty address' => array(
-                array($this->getTypedAddressMock(false, true), $this->getTypedAddressMock(false, true))
-            ),
-            'empty address and primary' => array(
-                array($this->getTypedAddressMock(false, true), $this->getTypedAddressMock(true), $this->getTypedAddressMock(false, true))
+            'empty item and primary' => array(
+                array($this->getPrimaryItemMock(false, true), $this->getPrimaryItemMock(true), $this->getPrimaryItemMock(false, true))
             )
         );
     }
 
     /**
-     * @dataProvider invalidAddressesDataProvider
-     * @param array $addresses
+     * @dataProvider invalidItemsDataProvider
+     * @param array $items
      */
-    public function testValidateInvalid($addresses)
+    public function testValidateInvalid($items)
     {
         $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->once())
             ->method('addViolation')
-            ->with('One of addresses must be set as primary.');
+            ->with('One of items must be set as primary.');
 
         $constraint = $this->getMock('Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimary');
         $validator = new ContainsPrimaryValidator();
         $validator->initialize($context);
 
-        $validator->validate($addresses, $constraint);
+        $validator->validate($items, $constraint);
     }
 
     /**
      * @return array
      */
-    public function invalidAddressesDataProvider()
+    public function invalidItemsDataProvider()
     {
         return array(
-            'one address' => array(
-                array($this->getTypedAddressMock(false))
+            'one item' => array(
+                array($this->getPrimaryItemMock(false))
             ),
-            'more than one address no primary' => array(
-                array($this->getTypedAddressMock(false), $this->getTypedAddressMock(false))
+            'more than one item no primary' => array(
+                array($this->getPrimaryItemMock(false), $this->getPrimaryItemMock(false))
             ),
-            'more than one address more than one primary' => array(
-                array($this->getTypedAddressMock(true), $this->getTypedAddressMock(true))
+            'more than one item more than one primary' => array(
+                array($this->getPrimaryItemMock(true), $this->getPrimaryItemMock(true))
             ),
         );
     }
 
     /**
-     * Get address mock.
+     * Get primary item mock.
      *
      * @param bool $isPrimary
-     * @param bool $isEmpty
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getTypedAddressMock($isPrimary, $isEmpty = false)
+    protected function getPrimaryItemMock($isPrimary)
     {
-        $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
+        $item = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\PrimaryItem')
             ->disableOriginalConstructor()
             ->getMock();
-        $address->expects($this->any())
+
+        $item->expects($this->any())
             ->method('isPrimary')
             ->will($this->returnValue($isPrimary));
-        $address->expects($this->once())
-            ->method('isEmpty')
-            ->will($this->returnValue($isEmpty));
-        return $address;
+
+        return $item;
     }
 }

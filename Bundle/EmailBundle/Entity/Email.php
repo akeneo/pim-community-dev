@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Entity;
 
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
@@ -71,7 +72,8 @@ class Email
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="EmailRecipient", mappedBy="email", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EmailRecipient", mappedBy="email",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
      * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailRecipient[]")
      */
     protected $recipients;
@@ -254,7 +256,8 @@ class Email
     /**
      * Get email recipients
      *
-     * @param null|string $recipientType null to get all recipients, or 'to', 'cc' or 'bcc' if you need specific type of recipients
+     * @param null|string $recipientType null to get all recipients,
+     *                                   or 'to', 'cc' or 'bcc' if you need specific type of recipients
      * @return EmailRecipient[]
      */
     public function getRecipients($recipientType = null)
@@ -500,6 +503,6 @@ class Email
      */
     public function beforeSave()
     {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->created = EmailUtil::currentUTCDateTime();
     }
 }

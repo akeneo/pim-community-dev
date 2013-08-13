@@ -3,13 +3,14 @@
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EmailBundle\Entity\EmailRecipient;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 
 class EmailRecipientTest extends \PHPUnit_Framework_TestCase
 {
     public function testIdGetter()
     {
         $entity = new EmailRecipient();
-        self::setId($entity, 1);
+        ReflectionUtil::setId($entity, 1);
         $this->assertEquals(1, $entity->getId());
     }
 
@@ -45,14 +46,5 @@ class EmailRecipientTest extends \PHPUnit_Framework_TestCase
         $entity->setEmail($email);
 
         $this->assertTrue($email === $entity->getEmail());
-    }
-
-    private static function setId($obj, $val)
-    {
-        $class = new \ReflectionClass($obj);
-        $prop = $class->getProperty('id');
-        $prop->setAccessible(true);
-
-        $prop->setValue($obj, $val);
     }
 }
