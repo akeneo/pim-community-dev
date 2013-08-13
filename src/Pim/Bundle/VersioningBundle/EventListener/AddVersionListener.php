@@ -24,23 +24,10 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
 class AddVersionListener implements EventSubscriber
 {
     /**
-     * @var ContainerInterface $container
+     * Versions to save
+     * @var array
      */
-    protected $container;
-
-    /**
-     * Inject service container
-     *
-     * @param ContainerInterface $container
-     *
-     * @return ScopableListener
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
-
-        return $this;
-    }
+    protected $pendingVersions = array();
 
     /**
      * Specifies the list of events to listen
@@ -49,9 +36,7 @@ class AddVersionListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            'onFlush'
-        );
+        return array('onFlush');
     }
 
     /**
@@ -74,19 +59,13 @@ class AddVersionListener implements EventSubscriber
                 $this->writeSnapshot($em, $entity);
 
             } else if($entity instanceof ProductValueInterface) {
-                $product = $entity->getEntity();
-                $product->setUpdated(new \DateTime("now"));
-                //$this->computeChangeSet($em, $product);
-                //if (empty($uow->getEntityChangeSet($product))) {
-                    $this->writeSnapshot($em, $product);
-                //}
+                 $product = $entity->getEntity();
+                 $this->writeSnapshot($em, $product);
 
             } else if ($entity instanceof ProductPrice) {
-                $product = $entity->getValue()->getEntity();
-                $product->setUpdated(new \DateTime("now"));
-                //if (empty($uow->getEntityChangeSet($product))) {
-                    $this->writeSnapshot($em, $product);
-                //}
+                 $product = $entity->getValue()->getEntity();
+                 $this->writeSnapshot($em, $product);
+
             }
         }
     }
@@ -99,8 +78,12 @@ class AddVersionListener implements EventSubscriber
      */
     protected function writeSnapshot(EntityManager $em, Versionable $entity)
     {
-        $version = new Version($entity);
-        $this->computeChangeSet($em, $version);
+        $oid = spl_object_hash($entity);
+        if (!isset($this->pendingVersions[$oid])) {
+            $version = new Version($entity);
+            $this->computeChangeSet($em, $version);
+            $this->pendingVersions[$oid]= $version;
+        }
     }
 
     /**
