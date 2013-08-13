@@ -34,6 +34,11 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     protected $registryDefinition;
 
     /**
+     * @var array
+     */
+    protected $datagridNames = array();
+
+    /**
      * {@inheritDoc}
      */
     public function processDatagrid()
@@ -50,6 +55,13 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     protected function applyConfigurationFromAttributes()
     {
         $datagridName = $this->getMandatoryAttribute('datagrid_name');
+        if (in_array($datagridName, $this->datagridNames)) {
+            throw new InvalidDefinitionException(
+                sprintf('Datagrid manager with name "%s" already exists', $datagridName)
+            );
+        }
+        $this->datagridNames[] = $datagridName;
+
         $this->definition->addMethodCall('setName', array($datagridName));
 
         // add service to datagrid manager registry
