@@ -26,19 +26,6 @@ use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 class CategoryTreeController extends Controller
 {
     /**
-     * Index action
-     *
-     * @Route("/")
-     * @Template()
-     *
-     * @return array
-     */
-    public function indexAction()
-    {
-        return array();
-    }
-
-    /**
      * List category trees. The select_node_id request parameter
      * allow to send back the tree where the node belongs with a selected
      * attribute
@@ -179,82 +166,29 @@ class CategoryTreeController extends Controller
     }
 
     /**
-     * Show tree in management mode
+     * Create a tree or category
      *
-     * @param Category $treeRoot
+     * @param integer $parent
      *
-     * @Route(
-     *     "/manage/{treeRoot}",
-     *     requirements={"treeRoot"="\d+"},
-     *     defaults={"treeRoot"=0}
-     * )
-     * @Template("PimProductBundle:CategoryTree:manage.html.twig")
-     *
-     * @return array
-     */
-    public function manageAction(Category $treeRoot)
-    {
-        $categories = $this->getTreeManager()->getTreeCategories($treeRoot);
-
-        return array('categories' => $categories);
-    }
-
-    /**
-     * Add a node
-     *
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @Route("/add")
-     */
-    public function addAction(Request $request)
-    {
-        $code     = $request->get('title');
-        $parentId = $request->get('id');
-        $parent   = $this->getTreeManager()->getEntityRepository()->find($parentId);
-
-        /** @var Category */
-        $category = $this->getTreeManager()->getSegmentInstance();
-        $category->setParent($parent);
-        // TODO : deal with code already exists case
-        $category->setCode($code);
-        // TODO : could be remove after locale refactoring
-        $categoryTranslation = $category->getTranslation('default');
-        $categoryTranslation->setTitle($code);
-
-        $manager = $this->getTreeManager()->getStorageManager();
-        $manager->persist($category);
-        $manager->flush();
-
-        return new JsonResponse(array('status' => 1, 'id' => $category->getId()));
-    }
-
-    /**
-     * Create category action
-     *
-     * @param Category $parent
-     *
-     * @Route(
-     *     "/create/{parent}",
-     *     requirements={"parent"="\d+"},
-     *     defaults={"parent"=0}
-     * )
+     * @Route("/create/{parent}")
      * @Template("PimProductBundle:CategoryTree:edit.html.twig")
      *
      * @return array
      */
-    public function createAction(Category $parent = null)
+    public function createAction($parent = null)
     {
         if ($parent) {
+            $parent = $this->findCategory($parent);
             $category = $this->getTreeManager()->getSegmentInstance();
             $category->setParent($parent);
         } else {
             $category = $this->getTreeManager()->getTreeInstance();
         }
 
-        $form    = $this->createForm($this->get('pim_product.form.type.category'), $category);
         $request = $this->getRequest();
+        $category->setCode($request->get('title'));
+
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -269,12 +203,7 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_categorytree_edit',
-                        array('id'=> $category->getId(), 'node' => $category->getId())
-                    )
-                );
+                return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
             }
         }
 
@@ -286,58 +215,19 @@ class CategoryTreeController extends Controller
     /**
      * Edit tree action
      *
-     * @Route("/myedit")
-     * @Template("PimProductBundle:CategoryTree:form.html.twig")
+     * @param Category $category
      *
-     * @return array
-     */
-    public function myeditAction()
-    {
-        $request  = $this->getRequest();
-        $categoryId = $request->get('id');
-        $category   = $this->getTreeManager()->getEntityRepository()->find($categoryId);
-        if (!$category) {
-            $category = $this->getTreeManager()->getSegmentInstance();
-        }
-        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
-
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $manager = $this->getTreeManager()->getStorageManager();
-                $manager->persist($category);
-                $manager->flush();
-
-                $this->addFlash(
-                    'success',
-                    sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
-                );
-
-                return array('form' => $form->createView(),);
-            }
-        }
-
-        return array('form' => $form->createView(),);
-    }
-
-    /**
-     * Edit tree action
-     *
-     * @param Category $category The category to manage
-     *
-     * @Route(
-     *     "/edit/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0}
+     * @Route("/edit/{id}",
+     *     requirements={"id"="\d+"}
      * )
-     * @Template("PimProductBundle:CategoryTree:edit.html.twig")
+     * @Template()
      *
      * @return array
      */
     public function editAction(Category $category)
     {
-        $request  = $this->getRequest();
+        $request = $this->getRequest();
+
         $datagrid = $this->getDataAuditDatagrid(
             $category,
             'pim_product_categorytree_edit',
@@ -346,10 +236,9 @@ class CategoryTreeController extends Controller
             )
         );
 
-        /*
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
-        }*/
+        if ('json' == $request->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
+        }
 
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
@@ -365,66 +254,51 @@ class CategoryTreeController extends Controller
                     'success',
                     sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
                 );
-
-                return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_categorytree_edit',
-                        array('id'=> $category->getId(), 'node' => $category->getId())
-                    )
-                );
             }
         }
 
         return array(
-            'form'     => $form->createView(),
-            //'datagrid' => $datagrid->createView(),
+            'form' => $form->createView(),
+            'datagrid' => $datagrid->createView(),
         );
     }
 
     /**
      * Remove category tree
      *
-     * @param Category $category The category to delete
+     * @param Category $category
      *
-     * @Route(
-     *     "/{id}/remove.{_format}",
-     *     requirements={"_format"="json|html", "id"="\d+"},
-     *     defaults={"_format"="html", "id"="\d+"}
-     * )
+     * @Route("/{id}/remove")
      * @Method("DELETE")
-     * @Template()
      *
-     * @return array
+     * @return RedirectResponse
      */
     public function removeAction(Category $category)
     {
-        $count = $this->getTreeManager()->getEntityRepository()->countProductsLinked($category, false);
-        $parent = $category->getParent();
+        $productCount = $this->getTreeManager()->getEntityRepository()->countProductsLinked($category, false);
+        $childrenCount = $this->getTreeManager()->getEntityRepository()->countChildren($category);
 
-        if ($count == 0) {
+        if ((int) $childrenCount > 0) {
+            $message = sprintf(
+                'This category can not be deleted because it contains %s child categories',
+                $childrenCount
+            );
+        } elseif ((int) $productCount > 0) {
+            $message = sprintf('This category can not be deleted because it contains %s products', $productCount);
+        } else {
             $this->getTreeManager()->remove($category);
             $this->getTreeManager()->getStorageManager()->flush();
-        } else {
-            $errorMessage = 'They are products in this category, but they will not be deleted';
-            if ($this->getRequest()->isXmlHttpRequest()) {
-                return new JsonResponse($errorMessage, 400);
-            } else {
-                $this->addFlash('error', $errorMessage);
 
-                return $this->redirect(
-                    $this->generateUrl('pim_product_categorytree_index', array('node' => $category->getId()))
-                );
-            }
-        }
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new JsonResponse();
-        } else {
             $this->addFlash('success', 'Category successfully removed');
+            $parent = $category->getParent();
             $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-            return $this->redirect($this->generateUrl('pim_product_categorytree_index', $params));
+            return $this->redirectToRoute('pim_product_categorytree_create', $params);
         }
+
+        $this->addFlash('error', $message);
+
+        return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
     }
 
     /**
@@ -453,17 +327,5 @@ class CategoryTreeController extends Controller
     protected function getTreeManager()
     {
         return $this->container->get('pim_product.manager.category');
-    }
-
-    /**
-     * Get category path
-     *
-     * @param Category $category
-     *
-     * @return multitype:integer
-     */
-    protected function getCategoryPath(Category $category)
-    {
-        return $this->getTreeManager()->getEntityRepository()->getPath($category);
     }
 }

@@ -14,34 +14,34 @@ Pim.tree.associate = function(elementId) {
     self = this;
 
     this.config = {
-        "core" : {
-            "animation" : 200,
-            "html_titles" : true
+        'core': {
+            'animation': 200,
+            'html_titles': true
         },
-        "plugins" : [
-             "themes",
-             "json_data",
-             "ui",
-             "types",
-             "checkbox"
+        'plugins': [
+             'themes',
+             'json_data',
+             'ui',
+             'types',
+             'checkbox'
         ],
-        "checkbox" : {
-            "two_state" : true,
-            "real_checkboxes" : true,
-            "override_ui" : true,
-            "real_checkboxes_names" : function (n) {
-                return ["category_" + n[0].id, 1];
+        'checkbox': {
+            'two_state': true,
+            'real_checkboxes': true,
+            'override_ui': true,
+            'real_checkboxes_names': function (n) {
+                return ['category_' + n[0].id, 1];
             }
         },
-        "themes" : {
-            "dots" : true,
-            "icons" : true,
-            "themes" : "bap",
-            "url" : assetsPath + "css/style.css"
+        'themes': {
+            'dots': true,
+            'icons': true,
+            'themes': 'bap',
+            'url': assetsPath + 'css/style.css'
         },
-        "json_data" : {
-            "ajax" : {
-                "url" : function (node) {
+        'json_data': {
+            'ajax': {
+                'url': function (node) {
                     var treeHasProduct = $('#tree-link-'+currentTree).hasClass('tree-has-product');
 
                     if ( (!node || (node == -1)) && treeHasProduct )  {
@@ -51,37 +51,37 @@ Pim.tree.associate = function(elementId) {
 
                     return childrenUrl;
                 },
-                "data" : function (node) {
+                'data': function (node) {
                     var data = {};
 
                     var treeHasProduct = $('#tree-link-'+currentTree).hasClass('tree-has-product');
 
                     if (node && node != -1) {
-                        data.id = node.attr("id").replace('node_','');
+                        data.id = node.attr('id').replace('node_','');
                     } else {
                         if (!treeHasProduct) {
                             data.id = currentTree;
                         }
-                        data.include_parent = "true";
+                        data.include_parent = 'true';
                     }
 
                     return data;
                 }
             }
         },
-        "types" : {
-            "max_depth" : -2,
-            "max_children" : -2,
-            "valid_children" : [ "folder" ],
-            "types" : {
-                "default" : {
-                    "valid_children" : "folder"
+        'types': {
+            'max_depth': -2,
+            'max_children': -2,
+            'valid_children': [ 'folder' ],
+            'types': {
+                'default': {
+                    'valid_children': 'folder'
                 }
             }
         },
-        "ui" : {
-            "select_limit": 1,
-            "select_multiple_modifier" : false
+        'ui': {
+            'select_limit': 1,
+            'select_multiple_modifier': false
         }
     };
 
@@ -93,7 +93,7 @@ Pim.tree.associate = function(elementId) {
         $('#trees-list').find('li').removeClass('active');
         $('#tree-link-' + treeId).parent().addClass('active');
 
-        $(".tree[data-tree-id="+treeId+"]").show();
+        $('.tree[data-tree-id='+treeId+']').show();
         $tree.show();
 
         // If empty, load the associated jstree

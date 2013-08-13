@@ -29,5 +29,5 @@ Feature: Delete import
     When I delete the "acme_product_import" job
     And I cancel the deletion
     Then the grid should contain 2 elements
-    And the grid should contain the elements "acme_product_import", "acmeattribute_import"
+    And the grid should contain the elements "acme_product_import", "acme_attribute_import"
     And the grid should not contain the elements "acme_product_export"
