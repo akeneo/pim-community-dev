@@ -228,7 +228,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'          => FieldDescriptionInterface::TYPE_TEXT,
                 'label'         => $this->translate('Family'),
-                'field_name'    => 'familyCode',
+                'field_name'    => 'familyLabel',
                 'expression'    => 'family',
                 'filter_type'   => FilterInterface::TYPE_ENTITY,
                 'required'      => false,
@@ -349,8 +349,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
+        // @todo : must be THEN CONCAT("[", family.code, "]")
+        $selectConcat = "CASE WHEN ft.label IS NULL ".
+                        "THEN family.code ".
+                        "ELSE ft.label END ".
+                        "as familyLabel";
+
         $proxyQuery
-            ->addSelect('ft.label as familyCode', true)
+            ->addSelect($selectConcat, true)
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
