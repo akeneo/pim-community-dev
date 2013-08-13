@@ -120,7 +120,7 @@ class ConfigProvider implements ConfigProviderInterface
             $config->set($key, $value);
         }
 
-        $this->persist($config);
+        $this->merge($config);
 
         return $config;
     }
@@ -210,6 +210,14 @@ class ConfigProvider implements ConfigProviderInterface
     public function persist(ConfigInterface $config)
     {
         $this->configManager->persist($config);
+    }
+
+    /**
+     * @param ConfigInterface $config
+     */
+    public function merge(ConfigInterface $config)
+    {
+        $this->configManager->merge($config);
     }
 
     /**

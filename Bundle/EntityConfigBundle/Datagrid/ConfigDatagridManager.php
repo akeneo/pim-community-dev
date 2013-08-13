@@ -79,7 +79,7 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getObjectName($scope = 'name')
     {
-        $options = array('name'=> array(), 'module'=> array());
+        $options = array('name' => array(), 'module' => array());
 
         $query = $this->createQuery()->getQueryBuilder()
             ->add('select', 'ce.className')
@@ -90,15 +90,20 @@ class ConfigDatagridManager extends DatagridManager
         foreach ((array) $result as $value) {
             $className = explode('\\', $value['className']);
 
-            $options['name'][$value['className']] = '';
+            $options['name'][$value['className']]   = '';
             $options['module'][$value['className']] = '';
 
-            foreach ($className as $index => $name) {
-                if (count($className)-1 == $index) {
-                    $options['name'][$value['className']] = $name;
-                } elseif (!in_array($name, array('Bundle','Entity'))) {
-                    $options['module'][$value['className']] .= $name;
+            if (count($className) > 1) {
+                foreach ($className as $index => $name) {
+                    if (count($className) - 1 == $index) {
+                        $options['name'][$value['className']] = $name;
+                    } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                        $options['module'][$value['className']] .= $name;
+                    }
                 }
+            } else {
+                $options['name'][$value['className']]   = $value['className'];
+                $options['module'][$value['className']] = 'System';
             }
         }
 

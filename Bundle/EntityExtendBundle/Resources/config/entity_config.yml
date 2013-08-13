@@ -119,6 +119,11 @@ oro_entity_config:
                             scope:          extend
                             code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:        "/^[0-9]*$/"
+                        - Range:
+                            min:            1
+                            max:            255
                     form:
                         type:               text
                         options:
@@ -135,6 +140,10 @@ oro_entity_config:
                             property_type:  field
                             property_path:  extend.owner
                             value:          Custom
+                    constraints:
+                        - Regex:        "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:
@@ -151,6 +160,10 @@ oro_entity_config:
                             property_type:  field
                             property_path:  extend.owner
                             value:          Custom
+                    constraints:
+                        - Regex:        "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:

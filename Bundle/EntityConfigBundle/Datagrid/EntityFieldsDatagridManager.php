@@ -8,10 +8,12 @@ use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
@@ -65,6 +67,7 @@ class EntityFieldsDatagridManager extends DatagridManager
                 if (isset($config['entity_id']) && $config['entity_id'] == true) {
                     $config['args'] = array('id' => $entity->getId());
                 }
+
                 $actions[] = $config;
             }
         }
@@ -79,7 +82,10 @@ class EntityFieldsDatagridManager extends DatagridManager
     {
         $properties = array(
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_field_update', array('id')),
+
         );
+
+        $filters = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
@@ -89,7 +95,24 @@ class EntityFieldsDatagridManager extends DatagridManager
                     $config['route'],
                     (isset($config['args']) ? $config['args'] : array())
                 );
+
+                if (isset($config['filter'])) {
+                    $filters[strtolower($config['name'])] = $config['filter'];
+                }
             }
+        }
+
+        if (count($filters)) {
+            $properties[] = new ActionConfigurationProperty(function (ResultRecord $record) use ($filters) {
+                $result = array();
+                foreach ($filters as $action => $valueKey) {
+                    if (!$record->getValue($valueKey)) {
+                        $result[$action] = false;
+                    }
+                }
+
+                return $result;
+            });
         }
 
         return $properties;

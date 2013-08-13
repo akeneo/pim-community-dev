@@ -54,27 +54,19 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function newConfigModel(NewEntityConfigModelEvent $event)
     {
-        if ($this->extendManager->getConfigProvider()->hasConfig($event->getClassName())) {
-            $isExtend = $this->extendManager->getConfigProvider()->getConfig($event->getClassName())->is('is_extend');
-        } else {
+        if (class_exists($event->getClassName())) {
             $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
-            $isExtend = $metadata && $metadata->isExtend;
-        }
+            if ($metadata && $metadata->isExtend) {
+                $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
+                $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
 
-        if ($isExtend) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
+                $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
+                $config->set('is_extend', true);
+                $config->set('extend_class', $extendClass);
+                $config->set('proxy_class', $proxyClass);
 
-            $configId = new EntityConfigId($event->getClassName(), $this->extendManager->getConfigProvider()->getScope());
-            $this->extendManager->getConfigProvider()->createConfig(
-                $configId,
-                $values = array(
-                    'is_extend'    => true,
-                    'extend_class' => $extendClass,
-                    'proxy_class'  => $proxyClass,
-                    'owner'        => 'System',
-                )
-            );
+                $this->extendManager->getConfigProvider()->persist($config);
+            }
         }
     }
 

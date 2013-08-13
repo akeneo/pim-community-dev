@@ -6,12 +6,12 @@ oro_entity_config:
                     entity:
                         priority:           20
 
-            constraints:    ~
-
             items:
                 icon:
                     options:
                         priority:           10
+                    constraints:
+                        - NotBlank:         ~
                     form:
                         type:               text
                         options:
@@ -43,6 +43,10 @@ oro_entity_config:
                 plural_label:
                     options:
                         priority:           35
+                    constraints:
+                        - Length:
+                            min:            2
+                            max:            50
                     form:
                         type:               text
                         options:
@@ -53,6 +57,9 @@ oro_entity_config:
                 description:
                     options:
                         priority:           50
+                    constraints:
+                        - Length:
+                            max:            500
                     grid:
                         type:               text
                         label:              'Description'
@@ -76,6 +83,11 @@ oro_entity_config:
                 label:
                     options:
                         priority:           10
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
                     grid:
                         type:               string
                         label:              'Label'
@@ -93,6 +105,9 @@ oro_entity_config:
                 description:
                     options:
                         priority:           30
+                    constraints:
+                        - Length:
+                            max:            500
                     grid:
                         type:               text
                         label:              'Description'

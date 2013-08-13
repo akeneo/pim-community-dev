@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
@@ -31,6 +32,7 @@ class AuditController extends Controller
      *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
+     * @Template
      * @Acl(
      *      id="oro_entityconfig_audit",
      *      name="View entity history",
@@ -57,11 +59,14 @@ class AuditController extends Controller
             )
         );
 
-        $view = $datagridManager->getDatagrid()->createView();
+        $datagridView = $datagridManager->getDatagrid()->createView();
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        }
 
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
+        return array(
+            'datagrid' => $datagridView,
+        );
     }
 
     /**
@@ -71,6 +76,7 @@ class AuditController extends Controller
      *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
+     * @Template
      * @Acl(
      *      id="oro_entityconfig_audit_field",
      *      name="View entity's field history",
@@ -102,10 +108,13 @@ class AuditController extends Controller
             )
         );
 
-        $view = $datagridManager->getDatagrid()->createView();
+        $datagridView = $datagridManager->getDatagrid()->createView();
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        }
 
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
+        return array(
+            'datagrid' => $datagridView,
+        );
     }
 }

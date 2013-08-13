@@ -432,7 +432,7 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
-                if (!$metadata && isset($metadata->defaultValues[$provider->getScope()])) {
+                if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
