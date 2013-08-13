@@ -21,8 +21,22 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      * @PimAssert\File(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
+     */
     protected $delimiter = ';';
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
+     */
     protected $enclosure = '"';
+
+    /**
+     * @Assert\NotBlank
+     */
     protected $escape = '\\';
 
     private $csv;
