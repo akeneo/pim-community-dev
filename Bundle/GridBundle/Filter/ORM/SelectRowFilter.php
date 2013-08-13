@@ -32,7 +32,19 @@ class SelectRowFilter extends AbstractFilter
             $expression = $this->getExpressionFactory()->eq(0, 1);
         }
 
-        $this->applyFilterToClause($queryBuilder, $expression);
+        if ($data['value'] === self::SELECTED_VALUE && !empty($data['in'])) {
+            $expression = $this->getExpressionFactory()->in(
+                $this->createFieldExpression($field, $alias), $data['in']);
+        }
+
+        if ($data['value'] === self::NOT_SELECTED_VALUE && !empty($data['out'])) {
+            $expression = $this->getExpressionFactory()->notIn(
+                $this->createFieldExpression($field, $alias), $data['out']);
+        }
+
+        if (isset($expression)) {
+            $this->applyFilterToClause($queryBuilder, $expression);
+        }
     }
 
     /**
@@ -43,34 +55,18 @@ class SelectRowFilter extends AbstractFilter
      */
     protected function parseData($data)
     {
-        $value = null;
-        if (isset($data['value']) && in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE))) {
-            $value = $data['value'];
+        if (!(isset($data['value']) || in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE)))) {
+            $data['value'] = null;
         }
 
-        $dataIn = null;
-        if (isset($data['in'])) {
-            if (!empty($data['in'])) {
-                $dataIn = explode(',', $data['in']);
-            } else {
-                $dataIn = array();
-            }
+        if (isset($data['in']) && !is_array($data['in'])) {
+            $data['in'] = explode(',', $data['in']);
+        }
+        if (isset($data['out']) && !is_array($data['out'])) {
+            $data['out'] = explode(',', $data['out']);
         }
 
-        $dataOut = null;
-        if (isset($data['out'])) {
-            if (!empty($data['out'])) {
-                $dataOut = explode(',', $data['out']);
-            } else {
-                $dataOut = array();
-            }
-        }
-
-        return array(
-            'value' => $value,
-            'in'    => $dataIn,
-            'out'   => $dataOut,
-        );
+        return $data;
     }
 
     /**

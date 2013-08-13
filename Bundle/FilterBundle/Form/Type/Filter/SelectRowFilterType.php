@@ -11,8 +11,18 @@ class SelectRowFilterType extends AbstractChoiceType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('in', 'hidden');
-        $builder->add('out', 'hidden');
+        $emptyData = function ($form, $submittedData) {
+            if ($submittedData === null) {
+                return $submittedData;
+            } elseif ($submittedData === '') {
+                return array();
+            }
+
+            return null;
+        };
+
+        $builder->add('in', 'hidden', array('empty_data' => $emptyData));
+        $builder->add('out', 'hidden', array('empty_data' => $emptyData));
     }
 
     /**
