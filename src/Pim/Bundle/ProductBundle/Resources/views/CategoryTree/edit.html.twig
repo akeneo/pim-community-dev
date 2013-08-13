@@ -2,7 +2,7 @@
 
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'category' : 'tree' %}
-{% set action = form.vars.value.id ? 'Edit' : 'Add' %}
+{% set action = form.vars.value.id ? 'Edit' : 'Create' %}
 
 {% set title = action|trans ~ ' ' ~ type|trans %}
 {% if form.vars.value.id %}
@@ -11,21 +11,27 @@
 
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-
-    {#
     {% if form.vars.value.id %}
         {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
     {% endif %}
-    #}
-
 {% endblock %}
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree"></div>
+        <div id="tree"
+            data-tree="manage"
+            data-assets-path="{{ asset('bundles/pimproduct/') }}"
+            data-edit-url="{{ path('pim_product_categorytree_edit', { id: 0 }) }}"
+            data-create-url="{{ path('pim_product_categorytree_create') }}"
+            data-move-url="{{ path('pim_product_categorytree_movenode') }}"
+            data-listtree-url="{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}"
+            data-no-tree-message="{{ 'No tree available'|trans }}"
+            data-edit-label="{{ 'Edit'|trans }}"
+            data-children-url="{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}"
+            {% if form.vars.value.id %}data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %}data-node-id="{{ form.vars.value.parent.id }}"{% endif %}
+        ></div>
 
-        <div id="category-edit-form">
+        <div id="category-form">
             {{ JSFV(form) }}
             <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
@@ -57,9 +63,11 @@
                         {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': form_row(form.title) }) }}
                     </div>
 
-                    <div class="tab-pane" id="history">
-                        <div id="history-grid"></div>
-                    </div>
+                    {% if form.vars.value.id %}
+                        <div class="tab-pane" id="history">
+                            <div id="history-grid"></div>
+                        </div>
+                    {% endif %}
                 </div>
                 {{ form_rest(form) }}
             </form>
