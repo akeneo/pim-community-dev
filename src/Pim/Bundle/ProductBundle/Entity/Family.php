@@ -103,13 +103,13 @@ class Family implements TranslatableInterface
     }
 
     /**
-     * Returns the label of the product family
+     * Returns the label of the family
      *
      * @return string
      */
     public function __toString()
     {
-        return ($this->getLabel() != '') ? $this->getLabel() : $this->code;
+        return $this->getLabel();
     }
 
     /**
@@ -327,7 +327,7 @@ class Family implements TranslatableInterface
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
 
     /**
