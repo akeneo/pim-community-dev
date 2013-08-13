@@ -71,6 +71,7 @@ class Grid extends Index
 
     /**
      * Filter the filter name by the value
+     *
      * @param string $filterName
      * @param string $value
      */
@@ -83,7 +84,7 @@ class Grid extends Index
             $elt->selectOption($value);
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
             $elt->fillField('value', $value);
-            $filterCriteria->find('css', 'button.filter-update')->click();
+            $filter->find('css', 'button.filter-update')->click();
         } else {
             throw new \InvalidArgumentException(sprintf('Filtering by "%s" is not yet implemented"', $filterName));
         }
