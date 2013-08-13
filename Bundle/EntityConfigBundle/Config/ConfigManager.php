@@ -80,7 +80,7 @@ class ConfigManager
     protected $localCache;
 
     /**
-     * @var ConfigInterface[]|ArrayCollection
+     * @var ConfigInterface[]|\SplObjectStorage
      */
     protected $persistConfigs;
 
@@ -108,7 +108,7 @@ class ConfigManager
 
         $this->providers        = new ArrayCollection;
         $this->localCache       = new ArrayCollection;
-        $this->persistConfigs   = new ArrayCollection;
+        $this->persistConfigs   = new \SplObjectStorage();
         $this->originalConfigs  = new ArrayCollection;
         $this->configChangeSets = new ArrayCollection;
 
@@ -307,7 +307,7 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        $this->persistConfigs->add($config);
+        $this->persistConfigs->attach($config);
     }
 
     /**
@@ -317,8 +317,9 @@ class ConfigManager
     public function merge(ConfigInterface $config)
     {
         $config = $this->doMerge($config);
+        $this->persistConfigs->attach($config);
 
-        return $this->persistConfigs->add($config);
+        return $config;
     }
 
     public function flush()
@@ -351,7 +352,7 @@ class ConfigManager
 
         $this->getEntityManager()->flush();
 
-        $this->persistConfigs   = new ArrayCollection;
+        $this->persistConfigs   = new \SplObjectStorage();
         $this->originalConfigs  = new ArrayCollection;
         $this->configChangeSets = new ArrayCollection;
     }
@@ -405,7 +406,9 @@ class ConfigManager
      */
     public function getUpdateConfig(\Closure $filter = null)
     {
-        return $filter ? $this->persistConfigs->filter($filter) : $this->persistConfigs;
+        $result = iterator_to_array($this->persistConfigs, false);
+
+        return $filter ? array_filter($result, $filter) : $result;
     }
 
     /**
@@ -439,7 +442,7 @@ class ConfigManager
                 $entityId = new EntityConfigId($className, $provider->getScope());
                 $config   = $provider->createConfig($entityId, $defaultValues);
 
-                $this->localCache->add($config->getConfigId()->getId(), $config);
+                $this->localCache->set($config->getConfigId()->getId(), $config);
             }
 
             $this->eventDispatcher->dispatch(
@@ -485,13 +488,14 @@ class ConfigManager
      * @param ConfigInterface $config
      * @return ConfigInterface
      */
-    protected function doMerge(ConfigInterface $config)
+    private function doMerge(ConfigInterface $config)
     {
-        if ($this->persistConfigs->containsKey($config->getConfigId()->getId())) {
-            /** @var ConfigInterface $persistConfig */
-            $persistConfig = $this->persistConfigs->get($config->getConfigId()->getId());
+        foreach ($this->persistConfigs as $persistConfig) {
+            if ($config->getConfigId()->getId() == $persistConfig->getConfigId()->getId()) {
+                $config = array_merge($persistConfig->getValues(), $config->getValues());
 
-            return array_merge($persistConfig->getValues(), $config->getValues());
+                break;
+            }
         }
 
         return $config;

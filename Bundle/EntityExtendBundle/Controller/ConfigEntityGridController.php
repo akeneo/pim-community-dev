@@ -163,13 +163,14 @@ class ConfigEntityGridController extends Controller
             $form->submit($request);
 
             if ($form->isValid()) {
-                $newEntityModel = $configManager->createConfigFieldModel($className, 'id', 'integer');
-                $extendFieldConfig   = $configManager->getProvider('extend')->getConfig($className, 'id');
+                $newEntityModel    = $configManager->createConfigFieldModel($className, 'id', 'integer');
+                $extendFieldConfig = $configManager->getProvider('extend')->getConfig($className, 'id');
                 $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
                 $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
                 $extendFieldConfig->set('is_extend', true);
 
-                $configManager->persist($extendFieldConfig);
+                $entityFieldConfig = $configManager->getProvider('entity')->getConfig($className, 'id');
+                $entityFieldConfig->set('label', 'Id');
 
                 $configManager->flush();
 

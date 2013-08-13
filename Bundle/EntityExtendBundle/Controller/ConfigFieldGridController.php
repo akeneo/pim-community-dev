@@ -133,6 +133,7 @@ class ConfigFieldGridController extends Controller
 
         $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
         $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+        $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
         $extendFieldConfig->set('is_extend', true);
 
         $form = $this->createForm('oro_entity_config_type', null, array(

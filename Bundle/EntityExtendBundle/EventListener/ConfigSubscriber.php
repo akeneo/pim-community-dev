@@ -75,25 +75,30 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function persistConfig(PersistConfigEvent $event)
     {
-        //$event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
         $scope     = $event->getConfig()->getConfigId()->getScope();
         $className = $event->getConfig()->getConfigId()->getClassName();
 
         if ($scope == 'extend'
-            && $event->getConfig()->is('is_extend')
-            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
-            && $event->getConfig()->get('state') != ExtendManager::STATE_NEW
+           && $event->getConfig()->is('is_extend')
+           && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
         ) {
             $entityConfig = $event->getConfigManager()
                 ->getProvider($scope)
                 ->getConfig($className);
 
-            $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
-            $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+            if ($event->getConfig()->get('state') != ExtendManager::STATE_NEW) {
+                $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
 
-            $event->getConfigManager()->persist($entityConfig);
+                $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+            }
+
+            if ($entityConfig->get('state') != ExtendManager::STATE_NEW) {
+                $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+
+                $event->getConfigManager()->persist($entityConfig);
+            }
         }
     }
 }
