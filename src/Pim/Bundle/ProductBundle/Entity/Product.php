@@ -317,7 +317,19 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      */
     public function getVersionedData()
     {
-        return array('my' => 'data');
+        $data = array();
+        if ($this->getFamily()) {
+            $data['family'] = $this->getFamily()->getCode();
+        }
+
+        foreach ($this->getValues() as $value) {
+            $key = $value->getAttribute()->getCode();
+            $key .= ($value->getLocale()) ? '_'.$value->getLocale() : '';
+            $key .= ($value->getScope()) ? '_'.$value->getScope() : '';
+            $data[$key]= (string) $value;
+        }
+
+        return $data;
 
         /*
         $normalizer = new ProductNormalizer();

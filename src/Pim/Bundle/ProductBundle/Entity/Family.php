@@ -397,7 +397,6 @@ class Family implements TranslatableInterface, Versionable
             'attributes' => implode(',', $attributes),
         );
 
-        $translations = array();
         foreach ($this->getTranslations() as $translation) {
             $data['label_'.$translation->getLocale()]= $translation->getLabel();
         }

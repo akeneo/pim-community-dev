@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Model\Versionable;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -29,10 +29,17 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @Oro\Loggable
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, Versionable
 {
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
     /**
      * @var Category $parent
      *
@@ -70,7 +77,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * @var string $code
      *
      * @ORM\Column(name="code", type="string", length=100)
-     * @Oro\Versioned
      */
     protected $code;
 
@@ -119,6 +125,16 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
 
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**
@@ -317,5 +333,18 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function __toString()
     {
         return ($this->getTitle() != '') ? $this->getTitle() : $this->code;
+    }
+
+    public function getVersionedData()
+    {
+        $data = array(
+            'code' => $this->getCode(),
+        );
+
+        foreach ($this->getTranslations() as $translation) {
+            $data['title_'.$translation->getLocale()]= $translation->getTitle();
+        }
+
+        return $data;
     }
 }

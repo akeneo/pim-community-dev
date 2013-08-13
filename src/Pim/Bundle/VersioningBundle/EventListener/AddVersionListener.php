@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 use Doctrine\ORM\EntityManager;
@@ -66,6 +68,10 @@ class AddVersionListener implements EventSubscriber
                  $product = $entity->getValue()->getEntity();
                  $this->writeSnapshot($em, $product);
 
+            } else if ($entity instanceof AbstractTranslation) {
+                if ($entity->getForeignKey() instanceof Versionable) {
+                    $this->writeSnapshot($em, $entity->getForeignKey());
+                }
             }
         }
     }
