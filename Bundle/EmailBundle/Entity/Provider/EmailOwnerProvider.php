@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Entity\Provider;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
 /**
  * Email owner provider chain
@@ -15,30 +16,27 @@ class EmailOwnerProvider
     private $emailOwnerProviderStorage;
 
     /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
      * Constructor
      *
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
-     * @param EntityManager $em
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, EntityManager $em)
+    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage)
     {
         $this->emailOwnerProviderStorage = $emailOwnerProviderStorage;
-        $this->em = $em;
     }
 
     /**
-     * {@inheritdoc}
+     * Find an entity object which is an owner of the given email address
+     *
+     * @param \Doctrine\ORM\EntityManager $em
+     * @param string $email
+     * @return EmailOwnerInterface
      */
-    public function findEmailOwner($email)
+    public function findEmailOwner(EntityManager $em, $email)
     {
         $emailOwner = null;
         foreach ($this->emailOwnerProviderStorage->getProviders() as $provider) {
-            $emailOwner = $provider->findEmailOwner($this->em, $email);
+            $emailOwner = $provider->findEmailOwner($em, $email);
             if ($emailOwner !== null) {
                 break;
             }

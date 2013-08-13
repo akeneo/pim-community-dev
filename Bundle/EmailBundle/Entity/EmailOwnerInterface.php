@@ -9,6 +9,8 @@ interface EmailOwnerInterface
 {
     /**
      * Get entity class name.
+     * TODO: This is a temporary solution for get 'view' route in twig.
+     *       Will be removed after EntityConfigBundle is finished
      *
      * @return string
      */

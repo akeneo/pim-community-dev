@@ -35,6 +35,7 @@ class OroEmailBundle extends Bundle
 
         $container->setParameter('oro_email.entity.cache_dir', $cacheDir);
         $container->setParameter('oro_email.entity.cache_namespace', $entityCacheNamespace);
+        $container->setParameter('oro_email.entity.proxy_name_template', '%sProxy');
 
         $entityCacheDir = sprintf('%s/%s', $cacheDir, str_replace('\\', '/', $entityCacheNamespace));
         // Ensure the cache directory exists

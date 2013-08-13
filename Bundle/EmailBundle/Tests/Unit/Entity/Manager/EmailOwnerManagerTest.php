@@ -1,12 +1,14 @@
 <?php
 
-namespace Oro\Bundle\EmailBundle\Tests\Unit\EventListener;
+namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity\Manager;
 
-use Oro\Bundle\EmailBundle\EventListener\EmailAddressManager;
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 
-class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
+class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $flushEventArgs;
@@ -64,8 +66,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->will($this->returnValue($this->em));
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailOwnerManagerMockBuilder()
             ->setMethods(array('handleInsertionsOrUpdates', 'handleDeletions'))
             ->getMock();
 
@@ -128,8 +129,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
     ) {
         $this->initOnFlush();
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailOwnerManagerMockBuilder()
             ->setMethods(array('processInsertionOrUpdateEntity'))
             ->getMock();
 
@@ -137,25 +137,38 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             if ($entity instanceof EmailOwnerInterface) {
                 $args = array('SomeField', $entity, $entity, $this->em, $this->uow);
             } elseif ($entity instanceof EmailInterface) {
-                $args = array('SomeField', $entity, $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface'), $this->em, $this->uow);
+                $args = array(
+                    'SomeField',
+                    $entity,
+                    $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface'),
+                    $this->em,
+                    $this->uow
+                );
             } else {
                 $this->fail('Unexpected entity type');
+
                 return;
             }
 
             $manager->expects($this->once())
                 ->method('processInsertionOrUpdateEntity')
-                ->with($this->equalTo($args[0]), $this->equalTo($args[1]), $this->equalTo($args[2]), $this->equalTo($args[3]), $this->equalTo($args[4]))
+                ->with(
+                    $this->equalTo($args[0]),
+                    $this->equalTo($args[1]),
+                    $this->equalTo($args[2]),
+                    $this->equalTo($args[3]),
+                    $this->equalTo($args[4])
+                )
                 ->will($this->returnValue($processInsertionOrUpdateEntityReturnValue));
         } else {
             $manager->expects($this->never())
                 ->method('processInsertionOrUpdateEntity');
         }
 
-        $result = $this->callProtectedMethod(
+        $result = ReflectionUtil::callProtectedMethod(
             $manager,
             'handleInsertionsOrUpdates',
-            array($entity === null ? array() :  array($entity), $this->em, $this->uow)
+            array($entity === null ? array() : array($entity), $this->em, $this->uow)
         );
         $this->assertEquals($returnValue, $result);
     }
@@ -167,7 +180,12 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
             'not tracked item' => array(new \stdClass(), false, false, false),
             'EmailOwnerInterface nothing to change' =>
             array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, false, false),
-            'EmailOwnerInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, true, true),
+            'EmailOwnerInterface' => array(
+                $this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(),
+                true,
+                true,
+                true
+            ),
             'EmailInterface nothing to change' =>
             array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, false, false),
             'EmailInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, true, true),
@@ -208,8 +226,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
     ) {
         $this->initOnFlush();
 
-        $manager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
-            ->setConstructorArgs(array($this->getEmailOwnerProviderStorageMock()))
+        $manager = $this->createEmailOwnerManagerMockBuilder()
             ->setMethods(array('unbindEmailAddress'))
             ->getMock();
 
@@ -228,6 +245,7 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue($unbindEmailAddressReturnValue));
             } else {
                 $this->fail('Unexpected entity type');
+
                 return;
             }
         } else {
@@ -235,10 +253,10 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
                 ->method('unbindEmailAddress');
         }
 
-        $result = $this->callProtectedMethod(
+        $result = ReflectionUtil::callProtectedMethod(
             $manager,
             'handleDeletions',
-            array($entity === null ? array() :  array($entity), $this->em)
+            array($entity === null ? array() : array($entity), $this->em)
         );
         $this->assertEquals($returnValue, $result);
     }
@@ -274,12 +292,155 @@ class EmailAddressManagerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    private function callProtectedMethod($obj, $methodName, array $args)
+    public function testProcessInsertionOrUpdateEntityNoEmailField()
     {
-        $class = new \ReflectionClass($obj);
-        $method = $class->getMethod($methodName);
-        $method->setAccessible(true);
+        $this->initOnFlush();
 
-        return $method->invokeArgs($obj, $args);
+        $manager = $this->createEmailOwnerManagerMockBuilder()
+            ->setMethods(array('bindEmailAddress'))
+            ->getMock();
+
+        $this->uow->expects($this->never())
+            ->method('getEntityChangeSet');
+
+        $manager->expects($this->never())
+            ->method('bindEmailAddress');
+
+        $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
+
+        $result = ReflectionUtil::callProtectedMethod(
+            $manager,
+            'processInsertionOrUpdateEntity',
+            array(null, null, $owner, $this->em, $this->uow)
+        );
+
+        $this->assertEquals(false, $result);
+    }
+
+    public function testProcessInsertionOrUpdateEntityNoEmailRelatedChanges()
+    {
+        $this->initOnFlush();
+
+        $manager = $this->createEmailOwnerManagerMockBuilder()
+            ->setMethods(array('bindEmailAddress'))
+            ->getMock();
+
+        $this->uow->expects($this->once())
+            ->method('getEntityChangeSet')
+            ->will($this->returnValue(array('SomeField' => array('val1', 'val2'))));
+
+        $manager->expects($this->never())
+            ->method('bindEmailAddress');
+
+        $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
+
+        $result = ReflectionUtil::callProtectedMethod(
+            $manager,
+            'processInsertionOrUpdateEntity',
+            array('testEmailField', null, $owner, $this->em, $this->uow)
+        );
+
+        $this->assertEquals(false, $result);
+    }
+
+    public function testProcessInsertionOrUpdateEntityEmailValueNotChanged()
+    {
+        $this->initOnFlush();
+
+        $manager = $this->createEmailOwnerManagerMockBuilder()
+            ->setMethods(array('bindEmailAddress'))
+            ->getMock();
+
+        $this->uow->expects($this->once())
+            ->method('getEntityChangeSet')
+            ->will($this->returnValue(array('testEmailField' => array('val1', 'val1'))));
+
+        $manager->expects($this->never())
+            ->method('bindEmailAddress');
+
+        $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
+
+        $result = ReflectionUtil::callProtectedMethod(
+            $manager,
+            'processInsertionOrUpdateEntity',
+            array('testEmailField', null, $owner, $this->em, $this->uow)
+        );
+
+        $this->assertEquals(false, $result);
+    }
+
+    public function testProcessInsertionOrUpdateEntityEmailValueChanged()
+    {
+        $this->initOnFlush();
+
+        $manager = $this->createEmailOwnerManagerMockBuilder()
+            ->setMethods(array('bindEmailAddress'))
+            ->getMock();
+
+        $this->uow->expects($this->once())
+            ->method('getEntityChangeSet')
+            ->will($this->returnValue(array('testEmailField' => array('val1', 'val2'))));
+
+        $manager->expects($this->once())
+            ->method('bindEmailAddress')
+            ->will($this->returnValue(true));
+
+        $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
+
+        $result = ReflectionUtil::callProtectedMethod(
+            $manager,
+            'processInsertionOrUpdateEntity',
+            array('testEmailField', null, $owner, $this->em, $this->uow)
+        );
+
+        $this->assertEquals(true, $result);
+    }
+
+    public function testCreateEmailAddress()
+    {
+        $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
+        $addrManager = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $addr = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailAddress');
+
+        $addrManager->expects($this->once())
+            ->method('newEmailAddress')
+            ->will($this->returnValue($addr));
+
+        $addr->expects($this->once())
+            ->method('setEmail')
+            ->with($this->equalTo('test@example.com'))
+            ->will($this->returnValue($addr));
+        $addr->expects($this->once())
+            ->method('setOwner')
+            ->with($this->identicalTo($owner))
+            ->will($this->returnValue($addr));
+
+        $manager = new EmailOwnerManager(
+            $this->getEmailOwnerProviderStorageMock(),
+            $addrManager
+        );
+
+
+        $result = ReflectionUtil::callProtectedMethod(
+            $manager,
+            'createEmailAddress',
+            array('test@example.com', $owner)
+        );
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     */
+    private function createEmailOwnerManagerMockBuilder()
+    {
+        return $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager')
+            ->setConstructorArgs(
+                array(
+                    $this->getEmailOwnerProviderStorageMock(),
+                    new EmailAddressManager('SomeNamespace', 'ProxyFor%s')
+                )
+            );
     }
 }
