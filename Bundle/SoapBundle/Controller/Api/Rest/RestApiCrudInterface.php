@@ -4,7 +4,7 @@ namespace Oro\Bundle\SoapBundle\Controller\Api\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
 
-interface RestApiCrudInterface
+interface RestApiCrudInterface extends RestApiReadInterface
 {
     /**
      * Create item.
@@ -12,23 +12,6 @@ interface RestApiCrudInterface
      * @return Response
      */
     public function handleCreateRequest();
-
-    /**
-     * Get paginated items list.
-     *
-     * @param int $page
-     * @param int $limit
-     * @return Response
-     */
-    public function handleGetListRequest($page, $limit);
-
-    /**
-     * Get item by identifier.
-     *
-     * @param mixed $id
-     * @return mixed
-     */
-    public function handleGetRequest($id);
 
     /**
      * Update item.

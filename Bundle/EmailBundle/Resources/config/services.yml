@@ -1,4 +1,17 @@
 parameters:
+    oro_email.email.entity.class:                 Oro\Bundle\EmailBundle\Entity\Email
+    oro_email.email.cache.manager.class:          Oro\Bundle\EmailBundle\Cache\EmailCacheManager
+    oro_email.email.address.manager.class:        Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager
+    oro_email.email.owner.provider.class:         Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider
+    oro_email.email.owner.provider.storage.class: Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage
+    oro_email.email.owner.manager.class:          Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager
+    oro_email.email.entity.builder.class:         Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder
+    oro_email.email.entity.batch_processor.class: Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor
+    oro_email.listener.entity_subscriber.class:   Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
+    oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
+    oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
+    oro_email.entity.cache.clearer.class:         Oro\Bundle\EmailBundle\Cache\EntityCacheClearer
+
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
     # Email template field
@@ -15,6 +28,85 @@ parameters:
     oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
 
 services:
+    oro_email.entity.cache.warmer:
+        public: false
+        class: %oro_email.entity.cache.warmer.class%
+        arguments:
+            - @oro_email.email.owner.provider.storage
+            - %oro_email.entity.cache_dir%
+            - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
+        tags:
+            - { name: kernel.cache_warmer, priority: 30 }
+
+    oro_email.entity.cache.clearer:
+        public: false
+        class: %oro_email.entity.cache.clearer.class%
+        arguments:
+            - %oro_email.entity.cache_dir%
+            - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_email.email.cache.manager:
+        class: %oro_email.email.cache.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    oro_email.email.address.manager:
+        public: false
+        class: %oro_email.email.address.manager.class%
+        arguments:
+            - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
+
+    oro_email.email.owner.provider.storage:
+        public: false
+        class: %oro_email.email.owner.provider.storage.class%
+
+    oro_email.email.owner.provider:
+        public: false
+        class: %oro_email.email.owner.provider.class%
+        arguments:
+            - @oro_email.email.owner.provider.storage
+
+    oro_email.email.owner.manager:
+        public: false
+        class: %oro_email.email.owner.manager.class%
+        arguments:
+            - @oro_email.email.owner.provider.storage
+            - @oro_email.email.address.manager
+
+    oro_email.email.entity.builder:
+        class: %oro_email.email.entity.builder.class%
+        scope: prototype
+        arguments:
+            - @oro_email.email.entity.batch_processor
+            - @oro_email.email.address.manager
+
+    oro_email.email.entity.batch_processor:
+        class: %oro_email.email.entity.batch_processor.class%
+        public: false
+        scope: prototype
+        arguments:
+            - @oro_email.email.address.manager
+            - @oro_email.email.owner.provider
+
+    oro_email.listener.entity_subscriber:
+        public: false
+        class: %oro_email.listener.entity_subscriber.class%
+        arguments:
+            - @oro_email.email.owner.manager
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    oro_email.manager.email.api:
+        class: %oro_email.manager.email.api.class%
+        arguments:
+            - %oro_email.email.entity.class%
+            - @doctrine.orm.entity_manager
+
     # Email template field
     oro_email.form.subscriber.emailtemplate:
         class: %oro_email.form.subscriber.emailtemplate.class%

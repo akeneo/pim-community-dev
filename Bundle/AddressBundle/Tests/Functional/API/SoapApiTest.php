@@ -80,7 +80,9 @@ class SoapApiTest extends WebTestCase
 
     public function testCreateAddress()
     {
-        $this->assertTrue($this->client->getSoap()->createAddress($this->addressData['Create Address Data']));
+        $id = $this->client->getSoap()->createAddress($this->addressData['Create Address Data']);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**

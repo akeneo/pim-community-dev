@@ -15,10 +15,10 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
 
         $defaultBusinessUnit
             ->setName('Root')
-            ->setOrganization($this->getReference('default_organization'))
-            ->setOwner($this->getReference('default_business_unit'));
+            ->setOrganization($this->getReference('default_organization'));
 
         $this->addReference('default_business_unit', $defaultBusinessUnit);
+        $defaultBusinessUnit->setOwner($this->getReference('default_business_unit'));
 
         $manager->persist($defaultBusinessUnit);
         $manager->flush();
@@ -26,6 +26,6 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
 
     public function getOrder()
     {
-        return 1;
+        return 2;
     }
 }

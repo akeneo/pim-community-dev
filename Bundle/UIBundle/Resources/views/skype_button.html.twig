@@ -1,0 +1,7 @@
+<div id="{{ options.element }}" class="skype-button">
+    <script type="text/javascript">
+        (function() {
+            Skype.ui({{ options|json_encode|raw }});
+        })();
+    </script>
+</div>

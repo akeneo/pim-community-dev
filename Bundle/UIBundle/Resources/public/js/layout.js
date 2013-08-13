@@ -172,7 +172,12 @@ function initLayout() {
             el = $(el);
 
             el.datepicker({
-                dateFormat: el.attr('data-dateformat') ? el.attr('data-dateformat') : 'm/d/y'
+                dateFormat: el.attr('data-dateformat') ? el.attr('data-dateformat') : 'm/d/y',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true,
+                currentText: _.__('Now')
             });
         });
     }
@@ -183,7 +188,12 @@ function initLayout() {
 
             el.datetimepicker({
                 dateFormat: el.attr('data-dateformat') ? el.attr('data-dateformat') : 'm/d/y',
-                timeFormat: el.attr('data-timeformat') ? el.attr('data-timeformat') : 'hh:mm tt'
+                timeFormat: el.attr('data-timeformat') ? el.attr('data-timeformat') : 'hh:mm tt',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true,
+                currentText: _.__('Now')
             });
         });
     }

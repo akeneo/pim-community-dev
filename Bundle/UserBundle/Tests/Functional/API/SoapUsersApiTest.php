@@ -38,9 +38,9 @@ class SoapUsersApiTest extends WebTestCase
      */
     public function testCreateUser($request, $response)
     {
-        $result = $this->client->getSoap()->createUser($request);
-        $result = ToolsAPI::classToArray($result);
-        ToolsAPI::assertEqualsResponse($response, $result, $this->client->getSoap()->__getLastResponse());
+        $id = $this->client->getSoap()->createUser($request);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**

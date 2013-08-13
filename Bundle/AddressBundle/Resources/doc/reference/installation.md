@@ -36,6 +36,5 @@ public function registerBundles()
 * FOSJsRoutingBundle https://github.com/FriendsOfSymfony/FOSJsRoutingBundle
 * BeSimpleSoapBundle, https://github.com/BeSimple/BeSimpleSoapBundle
 * NelmioApiDocBundle https://github.com/nelmio/NelmioApiDocBundle
-* OroFlexibleEntityBundle, https://github.com/orocrm/platform/tree/master/src/Oro/Bundle/FlexibleEntityBundle
 * OroFormBundle, https://github.com/orocrm/platform/tree/master/src/Oro/Bundle/FormBundle
 * OroTranslationBundle, https://github.com/orocrm/platform/tree/master/src/Oro/Bundle/TranslationBundle

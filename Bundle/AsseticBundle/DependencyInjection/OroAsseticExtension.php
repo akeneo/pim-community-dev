@@ -29,7 +29,8 @@ class OroAsseticExtension extends Extension
         $container->setParameter('oro_assetic.assets', $this->getAssets($container, $config));
 
         // choose dynamic or static
-        if (!$container->getParameterBag()->resolveValue($container->getParameterBag()->get('assetic.use_controller'))) {
+        $useController = $container->getParameterBag()->get('assetic.use_controller');
+        if (!$container->getParameterBag()->resolveValue($useController)) {
             $loader->load('assetic_controller_service.yml');
         }
     }

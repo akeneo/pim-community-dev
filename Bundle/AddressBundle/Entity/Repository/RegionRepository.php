@@ -9,9 +9,6 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 
-/**
- * @package Oro\Bundle\AddressBundle\Entity\Repository
- */
 class RegionRepository extends EntityRepository
 {
     /**

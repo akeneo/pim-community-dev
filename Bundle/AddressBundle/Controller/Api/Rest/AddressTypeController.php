@@ -44,7 +44,6 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      */
     public function cgetAction()
     {
-        /** @var $item AddressType */
         $items = $this->getDoctrine()->getRepository('OroAddressBundle:AddressType')->findAll();
 
         return $this->handleView(
