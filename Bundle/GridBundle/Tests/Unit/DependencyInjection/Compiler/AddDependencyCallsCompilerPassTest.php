@@ -158,6 +158,7 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'datagrid_name' => 'users',
                                     'entity_name' => 'User',
                                     'entity_hint' => 'users',
+                                    'identifier_field' => 'some_field',
                                     'route_name' => 'user_grid_route'
                                 )
                             )
@@ -169,7 +170,8 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                 'expectedDefinitions' => array(
                     'test.user_grid.manager' => array(
                         'methodCalls' => array(
-                            'setEntityHint' => array('users')
+                            'setEntityHint' => array('users'),
+                            'setIdentifierField' => array('some_field'),
                         )
                     ),
                     AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(

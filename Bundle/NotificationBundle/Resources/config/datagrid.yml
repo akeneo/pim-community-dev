@@ -11,3 +11,4 @@ services:
               entity_name: %oro_notification.emailnotification.entity.class%
               entity_hint: transactional email
               route_name: oro_notification_emailnotification_index
+              identifier_field: id

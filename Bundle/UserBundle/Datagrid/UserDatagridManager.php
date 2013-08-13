@@ -30,7 +30,6 @@ class UserDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $this->addFieldId($fieldsCollection);
         $this->addFieldUsername($fieldsCollection);
         $this->addFieldEmail($fieldsCollection);
         $this->addFieldFirstName($fieldsCollection);
@@ -108,29 +107,6 @@ class UserDatagridManager extends FlexibleDatagridManager
         );
 
         return array($clickAction, $viewAction, $updateAction, $deleteAction);
-    }
-
-    /**
-     * @param FieldDescriptionCollection $fieldsCollection
-     */
-    protected function addFieldId(FieldDescriptionCollection $fieldsCollection)
-    {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                 'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                 'label'       => 'ID',
-                 'field_name'  => 'id',
-                 'filter_type' => FilterInterface::TYPE_NUMBER,
-                 'required'    => false,
-                 'sortable'    => false,
-                 'filterable'  => false,
-                 'show_filter' => false,
-                 'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
     }
 
     /**

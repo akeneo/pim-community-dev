@@ -26,6 +26,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     const VALIDATOR_ATTRIBUTE          = 'validator';
     const ROUTER_ATTRIBUTE             = 'router';
     const ENTITY_HINT_ATTRIBUTE        = 'entity_hint';
+    const IDENTIFIER_FIELD             = 'identifier_field';
 
     /**
      * @var Definition
@@ -78,7 +79,8 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
         // add other attributes
         $attributeKeys = array(
             self::ENTITY_HINT_ATTRIBUTE,
-            self::TRANSLATION_DOMAIN_ATTRIBUTE
+            self::TRANSLATION_DOMAIN_ATTRIBUTE,
+            self::IDENTIFIER_FIELD
         );
 
         foreach ($attributeKeys as $key) {

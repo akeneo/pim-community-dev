@@ -31,6 +31,14 @@ interface DatagridManagerInterface
     public function setEntityHint($entityHint);
 
     /**
+     * Pass identifier field name from configuration
+     *
+     * @param string $identifier
+     * @return void
+     */
+    public function setIdentifierField($identifier);
+
+    /**
      * @param DatagridBuilderInterface $datagridBuilder
      * @return void
      */

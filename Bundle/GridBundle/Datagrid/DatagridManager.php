@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -13,6 +14,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Property\PropertyInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
@@ -79,9 +81,9 @@ abstract class DatagridManager implements DatagridManagerInterface
     private $fieldsCollection;
 
     /**
-     * @var MassActionInterface[]
+     * @var string|null
      */
-    private $massActions;
+    private $identifierField;
 
     /**
      * @var array
@@ -171,6 +173,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function setIdentifierField($identifierField)
+    {
+        $this->identifierField = $identifierField;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setParameters(ParametersInterface $parameters)
     {
         $this->parameters = $parameters;
@@ -184,8 +194,10 @@ abstract class DatagridManager implements DatagridManagerInterface
         // add datagrid fields
         $listCollection = $this->listBuilder->getBaseList();
 
+        $this->prepareIdentifierColumn();
+
         /** @var $fieldDescription FieldDescriptionInterface */
-        foreach ($this->getListFields() as $fieldDescription) {
+        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
             $listCollection->add($fieldDescription);
         }
 
@@ -241,6 +253,32 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setToolbarOptions($this->getToolBarOptions());
 
         return $datagrid;
+    }
+
+    /**
+     * Adds identifier column if it's configured in datagrid config
+     */
+    protected function prepareIdentifierColumn()
+    {
+        if ($this->identifierField) {
+            $fieldCollection = $this->getFieldDescriptionCollection();
+
+            $hasIdentifierField = $fieldCollection->has($this->identifierField);
+
+            if (!$hasIdentifierField) {
+                $fieldId = new FieldDescription();
+                $fieldId->setName($this->identifierField);
+                $fieldId->setOptions(
+                    array(
+                        'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                        'label'       => $this->translate($this->identifierField),
+                        'filter_type' => FilterInterface::TYPE_NUMBER,
+                        'show_column' => false
+                    )
+                );
+                $fieldCollection->add($fieldId);
+            }
+        }
     }
 
     /**
@@ -309,16 +347,6 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function getRouteGenerator()
     {
         return $this->routeGenerator;
-    }
-
-    /**
-     * Get list of datagrid fields
-     *
-     * @return FieldDescriptionInterface[]
-     */
-    protected function getListFields()
-    {
-        return $this->getFieldDescriptionCollection()->getElements();
     }
 
     /**
