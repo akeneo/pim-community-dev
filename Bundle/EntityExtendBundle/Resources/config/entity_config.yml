@@ -1,8 +1,19 @@
 oro_entity_config:
     extend:
         entity:
+            grid_action:
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_entity_remove'
+                    type:                   'delete'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom' }
+                    args:                   ['id']
             layout_action:
-                -                           {'name':'Create Entity', 'route':'oro_entityextend_entity_create'}
+                -
+                    name:                   'Create Entity'
+                    route:                  'oro_entityextend_entity_create'
             items:
                 owner:
                     options:
@@ -60,11 +71,30 @@ oro_entity_config:
 
         field:
             grid_action:
-                -                           {'name':'Remove', 'route':'oro_entityextend_field_remove', 'type':'delete', 'icon':'trash', 'acl_resource':'root', 'filter':'is_extend', 'args':['id']}
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_field_remove'
+                    type:                   'delete'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom' }
+                    args:                   ['id']
             layout_action:
-                -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
-                -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
-                -                           {'name':'Update schema', 'route':'oro_entityextend_update', 'entity_id':true, 'aClass':'btn-danger entity-extend-apply', 'void':true}
+                -
+                    name:                   'Manage unique keys'
+                    route:                  'oro_entityextend_entity_unique_key'
+                    entity_id:              true
+                -
+                    name:                   'Create field'
+                    route:                  'oro_entityextend_field_create'
+                    entity_id:              true
+                    filter:                 { is_extend: true }
+                -
+                    name:                   'Update schema'
+                    route:                  'oro_entityextend_update'
+                    entity_id:              true
+                    aClass:                 'btn-danger entity-extend-apply'
+                    void:                   true
             items:
                 owner:
                     options:

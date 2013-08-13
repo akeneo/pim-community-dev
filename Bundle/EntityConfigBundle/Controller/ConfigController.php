@@ -195,7 +195,7 @@ class ConfigController extends Controller
     {
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
-        /** @var  FieldsDatagridManager $datagridManager */
+        /** @var  EntityFieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
 

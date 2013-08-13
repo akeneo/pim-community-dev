@@ -2,8 +2,11 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
+use FOS\Rest\Util\Codes;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,9 +17,11 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 
 /**
@@ -192,5 +197,44 @@ class ConfigEntityGridController extends Controller
         return array(
             'form' => $form->createView(),
         );
+    }
+
+    /**
+     * @Route(
+     *      "/remove/{id}",
+     *      name="oro_entityextend_entity_remove",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entityextend_entity_remove",
+     *      name="Remove custom entity",
+     *      description="Remove custom entity",
+     *      parent="oro_entityextend"
+     * )
+     */
+    public function removeAction(EntityConfigModel $entity)
+    {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find EntityConfigModel entity.');
+        }
+
+        /** @var ExtendManager $extendManager */
+        $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $entityConfig = $extendManager->getConfigProvider()->getConfig($entity->getClassName());
+
+        if ($entityConfig->get('owner') == ExtendManager::OWNER_SYSTEM) {
+            return new Response('', Codes::HTTP_FORBIDDEN);
+        }
+
+        $this->getDoctrine()->getManager()->remove($entity);
+        $this->getDoctrine()->getManager()->flush();
+
+        $configManager->clearCacheAll();
+
+        return new Response('', Codes::HTTP_NO_CONTENT);
     }
 }

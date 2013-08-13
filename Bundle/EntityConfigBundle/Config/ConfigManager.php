@@ -303,6 +303,16 @@ class ConfigManager
     }
 
     /**
+     * Remove All cache
+     */
+    public function clearCacheAll()
+    {
+        if ($this->cache) {
+            $this->cache->deleteAll();
+        }
+    }
+
+    /**
      * @param ConfigInterface $config
      */
     public function persist(ConfigInterface $config)

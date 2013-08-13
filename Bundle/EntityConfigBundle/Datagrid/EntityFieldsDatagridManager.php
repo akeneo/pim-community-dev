@@ -58,10 +58,12 @@ class EntityFieldsDatagridManager extends DatagridManager
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
-                if (isset($config['filter'])
-                    && !$provider->getConfig($entity->getClassName())->is($config['filter'])
-                ) {
-                    continue;
+                if (isset($config['filter'])) {
+                    foreach ($config['filter'] as $key => $value) {
+                        if ($provider->getConfig($entity->getClassName())->get($key) != $value) {
+                            continue 2;
+                        }
+                    }
                 }
 
                 if (isset($config['entity_id']) && $config['entity_id'] == true) {
@@ -103,17 +105,21 @@ class EntityFieldsDatagridManager extends DatagridManager
         }
 
         if (count($filters)) {
-            $properties[] = new ActionConfigurationProperty(function (ResultRecord $record) use ($filters) {
+            $properties[] = new ActionConfigurationProperty (function (ResultRecord $record) use ($filters) {
                 $result = array();
-                foreach ($filters as $action => $valueKey) {
-                    if (!$record->getValue($valueKey)) {
-                        $result[$action] = false;
+                foreach ($filters as $action => $filter) {
+                    foreach ($filter as $key => $value) {
+                        if ($record->getValue($key) != $value) {
+                            $result[$action] = false;
+                            break;
+                        }
                     }
                 }
 
                 return $result;
             });
         }
+
 
         return $properties;
     }

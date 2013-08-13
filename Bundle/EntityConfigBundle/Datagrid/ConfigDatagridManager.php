@@ -5,15 +5,22 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
+
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\UrlProperty;
 
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
+
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
+
+use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class ConfigDatagridManager extends DatagridManager
@@ -59,6 +66,8 @@ class ConfigDatagridManager extends DatagridManager
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
         );
 
+        $filters = array();
+
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getGridActions() as $config) {
                 $properties[] = new UrlProperty(
@@ -67,7 +76,27 @@ class ConfigDatagridManager extends DatagridManager
                     $config['route'],
                     (isset($config['args']) ? $config['args'] : array())
                 );
+
+                if (isset($config['filter'])) {
+                    $filters[strtolower($config['name'])] = $config['filter'];
+                }
             }
+        }
+
+        if (count($filters)) {
+            $properties[] = new ActionConfigurationProperty (function (ResultRecord $record) use ($filters) {
+                $result = array();
+                foreach ($filters as $action => $filter) {
+                    foreach ($filter as $key => $value) {
+                        if ($record->getValue($key) != $value) {
+                            $result[$action] = false;
+                            break;
+                        }
+                    }
+                }
+
+                return $result;
+            });
         }
 
         return $properties;
@@ -87,7 +116,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $result = $query->getQuery()->getArrayResult();
 
-        foreach ((array) $result as $value) {
+        foreach ((array)$result as $value) {
             $className = explode('\\', $value['className']);
 
             $options['name'][$value['className']]   = '';

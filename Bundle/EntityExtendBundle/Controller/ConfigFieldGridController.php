@@ -196,11 +196,13 @@ class ConfigFieldGridController extends Controller
     public function removeAction(FieldConfigModel $field)
     {
         if (!$field) {
-            throw $this->createNotFoundException('Unable to find ConfigField entity.');
+            throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
 
         $fieldConfig = $extendManager->getConfigProvider()->getConfig(
             $field->getEntity()->getClassName(),
@@ -214,10 +216,7 @@ class ConfigFieldGridController extends Controller
         $this->getDoctrine()->getManager()->remove($field);
         $this->getDoctrine()->getManager()->flush($field);
 
-        $extendManager->getConfigProvider()->clearCache(
-            $field->getEntity()->getClassName(),
-            $field->getFieldName()
-        );
+        $configManager->clearCacheAll();
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }
