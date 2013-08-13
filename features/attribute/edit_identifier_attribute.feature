@@ -32,4 +32,5 @@ Feature: Edit an identifier attribute
       | en_US       | Sku2              |
       | Description | My 2nd identifier |
     And I press the "Save" button
+    And I visit the "Parameters" tab
     Then I should see "An identifier attribute already exists"
