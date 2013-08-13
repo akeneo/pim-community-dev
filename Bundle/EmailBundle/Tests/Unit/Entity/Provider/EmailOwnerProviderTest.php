@@ -16,7 +16,7 @@ class EmailOwnerProviderTest extends \PHPUnit_Framework_TestCase
         return $storage;
     }
 
-    public function testFindEmailOwner1()
+    public function testFindEmailOwnerFirstProvider()
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -31,12 +31,11 @@ class EmailOwnerProviderTest extends \PHPUnit_Framework_TestCase
         $provider2->expects($this->never())
             ->method('findEmailOwner');
 
-
-        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)), $em);
-        $this->assertEquals($result, $provider->findEmailOwner('test'));
+        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)));
+        $this->assertEquals($result, $provider->findEmailOwner($em, 'test'));
     }
 
-    public function testFindEmailOwner2()
+    public function testFindEmailOwnerSecondProvider()
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -53,12 +52,11 @@ class EmailOwnerProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($em), $this->equalTo('test'))
             ->will($this->returnValue($result));
 
-
-        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)), $em);
-        $this->assertEquals($result, $provider->findEmailOwner('test'));
+        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)));
+        $this->assertEquals($result, $provider->findEmailOwner($em, 'test'));
     }
 
-    public function testFindEmailOwner3()
+    public function testFindEmailOwnerNotFound()
     {
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -74,8 +72,7 @@ class EmailOwnerProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($em), $this->equalTo('test'))
             ->will($this->returnValue(null));
 
-
-        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)), $em);
-        $this->assertNull($provider->findEmailOwner('test'));
+        $provider = new EmailOwnerProvider($this->getEmailOwnerProviderStorageMock(array($provider1, $provider2)));
+        $this->assertNull($provider->findEmailOwner($em, 'test'));
     }
 }

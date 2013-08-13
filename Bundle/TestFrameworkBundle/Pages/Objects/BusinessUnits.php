@@ -48,7 +48,7 @@ class BusinessUnits extends PageFilteredGrid
     {
         $this->filterBy('Name', $unitname);
         $this->waitForAjax();
-        if ($this->byXpath("//td[@class='action-cell']//a[contains(., '...')]")->displayed()) {
+        if ($this->isElementPresent("//td[@class='action-cell']//a[contains(., '...')]")) {
             $this->byXPath("//td[@class='action-cell']//a[contains(., '...')]")->click();
             $this->waitForAjax();
             return $this->assertElementNotPresent("//td[@class='action-cell']//a[@title= '{$contextname}']");

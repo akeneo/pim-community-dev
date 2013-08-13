@@ -34,7 +34,7 @@ class UserController extends FlexibleSoapController
     /**
      * @Soap\Method("createUser")
      * @Soap\Param("user", phpType="Oro\Bundle\UserBundle\Entity\UserSoap")
-     * @Soap\Result(phpType="boolean")
+     * @Soap\Result(phpType="int")
      * @AclAncestor("oro_user_user_create")
      */
     public function createAction($user)

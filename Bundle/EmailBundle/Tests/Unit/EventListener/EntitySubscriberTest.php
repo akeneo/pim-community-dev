@@ -11,14 +11,14 @@ class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
     private $subscriber;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $emailAddressManager;
+    private $emailOwnerManager;
 
     protected function setUp()
     {
-        $this->emailAddressManager = $this->getMockBuilder('Oro\Bundle\EmailBundle\EventListener\EmailAddressManager')
+        $this->emailOwnerManager = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subscriber = new EntitySubscriber($this->emailAddressManager);
+        $this->subscriber = new EntitySubscriber($this->emailOwnerManager);
     }
 
     public function testGetSubscribedEvents()
@@ -37,7 +37,7 @@ class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->emailAddressManager->expects($this->once())
+        $this->emailOwnerManager->expects($this->once())
             ->method('handleOnFlush')
             ->with($this->identicalTo($eventArgs));
 

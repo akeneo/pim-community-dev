@@ -12,7 +12,7 @@ OroAddressBundle provides PHP/REST/SOAP API for address CRUD operations.
     $addressManager = $this->get('oro_address.address.provider')->getStorage();
 
     //create empty address entity
-    $address = $addressManager->createFlexible();
+    $address = $addressManager->createAddress();
 
     //process insert/update
     $this->get('oro_address.form.handler.address')->process($entity)

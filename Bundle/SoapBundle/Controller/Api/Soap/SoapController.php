@@ -27,7 +27,10 @@ abstract class SoapController extends SoapGetController implements
      */
     public function handleCreateRequest()
     {
-        return $this->processForm($this->getManager()->createEntity());
+        $entity = $this->getManager()->createEntity();
+        $this->processForm($entity);
+
+        return $this->getManager()->getEntityId($entity);
     }
 
     /**
@@ -96,22 +99,37 @@ abstract class SoapController extends SoapGetController implements
             return;
         }
 
-        $data = array();
-        foreach ((array)$entityData as $field => $value) {
-            // special case for ordered arrays
-            if ($value instanceof \stdClass && isset($value->item) && is_array($value->item)) {
-                $value = (array) $value->item;
-            }
-
-            if ($value instanceof Collection) {
-                $value = $value->toArray();
-            }
-
-            if (!is_null($value)) {
-                $data[preg_replace('/[^\w+]+/i', '', $field)] = $value;
-            }
-        }
+        $data = $this->convertValueToArray($entityData);
 
         $request->request->set($this->getForm()->getName(), $data);
+    }
+
+    protected function convertValueToArray($value)
+    {
+        // special case for ordered arrays
+        if ($value instanceof \stdClass && isset($value->item) && is_array($value->item)) {
+            $value = (array) $value->item;
+        }
+
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (is_object($value)) {
+            $value = (array)$value;
+        }
+
+        if (is_array($value)) {
+            $convertedValue = array();
+            foreach ($value as $key => $item) {
+                $itemValue = $this->convertValueToArray($item);
+                if (!is_null($itemValue)) {
+                    $convertedValue[preg_replace('/[^\w+]+/i', '', $key)] = $itemValue;
+                }
+            }
+            $value = $convertedValue;
+        }
+
+        return $value;
     }
 }

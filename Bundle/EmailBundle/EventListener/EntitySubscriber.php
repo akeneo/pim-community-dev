@@ -6,17 +6,18 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager;
 
 class EntitySubscriber implements EventSubscriber
 {
     /**
-     * @var EmailAddressManager
+     * @var EmailOwnerManager
      */
-    protected $emailAddressManager;
+    protected $emailOwnerManager;
 
-    public function __construct(EmailAddressManager $emailAddressManager)
+    public function __construct(EmailOwnerManager $emailOwnerManager)
     {
-        $this->emailAddressManager = $emailAddressManager;
+        $this->emailOwnerManager = $emailOwnerManager;
     }
 
     /**
@@ -34,6 +35,6 @@ class EntitySubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $event)
     {
-        $this->emailAddressManager->handleOnFlush($event);
+        $this->emailOwnerManager->handleOnFlush($event);
     }
 }

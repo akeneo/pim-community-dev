@@ -71,6 +71,9 @@ class ObjectMapper extends AbstractMapper
                     $field['relation_type'] = 'none';
                 }
                 $value = $this->getFieldValue($object, $field['name']);
+                if (null === $value) {
+                    continue;
+                }
                 switch ($field['relation_type']) {
                     case Indexer::RELATION_ONE_TO_ONE:
                     case Indexer::RELATION_MANY_TO_ONE:
@@ -81,7 +84,6 @@ class ObjectMapper extends AbstractMapper
                             $value,
                             $field['name']
                         );
-
                         break;
                     case Indexer::RELATION_MANY_TO_MANY:
                     case Indexer::RELATION_ONE_TO_MANY:
@@ -94,12 +96,9 @@ class ObjectMapper extends AbstractMapper
                                 $field['name']
                             );
                         }
-
                         break;
                     default:
-                        if ($value) {
-                            $objectData = $this->setDataValue($alias, $objectData, $field, $value);
-                        }
+                        $objectData = $this->setDataValue($alias, $objectData, $field, $value);
                 }
             }
 

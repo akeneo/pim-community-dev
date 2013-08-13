@@ -165,15 +165,11 @@
 #}
 {% macro attachments(attachments) -%}
     {% macro attachment_row_data(values) -%}
-        <ul class="inline">
-            {%- for val in values -%}
-            <li>
-                <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
-                    <span class="label label-info">{{ val.fileName }}</span>
-                </a>
-            </li>
-            {%- endfor -%}
-        </ul>
+        {%- for val in values -%}
+        <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
+            <span class="label label-info">{{ val.fileName }}</span>
+        </a>
+        {%- endfor -%}
     {%- endmacro -%}
     {{ _self.attachment_row_data(attachments)|raw }}
 {%- endmacro %}
