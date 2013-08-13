@@ -19,10 +19,11 @@ class EntityType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'data_class'   => 'Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel',
             'block_config' => array(
                 'class' => array(
                     'title'    => 'Doctrine Setting',
-                    'priority' => 1,
+                    'priority' => 20,
                 )
             )
         ));

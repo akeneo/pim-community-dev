@@ -48,16 +48,6 @@ class ConfigType extends AbstractType
             $fieldName  = null;
             $fieldType  = null;
             $configType = PropertyConfigContainer::TYPE_ENTITY;
-
-            $builder->add('className', 'text', array(
-                'read_only'   => $options['class_name_read_only'],
-                'block'       => 'entity',
-                'required'    => false,
-                'constraints' => array(
-                    new UniqueEntity(array('fields' => 'className'))
-                )
-            ));
-            $data['className'] = $className;
         }
 
         foreach ($this->configManager->getProviders() as $provider) {
@@ -83,7 +73,6 @@ class ConfigType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('class_name_read_only' => true));
         $resolver->setRequired(array('config_model'));
 
         $resolver->setAllowedTypes(

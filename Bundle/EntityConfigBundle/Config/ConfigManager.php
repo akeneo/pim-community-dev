@@ -142,10 +142,13 @@ class ConfigManager
 
     /**
      * @param ConfigProvider $provider
+     * @return $this
      */
     public function addProvider(ConfigProvider $provider)
     {
         $this->providers->set($provider->getScope(), $provider);
+
+        return $this;
     }
 
     /**
@@ -154,7 +157,7 @@ class ConfigManager
      */
     public function getProvider($scope)
     {
-        $this->providers->get($scope);
+        return $this->providers->get($scope);
     }
 
     /**
@@ -348,9 +351,9 @@ class ConfigManager
 
         $this->getEntityManager()->flush();
 
-        $this->persistConfigs =
-        $this->originalConfigs =
-        $this->configChangeSets = array();
+        $this->persistConfigs   = new ArrayCollection;
+        $this->originalConfigs  = new ArrayCollection;
+        $this->configChangeSets = new ArrayCollection;
     }
 
 
@@ -466,7 +469,7 @@ class ConfigManager
                 $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config        = $provider->createConfig($fieldId, $defaultValues);
 
-                $this->localCache->add($config->getConfigId()->getId(), $config);
+                $this->localCache->set($config->getConfigId()->getId(), $config);
             }
 
             $this->eventDispatcher->dispatch(

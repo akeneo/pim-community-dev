@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -140,23 +141,25 @@ class ConfigEntityGridController extends Controller
 
         $className = '';
         if ($request->getMethod() == 'POST') {
-            $className = $request->request->get('oro_entity_config_type[className]', null, true);
+            $className = $request->request->get('oro_entity_config_type[model][className]', null, true);
         }
 
-        $entityModel   = $configManager->createConfigEntityModel($className, true);
-        $extendConfig  = $configManager->getProvider('extend')->getConfig($className);
+        $entityModel  = $configManager->createConfigEntityModel($className, true);
+        $extendConfig = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('is_extend', true);
 
         $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model'         => $entityModel,
-            'class_name_read_only' => false
+            'config_model' => $entityModel,
+        ));
+
+        $cloneEntityModel = clone $entityModel;
+        $cloneEntityModel->setClassName('');
+        $form->add('model', new EntityType, array(
+            'data' => $cloneEntityModel,
         ));
 
         if ($request->getMethod() == 'POST') {
-
-
-
             $form->submit($request);
 
             if ($form->isValid()) {

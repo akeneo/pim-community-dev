@@ -83,7 +83,7 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function persistConfig(PersistConfigEvent $event)
     {
-        $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+        //$event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
         $scope     = $event->getConfig()->getConfigId()->getScope();
