@@ -230,7 +230,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'sortable'      => true,
                 'filterable'    => true,
                 'show_filter'   => true,
-                // entity filter options
                 'multiple'      => true,
                 'class'         => 'PimProductBundle:Family',
                 'property'      => 'label',
