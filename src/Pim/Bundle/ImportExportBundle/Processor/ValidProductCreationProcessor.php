@@ -29,6 +29,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $categoriesDelimiter = ',';
 
     private $attributes;
+    private $categories = array();
     private $categoriesColumnIndex;
 
     public function __construct(EntityManager $em, FormFactoryInterface $formFactory, ProductManager $productManager)
@@ -125,7 +126,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             return;
         }
 
-        $product = $this->createProduct($item);
+        $product = $this->createProduct();
         $form    = $this->createAndSubmitForm($product, $item);
 
         if (!$form->isValid()) {
@@ -171,7 +172,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @return Product
      */
-    private function createProduct(array $item)
+    private function createProduct()
     {
         $product = $this->productManager->createFlexible();
 
@@ -247,8 +248,12 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
     private function getCategory($code)
     {
-        return $this->em
-            ->getRepository('PimProductBundle:Category')
-            ->findOneBy(array('code' => $code));
+        if (!array_key_exists($code, $this->categories)) {
+            $this->categories[$code] = $this->em
+                ->getRepository('PimProductBundle:Category')
+                ->findOneBy(array('code' => $code));
+        }
+
+        return $this->categories[$code];
     }
 }
