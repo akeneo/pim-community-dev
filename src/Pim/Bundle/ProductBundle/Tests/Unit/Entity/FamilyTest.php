@@ -143,7 +143,6 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetAttributeAsLabel()
     {
-        $this->family    = new Family;
         $attribute = $this->getAttributeMock();
 
         $this->assertNull($this->family->getAttributeAsLabel());
@@ -154,9 +153,19 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
+    public function testAddAttribute()
+    {
+        $attribute = $this->getAttributeMock();
+
+        $this->assertEntity($this->family->addAttribute($attribute));
+        $this->assertEquals(array($attribute), $this->family->getAttributes()->toArray());
+    }
+
+    /**
+     * Test related method
+     */
     public function testGetAttributeAsLabelChoices()
     {
-        $this->family  = new Family;
         $name    = $this->getAttributeMock();
         $address = $this->getAttributeMock();
         $phone   = $this->getAttributeMock('phone');
@@ -166,13 +175,6 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->family->addAttribute($phone);
 
         $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
-    }
-
-    public function testAddAttribute()
-    {
-        $attribute = $this->getAttributeMock();
-        $this->family->addAttribute($attribute);
-        $this->assertEquals(array($attribute), $this->family->getAttributes()->toArray());
     }
 
     /**
