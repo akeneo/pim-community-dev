@@ -42,7 +42,7 @@ class MassActionController extends Controller
      *      name="Datagrid mass action",
      *      description="Datagrid mass action entry point",
      *      parent="oro_grid"
-     *
+     * )
      * @param string $gridName
      * @param string $actionName
      * @return Response
@@ -58,6 +58,8 @@ class MassActionController extends Controller
 
         $values = $this->getRequest()->get('values', '');
         $values = $values !== '' ? explode(',', $values) : array();
+
+        $filters = $this->getRequest()->get('filters', array());
 
         // if there is nothing to do
         if ($inset && empty($values)) {
