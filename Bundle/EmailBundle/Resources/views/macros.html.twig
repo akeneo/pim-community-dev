@@ -69,7 +69,7 @@
 
                     var confirmModal = new Oro.BootstrapModal({
                         title: _.__('Preview'),
-                        content: '',
+                        content: '<div class="loading-content">Loading...</div>',
                         okText: _.__('Ok'),
                         className: 'modal oro-modal-normal',
                         template: _.template('\
@@ -84,11 +84,9 @@
             <div class="modal-body"><%= content %></div>\
         ')
                     });
-                    confirmModal.on('ok', _.bind(function () {
-
-                    }, this));
                     confirmModal.open();
                     confirmModal.$content.append(iframe)
+                    $('.loading-content').show();
 
                     form.attr('target', iframeId);
                     form.attr('action', $(el).attr('href'));
@@ -103,6 +101,8 @@
                     form.attr('action', formAction);
                     form.removeAttr('target');
                     form.data('preview', false);
+
+                    $('.loading-content').hide();
                 });
 
                 form.submit();
