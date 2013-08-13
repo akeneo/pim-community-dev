@@ -96,14 +96,19 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      */
     _getActionParams: function() {
         var selectionState = this.datagrid.getSelectionState();
+        var collection = this.datagrid.collection;
         var idValues = _.map(selectionState.selectedModels, function(model) {
             return model.get(this.identifierFieldName)
         }, this);
 
-        return {
+        var params = {
             inset: selectionState.inset ? 1 : 0,
             values: idValues.join(',')
         }
+
+        params = collection.processFiltersParams(params, null, 'filters');
+
+        return params;
     },
 
     /**
