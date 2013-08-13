@@ -21,6 +21,9 @@ use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
  */
 class ProductManager extends FlexibleManager
 {
+    /**
+     * @var \Pim\Bundle\ProductBundle\Manager\MediaManager
+     */
     protected $mediaManager;
 
     /**

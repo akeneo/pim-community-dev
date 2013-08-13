@@ -25,15 +25,15 @@ var jsfv = new function () {
         return (typeof(value) == 'undefined' || null === value || '' === value);
     }
 
-    function showErrorsOnTabs() {
-        $tabs = $('div.tab-groups ul');
-        if (!$tabs.length) {
+    function showErrorsOnGroups() {
+        $groups = $('div.tab-groups ul');
+        if (!$groups.length) {
             return;
         }
 
         var $error = $('<i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ 'There are errors in this tab!'|trans }}"></i>');
 
-        $tabs.find('a').each(
+        $groups.find('a').each(
             function() {
                 var target = $(this).attr('href');
                 if (!target || target == '#' || target == 'javascript:void(0);') {
@@ -46,6 +46,28 @@ var jsfv = new function () {
                     }
                 } else {
                     $(this).find('.validation-tooltip').remove();
+                }
+            }
+        )
+    }
+
+    function highlightTabsWithErrors() {
+        $tabs = $('#form-navbar ul.nav');
+        if (!$tabs.length) {
+            return;
+        }
+
+        $tabs.find('a').each(
+            function() {
+                var target = $(this).attr('href');
+                if (!target || target == '#' || target == 'javascript:void(0);') {
+                    return;
+                }
+
+                if ($(target).find('.validation-error').length) {
+                    $(this).addClass('error');
+                } else {
+                    $(this).removeClass('error');
                 }
             }
         )
@@ -128,12 +150,14 @@ var jsfv = new function () {
         if (errorMessage != true) {
 {% block addError %}
             jsfv.addError(field, errorMessage);
-            showErrorsOnTabs();
+            highlightTabsWithErrors();
+            showErrorsOnGroups();
 {% endblock %}
 
             return false;
         }
-        showErrorsOnTabs();
+        highlightTabsWithErrors();
+        showErrorsOnGroups();
 
         return true;
     }
@@ -234,6 +258,7 @@ var jsfv = new function () {
 
                 // Remove HTML5 validation
                 $(form).attr('novalidate', 'novalidate');
+                highlightTabsWithErrors();
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {
                     var gv, submitForm = true;

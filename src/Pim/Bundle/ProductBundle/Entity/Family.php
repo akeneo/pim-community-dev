@@ -12,7 +12,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
- * Product family
+ * Family entity
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -50,7 +50,7 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $code;
 
     /**
-     * @var ArrayCollection $attributes
+     * @var \Doctrine\Common\Collections\ArrayCollection $attributes
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute", cascade={"persist"})
      * @ORM\JoinTable(
@@ -70,7 +70,7 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
+     * @var \Doctrine\Common\Collections\ArrayCollection $translations
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Entity\FamilyTranslation",
@@ -88,6 +88,8 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $attributeAsLabel;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection $attributeRequirements
+     *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeRequirement",
      *     mappedBy="family",
@@ -107,13 +109,13 @@ class Family implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Returns the label of the product family
+     * Returns the label of the family
      *
      * @return string
      */
     public function __toString()
     {
-        return ($this->getLabel() != '') ? $this->getLabel() : $this->code;
+        return $this->getLabel();
     }
 
     /**
@@ -151,7 +153,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param string $code
      *
-     * @return ProductAttribute
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
     public function setCode($code)
     {
@@ -165,7 +167,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return Family
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      *
      * @throw InvalidArgumentException
      */
@@ -183,10 +185,14 @@ class Family implements TranslatableInterface, VersionableInterface
      * Remove attribute
      *
      * @param ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
         $this->attributes->removeElement($attribute);
+
+        return $this;
     }
 
     /**
@@ -228,10 +234,14 @@ class Family implements TranslatableInterface, VersionableInterface
 
     /**
      * @param ProductAttribute $attributeAsLabel
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
     public function setAttributeAsLabel($attributeAsLabel)
     {
         $this->attributeAsLabel = $attributeAsLabel;
+
+        return $this;
     }
 
     /**
@@ -339,9 +349,9 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function getLabel()
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**

@@ -399,7 +399,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function __toString()
     {
-        return ($this->getLabel() != '') ? (string) $this->getLabel() : $this->getCode();
+        return $this->getLabel();
     }
 
     /**
@@ -1139,7 +1139,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated != '') ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**

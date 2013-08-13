@@ -76,12 +76,48 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetSetLabel()
     {
         // Change value and assert new
-        $this->attribute->setCode('code');
-        $this->assertEquals('[code]', $this->attribute->getLabel());
+        $newCode = 'code';
+        $expectedCode = '['. $newCode .']';
+        $this->attribute->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->attribute->getLabel());
+
         $newName = 'test-label';
-        $this->attribute->setLocale('en_US');
+        $this->assertEntity($this->attribute->setLocale('en_US'));
         $this->assertEntity($this->attribute->setLabel($newName));
         $this->assertEquals($newName, $this->attribute->getLabel());
+
+        // if no translation, assert the expected code is returned
+        $this->attribute->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->attribute->getLabel());
+
+        // if empty translation, assert the expected code is returned
+        $this->attribute->setLabel('');
+        $this->assertEquals($expectedCode, $this->attribute->getLabel());
+    }
+
+    /**
+     * Test for __toString method
+     */
+    public function testToString()
+    {
+        // Change value and assert new
+        $newCode = 'code';
+        $expectedCode = '['. $newCode .']';
+        $this->attribute->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->attribute->__toString());
+
+        $newName = 'test-label';
+        $this->assertEntity($this->attribute->setLocale('en_US'));
+        $this->assertEntity($this->attribute->setLabel($newName));
+        $this->assertEquals($newName, $this->attribute->__toString());
+
+        // if no translation, assert the expected code is returned
+        $this->attribute->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->attribute->__toString());
+
+        // if empty translation, assert the expected code is returned
+        $this->attribute->setLabel('');
+        $this->assertEquals($expectedCode, $this->attribute->__toString());
     }
 
     /**
@@ -151,17 +187,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($this->attribute->setGroup($attributeGroup));
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getGroup());
         $this->assertEquals($attributeGroup, $this->attribute->getGroup());
-    }
-
-    /**
-     * Test for __toString method
-     */
-    public function testToString()
-    {
-        $string = 'test-string';
-        $this->attribute->setLocale('en_US');
-        $this->attribute->setLabel($string);
-        $this->assertEquals($string, $this->attribute->__toString());
     }
 
     /**

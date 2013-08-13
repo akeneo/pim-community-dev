@@ -129,7 +129,7 @@ function init() {
         if (activeGroup) {
             sessionStorage.activeGroup = activeGroup;
         }
-    };
+    }
 
     function restoreFormState() {
         if (sessionStorage.activeTab) {
@@ -147,13 +147,22 @@ function init() {
             }
             sessionStorage.removeItem('activeGroup');
         }
-    };
+    }
 
     if (typeof(Storage) !== 'undefined') {
         restoreFormState();
 
         $('form.form-horizontal').on('submit', saveFormState);
         $('#locale-switcher a').on('click', saveFormState);
+    }
+
+    // Initialize slimbox
+    if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
+        $("a[rel^='lightbox']").slimbox({
+            overlayOpacity: 0.3,
+        }, null, function(el) {
+            return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
+        });
     }
 }
 

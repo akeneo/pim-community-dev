@@ -21,7 +21,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class AttributeGroup implements TimestampableInterface, TranslatableInterface
 {
     /**
-     * @var string
+     * @staticvar string
      */
     const DEFAULT_GROUP_CODE = 'Other';
 
@@ -102,11 +102,12 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
 
     /**
      * Returns the name of the attribute group
+     *
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     /**
@@ -364,9 +365,9 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
             return self::DEFAULT_GROUP_CODE;
         }
 
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getName() : null;
+        $translated = $this->getTranslation() ? $this->getTranslation()->getName() : null;
 
-        return ($translated != '') ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
 
     /**
