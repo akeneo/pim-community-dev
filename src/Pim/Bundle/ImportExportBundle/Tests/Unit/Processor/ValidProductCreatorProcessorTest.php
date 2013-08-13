@@ -82,8 +82,11 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
                         'sku' => array(
                             'varchar' => 'foo-1',
                         ),
-                        'name' => array(
-                            'varchar' => 'foo',
+                        'name_en_US' => array(
+                            'varchar' => 'car',
+                        ),
+                        'name_fr_FR' => array(
+                            'varchar' => 'voiture',
                         ),
                         'description' => array(
                             'longtext' => 'A foo product'
@@ -93,10 +96,17 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->assertNull($this->processor->process(array('sku', 'name', 'description', 'categories')));
         $this->assertEquals(
             $product,
-            $this->processor->process(array('foo-1', 'foo', 'A foo product', 'cat_1,cat_2,cat_3'))
+            $this->processor->process(
+                array(
+                    'sku'         => 'foo-1',
+                    'name-en_US'  => 'car',
+                    'name-fr_FR'  => 'voiture',
+                    'description' => 'A foo product',
+                    'categories'  => 'cat_1,cat_2,cat_3'
+                )
+            )
         );
     }
 
@@ -150,8 +160,15 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
             ->with('pim_product', $product, array('csrf_protection' => false, 'withCategories' => true))
             ->will($this->returnValue($form));
 
-        $this->processor->process(array('sku', 'name', 'description', 'categories'));
-        $this->processor->process(array('foo-1', 'foo', 'A foo product', 'cat_1,cat_2,cat_3'));
+        $this->processor->process(
+            array(
+                'sku'         => 'foo-1',
+                'name-en_US'  => 'car',
+                'name-fr_FR'  => 'voiture',
+                'description' => 'A foo product',
+                'categories'  => 'cat_1,cat_2,cat_3'
+            )
+        );
     }
 
     protected function getFormFactoryMock()

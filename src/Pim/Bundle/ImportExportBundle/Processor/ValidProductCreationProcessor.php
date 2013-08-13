@@ -28,9 +28,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $categoriesColumn    = 'categories';
     protected $categoriesDelimiter = ',';
 
-    private $attributes;
     private $categories = array();
-    private $categoriesColumnIndex;
+    private $attributes = array();
 
     public function __construct(EntityManager $em, FormFactoryInterface $formFactory, ProductManager $productManager)
     {
@@ -100,16 +99,31 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Goal is to create an array structured like this:
+     * Goal is to transform an array like this:
+     * array(
+     *     'sku'        => 'sku-001',
+     *     'name-en_US' => 'car',
+     *     'name-fr_FR' => 'voiture,
+     *     'categories' => 'cat_1,cat_2,cat3',
+     * )
+     *
+     * into this:
      * array(
      *    'enabled' => '1',
      *    'values'  => array(
      *        'sku' => array(
-     *            'varchar' => 'sku-001',
-     *         )
+     *             'varchar' => 'sku-001',
+     *         ),
+     *         'name_en_US' => array(
+     *             'varchar' => 'car'
+     *         ),
+     *         'name_fr_FR' => array(
+     *             'varchar' => 'voiture'
+     *         ),
      *     ),
      *     'categories' => array(1, 2, 3)
      * )
+     *
      * and to bind it to the ProductType.
      *
      * @param mixed $item item to be processed
@@ -120,14 +134,12 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($item)
     {
-        if (!$this->attributes) {
-            $this->initializeAttributes($item);
-
-            return;
+        foreach ($item as $code => $value) {
+            $attributes[$code] = $this->getAttribute($code);
         }
 
-        $product = $this->createProduct();
-        $form    = $this->createAndSubmitForm($product, $item);
+        $product = $this->createProduct($attributes);
+        $form    = $this->createAndSubmitForm($product, $attributes, $item);
 
         if (!$form->isValid()) {
             throw new InvalidObjectException($form);
@@ -151,32 +163,17 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Initialize the attributes using the first processed item
-     *
-     * @param array $item the processed item
-     */
-    private function initializeAttributes(array $item)
-    {
-        foreach ($item as $index => $code) {
-            if ($this->categoriesColumn === $code) {
-                $this->categoriesColumnIndex = $index;
-            }
-            $this->attributes[] = $this->getAttribute($code);
-        }
-    }
-
-    /**
      * Create a product using the initialized attributes
      *
      * @param array $item
      *
      * @return Product
      */
-    private function createProduct()
+    private function createProduct(array $attributes)
     {
         $product = $this->productManager->createFlexible();
 
-        foreach ($this->attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             if (!$attribute) {
                 // We ignore attribute that doesn't exist in the PIM
                 continue;
@@ -195,14 +192,16 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @return FormInterface
      */
-    private function createAndSubmitForm(Product $product, array $item)
+    private function createAndSubmitForm(Product $product, array $attributes, array $item)
     {
         $values = array();
         $categories = array();
-        foreach ($item as $index => $value) {
-            if ($attribute = $this->attributes[$index]) {
-                $values[$attribute->getCode()][$attribute->getBackendType()] = $value;
-            } elseif ($index === $this->categoriesColumnIndex) {
+        foreach ($item as $code => $value) {
+            if (isset($attributes[$code])) {
+                $attribute = $attributes[$code];
+                $key = str_replace('-', '_', $code);
+                $values[$key][$attribute->getBackendType()] = $value;
+            } elseif ($code === $this->categoriesColumn) {
                 $categories = $this->getCategoryIds($value);
             }
         }
@@ -241,9 +240,15 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
     private function getAttribute($code)
     {
-        return $this->em
-            ->getRepository('PimProductBundle:ProductAttribute')
-            ->findOneBy(array('code' => $code));
+        $parts = explode('-', $code);
+
+        if (!array_key_exists($parts[0], $this->attributes)) {
+            $this->attributes[$parts[0]] = $this->em
+                ->getRepository('PimProductBundle:ProductAttribute')
+                ->findOneBy(array('code' => $parts[0]));
+        }
+
+        return $this->attributes[$parts[0]];
     }
 
     private function getCategory($code)
