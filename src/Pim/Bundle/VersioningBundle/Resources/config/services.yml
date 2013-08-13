@@ -1,6 +1,6 @@
 services:
 
-    pim_versioning.event_listener.audit:
+    pim_versioning.event_listener.addversion:
         class: %pim_versioning.event_listener.addversion.class%
         tags:
             - { name: doctrine.event_subscriber }

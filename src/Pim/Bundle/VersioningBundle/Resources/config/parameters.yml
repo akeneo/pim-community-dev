@@ -1,2 +1,3 @@
 parameters:
-    pim_versioning.event_listener.addversion.class: Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
+    pim_versioning.event_listener.addversion.class:   Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
+    pim_versioning.event_listener.addauditdata.class: Pim\Bundle\VersioningBundle\EventListener\AddAuditDataListener

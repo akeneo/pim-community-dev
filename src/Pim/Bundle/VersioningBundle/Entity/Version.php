@@ -60,4 +60,36 @@ class Version
         $this->version       = $resource->getVersion();
         $this->snapshotDate  = new \DateTime("now");
     }
+
+    /**
+     * @return integer
+     */
+    public function getResourceId()
+    {
+        return $this->resourceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVersionedData()
+    {
+        return $this->versionedData;
+    }
 }

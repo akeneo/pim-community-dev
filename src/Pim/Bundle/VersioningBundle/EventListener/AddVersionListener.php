@@ -2,19 +2,18 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\VersioningBundle\Model\Versionable;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -53,6 +52,8 @@ class AddVersionListener implements EventSubscriber
             if ($entity instanceof Versionable) {
                 $this->writeSnapshot($em, $entity);
             }
+
+            // TODO add same coverage than update
         }
 
         foreach ($uow->getScheduledEntityUpdates() AS $entity) {
@@ -89,6 +90,28 @@ class AddVersionListener implements EventSubscriber
             $version = new Version($entity);
             $this->computeChangeSet($em, $version);
             $this->pendingVersions[$oid]= $version;
+
+
+            /** @var User $user */
+            $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => 'admin')); // TODO : to fix !
+
+            $logEntry = new Audit();
+
+            $logEntry->setAction('update');
+            $logEntry->setObjectClass($version->getResourceName());
+            $logEntry->setLoggedAt();
+            $logEntry->setUser($user);
+
+            $logEntry->setObjectName('TODO : useless name ?');
+            $logEntry->setObjectId($version->getResourceId());
+
+            // $version->getVersionedData() TODO
+            $logEntry->setData(array('puet' => array('old' => 'machin', 'new' => 'truc')));
+            $logEntry->setVersion($version->getVersion());
+
+
+            $this->computeChangeSet($em, $logEntry);
+
         }
     }
 
