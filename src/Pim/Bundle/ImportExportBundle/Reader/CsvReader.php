@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\ProductBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Csv reader
@@ -17,7 +18,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @Assert\File(groups={"Execution"})
+     * @PimAssert\File(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
     protected $delimiter = ';';

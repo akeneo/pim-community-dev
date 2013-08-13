@@ -23,11 +23,11 @@ class FileValidator extends BaseFileValidator
         parent::validate($value, $constraint);
 
         if ($constraint->allowedExtensions) {
-            $file = !$value instanceof FileObject ? new FileObject($value) : $value;
+            $file = !$value instanceof \SplFileInfo ? new \SplFileInfo($value) : $value;
             if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->allowedExtensionsMessage,
-                    array('{{ extensions }}' => $constraint->allowedExtensions)
+                    array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))
                 );
             }
         }
