@@ -2,11 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\FixedProperty;
-
-use Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository;
-
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
