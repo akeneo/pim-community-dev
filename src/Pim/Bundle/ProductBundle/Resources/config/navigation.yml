@@ -23,7 +23,7 @@ oro_menu_config:
             route: 'pim_product_attributegroup_index'
         pim_enrich_categorytree:
             label: 'Categories'
-            route: 'pim_product_categorytree_index'
+            route: 'pim_product_categorytree_create'
 
     tree:
         application_menu:
@@ -45,10 +45,7 @@ oro_titles:
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit
     pim_product_attributegroup_sort:         Attribute groups | Sort
-    pim_product_categorytree_index:          Category trees
     pim_product_categorytree_listtree:       Category trees | List
-    pim_product_categorytree_manage:         Category trees | Manage
-    pim_product_categorytree_edit:           Category trees | View
     pim_product_categorytree_create:         Category trees | Create
     pim_product_categorytree_edit:           Category trees | Edit
     pim_product_productattribute_index:      Product attributes

@@ -111,6 +111,56 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter/setter for title property
+     */
+    public function testGetSetTitle()
+    {
+        // Change value and assert new
+        $newCode = 'code';
+        $expectedCode = '['. $newCode .']';
+        $this->category->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+
+        $newTitle = 'test-title';
+        $this->assertEntity($this->category->setLocale('en_US'));
+        $this->assertEntity($this->category->setTitle($newTitle));
+        $this->assertEquals($newTitle, $this->category->getTitle());
+
+        // if no translation, assert the expected code is returned
+        $this->category->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+
+        // if empty translation, assert the expected code is returned
+        $this->category->setTitle('');
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+    }
+
+    /**
+     * Test for __toString method
+     */
+    public function testToString()
+    {
+        // Change value and assert new
+        $newCode = 'code';
+        $expectedCode = '['. $newCode .']';
+        $this->category->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+
+        $newTitle = 'test-label';
+        $this->assertEntity($this->category->setLocale('en_US'));
+        $this->assertEntity($this->category->setTitle($newTitle));
+        $this->assertEquals($newTitle, $this->category->getTitle());
+
+        // if no translation, assert the expected code is returned
+        $this->category->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+
+        // if empty translation, assert the expected code is returned
+        $this->category->setTitle('');
+        $this->assertEquals($expectedCode, $this->category->getTitle());
+    }
+
+    /**
      * Test is/setter for dynamic property
      */
     public function testDynamic()

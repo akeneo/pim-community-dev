@@ -31,20 +31,13 @@ class TranslatableFieldType extends AbstractType
     protected $localeManager;
 
     /**
-     * @var string
-     */
-    protected $defaultLocale;
-
-    /**
      * @param ValidatorInterface $validator
      * @param LocaleManager      $localeManager
-     * @param string             $defaultLocale
      */
-    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
+    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager)
     {
         $this->validator     = $validator;
         $this->localeManager = $localeManager;
-        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -83,11 +76,9 @@ class TranslatableFieldType extends AbstractType
      * - translation_class    : FQCN of the translation class
      * - entity_class         : FQCN of the based entity class
      * - locales              : Locales you wish to edit
-     * - default_locale       : Name of the locale for the default translation
      * - required_locale      : Fields are required or not
      * - field                : Field name
      * - widget               : Widget used by translations fields
-     * - only_default         : Render only default translation
      */
     public function getDefaultOptions(array $options = array())
     {
@@ -95,10 +86,8 @@ class TranslatableFieldType extends AbstractType
         $options['entity_class']      = false;
         $options['field']             = false;
         $options['locales']           = $this->getActiveLocales();
-        $options['default_locale']    = $this->defaultLocale;
-        $options['required_locale']   = array($this->defaultLocale);
+        $options['required_locale']   = array();
         $options['widget']            = 'text';
-        $options['only_default']      = false;
 
         return $options;
     }
@@ -116,10 +105,8 @@ class TranslatableFieldType extends AbstractType
                 'entity_class' => false,
                 'field' => false,
                 'locales' => $this->getActiveLocales(),
-                'default_locale' => $this->defaultLocale,
-                'required_locale' => array($this->defaultLocale),
-                'widget' => 'text',
-                'only_default' => false
+                'required_locale' => array(),
+                'widget' => 'text'
             )
         );
     }
@@ -132,7 +119,6 @@ class TranslatableFieldType extends AbstractType
     protected function getActiveLocales()
     {
         $locales = $this->localeManager->getActiveCodes();
-        array_unshift($locales, $this->defaultLocale);
 
         return $locales;
     }

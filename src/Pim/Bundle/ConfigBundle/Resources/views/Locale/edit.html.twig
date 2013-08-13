@@ -3,13 +3,11 @@
 {% block content %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_config_locale_edit', { id: form.vars.value.id }) :
-        path('pim_config_locale_create') }}" method="POST">
+    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_config_locale_edit', { id: form.vars.value.id }) }}" method="POST">
 
         {% set title = 'Locale'|trans %}
 
-        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New locale'|trans %}
+        {% set subtitle = localizedLabel(form.vars.value.code) %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_config_locale_index')) }}
@@ -25,17 +23,9 @@
 
             {{ form_row(form.code) }}
 
-            {{ form_row(form.fallback) }}
-
             {{ form_row(form.defaultCurrency) }}
 
             {{ form_row(form._token) }}
         </div>
     </form>
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    {% include 'PimUIBundle:Default:_back-url.html.twig' %}
 {% endblock %}

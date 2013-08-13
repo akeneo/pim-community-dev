@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
@@ -229,6 +231,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should see activated locales? (.*)$/
      */
     public function iShouldSeeActivatedLocales($locales)
@@ -243,6 +247,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should see deactivated locales? (.*)$/
      */
     public function iShouldSeeDeactivatedLocales($locales)
@@ -257,6 +263,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
      * @When /^I should not see locales? (.*)$/
      */
     public function iShouldNotSeeLocales($locales)
@@ -362,6 +370,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSave()
     {
         $this->getCurrentPage()->save();
+        $this->wait();
     }
 
     /**
@@ -373,6 +382,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iChangeTheAttributePositionTo($attribute, $position)
     {
         $this->getCurrentPage()->dragAttributeToPosition($attribute, $position)->save();
+        $this->wait();
     }
 
     /**
@@ -432,8 +442,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getGroup($group) ?: 'Other';
-
+        $group = $this->getGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -546,7 +555,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $value = $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field));
 
-        return $this->getSession()->getPage()->fillField($field, $value);
+        return $this->getCurrentPage()->fillField($field, $value);
     }
 
     /**
@@ -827,7 +836,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Default value'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
         }
     }
 
@@ -1090,6 +1099,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewExport($exportTitle)
     {
         $this->getPage('Export index')->clickExportCreationLink($exportTitle);
+        $this->wait();
         $this->currentPage = 'Export creation';
     }
 
@@ -1109,6 +1119,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateANewImport($importTitle)
     {
         $this->getPage('Import index')->clickImportCreationLink($importTitle);
+        $this->wait();
         $this->currentPage = 'Import creation';
     }
 
@@ -1286,12 +1297,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $path
+     *
      * @Then /^I should see the "([^"]*)" content$/
      */
     public function iShouldSeeTheContent($path)
     {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
+        if ($filesPath = $this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($filesPath), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$path;
             if (is_file($fullPath)) {
                 $path = $fullPath;
             }
@@ -1301,6 +1314,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $not
+     * @param string $channels
+     *
      * @Then /^attribute "([^"]*)" should( not)? be required in channels? (.*)$/
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
@@ -1322,6 +1339,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $channel
+     *
      * @Given /^I switch the attribute "([^"]*)" requirement in channel "([^"]*)"$/
      */
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
@@ -1377,10 +1397,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         switch (strtolower($field)) {
             case 'family edit.code':
                 return 'inv@lid';
-            case 'attribute creation.name':
+            case 'attribute creation.code':
                 return $this->lorem(20);
             case 'attribute creation.description':
                 return $this->lorem(256);
+            default:
+                return '!@#-?_'.$this->lorem(250);
         }
     }
 

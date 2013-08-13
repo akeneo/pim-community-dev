@@ -18,4 +18,4 @@ Feature: Browse locales
     And the grid should contain the elements "de_DE", "en_US" and "fr_FR"
     And I should see activated locales en_US and fr_FR
     And I should see deactivated locales de_DE
-    And I should see the filters "Code", "Fallback" and "Activated"
+    And I should see the filters "Code" and "Activated"

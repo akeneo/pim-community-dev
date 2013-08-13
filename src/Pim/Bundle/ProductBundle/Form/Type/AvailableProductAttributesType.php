@@ -26,8 +26,8 @@ class AvailableProductAttributesType extends AbstractType
             'entity',
             array(
                 'class' => 'PimProductBundle:ProductAttribute',
-                'query_builder' => function (EntityRepository $er) use ($options) {
-                    return $er->getFindAllExceptQB($options['attributes']);
+                'query_builder' => function (EntityRepository $repository) use ($options) {
+                    return $repository->getFindAllExceptQB($options['attributes']);
                 },
                 'multiple' => true,
                 'expanded' => false,

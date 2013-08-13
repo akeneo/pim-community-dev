@@ -4,6 +4,5 @@ services:
         arguments:
             - @validator
             - @pim_config.manager.locale
-            - %default_locale%
         tags:
             - { name: form.type, alias: pim_translatable_field }

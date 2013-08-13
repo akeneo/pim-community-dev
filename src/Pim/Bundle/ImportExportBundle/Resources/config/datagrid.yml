@@ -1,7 +1,7 @@
 parameters:
     pim_import_export.entity.job.class:              Pim\Bundle\BatchBundle\Entity\Job
     pim_import_export.entity.job_execution.class:    Pim\Bundle\BatchBundle\Entity\JobExecution
-    
+
     pim_import_export.datagrid.manager.job.class:    Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
     pim_import_export.datagrid.manager.report.class: Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
 

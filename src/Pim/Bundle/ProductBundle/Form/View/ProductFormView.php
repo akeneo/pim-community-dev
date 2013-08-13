@@ -157,12 +157,12 @@ class ProductFormView
     {
         uasort(
             $attributes,
-            function ($a, $b) {
-                if ($a['sortOrder'] === $b['sortOrder']) {
+            function ($first, $second) {
+                if ($first['sortOrder'] === $second['sortOrder']) {
                     return 0;
                 }
 
-                return $a['sortOrder'] > $b['sortOrder'] ? 1 : -1;
+                return $first['sortOrder'] > $second['sortOrder'] ? 1 : -1;
             }
         );
 

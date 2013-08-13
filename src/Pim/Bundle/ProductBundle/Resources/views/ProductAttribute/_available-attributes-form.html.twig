@@ -1,24 +1,4 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hide" method="POST" action="{{ action }}">
+<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hide" data-form="popin" data-title="{{ 'Add attributes'|trans }}" data-empty-text="{{ 'There are no more attributes to add'|trans }}" data-placeholder="{{ 'Search'|trans }}" data-target="#attribute-buttons" data-save-button="{{ 'Add'|trans }}" method="POST" action="{{ action }}">
     {{ form_widget(form.attributes) }}
     {{ form_widget(form._token) }}
 </form>
-<script>
-$(function() {
-    $('#{{ form.attributes.vars.id }}').select2('destroy');
-
-    $('#{{ form.attributes.vars.id }}').pimMultiselect({
-        title: "{{ 'Add attributes'|trans }}",
-        placeholder: "{{ 'Search'|trans }}",
-        emptyText: "{{ 'There are no more attributes to add'|trans }}",
-        appendTo: '#attribute-buttons',
-        buttons: {
-            "{{ 'Add'|trans }}": function() {
-                $('#{{ form.attributes.vars.id }}').multiselect('close');
-                if ($('#{{ form.attributes.vars.id }}').val() !== null) {
-                    $('#{{ form.vars.id }}').submit();
-                }
-            }
-        }
-    });
-})
-</script>

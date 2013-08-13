@@ -25,8 +25,8 @@ class OptionMultiSelectType extends AbstractAttributeType
         $attribute = $value->getAttribute();
         $options['empty_value']   = false;
         $options['class']         = 'PimProductBundle:AttributeOption';
-        $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
-            return $er->findAllForAttribute($attribute);
+        $options['query_builder'] = function (EntityRepository $repository) use ($attribute) {
+            return $repository->findAllForAttribute($attribute);
         };
         $options['expanded'] = false;
         $options['multiple'] = true;

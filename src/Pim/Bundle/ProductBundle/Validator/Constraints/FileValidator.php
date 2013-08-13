@@ -30,7 +30,7 @@ class FileValidator extends BaseFileValidator
             $file = !$value instanceof \SplFileInfo ? new \SplFileInfo($value) : $value;
             if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
-                    $constraint->allowedExtensionsMessage,
+                    $constraint->extensionsMessage,
                     array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))
                 );
             }

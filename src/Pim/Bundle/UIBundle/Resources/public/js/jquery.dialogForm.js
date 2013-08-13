@@ -3,18 +3,16 @@
  */
 
 (function($){
-    "use strict";
+    'use strict';
 
-    $.fn.dialogForm = function(options) {
+    $.fn.dialogForm = function() {
+        var $el = $(this);
         var $dialog;
-        var options = options || {};
-        if (!options.trigger) {
-            throw new Error('Please specify the trigger');
-        }
-        if (!options.url) {
+        var url = $el.attr('data-form-url');
+        if (!url) {
             throw new Error('Please specify the url');
         }
-        options.width = options.width || 400;
+        var width = $el.attr('data-form-width') || 400;
 
         function destroyDialog() {
             if ($dialog && $dialog.length) {
@@ -38,7 +36,7 @@
                     'class': 'btn btn-primary',
                     click: function() {
                         $.ajax({
-                            url: options.url,
+                            url: url,
                             type: 'post',
                             data: $(formId).serialize(),
                             success: function (data) {
@@ -62,7 +60,7 @@
                 title: formTitle,
                 modal: true,
                 resizable: false,
-                width: options.width,
+                width: width,
                 buttons: formButtons
             });
 
@@ -90,11 +88,10 @@
             return true;
         }
 
-        $(options.trigger).removeAttr('href');
-        $(document).on('click', options.trigger, function(e) {
+        $el.on('click', function(e) {
             e.preventDefault();
             $.ajax({
-                url: options.url,
+                url: url,
                 type: 'get',
                 success: function(data) {
                     createDialog(data);

@@ -1,8 +1,7 @@
 js:
   pim_ui:
     - '@PimUIBundle/Resources/public/js/jquery.actual.min.js'
-    - '@PimUIBundle/Resources/public/js/pim_all.js'
-    - '@PimUIBundle/Resources/public/js/select2.js'
+    # - '@PimUIBundle/Resources/public/js/pim_all.js'
     - '@PimUIBundle/Resources/public/js/jquery.sidebarize.js'
     - '@PimUIBundle/Resources/public/js/slimbox2.js'
     - '@PimUIBundle/Resources/public/js/jquery.dialogForm.js'
@@ -10,12 +9,18 @@ js:
     - '@PimUIBundle/Resources/public/js/pim-ajax.js'
     - '@PimUIBundle/Resources/public/js/jquery.scopableField.js'
     - '@PimUIBundle/Resources/public/js/jquery.currencyField.js'
+    - '@PimUIBundle/Resources/public/js/pim_popinForm.js'
     - '@OroUIBundle/Resources/public/lib/jstree/jquery.cookie.js'
+    - '@OroUIBundle/Resources/public/lib/backbone.bootstrap-modal.js'
+    - '@OroUIBundle/Resources/public/lib/jstree/jquery.hotkeys.js'
+    - '@OroUIBundle/Resources/public/lib/jstree/jquery.jstree.js'
+    - '@PimProductBundle/Resources/public/js/tree-associate.jstree.js'
+    - '@PimProductBundle/Resources/public/js/tree-view.jstree.js'
+    - '@PimProductBundle/Resources/public/js/tree-management.jstree.js'
 css:
   pim_ui:
     - 'bundles/pimui/css/pim.less'
     - 'bundles/pimui/css/bootstrap-datetimepicker.min.css'
-    - 'bundles/pimui/css/select2.css'
     - 'bundles/pimui/css/slimbox2.css'
     - 'bundles/pimui/css/font-awesome/font-awesome.min.css'
     - 'bundles/pimui/css/flags.css'

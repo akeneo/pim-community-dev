@@ -174,7 +174,7 @@ class ProductExtension extends \Twig_Extension
         $localeCode = $this->getCatalogLocale();
         $locale = $this->localeManager->getLocaleByCode($localeCode);
 
-        return ($locale !== null) ? $locale->getDefaultCurrency()->getCode() : null;
+        return ($locale !== null and $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
     }
 
     /**

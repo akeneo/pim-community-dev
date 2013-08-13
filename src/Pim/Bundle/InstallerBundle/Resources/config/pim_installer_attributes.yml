@@ -1,7 +1,7 @@
 'attributes':
     'sku':
         'labels':
-            'default': 'SKU'
+            'en_US': 'SKU'
             'fr_FR':   'SKU'
         'type': 'pim_product_identifier'
         'description': 'the product sku'

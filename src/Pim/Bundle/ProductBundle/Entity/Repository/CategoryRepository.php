@@ -31,19 +31,6 @@ class CategoryRepository extends SegmentRepository
     }
 
     /**
-     * Shortcut to get all children query builder
-     *
-     * @param Category $category    the requested node
-     * @param boolean  $includeNode true to include actual node in query result
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getAllChildrenQueryBuilder(Category $category, $includeNode = false)
-    {
-        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
-    }
-
-    /**
      * Count products linked to a node.
      * You can define if you just want to get the property of the actual node
      * or with its children with the direct parameter
@@ -66,6 +53,28 @@ class CategoryRepository extends SegmentRepository
 
         $qb->select($qb->expr()->count('p'))
            ->join($firstRootAlias .'.products', 'p');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Count children for a given category.
+     *
+     * @param Category $category   the requested node
+     * @param boolean  $onlyDirect true to cound only direct children
+     *
+     * @return integer
+     */
+    public function countChildren(Category $category, $onlyDirect = false)
+    {
+        $qb = ($onlyDirect) ?
+            $this->getNodeQueryBuilder($category) :
+            $this->getAllChildrenQueryBuilder($category, false);
+
+        $rootAlias = $qb->getRootAliases();
+        $firstRootAlias = $rootAlias[0];
+
+        $qb->select($qb->expr()->count($firstRootAlias));
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -101,22 +110,6 @@ class CategoryRepository extends SegmentRepository
         $productIds = array_unique($productIds);
 
         return $productIds;
-    }
-
-    /**
-     * Create a query builder with just a link to the category passed in parameter
-     *
-     * @param Category $category
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getNodeQueryBuilder(Category $category)
-    {
-        $qb = $this->createQueryBuilder('ps');
-        $qb->where('ps.id = :nodeId')
-           ->setParameter('nodeId', $category->getId());
-
-        return $qb;
     }
 
     /**
@@ -238,5 +231,34 @@ class CategoryRepository extends SegmentRepository
         }
 
         return $choices;
+    }
+
+    /**
+     * Create a query builder with just a link to the category passed in parameter
+     *
+     * @param Category $category
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getNodeQueryBuilder(Category $category)
+    {
+        $qb = $this->createQueryBuilder('ps');
+        $qb->where('ps.id = :nodeId')
+           ->setParameter('nodeId', $category->getId());
+
+        return $qb;
+    }
+
+    /**
+     * Shortcut to get all children query builder
+     *
+     * @param Category $category    the requested node
+     * @param boolean  $includeNode true to include actual node in query result
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getAllChildrenQueryBuilder(Category $category, $includeNode = false)
+    {
+        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }
 }

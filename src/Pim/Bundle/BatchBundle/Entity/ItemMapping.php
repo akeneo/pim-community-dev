@@ -32,6 +32,7 @@ class ItemMapping extends ItemMappingModel
      * @ORM\OneToMany(targetEntity="FieldMapping", mappedBy="item", cascade={"persist", "remove"})
      */
     protected $fields;
+
     /**
      * Constructor
      */

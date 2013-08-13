@@ -79,7 +79,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->once())
             ->method('addViolation')
             ->with(
-                $constraint->allowedExtensionsMessage,
+                $constraint->extensionsMessage,
                 array('{{ extensions }}' => 'gif, png')
             );
 
