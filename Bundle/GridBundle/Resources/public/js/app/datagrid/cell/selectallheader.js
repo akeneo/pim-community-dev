@@ -81,6 +81,18 @@
         },
 
         /**
+         * Gets selection state
+         *
+         * @returns {{selectedModels: *, inset: boolean}}
+         */
+        getSelectionState: function() {
+            return {
+                selectedModels: this.selectedModels,
+                inset: true
+            }
+        },
+
+        /**
          * Checks if passed model have to be marked as selected
          *
          * @param {Backbone.Model} model

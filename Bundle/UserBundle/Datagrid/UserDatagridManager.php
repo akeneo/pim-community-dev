@@ -49,7 +49,13 @@ class UserDatagridManager extends FlexibleDatagridManager
                 'name'         => 'delete',
                 'acl_resource' => 'oro_user_user_delete',
                 'label'        => $this->translate('oro.grid.mass_action.delete.label'),
-                'icon'         => 'trash'
+                'icon'         => 'trash',
+                'route'        => 'oro_grid_mass_action',
+                'messages'     => array(
+                    'confirm_title'   => $this->translate('oro.grid.mass_action.delete.confirm_title'),
+                    'confirm_content' => $this->translate('oro.grid.mass_action.delete.confirm_content'),
+                    'confirm_ok'      => $this->translate('oro.grid.mass_action.confirm_ok')
+                )
             )
         );
 

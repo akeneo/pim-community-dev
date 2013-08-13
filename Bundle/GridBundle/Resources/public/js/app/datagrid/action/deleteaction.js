@@ -70,12 +70,12 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
      */
     getErrorDialog: function() {
         if (!this.errorModal) {
-            this.confirmModal = new Oro.BootstrapModal({
+            this.errorModal = new Oro.BootstrapModal({
                 title: _.__('Delete Error'),
                 content: _.__('Cannot delete item.'),
                 cancelText: false
             });
         }
-        return this.confirmModal;
+        return this.errorModal;
     }
 });
