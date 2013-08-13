@@ -36,6 +36,7 @@
     $(function() {
         var datagridOptions = {
             grid: {
+                name: '{{ datagrid.name }}',
                 columns: [
                     {% for column in datagrid.columns %}
                     {

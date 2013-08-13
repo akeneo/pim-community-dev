@@ -12,13 +12,16 @@ Oro.Datagrid = Oro.Datagrid || {};
  * @extends Backgrid.Grid
  */
 Oro.Datagrid.Grid = Backgrid.Grid.extend({
-    /** @property */
+    /** @property {String} */
+    name: 'datagrid',
+
+    /** @property {String} */
     tagName: 'div',
 
-    /** @property */
+    /** @property {int} */
     requestsCount: 0,
 
-    /** @property */
+    /** @property {String} */
     className: 'clearfix',
 
     /** @property */
@@ -117,7 +120,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         }
 
         options.columns.push(this._createActionsColumn());
-        options.columns.unshift(this._createMassActionsColumn());
+        options.columns.unshift(this._getMassActionsColumn());
 
         this.loadingMask = this._createLoadingMask();
         this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
@@ -166,16 +169,30 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * @return {Backgrid.Column}
      * @private
      */
-    _createMassActionsColumn: function() {
-        return {
-            name: "massAction",
-            label: _.__("Selected Rows"),
-            renderable: !_.isEmpty(this.massActions),
-            sortable: false,
-            editable: false,
-            cell: Oro.Datagrid.Cell.SelectRowCell,
-            headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
-        };
+    _getMassActionsColumn: function() {
+        if (!this.massActionsColumn) {
+            this.massActionsColumn = new Backgrid.Column({
+                name: "massAction",
+                label: _.__("Selected Rows"),
+                renderable: !_.isEmpty(this.massActions),
+                sortable: false,
+                editable: false,
+                cell: Oro.Datagrid.Cell.SelectRowCell,
+                headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
+            });
+        }
+
+        return this.massActionsColumn;
+    },
+
+    /**
+     * Gets selection state
+     *
+     * @returns {{selectedModels: *, inset: boolean}}
+     */
+    getSelectionState: function() {
+        var selectAllHeader = this.header.row.cells[0];
+        return selectAllHeader.getSelectionState();
     },
 
     /**
@@ -413,8 +430,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _beforeRequest: function() {
         this.requestsCount++;
-        this.loadingMask.show();
-        this.toolbar.disable();
+        this.showLoading();
     },
 
     /**
@@ -425,8 +441,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     _afterRequest: function() {
         this.requestsCount--;
         if (this.requestsCount == 0) {
-            this.loadingMask.hide();
-            this.toolbar.enable();
+            this.hideLoading();
             // render block instead of update in order to change message depending on filter state
             this.renderNoDataBlock();
             /**
@@ -435,6 +450,22 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
              */
             Oro.Events.trigger("grid_load:complete", this.collection);
         }
+    },
+
+    /**
+     * Show loading mask and disable toolbar
+     */
+    showLoading: function() {
+        this.loadingMask.show();
+        this.toolbar.disable();
+    },
+
+    /**
+     * Hide loading mask and enable toolbar
+     */
+    hideLoading: function() {
+        this.loadingMask.hide();
+        this.toolbar.enable();
     },
 
     /**
