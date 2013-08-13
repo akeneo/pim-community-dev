@@ -6,9 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-
 class OwnershipType extends AbstractType
 {
     const NAME = 'oro_type_choice_ownership_type';
@@ -57,15 +54,5 @@ class OwnershipType extends AbstractType
     public function getName()
     {
         return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        if (isset($view->vars['value']) && $view->vars['value']) {
-            $view->vars['read_only'] = true;
-        }
     }
 }
