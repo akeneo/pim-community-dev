@@ -245,10 +245,20 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->datagridBuilder->addRowAction($datagrid, $actionParameters);
         }
 
+        $massActions = $this->getMassActions();
         // add mass actions
-        foreach ($this->getMassActions() as $massAction) {
+        foreach ($massActions as $massAction) {
             $this->datagridBuilder->addMassAction($datagrid, $massAction);
         }
+
+        // add "selected rows: filter if mass actions exist and identifier is configured
+        if (count($massActions) && $this->identifierField) {
+            $this->datagridBuilder->addSelectedRowFilter(
+                $datagrid,
+                $this->getSelectedRowFilterDefaultOptions()
+            );
+        }
+
         // add toolbar options
         $datagrid->setToolbarOptions($this->getToolBarOptions());
 
@@ -279,6 +289,24 @@ abstract class DatagridManager implements DatagridManagerInterface
                 $fieldCollection->add($fieldId);
             }
         }
+    }
+
+    /**
+     * Provide ability to override default "selected rows" filter setting
+     * e.g label, show/hide filter, field name
+     *
+     * @return array
+     */
+    protected function getSelectedRowFilterDefaultOptions()
+    {
+        return array(
+            'field_mapping' => array(
+                'fieldName' => $this->identifierField
+            ),
+            'field_name'    => $this->identifierField,
+            'show_filter'   => true,
+            'label'         => $this->translate('oro.grid.mass_action.selected_rows', array(), 'messages')
+        );
     }
 
     /**
@@ -489,7 +517,8 @@ abstract class DatagridManager implements DatagridManagerInterface
 
             if ($notExists) {
                 $options['pageSize'] = isset($options['pageSize']) ? $options['pageSize'] : array();
-                $options['pageSize']['items'] = isset($options['pageSize']['items']) && is_array($options['pageSize']['items'])
+                $options['pageSize']['items'] = isset($options['pageSize']['items'])
+                    && is_array($options['pageSize']['items'])
                     ? $options['pageSize']['items']
                     : array();
                 $options['pageSize']['items'][] = array(

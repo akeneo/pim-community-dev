@@ -13,6 +13,8 @@ use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 interface DatagridBuilderInterface
 {
+    const SELECTED_ROW_FILTER_NAME = 'selected_row_filter';
+
     /**
      * Add property to datagrid
      *
@@ -31,6 +33,13 @@ interface DatagridBuilderInterface
         DatagridInterface $datagrid,
         FieldDescriptionInterface $fieldDescription = null
     );
+
+    /**
+     * @param DatagridInterface $datagrid
+     * @param array $options
+     * @return void
+     */
+    public function addSelectedRowFilter(DatagridInterface $datagrid, array $options);
 
     /**
      * @param DatagridInterface $datagrid

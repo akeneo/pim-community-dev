@@ -24,25 +24,29 @@ class SelectRowFilter extends AbstractFilter
             return;
         }
 
-        if ($data['in'] === null && $data['out'] !== null && empty($data['out'])) {
-            $expression = $this->getExpressionFactory()->eq(1, 1);
+        $expression = false;
+        switch (true) {
+            case $data['in'] === null && $data['out'] !== null && empty($data['out']):
+                $expression = $this->getExpressionFactory()->eq(1, 1);
+                break;
+            case $data['out'] === null && $data['in'] !== null && empty($data['in']):
+                $expression = $this->getExpressionFactory()->eq(0, 1);
+                break;
+            case $data['value'] === self::SELECTED_VALUE && !empty($data['in']):
+                $expression = $this->getExpressionFactory()->in(
+                    $this->createFieldExpression($field, $alias),
+                    $data['in']
+                );
+                break;
+            case $data['value'] === self::NOT_SELECTED_VALUE && !empty($data['out']):
+                $expression = $this->getExpressionFactory()->notIn(
+                    $this->createFieldExpression($field, $alias),
+                    $data['out']
+                );
+                break;
         }
 
-        if ($data['out'] === null && $data['in'] !== null && empty($data['in'])) {
-            $expression = $this->getExpressionFactory()->eq(0, 1);
-        }
-
-        if ($data['value'] === self::SELECTED_VALUE && !empty($data['in'])) {
-            $expression = $this->getExpressionFactory()->in(
-                $this->createFieldExpression($field, $alias), $data['in']);
-        }
-
-        if ($data['value'] === self::NOT_SELECTED_VALUE && !empty($data['out'])) {
-            $expression = $this->getExpressionFactory()->notIn(
-                $this->createFieldExpression($field, $alias), $data['out']);
-        }
-
-        if (isset($expression)) {
+        if ($expression) {
             $this->applyFilterToClause($queryBuilder, $expression);
         }
     }
@@ -55,7 +59,8 @@ class SelectRowFilter extends AbstractFilter
      */
     protected function parseData($data)
     {
-        if (!(isset($data['value']) || in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE)))) {
+        if (!(isset($data['value'])
+            || in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE)))) {
             $data['value'] = null;
         }
 

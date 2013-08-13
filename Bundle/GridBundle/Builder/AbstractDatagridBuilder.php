@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Builder;
 
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -98,6 +99,20 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
             $fieldDescription->getOptions()
         );
         $filter->setOption('data_type', $fieldDescription->getType());
+        $datagrid->addFilter($filter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addSelectedRowFilter(DatagridInterface $datagrid, array $options)
+    {
+        $filter = $this->filterFactory->create(
+            self::SELECTED_ROW_FILTER_NAME,
+            FilterInterface::TYPE_SELECT_ROW,
+            $options
+        );
+        $filter->setOption('data_type', FieldDescriptionInterface::TYPE_INTEGER);
         $datagrid->addFilter($filter);
     }
 
