@@ -1263,6 +1263,16 @@ footer{
   float: none;
   width: auto;
 }
+.pin-menus .nav-tabs > li > a {
+  border-radius: 0px;
+  padding: 8px;
+  line-height: 14px;
+  margin-right: 0px;
+}
+.pin-menus .nav-tabs > li > a:hover {
+  border-color: #e6eef6 #d8e3ee #e6eef6 #d8e3ee;
+}
+
 .pin-menus:hover,
 .pin-menus.open{
   background-color: #5e6872;
@@ -1383,8 +1393,13 @@ footer{
   height: 11px;
   background: url("../../img/general-sprite.png") no-repeat 0 -121px;
 }
-.pin-menus .extra-list li{
-  padding: 5px 15px;
+
+.pin-menus .extra-list {
+  padding: 5px 0px;
+}
+
+.pin-menus .extra-list li {
+  padding: 4px 15px;
 }
 .pin-menus .extra-list > li:hover{
   background-color: #f4f4f4;
@@ -2593,7 +2608,7 @@ textarea{
   padding-top: 5px;
 }
 .dot-menu-empty-message{
-  padding: 15px;
+  padding: 4px 15px;
 }
 .oro-forgot-password #prependedInput{
   width: 310px;
