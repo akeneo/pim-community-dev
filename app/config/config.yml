@@ -262,7 +262,7 @@ pim_batch:
                     title:      pim_import_export.jobs.product_import.import.title
                     reader:     pim_import_export.reader.csv
                     processor:  pim_import_export.processor.valid_product_creation
-                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+                    writer:     pim_import_export.writer.orm_product    #TODO : to replace by concret implementation
         category_import:
             title:     pim_import_export.jobs.category_import.title
             connector: "Akeneo"

@@ -8,6 +8,8 @@ parameters:
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
     pim_import_export.processor.valid_product_creation.class:       Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor
 
+    pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
+
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
 
     # TODO fake implementations to replace by concret one when we'll work on launch an import
@@ -67,4 +69,10 @@ services:
 
     pim_import_export.writer.dummy:
         class: %pim_import_export.writer.dummy.class%
+
+    pim_import_export.writer.orm_product:
+        class: %pim_import_export.writer.orm_product.class%
+        arguments:
+            - @pim_product.manager.product
+            - @doctrine.orm.default_entity_manager
 
