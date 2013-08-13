@@ -82,6 +82,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         // if no translation, assert the expected code is returned
         $this->family->setLocale('fr_FR');
         $this->assertEquals($expectedCode, $this->family->getLabel());
+
+        // if empty translation, assert the expected code is returned
+        $this->family->setLabel('');
+        $this->assertEquals($expectedCode, $this->family->getLabel());
     }
 
     /**
@@ -102,6 +106,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
 
         // if no translation, assert the expected code is returned
         $this->family->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->family->__toString());
+
+        // if empty translation, assert the expected code is returned
+        $this->family->setLabel('');
         $this->assertEquals($expectedCode, $this->family->__toString());
     }
 
