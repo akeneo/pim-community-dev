@@ -65,9 +65,8 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
         $this->productManager->getStorageManager()->flush();
 
         $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductValue');
+        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductPrice');
         $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\Product');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\Category');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\CategoryTranslation');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
     }
