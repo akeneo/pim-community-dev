@@ -86,7 +86,7 @@
                     });
                     confirmModal.open();
                     confirmModal.$content.append(iframe)
-                    $('.loading-content').show();
+                    $('.modal-body .loading-content').show();
 
                     form.attr('target', iframeId);
                     form.attr('action', $(el).attr('href'));
@@ -102,7 +102,7 @@
                     form.removeAttr('target');
                     form.data('preview', false);
 
-                    $('.loading-content').hide();
+                    $('.modal-body .loading-content').hide();
                 });
 
                 form.submit();
