@@ -42,8 +42,8 @@ class PriceCollectionTypeTest extends AttributeTypeTest
                 'label'        => null,
                 'required'     => null,
                 'type'         => 'pim_product_price',
-                'allow_add'    => false,
-                'allow_delete' => false,
+                'allow_add'    => true,
+                'allow_delete' => true,
                 'by_reference' => false,
                 'auto_initialize' => false
                 )
