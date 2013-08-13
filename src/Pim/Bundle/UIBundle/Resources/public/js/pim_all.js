@@ -4,6 +4,50 @@ Pim.navigate = function(route) {
     Oro.hashNavigationInstance.setLocation(route);
 };
 
+// Listener for form update events (used in product edit form)
+Pim.updateListener = function($form) {
+    this.updated = false;
+    var message = $form.attr('data-updated-message'),
+    title = $form.attr('data-updated-title')
+    self = this;
+
+    var formUpdated = function() {
+        self.updated = true;
+        $('#updated').show();
+
+        $form.off('change', formUpdated);
+        $form.find('ins.jstree-checkbox').off('click', formUpdated);
+
+        $form.find('button[type="submit"]').on('click', function() {
+            self.updated = false;
+        });
+
+        $(window).on('beforeunload', function() {
+            if (self.updated) {
+                return message;
+            }
+        });
+    };
+
+    $form.on('change', formUpdated);
+    $form.find('ins.jstree-checkbox').on('click', formUpdated);
+
+    $('a[href^="/"]:not(".no-hash")').off('click').on('click', function (e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var doAction = function() {
+            Pim.navigate(url);
+        };
+        if (!self.updated) {
+            doAction();
+        } else {
+            PimDialog.confirm(message, title, doAction);
+        }
+        return false;
+    });
+};
+
 function init() {
     // Place code that we need to run on every page load here
 
@@ -65,8 +109,8 @@ function init() {
     });
 
     // Add form update listener
-    $('form[data-updated]').each(function() {
-        new FormUpdateListener($(this).attr('id'), $(this).data('updated'));
+    $('form[data-updated-message]').each(function() {
+        Pim.updateListener($(this));
     });
 
     // Instantiate the tree
@@ -169,32 +213,8 @@ function init() {
 $(function() {
     'use strict';
 
+    $(window).off('beforeunload');
+
     // Execute the init function on page load
     init();
 });
-
-// Listener for form update events (used in product edit form)
-var FormUpdateListener = function(formId, message) {
-    var self = this;
-    this.updated = false;
-
-    this.formUpdated = function() {
-        this.updated = true;
-        $('#updated').show();
-        $('form#' + formId).off('change', this.formUpdated);
-        $('form#' + formId + ' ins.jstree-checkbox').off('click', this.formUpdated);
-
-        // This will not work with backbone navigation
-        $(window).on('beforeunload', function() {
-            if (self.updated) {
-                return message;
-            }
-        });
-        $('form#' + formId + ' button[type="submit"]').on('click', function() {
-            self.updated = false;
-        });
-    };
-
-    $('form#' + formId).on('change', this.formUpdated);
-    $('form#' + formId + ' ins.jstree-checkbox').on('click', this.formUpdated);
-};
