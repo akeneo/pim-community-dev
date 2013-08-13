@@ -148,6 +148,7 @@ header{
   .dropdown-menu{
     -webkit-border-radius: @baseBtnBorderRadius;
     border-radius: @baseBtnBorderRadius;
+    padding-bottom: 7px;
     li.active > a,
     li > a:hover,
     li > a:focus{
@@ -156,6 +157,7 @@ header{
     }
     li > a {
       color: #444;
+      padding: 3px 15px;
     }
   }
   .navbar .nav{
@@ -220,14 +222,29 @@ header{
     padding: 0 14px 0 0;
     margin: 0 15px 0 0;
   }
-  .logo:after{
-    border-bottom: 20px solid transparent;
-    border-top: 20px solid transparent;
-    border-left: 20px solid #2d333b;
+  .logo:before{
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 20px 0 20px 15px;
+    border-color: transparent transparent transparent #1b1e24;
     content: "";
     display: inline-block;
     position: absolute;
-    right: -5px;
+    right: -1px;
+    top: 0;
+  }
+
+  .logo:after{
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 20px 0 20px 15px;
+    border-color: transparent transparent transparent #2d333b;
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: 0px;
     top: 0;
   }
   .logo a{
@@ -245,7 +262,7 @@ header{
     width: 19px;
     height: 20px;
     margin: 10px 11px 0 0;
-    background: url("../../img/general-sprite.png") no-repeat 0 -322px;
+    background: url("../../img/general-sprite.png") no-repeat 0 -321px;
   }
 }
 .dark{
@@ -378,15 +395,14 @@ header:after{
   background: #fff;
   color: #444;
 }
-#search-bar-dropdown:after{
-  border-bottom: 6px solid #FFFFFF;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  content: "";
-  display: inline-block;
-  left: 10px;
-  position: absolute;
-  top: -6px;
+#search-bar-dropdown:before, #search-bar-dropdown:after {
+  border: none
+}
+#search-bar-dropdown {
+  margin-top: -1px;
+  border-top-color: #ccc;
+  min-width: 150px;
+  border-radius: 0px;
 }
 
 footer{
@@ -1183,7 +1199,7 @@ footer{
 }
 .nav-header{
   color: #444;
-  font-size: 10px;
+  font-size: 12px;
 }
 .nav-header-title{
   font-size: 13px;
@@ -4086,21 +4102,11 @@ disabled look for disabled choices in the results dropdown
   .top-search .dropdown-search{
     margin-left: 5px;
   }
-  .top-search .dropdown-search > span{
+  .top-search .dropdown-search > a {
     background: url("../../img/general-sprite.png") no-repeat 0 -343px;
-    float: left;
-    font-size: 0;
-    height: 28px;
-    line-height: 0;
-    margin:  2px 0 0 ;
-    padding: 0 ;
-    text-indent: -9999px;
-    text-shadow: none;
-    width: 28px;
-    cursor: pointer;
   }
-  .top-search .dropdown-search.open > span,
-  .top-search .dropdown-search:hover > span{
+  .top-search .dropdown-search.open > a,
+  .top-search .dropdown-search:hover > a{
     background-position: 0 -371px;
   }
   .shortcuts .dropdown{
@@ -4123,7 +4129,7 @@ disabled look for disabled choices in the results dropdown
     border-right: 6px solid transparent;
     content: "";
     display: inline-block;
-    left: 10px;
+    left: 7px;
     position: absolute;
     top: -6px;
   }
