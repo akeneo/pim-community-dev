@@ -101,7 +101,7 @@ function init() {
 
     // DELETE request for delete buttons
     $('a[data-dialog]').on('click', function() {
-        $el = $(this);
+        var $el = $(this);
         var message = $el.data('message');
         var title = $el.data('title');
         if ($el.data('dialog') ==  'confirm') {
@@ -117,6 +117,44 @@ function init() {
             PimDialog.alert(message, title);
         }
     });
+
+    // Save and restore activated form tabs and groups
+    function saveFormState() {
+        var activeTab = $('#form-navbar .nav li.active a').attr('href');
+        if (activeTab) {
+            sessionStorage.activeTab = activeTab;
+        }
+
+        var activeGroup = $('.tab-groups li.tab.active a').attr('href');
+        if (activeGroup) {
+            sessionStorage.activeGroup = activeGroup;
+        }
+    };
+
+    function restoreFormState() {
+        if (sessionStorage.activeTab) {
+            var $activeTab = $('[href=' + sessionStorage.activeTab + ']');
+            if ($activeTab) {
+                $activeTab.tab('show');
+            }
+            sessionStorage.removeItem('activeTab');
+        }
+
+        if (sessionStorage.activeGroup) {
+            var $activeGroup = $('[href=' + sessionStorage.activeGroup + ']');
+            if ($activeGroup) {
+                $activeGroup.tab('show');
+            }
+            sessionStorage.removeItem('activeGroup');
+        }
+    };
+
+    if (typeof(Storage) !== 'undefined') {
+        restoreFormState();
+
+        $('form.form-horizontal').on('submit', saveFormState);
+        $('#locale-switcher a').on('click', saveFormState);
+    }
 }
 
 $(function() {
