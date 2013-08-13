@@ -1,18 +1,10 @@
-.pim-icon(@x, @y) {
+.icon-close-white() {
   background-image: url("images/pim_icons.png");
-  background-position: @x @y;
+  background-position: -77px -77px;
 }
 
-.icon-search()               { .pim-icon(-71px, -50px); }
-.icon-shortcuts()            { .pim-icon(-149px, -49px); }
-.icon-close-white()          { .pim-icon(-77px, -77px); }
-
-//---------------------------------------//
 // Add !important to override oro !important statements. To be removed when oro.less is cleaned up
-.pim-icon-important(@x, @y) {
-  background-image: url("images/pim_icons.png") !important;
-  background-position: @x @y !important;
+.icon-shortcuts() {
+  background-image: url("images/pim_icons.png")!important;
+  background-position: -149px -49px!important;
 }
-
-.icon-search-important()    { .pim-icon-important(-71px, -50px); }
-.icon-shortcuts-important() { .pim-icon-important(-149px, -49px); }
