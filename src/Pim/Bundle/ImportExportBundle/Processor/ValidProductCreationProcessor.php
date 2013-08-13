@@ -24,7 +24,7 @@ use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
  */
 class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
-    protected $em;
+    protected $entityManager;
     protected $formFactory;
     protected $productManager;
     protected $channelManager;
@@ -43,12 +43,12 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private $attributes = array();
 
     public function __construct(
-        EntityManager $em,
+        EntityManager $entityManager,
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
         ChannelManager $channelManager
     ) {
-        $this->em             = $em;
+        $this->entityManager  = $entityManager;
         $this->formFactory    = $formFactory;
         $this->productManager = $productManager;
         $this->channelManager = $channelManager;
@@ -172,7 +172,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $attributes[$code] = $this->getAttribute($code);
         }
 
-        $product = $this->createProduct($attributes);
+        $product = $this->getProduct($attributes, $item);
         $form    = $this->createAndSubmitForm($product, $attributes, $item);
 
         if (!$form->isValid()) {
@@ -210,16 +210,18 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @return Product
      */
-    private function createProduct(array $attributes)
+    private function getProduct(array $attributes, array $item)
     {
-        $product = $this->productManager->createFlexible();
-
-        foreach ($attributes as $attribute) {
-            if (!$attribute) {
-                // We ignore attribute that doesn't exist in the PIM
-                continue;
+        if (null === $product = $this->productManager->findByIdentifier(reset($item))) {
+            $product = $this->productManager->createFlexible();
+            foreach ($attributes as $attribute) {
+                if (!$attribute) {
+                    // We ignore attribute that doesn't exist in the PIM
+                    continue;
+                }
+                $this->productManager->addAttributeToProduct($product, $attribute);
             }
-            $this->productManager->addAttributeToProduct($product, $attribute);
+            $this->entityManager->persist($product);
         }
 
         return $product;
@@ -332,7 +334,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $parts = explode('-', $code);
 
         if (!array_key_exists($parts[0], $this->attributes)) {
-            $this->attributes[$parts[0]] = $this->em
+            $this->attributes[$parts[0]] = $this->entityManager
                 ->getRepository('PimProductBundle:ProductAttribute')
                 ->findOneBy(array('code' => $parts[0]));
         }
@@ -343,7 +345,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function getCategory($code)
     {
         if (!array_key_exists($code, $this->categories)) {
-            $this->categories[$code] = $this->em
+            $this->categories[$code] = $this->entityManager
                 ->getRepository('PimProductBundle:Category')
                 ->findOneBy(array('code' => $code));
         }
@@ -351,10 +353,10 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         return $this->categories[$code];
     }
 
-    private function getOption($defaultValue)
+    private function getOption($code)
     {
-        return $this->em
+        return $this->entityManager
             ->getRepository('PimProductBundle:AttributeOption')
-            ->findOneBy(array('defaultValue' => $defaultValue));
+            ->findOneBy(array('code' => $code));
     }
 }
