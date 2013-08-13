@@ -76,7 +76,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=100)
+     * @ORM\Column(name="code", type="string", length=100, unique=true)
      */
     protected $code;
 

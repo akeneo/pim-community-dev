@@ -7,7 +7,7 @@
             <li>
                 <b>{{ ('pim_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
                 <span class="label">{{ value|normalizeValue }}</span>
-                <span class="label label-important">{{ getViolations(violations, stepIndex, stepType, field) }}</span>
+                {{ getViolations(violations, stepIndex, stepType, field) }}
             </li>
         {% else %}
             <li><i>{{ 'No configuration'|trans }}</i></li>

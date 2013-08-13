@@ -6,7 +6,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
@@ -21,7 +20,7 @@ use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
 class ProductType extends FlexibleType
 {
     /**
-     * TODO : comment !!!
+     * Storage of the product form fields in order to use its frontend manipulation
      *
      * @var ProductFormView $productFormView
      */
@@ -35,6 +34,24 @@ class ProductType extends FlexibleType
         parent::__construct($flexibleManager, $valueFormAlias);
 
         $this->productFormView = $productFormView;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        if ($options['withCategories']) {
+            $builder
+                ->add(
+                    'categories',
+                    'entity',
+                    array(
+                        'multiple' => true,
+                        'class'    => 'PimProductBundle:Category',
+                    )
+                );
+        }
+
     }
 
     /**
@@ -52,17 +69,18 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder->add(
-            'enabled',
-            'checkbox',
-            array(
-                'attr' => array(
-                    'data-on-label'  => 'Enabled',
-                    'data-off-label' => 'Disabled',
-                    'size'           => null
+        $builder
+            ->add(
+                'enabled',
+                'checkbox',
+                array(
+                    'attr' => array(
+                        'data-on-label'  => 'Enabled',
+                        'data-off-label' => 'Disabled',
+                        'size'           => null
+                    )
                 )
-            )
-        );
+            );
     }
 
     /**
@@ -92,7 +110,12 @@ class ProductType extends FlexibleType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('currentLocale' => null));
+        $resolver->setDefaults(
+            array(
+                'currentLocale'  => null,
+                'withCategories' => false,
+            )
+        );
     }
 
     /**
