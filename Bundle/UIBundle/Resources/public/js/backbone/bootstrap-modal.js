@@ -49,8 +49,10 @@ var Oro = Oro || {};
                 options.okButtonClass = this.okButtonClass;
             }
             options = _.extend({
-                template: this.template
+                template: this.template,
+                className: this.className
             }, options);
+
             Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
         }
     });
