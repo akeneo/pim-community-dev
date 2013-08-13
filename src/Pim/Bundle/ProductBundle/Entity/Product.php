@@ -323,6 +323,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             $data['family'] = $this->getFamily()->getCode();
         }
 
+        $categories = array();
+        foreach ($this->getCategories() as $category) {
+            $categories[]= $category->getCode();
+        }
+        $data['categories']= implode(', ', $categories);
+
         foreach ($this->getValues() as $value) {
             $key = $value->getAttribute()->getCode();
             $key .= ($value->getLocale()) ? '_'.$value->getLocale() : '';

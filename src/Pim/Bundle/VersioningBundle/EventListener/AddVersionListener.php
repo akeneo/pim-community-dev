@@ -59,25 +59,31 @@ class AddVersionListener implements EventSubscriber
 
             } else if($entity instanceof ProductValueInterface) {
                  $product = $entity->getEntity();
-                 $this->writeSnapshot($em, $product);
+                 if ($product) {
+                     $this->writeSnapshot($em, $product);
+                 }
 
             } else if ($entity instanceof ProductPrice) {
                  $product = $entity->getValue()->getEntity();
                  $this->writeSnapshot($em, $product);
 
             } else if ($entity instanceof AbstractTranslation) {
-                if ($entity->getForeignKey() instanceof VersionableInterface) {
-                    $this->writeSnapshot($em, $entity->getForeignKey());
+                $translatedEntity = $entity->getForeignKey();
+                if ($translatedEntity instanceof VersionableInterface) {
+                    $this->writeSnapshot($em, $translatedEntity);
                 }
             }
         }
 
         foreach ($uow->getScheduledCollectionDeletions() AS $entity) {
-
+            if ($entity->getOwner() instanceof VersionableInterface) {
+                $this->writeSnapshot($em, $entity->getOwner());
+            }
         }
 
         foreach ($uow->getScheduledCollectionUpdates() AS $entity) {
             if ($entity->getOwner() instanceof VersionableInterface) {
+                // special case for product to category
                 $this->writeSnapshot($em, $entity->getOwner());
             }
         }
@@ -95,31 +101,20 @@ class AddVersionListener implements EventSubscriber
         if (!isset($this->pendingVersions[$oid])) {
 
             $version = new Version($versionable);
-            $this->computeChangeSet($em, $version);
-            $this->pendingVersions[$oid]= $version;
 
             /** @var User $user */
             $user = $em->getRepository('OroUserBundle:User')
                 ->findOneBy(array('username' => 'admin')); // TODO : to fix !
 
-            $logEntry = new Audit();
-            $logEntry->setAction('update'); // TODO create if there is no
-            $logEntry->setObjectClass($version->getResourceName());
-            $logEntry->setLoggedAt();
-            $logEntry->setUser($user);
-            $logEntry->setObjectName('TODO : useless name ?');
-            $logEntry->setObjectId($version->getResourceId());
-            $logEntry->setVersion($version->getVersion());
-            $newData = $version->getVersionedData();
-
             $previousVersion = $em->getRepository('PimVersioningBundle:Version')
-                ->findOneBy(array('resourceId' => $version->getResourceId()), array('version' => 'desc'));
+                ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
 
             if ($previousVersion) {
                 $oldData = $previousVersion->getVersionedData();
             } else {
                 $oldData = array();
             }
+            $newData = $version->getVersionedData();
 
             $diff = array_diff($newData, $oldData);
             $diffData = array();
@@ -134,11 +129,30 @@ class AddVersionListener implements EventSubscriber
                 } else {
                     $diffData[$changedField]['new'] = '';
                 }
+                if (empty($diffData[$changedField]['new']) and empty($diffData[$changedField]['old'])) {
+                    unset($diffData[$changedField]);
+                }
+                if ($diffData[$changedField]['new'] == $diffData[$changedField]['old']) {
+                    unset($diffData[$changedField]);
+                }
             }
 
+            $action = ($version->getVersion() > 1) ? 'update' : 'create';
+            $logEntry = new Audit();
+            $logEntry->setAction($action);
+            $logEntry->setObjectClass($version->getResourceName());
+            $logEntry->setLoggedAt();
+            $logEntry->setUser($user);
+            $logEntry->setObjectName($version->getResourceName());
+            $logEntry->setObjectId($version->getResourceId());
+            $logEntry->setVersion($version->getVersion());
             $logEntry->setData($diffData);
 
             if (!empty($diffData)) {
+
+                $this->computeChangeSet($em, $version);
+                $this->pendingVersions[$oid]= $version;
+
                 $this->computeChangeSet($em, $logEntry);
             }
         }

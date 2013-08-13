@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
 /**
  * Resource version entity
