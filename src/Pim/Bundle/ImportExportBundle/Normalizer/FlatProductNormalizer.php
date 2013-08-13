@@ -72,7 +72,7 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $suffix = '';
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix = sprintf('_%s', $value->getLocale());
+            $suffix = sprintf('-%s', $value->getLocale());
         }
         $data = $value->getData();
 
