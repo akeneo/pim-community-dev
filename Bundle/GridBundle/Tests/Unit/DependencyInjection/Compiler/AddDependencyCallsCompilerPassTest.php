@@ -62,6 +62,8 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                 )
                             )
                         ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     )
                 ),
                 'expectedDefinitions' => array(
@@ -101,7 +103,12 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                             new Reference('service_container'),
                             'users'
                         )
-                    )
+                    ),
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(
+                        'methodCalls' => array(
+                            'addDatagridManagerService' => array('users', 'test.user_grid.manager'),
+                        ),
+                    ),
                 )
             ),
             'Optional tag attribute "query_entity_alias"' => array(
@@ -117,7 +124,9 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'route_name' => 'user_grid_route'
                                 )
                             )
-                        )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     )
                 ),
                 'expectedDefinitions' => array(
@@ -131,7 +140,12 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                     'test.user_grid.manager.default_query_factory' => array(
                         'class' => '%oro_grid.orm.query_factory.entity.class%',
                         'arguments' => array(new Reference('doctrine'), 'User', 'u')
-                    )
+                    ),
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(
+                        'methodCalls' => array(
+                            'addDatagridManagerService' => array('users', 'test.user_grid.manager'),
+                        ),
+                    ),
                 )
             ),
             'Optional tag attribute "entity_hint"' => array(
@@ -147,7 +161,9 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'route_name' => 'user_grid_route'
                                 )
                             )
-                        )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     )
                 ),
                 'expectedDefinitions' => array(
@@ -155,7 +171,12 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                         'methodCalls' => array(
                             'setEntityHint' => array('users')
                         )
-                    )
+                    ),
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(
+                        'methodCalls' => array(
+                            'addDatagridManagerService' => array('users', 'test.user_grid.manager'),
+                        ),
+                    ),
                 )
             ),
             'Tag attributes override services' => array(
@@ -177,7 +198,9 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'translation_domain' => 'translation_domain_parameter'
                                 )
                             )
-                        )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     )
                 ),
                 'expectedDefinitions' => array(
@@ -193,7 +216,12 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                             'setRouter' => array(new Reference('router_service')),
                             'setTranslationDomain' => array(new Parameter('translation_domain_parameter')),
                         )
-                    )
+                    ),
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(
+                        'methodCalls' => array(
+                            'addDatagridManagerService' => array('users', 'test.user_grid.manager'),
+                        ),
+                    ),
                 )
             )
         );
@@ -222,6 +250,26 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
     public function processErrorDataProvider()
     {
         return array(
+            'Manager registry is required' => array(
+                'containerData' => array(
+                    'definitions' => array(
+                        'test_service' => $this->createStubDefinitionWithTags(
+                            array(
+                                AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG => array(
+                                    'name' => AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG,
+                                    'entity_name' => 'User',
+                                    'route_name' => 'user_grid_route',
+                                )
+                            )
+                        ),
+                    )
+                ),
+                'Symfony\Component\DependencyInjection\Exception\InvalidArgumentException',
+                sprintf(
+                    'The service definition "%s" does not exist.',
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                )
+            ),
             'Attribute "datagrid_name" is required' => array(
                 'containerData' => array(
                     'definitions' => array(
@@ -233,7 +281,9 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'route_name' => 'user_grid_route',
                                 )
                             )
-                        )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     )
                 ),
                 'Symfony\Component\Config\Definition\Exception\InvalidDefinitionException',
@@ -253,7 +303,9 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'entity_name' => 'User'
                                 ),
                             )
-                        )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
                     ),
                 ),
                 'Symfony\Component\Config\Definition\Exception\InvalidDefinitionException',
