@@ -12,6 +12,13 @@ use Doctrine\ORM\EntityRepository;
 
 class BusinessUnitType extends AbstractType
 {
+    protected $ownershipListener;
+
+    public function __construct($ownershipListener)
+    {
+        $this->ownershipListener = $ownershipListener;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -92,6 +99,7 @@ class BusinessUnitType extends AbstractType
                     'multiple' => true,
                 )
             );
+        $builder->addEventSubscriber($this->ownershipListener);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

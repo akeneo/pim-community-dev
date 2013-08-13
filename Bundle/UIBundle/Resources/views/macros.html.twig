@@ -259,7 +259,7 @@
     Parameters:
         dataTarget - id of scroll block
         data - array with scroll data blocks
-        isForm - flag that scroll block must contain the form
+        from
     data parameter structure:
         [
             'dataBlocks' - array of blocks. each block consist of:
@@ -276,12 +276,36 @@
             'hiddenData' - additional data (hidden fields from the form)
         ]
 #}
-{% macro scrollData(dataTarget, data, isForm) %}
+{% macro scrollData(dataTarget, data, form = null) %}
+    {% if form is defined %}
+        {% set isForm = true %}
+    {% else %}
+        {% set isForm = false %}
+    {% endif %}
+
+    {% set dataBlocks = data.dataBlocks %}
+
+    {% if isForm  %}
+        {% set dataBlocks = dataBlocks|merge(
+        [{
+        'title' : 'Record owner',
+        'subblocks':
+            [
+                {
+                    'title' : null,
+                    'useSpan': false,
+                    'data' : [form_row(form.owner)]
+                }
+            ]
+        }]
+        )
+        %}
+    {% endif %}
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="container-fluid" style="width: auto;">
                 <ul class="nav">
-                    {% for navElement in data.dataBlocks %}
+                    {% for navElement in dataBlocks %}
                         <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
                     {% endfor %}
                 </ul>
@@ -298,12 +322,17 @@
             </div>
         {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
-            {% for scrollBlock in data.dataBlocks %}
+            {% for scrollBlock in dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
-            {% if data.hiddenData is defined %}
+            {% if data.hiddenData is defined or isForm %}
                 <div class="hide">
-                    {{ data.hiddenData|raw }}
+                    {% if data.hiddenData is defined %}
+                        {{ data.hiddenData|raw }}
+                    {% endif %}
+                    {% if isForm %}
+                        {{ form_rest(form) }}
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
