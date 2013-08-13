@@ -12,7 +12,7 @@
 @widthClosePanel:                 25px;
 @widthLeftPanel:                  230px;
 @widthLeftPanel2:                 210;
-@baseBtnBorderRadius:             3px;
+@baseBtnBorderRadius:             4px;
 @iconSpritePath:                  "../../img/glyphicons-halflings.png";
 @iconWhiteSpritePath:             "../../img/glyphicons-halflings-white.png";
 @bodyColor:                       #444;
@@ -810,11 +810,6 @@ footer{
   background: #fff;
   border: 0;
   .box-shadow(0 1px 4px rgba(0,0,0,.065));
-  fieldset{
-    padding: 30px 40px;
-    background: #fff;
-    .border-radius(0 0 @baseBorderRadius*2 @baseBorderRadius*2);
-  }
   .add-on{
     padding: 4px 10px;
     min-width: 71px;
@@ -829,10 +824,10 @@ footer{
   }
   .oro-title{
     float: left;
-    font-size: 34px;
+    font-size: 24px;
     line-height: 40px;
     margin: 0;
-    text-shadow: 1px 1px 2px #000000;
+    text-shadow: 1px 1px 1px #000000;
     filter: dropshadow(color=#000000, offx=1, offy=1);
   }
   .oro-title a{
@@ -842,28 +837,27 @@ footer{
     text-decoration: none;
   }
   .title{
-    font: 26px/40px Arial, Helvetica, sans-serif;
+    font: 24px/40px Arial, Helvetica, sans-serif;
     margin: 0;
-    text-shadow: 1px 1px 2px #000000;
+    text-shadow: 1px 1px 1px #000000;
     filter: dropshadow(color=#000000, offx=1, offy=1);
   }
-  .input-prepend {
-    .add-on{
-      height: 36px;
-      font: bold 14px/36px Arial, Helvetica, sans-serif;
-      color: #5b636d;
-      #gradient > .vertical(#dde0e3, #d2d7db);
-      padding: 0 10px;
-    }
-    input[type="text"],
-    input[type="password"]{
-      height: 36px;
-      font: 14px/36px Arial, Helvetica, sans-serif;
-      color: #000;
-      padding: 0 10px;
-      width: 205px;
-    }
+  .add-on{
+    height: 36px;
+    font: bold 14px/36px Arial, Helvetica, sans-serif;
+    color: #5b636d;
+    #gradient > .vertical(#dde0e3, #d2d7db);
+    padding: 0 10px;
   }
+  input[type="text"],
+  input[type="password"]{
+    height: 36px;
+    font: 14px/36px Arial, Helvetica, sans-serif;
+    color: #000;
+    padding: 0 10px;
+    width: 205px;
+  }
+
   .form-row{
     padding-top: 4px;
   }
@@ -878,10 +872,11 @@ footer{
     min-width: 130px;
   }
   fieldset{
-    .border-radius(0 0 @baseBorderRadius*2 @baseBorderRadius*2);
     border: solid @navbarBorder;
     border-width: 0 1px 1px 1px;
     padding: 30px 39px;
+    background: #fff;
+    .border-radius(0 0 5px 5px);
   }
 }
 .oro-subtitle{
@@ -1005,9 +1000,9 @@ footer{
 
 .title-box{
   overflow: hidden;
-  padding: 10px 15px 7px;
+  padding: 8px 23px 5px;
   color: #fff;
-  .border-radius( @baseBorderRadius*2 @baseBorderRadius*2 0 0);
+  .border-radius( 5px 5px 0 0);
   #gradient > .vertical(#47505a, #353d45);
   .divider-vertical{
     float: left;
@@ -1031,6 +1026,23 @@ footer{
   font-size: 14px;
   background-repeat: none;
   display: inline-block;
+  #gradient > .vertical(#fafafa, #efefef);
+  color: #666;
+}
+.btn:hover,
+.btn:focus {
+  text-decoration: none;
+  background-position: 0 0;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+  color: #666;
+  #gradient > .vertical(#FDFDFD, #f5f5f5);
+}
+.btn:active{
+  #gradient > .vertical(#e7e7e7, #f2f2f2);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .btn-small{
@@ -1043,26 +1055,13 @@ footer{
   min-width: 112px;
   padding: 0 20px;
   height: 34px;
-  line-height: 34px;
+  line-height: 32px;
   font-weight: bold;
 }
 .btn-mini{
   height: 20px;
   line-height: 20px;
   font-size: 11px;
-}
-.btn:hover,
-.btn:focus {
-  text-decoration: none;
-  background-position: 0 0;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-  color: #666;
-}
-.btn{
-  #gradient > .vertical(#ffffff, #E6E6E6);
 }
 .btn-uppercase{
  text-transform: uppercase;
@@ -1071,9 +1070,10 @@ footer{
   #gradient > .vertical(#739cdc, #4875bc);
   border: 1px solid;
   border-color: #5387be #5387be #5387be;
-  text-shadow: 1px 1px 2px #00324d;
+  text-shadow: 0px 1px 0px #386E9F;
   filter: dropshadow(color=#00324d, offx=1, offy=1);
   font-weight: bold;
+  color: #fff;
 }
 .btn-primary:hover{
   #gradient > .vertical(#85ace8, #567fbf);
@@ -2596,10 +2596,16 @@ textarea{
   padding: 15px;
 }
 .oro-forgot-password #prependedInput{
-  width: 160px;
+  width: 310px;
 }
 .form-signin .oro-forgot-password {
   padding: 30px 33px;
+}
+.form-signin .oro-remember-me {
+  margin-bottom: 10px;
+}
+.form-signin .form-row a {
+
 }
 
 .filter-criteria .oro-action{

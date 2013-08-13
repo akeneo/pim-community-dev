@@ -20,20 +20,18 @@
         <fieldset>
             <div class="input-prepend">
                 <span class="add-on">{{ 'Username'|trans }}</span>
-                <input type="text" id="prependedInput" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+                <input type="text" id="prependedInput" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus/>
             </div>
             <div class="input-prepend">
                 <span class="add-on">{{ 'Password'|trans }}</span>
                 <input type="password" id="prependedInput2" class="span2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" />
             </div>
-            <div class="form-row">
-                <label class="checkbox">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
-                </label>
-            </div>
-            <div class="form-row">
+            <label class="checkbox oro-remember-me">
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
+            </label>
+            <div class="control-group form-row">
+                <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
                 <button type="submit" class="btn btn-large  btn-primary" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
-                <a class="forgot-pass" href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
             </div>
         </fieldset>
         <input type="hidden" name="_target_path" value="" />

@@ -5,7 +5,7 @@
 {% block content %}
 <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-signin">
     <div class="title-box">
-        <h1 class="oro-title">Oro</h1>
+        <h1 class="oro-title">{{ oro_config_value('oro_ui.application_title') }}</h1>
         <span class="divider-vertical"></span>
         <h2 class="title">{{ 'Forgot Password'|trans }}</h2>
     </div>
@@ -19,9 +19,8 @@
     {% endif %}
 
     <fieldset class="oro-forgot-password">
-        <div class="input-prepend">
-            <span class="add-on">{{ 'Username or email'|trans }}</span>
-            <input type="text" id="prependedInput" class="span2" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+        <div>
+            <input type="text" id="prependedInput" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus/>
         </div>
         <div class="form-row">
             <a href="{{ path('oro_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>
