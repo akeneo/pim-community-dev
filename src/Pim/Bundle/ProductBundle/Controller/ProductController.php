@@ -297,21 +297,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Custom method to always generate an url with a datalocale paramater
-     * @param string  $route      The name of the route
-     * @param mixed   $parameters An array of parameters
-     * @param Boolean $absolute   Whether to generate an absolute URL
-     * @param string  $hash       The hash to prepend to the URL
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function generateUrl($route, $parameters = array(), $absolute = false, $hash = null)
+    protected function redirectToRoute($route, $parameters = array(), $status = 302)
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocale();
         }
 
-        return parent::generateUrl($route, $parameters, $absolute);
+        return parent::redirectToRoute($route, $parameters, $status);
     }
 
     /**
