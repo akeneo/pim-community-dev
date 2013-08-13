@@ -21,7 +21,6 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     public function testDefaultValues()
     {
         $this->assertEquals(null, $this->reader->getFilePath());
-        $this->assertEquals(0, $this->reader->getLineLength());
         $this->assertEquals(';', $this->reader->getDelimiter());
         $this->assertEquals('"', $this->reader->getEnclosure());
         $this->assertEquals('\\', $this->reader->getEscape());
@@ -31,10 +30,19 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/import.csv');
 
-        $this->assertEquals(array('firstname', 'lastname', 'age'), $this->reader->read());
-        $this->assertEquals(array('Severin', 'Gero', '28'), $this->reader->read());
-        $this->assertEquals(array('Kyrylo', 'Zdislav', '34'), $this->reader->read());
-        $this->assertEquals(array('Cenek', 'Wojtek', '7'), $this->reader->read());
+        $this->assertEquals(
+            array('firstname' => 'Severin', 'lastname' => 'Gero', 'age' => '28'),
+            $this->reader->read()
+        );
+        $this->assertEquals(
+            array('firstname' => 'Kyrylo', 'lastname' => 'Zdislav', 'age' => '34'),
+            $this->reader->read()
+        );
+        $this->assertEquals(
+            array('firstname' => 'Cenek', 'lastname' => 'Wojtek', 'age' => '7'),
+            $this->reader->read()
+        );
+
         $this->assertNull($this->reader->read());
     }
 
@@ -46,7 +54,6 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
 
-        $this->reader->read();
         $this->reader->read();
     }
 }

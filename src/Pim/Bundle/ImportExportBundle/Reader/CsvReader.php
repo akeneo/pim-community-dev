@@ -20,12 +20,11 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      * @Assert\File(groups={"Execution"})
      */
     protected $filePath;
-    protected $lineLength = 0;
     protected $delimiter = ';';
     protected $enclosure = '"';
     protected $escape = '\\';
 
-    private $handle;
+    private $csv;
     private $columnsCount;
 
     public function setFilePath($filePath)
@@ -36,16 +35,6 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     public function getFilePath()
     {
         return $this->filePath;
-    }
-
-    public function setLineLength($lineLength)
-    {
-        $this->lineLength = $lineLength;
-    }
-
-    public function getLineLength()
-    {
-        return $this->lineLength;
     }
 
     public function setDelimiter($delimiter)
@@ -83,24 +72,34 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      */
     public function read()
     {
-        if (!$this->handle) {
-            $this->handle = fopen($this->filePath, 'r');
+        if (null === $this->csv) {
+            $this->csv = new \SplFileObject($this->filePath);
+            $this->csv->setFlags(\SplFileObject::READ_CSV);
+            $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
+            $this->fieldNames = $this->csv->fgetcsv();
         }
 
-        $data = fgetcsv($this->handle, $this->lineLength, $this->delimiter, $this->enclosure, $this->escape);
-        if (!$this->columnsCount) {
-            $this->columnsCount = count($data);
-        } elseif (is_array($data) && $this->columnsCount !== count($data)) {
-            throw new \Exception(
-                sprintf(
-                    'Expecting to have %d columns, actually have %d.',
-                    $this->columnsCount,
-                    count($data)
-                )
-            );
+        if ($data = $this->csv->fgetcsv()) {
+            if (array(null) === $data) {
+                return;
+            }
+
+            if (count($this->fieldNames) !== count($data)) {
+                throw new \Exception(
+                    sprintf(
+                        'Expecting to have %d columns, actually have %d.',
+                        count($this->fieldNames),
+                        count($data)
+                    )
+                );
+            }
+
+            $data = array_combine($this->fieldNames, $data);
+        } else {
+            throw new \RuntimeException('An error occured while reading the csv.');
         }
 
-        return $data ?: null;
+        return $data;
     }
 
     /**
@@ -110,7 +109,6 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     {
         return array(
             'filePath'   => array(),
-            'lineLength' => array(),
             'delimiter'  => array(),
             'enclosure'  => array(),
             'escape'     => array(),
