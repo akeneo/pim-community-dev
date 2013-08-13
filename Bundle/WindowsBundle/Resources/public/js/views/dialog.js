@@ -169,39 +169,7 @@ Oro.widget.DialogView = Oro.widget.Abstract.extend({
             this.options.dialogOptions.stateChange = _.bind(this.handleStateChange, this);
             this.widget = Backbone.$('<div/>').append(this.$el).dialog(this.options.dialogOptions);
         } else {
-            this.widget.html(this.dialogContent);
-        }
-
-        this.adoptActions();
-        this.adjustHeight();
-
-        // Processing links in dialog
-        if (!_.isUndefined(Oro.hashNavigationInstance) && Oro.hashNavigationEnabled()) {
-            Oro.hashNavigationInstance.processClicks($(this.dialogContent).find(Oro.hashNavigationInstance.selectors.links));
-        }
-    },
-
-    adjustHeight: function() {
-        var content = this.widget.find('.scrollable-container');
-        if (content.length == 0) {
-            return;
-        }
-
-        // first execute
-        if (_.isNull(this.contentTop)) {
-            content.css('overflow', 'auto');
-
-            var parentEl = content.parent();
-            var topPaddingOffset = parentEl.is(this.widget)?0:parentEl.position().top;
-            this.contentTop = content.position().top + topPaddingOffset;
-            var widgetHeight = this.widget.height();
-            content.outerHeight(this.widget.height() - this.contentTop);
-            if (widgetHeight != this.widget.height()) {
-                // there is some unpredictable offset
-                this.contentTop += this.widget.height() - this.contentTop - content.outerHeight();
-                content.outerHeight(this.widget.height() - this.contentTop);
-            }
-            this.widget.on("dialogresize", _.bind(this.adjustHeight, this));
+            this.widget.html(this.$el);
         }
         Oro.widget.Abstract.prototype.show.apply(this);
     },
