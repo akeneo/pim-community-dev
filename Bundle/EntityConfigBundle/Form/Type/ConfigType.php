@@ -52,14 +52,20 @@ class ConfigType extends AbstractType
 
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getPropertyConfig()->hasForm($configType, $fieldType)) {
+                $config = $provider->getConfig($className, $fieldName);
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigScopeType($provider->getPropertyConfig()->getFormItems($configType, $fieldType)),
+                    new ConfigScopeType(
+                        $provider->getPropertyConfig()->getFormItems($configType, $fieldType),
+                        $config,
+                        $this->configManager,
+                        $configModel
+                    ),
                     array(
-                        'block_config' => (array) $provider->getPropertyConfig()->getFormBlockConfig($configType)
+                        'block_config' => (array)$provider->getPropertyConfig()->getFormBlockConfig($configType)
                     )
                 );
-                $data[$provider->getScope()] = $provider->getConfig($className, $fieldName)->getValues();
+                $data[$provider->getScope()] = $config->getValues();
             }
         }
 

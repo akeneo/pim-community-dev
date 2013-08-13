@@ -87,7 +87,7 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * @param      $className
      * @param null $fieldName
-     * @return null|Config|ConfigInterface
+     * @return ConfigInterface
      */
     public function getConfig($className, $fieldName = null)
     {

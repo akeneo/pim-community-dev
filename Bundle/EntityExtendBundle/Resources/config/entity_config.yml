@@ -141,16 +141,11 @@ oro_entity_config:
                         allowed_type:       [string]
                         required_property:
                             config_id:
-                                class_name: TestClass
-                                field_name: testField
-                                scope:      test
-                                value:      test_value
-                            parent:         false
-                            scope:          extend
+                                scope:      extend
                             code:           owner
                             value:          Custom
                     constraints:
-                        - Regex:        "/^[0-9]*$/"
+                        - Regex:            "/^[0-9]*$/"
                         - Range:
                             min:            1
                             max:            255
@@ -167,11 +162,12 @@ oro_entity_config:
                         default_value:      2
                         allowed_type:       [decimal]
                         required_property:
-                            property_type:  field
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
                     constraints:
-                        - Regex:        "/^[0-9]*$/"
+                        - Regex:            "/^[0-9]*$/"
                         - Range:
                             min:            0
                     form:
@@ -187,11 +183,12 @@ oro_entity_config:
                         default_value:      2
                         allowed_type:       [decimal]
                         required_property:
-                            property_type:  field
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
                     constraints:
-                        - Regex:        "/^[0-9]*$/"
+                        - Regex:            "/^[0-9]*$/"
                         - Range:
                             min:            0
                     form:
