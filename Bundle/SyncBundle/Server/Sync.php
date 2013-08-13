@@ -61,14 +61,14 @@ class Sync implements WampServerInterface
         $message = json_decode($message, true);
 
         // If the lookup topic object isn't set there is no one to publish to
-        if (!empty($message['url'])
+        if (!empty($message['channel'])
             && $message['attributes']
-            && !array_key_exists($message['url'], $this->subscribedTopics)
+            && !array_key_exists($message['channel'], $this->subscribedTopics)
         ) {
             return;
         }
 
         // re-send the data to all the clients subscribed to that category
-        $this->subscribedTopics[$message['url']]->broadcast($message['attributes']);
+        $this->subscribedTopics[$message['channel']]->broadcast($message['attributes']);
     }
 }

@@ -46,7 +46,9 @@
          */
         subscribeModel = function (model) {
             if (model.id) {
-                service.subscribe(_.result(model, 'url'), _.bind(model.set, model));
+                // saves bound function in order to have same callback in unsubscribeModel call
+                model['[[SetCallback]]'] = (model['[[SetCallback]]'] || _.bind(model.set, model));
+                service.subscribe(_.result(model, 'url'), model['[[SetCallback]]']);
                 model.on('remove', unsubscribeModel);
             }
         },
@@ -57,7 +59,11 @@
          */
         unsubscribeModel = function (model) {
             if (model.id) {
-                service.unsubscribe(_.result(model, 'url'));
+                var args = [_.result(model, 'url')];
+                if (_.isFunction(model['[[SetCallback]]'])) {
+                    args.push(model['[[SetCallback]]']);
+                }
+                service.unsubscribe.apply(service, args);
             }
         },
 

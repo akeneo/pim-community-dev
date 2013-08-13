@@ -13,7 +13,7 @@
     var defaultOptions = {
             waitUpdate: 5000,
             waitSubscription: 500,
-            attemptsLimit: 10
+            maxRetries: 10
         },
 
         /**
@@ -122,39 +122,40 @@
                 },
                 complete: _.bind(function (xhr, status) {
                     attempt = status === 'error' ? attempt + 1 : 0;
-                    if (attempt <= this.options.attemptsLimit && (attempt || _.some(channels, function (obj) {
+                    if (attempt <= this.options.maxRetries && (attempt || _.some(channels, function (obj) {
                         return obj.token === '';
                     }))) {
                         subscribe.call(this, attempt);
                     }
                 }, this)
             });
-        },
-
-        /**
-         * Synchronizer service build over AJAX
-         *
-         * @constructor
-         * @param {Object} options to configure service
-         * @param {string} options.url is required,
-         * @param {number=} options.waitUpdate default is 5000 (5s)
-         * @param {number=} options.waitSubscription is time before actual subscribe request after first
-         *      subscribe call, default is 500 (1/2s). During this time, service waits for more
-         *      subscribers and after it makes a request to subscribe them all ta ones
-         * @param {number=} options.attemptsLimit quantity of attempts before stop trying
-         *      to subscribe after an error response received, default is 10
-         *
-         * @var {Function} ajax protected shortcut for Synchronizer.Ajax
-         */
-        ajax = Synchronizer.Ajax = function (options) {
-            this.options = _.extend({}, defaultOptions, options);
-            this.channels = {};
-            fetchUpdates.call(this);
         };
 
-    ajax.prototype = {
+    /**
+     * Synchronizer service build over AJAX
+     *
+     * @constructor
+     * @param {Object} options to configure service
+     * @param {string} options.url is required
+     * @param {number=} options.waitUpdate default is 5000 (5s)
+     * @param {number=} options.waitSubscription is time before actual subscribe request after first
+     *      subscribe call, default is 500 (1/2s). During this time, service waits for more
+     *      subscribers and after it makes a request to subscribe them all ta ones
+     * @param {number=} options.maxRetries quantity of attempts before stop trying
+     *      to subscribe after an error response received, default is 10
+     */
+    Synchronizer.Ajax = function (options) {
+        this.options = _.extend({}, defaultOptions, options);
+        if (!this.options.url) {
+            throw new Error('URL option is required');
+        }
+        this.channels = {};
+        fetchUpdates.call(this);
+    };
+
+    Synchronizer.Ajax.prototype = {
         /**
-         * Subscribes update callback function on channel
+         * Subscribes update callback function on a channel
          *
          * @param {string} channel is an URL which broadcasts updates
          * @param {function(Object)} callback is a function which accepts JSON
@@ -173,6 +174,7 @@
                 obj.callbacks.push(callback);
             }
         },
+
         /**
          * Removes subscription of update callback function for a channel
          *
