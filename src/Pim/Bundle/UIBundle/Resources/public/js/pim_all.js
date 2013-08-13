@@ -8,7 +8,7 @@ Pim.navigate = function(route) {
 Pim.updateListener = function($form) {
     this.updated = false;
     var message = $form.attr('data-updated-message'),
-    title = $form.attr('data-updated-title')
+    title = $form.attr('data-updated-title'),
     self = this;
 
     var formUpdated = function() {
