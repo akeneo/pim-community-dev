@@ -72,7 +72,7 @@
     {% if form.vars.value and form.vars.value.filePath %}
         <ul class="unstyled controls medias">
             <li>
-                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                <a class="no-hash" href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
                 <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
             </li>
         </ul>
