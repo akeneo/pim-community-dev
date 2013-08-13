@@ -217,25 +217,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createFamilyField()
     {
-        $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
-
         $field = new FieldDescription();
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Family'),
-                'field_name'  => 'family',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices'  => $choices,
-                    'multiple' => true
-                ),
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Family'),
+                'field_name'    => 'familyLabel',
+                'expression'    => 'family',
+                'filter_type'   => FilterInterface::TYPE_ENTITY,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                'multiple'      => true,
+                'class'         => 'PimProductBundle:Family',
+                'property'      => 'label',
+                'filter_by_where' => true,
             )
         );
 
@@ -341,25 +339,36 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function prepareQuery(ProxyQueryInterface $query)
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        /**
-         * @var FlexibleQueryBuilder
-         */
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        // @todo : must be THEN CONCAT("[", family.code, "]")
+        $selectConcat = "CASE WHEN ft.label IS NULL ".
+                        "THEN family.code ".
+                        "ELSE ft.label END ".
+                        "as familyLabel";
+
+        $proxyQuery
+            ->addSelect($selectConcat, true)
+            ->leftJoin($rootAlias .'.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+
+        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
 
             if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $query->expr()->in($query->getRootAlias().'.id', $productIds);
-                $query->where($expression);
-
+                $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+                $proxyQuery->andWhere($expression);
             } else {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $query->expr()->notIn($query->getRootAlias().'.id', $productIds);
-                $query->where($expression);
+                $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
+                $proxyQuery->andWhere($expression);
             }
         }
     }
