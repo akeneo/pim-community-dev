@@ -341,6 +341,12 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
             'code' => $this->getCode(),
         );
 
+        $products = array();
+        foreach ($this->getProducts() as $product) {
+            $products[]= $product->getIdentifier();
+        }
+        $data['products']= implode(', ', $products);
+
         foreach ($this->getTranslations() as $translation) {
             $data['title_'.$translation->getLocale()]= $translation->getTitle();
         }

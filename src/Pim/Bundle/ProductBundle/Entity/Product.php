@@ -332,6 +332,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             $data['family'] = $this->getFamily()->getCode();
         }
 
+        $data['enabled'] = $this->isEnabled();
+
         $categories = array();
         foreach ($this->getCategories() as $category) {
             $categories[]= $category->getCode();
