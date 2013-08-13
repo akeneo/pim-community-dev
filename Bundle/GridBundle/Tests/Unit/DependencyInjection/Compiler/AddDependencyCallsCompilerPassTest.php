@@ -257,8 +257,6 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                             array(
                                 AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG => array(
                                     'name' => AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG,
-                                    'entity_name' => 'User',
-                                    'route_name' => 'user_grid_route',
                                 )
                             )
                         ),
@@ -291,6 +289,36 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                     'Definition of service "test_service" must have "datagrid_name" attribute in tag "%s"',
                     AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG
                 )
+            ),
+            'Two datagrids with the same name' => array(
+                'containerData' => array(
+                    'definitions' => array(
+                        'test_first_service' => $this->createStubDefinitionWithTags(
+                            array(
+                                AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG => array(
+                                    'name' => AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG,
+                                    'datagrid_name' => 'users',
+                                    'entity_name' => 'User',
+                                    'route_name' => 'user_grid_route',
+                                )
+                            )
+                        ),
+                        'test_second_service' => $this->createStubDefinitionWithTags(
+                            array(
+                                AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG => array(
+                                    'name' => AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG,
+                                    'datagrid_name' => 'users',
+                                    'entity_name' => 'User',
+                                    'route_name' => 'user_grid_route',
+                                )
+                            )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                            => $this->createStubDefinition('DatagridManagerRegistry'),
+                    )
+                ),
+                'Symfony\Component\Config\Definition\Exception\InvalidDefinitionException',
+                'Datagrid manager with name "users" already exists'
             ),
             'Attribute "route_name" is required' => array(
                 'containerData' => array(
