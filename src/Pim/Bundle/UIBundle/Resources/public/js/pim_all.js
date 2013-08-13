@@ -129,7 +129,7 @@ function init() {
         if (activeGroup) {
             sessionStorage.activeGroup = activeGroup;
         }
-    };
+    }
 
     function restoreFormState() {
         if (sessionStorage.activeTab) {
@@ -147,7 +147,7 @@ function init() {
             }
             sessionStorage.removeItem('activeGroup');
         }
-    };
+    }
 
     if (typeof(Storage) !== 'undefined') {
         restoreFormState();
