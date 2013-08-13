@@ -318,6 +318,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function getVersionedData()
     {
         $data = array();
+
         if ($this->getFamily()) {
             $data['family'] = $this->getFamily()->getCode();
         }
@@ -330,10 +331,5 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         }
 
         return $data;
-
-        /*
-        $normalizer = new ProductNormalizer();
-
-        return $normalizer->normalize($this);*/
     }
 }

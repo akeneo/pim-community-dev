@@ -49,11 +49,7 @@ class AddVersionListener implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() AS $entity) {
-            if ($entity instanceof Versionable) {
-                $this->writeSnapshot($em, $entity);
-            }
-
-            // TODO add same coverage than update
+            // TODO add same coverage than update, pb with unexisting entity id
         }
 
         foreach ($uow->getScheduledEntityUpdates() AS $entity) {
@@ -83,35 +79,58 @@ class AddVersionListener implements EventSubscriber
      * @param EntityManager        $em
      * @param VersionableInterface $entity
      */
-    protected function writeSnapshot(EntityManager $em, Versionable $entity)
+    public function writeSnapshot(EntityManager $em, Versionable $versionable)
     {
-        $oid = spl_object_hash($entity);
+        $oid = spl_object_hash($versionable);
         if (!isset($this->pendingVersions[$oid])) {
-            $version = new Version($entity);
+
+            $version = new Version($versionable);
             $this->computeChangeSet($em, $version);
             $this->pendingVersions[$oid]= $version;
 
-
             /** @var User $user */
-            $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => 'admin')); // TODO : to fix !
+            $user = $em->getRepository('OroUserBundle:User')
+                ->findOneBy(array('username' => 'admin')); // TODO : to fix !
 
             $logEntry = new Audit();
-
-            $logEntry->setAction('update');
+            $logEntry->setAction('update'); // TODO create if there is no
             $logEntry->setObjectClass($version->getResourceName());
             $logEntry->setLoggedAt();
             $logEntry->setUser($user);
-
             $logEntry->setObjectName('TODO : useless name ?');
             $logEntry->setObjectId($version->getResourceId());
-
-            // $version->getVersionedData() TODO
-            $logEntry->setData(array('puet' => array('old' => 'machin', 'new' => 'truc')));
             $logEntry->setVersion($version->getVersion());
+            $newData = $version->getVersionedData();
 
+            $previousVersion = $em->getRepository('PimVersioningBundle:Version')
+                ->findOneBy(array('resourceId' => $version->getResourceId()), array('version' => 'desc'));
 
-            $this->computeChangeSet($em, $logEntry);
+            if ($previousVersion) {
+                $oldData = $previousVersion->getVersionedData();
+            } else {
+                $oldData = array();
+            }
 
+            $diff = array_diff($newData, $oldData);
+            $diffData = array();
+            foreach (array_keys($diff) as $changedField) {
+                if (isset($oldData[$changedField])) {
+                    $diffData[$changedField]= array('old' => $oldData[$changedField]);
+                } else {
+                    $diffData[$changedField]= array('old' => '');
+                }
+                if (isset($newData[$changedField])) {
+                    $diffData[$changedField]['new'] = $newData[$changedField];
+                } else {
+                    $diffData[$changedField]['new'] = '';
+                }
+            }
+
+            $logEntry->setData($diffData);
+
+            if (!empty($diffData)) {
+                $this->computeChangeSet($em, $logEntry);
+            }
         }
     }
 
