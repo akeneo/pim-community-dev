@@ -48,8 +48,8 @@ class PriceCollectionType extends AbstractAttributeType
     {
         $options = parent::prepareValueFormOptions($value);
         $options['type']         = 'pim_product_price';
-        $options['allow_add']    = false;
-        $options['allow_delete'] = false;
+        $options['allow_add']    = true;
+        $options['allow_delete'] = true;
         $options['by_reference'] = false;
 
         return $options;

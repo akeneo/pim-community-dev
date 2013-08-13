@@ -25,7 +25,11 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('getViolations', array($this, 'getViolationsFunction')),
+            new \Twig_SimpleFunction(
+                'getViolations',
+                array($this, 'getViolationsFunction'),
+                array('is_safe' => array('html'))
+            )
         );
     }
 
@@ -52,7 +56,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             return $value ? 'Yes' : 'No';
         }
 
-        if (!$value) {
+        if (null === $value) {
             return 'N/A';
         }
 
@@ -81,6 +85,11 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             }
         }
 
-        return join(' ', $messages);
+        if (count($messages)) {
+            $spanStart = '<span class="label label-important">';
+            $spanEnd   = '</span>';
+
+            return $spanStart . join("$spanEnd $spanStart", $messages) . $spanEnd;
+        }
     }
 }

@@ -260,8 +260,8 @@ pim_batch:
             steps:
                 export:
                     title:      pim_import_export.jobs.product_import.import.title
-                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
-                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
+                    reader:     pim_import_export.reader.csv
+                    processor:  pim_import_export.processor.valid_product_creation
                     writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
         category_import:
             title:     pim_import_export.jobs.category_import.title

@@ -118,7 +118,7 @@ abstract class JobControllerAbstract extends Controller
 
         return array(
             'job'        => $job,
-            'violations' => $this->getValidator()->validate($job),
+            'violations' => $this->getValidator()->validate($job, array('Default', 'Execution')),
         );
     }
 
@@ -212,7 +212,7 @@ abstract class JobControllerAbstract extends Controller
             return $this->redirectToIndexView();
         }
 
-        if (count($this->getValidator()->validate($job)) === 0) {
+        if (count($this->getValidator()->validate($job, array('Default', 'Execution'))) === 0) {
             $jobExecution = new JobExecution;
             $jobExecution->setJob($job);
             $definition = $job->getJobDefinition();
