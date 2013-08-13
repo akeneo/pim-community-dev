@@ -294,7 +294,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getTitle() : null;
 
-        return ($translated != '') ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**
@@ -316,6 +316,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function __toString()
     {
-        return ($this->getTitle() != '') ? $this->getTitle() : $this->code;
+        return $this->getTitle();
     }
 }

@@ -64,7 +64,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for name property
+     * Test getter/setter for label property
      */
     public function testGetSetLabel()
     {
