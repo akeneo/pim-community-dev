@@ -13,22 +13,23 @@
     {% set actionTypePrefix = 'Oro\\Bundle\\GridBundle\\Action\\ActionInterface::' %}
     {% set parameterTypePrefix = 'Oro\\Bundle\\GridBundle\\Datagrid\\ParametersInterface::' %}
 
-    {% set datagridParameters = [] %}
-    {% if datagrid.name in datagrid.parameters|keys %}
-        {% set datagridParameters = datagrid.parameters[datagrid.name] %}
+    {% set datagridParameters = datagrid.parameters.toArray() %}
+    {% set currentDatagridParameters = [] %}
+    {% if datagrid.name in datagridParameters|keys %}
+        {% set currentDatagridParameters = datagridParameters[datagrid.name] %}
     {% endif %}
 
     {% set parametersSorterType = constant(parameterTypePrefix ~ 'SORT_PARAMETERS') %}
     {% set parametersFilterType = constant(parameterTypePrefix ~ 'FILTER_PARAMETERS') %}
 
     {% set sorterData = [] %}
-    {% if parametersSorterType in datagridParameters|keys %}
-        {% set sorterData = datagridParameters[parametersSorterType] %}
+    {% if parametersSorterType in currentDatagridParameters|keys %}
+        {% set sorterData = currentDatagridParameters[parametersSorterType] %}
     {% endif %}
 
     {% set filterData = [] %}
-    {% if parametersFilterType in datagridParameters|keys %}
-        {% set filterData = datagridParameters[parametersFilterType] %}
+    {% if parametersFilterType in currentDatagridParameters|keys %}
+        {% set filterData = currentDatagridParameters[parametersFilterType] %}
     {% endif %}
 
     {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}

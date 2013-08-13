@@ -18,6 +18,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 class Datagrid implements DatagridInterface
 {
@@ -52,6 +53,13 @@ class Datagrid implements DatagridInterface
      * @var bool
      */
     protected $parametersApplied = false;
+
+    /**
+     * Filters applied flag
+     *
+     * @var bool
+     */
+    protected $filtersApplied = false;
 
     /**
      * Pager applied flag
@@ -118,9 +126,14 @@ class Datagrid implements DatagridInterface
     protected $massActions = array();
 
     /**
-     * @var associative array
+     * @var array
      */
     protected $toolbarOptions;
+
+    /**
+     * @var string|null
+     */
+    protected $identifierField;
 
     /**
      * @param ProxyQueryInterface $query
@@ -304,8 +317,12 @@ class Datagrid implements DatagridInterface
     /**
      * Apply filter data to ProxyQuery
      */
-    protected function applyFilters()
+    public function applyFilters()
     {
+        if ($this->filtersApplied) {
+            return;
+        }
+
         $form = $this->getForm();
 
         /** @var $filter FilterInterface */
@@ -317,6 +334,8 @@ class Datagrid implements DatagridInterface
                 $filter->apply($this->query, $data);
             }
         }
+
+        $this->filtersApplied = true;
     }
 
     /**
@@ -410,11 +429,11 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * @return ParametersInterface
      */
     public function getParameters()
     {
-        return $this->parameters->toArray();
+        return $this->parameters;
     }
 
     /**
@@ -517,5 +536,21 @@ class Datagrid implements DatagridInterface
     public function setToolbarOptions($options)
     {
         $this->toolbarOptions = $options;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierField()
+    {
+        return $this->identifierField;
+    }
+
+    /**
+     * @param string $identifierField
+     */
+    public function setIdentifierField($identifierField)
+    {
+        $this->identifierField = $identifierField;
     }
 }

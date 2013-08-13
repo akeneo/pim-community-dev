@@ -262,6 +262,11 @@ abstract class DatagridManager implements DatagridManagerInterface
         // add toolbar options
         $datagrid->setToolbarOptions($this->getToolBarOptions());
 
+        // set identifier field name
+        if ($this->identifierField) {
+            $datagrid->setIdentifierField($this->identifierField);
+        }
+
         return $datagrid;
     }
 
@@ -518,7 +523,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             if ($notExists) {
                 $options['pageSize'] = isset($options['pageSize']) ? $options['pageSize'] : array();
                 $options['pageSize']['items'] = isset($options['pageSize']['items'])
-                    && is_array($options['pageSize']['items'])
+                && is_array($options['pageSize']['items'])
                     ? $options['pageSize']['items']
                     : array();
                 $options['pageSize']['items'][] = array(

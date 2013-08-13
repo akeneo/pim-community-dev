@@ -3,16 +3,11 @@
 namespace Oro\Bundle\GridBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
-
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\GridBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManagerInterface;
-
-use Symfony\Component\HttpFoundation\Response;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher;
 
 /**
  * @Acl(
@@ -23,18 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MassActionController extends Controller
 {
-    /**
-     * @param string $name
-     * @return DatagridManagerInterface
-     */
-    protected function getDatagridManagerByName($name)
-    {
-        /** @var DatagridManagerRegistry $managerRegistry */
-        $managerRegistry = $this->get(AddDependencyCallsCompilerPass::REGISTRY_SERVICE);
-
-        return $managerRegistry->getDatagridManager($name);
-    }
-
     /**
      * @Route("/{gridName}/massAction/{actionName}", name="oro_grid_mass_action")
      * @Acl(
@@ -50,8 +33,6 @@ class MassActionController extends Controller
      */
     public function massActionAction($gridName, $actionName)
     {
-        $datagridManager = $this->getDatagridManagerByName($gridName);
-
         // get parameters
         $inset = $this->getRequest()->get('inset', true);
         $inset = !empty($inset);
@@ -61,19 +42,15 @@ class MassActionController extends Controller
 
         $filters = $this->getRequest()->get('filters', array());
 
-        // if there is nothing to do
-        if ($inset && empty($values)) {
-            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
+        /** @var MassActionDispatcher $massActionDispatcher */
+        $massActionDispatcher = $this->get('oro_grid.mass_action.dispatcher');
+        $successful = $massActionDispatcher->dispatch($gridName, $actionName, $inset, $values, $filters);
+        if (!$successful) {
+            throw new \LogicException(
+                sprintf('Error is occurred during procession of mass action "%s"', $actionName)
+            );
         }
 
-        return new Response(
-            sprintf(
-                'grid=%s action=%s inset=%s values=[%s]',
-                $gridName,
-                $actionName,
-                $inset ? 'true' : 'false',
-                implode(', ', $values)
-            )
-        );
+        return new Response('ok');
     }
 }

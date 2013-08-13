@@ -47,16 +47,6 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * Mass action field name
-     *
-     * @return string
-     */
-    public function getFieldName()
-    {
-        return $this->getOption('field_name');
-    }
-
-    /**
      * ACL resource name
      *
      * @return string|null

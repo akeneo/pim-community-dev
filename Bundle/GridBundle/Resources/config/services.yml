@@ -1,6 +1,6 @@
 parameters:
-    oro_grid.datagrid.class:                 Oro\Bundle\GridBundle\Datagrid\Datagrid
-    oro_grid.datagrid.parameters.class:      Oro\Bundle\GridBundle\Datagrid\RequestParameters
+    oro_grid.datagrid.class:                  Oro\Bundle\GridBundle\Datagrid\Datagrid
+    oro_grid.datagrid.parameters.class:       Oro\Bundle\GridBundle\Datagrid\RequestParameters
 
     oro_grid.orm.query_factory.entity.class:  Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory
     oro_grid.orm.query_factory.query.class:   Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\QueryFactory
@@ -13,6 +13,7 @@ parameters:
     oro_grid.action.factory.class:            Oro\Bundle\GridBundle\Action\ActionFactory
 
     oro_grid.datagrid_manager.registry.class: Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry
+    oro_grid.mass_action.dispatcher.class:    Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
 
     oro_grid.route.default_generator.class:   Oro\Bundle\GridBundle\Route\DefaultRouteGenerator
 
@@ -49,6 +50,10 @@ services:
     oro_grid.datagrid_manager.registry:
         class:     %oro_grid.datagrid_manager.registry.class%
         arguments: ["@service_container"]
+
+    oro_grid.mass_action.dispatcher:
+        class:     %oro_grid.mass_action.dispatcher.class%
+        arguments: ["@service_container", "@oro_grid.datagrid_manager.registry"]
 
     oro_grid.renderer:
         class:     %oro_grid.renderer.class%

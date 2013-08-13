@@ -196,7 +196,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $arrayParameters = array('test');
         $parameters = $this->createParameters($arrayParameters);
         $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getParameters());
+        $this->assertEquals($parameters, $datagrid->getParameters());
     }
 
     public function testGetValues()
@@ -204,7 +204,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $arrayParameters = array('test');
         $parameters = $this->createParameters($arrayParameters);
         $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getValues());
+        $this->assertEquals($parameters, $datagrid->getValues());
     }
 
     public function testGetRouteGenerator()

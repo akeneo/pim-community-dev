@@ -14,13 +14,6 @@ interface MassActionInterface
     public function getName();
 
     /**
-     * Mass action field name
-     *
-     * @return string
-     */
-    public function getFieldName();
-
-    /**
      * ACL resource name
      *
      * @return string|null
@@ -40,4 +33,12 @@ interface MassActionInterface
      * @return array
      */
     public function getOptions();
+
+    /**
+     * Get specific option by name
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption($name);
 }

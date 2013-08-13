@@ -47,6 +47,11 @@ interface DatagridInterface extends BaseDatagridInterface
     public function getRowActions();
 
     /**
+     * @return MassActionInterface[]
+     */
+    public function getMassActions();
+
+    /**
      * @param string $name
      * @return null|SorterInterface
      */
@@ -73,7 +78,7 @@ interface DatagridInterface extends BaseDatagridInterface
     public function createView();
 
     /**
-     * @return array
+     * @return ParametersInterface
      */
     public function getParameters();
 
@@ -92,4 +97,23 @@ interface DatagridInterface extends BaseDatagridInterface
      * @return $this
      */
     public function setToolbarOptions($options);
+
+    /**
+     * Apply filter data to ProxyQuery
+     */
+    public function applyFilters();
+
+    /**
+     * Get identifier field name
+     *
+     * @return string
+     */
+    public function getIdentifierField();
+
+    /**
+     * Set identifier field name
+     *
+     * @param string $identifierField
+     */
+    public function setIdentifierField($identifierField);
 }
