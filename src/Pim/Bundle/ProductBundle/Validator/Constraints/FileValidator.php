@@ -22,6 +22,10 @@ class FileValidator extends BaseFileValidator
     {
         parent::validate($value, $constraint);
 
+        if (null === $value || '' === $value) {
+            return;
+        }
+
         if ($constraint->allowedExtensions) {
             $file = !$value instanceof \SplFileInfo ? new \SplFileInfo($value) : $value;
             if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
