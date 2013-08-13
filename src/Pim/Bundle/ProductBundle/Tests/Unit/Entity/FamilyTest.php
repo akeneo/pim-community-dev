@@ -16,75 +16,76 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \Pim\Bundle\ProductBundle\Entity\Family
+     */
+    protected $family;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->family = new Family();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $family = new Family();
-        $this->assertEntity($family);
+        $this->assertEntity($this->family);
+
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->family->getAttributes());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->family->getTranslations());
+
+        $this->assertCount(0, $this->family->getAttributes());
+        $this->assertCount(0, $this->family->getTranslations());
     }
 
     /**
-     * Test getter/setter for id property
+     * Test getter for id property
      */
     public function testId()
     {
-        $family = new Family();
-        $this->assertEmpty($family->getId());
+        $this->assertEmpty($this->family->getId());
     }
 
     /**
-     * Test getter/setter for name property
+     * Test getter/setter for code property
      */
     public function testGetSetCode()
     {
-        $family = new Family();
-        $this->assertEmpty($family->getCode());
+        $this->assertEmpty($this->family->getCode());
 
         // Change value and assert new
         $newCode = 'test-code';
-        $family->setCode($newCode);
-        $this->assertEquals($newCode, $family->getCode());
+        $this->assertEntity($this->family->setCode($newCode));
+        $this->assertEquals($newCode, $this->family->getCode());
     }
 
     /**
-     * Test getter/setter for name property
+     * Test getter/setter for label property
      */
     public function testGetSetLabel()
     {
-        $family = new Family();
-
         // Change value and assert new
-        $family->setCode('code');
-        $this->assertEquals('[code]', $family->getLabel());
+        $newCode = 'code';
+        $expectedCode = '['. $newCode .']';
+        $this->family->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->family->getLabel());
+
         $newLabel = 'test-label';
-        $family->setLocale('en_US');
-        $family->setLabel($newLabel);
-        $this->assertEquals($newLabel, $family->getLabel());
-    }
+        $this->assertEntity($this->family->setLocale('en_US'));
+        $this->assertEntity($this->family->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->family->getLabel());
 
-    /**
-     * Test getter/setter for attributes property
-     */
-    public function testGetAddRemoveAttribute()
-    {
-        $family = new Family();
+        // if no translation, assert the expected code is returned
+        $this->family->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->family->getLabel());
 
-        // Change value and assert new
-        $newAttribute = new ProductAttribute();
-        $family->addAttribute($newAttribute);
-        $this->assertInstanceOf(
-            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-            $family->getAttributes()->first()
-        );
-        $this->assertTrue($family->hasAttribute($newAttribute));
-
-        $family->removeAttribute($newAttribute);
-        $this->assertNotInstanceOf(
-            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-            $family->getAttributes()->first()
-        );
-        $this->assertFalse($family->hasAttribute($newAttribute));
+        // if empty translation, assert the expected code is returned
+        $this->family->setLabel('');
+        $this->assertEquals($expectedCode, $this->family->getLabel());
     }
 
     /**
@@ -92,14 +93,52 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $family = new Family();
-        $string = 'test-string';
-        $family->setCode($string);
-        $this->assertEquals('['.$string.']', $family->__toString());
+        // Change value and assert new
+        $newCode = 'toStringCode';
+        $expectedCode = '['. $newCode .']';
+        $this->family->setCode($newCode);
+        $this->assertEquals($expectedCode, $this->family->__toString());
+
+        $newLabel = 'toStringLabel';
+        $this->assertEntity($this->family->setLocale('en_US'));
+        $this->assertEntity($this->family->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->family->__toString());
+
+        // if no translation, assert the expected code is returned
+        $this->family->setLocale('fr_FR');
+        $this->assertEquals($expectedCode, $this->family->__toString());
+
+        // if empty translation, assert the expected code is returned
+        $this->family->setLabel('');
+        $this->assertEquals($expectedCode, $this->family->__toString());
+    }
+
+    /**
+     * Test getter/setter for attributes property
+     */
+    public function testGetAddRemoveAttribute()
+    {
+        // Change value and assert new
+        $newAttribute = new ProductAttribute();
+        $this->assertEntity($this->family->addAttribute($newAttribute));
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+            $this->family->getAttributes()->first()
+        );
+        $this->assertTrue($this->family->hasAttribute($newAttribute));
+
+        $this->assertEntity($this->family->removeAttribute($newAttribute));
+        $this->assertNotInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+            $this->family->getAttributes()->first()
+        );
+        $this->assertCount(0, $this->family->getAttributes());
+        $this->assertFalse($this->family->hasAttribute($newAttribute));
     }
 
     /**
      * Assert entity
+     *
      * @param Pim\Bundle\ProductBundle\Entity\Family $entity
      */
     protected function assertEntity($entity)
@@ -112,12 +151,22 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetAttributeAsLabel()
     {
-        $family    = new Family;
         $attribute = $this->getAttributeMock();
 
-        $this->assertNull($family->getAttributeAsLabel());
-        $family->setAttributeAsLabel($attribute);
-        $this->assertEquals($attribute, $family->getAttributeAsLabel());
+        $this->assertNull($this->family->getAttributeAsLabel());
+        $this->assertEntity($this->family->setAttributeAsLabel($attribute));
+        $this->assertEquals($attribute, $this->family->getAttributeAsLabel());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testAddAttribute()
+    {
+        $attribute = $this->getAttributeMock();
+
+        $this->assertEntity($this->family->addAttribute($attribute));
+        $this->assertEquals(array($attribute), $this->family->getAttributes()->toArray());
     }
 
     /**
@@ -125,24 +174,15 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAttributeAsLabelChoices()
     {
-        $family  = new Family;
         $name    = $this->getAttributeMock();
         $address = $this->getAttributeMock();
         $phone   = $this->getAttributeMock('phone');
 
-        $family->addAttribute($name);
-        $family->addAttribute($address);
-        $family->addAttribute($phone);
+        $this->family->addAttribute($name);
+        $this->family->addAttribute($address);
+        $this->family->addAttribute($phone);
 
-        $this->assertEquals(array($name, $address), $family->getAttributeAsLabelChoices());
-    }
-
-    public function testAddAttribute()
-    {
-        $family = new Family();
-        $attribute = $this->getAttributeMock();
-        $family->addAttribute($attribute);
-        $this->assertEquals(array($attribute), $family->getAttributes()->toArray());
+        $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
     }
 
     /**
@@ -150,27 +190,23 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddIdentifierAttribute()
     {
-        $family = new Family();
         $attribute = $this->getAttributeMock('pim_product_identifier');
-        $family->addAttribute($attribute);
+        $this->family->addAttribute($attribute);
     }
 
     public function testGetAttributeRequirementKeyFor()
     {
-        $family = new Family();
-
-        $this->assertEquals('foo_bar', $family->getAttributeRequirementKeyFor('foo', 'bar'));
+        $this->assertEquals('foo_bar', $this->family->getAttributeRequirementKeyFor('foo', 'bar'));
     }
 
     public function testGetAttributeRequirements()
     {
-        $family               = new Family();
         $mobileName           = $this->getAttributeRequirementMock('mobile', 'name');
         $mobileDescription    = $this->getAttributeRequirementMock('mobile', 'description');
         $ecommerceName        = $this->getAttributeRequirementMock('ecommerce', 'name');
         $ecommerceDescription = $this->getAttributeRequirementMock('ecommerce', 'description');
 
-        $family->setAttributeRequirements(
+        $this->family->setAttributeRequirements(
             array(
                 $mobileName,
                 $mobileDescription,
@@ -186,7 +222,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
                 'name_ecommerce'        => $ecommerceName,
                 'description_ecommerce' => $ecommerceDescription,
             ),
-            $family->getAttributeRequirements()
+            $this->family->getAttributeRequirements()
         );
     }
 
@@ -213,6 +249,13 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * Get channel mock with code
+     *
+     * @param string $code
+     *
+     * @return Pim\Bundle\ConfigBundle\Entity\Channel
+     */
     protected function getChannelMock($code)
     {
         $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
@@ -224,6 +267,14 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         return $channel;
     }
 
+    /**
+     * Get attribute requirement mock with channel and attribute codes
+     *
+     * @param string $channelCode
+     * @param string $attributeCode
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\AttributeRequirement
+     */
     protected function getAttributeRequirementMock($channelCode, $attributeCode)
     {
         $requirement = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeRequirement');
