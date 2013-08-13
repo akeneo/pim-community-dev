@@ -335,7 +335,7 @@ class Family implements TranslatableInterface
      */
     public function getLabel()
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
