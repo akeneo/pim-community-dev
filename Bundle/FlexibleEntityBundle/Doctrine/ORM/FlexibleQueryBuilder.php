@@ -343,7 +343,7 @@ class FlexibleQueryBuilder
             $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->getLocale());
             $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
-            $this->qb->addOrderBy($joinAliasOpt.'.defaultValue', $direction);
+            $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
             $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
         } else {
