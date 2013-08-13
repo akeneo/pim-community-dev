@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Resource version entity
@@ -50,9 +50,9 @@ class Version
 
     /**
      * Constructor
-     * @param Versionable $resource
+     * @param VersionableInterface $resource
      */
-    public function __construct(Versionable $resource)
+    public function __construct(VersionableInterface $resource)
     {
         $this->resourceName  = get_class($resource);
         $this->resourceId    = $resource->getId();

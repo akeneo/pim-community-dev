@@ -11,7 +11,7 @@ use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -30,7 +30,7 @@ use Pim\Bundle\VersioningBundle\Model\Versionable;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, Versionable
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
 {
     /**
      * @var integer $version

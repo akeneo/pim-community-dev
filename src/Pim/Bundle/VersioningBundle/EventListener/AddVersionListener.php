@@ -7,7 +7,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
@@ -54,7 +54,7 @@ class AddVersionListener implements EventSubscriber
 
         foreach ($uow->getScheduledEntityUpdates() AS $entity) {
 
-            if ($entity instanceof Versionable) {
+            if ($entity instanceof VersionableInterface) {
                 $this->writeSnapshot($em, $entity);
 
             } else if($entity instanceof ProductValueInterface) {
@@ -66,9 +66,19 @@ class AddVersionListener implements EventSubscriber
                  $this->writeSnapshot($em, $product);
 
             } else if ($entity instanceof AbstractTranslation) {
-                if ($entity->getForeignKey() instanceof Versionable) {
+                if ($entity->getForeignKey() instanceof VersionableInterface) {
                     $this->writeSnapshot($em, $entity->getForeignKey());
                 }
+            }
+        }
+
+        foreach ($uow->getScheduledCollectionDeletions() AS $entity) {
+
+        }
+
+        foreach ($uow->getScheduledCollectionUpdates() AS $entity) {
+            if ($entity->getOwner() instanceof VersionableInterface) {
+                $this->writeSnapshot($em, $entity->getOwner());
             }
         }
     }
@@ -77,9 +87,9 @@ class AddVersionListener implements EventSubscriber
      * Write snapshot
      *
      * @param EntityManager        $em
-     * @param VersionableInterface $entity
+     * @param VersionableInterfaceInterface $entity
      */
-    public function writeSnapshot(EntityManager $em, Versionable $versionable)
+    public function writeSnapshot(EntityManager $em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
         if (!isset($this->pendingVersions[$oid])) {

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Product family
@@ -22,7 +22,7 @@ use Pim\Bundle\VersioningBundle\Model\Versionable;
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
  */
-class Family implements TranslatableInterface, Versionable
+class Family implements TranslatableInterface, VersionableInterface
 {
     /**
      * @var integer $id

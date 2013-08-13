@@ -11,7 +11,7 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\VersioningBundle\Model\Versionable;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 
 /**
@@ -24,7 +24,7 @@ use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, Versionable
+class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
 {
     /**
      * @var integer $version
