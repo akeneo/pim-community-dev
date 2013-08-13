@@ -18,6 +18,8 @@ use Pim\Bundle\ConfigBundle\Entity\Channel;
 class AttributeRequirement
 {
     /**
+     * @var integer $id
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -25,25 +27,40 @@ class AttributeRequirement
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", inversedBy="AttributeRequirements")
+     * @var Family $family
+     *
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", inversedBy="attributeRequirements")
      */
     protected $family;
 
     /**
+     * @var ProductAttribute $attribute
+     *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
      */
     protected $attribute;
 
     /**
+     * @var Channel $channel
+     *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel")
      */
     protected $channel;
 
     /**
+     * @var boolean $required
+     *
      * @ORM\Column(type="boolean")
      */
     protected $required = false;
 
+    /**
+     * Setter family
+     *
+     * @param Family $family
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
+     */
     public function setFamily(Family $family)
     {
         $this->family = $family;
@@ -51,11 +68,23 @@ class AttributeRequirement
         return $this;
     }
 
+    /**
+     * Getter family
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     */
     public function getFamily()
     {
         return $this->family;
     }
 
+    /**
+     * Setter product attribute
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
+     */
     public function setAttribute(ProductAttribute $attribute)
     {
         $this->attribute = $attribute;
@@ -63,11 +92,23 @@ class AttributeRequirement
         return $this;
     }
 
+    /**
+     * Getter product attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
     public function getAttribute()
     {
         return $this->attribute;
     }
 
+    /**
+     * Setter channel
+     *
+     * @param Channel $channel
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
+     */
     public function setChannel(Channel $channel)
     {
         $this->channel = $channel;
@@ -75,11 +116,23 @@ class AttributeRequirement
         return $this;
     }
 
+    /**
+     * Getter channel
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Channel
+     */
     public function getChannel()
     {
         return $this->channel;
     }
 
+    /**
+     * Setter required property
+     *
+     * @param boolean $required
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
+     */
     public function setRequired($required)
     {
         $this->required = $required;
@@ -87,6 +140,11 @@ class AttributeRequirement
         return $this;
     }
 
+    /**
+     * Predicate for required property
+     *
+     * @return boolean
+     */
     public function isRequired()
     {
         return $this->required;

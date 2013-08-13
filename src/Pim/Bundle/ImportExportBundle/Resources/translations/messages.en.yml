@@ -72,7 +72,9 @@ pim_batch.valid_product_creation_processor:
     categoriesDelimiter:
         label: 'Categories delimiter'
         help: 'Character used to separate the category codes'
-
+    channel:
+        label: 'Channel'
+        help: 'The channel in which create the imported value'
 
 pim_batch.heterogeneous_csv_serializer_processor:
     title: 'CSV configuration'

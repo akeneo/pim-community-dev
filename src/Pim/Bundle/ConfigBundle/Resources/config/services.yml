@@ -1,6 +1,6 @@
 parameters:
     pim_config.event_listener.user_preferences.class:  Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
-    
+
 services:
     # Subscriber
     pim_config.event_listener.user_preferences:
@@ -16,4 +16,18 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
         tags:
-        - { name: validator.constraint_validator, alias: pim_config.validator.valid_locale_fallback_validator }
+            - { name: validator.constraint_validator, alias: pim_config.validator.valid_locale_fallback_validator }
+
+    # Locale helper
+    pim_config.helper.locale:
+        class: Pim\Bundle\ConfigBundle\Helper\LocaleHelper
+        arguments:
+            - @pim_config.manager.locale
+            
+    # Twig extension
+    pim_config.twig.locale_extension:
+        class: Pim\Bundle\ConfigBundle\Twig\LocaleExtension
+        arguments:
+            - @pim_config.helper.locale
+        tags:
+            - { name: twig.extension }

@@ -29,11 +29,16 @@ class AttributeRequirementType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\AttributeRequirement'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\AttributeRequirement'
+            )
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_attribute_requirement';

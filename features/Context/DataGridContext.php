@@ -55,13 +55,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($elements as $element) {
             if ($not) {
                 try {
-                    $expectedValue = $this->datagrid->getGridRow($element);
-                    throw new \InvalidArgumentException(
-                        sprintf('The grid should not contain the element %s', $element)
-                    );
+                    $this->datagrid->getGridRow($element);
                 } catch (\InvalidArgumentException $e) {
-                    // nothing to do
+                    continue;
                 }
+                throw new \InvalidArgumentException(
+                    sprintf('The grid should not contain the element %s', $element)
+                );
             } else {
                 $this->datagrid->getGridRow($element);
             }

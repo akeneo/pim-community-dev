@@ -29,8 +29,8 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
         $options['class']       = $this->getEntityAlias();
         $options['expanded']    = false;
         $options['multiple']    = $this->isMultiselect();
-        $options['query_builder'] = function (EntityRepository $er) use ($orderBy, $isTranslatable) {
-            $qb = $er->createQueryBuilder('o');
+        $options['query_builder'] = function (EntityRepository $repository) use ($orderBy, $isTranslatable) {
+            $qb = $repository->createQueryBuilder('o');
             if ($isTranslatable) {
                 $qb->addSelect('translation')->leftJoin('o.translations', 'translation');
             }

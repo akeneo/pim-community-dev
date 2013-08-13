@@ -21,6 +21,11 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class AttributeGroup implements TimestampableInterface, TranslatableInterface
 {
     /**
+     * @staticvar string
+     */
+    const DEFAULT_GROUP_CODE = 'Other';
+
+    /**
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
@@ -71,7 +76,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @var string $locale
      */
-    protected $locale = self::FALLBACK_LOCALE;
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -97,11 +102,12 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
 
     /**
      * Returns the name of the attribute group
+     *
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     /**
@@ -300,6 +306,9 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
@@ -352,9 +361,13 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      */
     public function getName()
     {
-        $translated = $this->getTranslation()->getName();
+        if ($this->getCode() === self::DEFAULT_GROUP_CODE) {
+            return self::DEFAULT_GROUP_CODE;
+        }
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getName();
+        $translated = $this->getTranslation() ? $this->getTranslation()->getName() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
 
     /**

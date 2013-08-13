@@ -92,7 +92,7 @@ class Item implements TranslatableInterface
     {
         $translated = $this->getTranslation()->getName();
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getName();
+        return ($translated != '') ? $translated : '['.$this->getCode().']';
     }
 
     /**

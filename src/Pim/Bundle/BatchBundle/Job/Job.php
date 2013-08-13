@@ -90,7 +90,6 @@ class Job implements JobInterface
         return $this;
     }
 
-
     /**
      * Return all the steps
      *
@@ -150,7 +149,6 @@ class Job implements JobInterface
         return $names;
     }
 
-
     /**
      * Convenience method for adding a single step to the job.
      *
@@ -160,7 +158,6 @@ class Job implements JobInterface
     {
         $this->steps[] = $step;
     }
-
 
     /**
      * Public setter for the {@link JobRepositoryInterface} that is needed to manage the
@@ -216,7 +213,6 @@ class Job implements JobInterface
                 $this->getLogger()->debug("Job execution was stopped: ". $execution);
 
             }
-
 
         } catch (JobInterruptedException $e) {
             $this->getLogger()->info("Encountered interruption executing job: " . $e->getMessage());

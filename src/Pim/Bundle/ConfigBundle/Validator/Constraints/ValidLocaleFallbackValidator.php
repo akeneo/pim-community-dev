@@ -5,7 +5,6 @@ namespace Pim\Bundle\ConfigBundle\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Locale fallback validator
@@ -34,8 +33,8 @@ class ValidLocaleFallbackValidator extends ConstraintValidator
     /**
      * Validate the locale fallback
      *
-     * @param Locale     $locale     Locale entitty
-     * @param Constraint $constraint Validator constraint
+     * @param \Pim\Bundle\ConfigBundle\Entity\Locale  $locale     Locale entitty
+     * @param \Symfony\Component\Validator\Constraint $constraint Validator constraint
      */
     public function validate($locale, Constraint $constraint)
     {

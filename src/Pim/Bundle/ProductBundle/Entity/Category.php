@@ -75,14 +75,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     protected $code;
 
     /**
-     * Used locale to override Translation listener's locale
-     * this is not a mapped field of entity metadata, just a simple property
-     *
-     * @var string $locale
-     */
-    protected $locale = self::FALLBACK_LOCALE;
-
-    /**
      * Define if a node is dynamic or not
      *
      * @var boolean $isDynamic
@@ -98,6 +90,14 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * @ORM\Column(type="datetime")
      */
     protected $created;
+
+    /**
+     * Used locale to override Translation listener's locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     */
+    protected $locale;
 
     /**
      * @var ArrayCollection $translations
@@ -229,6 +229,9 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
+        if (!$locale) {
+            return null;
+        }
         foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
@@ -289,9 +292,9 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function getTitle()
     {
-        $translated = $this->getTranslation()->getTitle();
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getTitle() : null;
 
-        return ($translated != '') ? $translated : $this->getTranslation(self::FALLBACK_LOCALE)->getTitle();
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**
@@ -313,6 +316,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function __toString()
     {
-        return ($this->getTitle() != '') ? $this->getTitle() : $this->code;
+        return $this->getTitle();
     }
 }

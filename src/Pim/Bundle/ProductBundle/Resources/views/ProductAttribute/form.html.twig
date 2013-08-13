@@ -11,7 +11,7 @@
         {% set buttons %}
             {{ elements.backLink(path('pim_product_productattribute_index')) }}
             {% if form.vars.value.id and form.attributeType.vars.value != 'pim_product_identifier' %}
-                {{ elements.deleteLink(path('pim_product_productattribute_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this attribute?') }}
+                {{ elements.deleteLink(path('pim_product_productattribute_remove', { id: form.vars.value.id }), 'Are you sure you want to delete the attribute %attribute% ?'|trans({'%attribute%': form.vars.value.label})) }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}
@@ -60,7 +60,6 @@
 {% block head_script_component %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
     <script type="text/javascript">
         {% include 'PimUIBundle::measures.html.twig' with measures %}
         {% include 'PimProductBundle:ProductAttribute:_js-handler.html.twig' %}

@@ -9,10 +9,10 @@
     {% set title = form.vars.value.id ? 'Group'|trans ~ ' - ' ~ form.vars.data.name : 'New group'|trans %}
 
     {% set buttons %}
-        {{ elements.submitBtn }}
         {% if form.vars.value.id %}
             {{ elements.deleteLink(path('pim_product_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
         {% endif %}
+        {{ elements.submitBtn }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}
@@ -60,7 +60,7 @@
                                         <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
                                     </td>
                                     <td>
-                                        <a href="{{ path('pim_product_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                        <a href="javascript:void(0);" class="remove-attribute" data-url="{{ path('pim_product_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
                                             <i class="icon-trash"></i>
                                         </a>
                                     </td>
@@ -73,10 +73,12 @@
     </div>
 </form>
 
-{% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-    'form': attributesForm,
-    'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
-} %}
+{% if form.vars.value.id %}
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
+    } %}
+{% endif %}
 
 {% include 'PimProductBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
     'list': '#attributes-sortable',

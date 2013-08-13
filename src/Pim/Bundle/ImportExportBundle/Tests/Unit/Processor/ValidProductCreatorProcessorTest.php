@@ -18,11 +18,13 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
         $this->em             = $this->getEntityManagerMock();
         $this->formFactory    = $this->getFormFactoryMock();
         $this->productManager = $this->getProductManagerMock();
+        $this->channelManager = $this->getChannelManagerMock();
 
         $this->processor = new ValidProductCreationProcessor(
             $this->em,
             $this->formFactory,
-            $this->productManager
+            $this->productManager,
+            $this->channelManager
         );
     }
 
@@ -42,7 +44,7 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
 
         $attributesMap = array(
             array(array('code' => 'sku'), null, $this->getAttributeMock('sku', 'varchar')),
-            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar')),
+            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar', true)),
             array(array('code' => 'description'), null, $this->getAttributeMock('description', 'longtext')),
         );
         $attributeRepository
@@ -82,10 +84,10 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
                         'sku' => array(
                             'varchar' => 'foo-1',
                         ),
-                        'name_en_US' => array(
+                        'name_en_US_phpunit' => array(
                             'varchar' => 'car',
                         ),
-                        'name_fr_FR' => array(
+                        'name_fr_FR_phpunit' => array(
                             'varchar' => 'voiture',
                         ),
                         'description' => array(
@@ -96,6 +98,7 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
+        $this->processor->setChannel('phpunit');
         $this->assertEquals(
             $product,
             $this->processor->process(
@@ -129,7 +132,7 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
 
         $attributesMap = array(
             array(array('code' => 'sku'), null, $this->getAttributeMock('sku', 'varchar')),
-            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar')),
+            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar', true)),
             array(array('code' => 'description'), null, $this->getAttributeMock('description', 'longtext')),
         );
         $attributeRepository
@@ -160,6 +163,7 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
             ->with('pim_product', $product, array('csrf_protection' => false, 'withCategories' => true))
             ->will($this->returnValue($form));
 
+        $this->processor->setChannel('phpunit');
         $this->processor->process(
             array(
                 'sku'         => 'foo-1',
@@ -205,6 +209,14 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    protected function getChannelManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     protected function getEntityManagerMock()
     {
         return $this
@@ -221,7 +233,7 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    protected function getAttributeMock($code, $backendType)
+    protected function getAttributeMock($code, $backendType, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
@@ -232,6 +244,10 @@ class ValidProductCreatorProcessorTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getBackendType')
             ->will($this->returnValue($backendType));
+
+        $attribute->expects($this->any())
+            ->method('getScopable')
+            ->will($this->returnValue($scopable));
 
         return $attribute;
     }

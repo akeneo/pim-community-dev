@@ -29,6 +29,8 @@ class LocaleManagerTest extends WebTestCase
      */
     protected function setUp()
     {
+        $this->markTestSkipped('Due to locale refactoring PIM-861, to replace by behat scenario');
+
         if (null !== static::$kernel) {
             static::$kernel->shutdown();
         }

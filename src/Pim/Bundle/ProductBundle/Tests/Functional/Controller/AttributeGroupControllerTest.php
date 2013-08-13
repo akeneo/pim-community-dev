@@ -42,6 +42,11 @@ class AttributeGroupControllerTest extends ControllerTest
      */
     const GROUP_REMOVED_MSG = 'Attribute group successfully removed';
 
+    protected function setup()
+    {
+        $this->markTestSkipped('Due to locale refactoring PIM-861, to replace by behat scenario');
+    }
+
     /**
      * Test related action
      */
@@ -91,7 +96,7 @@ class AttributeGroupControllerTest extends ControllerTest
 
         $values = array(
             'pim_attribute_group_form[code]'          => self::GROUP_CODE,
-            'pim_attribute_group_form[name][default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[name][en_US]'   => self::GROUP_NAME,
             'pim_attribute_group_form[sort_order]'    => self::GROUP_ORDER
         );
 
@@ -139,7 +144,7 @@ class AttributeGroupControllerTest extends ControllerTest
 
         $values = array(
             'pim_attribute_group_form[code]'          => self::GROUP_EDITED_CODE,
-            'pim_attribute_group_form[name][default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[name][en_US]'   => self::GROUP_NAME,
             'pim_attribute_group_form[sort_order]'    => self::GROUP_ORDER
         );
 

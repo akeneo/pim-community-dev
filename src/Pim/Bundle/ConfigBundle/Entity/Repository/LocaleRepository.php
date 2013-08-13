@@ -83,4 +83,31 @@ class LocaleRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * Returns a query builder that select the available fallbacks
+     *
+     * A fallback must be activated and not link on another fallback
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getAvailableFallbacksQB()
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb
+            ->andWhere($qb->expr()->eq('l.activated', true))
+            ->andWhere($qb->expr()->isNull('l.fallback'));
+
+        return $qb;
+    }
+
+    /**
+     * Get a collection of available fallback locales
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getAvailableFallbacks()
+    {
+        return $this->getAvailableFallbacksQB()->getQuery()->getResult();
+    }
 }
