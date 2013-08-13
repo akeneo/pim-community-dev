@@ -26,10 +26,6 @@ body {
   padding: 0;
 }
 
-h1 {
-  padding: 0 20px;
-}
-
 a {
   color: @color-purple_dark;
 }
@@ -38,31 +34,16 @@ a {
 
 header {
   #gradient .vertical(@color-header_top, @color-header_bottom);
-  border-bottom: @border-purple;
 }
 
-header .dropdown-menu li>a, header .dropdown-menu li>a:hover, header .dropdown-menu li>a:focus {
-  color: @color-purple_dark;
-}
-
-header .extra-divider, .navbar .small-divider {
+.navbar .small-divider {
   background: transparent;
 }
 
-header h1.logo a img { margin-top: 1px;}
-
-.navbar-inner .logo, header .logo {padding: 0px; margin: 0px;}
-.navbar-inner .logo a, header .logo a { background: none; }
-.navbar-inner .logo:after, header .logo:after {border-bottom: none; border-top: none;}
 .navbar-inner .shortcuts .dropdown>a, header .shortcuts .dropdown>a { margin: 1px 0px 0 0; outline: none; }
 
 .navbar-responsive-collapse .top-search .dropdown-search.open>span, .navbar-responsive-collapse .top-search .dropdown-search:hover>span {
     background-position: 0 -343px;
-}
-
-.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
-    background-color: @color-purple_dark;
-    background-image: -webkit-linear-gradient(top,@color-purple_dark,@color-purple_dark);
 }
 
 /* Shortcut *********************************************************************************************************/
@@ -81,8 +62,13 @@ header .shortcuts .dropdown > a {
 header {
   border-bottom: 1px solid #e7e7e7;
   .navbar-inner h1.logo {
+    margin: 0px;
     padding: 0px;
+    &:after {
+      border: none;
+    }
     a {
+      background: none;
       padding: 0px;
       margin-left: -30px;
       img {
@@ -99,13 +85,10 @@ header {
 .pin-bar {
   background-color: @color-purple_dark;
   background-image: none;
+  padding-bottom: 0;
   .list-bar {
-    color: #B2BAC2;
     li.active{
       background-color: #6800A9;
-    }
-    li a {
-      color: #B2BAC2;
     }
   }
 }
@@ -131,72 +114,8 @@ header {
   }
 }
 
-/* application menu *************************************************************************************************/
-
-.application-menu {
-  background-color: #fff;
-}
-
-.application-menu {
-  .nav-tabs {
-    border-color: #d8d8d8;
-    > li {
-      > a {
-        color: @textColor + #555;
-        background-color: #efefef;
-        border: none;
-        border: 1px solid #d8d8d8;
-        border-width: 1px 1px 0 1px;
-        text-shadow: none;
-      }
-      > a:hover,
-      > a:focus {
-        color: @textColor + #555;
-        background-color: #dddddd;
-        border: 1px solid #d8d8d8;
-        border-width: 1px 1px 0 1px;
-        text-shadow: none;
-      }
-    }
-    > li.active {
-      > a,
-      > a:hover {
-        color: @textColor + #222;
-        background-color: @backgroundColor-white;
-        border: 1px solid #d8d8d8;
-        border-width: 1px 1px 0 1px;
-        text-shadow: none;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .tab-content {
-    overflow-y: hidden;
-    background-color: @backgroundColor-white + #111;
-    .box-shadow(0px 1px 3px rgba(20, 20, 20, 0.25));
-    > .tab-pane > .nav {
-      a {
-        color: @textColor;
-        font-weight: normal;
-      }
-      .active a,
-      a:hover {
-        color: @textColor;
-        background-color: #efefef;
-      }
-      .current a,
-      > li > a:focus {
-        color: @textColor;
-        background-color: #efefef;
-      }
-    }
-  }
-}
-
 /* nav bar **********************************************************************************************************/
 
-.navbar .fa-icon-home { font-size: 17px; }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus {
@@ -204,14 +123,8 @@ header {
   background-color: @backgroundColor-white;
 }
 
-.navbar.application-menu {
-  background-color: @color-grey_tab;
-}
-
-.navigation .top-action-box {
-  background-color: @backgroundColor-white;
-  padding: 5px 6px 9px;
-  .box-shadow(-3px -3px 3px -2px rgba(20, 20, 20, 0.25));
+.breadcrumb {
+  padding-top: 4px;
 }
 
 /* Messages *********************************************************************************************************/
