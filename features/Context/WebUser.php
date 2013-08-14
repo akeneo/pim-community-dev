@@ -212,6 +212,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     *
+     * @param string $currencies
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see currencies sorted as (.*)$/
+     */
+    public function iShouldSeeCurrenciesSortedAs($currencies)
+    {
+        return new Step\Then(
+            sprintf('I should see entities sorted as %s', $currencies)
+        );
+    }
+
+    /**
      * @Given /^I should be on the locales page$/
      */
     public function iShouldBeOnTheLocalesPage()
@@ -271,7 +286,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($this->listToArray($locales) as $locale) {
             try {
-                $this->getPage('Locale index')->getGridRow($locale);
+                $this->getPage('Locale index')->getRow($locale);
                 $this->createExpectationException(
                     sprintf('Locale "%s" should not be seen', $locale)
                 );
@@ -911,7 +926,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $channels = $this->listToArray($channels);
 
         foreach ($channels as $channel) {
-            if (!$this->getPage('Channel index')->getGridRow($channel)) {
+            if (!$this->getPage('Channel index')->getRow($channel)) {
                 throw $this->createExpectationException(sprintf('Expecting to see channel %s, not found', $channel));
             }
         }
@@ -1005,7 +1020,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $products = $this->listToArray($products);
         foreach ($products as $product) {
-            if (!$this->getPage('Product index')->getGridRow($product)) {
+            if (!$this->getPage('Product index')->getRow($product)) {
                 throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
             }
         }
@@ -1018,7 +1033,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeProduct($product)
     {
-        if (!$this->getPage('Product index')->getGridRow($product)) {
+        if (!$this->getPage('Product index')->getRow($product)) {
             throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
         }
     }
@@ -1031,7 +1046,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeProductWithData($product, $data)
     {
-        $row = $this->getPage('Product index')->getGridRow($product);
+        $row = $this->getPage('Product index')->getRow($product);
         $data = $this->listToArray($data);
 
         if (!$row) {
@@ -1058,7 +1073,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $products = $this->listToArray($products);
         foreach ($products as $product) {
             try {
-                $this->getPage('Product index')->getGridRow($product);
+                $this->getPage('Product index')->getRow($product);
             } catch (\InvalidArgumentException $e) {
                 continue;
             }
@@ -1074,7 +1089,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldNotSeeProduct($product)
     {
         try {
-            $this->getPage('Product index')->getGridRow($product);
+            $this->getPage('Product index')->getRow($product);
         } catch (\InvalidArgumentException $e) {
             return;
         }

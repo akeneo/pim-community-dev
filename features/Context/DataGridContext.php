@@ -55,7 +55,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($elements as $element) {
             if ($not) {
                 try {
-                    $this->datagrid->getGridRow($element);
+                    $this->datagrid->getRow($element);
                 } catch (\InvalidArgumentException $e) {
                     continue;
                 }
@@ -63,7 +63,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     sprintf('The grid should not contain the element %s', $element)
                 );
             } else {
-                $this->datagrid->getGridRow($element);
+                $this->datagrid->getRow($element);
             }
         }
     }
@@ -115,13 +115,63 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $column
+     *
+     * @When /^I sort by "(.*)" value (ascending|descending)$/
+     */
+    public function iSortByValue($columnName, $order = 'ascending')
+    {
+        $columnName = strtoupper($columnName);
+        if ($order === 'ascending') {
+            $this->datagrid->getColumnSorter($columnName)->click();
+            $this->wait();
+        }
+
+        $this->datagrid->getColumnSorter($columnName)->click();
+        $this->wait();
+    }
+
+    /**
+     * @param array $currencies
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @Then /^I should see entities sorted as (.*)$/
+     */
+    public function iShouldSeeEntitiesSortedAs($elements)
+    {
+        $elements = $this->getMainContext()->listToArray($elements);
+
+        if ($this->datagrid->countRows() !== count($elements)) {
+            throw new \InvalidArgumentException('You must define all the entities in the grid to check the sorting');
+        }
+
+        $expectedPosition = 0;
+        foreach ($elements as $element) {
+            $position = $this->datagrid->getRowPosition($element);
+            if ($expectedPosition !== $position) {
+                $errorMsg = sprintf(
+                    'Value %s is expected at position %d but is at position %d',
+                    $element,
+                    $expectedPosition,
+                    $position
+                );
+                throw new \InvalidArgumentException(
+                    sprintf("The columns are not well sorted\n%s", $errorMsg)
+                );
+            }
+            $expectedPosition++;
+        }
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
      */
     public function iClickOnTheRow($row)
     {
-        $this->datagrid->getGridRow($row)->click();
+        $this->datagrid->getRow($row)->click();
         $this->wait(5000, null);
     }
 

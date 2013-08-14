@@ -12,18 +12,38 @@ Feature: Browse currencies
       | GBP  | no        |
     And I am logged in as "admin"
 
-  Scenario: Succesfully display currencies
+  Scenario: Successfully display currencies
     Given I am on the currencies page
     Then I should see activated currencies USD and EUR
     And I should see deactivated currency GBP
 
-  Scenario: Succesfully activate a currency
+  Scenario: Successfully activate a currency
     Given I am on the currencies page
     When I activate the GBP currency
     Then I should see activated currencies GBP, USD and EUR
 
-  Scenario: Succesfully deactivate a currency
+  Scenario: Successfully deactivate a currency
     Given I am on the currencies page
     When I deactivate the USD currency
     Then I should see activated currency EUR
     And I should see deactivated currencies GBP and USD
+
+  Scenario: Successfully sort currencies by code ascending
+    Given I am on the currencies page
+    When I sort by "code" value ascending
+    Then I should see currencies sorted as EUR, GBP and USD
+
+  Scenario: Successfully sort currencies by code descending
+    Given I am on the currencies page
+    When I sort by "code" value descending
+    Then I should see currencies sorted as USD, GBP and EUR
+
+  Scenario: Successfully sort currencies by activated ascending
+    Given I am on the currencies page
+    When I sort by "Activated" value ascending
+    Then I should see currencies sorted as USD, EUR and GBP
+
+  Scenario: Successfully sort currencies by activated descending
+    Given I am on the currencies page
+    When I sort by "Activated" value descending
+    Then I should see currencies sorted as GBP, USD and EUR

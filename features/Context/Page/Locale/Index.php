@@ -25,7 +25,7 @@ class Index extends Grid
      */
     public function findActivatedLocale($locale)
     {
-        return $this->getGridRow($locale)->find('css', 'span.label-success');
+        return $this->getRow($locale)->find('css', 'span.label-success');
     }
 
     /**
@@ -35,7 +35,7 @@ class Index extends Grid
      */
     public function findDeactivatedLocale($locale)
     {
-        return $this->getGridRow($locale)->find('css', 'span.label-important');
+        return $this->getRow($locale)->find('css', 'span.label-important');
     }
 
     /**
