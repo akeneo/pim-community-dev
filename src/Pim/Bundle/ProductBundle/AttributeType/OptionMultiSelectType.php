@@ -39,7 +39,11 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     protected function prepareValueFormData(FlexibleValueInterface $value)
     {
-        return $value->getData()->isEmpty() ? $value->getAttribute()->getDefaultValue() : $value->getData();
+        if ($value->getData() && $value->getData()->isEmpty()) {
+            return $value->getAttribute()->getDefaultValue();
+        }
+
+        return $value->getData();
     }
 
     /**

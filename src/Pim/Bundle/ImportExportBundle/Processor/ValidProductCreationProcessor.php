@@ -215,14 +215,22 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
             $product = $this->productManager->createFlexible();
-            foreach ($attributes as $attribute) {
-                if (!$attribute) {
-                    // We ignore attribute that doesn't exist in the PIM
+            foreach ($attributes as $code => $attribute) {
+                if (!$attribute || false !== $product->{'get'.ucfirst($code)}()) {
                     continue;
                 }
-                $this->productManager->addAttributeToProduct($product, $attribute);
+
+                if ($attribute->getScopable()) {
+                    $product->setScope($this->channel);
+                }
+
+                if ($attribute->getTranslatable()) {
+                    list($code, $locale) = explode('-', $code);
+                    $product->setLocale($locale);
+                }
+
+                $product->{'set'.ucfirst($code)}(null);
             }
-            $this->entityManager->persist($product);
         }
 
         return $product;
