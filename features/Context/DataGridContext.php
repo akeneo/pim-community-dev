@@ -206,6 +206,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filter
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/
+     */
+    public function iFilterBy($filterName, $value)
+    {
+        $this->datagrid->filterBy($filterName, $value);
+        $this->wait();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/

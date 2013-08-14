@@ -39,24 +39,51 @@ Feature: Browse currencies
 
   Scenario: Successfully sort currencies by code ascending
     Given I am on the currencies page
-    And I should see currencies sorted as EUR, GBP and USD
+    Then I should see currencies sorted as EUR, GBP and USD
     When I sort by "code" value ascending
     Then I should see currencies sorted as EUR, GBP and USD
 
   Scenario: Successfully sort currencies by code descending
     Given I am on the currencies page
-    And I should see currencies sorted as EUR, GBP and USD
+    Then I should see currencies sorted as EUR, GBP and USD
     When I sort by "code" value descending
     Then I should see currencies sorted as USD, GBP and EUR
 
   Scenario: Successfully sort currencies by activated ascending
     Given I am on the currencies page
-    And I should see currencies sorted as EUR, GBP and USD
+    Then I should see currencies sorted as EUR, GBP and USD
     When I sort by "Activated" value ascending
     Then I should see currencies sorted as USD, EUR and GBP
 
   Scenario: Successfully sort currencies by activated descending
     Given I am on the currencies page
-    And I should see currencies sorted as EUR, GBP and USD
+    Then I should see currencies sorted as EUR, GBP and USD
     When I sort by "Activated" value descending
     Then I should see currencies sorted as GBP, USD and EUR
+
+  Scenario: Successfully filter by code
+    Given I am on the currencies page
+    Then the grid should contain 3 elements
+    And I should see currencies GBP, USD and EUR
+    And I should see the filters "Code" and "Activated"
+    When I filter by "Code" with value "U"
+    Then the grid should contain 2 elements
+    And I should see currencies USD and EUR
+
+  Scenario: Successfully filter by code
+    Given I am on the currencies page
+    Then the grid should contain 3 elements
+    And I should see currencies GBP, USD and EUR
+    And I should see the filters "Code" and "Activated"
+    When I filter by "Activated" with value "yes"
+    Then the grid should contain 2 elements
+    And I should see currencies USD and EUR
+
+  Scenario: Successfully filter by code
+    Given I am on the currencies page
+    Then the grid should contain 3 elements
+    And I should see currencies GBP, USD and EUR
+    And I should see the filters "Code" and "Activated"
+    When I filter by "Activated" with value "no"
+    Then the grid should contain 1 element
+    And I should see currencies GBP

@@ -192,6 +192,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $currencies
      *
+     * @Then /^I should see currency (.*)$/
+     * @Then /^I should see currencies (.*)$/
+     */
+    public function iShouldSeeCurrencies($currencies)
+    {
+        foreach ($this->listToArray($currencies) as $currency) {
+            if (!$this->getPage('Currency index')->findCurrency($currency)) {
+                throw $this->createExpectationException(sprintf('Currency "%s" not found', $currency));
+            }
+        }
+    }
+
+    /**
+     * @param string $currencies
+     *
      * @When /^I activate the (.*) currency$/
      */
     public function iActivateTheCurrency($currencies)
