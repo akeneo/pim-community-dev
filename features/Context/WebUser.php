@@ -232,9 +232,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Given
      *
-     * @Then /^I should see currencies sorted as (.*)$/
+     * @Then /^I should see sorted currencies (.*)$/
      */
-    public function iShouldSeeCurrenciesSortedAs($currencies)
+    public function iShouldSeeSortedCurrencies($currencies)
     {
         return new Step\Then(
             sprintf('I should see entities sorted as %s', $currencies)
