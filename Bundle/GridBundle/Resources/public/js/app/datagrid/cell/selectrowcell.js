@@ -51,7 +51,6 @@
             this.listenTo(this.model, "backgrid:select", function (model, checked) {
                 this.$el.find(":checkbox").prop("checked", checked).change();
             });
-
         },
 
         /**

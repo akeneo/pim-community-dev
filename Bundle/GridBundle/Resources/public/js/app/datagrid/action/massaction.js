@@ -25,10 +25,13 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
     identifierFieldName: 'id',
 
     /** @property {Object} */
-    messages: {
+    defaultMessages: {
         confirm_title: _.__('Mass Action Confirmation'),
         confirm_content: _.__('Are you sure you want to do this?'),
-        confirm_ok: _.__('Yes, do it')
+        confirm_ok: _.__('Yes, do it'),
+        success: _.__('Mass action was successfully performed.'),
+        error: _.__('Mass action was not performed.'),
+        empty_selection: _.__('Please, select items to perform mass action.')
     },
 
     /**
@@ -46,6 +49,8 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         }
         this.datagrid = options.datagrid;
 
+        _.defaults(this.messages, this.defaultMessages);
+
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
     },
 
@@ -53,7 +58,12 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      * Ask a confirmation and execute mass action.
      */
     execute: function() {
-        this.getConfirmDialog().open();
+        var selectionState = this.datagrid.getSelectionState();
+        if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
+            Oro.NotificationFlashMessage('warning', this.messages.empty_selection);
+        } else {
+            this.getConfirmDialog().open();
+        }
     },
 
     /**
@@ -74,7 +84,11 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
             success: function (data, textStatus, jqXHR) {
                 this.datagrid.hideLoading();
                 this.datagrid.collection.fetch();
-                Oro.NotificationFlashMessage('success', 'Action successfully performed.');
+                var defaultMessage = data.successful ? this.messages.success : this.messages.error;
+                Oro.NotificationFlashMessage(
+                    data.successful ? 'success' : 'error',
+                    data.message ? data.message : defaultMessage
+                );
             }
         });
     },
