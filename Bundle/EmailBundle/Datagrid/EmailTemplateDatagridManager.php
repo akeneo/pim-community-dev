@@ -4,7 +4,7 @@ namespace Oro\Bundle\EmailBundle\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassAction;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
@@ -47,6 +47,7 @@ class EmailTemplateDatagridManager extends DatagridManager
                     if ($record->getValue('isSystem')) {
                         return array('delete' => false);
                     }
+                    return null;
                 }
             )
         );
@@ -200,12 +201,10 @@ class EmailTemplateDatagridManager extends DatagridManager
      */
     protected function getMassActions()
     {
-        $deleteMassAction = new DefaultMassAction(
+        $deleteMassAction = new DeleteMassAction(
             array(
-                'name'         => 'delete',
                 'acl_resource' => 'oro_email_emailtemplate_remove',
                 'label'        => $this->translate('oro.email.datagrid.emailtemplate.action.delete'),
-                'handler'      => 'mass.delete.service.id'
             )
         );
 

@@ -8,7 +8,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-use Oro\Bundle\GridBundle\Action\MassAction\DefaultMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassAction;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
 class UserDatagridManager extends FlexibleDatagridManager
@@ -44,18 +44,16 @@ class UserDatagridManager extends FlexibleDatagridManager
      */
     protected function getMassActions()
     {
-        $deleteMassAction = new DefaultMassAction(
+        $deleteMassAction = new DeleteMassAction(
             array(
-                'name'         => 'delete',
                 'acl_resource' => 'oro_user_user_delete',
                 'label'        => $this->translate('oro.grid.mass_action.delete.label'),
                 'icon'         => 'trash',
-                'route'        => 'oro_grid_mass_action',
                 'messages'     => array(
                     'confirm_title'   => $this->translate('oro.grid.mass_action.delete.confirm_title'),
                     'confirm_content' => $this->translate('oro.grid.mass_action.delete.confirm_content'),
                     'confirm_ok'      => $this->translate('oro.grid.mass_action.confirm_ok')
-                )
+                ),
             )
         );
 

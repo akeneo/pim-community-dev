@@ -3,6 +3,7 @@
 namespace Oro\Bundle\GridBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -46,13 +47,13 @@ class MassActionController extends Controller
 
         /** @var MassActionDispatcher $massActionDispatcher */
         $massActionDispatcher = $this->get('oro_grid.mass_action.dispatcher');
-        $successful = $massActionDispatcher->dispatch($gridName, $actionName, $inset, $values, $filters);
-        if (!$successful) {
-            throw new \LogicException(
-                sprintf('Error is occurred during dispatching of mass action "%s"', $actionName)
-            );
-        }
+        $response = $massActionDispatcher->dispatch($gridName, $actionName, $inset, $values, $filters);
 
-        return new Response('ok');
+        $data = array(
+            'successful' => $response->isSuccessful(),
+            'message'    => $response->getMessage(),
+        );
+
+        return new JsonResponse(array_merge($data, $response->getOptions()));
     }
 }

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\GridBundle\Action\MassAction;
 
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediatorInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 
 interface MassActionHandlerInterface
 {
@@ -10,7 +11,7 @@ interface MassActionHandlerInterface
      * Handle mass action
      *
      * @param MassActionMediatorInterface $mediator
-     * @return boolean
+     * @return MassActionResponseInterface
      */
     public function handle(MassActionMediatorInterface $mediator);
 }
