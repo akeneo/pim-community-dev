@@ -25,7 +25,7 @@ class Grid extends Index
             array(
                 'Grid'         => array('css' => 'table.grid'),
                 'Grid content' => array('css' => 'table.grid tbody'),
-                'Filters'      => array('css' => 'div.filter-item'),
+                'Filters'      => array('css' => 'div.filter-box'),
             )
         );
     }
@@ -264,11 +264,11 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
-        $filter = $this->getElement('Filters')->find('css', sprintf(':contains("%s")', $filterName));
+        $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
 
         if (!$filter) {
             throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a filter for name "%s"', $filterName)
+                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
             );
         }
 

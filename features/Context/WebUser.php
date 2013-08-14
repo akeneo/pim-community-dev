@@ -205,6 +205,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locales
+     *
+     * @Then /^I should see locales? (.*)$/
+     */
+    public function iShouldSeeLocales($locales)
+    {
+        foreach ($this->listToArray($locales) as $locale) {
+            if (!$this->getPage('Locale index')->findLocale($locale)) {
+                throw $this->createExpectationException(sprintf('Locale "%s" not found', $locale));
+            }
+        }
+    }
+
+    /**
      * @param string $currencies
      *
      * @When /^I activate the (.*) currency$/
@@ -290,6 +304,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 );
             }
         }
+    }
+
+    /**
+     * @param string $locales
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see sorted locales (.*)$/
+     */
+    public function iShouldSeeSortedLocales($locales)
+    {
+        return new Step\Then(
+            sprintf('I should see entities sorted as %s', $locales)
+        );
     }
 
     /**

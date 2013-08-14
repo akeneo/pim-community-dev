@@ -39,6 +39,16 @@ class Index extends Grid
     }
 
     /**
+     * @param string $locale
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findLocale($locale)
+    {
+        return $this->getRow($locale);
+    }
+
+    /**
      * Click on the link to create a new locale
      */
     public function clickNewLocaleLink()
