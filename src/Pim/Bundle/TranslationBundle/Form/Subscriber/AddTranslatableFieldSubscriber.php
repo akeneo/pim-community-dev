@@ -91,8 +91,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity = $form->getParent()->getData();
-
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
             $method = 'get'.Inflector::camelize($this->getOption('field'));
