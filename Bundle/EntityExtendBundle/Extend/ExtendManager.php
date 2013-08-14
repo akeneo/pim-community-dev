@@ -23,6 +23,11 @@ class ExtendManager
     protected $proxyFactory;
 
     /**
+     * @var ExtendFactory
+     */
+    protected $extendFactory;
+
+    /**
      * @var ConfigProvider
      */
     protected $configProvider;
@@ -43,6 +48,7 @@ class ExtendManager
         $this->configProvider = $configProvider;
         $this->proxyFactory   = new ProxyObjectFactory($this);
         $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
+        $this->extendFactory  = new ExtendFactory($this);
     }
 
     /**
@@ -67,6 +73,14 @@ class ExtendManager
     public function getProxyFactory()
     {
         return $this->proxyFactory;
+    }
+
+    /**
+     * @return ExtendFactory
+     */
+    public function getExtendFactory()
+    {
+        return $this->extendFactory;
     }
 
     /**

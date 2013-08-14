@@ -68,19 +68,31 @@ class Generator
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.php',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $extendClass
+                ) . '.php',
                 "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
             );
 
             /** write Dynamic yml */
             file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.orm.yml',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $extendClass
+                ) . '.orm.yml',
                 Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5)
             );
 
             /** write Proxy class */
             file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $proxyClass) . '.php',
+                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $proxyClass
+                ) . '.php',
                 "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass)
             );
         }
@@ -107,7 +119,6 @@ class Generator
             $extendClass => array(
                 'type'     => 'entity',
                 'table'    => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
-
                 'oneToOne' => array(
                     '__extend__parent' => array(
                         'targetEntity' => $entityName,
@@ -139,7 +150,9 @@ class Generator
                     $fieldConfig = $this->configProvider->getConfigById($fieldId);
 
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['length']    = $fieldConfig->get('length');
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['precision'] = $fieldConfig->get('precision');
+                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['precision'] = $fieldConfig->get(
+                        'precision'
+                    );
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['scale']     = $fieldConfig->get('scale');
                 }
             }
@@ -295,7 +308,9 @@ class Generator
                     $class->setMethod(
                         $this->generateClassMethod(
                             'set' . ucfirst($fieldName),
-                            '$this->__proxy__extend->set' . ucfirst($fieldName) . '($' . $fieldName . '); return $this;',
+                            '$this->__proxy__extend->set' . ucfirst(
+                                $fieldName
+                            ) . '($' . $fieldName . '); return $this;',
                             array($fieldName)
                         )
                     );
@@ -306,7 +321,9 @@ class Generator
                         )
                     );
 
-                    $toArray .= '    \'' . $fieldName . '\' => $this->__proxy__extend->get' . ucfirst($fieldName) . '(),' . "\n";
+                    $toArray .= '    \'' . $fieldName . '\' => $this->__proxy__extend->get' . ucfirst(
+                            $fieldName
+                        ) . '(),' . "\n";
                 } else {
                     $toArray .= '    \'' . $fieldName . '\' => $this->get' . ucfirst($fieldName) . '(),' . "\n";
                 }

@@ -58,11 +58,14 @@ class ConfigFieldGridController extends Controller
         if (!$extendManager->isExtend($entity->getClassName())) {
             $this->get('session')->getFlashBag()->add('error', $entity->getClassName() . 'isn\'t extend');
 
-            return $this->redirect($this->generateUrl('oro_entityconfig_fields',
-                array(
-                    'id' => $entity->getId()
+            return $this->redirect(
+                $this->generateUrl(
+                    'oro_entityconfig_fields',
+                    array(
+                        'id' => $entity->getId()
+                    )
                 )
-            ));
+            );
         }
 
         $newFieldModel = new FieldConfigModel();
@@ -84,11 +87,14 @@ class ConfigFieldGridController extends Controller
                     $newFieldModel->getType()
                 );
 
-                return $this->redirect($this->generateUrl('oro_entityextend_field_update',
-                    array(
-                        'id' => $entity->getId()
+                return $this->redirect(
+                    $this->generateUrl(
+                        'oro_entityextend_field_update',
+                        array(
+                            'id' => $entity->getId()
+                        )
                     )
-                ));
+                );
 
             }
         }
@@ -120,11 +126,14 @@ class ConfigFieldGridController extends Controller
         $fieldType = $request->getSession()->get(sprintf(self::SESSION_ID_FIELD_TYPE, $entity->getId()));
 
         if (!$fieldName || !$fieldType) {
-            return $this->redirect($this->generateUrl('oro_entityextend_field_create',
-                array(
-                    'id' => $entity->getId()
+            return $this->redirect(
+                $this->generateUrl(
+                    'oro_entityextend_field_create',
+                    array(
+                        'id' => $entity->getId()
+                    )
                 )
-            ));
+            );
         }
 
         /** @var ConfigManager $configManager */
@@ -136,9 +145,13 @@ class ConfigFieldGridController extends Controller
         $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
         $extendFieldConfig->set('is_extend', true);
 
-        $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model' => $newFieldModel,
-        ));
+        $form = $this->createForm(
+            'oro_entity_config_type',
+            null,
+            array(
+                'config_model' => $newFieldModel,
+            )
+        );
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -176,7 +189,8 @@ class ConfigFieldGridController extends Controller
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
                 'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId()))
-            ));
+            )
+        );
     }
 
     /**

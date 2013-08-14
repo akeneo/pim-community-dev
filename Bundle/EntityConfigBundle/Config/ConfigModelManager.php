@@ -101,8 +101,8 @@ class ConfigModelManager
     {
         if (!$model = $this->findModel($className, $fieldName)) {
             $message = $fieldName
-                ? sprintf('EntityConfigModel "%s" is not found ', $className)
-                : sprintf('FieldConfigModel "%s","%s" is not found ', $className, $fieldName);
+                ? sprintf('FieldConfigModel "%s","%s" is not found ', $className, $fieldName)
+                : sprintf('EntityConfigModel "%s" is not found ', $className);
 
             throw new RuntimeException($message);
         }
@@ -137,12 +137,14 @@ class ConfigModelManager
     }
 
     /**
-     * @param $className
+     * @param string $className
+     * @param string $mode
      * @return EntityConfigModel
      */
-    public function createEntityModel($className)
+    public function createEntityModel($className, $mode = 'default')
     {
         $entityModel = new EntityConfigModel($className);
+        $entityModel->setMode($mode);
 
         $this->localCache->set($className, $entityModel);
 
@@ -150,17 +152,19 @@ class ConfigModelManager
     }
 
     /**
-     * @param $className
-     * @param $fieldName
-     * @param $fieldType
+     * @param string $className
+     * @param string $fieldName
+     * @param string $fieldType
+     * @param string $mode
      * @return FieldConfigModel
      */
-    public function createFieldModel($className, $fieldName, $fieldType)
+    public function createFieldModel($className, $fieldName, $fieldType, $mode = 'default')
     {
         /** @var EntityConfigModel $entityModel */
         $entityModel = $this->getModel($className);
 
         $fieldModel = new FieldConfigModel($fieldName, $fieldType);
+        $fieldModel->setMode($mode);
         $entityModel->addField($fieldModel);
 
         $this->localCache->set($className . $fieldName, $fieldModel);

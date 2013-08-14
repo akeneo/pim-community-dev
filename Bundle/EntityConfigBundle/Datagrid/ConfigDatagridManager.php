@@ -84,7 +84,7 @@ class ConfigDatagridManager extends DatagridManager
         }
 
         if (count($filters)) {
-            $properties[] = new ActionConfigurationProperty (function (ResultRecord $record) use ($filters) {
+            $properties[] = new ActionConfigurationProperty(function (ResultRecord $record) use ($filters) {
                 $result = array();
                 foreach ($filters as $action => $filter) {
                     foreach ($filter as $key => $value) {
@@ -116,7 +116,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $result = $query->getQuery()->getArrayResult();
 
-        foreach ((array)$result as $value) {
+        foreach ((array) $result as $value) {
             $className = explode('\\', $value['className']);
 
             $options['name'][$value['className']]   = '';
@@ -352,7 +352,12 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 $alias = 'cev' . $code;
-                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+                $query->leftJoin(
+                    'ce.values',
+                    $alias,
+                    'WITH',
+                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
+                );
                 $query->addSelect($alias . '.value as ' . $code, true);
             }
         }

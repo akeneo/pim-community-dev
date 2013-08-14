@@ -449,15 +449,16 @@ class ConfigManager
     }
 
     /**
-     * @param $className
+     * @param        $className
+     * @param string $mode
      * @return EntityConfigModel
      */
-    public function createConfigEntityModel($className)
+    public function createConfigEntityModel($className, $mode = 'default')
     {
         if (!$entityModel = $this->modelManager->findModel($className)) {
 
             $metadata    = $this->getClassMetadata($className);
-            $entityModel = $this->modelManager->createEntityModel($className);
+            $entityModel = $this->modelManager->createEntityModel($className, $mode);
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
@@ -482,16 +483,16 @@ class ConfigManager
 
     /**
      * TODO::implement default value for configs
-     * @param $className
-     * @param $fieldName
-     * @param $fieldType
+     * @param string $className
+     * @param string $fieldName
+     * @param string $fieldType
+     * @param string $mode
      * @return FieldConfigModel
-     * @throws LogicException
      */
-    public function createConfigFieldModel($className, $fieldName, $fieldType)
+    public function createConfigFieldModel($className, $fieldName, $fieldType, $mode = 'default')
     {
         if (!$fieldModel = $this->modelManager->findModel($className, $fieldName)) {
-            $fieldModel = $this->modelManager->createFieldModel($className, $fieldName, $fieldType);
+            $fieldModel = $this->modelManager->createFieldModel($className, $fieldName, $fieldType, $mode);
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getPropertyConfig()->getDefaultValues(PropertyConfigContainer::TYPE_FIELD);

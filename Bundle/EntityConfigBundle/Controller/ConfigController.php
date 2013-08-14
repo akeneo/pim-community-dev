@@ -154,7 +154,7 @@ class ConfigController extends Controller
         if (class_exists($entity->getClassName())) {
             $metadata = $configManager->getClassMetadata($entity->getClassName());
 
-            if ($metadata->routeName) {
+            if ($metadata && $metadata->routeName) {
                 $link = $this->generateUrl($metadata->routeName);
             }
         }

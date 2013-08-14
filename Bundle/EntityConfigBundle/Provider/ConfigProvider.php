@@ -53,6 +53,14 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @return ConfigManager
+     */
+    public function getConfigManager()
+    {
+        return $this->configManager;
+    }
+
+    /**
      * @param $className
      * @return bool
      */

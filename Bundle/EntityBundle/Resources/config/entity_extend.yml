@@ -1,0 +1,36 @@
+TestClassExtend:
+    type:                       Custom
+    fields:
+        testStringField:
+            type:               string
+            options:
+                length:         200
+        testIntegerField:
+            type:               smallint
+        testHiddenField:
+            mode:               hidden
+            type:               string
+        testReadonlyField:
+            mode:               readonly
+            type:               string
+
+TestClassExtend2:
+    mode:                       hidden
+    type:                       Custom
+    fields:
+        testStringField:
+            type:               string
+            options:
+                length:         200
+
+Oro\Bundle\UserBundle\Entity\User:
+    type:                       Extend
+    fields:
+        testField:
+            type:               string
+        testHiddenField:
+            mode:               hidden
+            type:               string
+        testReadonlyField:
+            mode:               readonly
+            type:               string

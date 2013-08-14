@@ -57,8 +57,12 @@ class ConfigSubscriber implements EventSubscriberInterface
         if (class_exists($event->getClassName())) {
             $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
             if ($metadata && $metadata->isExtend) {
-                $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
-                $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
+                $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName(
+                    $event->getClassName()
+                );
+                $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName(
+                    $event->getClassName()
+                );
 
                 $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
                 $config->set('is_extend', true);
@@ -81,8 +85,8 @@ class ConfigSubscriber implements EventSubscriberInterface
         $className = $event->getConfig()->getConfigId()->getClassName();
 
         if ($scope == 'extend'
-           && $event->getConfig()->is('is_extend')
-           && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
+            && $event->getConfig()->is('is_extend')
+            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
         ) {
             $entityConfig = $event->getConfigManager()
                 ->getProvider($scope)

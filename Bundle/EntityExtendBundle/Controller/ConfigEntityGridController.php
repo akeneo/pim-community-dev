@@ -64,7 +64,8 @@ class ConfigEntityGridController extends Controller
 
         $form = $this->createForm(
             new UniqueKeyCollectionType(
-                array_filter($fieldConfigIds,
+                array_filter(
+                    $fieldConfigIds,
                     function (FieldConfigIdInterface $fieldConfigId) {
                         return $fieldConfigId->getFieldType() != 'ref-many';
                     }
@@ -154,15 +155,23 @@ class ConfigEntityGridController extends Controller
 
         $configManager->persist($extendConfig);
 
-        $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model' => $entityModel,
-        ));
+        $form = $this->createForm(
+            'oro_entity_config_type',
+            null,
+            array(
+                'config_model' => $entityModel,
+            )
+        );
 
         $cloneEntityModel = clone $entityModel;
         $cloneEntityModel->setClassName('');
-        $form->add('model', new EntityType, array(
-            'data' => $cloneEntityModel,
-        ));
+        $form->add(
+            'model',
+            new EntityType,
+            array(
+                'data' => $cloneEntityModel,
+            )
+        );
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
