@@ -13,6 +13,9 @@ use Context\Page\Base\Grid;
  */
 class Index extends Grid
 {
+    /**
+     * @var string
+     */
     protected $path = '/configuration/channel/';
 
     /**
@@ -31,5 +34,15 @@ class Index extends Grid
                 $category
             )
         );
+    }
+
+    /**
+     * @param string $channel
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findChannel($channel)
+    {
+        return $this->getRow($channel);
     }
 }

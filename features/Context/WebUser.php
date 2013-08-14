@@ -962,7 +962,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
-     * @Then /^I should see channels (.*)$/
+     * @Then /^I should see channels? (.*)$/
      */
     public function iShouldSeeChannels($channels)
     {

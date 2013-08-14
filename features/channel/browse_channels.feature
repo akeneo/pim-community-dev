@@ -5,7 +5,8 @@ Feature: Browse channels
   I need to be able to see available channels
 
   Background:
-    Given the following channels:
+    Given there is no channel
+    And the following channels:
       | code | name  | locales      |
       | FOO  | foo   | fr_FR, en_US |
       | BAR  | bar   | de_DE        |
@@ -13,5 +14,9 @@ Feature: Browse channels
 
   Scenario: Successfully display channels
     Given I am on the channels page
-    Then I should see channels FOO and BAR
-    And I should see the filters "Code", "Name" and "Category Tree"
+    Then the grid should contain 2 elements
+    And I should see channels FOO and BAR
+
+  Scenario: Successfully display columns
+    Given I am on the channels page
+    Then I should see the columns Code, Name and Category tree
