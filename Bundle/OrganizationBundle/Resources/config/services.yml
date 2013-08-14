@@ -22,6 +22,7 @@ services:
 
     oro_organization.form.type.business_unit:
         class:                        %oro_organization.type.business_unit.class%
+        arguments: ["@oro_organization.form.ownership.listener"]
         tags:
             - { name: form.type, alias: oro_business_unit }
 
@@ -65,7 +66,21 @@ services:
         tags:
             - { name: form.type, alias: oro_type_choice_ownership_type }
 
+    oro_organization.form.ownership.listener:
+        class: Oro\Bundle\OrganizationBundle\Form\EventListener\AddOwnershipFieldListener
+        arguments: [@security.context, "@oro_entity.config.acl_config_provider"]
+    
     oro_organization.form.type.form_type:
         class:                        %oro_organization.type.form_type.class%
+        arguments: [@security.context, "@oro_entity.config.acl_config_provider"]
         tags:
             - { name: form.type_extension, alias: form }
+
+    # Autocomplete search handler
+    oro_organization.autocomplete.business_unit.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %oro_organization.business_unit.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: business_unit, acl_resource: oro_user_user_list }

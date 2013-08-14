@@ -7,6 +7,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 
@@ -33,10 +35,11 @@ class RecordOwnerDataListener
     /**
      * @param ContainerInterface $container
      * @param ConfigProvider $configProvider
+     * @param ObjectManager $om
      */
     public function __construct(ContainerInterface $container, ConfigProvider $configProvider)
     {
-        $this->container = $container;
+        $this->container      = $container;
         $this->configProvider = $configProvider;
     }
 
@@ -63,6 +66,19 @@ class RecordOwnerDataListener
         if ($token) {
             $user = $token->getUser();
             if ($user) {
+                $ownerId = null;
+                $post = $this->container->get('request')->request->all();
+                if ($post) {
+                    foreach ($post as $params) {
+                        if (is_array($params)) {
+                            foreach ($params as $key => $formParam) {
+                                if ($key === 'owner') {
+                                    $ownerId = $formParam;
+                                }
+                            }
+                        }
+                    }
+                }
                 $entity = $args->getEntity();
                 if ($this->configProvider->hasConfig(get_class($entity))) {
                     /** @var $config EntityConfig */
@@ -71,10 +87,22 @@ class RecordOwnerDataListener
 
                     $owner = null;
                     if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
-                        $owner = $user;
+                        if ($ownerId) {
+                            $owner = $args->getEntityManager()
+                                ->getRepository('OroUserBundle:User')
+                                ->find($ownerId);
+                        } else {
+                            $owner = $user;
+                        }
                     } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
-                        $businessUnits = $user->getBusinessUnits();
-                        $owner = $businessUnits->first();
+                        if ($ownerId) {
+                            $owner = $args->getEntityManager()
+                                ->getRepository('OroOrganizationBundle:BusinessUnit')
+                                ->find($ownerId);
+                        } else {
+                            $businessUnits = $user->getBusinessUnits();
+                            $owner = $businessUnits->first();
+                        }
                     } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
                         $businessUnits = $user->getBusinessUnits();
                         $owner = $businessUnits->first()->getOrganization();
