@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
+use Sonata\DoctrineORMAdminBundle\Model\ModelManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
@@ -29,9 +30,6 @@ use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-
-use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
@@ -105,7 +103,8 @@ class ConfigManager
         EventDispatcher $eventDispatcher,
         ServiceProxy $proxyEm,
         ServiceProxy $security
-    ) {
+    )
+    {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
@@ -207,7 +206,7 @@ class ConfigManager
      */
     public function isConfigurable($className)
     {
-        return (bool) $this->modelManager->findModel($className);
+        return (bool)$this->modelManager->findModel($className);
     }
 
     /**
@@ -247,7 +246,7 @@ class ConfigManager
             return true;
         }
 
-        return (bool) $this->modelManager->getModelByConfigId($configId);
+        return (bool)$this->modelManager->getModelByConfigId($configId);
     }
 
     /**
@@ -453,7 +452,7 @@ class ConfigManager
      * @param string $mode
      * @return EntityConfigModel
      */
-    public function createConfigEntityModel($className, $mode = 'default')
+    public function createConfigEntityModel($className, $mode = ConfigModelManager::MODE_DEFAULT)
     {
         if (!$entityModel = $this->modelManager->findModel($className)) {
 
@@ -489,7 +488,7 @@ class ConfigManager
      * @param string $mode
      * @return FieldConfigModel
      */
-    public function createConfigFieldModel($className, $fieldName, $fieldType, $mode = 'default')
+    public function createConfigFieldModel($className, $fieldName, $fieldType, $mode = ConfigModelManager::MODE_DEFAULT)
     {
         if (!$fieldModel = $this->modelManager->findModel($className, $fieldName)) {
             $fieldModel = $this->modelManager->createFieldModel($className, $fieldName, $fieldType, $mode);

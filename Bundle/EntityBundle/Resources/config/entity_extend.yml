@@ -1,5 +1,4 @@
 TestClassExtend:
-    type:                       Custom
     fields:
         testStringField:
             type:               string
@@ -15,7 +14,6 @@ TestClassExtend:
             type:               string
 
 TestClassExtend2:
-    mode:                       hidden
     type:                       Custom
     fields:
         testStringField:
@@ -24,7 +22,6 @@ TestClassExtend2:
                 length:         200
 
 Oro\Bundle\UserBundle\Entity\User:
-    type:                       Extend
     fields:
         testField:
             type:               string

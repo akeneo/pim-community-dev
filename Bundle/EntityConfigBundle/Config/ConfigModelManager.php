@@ -18,6 +18,13 @@ use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 class ConfigModelManager
 {
     /**
+     * mode of config model
+     */
+    const MODE_DEFAULT  = 'default';
+    const MODE_HIDDEN   = 'hidden';
+    const MODE_READONLY = 'readonly';
+
+    /**
      * @var AbstractConfigModel[]|ArrayCollection
      */
     protected $localCache;
@@ -141,7 +148,7 @@ class ConfigModelManager
      * @param string $mode
      * @return EntityConfigModel
      */
-    public function createEntityModel($className, $mode = 'default')
+    public function createEntityModel($className, $mode = self::MODE_DEFAULT)
     {
         $entityModel = new EntityConfigModel($className);
         $entityModel->setMode($mode);
@@ -158,7 +165,7 @@ class ConfigModelManager
      * @param string $mode
      * @return FieldConfigModel
      */
-    public function createFieldModel($className, $fieldName, $fieldType, $mode = 'default')
+    public function createFieldModel($className, $fieldName, $fieldType, $mode = self::MODE_DEFAULT)
     {
         /** @var EntityConfigModel $entityModel */
         $entityModel = $this->getModel($className);

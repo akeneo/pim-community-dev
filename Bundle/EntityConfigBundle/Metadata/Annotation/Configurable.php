@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Metadata\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Exception\AnnotationException;
 
 /**
@@ -12,16 +12,16 @@ use Oro\Bundle\EntityConfigBundle\Exception\AnnotationException;
  */
 class Configurable
 {
-    public $viewMode = AbstractConfigModel::MODE_VIEW_DEFAULT;
+    public $mode = ConfigModelManager::MODE_DEFAULT;
     public $routeName = '';
     public $defaultValues = array();
 
     public function __construct(array $data)
     {
-        if (isset($data['viewMode'])) {
-            $this->viewMode = $data['viewMode'];
+        if (isset($data['mode'])) {
+            $this->mode = $data['mode'];
         } elseif (isset($data['value'])) {
-            $this->viewMode = $data['value'];
+            $this->mode = $data['value'];
         }
 
         if (isset($data['routeName'])) {
@@ -42,14 +42,14 @@ class Configurable
         }
 
         $availableMode = array(
-            AbstractConfigModel::MODE_VIEW_DEFAULT,
-            AbstractConfigModel::MODE_VIEW_HIDDEN,
-            AbstractConfigModel::MODE_VIEW_READONLY
+            ConfigModelManager::MODE_DEFAULT,
+            ConfigModelManager::MODE_HIDDEN,
+            ConfigModelManager::MODE_READONLY
         );
 
-        if (!in_array($this->viewMode, $availableMode)) {
+        if (!in_array($this->mode, $availableMode)) {
             throw new AnnotationException(
-                sprintf('Annotation "Configurable" give invalid parameter "viewMode" : "%s"', $this->viewMode)
+                sprintf('Annotation "Configurable" give invalid parameter "mode" : "%s"', $this->mode)
             );
         }
     }

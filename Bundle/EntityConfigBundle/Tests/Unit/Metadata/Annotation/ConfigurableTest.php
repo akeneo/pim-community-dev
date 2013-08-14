@@ -13,7 +13,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
     public function testTrue(array $data)
     {
         $annot = new Configurable($data);
-        $this->assertEquals(AbstractConfigModel::MODE_VIEW_HIDDEN, $annot->viewMode);
+        $this->assertEquals(AbstractConfigModel::MODE_VIEW_HIDDEN, $annot->mode);
         $this->assertEquals('symfony_route_name', $annot->routeName);
         $this->assertEquals(array('key' => 'value'), $annot->defaultValues);
     }

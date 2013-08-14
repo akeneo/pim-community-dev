@@ -41,7 +41,7 @@ class AnnotationDriver implements DriverInterface
             $metadata->configurable  = true;
             $metadata->defaultValues = $annot->defaultValues;
             $metadata->routeName     = $annot->routeName;
-            $metadata->viewMode      = $annot->viewMode;
+            $metadata->viewMode      = $annot->mode;
 
             return $metadata;
         }

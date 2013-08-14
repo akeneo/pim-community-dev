@@ -5,6 +5,8 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+
 /**
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
@@ -45,7 +47,7 @@ class EntityConfigModel extends AbstractConfigModel
         $this->className = $className;
         $this->fields    = new ArrayCollection();
         $this->values    = new ArrayCollection();
-        $this->mode      = self::MODE_VIEW_DEFAULT;
+        $this->mode      = ConfigModelManager::MODE_DEFAULT;
     }
 
     /**
@@ -113,7 +115,8 @@ class EntityConfigModel extends AbstractConfigModel
      */
     public function getField($fieldName)
     {
-        $fields = $this->getFields(function (FieldConfigModel $field) use ($fieldName) {
+        $fields = $this->getFields(
+            function (FieldConfigModel $field) use ($fieldName) {
             return $field->getFieldName() == $fieldName;
         });
 
