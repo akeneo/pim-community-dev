@@ -10,14 +10,14 @@ interface MassActionResponseInterface
     public function isSuccessful();
 
     /**
-     * @return string
-     */
-    public function getMessage();
-
-    /**
      * @return array
      */
     public function getOptions();
+
+    /**
+     * @return string
+     */
+    public function getMessage();
 
     /**
      * @param string $name

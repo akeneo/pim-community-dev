@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -14,6 +13,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Property\PropertyInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
@@ -224,6 +224,18 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->entityHint
         );
 
+        $this->configureDatagrid($datagrid);
+
+        return $datagrid;
+    }
+
+    /**
+     * Process datagrid configuration
+     *
+     * @param DatagridInterface $datagrid
+     */
+    protected function configureDatagrid(DatagridInterface $datagrid)
+    {
         // add properties
         foreach ($this->getProperties() as $property) {
             $this->datagridBuilder->addProperty($datagrid, $property);
@@ -267,8 +279,6 @@ abstract class DatagridManager implements DatagridManagerInterface
         if ($this->identifierField) {
             $datagrid->setIdentifierField($this->identifierField);
         }
-
-        return $datagrid;
     }
 
     /**
