@@ -34,20 +34,22 @@ class MassActionController extends Controller
      */
     public function massActionAction($gridName, $actionName)
     {
+        $request = $this->getRequest();
+
         // get parameters
-        $inset = $this->getRequest()->get('inset', true);
+        $inset = $request->get('inset', true);
         $inset = !empty($inset);
 
-        $values = $this->getRequest()->get('values', '');
+        $values = $request->get('values', '');
         if (!is_array($values)) {
             $values = $values !== '' ? explode(',', $values) : array();
         }
 
-        $filters = $this->getRequest()->get('filters', array());
+        $filters = $request->get('filters', array());
 
         /** @var MassActionDispatcher $massActionDispatcher */
         $massActionDispatcher = $this->get('oro_grid.mass_action.dispatcher');
-        $response = $massActionDispatcher->dispatch($gridName, $actionName, $inset, $values, $filters);
+        $response = $massActionDispatcher->dispatch($gridName, $actionName, $request, $inset, $values, $filters);
 
         $data = array(
             'successful' => $response->isSuccessful(),

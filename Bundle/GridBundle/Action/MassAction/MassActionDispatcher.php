@@ -4,6 +4,7 @@ namespace Oro\Bundle\GridBundle\Action\MassAction;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\GridBundle\Datagrid\ORM\IterableResult;
@@ -42,14 +43,21 @@ class MassActionDispatcher
     /**
      * @param string $datagridName
      * @param string $massActionName
+     * @param Request $request
      * @param bool $inset
      * @param array $values
      * @param array $filters
      * @return MassActionResponseInterface
      * @throws \LogicException
      */
-    public function dispatch($datagridName, $massActionName, $inset = false, $values = array(), $filters = array())
-    {
+    public function dispatch(
+        $datagridName,
+        $massActionName,
+        Request $request,
+        $inset = false,
+        $values = array(),
+        $filters = array()
+    ) {
         if ($inset && empty($values)) {
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $massActionName));
         }
@@ -76,7 +84,7 @@ class MassActionDispatcher
         // create mediator
         $massAction = $this->getMassActionByName($datagrid, $massActionName);
         $resultIterator = $this->getResultIterator($proxyQuery);
-        $mediator = new MassActionMediator($massAction, $resultIterator, $datagrid);
+        $mediator = new MassActionMediator($massAction, $resultIterator, $request, $datagrid);
 
         // perform mass action
         $handle = $this->getMassActionHandler($massAction);

@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Action\MassAction;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
@@ -19,6 +21,11 @@ class MassActionMediator implements MassActionMediatorInterface
     protected $results;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @var DatagridInterface|null
      */
     protected $datagrid;
@@ -26,12 +33,18 @@ class MassActionMediator implements MassActionMediatorInterface
     /**
      * @param MassActionInterface $massAction
      * @param \Iterator|ResultRecordInterface[] $results
+     * @param Request $request
      * @param DatagridInterface|null $datagrid
      */
-    public function __construct(MassActionInterface $massAction, $results, DatagridInterface $datagrid = null)
-    {
+    public function __construct(
+        MassActionInterface $massAction,
+        $results,
+        Request $request,
+        DatagridInterface $datagrid = null
+    ) {
         $this->massAction = $massAction;
         $this->results    = $results;
+        $this->request    = $request;
         $this->datagrid   = $datagrid;
     }
 
@@ -49,6 +62,14 @@ class MassActionMediator implements MassActionMediatorInterface
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
