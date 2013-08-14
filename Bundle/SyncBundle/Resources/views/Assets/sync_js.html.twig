@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    /*Oro.Synchronizer(new Oro.Synchronizer.Ajax({
+        url: '/sync_ap.php'
+    }));*/
+    Oro.Synchronizer(new Oro.Synchronizer.Wamp({
+        host: '127.0.0.1',
+        port: 8000
+    }));
+    Oro.Events.on('datagrid_collection_set_after', function(obj) {
+        Oro.Synchronizer.keepRelevant(obj.collection);
+        Oro.Events.once('hash_navigation_request:start', function() {
+            Oro.Synchronizer.stopTracking(obj.collection);
+        });
+    });
+</script>
