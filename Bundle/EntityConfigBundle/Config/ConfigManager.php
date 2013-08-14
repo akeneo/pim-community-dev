@@ -269,7 +269,7 @@ class ConfigManager
         }
 
         if (!$this->isConfigurable($configId->getClassName())) {
-            throw new RuntimeException(sprintf('Entity "%s" is not Configurable', $configId->getClassName()));
+            throw new RuntimeException(sprintf('Entity "%s" is not Config', $configId->getClassName()));
         }
 
         $resultConfig = null !== $this->cache

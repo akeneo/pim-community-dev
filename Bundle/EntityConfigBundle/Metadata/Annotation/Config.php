@@ -10,7 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Exception\AnnotationException;
  * @Annotation
  * @Target("CLASS")
  */
-class Configurable
+class Config
 {
     public $mode = ConfigModelManager::MODE_DEFAULT;
     public $routeName = '';
@@ -35,7 +35,7 @@ class Configurable
         if (!is_array($this->defaultValues)) {
             throw new AnnotationException(
                 sprintf(
-                    'Annotation "Configurable" parameter "defaultValues" expect "array" but "%s" given',
+                    'Annotation "Config" parameter "defaultValues" expect "array" but "%s" given',
                     gettype($this->defaultValues)
                 )
             );
@@ -49,7 +49,7 @@ class Configurable
 
         if (!in_array($this->mode, $availableMode)) {
             throw new AnnotationException(
-                sprintf('Annotation "Configurable" give invalid parameter "mode" : "%s"', $this->mode)
+                sprintf('Annotation "Config" give invalid parameter "mode" : "%s"', $this->mode)
             );
         }
     }

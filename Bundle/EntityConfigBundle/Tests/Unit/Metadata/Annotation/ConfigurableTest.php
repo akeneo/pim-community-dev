@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Metadata\Annotation;
 
 use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 class ConfigurableTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +12,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
      */
     public function testTrue(array $data)
     {
-        $annot = new Configurable($data);
+        $annot = new Config($data);
         $this->assertEquals(AbstractConfigModel::MODE_VIEW_HIDDEN, $annot->mode);
         $this->assertEquals('symfony_route_name', $annot->routeName);
         $this->assertEquals(array('key' => 'value'), $annot->defaultValues);
@@ -25,7 +25,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException($exceptionClass, $exceptionMessage);
 
-        $annot = new Configurable($data);
+        $annot = new Config($data);
     }
 
     public function providerTrue()
@@ -58,7 +58,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
                     'defaultValues' => array('key' => 'value'),
                 ),
                 'Oro\Bundle\EntityConfigBundle\Exception\AnnotationException',
-                'Annotation "Configurable" give invalid parameter "viewMode" : "wrong_value"'
+                'Annotation "Config" give invalid parameter "viewMode" : "wrong_value"'
             ),
             array(
                 array(
@@ -67,7 +67,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
                     'defaultValues' => 'wrong_value',
                 ),
                 'Oro\Bundle\EntityConfigBundle\Exception\AnnotationException',
-                'Annotation "Configurable" parameter "defaultValues" expect "array" but "string" given'
+                'Annotation "Config" parameter "defaultValues" expect "array" but "string" given'
             )
         );
     }
