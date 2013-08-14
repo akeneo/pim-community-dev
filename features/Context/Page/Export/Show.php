@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Job\JobShow;
+use Context\Page\Job\Show as JobShow;
 
 /**
  * Export show page

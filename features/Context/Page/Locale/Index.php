@@ -45,12 +45,4 @@ class Index extends Grid
     {
         $this->clickLink('New locale');
     }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->getPath();
-    }
 }

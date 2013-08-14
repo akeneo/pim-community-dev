@@ -25,14 +25,4 @@ class Creation extends Form
     {
         return sprintf('pim_family_%s_%s', strtolower($name), $locale);
     }
-
-    /**
-     * @param array $options
-     *
-     * @return string
-     */
-    public function getUrl(array $options = array())
-    {
-        return $this->getPath();
-    }
 }

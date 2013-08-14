@@ -78,7 +78,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
     {
         $column = strtoupper($column);
-        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {
+        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting column "%s" to contain "%s", got "%s".',

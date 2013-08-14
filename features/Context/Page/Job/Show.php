@@ -2,7 +2,7 @@
 
 namespace Context\Page\Job;
 
-use Context\Page\Base\Index;
+use Context\Page\Base\Index as BaseIndex;
 
 /**
  * Job show page
@@ -11,18 +11,8 @@ use Context\Page\Base\Index;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobShow extends Index
+class Show extends BaseIndex
 {
-    /**
-     * @param Job $job
-     *
-     * @return string
-     */
-    public function getUrl($job)
-    {
-        return str_replace('{id}', $job->getId(), $this->getPath());
-    }
-
     /**
      * @param string $property
      *

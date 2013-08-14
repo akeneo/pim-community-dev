@@ -1088,7 +1088,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheCategoryEditPage($code)
     {
-        $this->assertSession()->addressEquals($this->getPage('Category edit')->getUrl($this->getCategory($code)));
+        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $this->getCategory($code)->getId()));
+        $this->assertSession()->addressEquals($expectedAddress);
     }
 
     /**
@@ -1138,7 +1139,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheImportJobPage($job)
     {
-        $expectedAddress = $this->getPage('Import show')->getUrl($this->getJob($job));
+        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJob($job)->getId()));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
@@ -1190,7 +1191,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheExportJobPage($job)
     {
-        $expectedAddress = $this->getPage('Export show')->getUrl($this->getJob($job));
+        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJob($job)->getId()));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobShow;
+use Context\Page\Job\Show as JobShow;
 
 /**
  * Import show page
