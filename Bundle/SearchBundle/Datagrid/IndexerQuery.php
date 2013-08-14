@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Result;
@@ -229,6 +230,13 @@ class IndexerQuery implements ProxyQueryInterface
      * @deprecated Not allowed for indexer query
      */
     public function setQueryHint($name, $value)
+    {
+    }
+
+    /**
+     * @return IterableResultInterface
+     */
+    public function getIterableResult()
     {
     }
 }
