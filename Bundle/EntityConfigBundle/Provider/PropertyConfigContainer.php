@@ -97,7 +97,7 @@ class PropertyConfigContainer
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool)$item['options']['serializable'];
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -113,7 +113,7 @@ class PropertyConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return (boolean)$this->getFormItems($type, $fieldType);
+        return (boolean) $this->getFormItems($type, $fieldType);
     }
 
     /**
@@ -125,20 +125,23 @@ class PropertyConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return array_filter($this->getItems($type), function ($item) use ($fieldType) {
-            if (!isset($item['form']) || !isset($item['form']['type'])) {
-                return false;
-            }
+        return array_filter(
+            $this->getItems($type),
+            function ($item) use ($fieldType) {
+                if (!isset($item['form']) || !isset($item['form']['type'])) {
+                    return false;
+                }
 
-            if ($fieldType
-                && isset($item['options']['allowed_type'])
-                && !in_array($fieldType, $item['options']['allowed_type'])
-            ) {
-                return false;
-            }
+                if ($fieldType
+                    && isset($item['options']['allowed_type'])
+                    && !in_array($fieldType, $item['options']['allowed_type'])
+                ) {
+                    return false;
+                }
 
-            return true;
-        });
+                return true;
+            }
+        );
     }
 
     /**

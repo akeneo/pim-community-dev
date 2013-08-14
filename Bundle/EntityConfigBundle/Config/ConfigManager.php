@@ -100,8 +100,12 @@ class ConfigManager
      * @param ServiceProxy    $proxyEm
      * @param ServiceProxy    $security
      */
-    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm, ServiceProxy $security)
-    {
+    public function __construct(
+        MetadataFactory $metadataFactory,
+        EventDispatcher $eventDispatcher,
+        ServiceProxy $proxyEm,
+        ServiceProxy $security
+    ) {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
@@ -215,13 +219,16 @@ class ConfigManager
     {
         $entityModels = $this->modelManager->getModels($className);
 
-        return array_map(function (AbstractConfigModel $model) use ($scope) {
-            if ($model instanceof FieldConfigModel) {
-                return new FieldConfigId($model->getClassName(), $scope, $model->getFieldName(), $model->getType());
-            } else {
-                return new EntityConfigId($model->getClassName(), $scope);
-            }
-        }, $entityModels);
+        return array_map(
+            function (AbstractConfigModel $model) use ($scope) {
+                if ($model instanceof FieldConfigModel) {
+                    return new FieldConfigId($model->getClassName(), $scope, $model->getFieldName(), $model->getType());
+                } else {
+                    return new EntityConfigId($model->getClassName(), $scope);
+                }
+            },
+            $entityModels
+        );
     }
 
     /**
@@ -257,7 +264,8 @@ class ConfigManager
 
         if (!$this->modelManager->checkDatabase()) {
             throw new LogicException(
-                'Database is not synced, if you use ConfigManager, when a db schema may be hasn\'t synced. check it by ConfigManager::modelManager::checkDatabase'
+                'Database is not synced, if you use ConfigManager, when a db schema may be hasn\'t synced.'
+                . ' check it by ConfigManager::modelManager::checkDatabase'
             );
         }
 
@@ -385,13 +393,21 @@ class ConfigManager
             }
         }
 
-        $diffNew = array_udiff_assoc($config->getValues(), $originConfigValue, function ($a, $b) {
-            return ($a == $b) ? 0 : 1;
-        });
+        $diffNew = array_udiff_assoc(
+            $config->getValues(),
+            $originConfigValue,
+            function ($a, $b) {
+                return ($a == $b) ? 0 : 1;
+            }
+        );
 
-        $diffOld = array_udiff_assoc($originConfigValue, $config->getValues(), function ($a, $b) {
-            return ($a == $b) ? 0 : 1;
-        });
+        $diffOld = array_udiff_assoc(
+            $originConfigValue,
+            $config->getValues(),
+            function ($a, $b) {
+                return ($a == $b) ? 0 : 1;
+            }
+        );
 
         $diff = array();
         foreach ($diffNew as $key => $value) {

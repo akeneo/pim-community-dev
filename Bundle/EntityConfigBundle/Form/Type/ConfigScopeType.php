@@ -13,6 +13,9 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class ConfigScopeType extends AbstractType
 {
     /**
@@ -36,13 +39,22 @@ class ConfigScopeType extends AbstractType
     protected $configModel;
 
     /**
+     * @var array
+     */
+    protected $jsRequireOptions;
+
+    /**
      * @param $items
      * @param $config
      * @param $configModel
      * @param $configManager
      */
-    public function __construct($items, ConfigInterface $config, ConfigManager $configManager, AbstractConfigModel $configModel)
-    {
+    public function __construct(
+        $items,
+        ConfigInterface $config,
+        ConfigManager $configManager,
+        AbstractConfigModel $configModel
+    ) {
         $this->items         = $items;
         $this->config        = $config;
         $this->configModel   = $configModel;
@@ -56,8 +68,12 @@ class ConfigScopeType extends AbstractType
     {
         foreach ($this->items as $code => $config) {
             if (isset($config['form']['type'])) {
+                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
+
                 if (isset($config['options']['required_property'])) {
                     $property = $config['options']['required_property'];
+
+                    $propertyOnForm = false;
 
                     if (isset($property['config_id'])) {
                         $configId = $property['config_id'];
@@ -80,21 +96,48 @@ class ConfigScopeType extends AbstractType
                         } else {
                             $configId = new EntityConfigId($className, $scope);
                         }
+
+                        //check if requirement property isset in this form
+                        if ($className == $this->config->getConfigId()->getClassName()) {
+                            if ($fieldName) {
+                                if ($this->config->getConfigId() instanceof FieldConfigId
+                                    && $this->config->getConfigId()->getFieldName() == $fieldName
+                                ) {
+                                    $propertyOnForm = true;
+                                }
+                            } else {
+                                $propertyOnForm = true;
+                            }
+                        }
                     } else {
+                        $propertyOnForm = true;
+
                         $configId = $this->config->getConfigId();
                     }
 
                     $requireConfig = $this->configManager->getConfig($configId);
+
                     if ($requireConfig->get($property['code']) != $property['value']) {
-                        continue;
+                        if ($propertyOnForm) {
+                            $options['attr']['class'] = isset($options['attr']['class'])
+                                ? $options['attr']['class'] . ' hide'
+                                : 'hide';
+                        } else {
+                            continue;
+                        }
+                    }
+
+                    if ($propertyOnForm) {
+                        $options['attr']['data-requireProperty'] = $configId->getId() . $property['code'];
+                        $options['attr']['data-requireValue']    = $property['value'];
                     }
                 }
-
-                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
 
                 if (isset($config['constraints'])) {
                     $options['constraints'] = $this->parseValidator($config['constraints']);
                 }
+
+                $options['attr']['data-property_id'] = $this->config->getConfigId()->getId() . $code;
 
                 $builder->add($code, $config['form']['type'], $options);
             }
@@ -117,7 +160,7 @@ class ConfigScopeType extends AbstractType
     protected function newConstraint($name, $options)
     {
         if (strpos($name, '\\') !== false && class_exists($name)) {
-            $className = (string)$name;
+            $className = (string) $name;
         } else {
             $className = 'Symfony\\Component\\Validator\\Constraints\\' . $name;
         }
