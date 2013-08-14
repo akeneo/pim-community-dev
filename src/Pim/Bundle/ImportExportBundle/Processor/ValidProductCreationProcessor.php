@@ -212,7 +212,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     private function getProduct(array $attributes, array $item)
     {
-        if (null === $product = $this->productManager->findByIdentifier(reset($item))) {
+        $product = $this->productManager->findByIdentifier(reset($item));
+        if (!$product) {
             $product = $this->productManager->createFlexible();
             foreach ($attributes as $attribute) {
                 if (!$attribute) {
