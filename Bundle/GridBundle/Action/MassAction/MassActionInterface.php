@@ -28,6 +28,13 @@ interface MassActionInterface
     public function getLabel();
 
     /**
+     * Mass action route
+     *
+     * @return string|null
+     */
+    public function getRoute();
+
+    /**
      * Action options (route, ACL resource etc.)
      *
      * @return array

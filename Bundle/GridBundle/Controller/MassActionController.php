@@ -38,7 +38,9 @@ class MassActionController extends Controller
         $inset = !empty($inset);
 
         $values = $this->getRequest()->get('values', '');
-        $values = $values !== '' ? explode(',', $values) : array();
+        if (!is_array($values)) {
+            $values = $values !== '' ? explode(',', $values) : array();
+        }
 
         $filters = $this->getRequest()->get('filters', array());
 

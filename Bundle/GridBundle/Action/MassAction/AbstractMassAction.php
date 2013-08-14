@@ -7,7 +7,7 @@ abstract class AbstractMassAction implements MassActionInterface
     /**
      * @var array
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * @param array $options
@@ -18,9 +18,7 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * Action options
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getOptions()
     {
@@ -28,8 +26,7 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * @param string $name
-     * @return mixed|null
+     * {@inheritDoc}
      */
     public function getOption($name)
     {
@@ -37,9 +34,7 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * Mass action name
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -47,9 +42,7 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * ACL resource name
-     *
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getAclResource()
     {
@@ -57,12 +50,18 @@ abstract class AbstractMassAction implements MassActionInterface
     }
 
     /**
-     * Mass action label
-     *
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getLabel()
     {
         return $this->getOption('label');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoute()
+    {
+        return $this->getOption('route');
     }
 }

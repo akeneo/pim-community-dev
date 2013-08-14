@@ -17,6 +17,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 abstract class DatagridManager implements DatagridManagerInterface
 {
@@ -275,20 +276,26 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function prepareIdentifierColumn()
     {
+        // TODO Use entity name and entity alias from datagrid configuration
         if ($this->identifierField) {
             $fieldCollection = $this->getFieldDescriptionCollection();
 
             $hasIdentifierField = $fieldCollection->has($this->identifierField);
 
-            if (!$hasIdentifierField) {
+            if (!$hasIdentifierField && $this->queryFactory instanceof EntityQueryFactory) {
+                /** @var EntityQueryFactory $queryFactory */
+                $queryFactory = $this->queryFactory;
+
                 $fieldId = new FieldDescription();
                 $fieldId->setName($this->identifierField);
                 $fieldId->setOptions(
                     array(
-                        'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                        'label'       => $this->translate($this->identifierField),
-                        'filter_type' => FilterInterface::TYPE_NUMBER,
-                        'show_column' => false
+                        'field_name'   => $this->identifierField,
+                        'entity_alias' => $queryFactory->getAlias(),
+                        'type'         => FieldDescriptionInterface::TYPE_INTEGER,
+                        'label'        => $this->translate($this->identifierField),
+                        'filter_type'  => FilterInterface::TYPE_NUMBER,
+                        'show_column'  => false
                     )
                 );
                 $fieldCollection->add($fieldId);

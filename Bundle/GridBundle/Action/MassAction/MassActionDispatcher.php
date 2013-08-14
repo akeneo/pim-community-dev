@@ -3,6 +3,7 @@
 namespace Oro\Bundle\GridBundle\Action\MassAction;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry;
@@ -10,6 +11,8 @@ use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 
 class MassActionDispatcher
 {
@@ -55,38 +58,27 @@ class MassActionDispatcher
         $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
         $datagrid->applyFilters();
 
-        // get mass action
-        $massAction = $this->getMassActionByName($datagrid, $massActionName);
-
         // apply selector parameters
-        $identifierFieldName = $this->getIdentifierFieldName($datagrid);
+        $identifierFieldExpression = $this->getIdentifierExpression($datagrid);
         /** @var QueryBuilder $proxyQuery */
         $proxyQuery = $datagrid->getQuery();
         if ($values) {
             $valueWhereCondition =
                 $inset
-                ? $proxyQuery->expr()->in($identifierFieldName, $values)
-                : $proxyQuery->expr()->notIn($identifierFieldName, $values);
+                ? $proxyQuery->expr()->in($identifierFieldExpression, $values)
+                : $proxyQuery->expr()->notIn($identifierFieldExpression, $values);
             $proxyQuery->andWhere($valueWhereCondition);
         }
 
-        // get result iterator
-        $resultIterator = $this->getResultIterator($proxyQuery); // TODO implement result iterator
-
-        // get handler
-        $handle = $this->getMassActionHandler($massAction);
+        // create mediator
+        $massAction = $this->getMassActionByName($datagrid, $massActionName);
+        $resultIterator = $this->getResultIterator($proxyQuery);
+        $mediator = new MassActionMediator($massAction, $resultIterator);
 
         // perform mass action
-        // TODO implement data container
-        $dataContainer = array(
-            'resultIterator'  => $resultIterator,
-            'massAction'      => $massAction,
-            'datagridManager' => $datagridManager,
-            'datagrid'        => $datagrid,
-        );
-        // return $handle->perform($dataContainer);
+        $handle = $this->getMassActionHandler($massAction);
 
-        return true;
+        return $handle->handle($mediator);
     }
 
     /**
@@ -113,12 +105,19 @@ class MassActionDispatcher
 
     /**
      * @param ProxyQueryInterface $proxyQuery
-     * @return mixed
+     * @return ResultRecord[]|\Iterator
      */
     protected function getResultIterator(ProxyQueryInterface $proxyQuery)
     {
+        // TODO use result iterator
         /** @var QueryBuilder $proxyQuery */
-        return $proxyQuery->getQuery()->iterate();
+        $result = array();
+        $rows = $proxyQuery->getQuery()->execute();
+        foreach ($rows as $row) {
+            $result[] = new ResultRecord($row);
+        }
+
+        return $result;
     }
 
     /**
@@ -126,7 +125,7 @@ class MassActionDispatcher
      * @return string
      * @throws \LogicException
      */
-    protected function getIdentifierFieldName(DatagridInterface $datagrid)
+    protected function getIdentifierExpression(DatagridInterface $datagrid)
     {
         $identifierField = $datagrid->getIdentifierField();
 
@@ -142,13 +141,25 @@ class MassActionDispatcher
             throw new \LogicException(sprintf('There is no identifier field with name "%s"', $identifierField));
         }
 
-        return $fieldDescription->getFieldName();
+        // compute identifier field expression
+        $fieldMapping = $fieldDescription->getFieldMapping();
+        if (!empty($fieldMapping['fieldExpression'])) {
+            $fieldExpression = $fieldMapping['fieldExpression'];
+        } elseif (!empty($fieldMapping['entityAlias'])) {
+            $fieldExpression = sprintf('%s.%s', $fieldMapping['entityAlias'], $fieldMapping['fieldName']);
+        } else {
+            $fieldExpression = $fieldMapping['fieldName'];
+        }
+
+        return $fieldExpression;
     }
+
 
     /**
      * @param MassActionInterface $massAction
-     * @return object
+     * @return MassActionHandlerInterface
      * @throws \LogicException
+     * @throws UnexpectedTypeException
      */
     protected function getMassActionHandler(MassActionInterface $massAction)
     {
@@ -160,6 +171,11 @@ class MassActionDispatcher
             throw new \LogicException(sprintf('Mass action handler service "%s" not exist', $handlerServiceId));
         }
 
-        return $this->container->get($handlerServiceId);
+        $handler = $this->container->get($handlerServiceId);
+        if (!$handler instanceof MassActionHandlerInterface) {
+            throw new UnexpectedTypeException($handler, 'MassActionHandlerInterface');
+        }
+
+        return $handler;
     }
 }
