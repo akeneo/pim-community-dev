@@ -74,6 +74,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
             success: function (data, textStatus, jqXHR) {
                 this.datagrid.hideLoading();
                 this.datagrid.collection.fetch();
+                Oro.NotificationFlashMessage('success', 'Action successfully performed.');
             }
         });
     },
@@ -118,7 +119,6 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      */
     getConfirmDialog: function() {
         if (!this.confirmModal) {
-            // TODO Replace translations with passed from configuration of mass action
             this.confirmModal = new Oro.BootstrapModal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
