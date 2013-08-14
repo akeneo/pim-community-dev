@@ -34,7 +34,7 @@ class ItemMappingTest extends \PHPUnit_Framework_TestCase
         $field = new FieldMapping();
         $field->setSource('my-code-src');
         $field->setDestination('my-code-dest');
-        $field->setIsIdentifier(true);
+        $field->setIdentifier(true);
         $this->item->addField($field);
 
         $this->assertEquals(count($this->item->getFields()), 1);

@@ -9,7 +9,7 @@
 
 {{ JSFV(form) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
     {% set buttons %}
@@ -112,12 +112,12 @@
                         $(this)
                             .attr('data-original-title', $(this).parent().data('not-required-title'))
                             .tooltip('show');
-                        $input.removeAttr('checked');
+                        $input.removeAttr('checked').trigger('change');
                     } else {
                         $(this)
                             .attr('data-original-title', $(this).parent().data('required-title'))
                             .tooltip('show');
-                        $input.attr('checked', 'checked');
+                        $input.attr('checked', 'checked').trigger('change');
                     }
                 });
 

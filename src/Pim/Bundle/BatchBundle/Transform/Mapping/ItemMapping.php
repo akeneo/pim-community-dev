@@ -28,7 +28,7 @@ class ItemMapping
         $field = new FieldMapping();
         $field->setSource($source);
         $field->setDestination($destination);
-        $field->setIsIdentifier($isIdentifier);
+        $field->setIdentifier($isIdentifier);
 
         $this->fields[] = $field;
 

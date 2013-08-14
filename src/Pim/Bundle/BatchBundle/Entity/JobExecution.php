@@ -31,7 +31,9 @@ class JobExecution
      */
     private $id;
 
-    /* @var array */
+    /**
+     *  @var array
+     */
     private $stepExecutions;
 
     /**
@@ -402,11 +404,11 @@ class JobExecution
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
-        foreach ($failureExceptions as $failureException) {
+        foreach ($this->failureExceptionsObjects as $failureException) {
             $failureExceptions[] = array(
-                'class' => get_class($e),
-                'message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString()
+                'class' => get_class($failureException),
+                'message' => $failureException->getMessage(),
+                'stack_trace' => $failureException->getTraceAsString()
             );
         }
 

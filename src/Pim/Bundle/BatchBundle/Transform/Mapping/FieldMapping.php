@@ -25,7 +25,7 @@ class FieldMapping
      * Predicate to know if field is an identifier
      * @var boolean
      */
-    protected $isIdentifier;
+    protected $identifier;
 
     /**
      * Set source
@@ -75,26 +75,26 @@ class FieldMapping
     }
 
     /**
-     * Set isIdentifier
+     * Set identifier
      *
-     * @param boolean $isIdentifier
+     * @param boolean $identifier
      *
      * @return \Pim\Bundle\BatchBundle\Mapping\FieldMapping
      */
-    public function setIsIdentifier($isIdentifier)
+    public function setIdentifier($identifier)
     {
-        $this->isIdentifier = $isIdentifier;
+        $this->identifier = $identifier;
 
         return $this;
     }
 
     /**
-     * Get isIdentifier
+     * Get identifier
      *
      * @return boolean
      */
-    public function getIsIdentifier()
+    public function isIdentifier()
     {
-        return $this->isIdentifier;
+        return $this->identifier;
     }
 }
