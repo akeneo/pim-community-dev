@@ -4,7 +4,9 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -21,7 +23,6 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class ConfigDatagridManager extends DatagridManager
 {
@@ -84,19 +85,21 @@ class ConfigDatagridManager extends DatagridManager
         }
 
         if (count($filters)) {
-            $properties[] = new ActionConfigurationProperty(function (ResultRecord $record) use ($filters) {
-                $result = array();
-                foreach ($filters as $action => $filter) {
-                    foreach ($filter as $key => $value) {
-                        if ($record->getValue($key) != $value) {
-                            $result[$action] = false;
-                            break;
+            $properties[] = new ActionConfigurationProperty(
+                function (ResultRecord $record) use ($filters) {
+                    $result = array();
+                    foreach ($filters as $action => $filter) {
+                        foreach ($filter as $key => $value) {
+                            if ($record->getValue($key) != $value) {
+                                $result[$action] = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                return $result;
-            });
+                    return $result;
+                }
+            );
         }
 
         return $properties;
@@ -116,7 +119,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $result = $query->getQuery()->getArrayResult();
 
-        foreach ((array) $result as $value) {
+        foreach ((array)$result as $value) {
             $className = explode('\\', $value['className']);
 
             $options['name'][$value['className']]   = '';
@@ -346,9 +349,6 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query->where('ce.mode <> :mode');
-        $query->setParameter('mode', AbstractConfigModel::MODE_VIEW_HIDDEN);
-
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 $alias = 'cev' . $code;

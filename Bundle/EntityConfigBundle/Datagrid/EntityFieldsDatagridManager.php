@@ -19,11 +19,11 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class EntityFieldsDatagridManager extends DatagridManager
 {
@@ -33,7 +33,7 @@ class EntityFieldsDatagridManager extends DatagridManager
     protected $fieldsCollection;
 
     /**
-     * @var EntityConfigModel id
+     * @var integer id
      */
     protected $entityId;
 
@@ -294,7 +294,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         /** @var ProxyQueryInterface|Query $query */
         $query = parent::createQuery();
         $query->where('cf.mode <> :mode');
-        $query->setParameter('mode', AbstractConfigModel::MODE_VIEW_HIDDEN);
+        $query->setParameter('mode', ConfigModelManager::MODE_HIDDEN);
         $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
         $query->addSelect('ce.id as entity_id', true);
 
