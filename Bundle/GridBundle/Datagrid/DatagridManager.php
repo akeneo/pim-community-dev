@@ -417,8 +417,13 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         $options = array_merge_recursive(
             array(
+                'hide' => false,
                 'pageSize' => array(
+                    'hide' => false,
                     'items' => array()
+                ),
+                'pagination' => array(
+                    'hide' => false,
                 )
             ),
             $options
@@ -433,9 +438,7 @@ abstract class DatagridManager implements DatagridManagerInterface
         );
         $notExists = count($zeroItem) == 0;
 
-        $hidden = isset($options['hide']) && $options['hide'] ||
-            isset($options['pagination']['hide']) && $options['pagination']['hide'] ||
-            isset($options['pageSize']['hide']) && $options['pageSize']['hide'];
+        $hidden = $options['hide'] || $options['pagination']['hide'] || $options['pageSize']['hide'];
 
         if ($hidden) {
             $defaultPager['_per_page'] = 0;
