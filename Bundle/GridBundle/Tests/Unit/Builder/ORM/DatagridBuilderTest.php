@@ -79,7 +79,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddFilter()
     {
         // test filter
-        $testFilter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\FilterInterface');
+        $testFilter = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Filter\FilterInterface');
 
         // field description
         $fieldDescription = new FieldDescription();

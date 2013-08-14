@@ -199,14 +199,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($parameters, $datagrid->getParameters());
     }
 
-    public function testGetValues()
-    {
-        $arrayParameters = array('test');
-        $parameters = $this->createParameters($arrayParameters);
-        $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($parameters, $datagrid->getValues());
-    }
-
     public function testGetRouteGenerator()
     {
         $routeGenerator = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
@@ -250,13 +242,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expectedActions, $datagrid->getRowActions());
-    }
-
-    public function testSetValue()
-    {
-        // method is empty, do nothing
-        $datagrid = $this->createDatagrid();
-        $datagrid->setValue('name', '=', 'value');
     }
 
     public function testGetPager()
