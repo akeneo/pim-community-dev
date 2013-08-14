@@ -439,7 +439,10 @@ abstract class DatagridManager implements DatagridManagerInterface
         );
         $notExists = count($zeroItem) == 0;
 
-        $hidden = $options['hide'] || $options['pagination']['hide'] || $options['pageSize']['hide'];
+        $hidden = in_array(
+            true,
+            array($options['hide'] , $options['pagination']['hide'] , $options['pageSize']['hide'])
+        );
 
         if ($hidden) {
             $defaultPager['_per_page'] = 0;
