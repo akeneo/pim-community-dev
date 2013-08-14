@@ -147,7 +147,7 @@ class Grid extends Index
      *
      * @return integer
      */
-    protected function getColumnPosition($column)
+    public function getColumnPosition($column)
     {
         $headers = $this->getColumnHeaders();
         foreach ($headers as $position => $header) {
@@ -164,11 +164,21 @@ class Grid extends Index
     /**
      * Get column headers
      *
-     * @return array
+     * @return \Behat\Mink\Element\Element
      */
     protected function getColumnHeaders()
     {
         return $this->getElement('Grid')->findAll('css', 'thead th');
+    }
+
+    /**
+     * Count columns in datagrid
+     *
+     * @return integer
+     */
+    public function countColumns()
+    {
+        return count($this->getColumnHeaders());
     }
 
     /**

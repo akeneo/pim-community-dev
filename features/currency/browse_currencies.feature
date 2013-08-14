@@ -17,6 +17,15 @@ Feature: Browse currencies
     Then I should see activated currencies USD and EUR
     And I should see deactivated currency GBP
 
+  Scenario: Successfully display filters
+    Given I am on the currencies page
+    Then I should see the filters "Code" and "Activated"
+
+  Scenario: Successfully display columns
+    Given I am on the currencies page
+    Then the grid should contain 3 elements
+    And I should see the columns Code and Activated
+
   Scenario: Successfully activate a currency
     Given I am on the currencies page
     When I activate the GBP currency
@@ -30,20 +39,24 @@ Feature: Browse currencies
 
   Scenario: Successfully sort currencies by code ascending
     Given I am on the currencies page
+    And I should see currencies sorted as EUR, GBP and USD
     When I sort by "code" value ascending
     Then I should see currencies sorted as EUR, GBP and USD
 
   Scenario: Successfully sort currencies by code descending
     Given I am on the currencies page
+    And I should see currencies sorted as EUR, GBP and USD
     When I sort by "code" value descending
     Then I should see currencies sorted as USD, GBP and EUR
 
   Scenario: Successfully sort currencies by activated ascending
     Given I am on the currencies page
+    And I should see currencies sorted as EUR, GBP and USD
     When I sort by "Activated" value ascending
     Then I should see currencies sorted as USD, EUR and GBP
 
   Scenario: Successfully sort currencies by activated descending
     Given I am on the currencies page
+    And I should see currencies sorted as EUR, GBP and USD
     When I sort by "Activated" value descending
     Then I should see currencies sorted as GBP, USD and EUR

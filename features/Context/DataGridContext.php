@@ -15,6 +15,17 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
  */
 class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
+
+    /**
+     * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
+     */
+    protected $pageFactory;
+
+    /**
+     * @var \Context\Page\Base\Grid
+     */
+    protected $datagrid;
+
     /**
      * @param PageFactory $pageFactory
      */
@@ -104,6 +115,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $columns
+     *
+     * @Then /^I should see the columns? (.*)$/
+     */
+    public function iShouldSeeTheColumns($columns)
+    {
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        $expectedColumns = count($columns);
+        $countColumns    = $this->datagrid->countColumns()-1;
+        if ($expectedColumns !== $countColumns) {
+            throw $this->createExpectationException(
+                'Expected %d columns but contains %d',
+                $expectedColumns,
+                $countColumns
+            );
+        }
+
+        $expectedPosition = 0;
+        foreach ($columns as $column) {
+            $position = $this->datagrid->getColumnPosition(strtoupper($column));
+            if ($expectedPosition++ !== $position) {
+                throw $this->createExpectationException("The columns are not well ordered");
+            }
+        }
+    }
+
+    /**
      * @param string $actionName
      * @param string $element
      *
@@ -143,7 +182,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $elements = $this->getMainContext()->listToArray($elements);
 
         if ($this->datagrid->countRows() !== count($elements)) {
-            throw new \InvalidArgumentException('You must define all the entities in the grid to check the sorting');
+            throw $this->createExpectationException(
+                'You must define all the entities in the grid to check the sorting'
+            );
         }
 
         $expectedPosition = 0;
@@ -156,7 +197,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     $expectedPosition,
                     $position
                 );
-                throw new \InvalidArgumentException(
+                throw $this->createExpectationException(
                     sprintf("The columns are not well sorted\n%s", $errorMsg)
                 );
             }
