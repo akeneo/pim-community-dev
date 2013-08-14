@@ -32,7 +32,7 @@ Pim.updateListener = function($form) {
     $form.on('change', formUpdated);
     $form.find('ins.jstree-checkbox').on('click', formUpdated);
 
-    $('a[href^="/"]:not(".no-hash")').off('click').on('click', function (e) {
+    var linkClicked = function (e) {
         e.stopImmediatePropagation();
         e.preventDefault();
         var url = $(this).attr('href');
@@ -45,6 +45,12 @@ Pim.updateListener = function($form) {
             PimDialog.confirm(message, title, doAction);
         }
         return false;
+    };
+
+    $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
+
+    Backbone.Router.prototype.on('route', function() {
+        $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);
     });
 };
 
