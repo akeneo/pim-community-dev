@@ -2,10 +2,8 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Unit\Event\Handler;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler;
 use Monolog\Logger;
-
 
 class EmailNotificationHandlerTest extends \PHPUnit_Framework_TestCase
 {
