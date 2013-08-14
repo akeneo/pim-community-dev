@@ -44,7 +44,7 @@ class ItemMappingTest extends \PHPUnit_Framework_TestCase
         $field = $fields[0];
         $this->assertEquals('test-source', $field->getSource());
         $this->assertEquals('test-destination', $field->getDestination());
-        $this->assertTrue($field->getIsIdentifier());
+        $this->assertTrue($field->isIdentifier());
     }
 
     /**
