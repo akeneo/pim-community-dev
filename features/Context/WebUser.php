@@ -271,7 +271,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($this->listToArray($locales) as $locale) {
             try {
-                $gridRow = $this->getPage('Locale index')->getGridRow($locale);
+                $this->getPage('Locale index')->getGridRow($locale);
                 $this->createExpectationException(
                     sprintf('Locale "%s" should not be seen', $locale)
                 );
