@@ -49,6 +49,8 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         }
         this.datagrid = options.datagrid;
 
+        this.messages = this.messages || {};
+
         _.defaults(this.messages, this.defaultMessages);
 
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
