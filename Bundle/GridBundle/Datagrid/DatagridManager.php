@@ -433,7 +433,8 @@ abstract class DatagridManager implements DatagridManagerInterface
         $zeroItem = array_filter(
             $options['pageSize']['items'],
             function ($item) {
-                return $item == 0 || isset($item['size']) && $item['size'] == 0;
+                $item = isset($item['size']) ? $item['size'] : $item;
+                return $item == 0;
             }
         );
         $notExists = count($zeroItem) == 0;
@@ -452,7 +453,6 @@ abstract class DatagridManager implements DatagridManagerInterface
             );
             $this->toolbarOptions = $options;
         }
-
 
         return $defaultPager;
     }
