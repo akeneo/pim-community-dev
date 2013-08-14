@@ -78,7 +78,7 @@ interface DatagridInterface extends BaseDatagridInterface
     /**
      * @return array
      */
-    public function getToolBarOptions();
+    public function getToolbarOptions();
 
     /**
      * @param $options
