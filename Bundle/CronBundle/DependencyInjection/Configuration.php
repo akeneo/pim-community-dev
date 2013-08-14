@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\DependencyInjection;
+namespace Oro\Bundle\CronBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -13,18 +13,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $builder = new TreeBuilder();
-        $root    = $builder
-            ->root('oro_config')
-            ->children()
-                ->arrayNode('entity_output')
-                    ->prototype('array')
-                    ->children()
-                        ->scalarNode('icon_class')->end()
-                        ->scalarNode('name')->end()
-                        ->scalarNode('description')->end()
-                    ->end()
-                ->end()
-            ->end();
+        $root    = $builder->root('oro_cron');
 
         return $builder;
     }

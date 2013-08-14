@@ -1,18 +1,9 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle;
+namespace Oro\Bundle\CronBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\ConfigPass;
-
-class OroConfigBundle extends Bundle
+class OroCronBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new ConfigPass());
-    }
 }

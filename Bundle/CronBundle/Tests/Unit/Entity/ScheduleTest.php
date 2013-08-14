@@ -1,17 +1,17 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Entity;
+namespace Oro\Bundle\CronBundle\Entity;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ScheduleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Config
+     * @var CronSchedule
      */
     protected $object;
 
     protected function setUp()
     {
-        $this->object = new Config;
+        $this->object = new Schedule;
     }
 
     public function testGetId()

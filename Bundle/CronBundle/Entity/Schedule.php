@@ -1,17 +1,14 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Entity;
+namespace Oro\Bundle\CronBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(
- *  name="oro_config",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"entity", "record_id"})}
- * )
+ * @ORM\Table(name="oro_cron_schedule", uniqueConstraints={@ORM\UniqueConstraint(name="UQ_COMMAND", columns={"command"})})
  * @ORM\Entity
  */
-class Config
+class Schedule
 {
     /**
      * @var int
@@ -25,23 +22,16 @@ class Config
     /**
      * @var string
      *
-     * @ORM\Column(name="entity", type="string", length=255)
+     * @ORM\Column(name="command", type="string", length=50)
      */
-    protected $entity;
+    protected $command;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="record_id", type="integer")
+     * @ORM\Column(name="definition", type="string", length=100, nullable=true)
      */
-    protected $recordId;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="settings", type="json_array")
-     */
-    protected $settings;
+    protected $definition;
 
     /**
      * Get id
@@ -54,70 +44,65 @@ class Config
     }
 
     /**
-     * Get entity
+     * Get command name
      *
      * @return string
      */
-    public function getEntity()
+    public function getCommand()
     {
-        return $this->entity;
+        return $this->command;
     }
 
     /**
-     * Set entity
+     * Set command name
      *
-     * @param  string $entity
-     * @return Config
+     * @param  string  $command
+     * @return Shedule
      */
-    public function setEntity($entity)
+    public function setCommand($command)
     {
-        $this->entity = $entity;
+        $this->command = $command;
 
         return $this;
     }
 
     /**
-     * Get record id
+     * Returns cron definition string
      *
-     * @return integer
+     * @return string
      */
-    public function getRecordId()
+    public function getDefinition()
     {
-        return $this->recordId;
+        return $this->definition;
     }
 
     /**
-     * Set record id
+     * Set cron definition string
      *
-     * @param  integer $recordId
-     * @return Config
-     */
-    public function setRecordId($recordId)
-    {
-        $this->recordId = $recordId;
-
-        return $this;
-    }
-
-    /**
-     * Returns array of entity settings
+     * General format:
+     * *    *    *    *    *
+     * ┬    ┬    ┬    ┬    ┬
+     * │    │    │    │    │
+     * │    │    │    │    │
+     * │    │    │    │    └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names)
+     * │    │    │    └────────── month (1 - 12)
+     * │    │    └─────────────── day of month (1 - 31)
+     * │    └──────────────────── hour (0 - 23)
+     * └───────────────────────── min (0 - 59)
      *
-     * @return array Entity related settings
-     */
-    public function getSettings()
-    {
-        return $this->settings;
-    }
-
-    /**
-     * Pass an associative array of settings => values and re-set settings with new ones.
+     * Predefined values are:
+     *  @yearly (or @annually)  Run once a year at midnight in the morning of January 1                 0 0 1 1 *
+     *  @monthly                Run once a month at midnight in the morning of the first of the month   0 0 1 * *
+     *  @weekly                 Run once a week at midnight in the morning of Sunday                    0 0 * * 0
+     *  @daily                  Run once a day at midnight                                              0 0 * * *
+     *  @hourly                 Run once an hour at the beginning of the hour                           0 * * * *
      *
-     * @param  array  $settings Array of setting => value pairs
-     * @return Config
+     * @param  string  $definition New cron definition
+     * @return Shedule
      */
-    public function setSettings(array $settings)
+    public function setDefinition($definition)
     {
-        $this->settings = $settings;
+        $this->definition = $definition;
 
         return $this;
     }
