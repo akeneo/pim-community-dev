@@ -327,7 +327,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $page = $this->getPage($entityPage);
         if (!$page) {
-            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $pageName));
+            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $entityPage));
         }
 
         $getter = 'get'.$entityType;
@@ -343,11 +343,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $action
-     *
      * @Given /^I confirm the ([^"]*)$/
      */
-    public function iConfirmThe($action)
+    public function iConfirmThe()
     {
         $this->getCurrentPage()->confirmDialog();
 
@@ -355,11 +353,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $action
-     *
      * @Given /^I cancel the ([^"]*)$/
      */
-    public function iCancelThe($action)
+    public function iCancelThe()
     {
         $this->getCurrentPage()->cancelDialog();
     }

@@ -20,14 +20,14 @@ class ValidMetric extends Constraint
      *
      * @var string
      */
-    public $invalidFamilyMessage = 'Please specify a valid metric family';
+    public $familyMessage = 'Please specify a valid metric family';
 
     /*
      * Violation message for invalid or missing default metric unit
      *
      * @var string
      */
-    public $invalidMetricUnitMessage = 'Please specify a valid metric unit';
+    public $unitMessage = 'Please specify a valid metric unit';
 
     /**
      * {@inheritDoc}
