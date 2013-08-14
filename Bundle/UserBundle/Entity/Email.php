@@ -35,14 +35,6 @@ class Email implements EmailInterface
     /**
      * {@inheritdoc}
      */
-    public function getClass()
-    {
-        return 'Oro\Bundle\UserBundle\Entity\Email';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getEmailField()
     {
         return 'email';

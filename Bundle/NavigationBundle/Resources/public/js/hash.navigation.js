@@ -32,7 +32,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @property
      */
     selectors: {
-        links:          'a:not([href^=#],[href^=javascript],[href^=mailto]),span[data-url]',
+        links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype]),span[data-url]',
         scrollLinks:    'a[href^=#]',
         forms:          'form',
         content:        '#content',
@@ -1035,6 +1035,9 @@ Oro.Navigation = Backbone.Router.extend({
     processForms: function(selector) {
         $(selector).on('submit', _.bind(function (e) {
             var target = e.currentTarget;
+            if ($(target).data('nohash')) {
+                return;
+            }
             e.preventDefault();
 
             var url = $(target).attr('action');

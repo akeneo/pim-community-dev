@@ -19,15 +19,22 @@ class EntityCacheClearer implements CacheClearerInterface
     private $entityCacheNamespace;
 
     /**
+     * @var string
+     */
+    private $entityProxyNameTemplate;
+
+    /**
      * Constructor.
      *
      * @param string $entityCacheDir
      * @param string $entityCacheNamespace
+     * @param string $entityProxyNameTemplate
      */
-    public function __construct($entityCacheDir, $entityCacheNamespace)
+    public function __construct($entityCacheDir, $entityCacheNamespace, $entityProxyNameTemplate)
     {
         $this->entityCacheDir = $entityCacheDir;
         $this->entityCacheNamespace = $entityCacheNamespace;
+        $this->entityProxyNameTemplate = $entityProxyNameTemplate;
     }
 
     /**
@@ -35,10 +42,21 @@ class EntityCacheClearer implements CacheClearerInterface
      */
     public function clear($cacheDir)
     {
+        $fs = $this->createFilesystem();
+
         $entityCacheDir = sprintf('%s/%s', $this->entityCacheDir, str_replace('\\', '/', $this->entityCacheNamespace));
-        $fs = new Filesystem();
 
         $this->clearEmailAddressCache($entityCacheDir, $fs);
+    }
+
+    /**
+     * Create Filesystem object
+     *
+     * @return Filesystem
+     */
+    protected function createFilesystem()
+    {
+        return new Filesystem();
     }
 
     /**
@@ -49,6 +67,7 @@ class EntityCacheClearer implements CacheClearerInterface
      */
     protected function clearEmailAddressCache($entityCacheDir, Filesystem $fs)
     {
-        $fs->remove(sprintf('%s/%s.php', $entityCacheDir, 'EmailAddressProxy'));
+        $className = sprintf($this->entityProxyNameTemplate, 'EmailAddress');
+        $fs->remove(sprintf('%s/%s.php', $entityCacheDir, $className));
     }
 }

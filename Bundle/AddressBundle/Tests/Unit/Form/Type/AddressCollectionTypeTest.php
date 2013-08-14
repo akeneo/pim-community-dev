@@ -1,8 +1,6 @@
 <?php
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType;
 
 class AddressCollectionTypeTest extends \PHPUnit_Framework_TestCase
@@ -20,19 +18,9 @@ class AddressCollectionTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new AddressCollectionType();
     }
 
-    public function testSetDefaultOptions()
-    {
-        /** @var OptionsResolverInterface $resolver */
-        $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
-        $resolver->expects($this->once())
-            ->method('setDefaults')
-            ->with($this->isType('array'));
-        $this->type->setDefaultOptions($resolver);
-    }
-
     public function testGetParent()
     {
-        $this->assertEquals('collection', $this->type->getParent());
+        $this->assertEquals('oro_item_collection', $this->type->getParent());
     }
 
     public function testGetName()

@@ -13,7 +13,7 @@
     <script type="text/javascript">
         $(function(){
             {% for stateId, state in states %}
-            new Oro.widget.DialogView({
+            Oro.widget.Manager.createWidget('dialog', {
                 model: new Oro.widget.StateModel({{ {'data': state, 'id': stateId}|json_encode|raw }})
             }).render();
             {% endfor %}

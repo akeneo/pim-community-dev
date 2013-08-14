@@ -31,10 +31,9 @@ class ApiEntityManager
      */
     public function __construct($class, ObjectManager $om)
     {
-        $this->metadata = $om->getClassMetadata($class);
-
-        $this->class = $this->metadata->getName();
         $this->om = $om;
+        $this->metadata = $this->om->getClassMetadata($class);
+        $this->class = $this->metadata->getName();
     }
 
     /**
@@ -66,6 +65,25 @@ class ApiEntityManager
     public function find($id)
     {
         return $this->getRepository()->find($id);
+    }
+
+    /**
+     * @param object $entity
+     * @return int
+     * @throws \InvalidArgumentException
+     */
+    public function getEntityId($entity)
+    {
+        $className = $this->class;
+        if (!$entity instanceof $className) {
+            throw new \InvalidArgumentException('Expected instance of ' . $this->class);
+        }
+
+        $idFields = $this->metadata->getIdentifierFieldNames();
+        $idField = current($idFields);
+        $entityIds = $this->metadata->getIdentifierValues($entity);
+
+        return $entityIds[$idField];
     }
 
     /**

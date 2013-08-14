@@ -10,7 +10,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 /**
  * AddressType
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressTypeRepository")
+ * @ORM\Entity
  * @ORM\Table(name="oro_address_type")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\AddressTypeTranslation")
  */
@@ -111,6 +111,6 @@ class AddressType implements Translatable
      */
     public function __toString()
     {
-        return $this->label;
+        return (string)$this->label;
     }
 }
