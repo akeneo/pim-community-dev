@@ -55,6 +55,7 @@
                 'backgrid:selected': this.selectModel,
                 'backgrid:selectAll': this.selectAll,
                 'backgrid:selectAllVisible': this.selectAllVisible,
+                'backgrid:selectNone': this.selectNone,
 
                 'backgrid:isSelected': _.bind(function (model, obj) {
                     if ($.isPlainObject(obj)) {
@@ -139,6 +140,19 @@
         },
 
         /**
+         * Reset selection of all possible models:
+         *  - reset to initial state
+         *  - change type of set type as inset
+         *  - marks all models in collection as not selected
+         *  start to collect models which have to be included
+         */
+        selectNone: function () {
+            this.initialState();
+            this.inset = true;
+            this._selectNone();
+        },
+
+        /**
          * Performs selection of all visible models:
          *  - if necessary reset to initial state
          *  - marks all models in collection as selected
@@ -162,6 +176,17 @@
         },
 
         /**
+         * Marks all models in collection as not selected
+         *
+         * @private
+         */
+        _selectNone: function () {
+            this.collection.each(function (model) {
+                model.trigger("backgrid:select", model, false);
+            });
+        },
+
+        /**
          *
          *
          * @returns {Oro.Datagrid.Cell.SelectAllHeaderCell}
@@ -180,6 +205,7 @@
                 </button>\
                 <ul class="dropdown-menu">\
                     <li><a href="#" data-select-all-visible>All visible</a></li>\
+                    <li><a href="#" data-select-none>None</a></li>\
                 </ul>\
             </div>');
             this.$el.find('[data-select-all]').on('click', _.bind(function (e) {
@@ -188,6 +214,10 @@
             }, this));
             this.$el.find('[data-select-all-visible]').on('click', _.bind(function (e) {
                 this.collection.trigger('backgrid:selectAllVisible');
+                e.preventDefault();
+            }, this));
+            this.$el.find('[data-select-none]').on('click', _.bind(function (e) {
+                this.collection.trigger('backgrid:selectNone');
                 e.preventDefault();
             }, this));
             /* temp solution: end */
