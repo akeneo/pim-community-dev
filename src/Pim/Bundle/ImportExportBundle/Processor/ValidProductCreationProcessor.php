@@ -32,6 +32,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $enabled             = true;
     protected $categoriesColumn    = 'categories';
     protected $categoriesDelimiter = ',';
+    protected $familyColumn        = 'family';
 
     /**
      * @Assert\NotBlank
@@ -92,6 +93,26 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     public function getCategoriesColumn()
     {
         return $this->categoriesColumn;
+    }
+
+    /**
+     * Set the categories column
+     *
+     * @param string $categoriesColumn
+     */
+    public function setFamilyColumn($familyColumn)
+    {
+        $this->familyColumn = $familyColumn;
+    }
+
+    /**
+     * Get the family delimiter
+     *
+     * @return string
+     */
+    public function getFamilyColumn()
+    {
+        return $this->familyColumn;
     }
 
     /**
@@ -188,15 +209,16 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     public function getConfigurationFields()
     {
         return array(
-            'enabled' => array(
+            'enabled'             => array(
                 'type' => 'checkbox',
             ),
-            'categoriesColumn' => array(),
+            'categoriesColumn'    => array(),
             'categoriesDelimiter' => array(),
-            'channel' => array(
+            'familyColumn'        => array(),
+            'channel'             => array(
                 'type' => 'choice',
                 'options' => array(
-                    'choices' => $this->channelManager->getChannelChoices(),
+                    'choices'  => $this->channelManager->getChannelChoices(),
                     'required' => true
                 )
             )
@@ -293,13 +315,16 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     private function createAndSubmitForm(Product $product, array $attributes, array $item)
     {
-        $values = array();
+        $values     = array();
         $categories = array();
+        $family     = null;
         foreach ($item as $code => $value) {
             if (isset($attributes[$code])) {
                 $values[$this->getAttributeCode($attributes, $code)] = $this->getValue($attributes[$code], $value);
             } elseif ($code === $this->categoriesColumn) {
                 $categories = $this->getCategoryIds($value);
+            } elseif ($code === $this->familyColumn) {
+                $family = $this->getFamilyId($value);
             }
         }
 
@@ -308,7 +333,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $product,
             array(
                 'csrf_protection' => false,
-                'withCategories'  => true,
+                'import_mode'     => true,
             )
         );
 
@@ -316,6 +341,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             'enabled'    => (string) (int) $this->enabled,
             'values'     => $values,
             'categories' => $categories,
+            'family'     => $family,
         );
         $form->submit($data);
 
@@ -332,6 +358,20 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return $ids;
+    }
+
+    public function getFamilyId($code)
+    {
+        if ($family = $this->getFamily($code)) {
+            return $family->getId();
+        }
+    }
+
+    private function getFamily($code)
+    {
+        return $this->entityManager
+            ->getRepository('PimProductBundle:Family')
+            ->findOneBy(array('code' => $code));
     }
 
     private function getAttribute($code)

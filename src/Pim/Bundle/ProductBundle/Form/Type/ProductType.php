@@ -40,7 +40,7 @@ class ProductType extends FlexibleType
     {
         parent::buildForm($builder, $options);
 
-        if ($options['withCategories']) {
+        if ($options['import_mode']) {
             $builder
                 ->add(
                     'categories',
@@ -48,6 +48,13 @@ class ProductType extends FlexibleType
                     array(
                         'multiple' => true,
                         'class'    => 'PimProductBundle:Category',
+                    )
+                )
+                ->add(
+                    'family',
+                    'entity',
+                    array(
+                        'class' => 'PimProductBundle:Family',
                     )
                 );
         }
@@ -112,8 +119,8 @@ class ProductType extends FlexibleType
     {
         $resolver->setDefaults(
             array(
-                'currentLocale'  => null,
-                'withCategories' => false,
+                'currentLocale' => null,
+                'import_mode'   => false,
             )
         );
     }

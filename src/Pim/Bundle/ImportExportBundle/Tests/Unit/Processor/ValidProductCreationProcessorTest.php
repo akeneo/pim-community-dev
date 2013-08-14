@@ -32,9 +32,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $attributeRepository = $this->getRepositoryMock();
         $categoryRepository  = $this->getRepositoryMock();
+        $familyRepository    = $this->getRepositoryMock();
         $repoMap = array(
             array('PimProductBundle:ProductAttribute', $attributeRepository),
             array('PimProductBundle:Category', $categoryRepository),
+            array('PimProductBundle:Family', $familyRepository),
         );
 
         $this->em
@@ -62,6 +64,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('findOneBy')
             ->will($this->returnValueMap($categoriesMap));
 
+        $familyRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValue($this->getFamilyMock(1)));
+
         $product = $this->getProductMock();
         $this->productManager
             ->expects($this->any())
@@ -72,7 +79,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product', $product, array('csrf_protection' => false, 'withCategories' => true))
+            ->with('pim_product', $product, array('csrf_protection' => false, 'import_mode' => true))
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
@@ -95,6 +102,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     'categories' => array(1, 2, 3),
+                    'family' => 1
                 )
             );
 
@@ -104,6 +112,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             $this->processor->process(
                 array(
                     'sku'         => 'foo-1',
+                    'family'      => 'vehicle',
                     'name-en_US'  => 'car',
                     'name-fr_FR'  => 'voiture',
                     'description' => 'A foo product',
@@ -160,7 +169,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product', $product, array('csrf_protection' => false, 'withCategories' => true))
+            ->with('pim_product', $product, array('csrf_protection' => false, 'import_mode' => true))
             ->will($this->returnValue($form));
 
         $this->processor->setChannel('phpunit');
@@ -266,5 +275,16 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($id));
 
         return $category;
+    }
+
+    protected function getFamilyMock($id)
+    {
+        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+
+        $family->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id));
+
+        return $family;
     }
 }
