@@ -62,7 +62,12 @@ class OroEntityConfigExtension extends Extension
         $annotationCacheDir = $cacheDir . '/annotation';
         if (!is_dir($annotationCacheDir)) {
             if (false === @mkdir($annotationCacheDir, 0777, true)) {
-                throw new RuntimeException(sprintf('Could not create annotation cache directory "%s".', $annotationCacheDir));
+                throw new RuntimeException(
+                    sprintf(
+                        'Could not create annotation cache directory "%s".',
+                        $annotationCacheDir
+                    )
+                );
             }
         }
         $container->setParameter('oro_entity_config.cache_dir.annotation', $annotationCacheDir);

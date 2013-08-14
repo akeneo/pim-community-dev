@@ -19,9 +19,12 @@ use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
  * @ORM\Table(name="oro_access_group")
  * @Config(
  *      routeName="oro_user_group_index",
- *      defaultValues={"entity"={"icon"="group","label"="Group", "plural_label"="Groups"}}
+ *      mode="readonly"
+ *      defaultValues={
+ *          "entity"={"icon"="group","label"="Group", "plural_label"="Groups"}
+ *          "extend"={"is_extend"=true}
+ *      }
  * )
- * @Extend
  */
 class Group
 {
@@ -101,7 +104,6 @@ class Group
 
     /**
      * Returns the group roles
-     *
      * @return Collection The roles
      */
     public function getRoles()
@@ -111,8 +113,7 @@ class Group
 
     /**
      * Get role by string
-     *
-     * @param  string    $roleName Role name
+     * @param  string $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
@@ -128,7 +129,7 @@ class Group
     }
 
     /**
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return boolean
      * @throws \InvalidArgumentException
      */
@@ -144,13 +145,12 @@ class Group
             );
         }
 
-        return (bool) $this->getRole($roleName);
+        return (bool)$this->getRole($roleName);
     }
 
     /**
      * Adds a Role to the Collection
-     *
-     * @param  Role  $role
+     * @param  Role $role
      * @return Group
      */
     public function addRole(Role $role)
@@ -164,8 +164,7 @@ class Group
 
     /**
      * Remove the Role object from collection
-     *
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return Group
      * @throws \InvalidArgumentException
      */
@@ -189,8 +188,7 @@ class Group
 
     /**
      * Set new Roles collection
-     *
-     * @param  array|Collection          $roles
+     * @param  array|Collection $roles
      * @return Group
      * @throws \InvalidArgumentException
      */

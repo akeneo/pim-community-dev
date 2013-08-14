@@ -22,20 +22,11 @@ class ConfigSubscriber implements EventSubscriberInterface
     protected $extendManager;
 
     /**
-     * @var MetadataFactory
+     * @param ExtendManager $extendManager
      */
-    protected $metadataFactory;
-
-    protected $postFlushConfig = array();
-
-    /**
-     * @param ExtendManager   $extendManager
-     * @param MetadataFactory $metadataFactory
-     */
-    public function __construct(ExtendManager $extendManager, MetadataFactory $metadataFactory)
+    public function __construct(ExtendManager $extendManager)
     {
-        $this->extendManager   = $extendManager;
-        $this->metadataFactory = $metadataFactory;
+        $this->extendManager = $extendManager;
     }
 
     /**
@@ -54,23 +45,19 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function newConfigModel(NewEntityConfigModelEvent $event)
     {
-        if (class_exists($event->getClassName())) {
-            $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
-            if ($metadata && $metadata->isExtend) {
-                $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName(
-                    $event->getClassName()
-                );
-                $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName(
-                    $event->getClassName()
-                );
+        $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
+        if ($config->get('is_extend')) {
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName(
+                $event->getClassName()
+            );
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName(
+                $event->getClassName()
+            );
 
-                $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
-                $config->set('is_extend', true);
-                $config->set('extend_class', $extendClass);
-                $config->set('proxy_class', $proxyClass);
+            $config->set('extend_class', $extendClass);
+            $config->set('proxy_class', $proxyClass);
 
-                $this->extendManager->getConfigProvider()->persist($config);
-            }
+            $this->extendManager->getConfigProvider()->persist($config);
         }
     }
 

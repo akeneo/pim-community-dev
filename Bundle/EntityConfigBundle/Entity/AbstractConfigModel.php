@@ -12,13 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractConfigModel
 {
     /**
-     * type of config
-     */
-    const MODE_VIEW_DEFAULT  = 'default';
-    const MODE_VIEW_HIDDEN   = 'hidden';
-    const MODE_VIEW_READONLY = 'readonly';
-
-    /**
      * @var \DateTime $created
      * @ORM\Column(type="datetime")
      */
@@ -102,9 +95,11 @@ abstract class AbstractConfigModel
      */
     public function getValue($code, $scope)
     {
-        $values = $this->getValues(function (ConfigModelValue $value) use ($code, $scope) {
-            return ($value->getScope() == $scope && $value->getCode() == $code);
-        });
+        $values = $this->getValues(
+            function (ConfigModelValue $value) use ($code, $scope) {
+                return ($value->getScope() == $scope && $value->getCode() == $code);
+            }
+        );
 
         return $values->first();
     }
@@ -188,9 +183,11 @@ abstract class AbstractConfigModel
      */
     public function toArray($scope)
     {
-        $values = $this->getValues(function (ConfigModelValue $value) use ($scope) {
-            return $value->getScope() == $scope;
-        });
+        $values = $this->getValues(
+            function (ConfigModelValue $value) use ($scope) {
+                return $value->getScope() == $scope;
+            }
+        );
 
         $result = array();
         foreach ($values as $value) {

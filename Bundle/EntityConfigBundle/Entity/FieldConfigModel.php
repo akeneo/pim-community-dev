@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
+
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 
 /**
@@ -54,10 +55,10 @@ class FieldConfigModel extends AbstractConfigModel
 
     public function __construct($fieldName = null, $type = null)
     {
-        $this->fieldName = $fieldName;
         $this->type      = $type;
-        $this->values    = new ArrayCollection;
         $this->mode      = ConfigModelManager::MODE_DEFAULT;
+        $this->values    = new ArrayCollection;
+        $this->fieldName = $fieldName;
     }
 
     /**

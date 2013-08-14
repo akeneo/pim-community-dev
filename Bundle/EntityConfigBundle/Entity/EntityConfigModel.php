@@ -117,8 +117,9 @@ class EntityConfigModel extends AbstractConfigModel
     {
         $fields = $this->getFields(
             function (FieldConfigModel $field) use ($fieldName) {
-            return $field->getFieldName() == $fieldName;
-        });
+                return $field->getFieldName() == $fieldName;
+            }
+        );
 
         return $fields->first();
     }
