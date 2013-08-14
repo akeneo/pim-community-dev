@@ -86,35 +86,4 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->onResponse($this->event);
     }
-
-    public function testHashRequestNotFound()
-    {
-        $this->response->setStatusCode(404);
-        $this->serverErrorHandle();
-    }
-
-    public function testHashRequestServerError()
-    {
-        $this->response->setStatusCode(500);
-        $this->serverErrorHandle();
-    }
-
-    private function serverErrorHandle()
-    {
-        $this->event->expects($this->once())
-            ->method('setResponse');
-
-        $this->templating->expects($this->once())
-            ->method('renderResponse')
-            ->with(
-                self::TEMPLATE,
-                array(
-                    'full_redirect' => true,
-                    'location' => self::TEST_URL
-                )
-            )
-            ->will($this->returnValue(new Response()));
-
-        $this->listener->onResponse($this->event);
-    }
 }

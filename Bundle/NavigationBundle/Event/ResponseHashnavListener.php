@@ -45,10 +45,6 @@ class ResponseHashnavListener
                     $isFullRedirect = true;
                 }
             }
-            if ($response->isNotFound() || $response->isServerError()) {
-                $location = $request->getUri();
-                $isFullRedirect = true;
-            }
             if ($location) {
                 $event->setResponse(
                     $this->templating->renderResponse(
