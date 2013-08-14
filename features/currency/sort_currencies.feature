@@ -1,8 +1,8 @@
 @javascript
 Feature: Sort currencies
-  In order to check wether or not a currency is available in the catalog
+  In order to sort currencies in the catalog
   As a user
-  I need to be able to see active and inactive currencies in the catalog
+  I need to be able to sort currencies by several columns in the catalog
 
   Background:
     Given the following currencies:
