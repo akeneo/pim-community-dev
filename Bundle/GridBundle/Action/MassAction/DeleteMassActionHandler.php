@@ -59,6 +59,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
                 if (!$entityName) {
                     $entityName = $this->getEntityName($mediator);
                 }
+
                 if (!$entityIdentifiedField) {
                     $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
                 }
