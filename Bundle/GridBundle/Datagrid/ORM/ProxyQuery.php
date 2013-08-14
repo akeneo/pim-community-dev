@@ -88,14 +88,6 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getIterableResult()
-    {
-        return new IterableResult($this);
-    }
-
-    /**
      * Get query builder for result query
      *
      * @return QueryBuilder

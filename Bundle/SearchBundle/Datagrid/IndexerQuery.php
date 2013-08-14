@@ -70,14 +70,6 @@ class IndexerQuery implements ProxyQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterableResult()
-    {
-        return new IterableResult($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setFirstResult($firstResult)
     {
         $this->query->setFirstResult($firstResult);

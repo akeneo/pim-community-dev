@@ -261,7 +261,7 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         // add toolbar options
-        $datagrid->setToolbarOptions($this->getToolBarOptions());
+        $datagrid->setToolbarOptions($this->getToolbarOptions());
 
         // set identifier field name
         if ($this->identifierField) {
@@ -501,44 +501,48 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected function getDefaultPager()
     {
         $defaultPager = array();
-        $options = $this->getToolBarOptions();
+        $options = $this->getToolbarOptions();
 
-        switch (true) {
-            case isset($options['hide']) && $options['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
-            case isset($options['pagination']['hide']) && $options['pagination']['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
-            case isset($options['pageSize']['hide']) && $options['pageSize']['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
+        $options = array_merge_recursive(
+            array(
+                'hide' => false,
+                'pageSize' => array(
+                    'hide' => false,
+                    'items' => array()
+                ),
+                'pagination' => array(
+                    'hide' => false,
+                )
+            ),
+            $options
+        );
+
+        // check all label exists
+        $zeroItem = array_filter(
+            $options['pageSize']['items'],
+            function ($item) {
+                $item = isset($item['size']) ? $item['size'] : $item;
+                return $item == 0;
+            }
+        );
+        $notExists = count($zeroItem) == 0;
+
+        $hidden = in_array(
+            true,
+            array($options['hide'] , $options['pagination']['hide'] , $options['pageSize']['hide'])
+        );
+
+        if ($hidden) {
+            $defaultPager['_per_page'] = 0;
         }
 
         // add 'all' pageSize
-        if (isset($defaultPager['_per_page']) && $defaultPager['_per_page'] == 0) {
-            $notExists = true;
-            if (isset($options['pageSize']['items']) && is_array($options['pageSize']['items'])) {
-                foreach ($options['pageSize']['items'] as $item) {
-                    if ($item == 0 || isset($item['size']) && $item['size'] == 0) {
-                        $notExists = false;
-                        break;
-                    }
-                }
-            }
-
-            if ($notExists) {
-                $options['pageSize'] = isset($options['pageSize']) ? $options['pageSize'] : array();
-                $options['pageSize']['items'] = isset($options['pageSize']['items'])
-                && is_array($options['pageSize']['items'])
-                    ? $options['pageSize']['items']
-                    : array();
-                $options['pageSize']['items'][] = array(
-                    'size' => 0,
-                    'label' => $this->translate('oro.grid.datagrid.page_size.all')
-                );
-                $this->toolbarOptions = $options;
-            }
+        if ($notExists && $hidden) {
+            $options['pageSize']['items'][] = array(
+                'size' => 0,
+                'label' => $this->translate('oro.grid.datagrid.page_size.all')
+            );
+            $this->toolbarOptions = $options;
         }
 
         return $defaultPager;
@@ -564,7 +568,7 @@ abstract class DatagridManager implements DatagridManagerInterface
      *
      * @return array
      */
-    public function getToolBarOptions()
+    public function getToolbarOptions()
     {
         return $this->toolbarOptions;
     }

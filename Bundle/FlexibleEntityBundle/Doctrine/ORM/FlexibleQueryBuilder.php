@@ -291,7 +291,7 @@ class FlexibleQueryBuilder
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
 
-        } else if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_ENTITY) {
+        } elseif ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_ENTITY) {
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);

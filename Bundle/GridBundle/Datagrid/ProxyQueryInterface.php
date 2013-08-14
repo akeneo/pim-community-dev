@@ -10,11 +10,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface as BaseProxyQueryInterface;
 interface ProxyQueryInterface extends BaseProxyQueryInterface
 {
     /**
-     * @return IterableResultInterface
-     */
-    public function getIterableResult();
-
-    /**
      * Adds sorting order
      *
      * @param array $parentAssociationMappings

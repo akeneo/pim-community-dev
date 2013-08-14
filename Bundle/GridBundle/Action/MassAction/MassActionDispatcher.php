@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\GridBundle\Datagrid\ORM\IterableResult;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
@@ -111,7 +112,7 @@ class MassActionDispatcher
      */
     protected function getResultIterator(ProxyQueryInterface $proxyQuery, $bufferSize = null)
     {
-        $result = $proxyQuery->getIterableResult($bufferSize);
+        $result = new IterableResult($proxyQuery, $bufferSize);
 
         if ($bufferSize) {
             $result->setBufferSize($result);
