@@ -59,7 +59,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      */
     execute: function() {
         var selectionState = this.datagrid.getSelectionState();
-        if (_.isEmpty(selectionState.selectedModels)) {
+        if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
             Oro.NotificationFlashMessage('warning', this.messages.empty_selection);
         } else {
             this.getConfirmDialog().open();
