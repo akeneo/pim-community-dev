@@ -195,19 +195,4 @@ class EmailTemplateDatagridManager extends DatagridManager
 
         return array($clickAction, $updateAction, $cloneAction, $deleteAction);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getMassActions()
-    {
-        $deleteMassAction = new DeleteMassAction(
-            array(
-                'acl_resource' => 'oro_email_emailtemplate_remove',
-                'label'        => $this->translate('oro.email.datagrid.emailtemplate.action.delete'),
-            )
-        );
-
-        return array($deleteMassAction);
-    }
 }

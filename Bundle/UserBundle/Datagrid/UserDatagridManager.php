@@ -42,27 +42,6 @@ class UserDatagridManager extends FlexibleDatagridManager
     /**
      * {@inheritDoc}
      */
-    protected function getMassActions()
-    {
-        $deleteMassAction = new DeleteMassAction(
-            array(
-                'acl_resource' => 'oro_user_user_delete',
-                'label'        => $this->translate('oro.grid.mass_action.delete.label'),
-                'icon'         => 'trash',
-                'messages'     => array(
-                    'confirm_title'   => $this->translate('oro.grid.mass_action.delete.confirm_title'),
-                    'confirm_content' => $this->translate('oro.grid.mass_action.delete.confirm_content'),
-                    'confirm_ok'      => $this->translate('oro.grid.mass_action.confirm_ok')
-                ),
-            )
-        );
-
-        return array($deleteMassAction);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     protected function getRowActions()
     {
         $clickAction = array(
