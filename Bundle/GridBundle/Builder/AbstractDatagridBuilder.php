@@ -113,7 +113,8 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
             $options
         );
         $filter->setOption('data_type', FieldDescriptionInterface::TYPE_INTEGER);
-        $datagrid->addFilter($filter);
+        // filter must be first in list
+        $datagrid->addFilter($filter, true);
     }
 
     /**

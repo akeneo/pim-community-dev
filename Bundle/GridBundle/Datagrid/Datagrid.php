@@ -6,8 +6,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Sonata\AdminBundle\Filter\FilterInterface as SonataFilterInterface;
-
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -20,6 +18,10 @@ use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * TODO: This class should be refactored  (BAP-969).
+ */
 class Datagrid implements DatagridInterface
 {
     /**
@@ -197,13 +199,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param SonataFilterInterface $filter
-     * @return void
+     * {@inheritDoc}
      */
-    public function addFilter(SonataFilterInterface $filter)
+    public function addFilter(FilterInterface $filter, $prepend = false)
     {
         $name = $filter->getName();
-        $this->filters[$name] = $filter;
+        if ($prepend) {
+            $this->filters = array_merge(array($name => $filter), $this->filters);
+        } else {
+            $this->filters[$name] = $filter;
+        }
         list($formType, $formOptions) = $filter->getRenderSettings();
         $this->formBuilder->add($name, $formType, $formOptions);
     }
@@ -219,7 +224,7 @@ class Datagrid implements DatagridInterface
     /**
      * @param string $name
      *
-     * @return SonataFilterInterface
+     * @return FilterInterface
      */
     public function getFilter($name)
     {
@@ -413,14 +418,6 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @deprecated Use applyParameters instead
-     */
-    public function buildPager()
-    {
-        $this->applyParameters();
-    }
-
-    /**
      * @return array
      */
     public function getColumns()
@@ -434,25 +431,6 @@ class Datagrid implements DatagridInterface
     public function getParameters()
     {
         return $this->parameters;
-    }
-
-    /**
-     * @param string $name
-     * @param string $operator
-     * @param mixed $value
-     * @deprecated Grid parameters are read-only
-     */
-    public function setValue($name, $operator, $value)
-    {
-    }
-
-    /**
-     * @return array
-     * @deprecated Use getParameters instead
-     */
-    public function getValues()
-    {
-        return $this->getParameters();
     }
 
     /**
