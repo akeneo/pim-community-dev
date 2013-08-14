@@ -36,13 +36,16 @@ class LoadRolesData extends AbstractFixture implements OrderedFixtureInterface
         $roleManager = new Role('ROLE_MANAGER');
         $roleManager->setLabel('Manager');
         $this->addReference('manager_role', $roleManager);
-
-        $roleAnonymous->setOwner($this->getReference('default_business_unit'));
-        $roleUser->setOwner($this->getReference('default_business_unit'));
-        $roleSAdmin->setOwner($this->getReference('default_business_unit'));
-        $roleAdmin->setOwner($this->getReference('default_business_unit'));
-        $roleManager->setOwner($this->getReference('default_business_unit'));
-
+        if ($this->hasReference('default_business_unit')) {
+            $defaultBusinessUnit = $this->getReference('default_business_unit');
+            if ($defaultBusinessUnit) {
+                $roleAnonymous->setOwner($defaultBusinessUnit);
+                $roleUser->setOwner($defaultBusinessUnit);
+                $roleSAdmin->setOwner($defaultBusinessUnit);
+                $roleAdmin->setOwner($defaultBusinessUnit);
+                $roleManager->setOwner($defaultBusinessUnit);
+            }
+        }
         $manager->persist($roleAnonymous);
         $manager->persist($roleUser);
         $manager->persist($roleAdmin);
