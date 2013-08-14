@@ -317,7 +317,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             ),
             'field_name'    => $this->identifierField,
             'show_filter'   => true,
-            'label'         => $this->translate('oro.grid.mass_action.selected_rows', array(), 'messages')
+            'label'         => $this->translate('oro.grid.mass_action.selected_rows')
         );
     }
 

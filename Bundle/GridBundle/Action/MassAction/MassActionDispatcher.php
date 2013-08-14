@@ -10,6 +10,7 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManagerRegistry;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
@@ -65,8 +66,8 @@ class MassActionDispatcher
         if ($values) {
             $valueWhereCondition =
                 $inset
-                ? $proxyQuery->expr()->in($identifierFieldExpression, $values)
-                : $proxyQuery->expr()->notIn($identifierFieldExpression, $values);
+                    ? $proxyQuery->expr()->in($identifierFieldExpression, $values)
+                    : $proxyQuery->expr()->notIn($identifierFieldExpression, $values);
             $proxyQuery->andWhere($valueWhereCondition);
         }
 
@@ -105,16 +106,15 @@ class MassActionDispatcher
 
     /**
      * @param ProxyQueryInterface $proxyQuery
-     * @return ResultRecord[]|\Iterator
+     * @param int|null $bufferSize
+     * @return IterableResultInterface
      */
-    protected function getResultIterator(ProxyQueryInterface $proxyQuery)
+    protected function getResultIterator(ProxyQueryInterface $proxyQuery, $bufferSize = null)
     {
-        // TODO use result iterator
-        /** @var QueryBuilder $proxyQuery */
-        $result = array();
-        $rows = $proxyQuery->getQuery()->execute();
-        foreach ($rows as $row) {
-            $result[] = new ResultRecord($row);
+        $result = $proxyQuery->getIterableResult($bufferSize);
+
+        if ($bufferSize) {
+            $result->setBufferSize($result);
         }
 
         return $result;

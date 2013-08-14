@@ -88,6 +88,14 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getIterableResult()
+    {
+        return new IterableResult($this);
+    }
+
+    /**
      * Get query builder for result query
      *
      * @return QueryBuilder
@@ -457,6 +465,16 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         $this->queryHints[$name] = $value;
 
         return $this;
+    }
+
+    /**
+     * Get a list of query hints
+     *
+     * @return array
+     */
+    public function getQueryHints()
+    {
+        return $this->queryHints;
     }
 
     /**
