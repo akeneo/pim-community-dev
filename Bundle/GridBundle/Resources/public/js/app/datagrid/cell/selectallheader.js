@@ -88,7 +88,7 @@
         getSelectionState: function() {
             return {
                 selectedModels: this.selectedModels,
-                inset: true
+                inset: this.inset
             }
         },
 
