@@ -30,7 +30,8 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         confirm_content: _.__('Are you sure you want to do this?'),
         confirm_ok: _.__('Yes, do it'),
         success: _.__('Mass action was successfully performed.'),
-        error: _.__('Mass action was not performed.')
+        error: _.__('Mass action was not performed.'),
+        empty_selection: _.__('Please, select items to perform mass action.')
     },
 
     /**
@@ -57,7 +58,12 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      * Ask a confirmation and execute mass action.
      */
     execute: function() {
-        this.getConfirmDialog().open();
+        var selectionState = this.datagrid.getSelectionState();
+        if (_.isEmpty(selectionState.selectedModels)) {
+            Oro.NotificationFlashMessage('warning', this.messages.empty_selection);
+        } else {
+            this.getConfirmDialog().open();
+        }
     },
 
     /**
