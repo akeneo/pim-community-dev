@@ -29,10 +29,10 @@ var Oro = Oro || {};
             <% } %>\
             <div class="modal-body"><%= content %></div>\
             <div class="modal-footer">\
-              <a href="#" class="btn ok <%= okButtonClass %>"><%- okText %></a>\
               <% if (allowCancel && cancelText) { %>\
                 <a href="#" class="btn cancel"><%- cancelText %></a>\
               <% } %>\
+              <a href="#" class="btn ok <%= okButtonClass %>"><%- okText %></a>\
             </div>\
         '),
 
@@ -57,7 +57,7 @@ var Oro = Oro || {};
 
         open: function() {
             Backbone.BootstrapModal.prototype.open.apply(this, arguments);
-            
+
             this.once('cancel', _.bind(function() {
                 this.$el.trigger('hidden');
             }, this));
