@@ -7,14 +7,18 @@ use Doctrine\Common\Annotations\Reader;
 use Metadata\Driver\DriverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
 
 class AnnotationDriver implements DriverInterface
 {
     /**
      * Annotation reader uses a full class pass for parsing
      */
-    const CONFIGURABLE = 'Oro\\Bundle\\EntityConfigBundle\\Metadata\\Annotation\\Config';
+    const ENTITY_CONFIG = 'Oro\\Bundle\\EntityConfigBundle\\Metadata\\Annotation\\Config';
+    const FIELD_CONFIG  = 'Oro\\Bundle\\EntityConfigBundle\\Metadata\\Annotation\\ConfigField';
 
     /**
      * @var Reader
@@ -34,14 +38,26 @@ class AnnotationDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        /** @var Config $annot */
-        if ($annot = $this->reader->getClassAnnotation($class, self::CONFIGURABLE)) {
-            $metadata = new ConfigClassMetadata($class->getName());
+        /** @var Config $annotation */
+        if ($annotation = $this->reader->getClassAnnotation($class, self::ENTITY_CONFIG)) {
+            $metadata = new EntityMetadata($class->getName());
 
             $metadata->configurable  = true;
-            $metadata->defaultValues = $annot->defaultValues;
-            $metadata->routeName     = $annot->routeName;
-            $metadata->viewMode      = $annot->mode;
+            $metadata->defaultValues = $annotation->defaultValues;
+            $metadata->routeName     = $annotation->routeName;
+            $metadata->mode          = $annotation->mode;
+
+            foreach ($class->getProperties() as $property) {
+                $propertyMetadata = new FieldMetadata($class, $property->getName());
+
+                /** @var ConfigField $annotation */
+                if ($annotation = $this->reader->getPropertyAnnotation($property, self::FIELD_CONFIG)) {
+                    $propertyMetadata->defaultValues = $annotation->defaultValues;
+                    $propertyMetadata->mode          = $annotation->mode;
+                }
+
+                $metadata->addPropertyMetadata($propertyMetadata);
+            }
 
             return $metadata;
         }

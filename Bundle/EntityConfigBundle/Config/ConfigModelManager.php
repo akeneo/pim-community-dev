@@ -146,10 +146,17 @@ class ConfigModelManager
     /**
      * @param string $className
      * @param string $mode
+     * @throws \InvalidArgumentException
      * @return EntityConfigModel
      */
     public function createEntityModel($className, $mode = self::MODE_DEFAULT)
     {
+        if (!in_array($mode, array(self::MODE_DEFAULT, self::MODE_READONLY))) {
+            throw new \InvalidArgumentException(
+                sprintf('EntityConfigModel give invalid parameter "mode" : "%s"', $mode)
+            );
+        }
+
         $entityModel = new EntityConfigModel($className);
         $entityModel->setMode($mode);
 
@@ -163,10 +170,17 @@ class ConfigModelManager
      * @param string $fieldName
      * @param string $fieldType
      * @param string $mode
+     * @throws \InvalidArgumentException
      * @return FieldConfigModel
      */
     public function createFieldModel($className, $fieldName, $fieldType, $mode = self::MODE_DEFAULT)
     {
+        if (!in_array($mode, array(self::MODE_DEFAULT, self::MODE_HIDDEN, self::MODE_READONLY))) {
+            throw new \InvalidArgumentException(
+                sprintf('FieldConfigModel give invalid parameter "mode" : "%s"', $mode)
+            );
+        }
+
         /** @var EntityConfigModel $entityModel */
         $entityModel = $this->getModel($className);
 

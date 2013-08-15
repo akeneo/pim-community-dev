@@ -18,7 +18,9 @@ use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-use Oro\Bundle\EntityConfigBundle\Metadata\ConfigClassMetadata;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
 
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -95,16 +97,15 @@ class ConfigManager
     /**
      * @param MetadataFactory $metadataFactory
      * @param EventDispatcher $eventDispatcher
-     * @param ServiceProxy    $proxyEm
-     * @param ServiceProxy    $security
+     * @param ServiceProxy $proxyEm
+     * @param ServiceProxy $security
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
         ServiceProxy $proxyEm,
         ServiceProxy $security
-    )
-    {
+    ) {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
@@ -182,11 +183,26 @@ class ConfigManager
 
     /**
      * @param $className
-     * @return ConfigClassMetadata|null
+     * @return EntityMetadata|null
      */
-    public function getClassMetadata($className)
+    public function getEntityMetadata($className)
     {
         return class_exists($className) ? $this->metadataFactory->getMetadataForClass($className) : null;
+    }
+
+    /**
+     * @param $className
+     * @param $fieldName
+     * @return null|FieldMetadata
+     */
+    public function getFieldMetadata($className, $fieldName)
+    {
+        $metadata = $this->getEntityMetadata($className);
+        if ($metadata && isset ($metadata->propertyMetadata[$fieldName])) {
+            return $metadata->propertyMetadata[$fieldName];
+        }
+
+        return null;
     }
 
     /**
@@ -201,12 +217,13 @@ class ConfigManager
     }
 
     /**
-     * @param $className
+     * @param string $className
+     * @param string $fieldName
      * @return bool
      */
-    public function isConfigurable($className)
+    public function isConfigurable($className, $fieldName = null)
     {
-        return (bool)$this->modelManager->findModel($className);
+        return (bool)$this->modelManager->findModel($className, $fieldName);
     }
 
     /**
@@ -455,14 +472,14 @@ class ConfigManager
     public function createConfigEntityModel($className, $mode = ConfigModelManager::MODE_DEFAULT)
     {
         if (!$entityModel = $this->modelManager->findModel($className)) {
-
-            $metadata    = $this->getClassMetadata($className);
             $entityModel = $this->modelManager->createEntityModel($className, $mode);
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
+
+                $metadata = $this->getEntityMetadata($className);
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues = $metadata->defaultValues[$provider->getScope()];
+                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
                 }
 
                 $entityId = new EntityConfigId($className, $provider->getScope());
@@ -481,7 +498,6 @@ class ConfigManager
     }
 
     /**
-     * TODO::implement default value for configs
      * @param string $className
      * @param string $fieldName
      * @param string $fieldType
@@ -495,8 +511,14 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = $provider->getPropertyConfig()->getDefaultValues(PropertyConfigContainer::TYPE_FIELD);
-                $fieldId       = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
-                $config        = $provider->createConfig($fieldId, $defaultValues);
+
+                $metadata = $this->getFieldMetadata($className, $fieldName);
+                if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
+                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
+                }
+
+                $fieldId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
+                $config  = $provider->createConfig($fieldId, $defaultValues);
 
                 $this->localCache->set($config->getConfigId()->getId(), $config);
             }

@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Metadata;
 use Metadata\MergeableClassMetadata;
 use Metadata\MergeableInterface;
 
-class ConfigClassMetadata extends MergeableClassMetadata
+class EntityMetadata extends MergeableClassMetadata
 {
     /**
      * @var bool
@@ -20,7 +20,7 @@ class ConfigClassMetadata extends MergeableClassMetadata
     /**
      * @var string
      */
-    public $viewMode;
+    public $mode;
 
     /**
      * @var array
@@ -34,11 +34,11 @@ class ConfigClassMetadata extends MergeableClassMetadata
     {
         parent::merge($object);
 
-        if ($object instanceof ConfigClassMetadata) {
+        if ($object instanceof EntityMetadata) {
             $this->configurable  = $object->configurable;
             $this->defaultValues = $object->defaultValues;
             $this->routeName     = $object->routeName;
-            $this->viewMode      = $object->viewMode;
+            $this->mode          = $object->mode;
         }
     }
 
@@ -47,13 +47,15 @@ class ConfigClassMetadata extends MergeableClassMetadata
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->configurable,
-            $this->defaultValues,
-            $this->routeName,
-            $this->viewMode,
-            parent::serialize(),
-        ));
+        return serialize(
+            array(
+                $this->configurable,
+                $this->defaultValues,
+                $this->routeName,
+                $this->mode,
+                parent::serialize(),
+            )
+        );
     }
 
     /**
