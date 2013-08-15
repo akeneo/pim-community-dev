@@ -13,7 +13,6 @@ services:
               entity_name: %oro_tag.tag.entity.class%
               entity_hint: tags
               route_name: oro_tag_index
-              identifier_field: id
 
     oro_tag.datagrid_results.datagrid_manager:
         class: %oro_tag.datagrid_manager.results.class%

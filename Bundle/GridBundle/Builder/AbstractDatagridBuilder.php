@@ -177,7 +177,6 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
      * @param RouteGeneratorInterface $routeGenerator
      * @param ParametersInterface $parameters
      * @param string $name
-     * @param string $entityHint
      *
      * @return DatagridInterface
      */
@@ -186,8 +185,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         FieldDescriptionCollection $fieldCollection,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        $name,
-        $entityHint = null
+        $name
     ) {
         $formBuilder = $this->formFactory->createNamedBuilder(
             $this->getFormName($name),
@@ -204,9 +202,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
             $formBuilder,
             $routeGenerator,
             $parameters,
-            $this->eventDispatcher,
-            $name,
-            $entityHint
+            $this->eventDispatcher
         );
     }
 

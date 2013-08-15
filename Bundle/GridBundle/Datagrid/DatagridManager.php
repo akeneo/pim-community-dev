@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -17,7 +19,6 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
-use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 abstract class DatagridManager implements DatagridManagerInterface
 {
@@ -40,6 +41,11 @@ abstract class DatagridManager implements DatagridManagerInterface
      * @var TranslatorInterface
      */
     protected $translator;
+
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
 
     /**
      * @var string
@@ -65,6 +71,16 @@ abstract class DatagridManager implements DatagridManagerInterface
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $entityName;
+
+    /**
+     * @var string
+     */
+    protected $queryEntityAlias;
 
     /**
      * @var string
@@ -166,6 +182,30 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setQueryEntityAlias($queryEntityAlias)
+    {
+        $this->queryEntityAlias = $queryEntityAlias;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setEntityHint($entityHint)
     {
         $this->entityHint = $entityHint;
@@ -177,6 +217,18 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function setIdentifierField($identifierField)
     {
         $this->identifierField = $identifierField;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierField()
+    {
+        if (null == $this->identifierField && $this->entityName && $this->entityManager) {
+            $this->identifierField =
+                current($this->entityManager->getClassMetadata($this->entityName)->getIdentifierFieldNames());
+        }
+        return $this->identifierField;
     }
 
     /**
@@ -194,8 +246,6 @@ abstract class DatagridManager implements DatagridManagerInterface
     {
         // add datagrid fields
         $listCollection = $this->listBuilder->getBaseList();
-
-        $this->prepareIdentifierColumn();
 
         /** @var $fieldDescription FieldDescriptionInterface */
         foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
@@ -220,8 +270,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             $listCollection,
             $this->routeGenerator,
             $this->parameters,
-            $this->name,
-            $this->entityHint
+            $this->name
         );
 
         $this->configureDatagrid($datagrid);
@@ -276,41 +325,14 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setToolbarOptions($this->getToolbarOptions());
 
         // set identifier field name
-        if ($this->identifierField) {
-            $datagrid->setIdentifierField($this->identifierField);
+        if ($this->getIdentifierField()) {
+            $datagrid->setIdentifierFieldName($this->getIdentifierField());
         }
-    }
 
-    /**
-     * Adds identifier column if it's configured in datagrid config
-     */
-    protected function prepareIdentifierColumn()
-    {
-        // TODO Use entity name and entity alias from datagrid configuration
-        if ($this->identifierField) {
-            $fieldCollection = $this->getFieldDescriptionCollection();
-
-            $hasIdentifierField = $fieldCollection->has($this->identifierField);
-
-            if (!$hasIdentifierField && $this->queryFactory instanceof EntityQueryFactory) {
-                /** @var EntityQueryFactory $queryFactory */
-                $queryFactory = $this->queryFactory;
-
-                $fieldId = new FieldDescription();
-                $fieldId->setName($this->identifierField);
-                $fieldId->setOptions(
-                    array(
-                        'field_name'   => $this->identifierField,
-                        'entity_alias' => $queryFactory->getAlias(),
-                        'type'         => FieldDescriptionInterface::TYPE_INTEGER,
-                        'label'        => $this->translate($this->identifierField),
-                        'filter_type'  => FilterInterface::TYPE_NUMBER,
-                        'show_column'  => false
-                    )
-                );
-                $fieldCollection->add($fieldId);
-            }
-        }
+        // set identifier field name
+        $datagrid->setEntityName($this->entityName);
+        $datagrid->setName($this->name);
+        $datagrid->setEntityHint($this->entityHint);
     }
 
     /**
@@ -375,9 +397,52 @@ abstract class DatagridManager implements DatagridManagerInterface
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
             $this->configureFields($this->fieldsCollection);
+            $this->configureIdentifierField($this->fieldsCollection);
         }
 
         return $this->fieldsCollection;
+    }
+
+    /**
+     * @param FieldDescriptionCollection $fieldCollection
+     */
+    protected function configureIdentifierField(FieldDescriptionCollection $fieldCollection)
+    {
+        $identifierField = $this->createIdentifierField();
+        if ($identifierField && !$fieldCollection->has($identifierField->getName())) {
+            $fieldCollection->add($identifierField);
+            $this->identifierField = $identifierField->getName();
+        }
+    }
+
+    /**
+     * @return FieldDescription|null
+     */
+    protected function createIdentifierField()
+    {
+        $identifierFieldName = $this->getIdentifierField();
+
+        if (!$identifierFieldName) {
+            return null;
+        }
+
+        $field = new FieldDescription();
+        $field->setName($identifierFieldName);
+        $options = array(
+            'field_name'   => $identifierFieldName,
+            'type'         => FieldDescriptionInterface::TYPE_INTEGER,
+            'label'        => $this->translate($this->identifierField),
+            'filter_type'  => FilterInterface::TYPE_NUMBER,
+            'show_column'  => false
+        );
+
+        if ($this->queryEntityAlias) {
+            $options['entity_alias'] = $this->queryEntityAlias;
+        }
+
+        $field->setOptions($options);
+
+        return $field;
     }
 
     /**

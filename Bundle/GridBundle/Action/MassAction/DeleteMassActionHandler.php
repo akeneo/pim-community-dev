@@ -24,11 +24,6 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     protected $translator;
 
     /**
-     * @var EntityRepository[]
-     */
-    protected $repositories = array();
-
-    /**
      * @var string
      */
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
@@ -52,8 +47,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $entityName = null;
         $entityIdentifiedField = null;
 
-        $results = $mediator->getResults();
-        foreach ($results as $result) {
+        foreach ($mediator->getResults() as $result) {
             $entity = $result->getRootEntity();
             if (!$entity) {
                 if (!$entityName) {
@@ -117,73 +111,34 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     protected function getEntityName(MassActionMediatorInterface $mediator)
     {
-        // TODO There should be a possibility to extract entity name from datagrid
-        $massAction = $mediator->getMassAction();
-        $entityName = $massAction->getOption('entity_name');
+        $entityName = $mediator->getDatagrid()->getEntityName();
         if (!$entityName) {
-            throw new \LogicException(sprintf('Mass action "%s" must define entity name', $massAction->getName()));
+            $massAction = $mediator->getMassAction();
+            $entityName = $massAction->getOption('entity_name');
+            if (!$entityName) {
+                throw new \LogicException(sprintf('Mass action "%s" must define entity name', $massAction->getName()));
+            }
         }
 
         return $entityName;
     }
 
     /**
-     * @param $entityName
-     * @return EntityRepository
-     * @throws \LogicException
-     */
-    protected function getEntityRepository($entityName)
-    {
-        if (empty($this->repositories[$entityName])) {
-            if (!$this->entityManager->getClassMetadata($entityName)) {
-                throw new \LogicException(sprintf('Entity "%s" is not manageable', $entityName));
-            }
-
-            $this->repositories[$entityName] = $this->entityManager->getRepository($entityName);
-        }
-
-        return $this->repositories[$entityName];
-    }
-
-    /**
      * @param MassActionMediatorInterface $mediator
      * @return string
-     * @throws \LogicException
      */
     protected function getEntityIdentifierField(MassActionMediatorInterface $mediator)
     {
-        $massAction = $mediator->getMassAction();
-        $datagrid = $mediator->getDatagrid();
-        if (!$datagrid) {
-            throw new \LogicException(sprintf('Datagrid is required for mass action "%s"', $massAction->getName()));
-        }
-
-        $identifierField = $datagrid->getIdentifierField();
-        if (!$identifierField) {
-            throw new \LogicException(
-                sprintf('Datagrid identifier field is required for mass action "%s"', $massAction->getName())
-            );
-        }
-
-        return $identifierField;
+        return $mediator->getDatagrid()->getIdentifierField()->getFieldName();
     }
 
     /**
-     * @param $entityName
-     * @param $identifierValue
-     * @return object|null
-     * @throws \LogicException
+     * @param string $entityName
+     * @param mixed $identifierValue
+     * @return object
      */
     protected function getEntity($entityName, $identifierValue)
     {
-        if (!$identifierValue) {
-            throw new \LogicException(
-                sprintf('Identifier value is required for entity "%s"', $entityName)
-            );
-        }
-
-        $repository = $this->getEntityRepository($entityName);
-
-        return $repository->find($identifierValue);
+        return $this->entityManager->getReference($entityName, $identifierValue);
     }
 }

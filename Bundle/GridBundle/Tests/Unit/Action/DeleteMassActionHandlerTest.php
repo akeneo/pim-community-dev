@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
 
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
 
 class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,310 +30,109 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
 
-        //$this->handler = new DeleteMassActionHandler($this->em, $this->translator);
-        $this->handler = $this->getMock(
-            'Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler',
-            array('getEntity'),
-            array($this->em, $this->translator)
-        );
+        $this->handler = new DeleteMassActionHandler($this->em, $this->translator);
 
         $this->mediator = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionMediatorInterface');
     }
 
-    /**
-     * handle with existing entity
-     */
-    public function testHandleExistingEntity()
+
+    public function testHandle()
     {
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $entitiesCount = 21;
 
-        $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
-        $result->expects($this->exactly(21))
-            ->method('getRootEntity')
-            ->will($this->returnValue($entity));
+        $entities = array();
+        $results = array();
 
-        $results = array_fill(0, 21, $result);
+        $emExpectedCalls = array();
 
-        $this->mediator
-            ->expects($this->once())
-            ->method('getResults')
-            ->will($this->returnValue($results));
+        for ($i = 0; $i < $entitiesCount; $i++) {
+            $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+            $entities[] = $entity;
 
-        $this->em
-            ->expects($this->exactly(21))
-            ->method('remove')
-            ->with($this->equalTo($entity));
+            $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
+            $results[] = $result;
 
-        $this->em
-            ->expects($this->exactly(2))
-            ->method('flush');
+            $this->addMockExpectedCalls(
+                array(
+                    'mock' => $result,
+                    'expectedCalls' => array(
+                        array('getRootEntity', array(), $this->returnValue($entity))
+                    )
+                )
+            );
 
-        $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
-        $massAction->expects($this->once())
-            ->method('getOption')
-            ->with($this->equalTo('messages'))
-            ->will($this->returnValue(array()));
+            if ($i == DeleteMassActionHandler::FLUSH_BATCH_SIZE) {
+                $emExpectedCalls[] = array('flush', array());
+            }
 
-        $this->mediator
-            ->expects($this->once())
-            ->method('getMassAction')
-            ->will($this->returnValue($massAction));
-
-        $message = 'oro.grid.mass_action.delete.success_message';
-        $this->translator
-            ->expects($this->once())
-            ->method('transChoice')
-            ->will($this->returnValue($message));
-
-        /** @var \Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse $response */
-        $response = $this->handler->handle($this->mediator);
-
-        $this->assertEquals($response->getMessage(), $message);
-        $this->assertTrue($response->isSuccessful());
-    }
-
-    /**
-     * handle with existing entity
-     */
-    public function testHandleNotExistEntity()
-    {
-        $entityName = 'user';
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $this->handler
-            ->expects($this->once())
-            ->method('getEntity')
-            ->will($this->returnValue($entity));
-
-        $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
-        $result->expects($this->once())
-            ->method('getRootEntity')
-            ->will($this->returnValue(false));
-        $result->expects($this->once())
-            ->method('getValue')
-            ->with('id')
-            ->will($this->returnValue(1));
-
-        $results = array($result);
-        $this->mediator
-            ->expects($this->once())
-            ->method('getResults')
-            ->will($this->returnValue($results));
-
-
-        $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
-        $datagrid->expects($this->once())
-            ->method('getIdentifierField')
-            ->will($this->returnValue('id'));
-
-        $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
-        $massAction->expects($this->at(0))
-            ->method('getOption')
-            ->with($this->equalTo('entity_name'))
-            ->will($this->returnValue($entityName));
-
-        $massAction->expects($this->at(1))
-            ->method('getOption')
-            ->with($this->equalTo('messages'))
-            ->will($this->returnValue(array()));
-
-        $this->mediator
-            ->expects($this->exactly(3))
-            ->method('getMassAction')
-            ->will($this->returnValue($massAction));
-
-        $this->mediator
-            ->expects($this->once())
-            ->method('getDatagrid')
-            ->will($this->returnValue($datagrid));
-
-        $this->em
-            ->expects($this->once())
-            ->method('remove')
-            ->with($this->equalTo($entity));
-
-        $this->em
-            ->expects($this->once())
-            ->method('flush');
-
-        $message = 'oro.grid.mass_action.delete.success_message';
-        $this->translator
-            ->expects($this->once())
-            ->method('transChoice')
-            ->will($this->returnValue($message));
-
-        /** @var \Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse $response */
-        $response = $this->handler->handle($this->mediator);
-
-        $this->assertEquals($response->getMessage(), $message);
-        $this->assertTrue($response->isSuccessful());
-    }
-
-    /**
-     * Get entity test
-     */
-    public function testGetEntity()
-    {
-        $handler = $this->getMock(
-            'Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler',
-            array('getEntityRepository'),
-            array($this->em, $this->translator)
-        );
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntity');
-        $method->setAccessible(true);
-
-        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $repository
-            ->expects($this->once())
-            ->method('find')
-            ->with($this->equalTo(1))
-            ->will($this->returnValue(new \stdClass()));
-
-        $handler->expects($this->once())
-            ->method('getEntityRepository')
-            ->with($this->equalTo('user'))
-            ->will($this->returnValue($repository));
-
-        $result = $method->invoke($handler, 'user', 1);
-        $this->assertInstanceOf('\stdClass', $result);
-    }
-
-    /**
-     * Test exception
-     *
-     * @expectedException \LogicException
-     */
-    public function testGetEntityException()
-    {
-        $handler = new DeleteMassActionHandler($this->em, $this->translator);
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntity');
-        $method->setAccessible(true);
-
-        $method->invoke($handler, 'user', false);
-    }
-
-    /**
-     * @expectedException \LogicException
-     * @dataProvider exceptionProvider
-     */
-    public function testGetEntityIdentifierFieldException($param)
-    {
-        $handler = new DeleteMassActionHandler($this->em, $this->translator);
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntityIdentifierField');
-        $method->setAccessible(true);
-
-        $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
-        $massAction->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('sdf'));
-
-        $this->mediator
-            ->expects($this->once())
-            ->method('getMassAction')
-            ->will($this->returnValue($massAction));
-
-        if ($param) {
-            $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
-            $datagrid->expects($this->once())
-                ->method('getIdentifierField')
-                ->will($this->returnValue(false));
+            $emExpectedCalls[] = array('remove', array($entity));
         }
-
-        $this->mediator
-            ->expects($this->once())
-            ->method('getDatagrid')
-            ->will($this->returnValue($param ? $datagrid : false));
-
-        $method->invoke($handler, $this->mediator);
-    }
-
-    /**
-     * @expectedException \LogicException
-     */
-    public function testGetEntityName()
-    {
-        $handler = new DeleteMassActionHandler($this->em, $this->translator);
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntityName');
-        $method->setAccessible(true);
+        $emExpectedCalls[] = array('flush', array());
 
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
-        $massAction->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('sdf'));
-        $massAction->expects($this->once())
-            ->method('getOption')
-            ->with('entity_name')
-            ->will($this->returnValue(false));
 
-        $this->mediator
-            ->expects($this->once())
-            ->method('getMassAction')
-            ->will($this->returnValue($massAction));
-
-        $method->invoke($handler, $this->mediator);
-    }
-
-    /**
-     * Test getEntityRepository
-     */
-    public function testGetEntityRepository()
-    {
-        $handler = new DeleteMassActionHandler($this->em, $this->translator);
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntityRepository');
-        $method->setAccessible(true);
-
-        $this->em->expects($this->once())
-            ->method('getClassMetadata')
-            ->with('user')
-            ->will($this->returnValue(true));
-
-        $this->em->expects($this->once())
-            ->method('getRepository')
-            ->will($this->returnValue(true));
-
-        $result = $method->invoke($handler, 'user');
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * Test getEntityRepository
-     *
-     * @expectedException \LogicException
-     */
-    public function testGetEntityRepositoryException()
-    {
-        $handler = new DeleteMassActionHandler($this->em, $this->translator);
-
-        $reflection = new \ReflectionObject($handler);
-        $method = $reflection->getMethod('getEntityRepository');
-        $method->setAccessible(true);
-
-        $this->em->expects($this->once())
-            ->method('getClassMetadata')
-            ->with('user')
-            ->will($this->returnValue(false));
-
-        $method->invoke($handler, 'user');
-    }
-
-    /**
-     * Provider data for getEntityIdentifierField tests
-     */
-    public function exceptionProvider()
-    {
-        return array(
-            array(true),
-            array(false),
+        $this->addMockExpectedCalls(
+            array(
+                'mock' => $this->mediator,
+                'expectedCalls' => array(
+                    array('getResults', array(), $this->returnValue($results)),
+                    array('getMassAction', array(), $this->returnValue($massAction)),
+                )
+            ),
+            array(
+                'mock' => $this->em,
+                'expectedCalls' => $emExpectedCalls
+            ),
+            array(
+                'mock' => $massAction,
+                'expectedCalls' => array(
+                    array('getOption', array('messages'), $this->returnValue(array('success' => 'success_message')))
+                ),
+            ),
+            array(
+                'mock' => $this->translator,
+                'expectedCalls' => array(
+                    array(
+                        'transChoice',
+                        array('success_message', $entitiesCount, array('%count%' => $entitiesCount)),
+                        $this->returnValue('translated_success_message')
+                    )
+                ),
+            )
         );
+
+        $this->assertEquals(
+            new MassActionResponse(
+                true,
+                'translated_success_message',
+                array('count' => $entitiesCount)
+            ),
+            $this->handler->handle($this->mediator)
+        );
+    }
+
+
+
+    protected function addMockExpectedCalls()
+    {
+        $mocksExpectedCalls = func_get_args();
+        foreach ($mocksExpectedCalls as $mockExpectedCalls) {
+            /** @var \PHPUnit_Framework_MockObject_MockObject $mock */
+            list($mock, $expectedCalls) = array_values($mockExpectedCalls);
+            if ($expectedCalls) {
+                $index = 0;
+                foreach ($expectedCalls as $expectedCall) {
+                    $expectedCall = array_pad($expectedCall, 3, null);
+                    list($method, $arguments, $result) = $expectedCall;
+                    $methodExpectation = $mock->expects(\PHPUnit_Framework_TestCase::at($index++))->method($method);
+                    $methodExpectation = call_user_func_array(array($methodExpectation, 'with'), $arguments);
+                    if ($result) {
+                        $methodExpectation->will($result);
+                    }
+                }
+            } else {
+                $mock->expects(\PHPUnit_Framework_TestCase::never())->method(\PHPUnit_Framework_TestCase::anything());
+            }
+        };
     }
 }

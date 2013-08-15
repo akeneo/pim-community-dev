@@ -6,8 +6,6 @@ oro:
                     message: "Template sucessfully saved"
         form:
             choose_template: "Choose a template..."
-oro:
-    email:
         datagrid:
             emailtemplate:
                 action:

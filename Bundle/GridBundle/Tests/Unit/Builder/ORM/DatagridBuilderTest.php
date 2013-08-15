@@ -14,7 +14,6 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
     const TEST_ENTITY_NAME   = 'test_entity_name';
     const TEST_ENTITY_TYPE   = 'test_entity_type';
     const TEST_ACL_RESOURCE  = 'test_acl_resource';
-    const TEST_HINT          = 'test_hint';
     /**#@-*/
 
     /**
@@ -417,8 +416,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             $fieldDescriptionCollection,
             $routeGeneratorMock,
             $parametersMock,
-            self::TEST_ENTITY_NAME,
-            self::TEST_HINT
+            self::TEST_ENTITY_NAME
         );
 
         $this->assertInstanceOf(self::DATAGRID_CLASS, $datagrid);
@@ -428,8 +426,6 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($eventDispatcherMock, 'eventDispatcher', $datagrid);
         $this->assertAttributeEquals($routeGeneratorMock, 'routeGenerator', $datagrid);
         $this->assertAttributeEquals($parametersMock, 'parameters', $datagrid);
-        $this->assertAttributeEquals(self::TEST_ENTITY_NAME, 'name', $datagrid);
-        $this->assertAttributeEquals(self::TEST_HINT, 'entityHint', $datagrid);
 
         // test pager
         $pager = $datagrid->getPager();

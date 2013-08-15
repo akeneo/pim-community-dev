@@ -67,7 +67,6 @@ interface DatagridBuilderInterface
      * @param RouteGeneratorInterface $routeGenerator,
      * @param ParametersInterface $parameters
      * @param string $name
-     * @param string $entityHint
      *
      * @return DatagridInterface
      */
@@ -76,7 +75,6 @@ interface DatagridBuilderInterface
         FieldDescriptionCollection $fieldCollection,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        $name,
-        $entityHint = null
+        $name
     );
 }

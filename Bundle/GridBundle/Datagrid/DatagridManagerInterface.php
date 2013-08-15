@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -21,6 +23,30 @@ interface DatagridManagerInterface
      * @return void
      */
     public function setName($name);
+
+    /**
+     * Set entity manager
+     *
+     * @param EntityManager $entityManager
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager);
+
+    /**
+     * Set entity name
+     *
+     * @param string $entityName
+     * @return void
+     */
+    public function setEntityName($entityName);
+
+    /**
+     * Set query entity alias
+     *
+     * @param string $queryEntityAlias
+     * @return void
+     */
+    public function setQueryEntityAlias($queryEntityAlias);
 
     /**
      * Set entity hint

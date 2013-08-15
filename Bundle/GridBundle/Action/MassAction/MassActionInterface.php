@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Action\MassAction;
 
-use Oro\Bundle\GridBundle\Action\ActionInterface;
-
 interface MassActionInterface
 {
     /**

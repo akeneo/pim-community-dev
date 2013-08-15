@@ -12,7 +12,6 @@ services:
               entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
               entity_hint: business units
               route_name: oro_business_unit_index
-              identifier_field: id
 
     oro_organization.business_unit_update_user_datagrid_manager:
             class: %oro_organization.business_unit_update_user_datagrid_manager.class%
@@ -23,7 +22,6 @@ services:
                   query_entity_alias: user
                   entity_hint: users
                   route_name: oro_business_update_unit_user_grid
-                  identifier_field: id
 
     oro_organization.business_unit_view_user_datagrid_manager:
             class: %oro_organization.business_unit_view_user_datagrid_manager.class%
@@ -34,4 +32,3 @@ services:
                   query_entity_alias: user
                   entity_hint: users
                   route_name: oro_business_view_unit_user_grid
-                  identifier_field: id

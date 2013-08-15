@@ -138,30 +138,11 @@ class MassActionDispatcher
     protected function getIdentifierExpression(DatagridInterface $datagrid)
     {
         $identifierField = $datagrid->getIdentifierField();
+        $fieldMapping = $identifierField->getFieldMapping();
 
-        $fieldDescription = null;
-        /** @var FieldDescriptionInterface $column */
-        foreach ($datagrid->getColumns() as $column) {
-            if ($column->getName() == $identifierField) {
-                $fieldDescription = $column;
-            }
-        }
-
-        if (!$fieldDescription) {
-            throw new \LogicException(sprintf('There is no identifier field with name "%s"', $identifierField));
-        }
-
-        // compute identifier field expression
-        $fieldMapping = $fieldDescription->getFieldMapping();
-        if (!empty($fieldMapping['fieldExpression'])) {
-            $fieldExpression = $fieldMapping['fieldExpression'];
-        } elseif (!empty($fieldMapping['entityAlias'])) {
-            $fieldExpression = sprintf('%s.%s', $fieldMapping['entityAlias'], $fieldMapping['fieldName']);
-        } else {
-            $fieldExpression = $fieldMapping['fieldName'];
-        }
-
-        return $fieldExpression;
+        return isset($fieldMapping['fieldExpression']) ?
+            $fieldMapping['fieldExpression'] :
+            $identifierField->getFieldName();
     }
 
 

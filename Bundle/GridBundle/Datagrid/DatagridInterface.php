@@ -133,9 +133,29 @@ interface DatagridInterface
     public function getName();
 
     /**
+     * @param string $name
+     */
+    public function setName($name);
+
+    /**
+     * @return string
+     */
+    public function getEntityName();
+
+    /**
+     * @param string $entityName
+     */
+    public function setEntityName($entityName);
+
+    /**
      * @return string
      */
     public function getEntityHint();
+
+    /**
+     * @param string $entityHint
+     */
+    public function setEntityHint($entityHint);
 
     /**
      * @return DatagridView
@@ -173,12 +193,20 @@ interface DatagridInterface
      *
      * @return string
      */
-    public function getIdentifierField();
+    public function getIdentifierFieldName();
 
     /**
      * Set identifier field name
      *
-     * @param string $identifierField
+     * @param string $identifierFieldName
      */
-    public function setIdentifierField($identifierField);
+    public function setIdentifierFieldName($identifierFieldName);
+
+    /**
+     * Set identifier field
+     *
+     * @return FieldDescriptionInterface
+     * @throws \RuntimeException If there is no identifier field
+     */
+    public function getIdentifierField();
 }

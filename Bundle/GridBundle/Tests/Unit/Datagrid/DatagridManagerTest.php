@@ -225,7 +225,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($queryMock));
 
         $datagridBuilderMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface')
-            ->setMethods(array('getBaseDatagrid', 'addFilter', 'addSorter', 'addRowAction'))
+            ->setMethods(array('getDatagrid', 'addFilter', 'addSorter', 'addRowAction'))
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
@@ -236,8 +236,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
                 $listCollection,
                 $routeGeneratorMock,
                 $parameters,
-                self::TEST_NAME,
-                self::TEST_HINT
+                self::TEST_NAME
             )
             ->will($this->returnValue($datagridMock));
         $datagridBuilderMock->expects($this->at(1))

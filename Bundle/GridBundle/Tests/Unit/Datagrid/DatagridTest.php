@@ -206,18 +206,20 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($routeGenerator, $datagrid->getRouteGenerator());
     }
 
-    public function testGetName()
+    public function testName()
     {
-        $datagridName = 'datagrid';
-        $datagrid = $this->createDatagrid(array('name' => $datagridName));
-        $this->assertEquals($datagridName, $datagrid->getName());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getName());
+        $datagrid->setName('datagrid');
+        $this->assertEquals('datagrid', $datagrid->getName());
     }
 
-    public function testGetEntityHint()
+    public function testEntityHint()
     {
-        $entityHint = 'Entity Hint';
-        $datagrid = $this->createDatagrid(array('entityHint' => $entityHint));
-        $this->assertEquals($entityHint, $datagrid->getEntityHint());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getEntityHint());
+        $datagrid->setEntityHint('Entity Hint');
+        $this->assertEquals('Entity Hint', $datagrid->getEntityHint());
     }
 
     public function testAddRowAction()
@@ -478,9 +480,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             $arguments['formBuilder'],
             $arguments['routeGenerator'],
             $arguments['parameters'],
-            $arguments['eventDispatcher'],
-            $arguments['name'],
-            $arguments['entityHint']
+            $arguments['eventDispatcher']
         );
     }
 

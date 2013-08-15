@@ -26,7 +26,7 @@ class MassActionMediator implements MassActionMediatorInterface
     protected $request;
 
     /**
-     * @var DatagridInterface|null
+     * @var DatagridInterface
      */
     protected $datagrid;
 
@@ -34,13 +34,13 @@ class MassActionMediator implements MassActionMediatorInterface
      * @param MassActionInterface $massAction
      * @param \Iterator|ResultRecordInterface[] $results
      * @param Request $request
-     * @param DatagridInterface|null $datagrid
+     * @param DatagridInterface $datagrid
      */
     public function __construct(
         MassActionInterface $massAction,
         $results,
         Request $request,
-        DatagridInterface $datagrid = null
+        DatagridInterface $datagrid
     ) {
         $this->massAction = $massAction;
         $this->results    = $results;

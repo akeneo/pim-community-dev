@@ -26,7 +26,7 @@ interface MassActionMediatorInterface
     public function getRequest();
 
     /**
-     * @return DatagridInterface|null
+     * @return DatagridInterface
      */
     public function getDatagrid();
 }

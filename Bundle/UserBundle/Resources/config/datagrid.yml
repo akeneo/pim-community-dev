@@ -15,7 +15,6 @@ services:
               entity_hint: users
               flexible: true
               route_name: oro_user_index
-              identifier_field: id
 
     oro_user.role_datagrid_manager:
         class: %oro_user.role_datagrid_manager.class%
@@ -25,7 +24,6 @@ services:
               entity_name: Oro\Bundle\UserBundle\Entity\Role
               entity_hint: roles
               route_name: oro_user_role_index
-              identifier_field: id
 
     oro_user.group_datagrid_manager:
         class: %oro_user.group_datagrid_manager.class%
@@ -36,7 +34,6 @@ services:
               query_entity_alias: user_group
               entity_hint: groups
               route_name: oro_user_group_index
-              identifier_field: id
 
     oro_user.role_user_datagrid_manager:
         class: %oro_user.role_user_datagrid_manager.class%
@@ -47,7 +44,6 @@ services:
               query_entity_alias: user
               entity_hint: users
               route_name: oro_user_role_user_grid
-              identifier_field: id
 
     oro_user.group_user_datagrid_manager:
         class: %oro_user.group_user_datagrid_manager.class%
@@ -58,4 +54,3 @@ services:
               query_entity_alias: user
               entity_hint: users
               route_name: oro_user_group_user_grid
-              identifier_field: id

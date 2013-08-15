@@ -115,6 +115,11 @@ class Datagrid implements DatagridInterface
     /**
      * @var string
      */
+    protected $entityName;
+
+    /**
+     * @var string
+     */
     protected $entityHint;
 
     /**
@@ -135,7 +140,7 @@ class Datagrid implements DatagridInterface
     /**
      * @var string|null
      */
-    protected $identifierField;
+    protected $identifierFieldName;
 
     /**
      * @param ProxyQueryInterface $query
@@ -146,7 +151,6 @@ class Datagrid implements DatagridInterface
      * @param ParametersInterface $parameters
      * @param EventDispatcherInterface $eventDispatcher
      * @param string $name
-     * @param string $entityHint
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -155,9 +159,7 @@ class Datagrid implements DatagridInterface
         FormBuilderInterface $formBuilder,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        EventDispatcherInterface $eventDispatcher,
-        $name,
-        $entityHint = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->query           = $query;
         $this->columns         = $columns;
@@ -166,8 +168,6 @@ class Datagrid implements DatagridInterface
         $this->routeGenerator  = $routeGenerator;
         $this->parameters      = $parameters;
         $this->eventDispatcher = $eventDispatcher;
-        $this->name            = $name;
-        $this->entityHint      = $entityHint;
         $this->properties      = new PropertyCollection();
 
         /** @var $field FieldDescriptionInterface */
@@ -450,11 +450,43 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
+    /**
      * @return string
      */
     public function getEntityHint()
     {
         return $this->entityHint;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityHint($entityHint)
+    {
+        $this->entityHint = $entityHint;
     }
 
     /**
@@ -519,16 +551,28 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getIdentifierField()
+    public function getIdentifierFieldName()
     {
-        return $this->identifierField;
+        return $this->identifierFieldName;
     }
 
     /**
-     * @param string $identifierField
+     * @param string $identifierFieldName
      */
-    public function setIdentifierField($identifierField)
+    public function setIdentifierFieldName($identifierFieldName)
     {
-        $this->identifierField = $identifierField;
+        $this->identifierFieldName = $identifierFieldName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierField()
+    {
+        $identifierFieldName = $this->getIdentifierFieldName();
+        if ($identifierFieldName && $this->columns->has($identifierFieldName)) {
+            return $this->columns->get($identifierFieldName);
+        }
+        throw new \RuntimeException(sprintf('There is no identifier field in grid "%s"', $this->getName()));
     }
 }
