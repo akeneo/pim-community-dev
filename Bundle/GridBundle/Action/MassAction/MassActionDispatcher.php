@@ -42,24 +42,31 @@ class MassActionDispatcher
 
     /**
      * @param string $datagridName
-     * @param string $massActionName
-     * @param Request $request
-     * @param bool $inset
-     * @param array $values
-     * @param array $filters
+     * @param string $actionName
+     * @param array $parameters
+     * @param array $data
      * @return MassActionResponseInterface
      * @throws \LogicException
      */
-    public function dispatch(
-        $datagridName,
-        $massActionName,
-        Request $request,
-        $inset = false,
-        $values = array(),
-        $filters = array()
-    ) {
+    public function dispatch($datagridName, $actionName, array $parameters, array $data = array())
+    {
+        $inset = true;
+        if (isset($parameters['inset'])) {
+            $inset = $parameters['inset'];
+        }
+
+        $values = array();
+        if (isset($parameters['values'])) {
+            $values = $parameters['values'];
+        }
+
+        $filters = array();
+        if (isset($parameters['filters'])) {
+            $filters = $parameters['filters'];
+        }
+
         if ($inset && empty($values)) {
-            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $massActionName));
+            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
         $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
@@ -69,7 +76,27 @@ class MassActionDispatcher
         $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
         $datagrid->applyFilters();
 
-        // apply selector parameters
+        // create mediator
+        $massAction = $this->getMassActionByName($datagrid, $actionName);
+        $proxyQuery = $this->getDatagridQuery($datagrid, $inset, $values);
+        $resultIterator = $this->getResultIterator($proxyQuery);
+        $mediator = new MassActionMediator($massAction, $resultIterator, $data, $datagrid);
+
+        // perform mass action
+        $handle = $this->getMassActionHandler($massAction);
+        $result = $handle->handle($mediator);
+
+        return $result;
+    }
+
+    /**
+     * @param DatagridInterface $datagrid
+     * @param bool $inset
+     * @param array $values
+     * @return ProxyQueryInterface
+     */
+    protected function getDatagridQuery(DatagridInterface $datagrid, $inset = true, $values = array())
+    {
         $identifierFieldExpression = $this->getIdentifierExpression($datagrid);
         /** @var QueryBuilder $proxyQuery */
         $proxyQuery = $datagrid->getQuery();
@@ -81,15 +108,7 @@ class MassActionDispatcher
             $proxyQuery->andWhere($valueWhereCondition);
         }
 
-        // create mediator
-        $massAction = $this->getMassActionByName($datagrid, $massActionName);
-        $resultIterator = $this->getResultIterator($proxyQuery);
-        $mediator = new MassActionMediator($massAction, $resultIterator, $request, $datagrid);
-
-        // perform mass action
-        $handle = $this->getMassActionHandler($massAction);
-
-        return $handle->handle($mediator);
+        return $proxyQuery;
     }
 
     /**

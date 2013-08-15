@@ -21,9 +21,9 @@ interface MassActionMediatorInterface
     public function getResults();
 
     /**
-     * @return Request
+     * @return array
      */
-    public function getRequest();
+    public function getData();
 
     /**
      * @return DatagridInterface|null

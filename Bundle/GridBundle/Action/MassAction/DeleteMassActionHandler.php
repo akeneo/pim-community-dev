@@ -53,31 +53,41 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $entityIdentifiedField = null;
 
         $results = $mediator->getResults();
-        foreach ($results as $result) {
-            $entity = $result->getRootEntity();
-            if (!$entity) {
-                if (!$entityName) {
-                    $entityName = $this->getEntityName($mediator);
+
+        // batch remove should be processed in transaction
+        $this->entityManager->beginTransaction();
+        try {
+            foreach ($results as $result) {
+                $entity = $result->getRootEntity();
+                if (!$entity) {
+                    // no entity in result record, it should be extracted from DB
+                    if (!$entityName) {
+                        $entityName = $this->getEntityName($mediator);
+                    }
+                    if (!$entityIdentifiedField) {
+                        $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
+                    }
+                    $entity = $this->getEntity($entityName, $result->getValue($entityIdentifiedField));
                 }
 
-                if (!$entityIdentifiedField) {
-                    $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
+                if ($entity) {
+                    $this->entityManager->remove($entity);
+
+                    $iteration++;
+                    if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
+                        $this->entityManager->flush();
+                    }
                 }
-                $entity = $this->getEntity($entityName, $result->getValue($entityIdentifiedField));
             }
 
-            if ($entity) {
-                $this->entityManager->remove($entity);
-
-                $iteration++;
-                if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
-                    $this->entityManager->flush();
-                }
+            if ($iteration % self::FLUSH_BATCH_SIZE > 0) {
+                $this->entityManager->flush();
             }
-        }
 
-        if ($iteration % self::FLUSH_BATCH_SIZE > 0) {
-            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (\Exception $e) {
+            $this->entityManager->rollback();
+            throw $e;
         }
 
         return $this->getResponse($mediator, $iteration);
@@ -93,8 +103,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $massAction = $mediator->getMassAction();
         $messages = $massAction->getOption('messages');
         $responseMessage = !empty($messages) && !empty($messages['success'])
-                ? $messages['success']
-                : $this->responseMessage;
+            ? $messages['success']
+            : $this->responseMessage;
 
         $successful = $entitiesCount > 0;
         $options = array('count' => $entitiesCount);

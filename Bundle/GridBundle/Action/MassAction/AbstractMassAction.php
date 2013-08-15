@@ -56,12 +56,4 @@ abstract class AbstractMassAction implements MassActionInterface
     {
         return $this->getOption('label');
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRoute()
-    {
-        return $this->getOption('route');
-    }
 }
