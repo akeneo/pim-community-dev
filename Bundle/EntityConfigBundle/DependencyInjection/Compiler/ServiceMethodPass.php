@@ -43,7 +43,7 @@ class ServiceMethodPass implements CompilerPassInterface
             }
 
             $serviceDefinition = $container->getDefinition($tag[0]['service']);
-            $class = $container->getParameterBag()->resolveValue($serviceDefinition->getClass());
+            $class             = $container->getParameterBag()->resolveValue($serviceDefinition->getClass());
             if (!method_exists($class, $tag[0]['method'])) {
                 throw new RuntimeException(
                     sprintf(
@@ -60,12 +60,9 @@ class ServiceMethodPass implements CompilerPassInterface
             }
 
             $service->setClass('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceMethod');
-            $service->setArguments(
-                array(
-                    new Reference($tag[0]['service']),
-                    $tag[0]['method']
-                )
-            );
+
+            $service->addMethodCall('setMethod', array($tag[0]['method']));
+            $service->addMethodCall('setService', array(new Reference($tag[0]['service'])));
         }
     }
 }

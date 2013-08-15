@@ -38,7 +38,7 @@ class FindExtendCommand extends ContainerAwareCommand
 
     /**
      * Runs command
-     * @param  InputInterface  $input
+     * @param  InputInterface $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
      * @return int|null|void
@@ -127,7 +127,7 @@ class FindExtendCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array  $options
+     * @param array $options
      * @param string $entityName
      * @param string $fieldName
      */
