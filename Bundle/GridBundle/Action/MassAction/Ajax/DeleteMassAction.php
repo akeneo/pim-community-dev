@@ -1,24 +1,16 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Action\MassAction;
+namespace Oro\Bundle\GridBundle\Action\MassAction\Ajax;
 
 class DeleteMassAction extends AjaxMassAction
 {
     /**
-     * Set default delete parameters
+     * Required options: name
      *
      * @param array $options
      */
     public function __construct(array $options)
     {
-        if (empty($options['name'])) {
-            $options['name'] = 'delete';
-        }
-
-        if (empty($options['label'])) {
-            $options['label'] = 'Delete';
-        }
-
         if (empty($options['handler'])) {
             $options['handler'] = 'oro_grid.mass_action.handler.delete';
         }

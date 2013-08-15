@@ -1,8 +1,7 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
+namespace Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction;
 
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler;
 
 class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase

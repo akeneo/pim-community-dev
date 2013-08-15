@@ -1,11 +1,13 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Action\MassAction;
+namespace Oro\Bundle\GridBundle\Action\MassAction\Ajax;
+
+use Oro\Bundle\GridBundle\Action\MassAction\AbstractMassAction;
 
 class AjaxMassAction extends AbstractMassAction
 {
     /**
-     * Set default route
+     * Required options: name, handler
      *
      * @param array $options
      */
@@ -22,5 +24,7 @@ class AjaxMassAction extends AbstractMassAction
         }
 
         parent::__construct($options);
+
+        $this->assertRequiredOptions(array('handler'));
     }
 }
