@@ -95,10 +95,10 @@ class StringFilter extends AbstractFilter
         // for other than listed comparison types - use default format
         switch ($comparisonType) {
             case TextFilterType::TYPE_STARTS_WITH:
-                $format = '%%%s';
+                $format = '%s%%';
                 break;
             case TextFilterType::TYPE_ENDS_WITH:
-                $format = '%s%%';
+                $format = '%%%s';
                 break;
         }
 

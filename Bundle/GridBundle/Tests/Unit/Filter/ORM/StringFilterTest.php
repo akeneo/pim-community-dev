@@ -138,8 +138,8 @@ class StringFilterTest extends FilterTestCase
     public function formatDataProvider()
     {
         return array(
-            array(TextFilterType::TYPE_STARTS_WITH, '%%%s'),
-            array(TextFilterType::TYPE_ENDS_WITH, '%s%%'),
+            array(TextFilterType::TYPE_STARTS_WITH, '%s%%'),
+            array(TextFilterType::TYPE_ENDS_WITH, '%%%s'),
         );
     }
 }
