@@ -17,10 +17,10 @@ oro_menu_config:
             route: 'pim_product_productattribute_index'
         pim_enrich_family:
             label: 'Families'
-            route: 'pim_product_family_index'
+            route: 'pim_product_family_create'
         pim_enrich_attributegroup:
             label: 'Attribute groups'
-            route: 'pim_product_attributegroup_index'
+            route: 'pim_product_attributegroup_create'
         pim_enrich_categorytree:
             label: 'Categories'
             route: 'pim_product_categorytree_create'
@@ -41,7 +41,6 @@ oro_menu_config:
 
 oro_titles:
     oro_default:                             Dashboard
-    pim_product_attributegroup_index:        Attribute groups
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit
     pim_product_attributegroup_sort:         Attribute groups | Sort
@@ -54,7 +53,6 @@ oro_titles:
     pim_product_product_index:               Products
     pim_product_product_create:              Products | Create
     pim_product_product_edit:                Products | Edit
-    pim_product_family_index:                Product families
     pim_product_family_create:               Product families | Create
     pim_product_family_edit:                 Product families | Edit
     pim_config_channel_index:                Channels

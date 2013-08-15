@@ -21,19 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 class FamilyController extends Controller
 {
     /**
-     * Index action
-     *
-     * @Route("/")
-     * @Template()
-     *
-     * @return array
-     */
-    public function indexAction()
-    {
-        return $this->redirectToRoute('pim_product_family_create');
-    }
-
-    /**
      * Create product family
      *
      * @param Request $request
@@ -139,7 +126,7 @@ class FamilyController extends Controller
 
         $this->addFlash('success', 'Product family successfully removed');
 
-        return $this->redirectToRoute('pim_product_family_index');
+        return $this->redirectToRoute('pim_product_family_create');
     }
 
     /**
