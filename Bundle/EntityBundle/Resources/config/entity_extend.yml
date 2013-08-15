@@ -1,33 +1,31 @@
 TestClassExtend:
+    configs:
+        entity:
+            label:                  TestClassExtend
     fields:
         testStringField:
-            type:               string
+            type:                   string
+            configs:
+                entity:
+                    label:          testStringField
             options:
-                length:         200
+                length:             200
         testIntegerField:
-            type:               smallint
+            type:                   smallint
         testHiddenField:
-            mode:               hidden
-            type:               string
+            mode:                   hidden
+            type:                   string
         testReadonlyField:
-            mode:               readonly
-            type:               string
-
-TestClassExtend2:
-    type:                       Custom
-    fields:
-        testStringField:
-            type:               string
-            options:
-                length:         200
+            mode:                   readonly
+            type:                   string
 
 Oro\Bundle\UserBundle\Entity\User:
     fields:
         testField:
-            type:               string
+            type:                   string
         testHiddenField:
-            mode:               hidden
-            type:               string
+            mode:                   hidden
+            type:                   string
         testReadonlyField:
-            mode:               readonly
-            type:               string
+            mode:                   readonly
+            type:                   string

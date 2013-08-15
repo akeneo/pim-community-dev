@@ -465,6 +465,7 @@ class ConfigManager
     }
 
     /**
+     * TODO:: check class name for custom entity
      * @param        $className
      * @param string $mode
      * @return EntityConfigModel

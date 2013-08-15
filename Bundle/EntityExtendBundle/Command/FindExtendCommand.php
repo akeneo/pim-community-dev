@@ -9,10 +9,23 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class FindExtendCommand extends ContainerAwareCommand
 {
+    /**
+     * @var ExtendManager
+     */
+    protected $extendManager;
+
+    /**
+     * @var ConfigManager
+     */
+    protected $configManager;
+
     /**
      * Console command configuration
      */
@@ -25,7 +38,7 @@ class FindExtendCommand extends ContainerAwareCommand
 
     /**
      * Runs command
-     * @param  InputInterface  $input
+     * @param  InputInterface $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
      * @return int|null|void
@@ -34,10 +47,8 @@ class FindExtendCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        /** @var ExtendManager $extendManager */
-        $extendManager = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
-        /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */
-        $configManager = $this->getContainer()->get('oro_entity_config.config_manager');
+        $this->extendManager = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
+        $this->configManager = $this->getContainer()->get('oro_entity_config.config_manager');
 
         /** @var Kernel $kernel */
         $kernel = $this->getContainer()->get('kernel');
@@ -47,62 +58,58 @@ class FindExtendCommand extends ContainerAwareCommand
                 $config = Yaml::parse(realpath($path));
 
                 foreach ($config as $entityName => $entityConfig) {
-                    if ($entityConfig['type'] == 'Extend') {
-                        if (!class_exists($entityName)) {
-                            throw new \InvalidArgumentException(sprintf('Entity "%s" is not found'));
-                        }
-
-                        if (!$configManager->isConfigurable($entityName)) {
-                            $mode = isset($entityConfig['mode']) ? $entityConfig['mode'] : 'hidden';
-
-                            $configManager->createConfigEntityModel($entityName);
-                            $doctrineMetadata = $configManager->getEntityManager()->getClassMetadata($entityName);
-                            foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
-                                $type = $doctrineMetadata->getTypeOfField($fieldName);
-                                $mode = isset($entityConfig['mode']) ? $entityConfig['mode'] : 'hidden';
-                                $configManager->createConfigFieldModel(
-                                    $doctrineMetadata->getName(),
-                                    $fieldName,
-                                    $type,
-                                    $mode
-                                );
-                            }
-
-                            foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
-                                $type = $doctrineMetadata->isSingleValuedAssociation(
-                                    $fieldName
-                                ) ? 'ref-one' : 'ref-many';
-                                $configManager->createConfigFieldModel(
-                                    $doctrineMetadata->getName(),
-                                    $fieldName,
-                                    $type,
-                                    $mode
-                                );
-                            }
-
-                            $extendManager->getExtendFactory()->createEntity($entityName, $mode);
-
-                            $output->writeln(sprintf('Entity "%s" was added', $entityName));
-                        }
-                    }
-
-                    if ($entityConfig['type'] == 'Custom') {
-                        $mode = isset($entityConfig['mode']) ? $entityConfig['mode'] : 'default';
-                        $extendManager->getExtendFactory()->createEntity($entityName, $mode);
-
-                        $output->writeln(sprintf('Entity "%s" was added', $entityName));
-                    }
-
-                    foreach ($entityConfig['fields'] as $fieldName => $fieldConfig) {
-                        $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : 'default';
-                        $extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
-
-                        $output->writeln(sprintf('Field for "%s" Entity "%s" was added', $fieldName, $entityName));
-                    }
+                    $this->parseEntity($entityName, $entityConfig);
                 }
 
-                $configManager->flush();
+                $this->configManager->flush();
+
+                $output->writeln('Done');
             }
+        }
+    }
+
+    /**
+     * @param $entityName
+     * @param $entityConfig
+     * @throws \InvalidArgumentException
+     */
+    protected function parseEntity($entityName, $entityConfig)
+    {
+        if (!$this->configManager->isConfigurable($entityName)) {
+            $this->createEntityModel($entityName, $entityConfig);
+        }
+
+        foreach ($entityConfig['fields'] as $fieldName => $fieldConfig) {
+            if ($this->configManager->isConfigurable($entityName, $fieldName)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Field "%s" for Entity "%s" already added', $entityName, $fieldName)
+                );
+            }
+
+            $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
+            $this->extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
+        }
+    }
+
+    /**
+     * @param $entityName
+     * @param $entityConfig
+     */
+    protected function createEntityModel($entityName, $entityConfig)
+    {
+        $mode = isset($entityConfig['mode']) ? $entityConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
+
+        $this->configManager->createConfigEntityModel($entityName, $mode);
+
+        $doctrineMetadata = $this->configManager->getEntityManager()->getClassMetadata($entityName);
+        foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
+            $type = $doctrineMetadata->getTypeOfField($fieldName);
+            $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+        }
+
+        foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
+            $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
+            $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
         }
     }
 }
