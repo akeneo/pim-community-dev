@@ -45,8 +45,9 @@ class MassActionDispatcher
      * @param string $actionName
      * @param array $parameters
      * @param array $data
-     * @return MassActionResponseInterface
      * @throws \LogicException
+     *
+     * @return MassActionResponseInterface
      */
     public function dispatch($datagridName, $actionName, array $parameters, array $data = array())
     {
