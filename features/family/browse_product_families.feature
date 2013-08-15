@@ -16,5 +16,4 @@ Feature: Browse product families
       | bags       | english  | Bags       |
     And I am logged in as "admin"
     When I am on the families page
-    Then I should be redirected on the family creation page
-    And I should see the families Bags, Jewels and Smartphone
+    Then I should see the families Bags, Jewels and Smartphone
