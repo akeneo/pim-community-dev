@@ -40,7 +40,6 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     protected $escape = '\\';
 
     private $csv;
-    private $columnsCount;
 
     public function setFilePath($filePath)
     {
