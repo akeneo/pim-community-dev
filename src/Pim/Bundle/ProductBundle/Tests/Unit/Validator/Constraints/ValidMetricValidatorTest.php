@@ -2,15 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetric;
 use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator;
-
-use Symfony\Component\Validator\GlobalExecutionContext;
-use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Test related class
@@ -22,45 +17,44 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class ValidMetricValidatorTest extends WebTestCase
 {
-    /**
-     * @var ExecutionContext
-     */
-    protected $executionContext;
-
-    /**
-     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetric
-     */
-    protected $constraint;
-
-    /**
-     * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetricValidator
-     */
+    protected $context;
     protected $validator;
+    protected $constraint;
 
     /**
      * @var array Measures
      */
-    protected $measures;
+    protected $measures = array(
+        'measures_config' => array(
+            'Length' => array(
+                'standard' => 'METER',
+                'units' => array(
+                    'INCH' => array(),
+                    'KILOMETER' => array(),
+                    'METER' => array(),
+                )
+            ),
+            'Temperature' => array(
+                'standard' => 'KELVIN',
+                'units' => array(
+                    'CELCIUS' => array(),
+                    'KELVIN' => array(),
+                    'RANKINE' => array(),
+                    'REAUMUR' => array()
+                )
+            )
+        )
+    );
 
     /**
      * {@inheritDoc}
      */
     public function setUp()
     {
-        $this->markTestSkipped('Due to Symfony 2.3 Upgrade, GlobalExecutionContext issue');
-        parent::setUp();
-
-        $this->executionContext = $this->initExecutionContext();
-
-        static::$kernel = static::createKernel(array('environment' => 'dev'));
-        static::$kernel->boot();
-
-        $this->measures = static::$kernel->getContainer()->getParameter('oro_measure.measures_config');
-
-        $this->constraint = new ValidMetric();
-
+        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new ValidMetricValidator($this->measures);
-        $this->validator->initialize($this->executionContext);
+        $this->validator->initialize($this->context);
+        $this->constraint = new ValidMetric();
     }
 
     /**
@@ -68,64 +62,48 @@ class ValidMetricValidatorTest extends WebTestCase
      */
     public function tearDown()
     {
-        $this->executionContext = null;
+        $this->context = null;
+        $this->validator = null;
+        $this->constraint = null;
 
         parent::tearDown();
     }
 
     /**
-     * Initialize execution context for validator with mock objects
-     *
-     * @return \Symfony\Component\Validator\ExecutionContext
-     */
-    protected function initExecutionContext()
-    {
-        $graphWalker = $this->getMock('Symfony\Component\Validator\GraphWalker', array(), array(), '', false);
-        $metadataFactory = $this->getMock('Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface');
-        $globalContext = new GlobalExecutionContext('Root', $graphWalker, $metadataFactory);
-
-        return new ExecutionContext($globalContext, 'currentValue', 'foo.bar', 'Group', 'ClassName', 'propertyName');
-    }
-
-    /**
      * Create a product attribute entity
      *
-     * @param string $metricFamily Metric type
-     * @param string $metricUnit   Default metric unit
+     * @param string $metricFamily
+     * @param string $metricUnit
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     protected function createProductAttribute($metricFamily, $metricUnit = '')
     {
-        $productAttribute = new ProductAttribute();
+        $attribute = new ProductAttribute();
 
-        $productAttribute->setAttributeType('pim_product_metric');
-        $productAttribute->setMetricFamily($metricFamily);
-        $productAttribute->setDefaultMetricUnit($metricUnit);
+        $attribute->setAttributeType('pim_product_metric');
+        $attribute->setMetricFamily($metricFamily);
+        $attribute->setDefaultMetricUnit($metricUnit);
 
-        return $productAttribute;
+        return $attribute;
     }
 
     /**
-     * Test case with invalid metric type
+     * Test case with invalid metric family
      *
-     * @param string $metricFamily Metric type
+     * @param string $metricFamily
      *
      * @dataProvider providerMetricFamilyInvalid
      */
     public function testMetricFamilyInvalid($metricFamily)
     {
-        $productAttribute = $this->createProductAttribute($metricFamily);
+        $attribute = $this->createProductAttribute($metricFamily);
 
-        $this->validator->validate($productAttribute, $this->constraint);
+        $this->context->expects($this->once())
+            ->method('addViolationAt')
+            ->with('metricFamily', $this->constraint->familyMessage);
 
-        $this->assertCount(1, $this->executionContext->getViolations());
-        foreach ($this->executionContext->getViolations() as $violation) {
-            $this->assertEquals(
-                $this->constraint->invalidFamilyMessage,
-                $violation->getMessageTemplate()
-            );
-        }
+        $this->validator->validate($attribute, $this->constraint);
     }
 
     /**
@@ -138,33 +116,29 @@ class ValidMetricValidatorTest extends WebTestCase
     public static function providerMetricFamilyInvalid()
     {
         return array(
-            array('invalid_type_1'),
-            array('invalid_type_2'),
-            array('invalid_type_3')
+            array('METER'),
+            array('CELCIUS'),
+            array('invalid_family')
         );
     }
 
     /**
      * Test case with invalid metric unit
      *
-     * @param string $metricUnit Metric unit
+     * @param string $metricFamily
+     * @param string $metricUnit
      *
      * @dataProvider providerMetricUnitInvalid
      */
-    public function testMetricUnitInvalid($metricUnit)
+    public function testMetricUnitInvalid($metricFamily, $metricUnit)
     {
-        $metricFamily = key($this->measures['measures_config']);
-        $productAttribute = $this->createProductAttribute($metricFamily, $metricUnit);
+        $attribute = $this->createProductAttribute($metricFamily, $metricUnit);
 
-        $this->validator->validate($productAttribute, $this->constraint);
+        $this->context->expects($this->once())
+            ->method('addViolationAt')
+            ->with('defaultMetricUnit', $this->constraint->unitMessage);
 
-        $this->assertCount(1, $this->executionContext->getViolations());
-        foreach ($this->executionContext->getViolations() as $violation) {
-            $this->assertEquals(
-                $this->constraint->invalidMetricUnitMessage,
-                $violation->getMessageTemplate()
-            );
-        }
+        $this->validator->validate($attribute, $this->constraint);
     }
 
     /**
@@ -177,24 +151,44 @@ class ValidMetricValidatorTest extends WebTestCase
     public static function providerMetricUnitInvalid()
     {
         return array(
-            array('invalid_unit_1'),
-            array('invalid_unit_2'),
-            array('invalid_unit_3')
+            array('Length', 'REAUMUR'),
+            array('Temperature', 'KILOMETER'),
+            array('Temperature','invalid_unit')
         );
     }
 
     /**
      * Test case with valid metric type and unit
+     *
+     * @param string $metricFamily
+     * @param string $metricUnit
+     *
+     * @dataProvider providerMetricFamilyAndUnitValid
      */
-    public function testMetricFamilyAndUnitValid()
+    public function testMetricFamilyAndUnitValid($metricFamily, $metricUnit)
     {
-        $metricFamily = key($this->measures['measures_config']);
-        $metricUnit = $this->measures['measures_config'][$metricFamily]['standard'];
-        $productAttribute = $this->createProductAttribute($metricFamily, $metricUnit);
+        $attribute = $this->createProductAttribute($metricFamily, $metricUnit);
 
-        $this->validator->validate($productAttribute, $this->constraint);
+        $this->context->expects($this->never())
+            ->method('addViolationAt');
 
-        $this->assertCount(0, $this->executionContext->getViolations());
+        $this->validator->validate($attribute, $this->constraint);
+    }
+
+    /**
+     * Provider for metric unit violation
+     *
+     * @return array
+     *
+     * @static
+     */
+    public static function providerMetricFamilyAndUnitValid()
+    {
+        return array(
+            array('Length', 'INCH'),
+            array('Temperature', 'RANKINE'),
+            array('Temperature','KELVIN')
+        );
     }
 
     /**

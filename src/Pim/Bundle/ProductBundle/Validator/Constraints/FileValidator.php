@@ -28,7 +28,8 @@ class FileValidator extends BaseFileValidator
 
         if ($constraint->allowedExtensions) {
             $file = !$value instanceof \SplFileInfo ? new \SplFileInfo($value) : $value;
-            if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
+            $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+            if (!in_array($extension, $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
                     array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))

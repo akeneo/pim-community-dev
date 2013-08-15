@@ -24,11 +24,11 @@ class ValidDateRangeValidator extends ConstraintValidator
         $min = $entity->getDateMin();
         $max = $entity->getDateMax();
 
-        if (!$this->isDateValid($entity, $min)) {
+        if (!$this->isDateValid($min)) {
             $this->context->addViolationAt('dateMin', $constraint->invalidDateMessage);
         }
 
-        if (!$this->isDateValid($entity, $max)) {
+        if (!$this->isDateValid($max)) {
             $this->context->addViolationAt('dateMax', $constraint->invalidDateMessage);
         }
 
@@ -41,12 +41,11 @@ class ValidDateRangeValidator extends ConstraintValidator
 
     /**
      * Check if the date/time/datetime is valid based on the rules defined in the entity
-     * @param mixed $entity
      * @param mixed $date
      *
      * @return boolean
      */
-    protected function isDateValid($entity, $date)
+    protected function isDateValid($date)
     {
         if (!$date || $date instanceof \DateTime) {
             return true;

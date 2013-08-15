@@ -54,22 +54,6 @@ class Edit extends Creation
     }
 
     /**
-     * @param array $options
-     *
-     * @return string
-     */
-    public function getUrl(array $options = array())
-    {
-        $url = $this->getPath();
-
-        foreach ($options as $parameter => $value) {
-            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
-        }
-
-        return $url;
-    }
-
-    /**
      * @param string $attribute
      *
      * @return NodeElement

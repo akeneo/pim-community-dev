@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Job\JobIndex;
+use Context\Page\Job\Index as JobIndex;
 
 /**
  * Export index page

@@ -105,7 +105,8 @@ class ProductController extends Controller
     /**
      * Edit product
      *
-     * @param integer $id the product id
+     * @param Request $request
+     * @param integer $id
      *
      * @Route(
      *     "/{id}/edit",
@@ -247,7 +248,7 @@ class ProductController extends Controller
             throw $this->createNotFoundException(
                 sprintf(
                     'Attribute %s can not be removed from the product %s',
-                    $atttribute->getCode(),
+                    $attribute->getCode(),
                     $product->getCode()
                 )
             );

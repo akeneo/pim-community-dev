@@ -11,7 +11,7 @@ use Context\Page\Base\Form;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobCreation extends Form
+class Creation extends Form
 {
     /**
      * {@inheritdoc}
@@ -45,15 +45,5 @@ class JobCreation extends Form
     public function checkField($field)
     {
         $this->getElement($field)->check();
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return string
-     */
-    public function getUrl(array $options)
-    {
-        return sprintf('%s?%s', $this->getPath(), http_build_query($options));
     }
 }

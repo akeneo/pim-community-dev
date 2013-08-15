@@ -14,7 +14,7 @@ class SortHelper
     /**
      * Sort ascending an array of objects using a public property
      *
-     * @param array $values    Array of objects
+     * @param array  $values    Array of objects
      * @param string $property The property on which sorts (must be public)
      *
      * @return array The sorted array
@@ -25,12 +25,12 @@ class SortHelper
     {
         uasort(
             $values,
-            function ($a, $b) use ($property) {
-                if ($a->$property === $b->$property) {
+            function ($first, $second) use ($property) {
+                if ($first->$property === $second->$property) {
                     return 0;
                 }
 
-                return ($a->$property < $b->$property) ? -1 : 1;
+                return ($first->$property < $second->$property) ? -1 : 1;
             }
         );
 

@@ -168,7 +168,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($item)
     {
-        foreach ($item as $code => $value) {
+        foreach (array_keys($item) as $code) {
             $attributes[$code] = $this->getAttribute($code);
         }
 
@@ -206,6 +206,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * Create a product using the initialized attributes
      *
+     * @param array $attributes
      * @param array $item
      *
      * @return Product
@@ -242,19 +243,16 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 return array(
                     'prices' => $prices
                 );
-
             case 'date':
                 $date = new \DateTime($value);
 
                 return array($attribute->getBackendType() => $date->format('m/d/Y'));
-
             case 'option':
                 if ($option = $this->getOption($value)) {
                     return array($attribute->getBackendType() => $option->getId());
                 }
 
                 return array();
-
             case 'options':
                 $options = array();
                 foreach (explode(',', $value) as $val) {
@@ -264,7 +262,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 }
 
                 return array($attribute->getBackendType() => $options);
-
             default:
                 return array($attribute->getBackendType() => $value);
         }

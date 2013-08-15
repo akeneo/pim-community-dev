@@ -103,11 +103,10 @@ class Grid extends Index
      * Get the text in the specified column of the specified row
      * @param string $column
      * @param string $row
-     * @param string $expectation
      *
      * @return string
      */
-    public function getColumnValue($column, $row, $expectation)
+    public function getColumnValue($column, $row)
     {
         return $this->getRowCell($this->getGridRow($row), $this->getColumnPosition($column))->getText();
     }

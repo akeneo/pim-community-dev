@@ -60,11 +60,6 @@ function init() {
     // Disable the oro scrollable container
     $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
-    // Prevent UniformJS from breaking our stuff
-    $(document).off('uniformInit').on('uniformInit', function() {
-        $(document).uniform.restore();
-    });
-
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 

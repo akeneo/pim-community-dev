@@ -158,7 +158,7 @@
 {% endblock pim_batch_step_element_configuration_widget %}
 
 {% block pim_attribute_requirement_widget %}
-    <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Non required'|trans }}">
+    <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
         {% if form.required.vars.checked %}
         <i class="fa-icon-ok required" data-toggle="tooltip" data-placement="right"></i>

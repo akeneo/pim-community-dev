@@ -15,15 +15,4 @@ use Pim\Bundle\ProductBundle\Entity\Category;
 class Edit extends Form
 {
     protected $path = '/enrich/category-tree/edit/{id}';
-
-    /**
-     * Return the url of the current page
-     * @param Category $category
-     *
-     * @return string
-     */
-    public function getUrl(Category $category)
-    {
-        return str_replace('{id}', $category->getId(), $this->getPath());
-    }
 }

@@ -115,7 +115,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->computeRequiredValues($product, $attribute);
+        $requiredValues = $this->computeRequiredValues($attribute);
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -263,7 +263,7 @@ class ProductManager extends FlexibleManager
         $attributes = array_unique($attributes);
 
         foreach ($attributes as $attribute) {
-            $requiredValues = $this->computeRequiredValues($product, $attribute);
+            $requiredValues = $this->computeRequiredValues($attribute);
             $existingValues = array();
 
             foreach ($product->getValues() as $value) {
@@ -300,12 +300,11 @@ class ProductManager extends FlexibleManager
      * Returns an array of values that are required to link product to an attribute
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param ProductInterface $product
      * @param ProductAttribute $attribute
      *
      * @return array:array
      */
-    protected function computeRequiredValues(ProductInterface $product, ProductAttribute $attribute)
+    protected function computeRequiredValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
 

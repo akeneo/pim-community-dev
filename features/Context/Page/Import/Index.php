@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobIndex;
+use Context\Page\Job\Index as JobIndex;
 
 /**
  * Import index page
