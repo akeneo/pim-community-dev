@@ -4,8 +4,7 @@ namespace Oro\Bundle\GridBundle\Filter\ORM;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
 
 class SelectRowFilter extends AbstractFilter

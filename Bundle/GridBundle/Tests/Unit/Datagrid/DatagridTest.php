@@ -544,7 +544,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $result = $this->getMockBuilder('Oro\Bundle\GridBundle\Filter\FilterInterface')
-            ->setMethods(array('getName', 'isActive', 'getFormName', 'apply', 'getRenderSettings'))
+            ->setMethods(array('getName', 'isActive', 'apply', 'getRenderSettings'))
             ->getMockForAbstractClass();
 
         $result->expects($this->any())

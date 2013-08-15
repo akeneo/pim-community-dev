@@ -59,7 +59,6 @@ class AbstractFlexibleFilterTest extends \PHPUnit_Framework_TestCase
                 'getRenderSettings',
                 'getForm',
                 'getName',
-                'getFormName',
                 'getLabel',
                 'setLabel',
                 'getAssociationMapping',
@@ -205,13 +204,6 @@ class AbstractFlexibleFilterTest extends \PHPUnit_Framework_TestCase
         $expected = 'test';
         $this->parentFilter->expects($this->once())->method('getName')->will($this->returnValue($expected));
         $this->assertEquals($expected, $this->model->getName());
-    }
-
-    public function testGetFormName()
-    {
-        $expected = 'test';
-        $this->parentFilter->expects($this->once())->method('getFormName')->will($this->returnValue($expected));
-        $this->assertEquals($expected, $this->model->getFormName());
     }
 
     public function testGetLabel()

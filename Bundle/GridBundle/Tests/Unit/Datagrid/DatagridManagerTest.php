@@ -198,31 +198,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $queryMock          = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface');
         $routeGeneratorMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
         $parameters         = $this->createTestParameters();
+        $listCollection     = new FieldDescriptionCollection();
 
-        $listCollection = new FieldDescriptionCollection();
-
-        $listBuilderMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Builder\ListBuilderInterface',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('getBaseList')
-        );
+        $listBuilderMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Builder\ListBuilderInterface')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getBaseList'))
+            ->getMockForAbstractClass();
         $listBuilderMock->expects($this->once())
             ->method('getBaseList')
             ->will($this->returnValue($listCollection));
 
-        $queryFactoryMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('createQuery', 'getAlias')
-        );
+        $queryFactoryMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('createQuery', 'getAlias'))
+            ->getMock();
         $queryFactoryMock->expects($this->once())
             ->method('createQuery')
             ->will($this->returnValue($queryMock));
@@ -233,38 +222,25 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getBaseDatagrid', 'addFilter', 'addSorter', 'addRowAction'))
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-
         $datagridBuilderMock->expects($this->at(0))
             ->method('getBaseDatagrid')
-            ->with(
-                $queryMock,
-                $listCollection,
-                $routeGeneratorMock,
-                $parameters,
-                self::TEST_NAME,
-                self::TEST_HINT
-            )
+            ->with($queryMock, $listCollection, $routeGeneratorMock, $parameters, self::TEST_NAME, self::TEST_HINT)
             ->will($this->returnValue($datagridMock));
         $datagridBuilderMock->expects($this->at(1))
             ->method('addProperty')
             ->with($datagridMock, $this->testProperties[0]);
-
         $datagridBuilderMock->expects($this->at(2))
             ->method('addFilter')
             ->with($datagridMock, $this->testFields[self::TEST_FILTERABLE_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(3))
             ->method('addSorter')
             ->with($datagridMock, $this->testFields[self::TEST_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(4))
             ->method('addSorter')
             ->with($datagridMock, $this->testFields[self::TEST_FILTERABLE_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(5))
             ->method('addRowAction')
             ->with($datagridMock, $this->testRowActions[1]);
-
         $datagridBuilderMock->expects($this->at(6))
             ->method('addRowAction')
             ->with($datagridMock, $this->testRowActions[2]);
@@ -289,8 +265,6 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-
-
         $this->assertEquals($datagridMock, $this->model->getDatagrid());
 
         $idField = $this->createFieldDescriptions(
@@ -306,7 +280,6 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $this->testFields = array_merge($this->testFields, $idField);
-
         $this->assertEquals($this->testFields, $listCollection->getElements());
 
         $defaultParameters = array(
