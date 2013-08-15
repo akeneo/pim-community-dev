@@ -168,7 +168,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($item)
     {
-        foreach ($item as $code => $value) {
+        foreach (array_keys($item) as $code) {
             $attributes[$code] = $this->getAttribute($code);
         }
 
