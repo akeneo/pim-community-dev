@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataAuditBundle\Tests;
+namespace Oro\Bundle\DataAuditBundle\Tests\Functional\API;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
