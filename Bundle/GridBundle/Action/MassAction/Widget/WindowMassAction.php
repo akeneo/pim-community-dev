@@ -11,7 +11,7 @@ class WindowMassAction extends WidgetMassAction
      */
     public function __construct(array $options)
     {
-        $options['frontend_type'] = 'window';
+        $options['frontend_type'] = 'dialog';
 
         parent::__construct($options);
     }
