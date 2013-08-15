@@ -18,6 +18,10 @@ services:
         tags:
             - { name: oro_service_link,  service: oro_entity_config.provider_bag }
 
+    oro_entity_config.link.provider_bag.method:
+        tags:
+            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: getProviders }
+
     oro_entity_config.config_manager:
         class:                                                  %oro_entity_config.config_manager.class%
         arguments:
