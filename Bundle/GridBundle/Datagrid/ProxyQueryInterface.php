@@ -2,13 +2,29 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface as BaseProxyQueryInterface;
-
 /**
  * Interface used by the Datagrid to build the query
  */
-interface ProxyQueryInterface extends BaseProxyQueryInterface
+interface ProxyQueryInterface
 {
+    /**
+     * Execute query
+     *
+     * @param array $params
+     * @param null  $hydrationMode
+     * @return mixed
+     */
+    public function execute(array $params = array(), $hydrationMode = null);
+
+    /**
+     * Proxy for query methods
+     *
+     * @param string $name
+     * @param array  $args
+     * @return mixed
+     */
+    public function __call($name, $args);
+
     /**
      * Adds sorting order
      *
@@ -58,4 +74,87 @@ interface ProxyQueryInterface extends BaseProxyQueryInterface
      * @return ProxyQueryInterface
      */
     public function setQueryHint($name, $value);
+
+    /**
+     * Set sort by field
+     *
+     * @param array $parentAssociationMappings
+     * @param array $fieldMapping
+     * @return ProxyQueryInterface
+     */
+    public function setSortBy($parentAssociationMappings, $fieldMapping);
+
+    /**
+     * Get sort by field
+     *
+     * @return mixed
+     */
+    public function getSortBy();
+
+    /**
+     * Set sort order
+     *
+     * @param mixed $sortOrder
+     * @return ProxyQueryInterface
+     */
+    public function setSortOrder($sortOrder);
+
+    /**
+     * Get sort order
+     *
+     * @return mixed
+     */
+    public function getSortOrder();
+
+    /**
+     * Get single scalar result
+     *
+     * @return mixed
+     */
+    public function getSingleScalarResult();
+
+    /**
+     * Set first result
+     *
+     * @param int $firstResult
+     * @return ProxyQueryInterface
+     */
+    public function setFirstResult($firstResult);
+
+    /**
+     * Get first result
+     *
+     * @return mixed
+     */
+    public function getFirstResult();
+
+    /**
+     * Set max records
+     *
+     * @param int $maxResults
+     * @return ProxyQueryInterface
+     */
+    public function setMaxResults($maxResults);
+
+    /**
+     * Get max records
+     *
+     * @return mixed
+     */
+    public function getMaxResults();
+
+    /**
+     * Get unique parameter ID
+     *
+     * @return mixed
+     */
+    public function getUniqueParameterId();
+
+    /**
+     * Join entity
+     *
+     * @param array $associationMappings
+     * @return mixed
+     */
+    public function entityJoin(array $associationMappings);
 }
