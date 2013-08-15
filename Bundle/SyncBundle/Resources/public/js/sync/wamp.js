@@ -1,14 +1,14 @@
 /* jshint browser:true */
 (function (factory) {
-    "use strict";
-    /* global define, jQuery, _, ab, Oro */
+    'use strict';
+    /* global define, jQuery, _, Backbone, ab, Oro */
     if (typeof define === 'function' && define.amd) {
-        define(['jQuery', '_', 'ab', 'OroSynchronizer'], factory);
+        define(['jQuery', '_', 'Backbone', 'ab', 'OroSynchronizer'], factory);
     } else {
-        factory(jQuery, _, ab, Oro.Synchronizer);
+        factory(jQuery, _, Backbone, ab, Oro.Synchronizer);
     }
-}(function ($, _, ab, Synchronizer) {
-    "use strict";
+}(function ($, _, Backbone, ab, Synchronizer) {
+    'use strict';
     var defaultOptions = {
             port: 80,
             debug: false
@@ -40,8 +40,23 @@
 
         /**
          * Handler on losing connection
+         *
+         * @param {number} code
+         *      CONNECTION_CLOSED = 0
+         *      CONNECTION_LOST = 1
+         *      CONNECTION_RETRIES_EXCEEDED = 2
+         *      CONNECTION_UNREACHABLE = 3
+         *      CONNECTION_UNSUPPORTED = 4
+         *      CONNECTION_UNREACHABLE_SCHEDULED_RECONNECT = 5
+         *      CONNECTION_LOST_SCHEDULED_RECONNECT = 6
+         * @param {string} msg text message
+         * @param {Object} details
+         * @param {number} details.delay in ms, before next reconnect attempt
+         * @param {number} details.maxretries max number of attempts
+         * @param {number} details.retries number of scheduled attempt
          */
-        onHangup = function() {
+        onHangup = function(code, msg, details) {
+            this.trigger('connection_lost', _.extend({code: code}, details || {}));
             this.session = null;
         };
 
@@ -67,11 +82,18 @@
         if (this.options.debug) {
             ab.debug(true, true, true);
         }
-        var wsuri = 'ws://' + this.options.host + ':' + this.options.port;
-        ab.connect(wsuri, _.bind(onConnect, this), _.bind(onHangup, this), this.options);
+        this.connect();
     };
 
     Synchronizer.Wamp.prototype = {
+        /**
+         * Initiate connection process
+         */
+        connect: function() {
+            var wsuri = 'ws://' + this.options.host + ':' + this.options.port;
+            ab.connect(wsuri, _.bind(onConnect, this), _.bind(onHangup, this), this.options);
+        },
+
         /**
          * Subscribes update callback function on a channel
          *
@@ -115,6 +137,8 @@
             }
         }
     };
+
+    _.extend(Synchronizer.Wamp.prototype, Backbone.Events);
 
     return Synchronizer.Wamp;
 }));

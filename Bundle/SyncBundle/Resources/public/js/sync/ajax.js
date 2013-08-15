@@ -1,34 +1,42 @@
 /* jshint browser:true */
 (function (factory) {
-    "use strict";
-    /* global define, jQuery, _, Oro */
+    'use strict';
+    /* global define, jQuery, _, Backbone, Oro */
     if (typeof define === 'function' && define.amd) {
-        define(['JSON', 'jQuery', '_', 'OroSynchronizer'], factory);
+        define(['JSON', 'jQuery', '_', 'Backbone', 'OroSynchronizer'], factory);
     } else {
-        factory(JSON, jQuery, _, Oro.Synchronizer);
+        factory(JSON, jQuery, _, Backbone, Oro.Synchronizer);
     }
-}(function (JSON, $, _, Synchronizer) {
-    "use strict";
+}(function (JSON, $, _, Backbone, Synchronizer) {
+    'use strict';
 
     var defaultOptions = {
-            waitUpdate: 5000,
-            waitSubscription: 500,
+            period: 5000,
+            subscriptionDelay: 500,
             maxRetries: 10
         },
 
         /**
          * Invokes doFetchUpdates function with a delay (which is configured via options)
+         *
+         * @param {number=} attempt number of an attempt to fetch updates, after error has occurred
          */
-        fetchUpdates = function () {
-            this.updater = _.delay(_.bind(doFetchUpdates, this), this.options.waitUpdate);
+        fetchUpdates = function (attempt) {
+            if (!this.updater) {
+                attempt = attempt || 0;
+                this.updater = _.delay(_.bind(doFetchUpdates, this, attempt), this.options.period);
+            }
         },
 
         /**
          * Collects all subscribed channels and makes request for updates.
          * If there's no subscribed channels for the moment, then just invoke fetchUpdates(),
          * to be executed again after a while.
+         *
+         * @param {number=} attempt number of an attempt to fetch updates, after error has occurred
          */
-        doFetchUpdates = function () {
+        doFetchUpdates = function (attempt) {
+            delete this.updater;
             if (_.isEmpty(this.channels) ) {
                 fetchUpdates.call(this);
                 return;
@@ -44,7 +52,7 @@
                     .value();
             $.ajax({
                 url: this.options.url,
-                type: "POST",
+                type: 'POST',
                 data: {
                     action: 'fetchUpdates',
                     payload: JSON.stringify(payload)
@@ -62,26 +70,40 @@
                         }
                     });
                 },
-                complete: _.bind(fetchUpdates, this)
+                complete: _.bind(function(xhr, status) {
+                    var retries = status === 'error' ? attempt + 1 : 0;
+                    if (status === 'error') {
+                        this.trigger('connection_lost', {
+                            delay: this.options.period,
+                            maxretries: this.options.maxRetries,
+                            retries: retries
+                        });
+                    } else if (attempt > 0) {
+                        this.trigger('connection_established');
+                    }
+                    if (retries <= this.options.maxRetries) {
+                        fetchUpdates.call(this, retries);
+                    }
+                }, this)
             });
         },
 
         /**
          * Invokes doSubscribe function but with a delay (which is configured via options)
          *
-         * @param {number=} attempt number of attempts which service have to do after error occurred
+         * @param {number=} attempt number of an attempt to subscribe, after error has occurred
          */
         subscribe = function (attempt) {
             if (!this.subscriber) {
                 attempt = attempt || 0;
-                this.subscriber = _.delay(_.bind(doSubscribe, this), this.options.waitSubscription, attempt);
+                this.subscriber = _.delay(_.bind(doSubscribe, this, attempt), this.options.subscriptionDelay);
             }
         },
 
         /**
          * Collect all channels which don't have tokens and makes subscribe request
          *
-         * @param {number} attempt number of attempts which service have to do after error occurred
+         * @param {number} attempt number of an attempt to fetch updates, after error has occurred
          */
         doSubscribe = function (attempt) {
             var channels = this.channels,
@@ -94,9 +116,13 @@
                     })
                     .value();
             delete this.subscriber;
+            if (payload.length === 0) {
+                // if list of tokens is empty, there's nothing to do
+                return;
+            }
             $.ajax({
                 url: this.options.url,
-                type: "POST",
+                type: 'POST',
                 data: {
                     action: 'subscribe',
                     payload: JSON.stringify(payload)
@@ -121,11 +147,13 @@
                     });
                 },
                 complete: _.bind(function (xhr, status) {
-                    attempt = status === 'error' ? attempt + 1 : 0;
-                    if (attempt <= this.options.maxRetries && (attempt || _.some(channels, function (obj) {
+                    var retries = status === 'error' ? attempt + 1 : 0;
+                    if (retries > this.options.maxRetries) {
+                        this.once('connection_established', _.bind(this.subscribe, this));
+                    } else if (status === 'error' || _.some(channels, function (obj) {
                         return obj.token === '';
-                    }))) {
-                        subscribe.call(this, attempt);
+                    })) {
+                        subscribe.call(this, retries);
                     }
                 }, this)
             });
@@ -137,8 +165,8 @@
      * @constructor
      * @param {Object} options to configure service
      * @param {string} options.url is required
-     * @param {number=} options.waitUpdate default is 5000 (5s)
-     * @param {number=} options.waitSubscription is time before actual subscribe request after first
+     * @param {number=} options.period default is 5000 (5s)
+     * @param {number=} options.subscriptionDelay is time before actual subscribe request after first
      *      subscribe call, default is 500 (1/2s). During this time, service waits for more
      *      subscribers and after it makes a request to subscribe them all ta ones
      * @param {number=} options.maxRetries quantity of attempts before stop trying
@@ -154,6 +182,14 @@
     };
 
     Synchronizer.Ajax.prototype = {
+        /**
+         * Initiate connection process
+         */
+        connect: function() {
+            subscribe.call(this);
+            fetchUpdates.call(this);
+        },
+
         /**
          * Subscribes update callback function on a channel
          *
@@ -194,6 +230,8 @@
             }
         }
     };
+
+    _.extend(Synchronizer.Ajax.prototype, Backbone.Events);
 
     return Synchronizer.Ajax;
 }));
