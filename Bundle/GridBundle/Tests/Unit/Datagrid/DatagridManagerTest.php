@@ -4,6 +4,8 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Datagrid;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -24,6 +26,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
     const TEST_SORTABLE_FIELD            = 'test_sortable_field';
     const TEST_DOMAIN                    = 'someDomain';
     const TEST_IDENTIFIER                = 'some_id';
+    const TEST_ALIAS                     = 'some_alias';
 
     /**
      * @var DatagridManager
@@ -45,7 +48,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         ),
         'simple_field' => array(
             'option_4' => 'value_4'
-        ),
+        )
     );
 
     protected $testProperties = array();
@@ -212,17 +215,19 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($listCollection));
 
         $queryFactoryMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Datagrid\QueryFactoryInterface',
+            'Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory',
             array(),
             '',
             false,
             true,
             true,
-            array('createQuery')
+            array('createQuery', 'getAlias')
         );
         $queryFactoryMock->expects($this->once())
             ->method('createQuery')
             ->will($this->returnValue($queryMock));
+        $queryFactoryMock->expects($this->any())
+            ->method('getAlias')->will($this->returnValue(self::TEST_ALIAS));
 
         $datagridBuilderMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface')
             ->setMethods(array('getBaseDatagrid', 'addFilter', 'addSorter', 'addRowAction'))
@@ -271,8 +276,37 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->model->setParameters($parameters);
         $this->model->setName(self::TEST_NAME);
         $this->model->setEntityHint(self::TEST_HINT);
+        $this->model->setIdentifierField(self::TEST_IDENTIFIER);
+
+        $translatorMock = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $this->model->setTranslator($translatorMock);
+        $translatorMock->expects($this->at(0))->method('trans')
+            ->with(self::TEST_IDENTIFIER, array(), null)
+            ->will(
+                $this->returnCallback(
+                    function ($string, $params, $domain) {
+                        return 'trans_' . $string;
+                    }
+                )
+            );
+
 
         $this->assertEquals($datagridMock, $this->model->getDatagrid());
+
+        $idField = $this->createFieldDescriptions(
+            array(
+                self::TEST_IDENTIFIER => array(
+                    'field_name'   => self::TEST_IDENTIFIER,
+                    'type'         => FieldDescriptionInterface::TYPE_INTEGER,
+                    'entity_alias' => self::TEST_ALIAS,
+                    'label'        => 'trans_' . self::TEST_IDENTIFIER,
+                    'filter_type'  => FilterInterface::TYPE_NUMBER,
+                    'show_column'  => false
+                )
+            )
+        );
+        $this->testFields = array_merge($this->testFields, $idField);
+
         $this->assertEquals($this->testFields, $listCollection->getElements());
 
         $defaultParameters = array(
