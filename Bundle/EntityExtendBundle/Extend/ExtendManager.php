@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -38,11 +38,11 @@ class ExtendManager
     protected $generator;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
     protected $lazyEm;
 
-    public function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
+    public function __construct(ServiceLink $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;

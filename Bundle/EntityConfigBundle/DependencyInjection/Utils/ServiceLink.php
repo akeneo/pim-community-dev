@@ -1,15 +1,28 @@
 <?php
 
-namespace Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy;
+namespace Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ServiceProxy
+/**
+ * This class contain link to the service
+ * It may be useful if you get circular error in DI
+ */
+class ServiceLink
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
+    /**
+     * @var mixed
+     */
     protected $service;
 
+    /**
+     * @var string
+     */
     protected $serviceId;
 
     public function __construct(ContainerInterface $container, $serviceId)
@@ -18,6 +31,9 @@ class ServiceProxy
         $this->serviceId = $serviceId;
     }
 
+    /**
+     * @return mixed
+     */
     public function getService()
     {
         $this->init();
@@ -25,6 +41,9 @@ class ServiceProxy
         return $this->service;
     }
 
+    /**
+     * Init service to internal cache
+     */
     protected function init()
     {
         if ($this->service === null) {

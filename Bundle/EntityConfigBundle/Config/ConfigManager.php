@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\EntityManager;
@@ -16,7 +15,7 @@ use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
@@ -49,9 +48,9 @@ class ConfigManager
     protected $metadataFactory;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
-    protected $proxyEm;
+    protected $emLink;
 
     /**
      * @var EventDispatcher
@@ -59,7 +58,7 @@ class ConfigManager
     protected $eventDispatcher;
 
     /**
-     * @var CacheProvider
+     * @var ConfigCache
      */
     protected $cache;
 
@@ -74,7 +73,7 @@ class ConfigManager
     protected $modelManager;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
     protected $providerBag;
 
@@ -101,35 +100,35 @@ class ConfigManager
     /**
      * @param MetadataFactory $metadataFactory
      * @param EventDispatcher $eventDispatcher
-     * @param ServiceProxy    $providerBag
-     * @param ServiceProxy    $proxyEm
-     * @param ServiceProxy    $security
+     * @param ServiceLink     $providerBagLink
+     * @param ServiceLink     $emLink
+     * @param ServiceLink     $securityLink
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
-        ServiceProxy $providerBag,
-        ServiceProxy $proxyEm,
-        ServiceProxy $security
+        ServiceLink $providerBagLink,
+        ServiceLink $emLink,
+        ServiceLink $securityLink
     ) {
         $this->metadataFactory = $metadataFactory;
-        $this->proxyEm         = $proxyEm;
+        $this->emLink          = $emLink;
         $this->eventDispatcher = $eventDispatcher;
 
-        $this->providerBag      = $providerBag;
+        $this->providerBag      = $providerBagLink;
         $this->localCache       = new ArrayCollection;
         $this->persistConfigs   = new \SplObjectStorage();
         $this->originalConfigs  = new ArrayCollection;
         $this->configChangeSets = new ArrayCollection;
 
-        $this->modelManager = new ConfigModelManager($proxyEm);
-        $this->auditManager = new AuditManager($this, $security);
+        $this->modelManager = new ConfigModelManager($emLink);
+        $this->auditManager = new AuditManager($this, $securityLink);
     }
 
     /**
-     * @param CacheProvider $cache
+     * @param ConfigCache $cache
      */
-    public function setCache(CacheProvider $cache)
+    public function setCache(ConfigCache $cache)
     {
         $this->cache = $cache;
     }
@@ -257,7 +256,7 @@ class ConfigManager
         }
 
         if (null !== $this->cache
-            && $config = $this->loadConfigFromCache($configId)
+            && $config = $this->cache->loadConfigFromCache($configId)
         ) {
             return true;
         }
@@ -289,7 +288,7 @@ class ConfigManager
         }
 
         $resultConfig = null !== $this->cache
-            ? $this->loadConfigFromCache($configId)
+            ? $this->cache->loadConfigFromCache($configId)
             : null;
 
         if (!$resultConfig) {
@@ -299,7 +298,7 @@ class ConfigManager
             $config->setValues($model->toArray($configId->getScope()));
 
             if (null !== $this->cache) {
-                $this->putConfigInCache($config);
+                $this->cache->putConfigInCache($config);
             }
 
             $resultConfig = $config;
@@ -321,7 +320,7 @@ class ConfigManager
     public function clearCache(ConfigIdInterface $configId)
     {
         if ($this->cache) {
-            $this->removeConfigFromCache($configId);
+            $this->cache->removeConfigFromCache($configId);
         }
     }
 
@@ -331,7 +330,7 @@ class ConfigManager
     public function clearCacheAll()
     {
         if ($this->cache) {
-            $this->cache->deleteAll();
+            $this->cache->removeAll();
         }
     }
 
@@ -373,7 +372,7 @@ class ConfigManager
             $model->fromArray($config->getConfigId()->getScope(), $config->getValues(), $serializableValues);
 
             if ($this->cache) {
-                $this->removeConfigFromCache($config->getConfigId());
+                $this->cache->removeConfigFromCache($config->getConfigId());
             }
         }
 
@@ -548,32 +547,5 @@ class ConfigManager
         }
 
         return $config;
-    }
-
-    /**
-     * @param ConfigIdInterface $configId
-     * @return bool|ConfigInterface
-     */
-    private function loadConfigFromCache(ConfigIdInterface $configId)
-    {
-        return unserialize($this->cache->fetch($configId->getId()));
-    }
-
-    /**
-     * @param ConfigIdInterface $configId
-     * @return bool
-     */
-    private function removeConfigFromCache(ConfigIdInterface $configId)
-    {
-        return $this->cache->delete($configId->getId());
-    }
-
-    /**
-     * @param ConfigInterface $config
-     * @return bool
-     */
-    private function putConfigInCache(ConfigInterface $config)
-    {
-        return $this->cache->save($config->getConfigId()->getId(), serialize($config));
     }
 }

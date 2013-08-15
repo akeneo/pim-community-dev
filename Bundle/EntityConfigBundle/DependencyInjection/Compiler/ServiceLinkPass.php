@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-class ServiceProxyPass implements CompilerPassInterface
+class ServiceLinkPass implements CompilerPassInterface
 {
-    const TAG_NAME = 'oro_entity_config.proxy';
+    const TAG_NAME = 'oro_service_link';
 
     /**
      * {@inheritdoc}
@@ -31,17 +31,24 @@ class ServiceProxyPass implements CompilerPassInterface
             }
 
             if (!$container->hasDefinition($tag[0]['service'])) {
-                throw new RuntimeException(sprintf(
-                    "Target service '%s' is undefined. Proxy Service '%s' with tag '%s' and tag-service '%s' ",
-                    $tag[0]['service'], $id, self::TAG_NAME, $tag[0]['service']
-                ));
+                throw new RuntimeException(
+                    sprintf(
+                        "Target service '%s' is undefined. Link Service '%s' with tag '%s' and tag-service '%s' ",
+                        $tag[0]['service'],
+                        $id,
+                        self::TAG_NAME,
+                        $tag[0]['service']
+                    )
+                );
             }
 
-            $service->setClass('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy');
-            $service->setArguments(array(
-                new Reference('service_container'),
-                $tag[0]['service']
-            ));
+            $service->setClass('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink');
+            $service->setArguments(
+                array(
+                    new Reference('service_container'),
+                    $tag[0]['service']
+                )
+            );
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Audit;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
@@ -14,6 +14,9 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
+/**
+ * Audit config data
+ */
 class AuditManager
 {
     /**
@@ -22,18 +25,18 @@ class AuditManager
     protected $configManager;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
-    protected $security;
+    protected $securityLink;
 
     /**
      * @param ConfigManager $configManager
-     * @param ServiceProxy  $security
+     * @param ServiceLink   $securityLink
      */
-    public function __construct(ConfigManager $configManager, ServiceProxy $security)
+    public function __construct(ConfigManager $configManager, ServiceLink $securityLink)
     {
         $this->configManager = $configManager;
-        $this->security      = $security;
+        $this->securityLink  = $securityLink;
     }
 
     /**
@@ -93,7 +96,7 @@ class AuditManager
     protected function getUser()
     {
         /** @var SecurityContext $security */
-        $security = $this->security->getService();
+        $security = $this->securityLink->getService();
         if (!$security->getToken() || !$security->getToken()->getUser()) {
             return false;
         }

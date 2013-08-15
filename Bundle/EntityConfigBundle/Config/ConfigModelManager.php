@@ -12,7 +12,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 class ConfigModelManager
@@ -30,11 +30,11 @@ class ConfigModelManager
     protected $localCache;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
     protected $proxyEm;
 
-    public function __construct(ServiceProxy $proxyEm)
+    public function __construct(ServiceLink $proxyEm)
     {
         $this->localCache = new ArrayCollection;
         $this->proxyEm    = $proxyEm;

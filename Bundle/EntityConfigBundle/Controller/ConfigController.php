@@ -75,9 +75,13 @@ class ConfigController extends Controller
         $entity  = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
 
-        $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model' => $entity,
-        ));
+        $form = $this->createForm(
+            'oro_entity_config_type',
+            null,
+            array(
+                'config_model' => $entity,
+            )
+        );
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -171,18 +175,16 @@ class ConfigController extends Controller
             : 0;
 
         return array(
-            'entity'            => $entity,
-            'entity_config'     => $entityConfigProvider->getConfig($entity->getClassName()),
-            'entity_extend'     => $extendConfig,
-            'entity_count'      => $entityCount,
-
+            'entity'        => $entity,
+            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
+            'entity_extend' => $extendConfig,
+            'entity_count'  => $entityCount,
             'entity_fields' => $datagrid->createView(),
-
-            'unique_key'        => $extendConfig->get('unique_key'),
-            'link'              => $link,
-            'entity_name'       => $entityName,
-            'module_name'       => $moduleName,
-            'button_config'     => $datagridManager->getLayoutActions($entity),
+            'unique_key'    => $extendConfig->get('unique_key'),
+            'link'          => $link,
+            'entity_name'   => $entityName,
+            'module_name'   => $moduleName,
+            'button_config' => $datagridManager->getLayoutActions($entity),
         );
     }
 
@@ -238,9 +240,13 @@ class ConfigController extends Controller
         $field   = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
 
-        $form = $this->createForm('oro_entity_config_type', null, array(
-            'config_model' => $field,
-        ));
+        $form = $this->createForm(
+            'oro_entity_config_type',
+            null,
+            array(
+                'config_model' => $field,
+            )
+        );
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -265,7 +271,10 @@ class ConfigController extends Controller
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
         $entityConfig         = $entityConfigProvider->getConfig($field->getEntity()->getClassName());
-        $fieldConfig          = $entityConfigProvider->getConfig($field->getEntity()->getClassName(), $field->getFieldName());
+        $fieldConfig          = $entityConfigProvider->getConfig(
+            $field->getEntity()->getClassName(),
+            $field->getFieldName()
+        );
 
         return array(
             'entity_config' => $entityConfig,
