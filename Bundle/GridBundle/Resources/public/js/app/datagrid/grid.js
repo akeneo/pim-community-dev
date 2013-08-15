@@ -159,7 +159,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _createActionsColumn: function() {
         return new this.actionsColumn({
-            actions: this.rowActions
+            actions: this.rowActions,
+            datagrid: this
         });
     },
 
@@ -283,7 +284,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     getRefreshAction: function() {
         if (!this.refreshAction) {
             this.refreshAction = new Oro.Datagrid.Action.RefreshCollectionAction({
-                collection: this.collection,
+                datagrid: this,
                 launcherOptions: {
                     label: 'Refresh',
                     className: 'btn',
@@ -302,7 +303,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     getResetAction: function() {
         if (!this.resetAction) {
             this.resetAction = new Oro.Datagrid.Action.ResetCollectionAction({
-                collection: this.collection,
+                datagrid: this,
                 launcherOptions: {
                     label: 'Reset',
                     className: 'btn',

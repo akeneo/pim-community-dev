@@ -102,7 +102,8 @@ Oro.Datagrid.Action.Cell = Backgrid.Cell.extend({
      */
     createAction: function(actionPrototype) {
         return new actionPrototype({
-            model: this.model
+            model: this.model,
+            datagrid: this.column.get('datagrid')
         });
     },
 
