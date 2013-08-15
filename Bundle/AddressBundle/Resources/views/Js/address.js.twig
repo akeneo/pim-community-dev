@@ -1,0 +1,22 @@
+<script type="text/html" id="template-contact-address">
+    <div class="clearfix">
+        <div class="title-item"><%= label %></div>
+        <div class="map-actions">
+            <button class="btn" title="<%= _.__('Edit') %>"><i class="icon-edit hide-text"><%= _.__('Edit') %></i></button>
+            <% if (!primary) { %><button class="btn" title="<%= _.__('Remove') %>"><i class="icon-remove hide-text"><%= _.__('Remove') %></i></button><% } %>
+        </div>
+    </div>
+    <ul class="inline">
+        <% if(primary) { %> <li><span class="label label-info"><%= _.__('Primary') %></span></li> <% } %>
+        <% _.each(types, function(type) { %>
+        <li><span class="label"><%= type.label %></span></li>
+        <% }) %>
+    </ul>
+    <address>
+        <% if (firstName || lastName) { %><%= firstName %>&nbsp;<%= lastName %><br /><% } %>
+        <%= street %>&nbsp;<%= street2 %><br />
+        <%= city %>, <%= state %><br />
+        <%= postalCode %><br />
+        <%= country %><br />
+    </address>
+</script>

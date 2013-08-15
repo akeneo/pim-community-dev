@@ -10,3 +10,7 @@
 .a2lix_translationsFields.tab-content .tab-pane textarea {
     width: 700px;
 }
+.modal-body .loading-content {
+    background: #fff url('/bundles/orogrid/img/loader.gif') no-repeat center left;
+    padding-left: 30px;
+}

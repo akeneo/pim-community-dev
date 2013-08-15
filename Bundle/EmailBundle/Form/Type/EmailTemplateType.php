@@ -76,8 +76,11 @@ class EmailTemplateType extends AbstractType
         );
 
         $builder->add(
-            'parent',
-            'hidden'
+            'parentTemplate',
+            'hidden',
+            array(
+                'property_path' => 'parent'
+            )
         );
     }
 
