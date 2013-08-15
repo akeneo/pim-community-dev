@@ -47,31 +47,42 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $entityName = null;
         $entityIdentifiedField = null;
 
-        foreach ($mediator->getResults() as $result) {
-            $entity = $result->getRootEntity();
-            if (!$entity) {
-                if (!$entityName) {
-                    $entityName = $this->getEntityName($mediator);
+        $results = $mediator->getResults();
+
+        // batch remove should be processed in transaction
+        $this->entityManager->beginTransaction();
+        try {
+            foreach ($results as $result) {
+                $entity = $result->getRootEntity();
+                if (!$entity) {
+                    // no entity in result record, it should be extracted from DB
+                    if (!$entityName) {
+                        $entityName = $this->getEntityName($mediator);
+                    }
+                    if (!$entityIdentifiedField) {
+                        $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
+                    }
+                    $entity = $this->getEntity($entityName, $result->getValue($entityIdentifiedField));
                 }
 
-                if (!$entityIdentifiedField) {
-                    $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
+                if ($entity) {
+                    $this->entityManager->remove($entity);
+
+                    $iteration++;
+                    if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
+                        $this->entityManager->flush();
+                    }
                 }
-                $entity = $this->getEntity($entityName, $result->getValue($entityIdentifiedField));
             }
 
-            if ($entity) {
-                $this->entityManager->remove($entity);
-
-                $iteration++;
-                if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
-                    $this->entityManager->flush();
-                }
+            if ($iteration % self::FLUSH_BATCH_SIZE > 0) {
+                $this->entityManager->flush();
             }
-        }
 
-        if ($iteration % self::FLUSH_BATCH_SIZE > 0) {
-            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (\Exception $e) {
+            $this->entityManager->rollback();
+            throw $e;
         }
 
         return $this->getResponse($mediator, $iteration);

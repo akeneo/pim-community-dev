@@ -7,8 +7,6 @@ oro:
             entity_post_update: "Entity update"
             entity_post_persist: "Entity create"
             entity_post_remove: "Entity remove"
-oro:
-    notification:
         datagrid:
             action:
                 update: "Update"

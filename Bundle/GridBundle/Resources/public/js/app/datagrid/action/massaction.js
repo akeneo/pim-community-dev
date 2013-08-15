@@ -15,14 +15,27 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
     /** @property {Oro.Datagrid.Grid} */
     datagrid: null,
 
-    /** @property {Backbone.BootstrapModal} */
-    confirmModal: undefined,
-
     /** @property {string} */
     route: null,
 
+    /** @property {Object} */
+    route_parameters: null,
+
+    /** @property {Boolean} */
+    confirmation: false,
+
+    /** @property {String} */
+    frontend_type: null,
+
+    /** @property {Object} */
+    frontend_options: null,
+
     /** @property {string} */
     identifierFieldName: 'id',
+
+    messages: {},
+
+    dispatched: false,
 
     /** @property {Object} */
     defaultMessages: {
@@ -49,8 +62,6 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         }
         this.datagrid = options.datagrid;
 
-        this.messages = this.messages || {};
-
         _.defaults(this.messages, this.defaultMessages);
 
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
@@ -64,20 +75,72 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
             Oro.NotificationFlashMessage('warning', this.messages.empty_selection);
         } else {
-            this.getConfirmDialog().open();
+            var eventName = this.getEventName();
+            Oro.Events.once(eventName, this.executeConfiguredAction, this);
+            this._confirmationExecutor(
+                _.bind(
+                    function() {Oro.Events.trigger(eventName, this);},
+                    this
+                )
+            );
         }
     },
 
-    /**
-     * Perform mass action
-     */
-    doAction: function() {
-        var self = this;
-        this.datagrid.showLoading();
+    getEventName: function() {
+        return 'grid_action_execute:' + this.datagrid.name + ':' + this.name;
+    },
+
+    executeConfiguredAction: function(action) {
+        if (action.frontend_type == 'ajax') {
+            this._handleAjax(action);
+        } else if (action.frontend_type == 'redirect') {
+            this._handleRedirect(action);
+        } else if (Oro.widget.Manager.isSupportedType(action.frontend_type)) {
+            this._handleWidget(action);
+        }
+    },
+
+    _confirmationExecutor: function(callback) {
+        if (this.confirmation) {
+            this.getConfirmDialog(callback).open();
+        } else {
+            callback();
+        }
+    },
+
+    _handleWidget: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        action.frontend_options.url = action.frontend_options.url || this._getActionUrl();
+        action.frontend_options.title = action.frontend_options.title || this.label;
+        Oro.widget.Manager.createWidget(action.frontend_type, action.frontend_options).render();
+    },
+
+    _handleRedirect: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        var url = action._getActionUrl(this._getActionParams());
+        if (Oro.hashNavigationEnabled()) {
+            Oro.hashNavigationInstance.processRedirect({
+                fullRedirect: false,
+                location: url
+            });
+        } else {
+            location.href = url;
+        }
+    },
+
+    _handleAjax: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        action.datagrid.showLoading();
         $.ajax({
-            url: this._getActionUrl(),
-            data: this._getActionParams(),
-            context: this,
+            url: action._getActionUrl(),
+            data: action._getActionParams(),
+            context: action,
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 Oro.BackboneError.Dispatch(null, jqXHR);
@@ -102,8 +165,18 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      * @return {String}
      * @private
      */
-    _getActionUrl: function() {
-        return Routing.generate(this.route, {gridName: this.datagrid.name, actionName: this.name});
+    _getActionUrl: function(parameters) {
+        if (_.isUndefined(parameters)) {
+            parameters = {};
+        }
+        return Routing.generate(
+            this.route,
+            _.extend(
+                {gridName: this.datagrid.name, actionName: this.name},
+                this.route_parameters,
+                parameters
+            )
+        );
     },
 
     /**
@@ -122,7 +195,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
         var params = {
             inset: selectionState.inset ? 1 : 0,
             values: idValues.join(',')
-        }
+        };
 
         params = collection.processFiltersParams(params, null, 'filters');
 
@@ -134,15 +207,11 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
      *
      * @return {Oro.BootstrapModal}
      */
-    getConfirmDialog: function() {
-        if (!this.confirmModal) {
-            this.confirmModal = new Oro.BootstrapModal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            });
-            this.confirmModal.on('ok', _.bind(this.doAction, this));
-        }
-        return this.confirmModal;
+    getConfirmDialog: function(callback) {
+        return new Oro.BootstrapModal({
+            title: this.messages.confirm_title,
+            content: this.messages.confirm_content,
+            okText: this.messages.confirm_ok
+        }).on('ok', callback);
     }
 });

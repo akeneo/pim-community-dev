@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
+namespace Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction;
 
 use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
@@ -44,6 +44,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
         $results = array();
 
         $emExpectedCalls = array();
+        $emExpectedCalls[] = array('beginTransaction', array());
 
         for ($i = 0; $i < $entitiesCount; $i++) {
             $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
@@ -68,6 +69,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             $emExpectedCalls[] = array('remove', array($entity));
         }
         $emExpectedCalls[] = array('flush', array());
+        $emExpectedCalls[] = array('commit', array());
 
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
 
@@ -110,8 +112,6 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             $this->handler->handle($this->mediator)
         );
     }
-
-
 
     protected function addMockExpectedCalls()
     {

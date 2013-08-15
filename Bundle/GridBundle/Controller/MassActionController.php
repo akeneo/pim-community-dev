@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 
 /**
  * @Acl(
@@ -36,20 +37,15 @@ class MassActionController extends Controller
     {
         $request = $this->getRequest();
 
-        // get parameters
-        $inset = $request->get('inset', true);
-        $inset = !empty($inset);
+        /** @var MassActionParametersParser $massActionParametersParser */
+        $parametersParser = $this->get('oro_grid.mass_action.parameters_parser');
+        $parameters = $parametersParser->parse($request);
 
-        $values = $request->get('values', '');
-        if (!is_array($values)) {
-            $values = $values !== '' ? explode(',', $values) : array();
-        }
-
-        $filters = $request->get('filters', array());
+        $requestData = array_merge($request->query->all(), $request->request->all());
 
         /** @var MassActionDispatcher $massActionDispatcher */
         $massActionDispatcher = $this->get('oro_grid.mass_action.dispatcher');
-        $response = $massActionDispatcher->dispatch($gridName, $actionName, $request, $inset, $values, $filters);
+        $response = $massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
 
         $data = array(
             'successful' => $response->isSuccessful(),
