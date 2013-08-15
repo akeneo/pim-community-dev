@@ -38,7 +38,7 @@ class FindExtendCommand extends ContainerAwareCommand
 
     /**
      * Runs command
-     * @param  InputInterface $input
+     * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
      * @return int|null|void
@@ -77,6 +77,14 @@ class FindExtendCommand extends ContainerAwareCommand
     {
         if (!$this->configManager->isConfigurable($entityName)) {
             $this->createEntityModel($entityName, $entityConfig);
+            $this->setDefaultConfig($entityConfig, $entityName);
+
+            if (!class_exists($entityName)) {
+                $config = array(
+                    'type' => 'integer',
+                );
+                $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
+            }
         }
 
         foreach ($entityConfig['fields'] as $fieldName => $fieldConfig) {
@@ -88,12 +96,15 @@ class FindExtendCommand extends ContainerAwareCommand
 
             $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
             $this->extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
+
+            $this->setDefaultConfig($entityConfig, $entityName, $fieldName);
         }
     }
 
     /**
      * @param $entityName
      * @param $entityConfig
+     * @return void
      */
     protected function createEntityModel($entityName, $entityConfig)
     {
@@ -111,6 +122,24 @@ class FindExtendCommand extends ContainerAwareCommand
             foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
                 $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
                 $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+            }
+        }
+    }
+
+    /**
+     * @param array  $options
+     * @param string $entityName
+     * @param string $fieldName
+     */
+    protected function setDefaultConfig($options, $entityName, $fieldName = null)
+    {
+        if (isset($options['configs']) && is_array($options['configs'])) {
+            foreach ($options['configs'] as $scope => $values) {
+                $config = $this->configManager->getProvider($scope)->getConfig($entityName, $fieldName);
+
+                foreach ($values as $key => $value) {
+                    $config->set($key, $value);
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ExtendFactory
@@ -16,7 +17,13 @@ class ExtendFactory
         $this->extendManager = $extendManager;
     }
 
-    public function createField($entityName, $fieldName, $fieldConfig, $mode = 'default')
+    /**
+     * @param string $entityName
+     * @param string $fieldName
+     * @param string $fieldConfig
+     * @param string $mode
+     */
+    public function createField($entityName, $fieldName, $fieldConfig, $mode = ConfigModelManager::MODE_DEFAULT)
     {
         $configProvider = $this->extendManager->getConfigProvider();
         $configManager  = $this->extendManager->getConfigProvider()->getConfigManager();
@@ -37,7 +44,11 @@ class ExtendFactory
         $configManager->persist($extendFieldConfig);
     }
 
-    public function createEntity($entityName, $mode = 'default')
+    /**
+     * @param string $entityName
+     * @param string $mode
+     */
+    public function createEntity($entityName, $mode = ConfigModelManager::MODE_DEFAULT)
     {
         $configProvider = $this->extendManager->getConfigProvider();
         $configManager  = $this->extendManager->getConfigProvider()->getConfigManager();
@@ -60,15 +71,5 @@ class ExtendFactory
 
         $entityFieldConfig = $configManager->getProvider('entity')->getConfig($entityName, 'id');
         $entityFieldConfig->set('label', 'Id');
-    }
-
-    private function checkEntityClass()
-    {
-
-    }
-
-    private function checkEntityField()
-    {
-
     }
 }
