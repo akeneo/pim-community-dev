@@ -22,6 +22,8 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
     const TEST_HINT                      = 'test_hint';
     const TEST_FILTERABLE_SORTABLE_FIELD = 'test_filterable_sortable_field';
     const TEST_SORTABLE_FIELD            = 'test_sortable_field';
+    const TEST_DOMAIN                    = 'someDomain';
+    const TEST_IDENTIFIER                = 'some_id';
 
     /**
      * @var DatagridManager
@@ -164,6 +166,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEmpty('name', $this->model);
         $this->model->setName(self::TEST_NAME);
         $this->assertAttributeEquals(self::TEST_NAME, 'name', $this->model);
+    }
+
+    public function testSetTranslationDomain()
+    {
+        $this->assertAttributeEmpty('translationDomain', $this->model);
+        $this->model->setTranslationDomain(self::TEST_DOMAIN);
+        $this->assertAttributeEquals(self::TEST_DOMAIN, 'translationDomain', $this->model);
+    }
+
+    public function testSetIdentifierField()
+    {
+        $this->assertAttributeEmpty('identifierField', $this->model);
+        $this->model->setIdentifierField(self::TEST_IDENTIFIER);
+        $this->assertAttributeEquals(self::TEST_IDENTIFIER, 'identifierField', $this->model);
     }
 
     public function testSetEntityHint()

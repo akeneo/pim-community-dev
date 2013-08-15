@@ -59,8 +59,8 @@ class SelectRowFilter extends AbstractFilter
      */
     protected function parseData($data)
     {
-        if (!isset($data['value'])
-            || !in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE))) {
+        if (empty($data['value'])
+            || !in_array($data['value'], array(self::NOT_SELECTED_VALUE, self::SELECTED_VALUE), true)) {
             $data['value'] = null;
         }
 

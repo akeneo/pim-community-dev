@@ -91,11 +91,28 @@ class DatagridManagerRegistryTest extends \PHPUnit_Framework_TestCase
         $servicesToAdd,
         $serviceToRetrieve,
         $expectedException,
+        $expectedExceptionMessage,
         $expectedContainerCalls
     ) {
         if ($expectedException) {
-            $this->setExpectedException($expectedException);
+            $this->setExpectedException($expectedException, $expectedExceptionMessage);
         }
+
+        foreach ($servicesToAdd as $name => $serviceId) {
+            $this->registry->addDatagridManagerService($name, $serviceId);
+        }
+
+        foreach ($expectedContainerCalls as $methodName => $data) {
+            $methodExpectation = $this->container->expects($this->exactly($data['count']))->method($methodName);
+            if (!empty($data['with'])) {
+                $methodExpectation->with($data['with']);
+            }
+            if (!empty($data['will'])) {
+                $methodExpectation->will($this->returnValue($data['will']));
+            }
+        }
+
+        $this->registry->getDatagridManager($serviceToRetrieve);
     }
 
     /**
@@ -104,9 +121,49 @@ class DatagridManagerRegistryTest extends \PHPUnit_Framework_TestCase
     public function datagridManagerProvider()
     {
         return array(
-            'trying to access not added manager' => array(),
-            'trying to access manager that doesn\'t exist in container' => array(),
-            'normal scenario' => array(),
+            'trying to access not added manager' => array(
+                array(
+                    'SomeDifferentName' => self::TEST_SERVICE_NAME
+                ),
+                self::TEST_NAME,
+                '\LogicException',
+                sprintf('Datagrid manager with name "%s" is not exist', self::TEST_NAME),
+                array()
+            ),
+            'trying to access manager that doesn\'t exist in container' => array(
+                array(
+                    self::TEST_NAME => self::TEST_SERVICE_NAME
+                ),
+                self::TEST_NAME,
+                '\LogicException',
+                sprintf('Datagrid manager with service ID "%s" is not exist', self::TEST_SERVICE_NAME),
+                array(
+                    'has' => array(
+                        'count' => 1,
+                        'with' => self::TEST_SERVICE_NAME,
+                        'will' => false
+                    )
+                )
+            ),
+            'normal scenario' => array(
+                array(
+                    self::TEST_NAME => self::TEST_SERVICE_NAME
+                ),
+                self::TEST_NAME,
+                false,
+                null,
+                array(
+                    'has' => array(
+                        'count' => 1,
+                        'with' => self::TEST_SERVICE_NAME,
+                        'will' => true
+                    ),
+                    'get' => array(
+                        'count' => 1,
+                        'with' => self::TEST_SERVICE_NAME,
+                    )
+                )
+            ),
         );
     }
 }
