@@ -238,7 +238,7 @@ class ConfigManager
         return array_map(
             function (AbstractConfigModel $model) use ($scope) {
                 if ($model instanceof FieldConfigModel) {
-                    return new FieldConfigId($model->getClassName(), $scope, $model->getFieldName(), $model->getType());
+                    return new FieldConfigId($model->getEntity()->getClassName(), $scope, $model->getFieldName(), $model->getType());
                 } else {
                     return new EntityConfigId($model->getClassName(), $scope);
                 }

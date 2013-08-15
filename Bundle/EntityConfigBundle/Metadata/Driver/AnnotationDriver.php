@@ -48,7 +48,7 @@ class AnnotationDriver implements DriverInterface
             $metadata->mode          = $annotation->mode;
 
             foreach ($class->getProperties() as $property) {
-                $propertyMetadata = new FieldMetadata($class, $property->getName());
+                $propertyMetadata = new FieldMetadata($class->getName(), $property->getName());
 
                 /** @var ConfigField $annotation */
                 if ($annotation = $this->reader->getPropertyAnnotation($property, self::FIELD_CONFIG)) {

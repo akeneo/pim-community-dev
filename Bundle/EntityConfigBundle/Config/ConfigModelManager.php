@@ -135,11 +135,11 @@ class ConfigModelManager
     public function getModels($className = null)
     {
         if ($className) {
-            return $this->getModel($className)->getFields();
+            return $this->getModel($className)->getFields()->toArray();
         } else {
             $entityConfigModelRepo = $this->getEntityManager()->getRepository(EntityConfigModel::ENTITY_NAME);
 
-            return $entityConfigModelRepo->findAll();
+            return (array) $entityConfigModelRepo->findAll();
         }
     }
 

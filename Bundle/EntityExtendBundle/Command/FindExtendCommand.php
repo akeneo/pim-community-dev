@@ -101,15 +101,17 @@ class FindExtendCommand extends ContainerAwareCommand
 
         $this->configManager->createConfigEntityModel($entityName, $mode);
 
-        $doctrineMetadata = $this->configManager->getEntityManager()->getClassMetadata($entityName);
-        foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
-            $type = $doctrineMetadata->getTypeOfField($fieldName);
-            $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
-        }
+        if (class_exists($entityName)) {
+            $doctrineMetadata = $this->configManager->getEntityManager()->getClassMetadata($entityName);
+            foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
+                $type = $doctrineMetadata->getTypeOfField($fieldName);
+                $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+            }
 
-        foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
-            $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
-            $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+            foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
+                $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
+                $this->configManager->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+            }
         }
     }
 }
