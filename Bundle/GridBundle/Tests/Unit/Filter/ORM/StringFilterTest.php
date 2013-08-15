@@ -117,4 +117,29 @@ class StringFilterTest extends FilterTestCase
             $this->model->getDefaultOptions()
         );
     }
+
+    /**
+     * @dataProvider formatDataProvider
+     *
+     * @param $comparisonType
+     * @param $expected
+     */
+    public function testGetFormatByComparisonType($comparisonType, $expected)
+    {
+        $this->assertEquals(
+            $expected,
+            $this->model->getFormatByComparisonType($comparisonType)
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function formatDataProvider()
+    {
+        return array(
+            array(TextFilterType::TYPE_STARTS_WITH, '%%%s'),
+            array(TextFilterType::TYPE_ENDS_WITH, '%s%%'),
+        );
+    }
 }

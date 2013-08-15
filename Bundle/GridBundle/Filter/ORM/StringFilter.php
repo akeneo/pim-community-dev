@@ -30,7 +30,7 @@ class StringFilter extends AbstractFilter
         if ('=' == $operator) {
             $value = $data['value'];
         } else {
-            $value = sprintf($this->getOption('format'), $data['value']);
+            $value = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
         }
         $queryBuilder->setParameter($parameterName, $value);
     }
@@ -64,6 +64,8 @@ class StringFilter extends AbstractFilter
             TextFilterType::TYPE_CONTAINS     => 'LIKE',
             TextFilterType::TYPE_NOT_CONTAINS => 'NOT LIKE',
             TextFilterType::TYPE_EQUAL        => '=',
+            TextFilterType::TYPE_STARTS_WITH  => 'LIKE',
+            TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
@@ -78,5 +80,28 @@ class StringFilter extends AbstractFilter
             'format' => '%%%s%%',
             'form_type' => TextFilterType::NAME
         );
+    }
+
+    /**
+     * Return value format depending on comparison type
+     *
+     * @param $comparisonType
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        $format = $this->getOption('format');
+
+        // for other than listed comparison types - use default format
+        switch ($comparisonType) {
+            case TextFilterType::TYPE_STARTS_WITH:
+                $format = '%%%s';
+                break;
+            case TextFilterType::TYPE_ENDS_WITH:
+                $format = '%s%%';
+                break;
+        }
+
+        return $format;
     }
 }
