@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction;
 
-use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
-
 abstract class MassActionWithExceptionsTestCase extends MassActionTestCase
 {
     /**

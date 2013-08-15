@@ -29,7 +29,8 @@ class AjaxMassActionTest extends MassActionWithExceptionsTestCase
                     'handler'          => 'test.handler.service',
                     'frontend_type'    => 'ajax',
                     'route'            => 'oro_grid_mass_action',
-                    'route_parameters' => array()
+                    'route_parameters' => array(),
+                    'confirmation'     => true,
                 ),
                 'inputOptions' => array(
                     'name'    => 'ajaxAction',
@@ -43,12 +44,14 @@ class AjaxMassActionTest extends MassActionWithExceptionsTestCase
                     'frontend_type'    => 'ajax',
                     'route'            => 'my_custom_route',
                     'route_parameters' => array('key' => 'value'),
+                    'confirmation'     => false,
                 ),
                 'inputOptions' => array(
                     'name'             => 'ajaxAction',
                     'handler'          => 'test.handler.service',
                     'route'            => 'my_custom_route',
                     'route_parameters' => array('key' => 'value'),
+                    'confirmation'     => false,
                 ),
             )
         );

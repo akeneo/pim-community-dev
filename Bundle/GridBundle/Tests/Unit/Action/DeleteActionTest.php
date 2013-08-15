@@ -39,7 +39,10 @@ class DeleteActionTest extends \PHPUnit_Framework_TestCase
 
     public function testSetOptions()
     {
-        $options = array('link' => '/delete_link');
+        $options = array(
+            'link'         => '/delete_link',
+            'confirmation' => true,
+        );
         $this->model->setOptions($options);
         $this->assertEquals($options, $this->model->getOptions());
     }

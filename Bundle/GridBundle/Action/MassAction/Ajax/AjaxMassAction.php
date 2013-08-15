@@ -23,6 +23,10 @@ class AjaxMassAction extends AbstractMassAction
             $options['route_parameters'] = array();
         }
 
+        if (!isset($options['confirmation'])) {
+            $options['confirmation'] = true;
+        }
+
         parent::__construct($options);
 
         $this->assertRequiredOptions(array('handler'));

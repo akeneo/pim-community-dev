@@ -29,7 +29,8 @@ class DeleteMassActionTest extends MassActionTestCase
                     'handler'          => 'oro_grid.mass_action.handler.delete',
                     'frontend_type'    => 'ajax',
                     'route'            => 'oro_grid_mass_action',
-                    'route_parameters' => array()
+                    'route_parameters' => array(),
+                    'confirmation'     => true,
                 ),
                 'inputOptions' => array(
                     'name'    => 'ajaxAction',
@@ -42,12 +43,14 @@ class DeleteMassActionTest extends MassActionTestCase
                     'frontend_type'    => 'ajax',
                     'route'            => 'my_custom_route',
                     'route_parameters' => array('key' => 'value'),
+                    'confirmation'     => false,
                 ),
                 'inputOptions' => array(
                     'name'             => 'ajaxAction',
                     'handler'          => 'test.delete.handler.service',
                     'route'            => 'my_custom_route',
                     'route_parameters' => array('key' => 'value'),
+                    'confirmation'     => false,
                 ),
             )
         );
