@@ -9,7 +9,10 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
         "jms/job-queue-bundle": "dev-master",
-        "mtdowling/cron-expression": "1.0.*"
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "mtdowling/cron-expression": "1.0.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/navigation-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\CronBundle": "" }

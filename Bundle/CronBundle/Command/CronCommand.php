@@ -3,9 +3,7 @@
 namespace Oro\Bundle\CronBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use JMS\JobQueueBundle\Entity\Job;
@@ -25,11 +23,26 @@ class CronCommand extends ContainerAwareCommand
     {
         $commands   = $this->getApplication()->all('oro:cron');
         $em         = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $daemon     = $this->getContainer()->get('oro_cron.job_daemon');
         $dbCommands = $em->getRepository('OroCronBundle:Schedule')->findAll();
+
+        // check if daemon is running
+        if (!$daemon->getPid()) {
+            $output->writeln('');
+            $output->write('Daemon process not found, running.. ');
+
+            if ($pid = $daemon->run()) {
+                $output->writeln(sprintf('<info>OK</info> (pid: %u)', $pid));
+            } else {
+                $output->writeln('<error>failed</error>. Cron jobs can\'t be launched.');
+
+                return;
+            }
+        }
 
         foreach ($commands as $name => $command) {
             $output->writeln('');
-            $output->writeln(sprintf('Processing command "<info>%s</info>"', $name));
+            $output->write(sprintf('Processing command "<info>%s</info>": ', $name));
 
             $dbCommand = array_filter(
                 $dbCommands,
@@ -39,7 +52,7 @@ class CronCommand extends ContainerAwareCommand
             );
 
             if (empty($dbCommand)) {
-                $output->writeln(sprintf('<comment>New command found: <info>%s</info>. Setting up schedule..</comment>', $name));
+                $output->writeln('<comment>new command found, setting up schedule..</comment>');
 
                 $schedule = new Schedule();
 
@@ -53,19 +66,21 @@ class CronCommand extends ContainerAwareCommand
             $dbCommand = current($dbCommand);
 
             if (!$dbCommand->getDefinition()) {
-                $output->writeln(sprintf('<comment>No schedule for <info>%s</info></comment>', $name));
+                $output->writeln('<comment>no cron definition found, check db record</comment>');
 
                 continue;
             }
 
-            $cron = \Cron\CronExpression::factory('*/5 * * * * *');
+            $cron = \Cron\CronExpression::factory($dbCommand->getDefinition());
 
             if ($cron->isDue()) {
                 $job = new Job($name);
 
                 $em->persist($job);
 
-                $output->writeln(sprintf('Command "<info>%s</info>" added to job queue', $name));
+                $output->writeln('<comment>added to job queue</comment>');
+            } else {
+                $output->writeln('<comment>skipped</comment>');
             }
         }
 

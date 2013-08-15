@@ -1,18 +1,7 @@
 parameters:
-    oro_config.user.class:            Oro\Bundle\ConfigBundle\Config\UserConfigManager
-    oro_config.twig_extension.class:  Oro\Bundle\ConfigBundle\Twig\ConfigExtension
+    oro_cron.job_daemon.class:        Oro\Bundle\CronBundle\Job\Daemon
 
 services:
-    oro_config.user:
-        class:                        %oro_config.user.class%
-        arguments:                    ["@doctrine.orm.entity_manager"]
-        calls:
-             - [setSecurity, ["@security.context"]]
-        tags:
-            -  { name: oro_config.manager }
-
-    oro_config.twig.config_extension:
-        class:                        %oro_config.twig_extension.class%
-        arguments:                    ["@oro_config.user", %oro_config.entities%]
-        tags:
-            - { name: twig.extension }
+    oro_cron.job_daemon:
+        class:                        %oro_cron.job_daemon.class%
+        arguments:                    [%kernel.root_dir%, %kernel.cache_dir%, %oro_cron.max_jobs%]

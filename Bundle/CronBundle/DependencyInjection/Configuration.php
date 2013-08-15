@@ -13,7 +13,14 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $builder = new TreeBuilder();
-        $root    = $builder->root('oro_cron');
+
+        $builder
+            ->root('oro_cron')
+            ->children()
+                ->scalarNode('max-concurrent-jobs')
+                    ->defaultValue(5)
+                ->end()
+            ->end();
 
         return $builder;
     }
