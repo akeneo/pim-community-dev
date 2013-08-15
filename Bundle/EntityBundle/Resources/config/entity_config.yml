@@ -27,13 +27,14 @@ oro_entity_config:
                             min:            2
                             max:            50
                     grid:
-                        type:               string
+                        type:               options
                         label:              'Label'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
                         filterable:         true
                         show_filter:        true
+                        choices:            @oro_entity_config.link.provider_bag.method
                     form:
                         type:               text
                         options:

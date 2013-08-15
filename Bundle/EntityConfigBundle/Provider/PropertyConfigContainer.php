@@ -256,4 +256,31 @@ class PropertyConfigContainer
 
         return $fieldLayoutActions;
     }
+
+    /**
+     * @param $config
+     * @return array|string
+     */
+    public function initConfig($config)
+    {
+        if (is_array($config)) {
+            $result = array();
+            foreach ($config as $key => $value) {
+                $result[$key] = is_array($value) ? $this->initConfig($value) : $this->initParameter($value);
+            }
+        } else {
+            $result = $this->initParameter($config);
+        }
+
+        return $result;
+    }
+
+    protected function initParameter($parameter)
+    {
+        if (0 === strpos($parameter, '@')) {
+            return '';
+        } else {
+            return $parameter;
+        }
+    }
 }
