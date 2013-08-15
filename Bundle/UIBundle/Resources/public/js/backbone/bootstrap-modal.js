@@ -29,12 +29,10 @@ var Oro = Oro || {};
             <% } %>\
             <div class="modal-body"><%= content %></div>\
             <div class="modal-footer">\
-              <% if (allowCancel) { %>\
-                <% if (cancelText) { %>\
-                  <a href="#" class="btn cancel"><%- cancelText %></a>\
-                <% } %>\
-              <% } %>\
               <a href="#" class="btn ok <%= okButtonClass %>"><%- okText %></a>\
+              <% if (allowCancel && cancelText) { %>\
+                <a href="#" class="btn cancel"><%- cancelText %></a>\
+              <% } %>\
             </div>\
         '),
 
@@ -42,24 +40,27 @@ var Oro = Oro || {};
          * @param {Object} options
          */
         initialize: function(options) {
-            if (!options.cancelText) {
-                options.cancelText = '';
-            }
+            options = _.extend({
+                cancelText: _.__('Cancel')
+            }, options);
+
             if (!options.okButtonClass) {
                 options.okButtonClass = this.okButtonClass;
             }
             options = _.extend({
-                template: this.template
+                template: this.template,
+                className: this.className
             }, options);
+
             Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
+        },
+
+        open: function() {
+            Backbone.BootstrapModal.prototype.open.apply(this, arguments);
+            
+            this.once('cancel', _.bind(function() {
+                this.$el.trigger('hidden');
+            }, this));
         }
     });
 })(jQuery, _, Backbone);
-/*
-*  add to modal-footer if you need button "Cancel"
- <% if (allowCancel) { %>\
- <% if (cancelText) { %>\
- <a href="#" class="btn cancel"><%= cancelText %></a>\
- <% } %>\
- <% } %>\
- */

@@ -86,6 +86,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
             success: function (data, textStatus, jqXHR) {
                 this.datagrid.hideLoading();
                 this.datagrid.collection.fetch();
+                this.datagrid.resetSelectionState();
                 var defaultMessage = data.successful ? this.messages.success : this.messages.error;
                 Oro.NotificationFlashMessage(
                     data.successful ? 'success' : 'error',
@@ -138,8 +139,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
             this.confirmModal = new Oro.BootstrapModal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok,
-                allowCancel: 'false'
+                okText: this.messages.confirm_ok
             });
             this.confirmModal.on('ok', _.bind(this.doAction, this));
         }

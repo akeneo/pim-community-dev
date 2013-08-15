@@ -1,7 +1,3 @@
-<div id="{{ options.element }}" class="skype-button">
-    <script type="text/javascript">
-        (function() {
-            Skype.ui({{ options|json_encode|raw }});
-        })();
-    </script>
-</div>
+<a href="skype:{{ options.participants|join(';') }}?{{ options.name }}"
+    class="skype-button"
+    id="{{ options.element }}"><i class="icon-skype"></i> {{ 'Call'|trans }}</a>

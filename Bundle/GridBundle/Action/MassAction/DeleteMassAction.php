@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Action\MassAction;
 
-class DeleteMassAction extends DefaultMassAction
+class DeleteMassAction extends AjaxMassAction
 {
     /**
      * Set default delete parameters

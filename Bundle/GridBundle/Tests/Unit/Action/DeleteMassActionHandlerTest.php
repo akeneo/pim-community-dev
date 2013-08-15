@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
 
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler;
 
 class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
@@ -165,5 +166,174 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($response->getMessage(), $message);
         $this->assertTrue($response->isSuccessful());
+    }
+
+    /**
+     * Get entity test
+     */
+    public function testGetEntity()
+    {
+        $handler = $this->getMock(
+            'Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler',
+            array('getEntityRepository'),
+            array($this->em, $this->translator)
+        );
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntity');
+        $method->setAccessible(true);
+
+        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository
+            ->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo(1))
+            ->will($this->returnValue(new \stdClass()));
+
+        $handler->expects($this->once())
+            ->method('getEntityRepository')
+            ->with($this->equalTo('user'))
+            ->will($this->returnValue($repository));
+
+        $result = $method->invoke($handler, 'user', 1);
+        $this->assertInstanceOf('\stdClass', $result);
+    }
+
+    /**
+     * Test exception
+     *
+     * @expectedException \LogicException
+     */
+    public function testGetEntityException()
+    {
+        $handler = new DeleteMassActionHandler($this->em, $this->translator);
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntity');
+        $method->setAccessible(true);
+
+        $method->invoke($handler, 'user', false);
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @dataProvider exceptionProvider
+     */
+    public function testGetEntityIdentifierFieldException($param)
+    {
+        $handler = new DeleteMassActionHandler($this->em, $this->translator);
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntityIdentifierField');
+        $method->setAccessible(true);
+
+        $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
+        $massAction->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('sdf'));
+
+        $this->mediator
+            ->expects($this->once())
+            ->method('getMassAction')
+            ->will($this->returnValue($massAction));
+
+        if ($param) {
+            $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
+            $datagrid->expects($this->once())
+                ->method('getIdentifierField')
+                ->will($this->returnValue(false));
+        }
+
+        $this->mediator
+            ->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($param ? $datagrid : false));
+
+        $method->invoke($handler, $this->mediator);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testGetEntityName()
+    {
+        $handler = new DeleteMassActionHandler($this->em, $this->translator);
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntityName');
+        $method->setAccessible(true);
+
+        $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
+        $massAction->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('sdf'));
+        $massAction->expects($this->once())
+            ->method('getOption')
+            ->with('entity_name')
+            ->will($this->returnValue(false));
+
+        $this->mediator
+            ->expects($this->once())
+            ->method('getMassAction')
+            ->will($this->returnValue($massAction));
+
+        $method->invoke($handler, $this->mediator);
+    }
+
+    /**
+     * Test getEntityRepository
+     */
+    public function testGetEntityRepository()
+    {
+        $handler = new DeleteMassActionHandler($this->em, $this->translator);
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntityRepository');
+        $method->setAccessible(true);
+
+        $this->em->expects($this->once())
+            ->method('getClassMetadata')
+            ->with('user')
+            ->will($this->returnValue(true));
+
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue(true));
+
+        $result = $method->invoke($handler, 'user');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test getEntityRepository
+     *
+     * @expectedException \LogicException
+     */
+    public function testGetEntityRepositoryException()
+    {
+        $handler = new DeleteMassActionHandler($this->em, $this->translator);
+
+        $reflection = new \ReflectionObject($handler);
+        $method = $reflection->getMethod('getEntityRepository');
+        $method->setAccessible(true);
+
+        $this->em->expects($this->once())
+            ->method('getClassMetadata')
+            ->with('user')
+            ->will($this->returnValue(false));
+
+        $method->invoke($handler, 'user');
+    }
+
+    /**
+     * Provider data for getEntityIdentifierField tests
+     */
+    public function exceptionProvider()
+    {
+        return array(
+            array(true),
+            array(false),
+        );
     }
 }
