@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
-use Sonata\DoctrineORMAdminBundle\Model\ModelManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\Exception\LogicException;
@@ -24,6 +23,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
 
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag;
 
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
@@ -38,6 +38,9 @@ use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class ConfigManager
 {
     /**
@@ -69,10 +72,11 @@ class ConfigManager
      * @var ConfigModelManager
      */
     protected $modelManager;
+
     /**
-     * @var ConfigProvider[]|ArrayCollection
+     * @var ServiceProxy
      */
-    protected $providers;
+    protected $providerBag;
 
     /**
      * @var ConfigInterface[]|ArrayCollection
@@ -97,12 +101,14 @@ class ConfigManager
     /**
      * @param MetadataFactory $metadataFactory
      * @param EventDispatcher $eventDispatcher
-     * @param ServiceProxy $proxyEm
-     * @param ServiceProxy $security
+     * @param ServiceProxy    $providerBag
+     * @param ServiceProxy    $proxyEm
+     * @param ServiceProxy    $security
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
+        ServiceProxy $providerBag,
         ServiceProxy $proxyEm,
         ServiceProxy $security
     ) {
@@ -110,7 +116,7 @@ class ConfigManager
         $this->proxyEm         = $proxyEm;
         $this->eventDispatcher = $eventDispatcher;
 
-        $this->providers        = new ArrayCollection;
+        $this->providerBag      = $providerBag;
         $this->localCache       = new ArrayCollection;
         $this->persistConfigs   = new \SplObjectStorage();
         $this->originalConfigs  = new ArrayCollection;
@@ -137,22 +143,19 @@ class ConfigManager
     }
 
     /**
+     * @return ConfigProviderBag
+     */
+    public function getProviderBag()
+    {
+        return $this->providerBag->getService();
+    }
+
+    /**
      * @return ConfigProvider[]|ArrayCollection
      */
     public function getProviders()
     {
-        return $this->providers;
-    }
-
-    /**
-     * @param ConfigProvider $provider
-     * @return $this
-     */
-    public function addProvider(ConfigProvider $provider)
-    {
-        $this->providers->set($provider->getScope(), $provider);
-
-        return $this;
+        return $this->getProviderBag()->getProviders();
     }
 
     /**
@@ -161,16 +164,7 @@ class ConfigManager
      */
     public function getProvider($scope)
     {
-        return $this->providers->get($scope);
-    }
-
-    /**
-     * @param $scope
-     * @return bool
-     */
-    public function hasProvider($scope)
-    {
-        return $this->providers->containsKey($scope);
+        return $this->getProviderBag()->getProvider($scope);
     }
 
     /**
@@ -223,7 +217,7 @@ class ConfigManager
      */
     public function isConfigurable($className, $fieldName = null)
     {
-        return (bool)$this->modelManager->findModel($className, $fieldName);
+        return (bool) $this->modelManager->findModel($className, $fieldName);
     }
 
     /**
@@ -238,7 +232,12 @@ class ConfigManager
         return array_map(
             function (AbstractConfigModel $model) use ($scope) {
                 if ($model instanceof FieldConfigModel) {
-                    return new FieldConfigId($model->getEntity()->getClassName(), $scope, $model->getFieldName(), $model->getType());
+                    return new FieldConfigId(
+                        $model->getEntity()->getClassName(),
+                        $scope,
+                        $model->getFieldName(),
+                        $model->getType()
+                    );
                 } else {
                     return new EntityConfigId($model->getClassName(), $scope);
                 }
@@ -263,7 +262,7 @@ class ConfigManager
             return true;
         }
 
-        return (bool)$this->modelManager->getModelByConfigId($configId);
+        return (bool) $this->modelManager->getModelByConfigId($configId);
     }
 
     /**
@@ -394,6 +393,7 @@ class ConfigManager
 
     /**
      * @param ConfigInterface $config
+     * @SuppressWarnings(PHPMD)
      */
     public function calculateConfigChangeSet(ConfigInterface $config)
     {
@@ -466,7 +466,7 @@ class ConfigManager
 
     /**
      * TODO:: check class name for custom entity
-     * @param        $className
+     * @param string $className
      * @param string $mode
      * @return EntityConfigModel
      */

@@ -17,7 +17,7 @@ class EntityConfigPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $configManagerDefinition = $container->getDefinition('oro_entity_config.config_manager');
+        $providerBagDefinition = $container->getDefinition('oro_entity_config.provider_bag');
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
@@ -37,7 +37,7 @@ class EntityConfigPass implements CompilerPassInterface
 
                         $container->setDefinition('oro_entity_config.provider.' . $scope, $provider);
 
-                        $configManagerDefinition->addMethodCall('addProvider', array($provider));
+                        $providerBagDefinition->addMethodCall('addProvider', array($provider));
                     }
                 }
             }

@@ -1,5 +1,6 @@
 parameters:
     oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\Config\ConfigManager
+    oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
     oro_entity_config.cache.file_cache.class:                   Oro\Bundle\EntityConfigBundle\Cache\FileCache
     oro_entity_config.command.setup.class:                      Oro\Bundle\EntityConfigBundle\Command\SetupCommand
 
@@ -12,15 +13,23 @@ services:
         tags:
             - { name: oro_entity_config.proxy,  service: security.context }
 
+    oro_entity_config.proxy.provider_bag:
+        tags:
+            - { name: oro_entity_config.proxy,  service: oro_entity_config.provider_bag }
+
     oro_entity_config.config_manager:
         class:                                                  %oro_entity_config.config_manager.class%
         arguments:
             - @oro_entity_config.metadata.annotation_metadata_factory
             - @event_dispatcher
+            - @oro_entity_config.proxy.provider_bag
             - @oro_entity_config.proxy.entity_manager
             - @oro_entity_config.proxy.security_context
         calls:
             - [setCache, [@oro_entity_config.cache.file_cache]]
+
+    oro_entity_config.provider_bag:
+        class:                                                  %oro_entity_config.provider_bag.class%
 
     oro_entity_config.cache.file_cache:
           parent: oro.cache.abstract

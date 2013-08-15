@@ -20,8 +20,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *      routeName="oro_user_group_index",
  *      mode="readonly",
  *      defaultValues={
- *          "entity"={"icon"="group","label"="Group","plural_label"="Groups"},
- *          "extend"={"is_extend"=true}
+ *          "entity"= {"icon"="group","label"="Group","plural_label"="Groups" },
+ *          "extend"= {"is_extend"=true}
  *      }
  * )
  */
