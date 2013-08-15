@@ -196,6 +196,14 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     },
 
     /**
+     * Resets selection state
+     */
+    resetSelectionState: function() {
+        var selectAllHeader = this.header.row.cells[0];
+        return selectAllHeader.selectNone();
+    },
+
+    /**
      * Creates loading mask
      *
      * @return {Oro.LoadingMask}
