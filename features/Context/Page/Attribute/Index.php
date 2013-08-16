@@ -16,7 +16,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/product-attribute/';
+    protected $path = '/configuration/attribute/';
 
     /**
      * @param string $attribute
