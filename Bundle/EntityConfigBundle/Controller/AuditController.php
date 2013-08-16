@@ -76,7 +76,7 @@ class AuditController extends Controller
      *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
-     * @Template
+     * @Template("OroEntityConfigBundle:Audit:audit.html.twig")
      * @Acl(
      *      id="oro_entityconfig_audit_field",
      *      name="View entity's field history",
