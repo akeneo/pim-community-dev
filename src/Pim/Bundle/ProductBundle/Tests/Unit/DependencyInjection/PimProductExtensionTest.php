@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Pim\Bundle\ProductBundle\DependencyInjection\PimProductExtension;
 
 /**
@@ -29,7 +28,7 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder
      */
-    protected $containerBuilder;
+    protected $container;
 
     /**
      * {@inheritdoc}
@@ -39,7 +38,7 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->extension = new PimProductExtension();
-        $this->containerBuilder = new ContainerBuilder();
+        $this->container = new ContainerBuilder();
     }
 
     /**
@@ -47,8 +46,20 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $this->extension->load($this->configs, $this->containerBuilder);
+        $this->assertCount(1, $this->container->getServiceIds());
+        $this->extension->load($this->configs, $this->container);
+        $this->assertGreaterThanOrEqual(1, $this->container->getServiceIds());
 
-        $this->assertGreaterThanOrEqual(1, $this->containerBuilder->getServiceIds());
+        // assert currency configuration
+        $configCurrencies = $this->container->getParameter('pim_product.currencies');
+        $this->assertCount(1, $configCurrencies);
+        $this->assertArrayHasKey('currencies', $configCurrencies);
+        $this->assertTrue(is_array($configCurrencies['currencies']));
+
+        // assert locale configuration
+        $configLocales = $this->container->getParameter('pim_product.locales');
+        $this->assertCount(1, $configLocales);
+        $this->assertArrayHasKey('locales', $configLocales);
+        $this->assertTrue(is_array($configLocales['locales']));
     }
 }

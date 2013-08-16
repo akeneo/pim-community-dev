@@ -3,10 +3,9 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 
 /**
  * Test related class
@@ -232,7 +231,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $newLocale = new Locale();
         $this->attribute->addAvailableLocale($newLocale);
         $this->assertInstanceOf(
-            'Pim\Bundle\ConfigBundle\Entity\Locale',
+            'Pim\Bundle\ProductBundle\Entity\Locale',
             $this->attribute->getAvailableLocales()->first()
         );
         $this->assertCount(1, $this->attribute->getAvailableLocales());

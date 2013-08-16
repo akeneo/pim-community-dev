@@ -1,4 +1,44 @@
-pim_product_api:
+api:
     resource: "@PimProductBundle/Controller/Api/ProductController.php"
     type:         rest
     prefix:       api/rest/{scope}/
+
+attributegroup:
+    resource: "@PimProductBundle/Controller/AttributeGroupController.php"
+    type: annotation
+    prefix: /configuration
+
+channel:
+    resource: "@PimProductBundle/Controller/ChannelController.php"
+    type: annotation
+    prefix: /configuration
+
+currency:
+    resource: "@PimProductBundle/Controller/CurrencyController.php"
+    type: annotation
+    prefix: /configuration
+
+family:
+    resource: "@PimProductBundle/Controller/FamilyController.php"
+    type: annotation
+    prefix: /configuration
+
+locale:
+    resource: "@PimProductBundle/Controller/LocaleController.php"
+    type: annotation
+    prefix: /configuration
+
+productattribute:
+    resource: "@PimProductBundle/Controller/ProductAttributeController.php"
+    type: annotation
+    prefix: /configuration
+
+categorytree:
+    resource: "@PimProductBundle/Controller/CategoryTreeController.php"
+    type: annotation
+    prefix: /enrich
+
+product:
+    resource: "@PimProductBundle/Controller/ProductController.php"
+    type: annotation
+    prefix: /enrich

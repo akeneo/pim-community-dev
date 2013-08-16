@@ -33,7 +33,7 @@ class ObjectTestEntity
      *
      * @param array $datas
      *
-     * @return \Pim\Bundle\ConfigBundle\Tests\Entity\ObjectEntityTest
+     * @return \Pim\Bundle\ProductBundle\Tests\Entity\ObjectEntityTest
      */
     public function fromArray($datas)
     {

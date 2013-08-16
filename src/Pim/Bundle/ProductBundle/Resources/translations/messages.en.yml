@@ -184,3 +184,35 @@
 'pim_product_boolean'          : 'Yes/No'
 'pim_product_date'             : 'Date'
 'pim_product_metric'           : 'Metric'
+
+# Locales
+'Locales overview': 'Locales overview'
+'New locale': 'New locale'
+'Code': 'Code'
+'Fallback': 'Fallback'
+'Activated': 'Activated'
+'Edit': 'Edit'
+'Disable': 'Disable'
+'Locales': 'Locales'
+
+'Edit locale': 'Edit locale'
+'Add locale': 'Add locale'
+'Back to list': 'Back to list'
+'Save': 'Save'
+
+# Currencies
+'Currencies overview': 'Currencies overview'
+'New currency': 'New currency'
+'Label': 'Label'
+'Add currency': 'Add currency'
+'Edit currency': 'Edit currency'
+'Currencies': 'Currencies'
+
+# Channels
+'Channels overview': 'Channels overview'
+'New channel': 'New channel'
+'Add channel': 'Add channel'
+'Name': 'Name'
+'Edit channel': 'Edit channel'
+'Remove': 'Remove'
+'Channels': 'Channels'

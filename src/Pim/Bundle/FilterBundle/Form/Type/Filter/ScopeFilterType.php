@@ -5,7 +5,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 
 /**
  * Overriding of ChoiceFilterType

@@ -80,7 +80,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function getChannelMock($code)
     {
-        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
+        $channel = $this->getMock('Pim\Bundle\ProductBundle\Entity\Channel');
 
         $channel->expects($this->any())
             ->method('getCode')
