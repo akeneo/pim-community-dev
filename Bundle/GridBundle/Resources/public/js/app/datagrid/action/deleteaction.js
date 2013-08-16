@@ -36,8 +36,8 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
             },
             success: function() {
                 var messageText = _.__('Item was deleted');
-                if (!_.isUndefined(Oro.NotificationFlashMessage)) {
-                    Oro.NotificationFlashMessage('success', messageText);
+                if (Oro.NotificationMessage) {
+                    Oro.NotificationMessage('success', messageText, {flash: true});
                 } else {
                     alert(messageText);
                 }

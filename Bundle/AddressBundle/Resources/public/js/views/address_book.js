@@ -120,7 +120,7 @@ var OroAddressBook = Backbone.View.extend({
             );
             this.addressEditDialog.on('formSave', _.bind(function() {
                 this.addressEditDialog.remove();
-                Oro.NotificationFlashMessage('success', _.__('Address successfully saved'));
+                Oro.NotificationMessage('success', ['Address successfully saved'], {flash: true});
                 this.reloadAddresses();
             }, this));
         }

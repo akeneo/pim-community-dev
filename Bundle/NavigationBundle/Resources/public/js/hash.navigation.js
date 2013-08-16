@@ -905,8 +905,8 @@ Oro.Navigation = Backbone.Router.extend({
     },
 
     showMessage: function(message) {
-        if (!_.isUndefined(Oro.NotificationFlashMessage)) {
-            Oro.NotificationFlashMessage('error', message);
+        if (Oro.NotificationMessage) {
+            Oro.NotificationMessage('error', message, {flash: true});
         } else {
             alert(message);
         }
@@ -929,7 +929,7 @@ Oro.Navigation = Backbone.Router.extend({
         this.selectorCached['flashMessages'].find('.flash-messages-holder').empty();
         for (var type in messages) if (messages.hasOwnProperty(type)) {
             for (var i = 0; i < messages[type].length; i++) {
-                Oro.NotificationFlashMessage(type, messages[type][i]);
+                Oro.NotificationMessage(type, messages[type][i], {flash: true});
             }
         }
     },

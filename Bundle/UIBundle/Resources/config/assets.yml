@@ -31,7 +31,7 @@ js:
         - '@OroUIBundle/Resources/public/js/height_fix.js'
         - '@OroUIBundle/Resources/public/js/csrf.js'
         - '@OroUIBundle/Resources/public/js/backbone/error.js'
-        - '@OroUIBundle/Resources/public/js/backbone/message.js'
+        - '@OroUIBundle/Resources/public/js/message.js'
         - '@OroUIBundle/Resources/public/js/registry.js'
 
         - '@OroUIBundle/Resources/public/lib/backbone.bootstrap-modal.js'
