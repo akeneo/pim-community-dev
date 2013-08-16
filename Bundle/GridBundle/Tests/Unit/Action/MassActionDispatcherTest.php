@@ -113,10 +113,6 @@ class MassActionDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchInsertEmpty()
     {
-        $result = $this->dispatcher->dispatch(
-            'user',
-            'delete',
-            array()
-        );
+        $this->dispatcher->dispatch('user', 'delete', array());
     }
 }
