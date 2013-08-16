@@ -183,8 +183,8 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
             data: action.getActionParameters(),
             context: action,
             dataType: 'json',
-            error: _.bind(this._onAjaxError, this),
-            success: _.bind(this._onAjaxSuccess, this)
+            error: action._onAjaxError,
+            success: action._onAjaxSuccess
         });
     },
 

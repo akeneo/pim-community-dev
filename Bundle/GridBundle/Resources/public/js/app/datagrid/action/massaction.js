@@ -61,7 +61,7 @@ Oro.Datagrid.Action.MassAction = Oro.Datagrid.Action.AbstractAction.extend({
 
     _onAjaxSuccess: function(data, textStatus, jqXHR) {
         this.datagrid.resetSelectionState();
-        Oro.Datagrid.Action.AbstractAction.prototype._onAjaxSuccess.call(this, arguments);
+        Oro.Datagrid.Action.AbstractAction.prototype._onAjaxSuccess.apply(this, arguments);
     },
 
     /**
