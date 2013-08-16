@@ -14,6 +14,7 @@ use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -29,6 +30,20 @@ class AddVersionListener implements EventSubscriber
      * @var array
      */
     protected $pendingVersions = array();
+
+    /**
+     * Version builder
+     * @var VersionBuilder
+     */
+    protected $builder;
+
+    /**
+     * @param VersionBuilder
+     */
+    public function __construct(VersionBuilder $builder)
+    {
+        $this->builder = $builder;
+    }
 
     /**
      * Specifies the list of events to listen
@@ -100,7 +115,7 @@ class AddVersionListener implements EventSubscriber
         $oid = spl_object_hash($versionable);
         if (!isset($this->pendingVersions[$oid])) {
 
-            $version = new Version($versionable);
+            $version = $this->builder->build($versionable); //new Version($versionable);
 
             /** @var User $user */
             $user = $em->getRepository('OroUserBundle:User')

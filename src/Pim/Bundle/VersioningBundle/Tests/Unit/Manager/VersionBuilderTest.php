@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\VersioningBundle\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**

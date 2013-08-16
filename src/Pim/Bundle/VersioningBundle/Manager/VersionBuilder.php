@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle;
+namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;

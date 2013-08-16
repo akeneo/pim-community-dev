@@ -2,5 +2,15 @@ services:
 
     pim_versioning.event_listener.addversion:
         class: %pim_versioning.event_listener.addversion.class%
+        arguments:
+            - @pim_versioning.manager.version_builder
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_versioning.manager.audit:
+        class: %pim_versioning.manager.audit.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    pim_versioning.manager.version_builder:
+        class: %pim_versioning.manager.version_builder.class%

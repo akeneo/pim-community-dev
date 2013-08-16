@@ -160,7 +160,7 @@ class ProductController extends Controller
             }
         }
 
-        $auditManager = $this->container->get('pim_product.manager.audit');
+        $auditManager = $this->container->get('pim_versioning.manager.audit');
 
         return array(
             'form'           => $form->createView(),
