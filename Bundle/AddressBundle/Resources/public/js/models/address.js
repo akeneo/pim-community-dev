@@ -18,6 +18,6 @@ var OroAddress = Backbone.Model.extend({
     getSearchableString: function() {
         return this.get('country') + ', '
             + this.get('city') + ', '
-            + this.get('street') + ' ' + this.get('street2');
+            + this.get('street') + ' ' + (this.get('street2') || '');
     }
 });
