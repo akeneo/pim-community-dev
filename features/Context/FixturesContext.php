@@ -299,6 +299,19 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there is no attribute$/
+     */
+    public function thereIsNoAttribute()
+    {
+        $em = $this->getEntityManager();
+        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')->findAll();
+
+        foreach ($attributes as $attribute) {
+            $em->remove($attribute);
+        }
+    }
+
+    /**
      * @param string $product
      * @param string $family
      *
@@ -535,6 +548,30 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($channel);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attributes:$/
+     */
+    public function theFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getProductManager()->createAttribute($data['type']);
+
+            $attribute->setCode($data['code']);
+            $attribute->setScopable($data['scopable']);
+            $attribute->setTranslatable($data['localizable']);
+
+            $attribute->setLocale('en_US');
+            $attribute->setLabel($data['label']);
+
+            $group = $this->getGroup($data['group']);
+            $attribute->setGroup($group);
+
+            $this->persist($attribute);
         }
     }
 

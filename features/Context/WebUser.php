@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Mink\Exception\ExpectationException;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -30,6 +32,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
+        'attributes' => 'Attribute index',
         'channels'   => 'Channel index',
         'currencies' => 'Currency index',
         'exports'    => 'Export index',
@@ -958,6 +961,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
+     * @throws ExpectationException
+     *
      * @Then /^I should see channels? (.*)$/
      */
     public function iShouldSeeChannels($channels)
@@ -974,7 +979,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return \Behat\Behat\Context\Step\Then
      *
      * @Then /^I should see sorted channels (.*)$/
      */
@@ -982,6 +987,38 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         return new Step\Then(
             sprintf('I should see entities sorted as %s', $channels)
+        );
+    }
+
+    /**
+     * @param string $attributes
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see attributes? (.*)$/
+     */
+    public function iShouldSeeAttributes($attributes)
+    {
+        $attributes = $this->listToArray($attributes);
+
+        foreach ($attributes as $attribute) {
+            if (!$this->getPage('Attribute index')->getRow($attribute)) {
+                throw $this->createExpectationException(sprintf('Expecting to see attribute %s', $attribute));
+            }
+        }
+    }
+
+    /**
+     * @param string $attributes
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should see sorted attributes (.*)$/
+     */
+    public function iShouldSeeSortedAttributes($attributes)
+    {
+        return new Step\Then(
+            sprintf('I should see entities sorted as %s', $attributes)
         );
     }
 
