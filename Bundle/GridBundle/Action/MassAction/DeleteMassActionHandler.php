@@ -4,7 +4,6 @@ namespace Oro\Bundle\GridBundle\Action\MassAction;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
