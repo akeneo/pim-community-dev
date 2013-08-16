@@ -49,7 +49,7 @@ class ImportController extends JobControllerAbstract
      * {@inheritdoc}
      *
      * @Route("/{id}")
-     * @Template("PimImportExportBundle:Import:show.html.twig")
+     * @Template
      */
     public function showAction($id)
     {
@@ -60,7 +60,7 @@ class ImportController extends JobControllerAbstract
      * {@inheritdoc}
      *
      * @Route("/edit/{id}")
-     * @Template("PimImportExportBundle:Import:edit.html.twig")
+     * @Template
      */
     public function editAction($id)
     {

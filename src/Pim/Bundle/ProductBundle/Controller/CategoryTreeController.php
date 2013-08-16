@@ -26,7 +26,7 @@ class CategoryTreeController extends Controller
      * allow to send back the tree where the node belongs with a selected
      * attribute
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function listTreeAction()
@@ -80,7 +80,7 @@ class CategoryTreeController extends Controller
      * If the node to select is not a direct child of the parent category, the tree
      * is expanded until the selected node is found amongs the children
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function childrenAction()
@@ -136,7 +136,7 @@ class CategoryTreeController extends Controller
      *
      * @param Category $category
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function listItemsAction(Category $category)
@@ -202,7 +202,7 @@ class CategoryTreeController extends Controller
      *
      * @param Category $category
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function editAction(Category $category)

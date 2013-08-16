@@ -248,8 +248,7 @@ class ProductController extends Controller
      * httpparam include_category if true, will include the parentCategory in the response
      *
      * @ParamConverter("parent", class="PimProductBundle:Category", options={"id" = "category_id"})
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function listCategoriesAction($id, Category $parent)

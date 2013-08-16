@@ -21,7 +21,7 @@ class FamilyController extends Controller
      *
      * @param Request $request
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function createAction(Request $request)
@@ -52,7 +52,7 @@ class FamilyController extends Controller
      * @param Request $request
      * @param integer $id
      *
-     * @Template()
+     * @Template
      * @return array
      */
     public function editAction(Request $request, $id)

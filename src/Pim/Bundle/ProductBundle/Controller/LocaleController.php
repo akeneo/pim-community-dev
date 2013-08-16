@@ -22,7 +22,7 @@ class LocaleController extends Controller
      *
      * @param Request $request
      *
-     * @Template()
+     * @Template
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
