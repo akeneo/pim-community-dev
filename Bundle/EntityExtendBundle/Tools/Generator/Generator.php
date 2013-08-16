@@ -65,6 +65,9 @@ class Generator
         }
         //$validatorYml = Yaml::parse($validator);
 
+        echo $entityName, '***';
+        return;
+
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
