@@ -136,20 +136,6 @@ var Oro = {
     },
 
     /**
-     * Creates instance based on constructor
-     *
-     * @param {Object} constructor
-     * @return {Object}
-     */
-    createInstanceFromConstructor: function(constructor) {
-        var instance = new constructor();
-        var instanceArguments = Array.prototype.splice.call(arguments, 1);
-        constructor.apply(instance, instanceArguments);
-
-        return instance;
-    },
-
-    /**
      * Deep clone a value
      *
      * @param {*} value

@@ -5,7 +5,7 @@ namespace Oro\Bundle\GridBundle\Filter\ORM;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Common\Collections\Collection;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 class ChoiceFilter extends AbstractFilter

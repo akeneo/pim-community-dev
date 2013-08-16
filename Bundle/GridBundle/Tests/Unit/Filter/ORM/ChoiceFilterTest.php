@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ChoiceFilterTest extends FilterTestCase
 {
+    const TEST_DOMAIN = 'someDomain';
+
     /**
      * @var ChoiceFilter
      */
@@ -183,14 +185,15 @@ class ChoiceFilterTest extends FilterTestCase
                 )
             ),
             'multiple select' => array(
-                array('choices' => $this->testChoices, 'multiple' => true),
+                array('choices' => $this->testChoices, 'multiple' => true, 'translation_domain' => self::TEST_DOMAIN),
                 array(ChoiceFilterType::NAME,
                     array(
                         'show_filter'   => false,
                         'field_options' => array(
                             'choices'  => $this->testChoices,
                             'multiple' => true
-                        )
+                        ),
+                        'translation_domain' => self::TEST_DOMAIN
                     )
                 )
             ),
