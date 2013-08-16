@@ -12,4 +12,11 @@ interface ResultRecordInterface
      * @throws \LogicException When cannot get value
      */
     public function getValue($name);
+
+    /**
+     * Get root entity of current result record
+     *
+     * @return object|null
+     */
+    public function getRootEntity();
 }

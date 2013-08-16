@@ -38,16 +38,43 @@ class ConfigManagerTest extends AbstractEntityManagerTest
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $serviceProxy;
+    private $emProxy;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $securityProxy;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $provider;
 
+    private $securityContext;
+
     public function setUp()
     {
         parent::setUp();
+
+        $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->securityContext = $this->getMockForAbstractClass(
+            'Symfony\Component\Security\Core\SecurityContextInterface'
+        );
+        $token = $this->getMockForAbstractClass(
+            'Symfony\Component\Security\Core\Authentication\Token\TokenInterface'
+        );
+
+        $token->expects($this->any())->method('getUser')->will($this->returnValue($user));
+
+        $this->securityContext->expects($this->any())->method('getToken')->will($this->returnValue($token));
+
+        $this->securityProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->securityProxy->expects($this->any())->method('getService')->will($this->returnValue($this->securityContext));
 
         $this->initConfigManager();
 
@@ -193,8 +220,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
         $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::FOUND_CONFIG_ENTITY_REPOSITORY);
         $config      = $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
-        $fields      = $config->getFields();
-        $configField = reset($fields);
+        $configField = $config->getFields()->first();
 
         $configField->set('test_field_value1', 'test_field_value1_new');
 
@@ -217,10 +243,10 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
         $this->assertEquals($result, $this->configManager->getConfigChangeSet($config));
 
-        $this->assertEquals(array($config), $this->configManager->getUpdatedEntityConfig());
+        $this->assertEquals(array(spl_object_hash($config) => $config), $this->configManager->getUpdatedEntityConfig());
         $this->assertEquals(array(), $this->configManager->getUpdatedEntityConfig('test1'));
 
-        $this->assertEquals(array(1 => $configField), $this->configManager->getUpdatedFieldConfig());
+        $this->assertEquals(array(spl_object_hash($configField) => $configField), $this->configManager->getUpdatedFieldConfig());
         $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig('test1'));
         $this->assertEquals(array(), $this->configManager->getUpdatedFieldConfig(null, 'WrongClass'));
     }
@@ -229,12 +255,11 @@ class ConfigManagerTest extends AbstractEntityManagerTest
     {
         $metadataFactory = new MetadataFactory(new AnnotationDriver(new AnnotationReader));
 
-        $this->serviceProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy')
+        $this->emProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->emProxy->expects($this->any())->method('getService')->will($this->returnValue($this->em));
 
-        $this->serviceProxy->expects($this->any())->method('getService')->will($this->returnValue($this->em));
-
-        $this->configManager = new ConfigManager($metadataFactory, new EventDispatcher, $this->serviceProxy);
+        $this->configManager = new ConfigManager($metadataFactory, new EventDispatcher, $this->emProxy, $this->securityProxy);
     }
 }

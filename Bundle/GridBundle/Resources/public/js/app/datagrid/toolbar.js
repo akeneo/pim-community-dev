@@ -13,16 +13,17 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
     template:_.template(
         '<div class="grid-toolbar">' +
             '<div class="pull-left">' +
+                '<div class="mass-actions-panel btn-group icons-holder"></div>' +
                 '<div class="btn-group icons-holder" style="display: none;">' +
-                    '<button class="btn"><i class="icon-edit hide-text">edit</i></button>' +
-                    '<button class="btn"><i class="icon-copy hide-text">copy</i></button>' +
-                    '<button class="btn"><i class="icon-trash hide-text">remove</i></button>' +
+                    '<button class="btn"><i class="icon-edit hide-text"><%- _.__("edit") %></i></button>' +
+                    '<button class="btn"><i class="icon-copy hide-text"><%- _.__("copy") %></i></button>' +
+                    '<button class="btn"><i class="icon-trash hide-text"><%- _.__("remove") %></i></button>' +
                 '</div>' +
                 '<div class="btn-group" style="display: none;">' +
-                    '<button data-toggle="dropdown" class="btn dropdown-toggle">Status: <strong>All</strong><span class="caret"></span></button>' +
+                    '<button data-toggle="dropdown" class="btn dropdown-toggle"><%- _.__("Status") %>: <strong><%- _.__("All") %></strong><span class="caret"></span></button>' +
                     '<ul class="dropdown-menu">' +
-                        '<li><a href="#">only short</a></li>' +
-                        '<li><a href="#">this is long text for test</a></li>' +
+                        '<li><a href="#"><%- _.__("only short") %></a></li>' +
+                        '<li><a href="#"><%- _.__("this is long text for test") %></a></li>' +
                     '</ul>' +
                 '</div>' +
             '</div>' +
@@ -43,6 +44,9 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
     /** @property */
     actionsPanel: Oro.Datagrid.ActionsPanel,
 
+    /** @property */
+    massActionsPanel: Oro.Datagrid.ActionsPanel,
+
     /**
      * Initializer.
      *
@@ -60,17 +64,26 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
 
         this.collection = options.collection;
 
-        this.pagination = new this.pagination({
-            collection: this.collection
-        });
+        this.pagination = new this.pagination(_.extend({}, options.pagination, { collection: this.collection }));
 
-        this.pageSize = new this.pageSize({
-            collection: this.collection
-        });
+        options.pageSize = options.pageSize || {};
+        this.pageSize = new this.pageSize(_.extend({}, options.pageSize, { collection: this.collection }));
 
-        this.actionsPanel = new this.actionsPanel();
+        this.actionsPanel = new this.actionsPanel(_.extend({}, options.actionsPanel));
         if (options.actions) {
             this.actionsPanel.setActions(options.actions);
+        }
+
+        if (options.enable == false) {
+            this.disable();
+        }
+        if (options.hide == true) {
+            this.hide();
+        }
+
+        this.massActionsPanel = new this.massActionsPanel();
+        if (options.massActions) {
+            this.massActionsPanel.setActions(options.massActions);
         }
 
         Backbone.View.prototype.initialize.call(this, options);
@@ -85,6 +98,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.enable();
         this.pageSize.enable();
         this.actionsPanel.enable();
+        this.massActionsPanel.enable();
         return this;
     },
 
@@ -97,6 +111,17 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.pagination.disable();
         this.pageSize.disable();
         this.actionsPanel.disable();
+        this.massActionsPanel.disable();
+        return this;
+    },
+
+    /**
+     * Hide toolbar
+     *
+     * @return {*}
+     */
+    hide: function() {
+        this.$el.hide();
         return this;
     },
 
@@ -110,6 +135,7 @@ Oro.Datagrid.Toolbar = Backbone.View.extend({
         this.$('.pagination').replaceWith(this.pagination.render().$el);
         this.$('.page-size').append(this.pageSize.render().$el);
         this.$('.actions-panel').append(this.actionsPanel.render().$el);
+        this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 
         return this;
     }

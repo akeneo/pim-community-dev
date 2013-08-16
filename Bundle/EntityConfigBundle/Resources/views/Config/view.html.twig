@@ -2,10 +2,9 @@
 {% set gridId = 'fields-grid' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
-{#{% set entityClass = entity.classname|replace('\\', '_') %}#}
-{#{% set entityClass = 'Oro_Bundle_EntityConfigBundle_Entity_ConfigEntity' %}#}
-{#{% set audit_title = entity_config.get('label') %}#}
-{#{% set audit_path = 'oro_entity_audit' %}#}
+{% set entityClass = entity.classname|replace('\\', '_') %}
+{% set audit_title = entity_config.get('label')|default(entity_name) %}
+{% set audit_path = 'oro_entityconfig_audit' %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
@@ -15,8 +14,9 @@
 
     {% for button in button_config %}
         {{ UI.button({
-            'path'   : path(button.route, button.args|default({})),
-            'iClass' : button.aClass|default(''),
+            'path'   : button.void is defined ? [ 'javascript:void(0);//', path(button.route, button.args|default({})) ]|join : path(button.route, button.args|default({})),
+            'iClass' : button.iClass|default(''),
+            'aClass' : button.aClass|default(''),
             'title'  : button.title|default(button.name),
             'label'  : button.name
         }) }}
@@ -34,7 +34,7 @@
         'entity':      entity,
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': entity_config.get('label'),
+        'entityTitle': entity_config.get('label')|default(entity_name),
     }%}
 
     {{ parent() }}
@@ -43,7 +43,11 @@
 {% block stats %}
     <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
     <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
+    {% if link %}
     <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>
+    {% else %}
+    <li>{{ ['<span>', 'Number of records'|trans, ': ', entity_count|default(0) , '</span>']|join|raw }}</li>
+    {% endif %}
 {% endblock stats%}
 
 {% block content_data %}

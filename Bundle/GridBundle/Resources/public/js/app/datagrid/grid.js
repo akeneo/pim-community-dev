@@ -12,13 +12,16 @@ Oro.Datagrid = Oro.Datagrid || {};
  * @extends Backgrid.Grid
  */
 Oro.Datagrid.Grid = Backgrid.Grid.extend({
-    /** @property */
+    /** @property {String} */
+    name: 'datagrid',
+
+    /** @property {String} */
     tagName: 'div',
 
-    /** @property */
+    /** @property {int} */
     requestsCount: 0,
 
-    /** @property */
+    /** @property {String} */
     className: 'clearfix',
 
     /** @property */
@@ -41,7 +44,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         grid:        '.grid',
         toolbar:     '.toolbar',
         noDataBlock: '.no-data',
-        loadingMask: '.loading-mask'
+        loadingMask: '.loading-mask',
+        filterBox:   '.filter-box'
     },
 
     /** @property {Oro.Datagrid.Header} */
@@ -64,13 +68,15 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     defaults: {
         noDataHint: 'No data found.',
+        noResultsHint: 'No items found during search.',
         rowClickActionClass: 'row-click-action',
         rowClassName: '',
         toolbarOptions: {},
         addResetAction: true,
         addRefreshAction: true,
         rowClickAction: undefined,
-        rowActions: []
+        rowActions: [],
+        massActions: []
     },
 
     /**
@@ -86,6 +92,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * @param {Boolean} [options.addResetAction] If TRUE reset action will be added in toolbar
      * @param {Boolean} [options.addRefreshAction] If TRUE refresh action will be added in toolbar
      * @param {Oro.Datagrid.Action.AbstractAction[]} [options.rowActions] Array of row actions prototypes
+     * @param {Oro.Datagrid.Action.AbstractAction[]} [options.massActions] Array of mass actions prototypes
      * @param {Oro.Datagrid.Action.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
      * @throws {TypeError} If mandatory options are undefined
      */
@@ -113,9 +120,10 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
         }
 
         options.columns.push(this._createActionsColumn());
+        options.columns.unshift(this._getMassActionsColumn());
 
         this.loadingMask = this._createLoadingMask();
-        this.toolbar = this._createToolbar(this.toolbarOptions);
+        this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
 
         Backgrid.Grid.prototype.initialize.apply(this, arguments);
 
@@ -151,8 +159,49 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _createActionsColumn: function() {
         return new this.actionsColumn({
-            actions: this.rowActions
+            actions: this.rowActions,
+            datagrid: this
         });
+    },
+
+    /**
+     * Creates mass actions column
+     *
+     * @return {Backgrid.Column}
+     * @private
+     */
+    _getMassActionsColumn: function() {
+        if (!this.massActionsColumn) {
+            this.massActionsColumn = new Backgrid.Column({
+                name: "massAction",
+                label: _.__("Selected Rows"),
+                renderable: !_.isEmpty(this.massActions),
+                sortable: false,
+                editable: false,
+                cell: Oro.Datagrid.Cell.SelectRowCell,
+                headerCell: Oro.Datagrid.Cell.SelectAllHeaderCell
+            });
+        }
+
+        return this.massActionsColumn;
+    },
+
+    /**
+     * Gets selection state
+     *
+     * @returns {{selectedModels: *, inset: boolean}}
+     */
+    getSelectionState: function() {
+        var selectAllHeader = this.header.row.cells[0];
+        return selectAllHeader.getSelectionState();
+    },
+
+    /**
+     * Resets selection state
+     */
+    resetSelectionState: function() {
+        var selectAllHeader = this.header.row.cells[0];
+        return selectAllHeader.selectNone();
     },
 
     /**
@@ -175,7 +224,8 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     _createToolbar: function(toolbarOptions) {
         return new this.toolbar(_.extend({}, toolbarOptions, {
             collection: this.collection,
-            actions: this._getToolbarActions()
+            actions: this._getToolbarActions(),
+            massActions: this._getToolbarMassActions()
         }));
     },
 
@@ -197,6 +247,36 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     },
 
     /**
+     * Get mass actions of toolbar
+     *
+     * @return {Array}
+     * @private
+     */
+    _getToolbarMassActions: function() {
+        var result = [];
+        _.each(this.massActions, function(action) {
+            result.push(this.createMassAction(action));
+        }, this);
+
+        return result;
+    },
+
+    /**
+     * Creates action
+     *
+     * @param {Function} actionPrototype
+     * @protected
+     */
+    createMassAction: function(actionPrototype) {
+        return new actionPrototype({
+            datagrid: this,
+            launcherOptions: {
+                className: 'btn'
+            }
+        });
+    },
+
+    /**
      * Get action that refreshes grid's collection
      *
      * @return Oro.Datagrid.Action.RefreshCollectionAction
@@ -204,7 +284,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     getRefreshAction: function() {
         if (!this.refreshAction) {
             this.refreshAction = new Oro.Datagrid.Action.RefreshCollectionAction({
-                collection: this.collection,
+                datagrid: this,
                 launcherOptions: {
                     label: 'Refresh',
                     className: 'btn',
@@ -223,7 +303,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     getResetAction: function() {
         if (!this.resetAction) {
             this.resetAction = new Oro.Datagrid.Action.ResetCollectionAction({
-                collection: this.collection,
+                datagrid: this,
                 launcherOptions: {
                     label: 'Reset',
                     className: 'btn',
@@ -339,8 +419,15 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      * Render no data block.
      */
     renderNoDataBlock: function() {
-        this.$(this.selectors.noDataBlock).append($(this.noDataTemplate({
-            hint: this.noDataHint.replace('\n', '<br />')
+        if (_.isEmpty(this.collection.state.filters)) {
+            // no filters
+            var dataHint = this.noDataHint;
+        } else {
+            // some filters exists
+            var dataHint = this.noResultsHint;
+        }
+        this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
+            hint: dataHint.replace('\n', '<br />')
         }))).hide();
         this._updateNoDataBlock();
     },
@@ -352,8 +439,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
      */
     _beforeRequest: function() {
         this.requestsCount++;
-        this.loadingMask.show();
-        this.toolbar.disable();
+        this.showLoading();
     },
 
     /**
@@ -364,9 +450,9 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     _afterRequest: function() {
         this.requestsCount--;
         if (this.requestsCount == 0) {
-            this.loadingMask.hide();
-            this.toolbar.enable();
-            this._updateNoDataBlock();
+            this.hideLoading();
+            // render block instead of update in order to change message depending on filter state
+            this.renderNoDataBlock();
             /**
              * Backbone event. Fired when data for grid has been successfully rendered.
              * @event grid_load:complete
@@ -376,16 +462,36 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     },
 
     /**
+     * Show loading mask and disable toolbar
+     */
+    showLoading: function() {
+        this.loadingMask.show();
+        this.toolbar.disable();
+    },
+
+    /**
+     * Hide loading mask and enable toolbar
+     */
+    hideLoading: function() {
+        this.loadingMask.hide();
+        this.toolbar.enable();
+    },
+
+    /**
      * Update no data block status
      *
      * @private
      */
     _updateNoDataBlock: function() {
         if (this.collection.models.length > 0) {
+            this.$(this.selectors.toolbar).show();
             this.$(this.selectors.grid).show();
+            this.$(this.selectors.filterBox).show();
             this.$(this.selectors.noDataBlock).hide();
         } else {
             this.$(this.selectors.grid).hide();
+            this.$(this.selectors.toolbar).hide();
+            this.$(this.selectors.filterBox).hide();
             this.$(this.selectors.noDataBlock).show();
         }
     },

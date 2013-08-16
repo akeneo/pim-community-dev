@@ -35,7 +35,7 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
                 self.getErrorDialog().open();
             },
             success: function() {
-                var messageText = Translator.get('Item was deleted');
+                var messageText = _.__('Item was deleted');
                 if (!_.isUndefined(Oro.NotificationFlashMessage)) {
                     Oro.NotificationFlashMessage('success', messageText);
                 } else {
@@ -53,10 +53,9 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
     getConfirmDialog: function() {
         if (!this.confirmModal) {
             this.confirmModal = new Oro.BootstrapModal({
-                title: Translator.get('Delete Confirmation'),
-                content: Translator.get('Are you sure you want to delete this item?'),
-                okText: 'Yes, Delete',
-                allowCancel: 'false'
+                title: _.__('Delete Confirmation'),
+                content: _.__('Are you sure you want to delete this item?'),
+                okText: _.__('Yes, Delete')
             });
             this.confirmModal.on('ok', _.bind(this.doDelete, this));
         }
@@ -70,12 +69,12 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
      */
     getErrorDialog: function() {
         if (!this.errorModal) {
-            this.confirmModal = new Oro.BootstrapModal({
-                title: 'Delete Error',
-                content: 'Cannot delete item.',
+            this.errorModal = new Oro.BootstrapModal({
+                title: _.__('Delete Error'),
+                content: _.__('Cannot delete item.'),
                 cancelText: false
             });
         }
-        return this.confirmModal;
+        return this.errorModal;
     }
 });

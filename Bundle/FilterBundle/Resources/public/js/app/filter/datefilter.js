@@ -29,7 +29,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             '</div>' +
             '<div class="oro-action">' +
                 '<div class="btn-group">' +
-                    '<button class="btn btn-primary filter-update" type="button">Update</button>' +
+                    '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
                 '</div>' +
             '</div>' +
         '</div>'
@@ -76,7 +76,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
     dateWidgetOptions: {
         changeMonth: true,
         changeYear:  true,
-        yearRange:  '-50:+1',
+        yearRange:  '-80:+1',
         dateFormat: 'yy-mm-dd',
         altFormat:  'yy-mm-dd',
         className:      'date-filter-widget',

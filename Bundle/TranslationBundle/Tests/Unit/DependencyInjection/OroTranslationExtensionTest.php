@@ -13,7 +13,8 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $expectedDefinitions = array(
         'oro_translation.form.type.translatable_entity',
-        'oro_translation.form.type.jqueryselect2_translatable_entity'
+        'oro_translation.form.type.jqueryselect2_translatable_entity',
+        'oro_translation.controller',
     );
 
     /**
@@ -21,6 +22,21 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $expectedParameters = array(
         'oro_translation.form.type.translatable_entity.class',
+        'translator.class',
+        'oro_translation.controller.class',
+        'oro_translation.js_translation.domains',
+    );
+
+    /**
+     * @var array
+     */
+    protected $config = array(
+        'oro_translation' => array(
+            'js_translation' => array(
+                'domains' => array('validators'),
+                'debug' => false,
+            )
+        )
     );
 
     public function testLoad()
@@ -29,7 +45,7 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
         $actualParameters  = array();
 
         $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->setMethods(array('setDefinition', 'setParameter'))
+            ->setMethods(array('setDefinition', 'setParameter', 'getDefinition'))
             ->getMock();
         $container->expects($this->any())
             ->method('setDefinition')
@@ -49,9 +65,18 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
+        $container->expects($this->any())
+            ->method('getDefinition')
+            ->will(
+                $this->returnCallback(
+                    function ($name) use (&$actualDefinitions) {
+                        return $actualDefinitions[$name];
+                    }
+                )
+            );
 
         $extension = new OroTranslationExtension();
-        $extension->load(array(), $container);
+        $extension->load($this->config, $container);
 
         foreach ($this->expectedDefinitions as $serviceId) {
             $this->assertArrayHasKey($serviceId, $actualDefinitions);

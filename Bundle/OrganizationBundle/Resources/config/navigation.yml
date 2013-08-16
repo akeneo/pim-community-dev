@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         oro_business_unit_list:
-            label: 'Business Unit'
+            label: 'Business Units'
             route: 'oro_business_unit_index'
             extras:
                 routes: ['oro_business_unit_*']
@@ -13,6 +13,7 @@ oro_menu_config:
                         oro_business_unit_list: ~
 
 oro_titles:
-    oro_business_unit_index:  Business Units
-    oro_business_unit_update: Edit %%business_unit.name%%
-    oro_business_unit_create: Create business unit
+    oro_business_unit_index:  ~
+    oro_business_unit_update: %%business_unit.name%%
+    oro_business_unit_create: Create Business Unit
+    oro_business_unit_view: %%business_unit.name%%

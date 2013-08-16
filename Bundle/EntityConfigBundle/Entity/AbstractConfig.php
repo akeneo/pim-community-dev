@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractConfig
 {
     /**
+     * type of config
+     */
+    const MODE_VIEW_DEFAULT  = 'default';
+    const MODE_VIEW_HIDDEN   = 'hidden';
+    const MODE_VIEW_READONLY = 'readonly';
+
+    /**
      * @var \DateTime $created
      * @ORM\Column(type="datetime")
      */
@@ -22,6 +29,12 @@ abstract class AbstractConfig
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updated;
+
+    /**
+     * @var string $updated
+     * @ORM\Column(type="string", length=8)
+     */
+    protected $mode;
 
     /**
      * @var ConfigValue[]|ArrayCollection
@@ -55,12 +68,31 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param  callable                            $filter
+     * @param string $mode
+     * @return $this
+     */
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param  callable $filter
      * @return array|ArrayCollection|ConfigValue[]
      */
     public function getValues(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->values->toArray(), $filter) : $this->values;
+        return $filter ? $this->values->filter($filter) : $this->values;
     }
 
     /**
@@ -70,7 +102,7 @@ abstract class AbstractConfig
      */
     public function getValue($code, $scope)
     {
-        $values = $this->values->filter(function (ConfigValue $value) use ($code, $scope) {
+        $values = $this->getValues(function (ConfigValue $value) use ($code, $scope) {
             return ($value->getScope() == $scope && $value->getCode() == $code);
         });
 
@@ -123,21 +155,21 @@ abstract class AbstractConfig
     public function fromArray($scope, array $values, array $serializableValues = array())
     {
         foreach ($values as $code => $value) {
-            $serializable = isset($serializableValues[$code]) && (bool) $serializableValues[$code];
+            $serializable = isset($serializableValues[$code]) && (bool)$serializableValues[$code];
 
             if (!$serializable && is_bool($value)) {
-                $value = (int) $value;
+                $value = (int)$value;
             }
 
             if (!$serializable && !is_string($value)) {
-                $value = (string) $value;
+                $value = (string)$value;
             }
 
             if ($configValue = $this->getValue($code, $scope)) {
                 $configValue->setValue($value);
             } else {
 
-                $configValue  = new ConfigValue($code, $scope, $value, $serializable);
+                $configValue = new ConfigValue($code, $scope, $value, $serializable);
 
                 if ($this instanceof ConfigEntity) {
                     $configValue->setEntity($this);

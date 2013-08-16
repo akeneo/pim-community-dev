@@ -1,4 +1,7 @@
 oro.user.form.choose_user: Choose a user...
+oro.user.form.choose_gender: Choose a gender...
+oro.user.gender.male: Male
+oro.user.gender.female: Female
 
 change_password:
     flash:

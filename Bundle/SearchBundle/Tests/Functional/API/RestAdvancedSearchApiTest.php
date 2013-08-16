@@ -19,11 +19,7 @@ class RestAdvancedSearchApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
         if (!self::$hasLoaded) {
             $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
@@ -39,7 +35,11 @@ class RestAdvancedSearchApiTest extends WebTestCase
     public function testApi($request, $response)
     {
         $requestUrl = $request['query'];
-        $this->client->request('GET', $this->client->generate('oro_api_get_search_advanced'), array('query' => $requestUrl));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_search_advanced'),
+            array('query' => $requestUrl)
+        );
 
         $result = $this->client->getResponse();
 

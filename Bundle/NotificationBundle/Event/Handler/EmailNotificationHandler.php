@@ -2,48 +2,48 @@
 
 namespace Oro\Bundle\NotificationBundle\Event\Handler;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Monolog\Logger;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
-use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
+use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Event\NotificationEvent;
-use Oro\Bundle\NotificationBundle\DependencyInjection\Compiler\TemplatesCompilerPass;
+use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 
 class EmailNotificationHandler extends EventHandlerAbstract
 {
-    const SEND_COMMAND = 'oro:spool:send';
+    const SEND_COMMAND = 'swiftmailer:spool:send';
 
-    /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
+    /** @var EmailRenderer */
+    protected $renderer;
 
-    /**
-     * @var \Swift_Mailer
-     */
+    /** @var \Swift_Mailer */
     protected $mailer;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $sendFrom;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $messageLimit = 100;
 
-    /**
-     * @var string
-     */
+    /** @var Logger */
+    protected $logger;
+
+    /** @var string */
     protected $env = 'prod';
 
-    public function __construct(\Twig_Environment $twig, \Swift_Mailer $mailer, ObjectManager $em, $sendFrom)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        EmailRenderer $emailRenderer,
+        \Swift_Mailer $mailer,
+        ObjectManager $em,
+        $sendFrom,
+        Logger $logger
+    ) {
+        $this->renderer = $emailRenderer;
         $this->mailer = $mailer;
         $this->em = $em;
         $this->sendFrom = $sendFrom;
+        $this->logger = $logger;
     }
 
     /**
@@ -58,42 +58,37 @@ class EmailNotificationHandler extends EventHandlerAbstract
         $entity = $event->getEntity();
 
         foreach ($matchedNotifications as $notification) {
-            $templateParams = array(
-                'event' => $event,
-                'notification' => $notification,
-                'entity' => $entity,
-                'templateName' => $notification->getTemplate(),
-            );
+            $emailTemplate = $notification->getTemplate();
 
-            $template = str_replace(
-                'Bundle:',
-                '/../' . TemplatesCompilerPass::DIR_NAME . DIRECTORY_SEPARATOR,
-                $notification->getTemplate()
-            );
+            try {
+                list ($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
+                    $emailTemplate,
+                    array('entity' => $entity)
+                );
+            } catch (\Twig_Error $e) {
+                $this->logger->log(
+                    Logger::ERROR,
+                    sprintf(
+                        'Error rendering email template (id: %d), %s',
+                        $emailTemplate->getId(),
+                        $e->getMessage()
+                    )
+                );
 
-            $emailTemplate = $this->twig->loadTemplate($template);
-            // TODO: There's a bug with sandbox and forms, to be investigated
-            //$emailTemplate = $this->twig->loadTemplate('@OroNotification\email_sandbox.html.twig');
-
-            $subject = ($emailTemplate->hasBlock("subject")
-                ? trim($emailTemplate->renderBlock("subject", $templateParams))
-                : "oro_notification.default_notification_subject");
+                continue;
+            }
 
             $recipientEmails = $this->em->getRepository('Oro\Bundle\NotificationBundle\Entity\RecipientList')
                 ->getRecipientEmails($notification->getRecipientList(), $entity);
 
-            try {
-                $templateRendered = $emailTemplate->render($templateParams);
-            } catch (\Twig_Error $e) {
-                $templateRendered = '';
-            }
-
+            // TODO: use locale for subject and body
             $params = new ParameterBag(
                 array(
-                    'subject' => $subject,
+                    'subject' => $subjectRendered,
                     'body'    => $templateRendered,
                     'from'    => $this->sendFrom,
                     'to'      => $recipientEmails,
+                    'type'    => $emailTemplate->getType() == 'txt' ? 'text/plain' : 'text/html'
                 )
             );
 
@@ -117,7 +112,7 @@ class EmailNotificationHandler extends EventHandlerAbstract
                 ->setSubject($params->get('subject'))
                 ->setFrom($params->get('from'))
                 ->setTo($email)
-                ->setBody($params->get('body'));
+                ->setBody($params->get('body'), $params->get('type'));
             $this->mailer->send($message);
         }
 
@@ -126,26 +121,33 @@ class EmailNotificationHandler extends EventHandlerAbstract
 
     /**
      * Add swiftmailer spool send task to job queue if it has not been added earlier
+     *
+     * @param string $command
+     * @param array $commandArgs
+     * @return boolean|integer
      */
     public function addJob($command, $commandArgs = array())
     {
         $commandArgs = array_merge(
             array(
-                'message-limit' => $this->messageLimit,
-                'env'           => $this->env,
+                '--message-limit=' . $this->messageLimit,
+                '--env=' . $this->env,
+                '--mailer=db_spool_mailer',
             ),
             $commandArgs
         );
 
-        if ($commandArgs['env'] == 'prod') {
-            $commandArgs['no-debug'] = true;
+        if ($this->env == 'prod') {
+            $commandArgs[] = '--no-debug';
         }
 
         return parent::addJob($command, $commandArgs);
     }
 
     /**
-     * @param $messageLimit
+     * Set message limit
+     *
+     * @param int $messageLimit
      */
     public function setMessageLimit($messageLimit)
     {
@@ -153,6 +155,8 @@ class EmailNotificationHandler extends EventHandlerAbstract
     }
 
     /**
+     * Set environment
+     *
      * @param string $env
      */
     public function setEnv($env)

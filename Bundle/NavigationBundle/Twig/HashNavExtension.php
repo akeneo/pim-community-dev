@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NavigationBundle\Twig;
 
+use Oro\Bundle\NavigationBundle\Event\ResponseHashnavListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 
@@ -37,6 +38,11 @@ class HashNavExtension extends \Twig_Extension
                 'checkIsHashNavigation',
                 array('is_safe' => array('html'))
             ),
+            'oro_hash_navigation_header' => new \Twig_Function_Method(
+                $this,
+                'getHashNavigationHeaderConst',
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -49,10 +55,20 @@ class HashNavExtension extends \Twig_Extension
     {
         return (!is_object($this->request)
             || (
-                $this->request->headers->get('x-oro-hash-navigation') != true
-                    && $this->request->get('x-oro-hash-navigation') != true
+                $this->request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER) != true
+                    && $this->request->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER) != true
             )
         ) ? false : true;
+    }
+
+    /**
+     * Get hash navigation header string
+     *
+     * @return string
+     */
+    public function getHashNavigationHeaderConst()
+    {
+        return ResponseHashnavListener::HASH_NAVIGATION_HEADER;
     }
 
     /**

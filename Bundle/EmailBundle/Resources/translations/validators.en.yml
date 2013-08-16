@@ -1,0 +1,6 @@
+oro_email:
+    validators:
+        emailtemplate:
+            attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
+            contains:
+                not_allowed_calls: "Template contains calls to not allowed methods and properties"

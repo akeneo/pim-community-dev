@@ -3,7 +3,7 @@ parameters:
 
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
-    oro_navigation.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+    oro_notification.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
     # Event manager and event handler classes
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
@@ -26,6 +26,7 @@ parameters:
     oro_notification.mailer.transport.spool_db.class: Oro\Bundle\NotificationBundle\Provider\Mailer\DbSpool
     oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
 
+    swiftmailer.mailer.db_spool_mailer.spool.enabled: true
 services:
     # Email notification form services
     oro_notification.form.email_notification:
@@ -36,7 +37,9 @@ services:
 
     oro_notification.form.type.email_notification:
         class: %oro_notification.form.type.email_notification.class%
-        arguments: [%oro_config.entities%, %oro_notification.emailnotification.templates_list%]
+        arguments:
+            - %oro_config.entities%
+            - @oro_email.form.subscriber.emailtemplate
         tags:
             - { name: form.type, alias: emailnotification }
 
@@ -59,11 +62,14 @@ services:
     oro_notification.email_notification.manager.api:
         class: %oro_notification.email_notification.manager.api.class%
         arguments:
-            - %oro_navigation.emailnotification.entity.class%
+            - %oro_notification.emailnotification.entity.class%
             - @doctrine.orm.entity_manager
 
     oro_notification.form.type.email_notification.api:
         class: %oro_notification.form.type.email_notification.api.class%
+        arguments:
+            - %oro_config.entities%
+            - @oro_email.form.subscriber.emailtemplate
         tags:
             - { name: form.type, alias: emailnotification_api }
 
@@ -96,15 +102,16 @@ services:
         class: %oro_notification.manager.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - %oro_navigation.emailnotification.entity.class%
+            - %oro_notification.emailnotification.entity.class%
 
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%
         arguments:
-            - @twig
-            - @oro_notification.mailer
+            - @oro_email.email_renderer
+            - @swiftmailer.mailer.db_spool_mailer
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
+            - @logger
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
@@ -118,39 +125,21 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
 
-    swiftmailer.spool.db:
-        alias: oro_notification.mailer.spool_db
+
+    oro_notification.mailer.transport.eventdispatcher:
+        parent: swiftmailer.transport.eventdispatcher.abstract
 
     oro_notification.mailer.transport:
-        class: Swift_Transport_SpoolTransport
+        parent: swiftmailer.transport.spool.abstract
         arguments:
-            - @swiftmailer.transport.eventdispatcher
+            - @oro_notification.mailer.transport.eventdispatcher
             - @oro_notification.mailer.spool_db
 
-    oro_notification.mailer:
+    # notification mailer instance
+    swiftmailer.mailer.db_spool_mailer:
         class: %swiftmailer.class%
         arguments:
             - @oro_notification.mailer.transport
 
-    oro_notification.twig.email_security_policy:
-        class: Twig_Sandbox_SecurityPolicy
-        arguments:
-            # tags
-            - [ 'if' ]
-            # filters
-            - [ 'upper', 'escape' ]
-            # methods
-            -
-              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname]
-            # properties
-            -
-              Oro\Bundle\UserBundle\Entity\User: [username, firstname]
-            # functions
-            - []
-
-    oro_notification.twig.email_sandbox:
-        class: Twig_Extension_Sandbox
-        arguments:
-            - @oro_notification.twig.email_security_policy
-#        tags:
-#            - { name: 'twig.extension' }
+    swiftmailer.mailer.db_spool_mailer.transport.real:
+        alias: swiftmailer.transport.real

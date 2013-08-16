@@ -81,7 +81,8 @@ var grid = new Oro.Datagrid.Grid({
         }
     ],
     entityHint: "Users",
-    noDataHint: "No users were found to match your search. Try modifying your search criteria or creating a new ..."
+    noDataHint: "There are no users yet. Try to creating a new ..."
+    noResultsHint: "No users were found to match your search. Try modifying your search criteria ..."
 });
 
 $('#grid').html(grid.render().$el);

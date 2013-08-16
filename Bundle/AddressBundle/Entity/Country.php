@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
-use JMS\Serializer\Annotation\Exclude;
-
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,7 +12,9 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 /**
  * Country
  *
- * @ORM\Table("oro_dictionary_country")
+ * @ORM\Table("oro_dictionary_country", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\CountryTranslation")
  */
@@ -55,7 +55,6 @@ class Country implements Translatable
      *     cascade={"ALL"},
      *     fetch="EXTRA_LAZY"
      * )
-     * @Exclude
      */
     protected $regions;
 

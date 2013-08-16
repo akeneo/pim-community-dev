@@ -1,6 +1,5 @@
 parameters:
     oro_windows.twig.extension.class: Oro\Bundle\WindowsBundle\Twig\WindowsExtension
-    oro.view.listener.class: Oro\Bundle\WindowsBundle\EventListener\TemplateListener
 
 services:
     oro_windows.twig.extension:
@@ -10,10 +9,3 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - { name: twig.extension }
-
-    oro_windows.view.listener:
-        class: %oro.view.listener.class%
-        arguments:
-            - @service_container
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }

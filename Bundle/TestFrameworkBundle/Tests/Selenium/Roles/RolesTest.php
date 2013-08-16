@@ -39,7 +39,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openRoles()
-            ->assertTitle('Roles');
+            ->assertTitle('Roles - System');
     }
 
     public function testRolesGridDefaultContent()
@@ -58,6 +58,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             $this->assertArrayHasKey($content, $this->defaultRoles['header']);
         }
 
+        $checks = 0;
         foreach ($records as $row) {
             $columns = $row->elements($this->using('xpath')->value("td[not(contains(@style, 'display: none;'))]"));
             $id = null;
@@ -66,10 +67,13 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
                 if (is_null($id)) {
                     $id = trim($content);
                 }
-                $this->assertArrayHasKey($content, $this->defaultRoles[$id]);
+                if (array_key_exists($id, $this->defaultRoles)) {
+                    $this->assertArrayHasKey($content, $this->defaultRoles[$id]);
+                }
             }
+            $checks = $checks + 1;
         }
-
+        $this->assertGreaterThanOrEqual(count($this->defaultRoles)-1, $checks);
     }
 
     public function testRolesAdd()

@@ -21,11 +21,7 @@ class RestApiAclTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -61,7 +57,10 @@ class RestApiAclTest extends WebTestCase
      */
     public function testGetRoleAcl($acls)
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_ROLE)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_ROLE))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $roleId = ToolsAPI::jsonToArray($result->getContent());
@@ -94,7 +93,10 @@ class RestApiAclTest extends WebTestCase
 
     public function testRemoveAclFromRole()
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $roleId = ToolsAPI::jsonToArray($result->getContent());
@@ -106,13 +108,20 @@ class RestApiAclTest extends WebTestCase
         sort($expectedAcl);
         $tmpExpectedAcl = $expectedAcl;
         foreach ($expectedAcl as $key => $val) {
-            if (preg_match('/oro_address*/', $val) || $val == 'root') { // root resource will be deleted after any resource delete
+            // root resource will be deleted after any resource delete
+            if (preg_match('/oro_address*/', $val) || $val == 'root') {
                 unset($expectedAcl[ $key ]);
             }
         }
         sort($expectedAcl);
 
-        $this->client->request('DELETE', $this->client->generate('oro_api_delete_role_acl', array('id' => $roleId['id'], 'resource' => 'oro_address')));
+        $this->client->request(
+            'DELETE',
+            $this->client->generate(
+                'oro_api_delete_role_acl',
+                array('id' => $roleId['id'], 'resource' => 'oro_address')
+            )
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
 
@@ -133,16 +142,25 @@ class RestApiAclTest extends WebTestCase
      */
     public function testAddAclToRole($expectedAcl)
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $roleId = ToolsAPI::jsonToArray($result->getContent());
 
-        $this->client->request('POST', $this->client->generate('oro_api_post_role_acl', array('id' => $roleId['id'], 'resource' => 'oro_address')));
+        $this->client->request(
+            'POST',
+            $this->client->generate('oro_api_post_role_acl', array('id' => $roleId['id'], 'resource' => 'oro_address'))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
 
-        $this->client->request('POST', $this->client->generate('oro_api_post_role_acl', array('id' => $roleId['id'], 'resource' => 'root')));
+        $this->client->request(
+            'POST',
+            $this->client->generate('oro_api_post_role_acl', array('id' => $roleId['id'], 'resource' => 'root'))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
 
@@ -163,7 +181,10 @@ class RestApiAclTest extends WebTestCase
     public function testRemoveAclsFromRole($expectedAcl)
     {
         $this->markTestSkipped('BAP-1058');
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $roleId = ToolsAPI::jsonToArray($result->getContent());
@@ -205,7 +226,10 @@ class RestApiAclTest extends WebTestCase
      */
     public function testAddAclsToRole($expectedAcl)
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE)));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => self::TEST_EDIT_ROLE))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $roleId = ToolsAPI::jsonToArray($result->getContent());

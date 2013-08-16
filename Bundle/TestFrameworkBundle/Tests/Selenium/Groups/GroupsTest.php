@@ -38,7 +38,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openGroups()
-            ->assertTitle('Groups');
+            ->assertTitle('Groups - System');
     }
 
     public function testGroupsGridDefaultContent()
@@ -57,6 +57,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             $this->assertArrayHasKey($content, $this->defaultGroups['header']);
         }
 
+        $checks = 0;
         foreach ($records as $row) {
             $columns = $row->elements($this->using('xpath')->value("td[not(contains(@style, 'display: none;'))]"));
             $id = null;
@@ -65,9 +66,13 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
                 if (is_null($id)) {
                     $id = $content;
                 }
-                $this->assertArrayHasKey($content, $this->defaultGroups[$id]);
+                if (array_key_exists($id, $this->defaultGroups)) {
+                    $this->assertArrayHasKey($content, $this->defaultGroups[$id]);
+                }
             }
+            $checks = $checks + 1;
         }
+        $this->assertGreaterThanOrEqual(count($this->defaultGroups)-1, $checks);
     }
 
     public function testGroupAdd()

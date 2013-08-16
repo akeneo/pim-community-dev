@@ -4,25 +4,18 @@ namespace Oro\Bundle\AddressBundle\Tests\Entity\Manager;
 
 use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
 use Oro\Bundle\AddressBundle\Entity\Address;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class AddressManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ObjectManager
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $om;
 
     /**
-     * @var FlexibleManager
-     */
-    protected $fm;
-
-    /**
      * @var string
      */
-    protected $class;
+    protected $class = 'Oro\Bundle\AddressBundle\Entity\Address';
 
     /**
      * @var AddressManager
@@ -35,10 +28,6 @@ class AddressManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->fm = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->class = 'Oro\Bundle\AddressBundle\Entity\Address';
 
         $classMetaData = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
@@ -55,7 +44,7 @@ class AddressManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($this->class))
             ->will($this->returnValue($classMetaData));
 
-        $this->addressManager = new AddressManager($this->class, $this->om, $this->fm);
+        $this->addressManager = new AddressManager($this->class, $this->om);
     }
 
     /**
@@ -124,54 +113,6 @@ class AddressManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($this->addressManager->getClass()))
             ->will($this->returnValue($repository));
         $this->assertEquals($this->addressManager->findAddressBy($addressCriteria), $address);
-    }
-
-    /**
-     * Test magic call methods for existing flexible manager methods
-     */
-    public function testCall()
-    {
-        $this->fm
-            ->expects($this->once())
-            ->method('getFlexibleName')
-            ->will($this->returnValue(1));
-
-        $this->assertEquals($this->addressManager->getFlexibleName(), 1);
-    }
-
-    /**
-     * Testing exception on not existing method in address manager
-     *
-     * @expectedException \RuntimeException
-     */
-    public function testCallException()
-    {
-        $this->addressManager->NotExistingMethod();
-    }
-
-    public function testListQuery()
-    {
-        $limit = 1;
-        $offset = 10;
-        $paginator = $this->getMockBuilder('Doctrine\ORM\Tools\Pagination\Paginator')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repo = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repo->expects($this->once())
-            ->method('findByWithAttributesQB')
-            ->with(array(), null, array('id' => 'ASC'), $limit, $offset)
-            ->will($this->returnValue($paginator));
-
-        $this->fm->expects($this->once())
-            ->method('getFlexibleRepository')
-            ->will($this->returnValue($repo));
-
-
-        $this->assertSame($paginator, $this->addressManager->getListQuery($limit, $offset));
     }
 
     /**

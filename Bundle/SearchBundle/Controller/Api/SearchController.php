@@ -38,7 +38,7 @@ class SearchController extends FOSRestController
                     $this->getRequest()->get('from')
                 )->toSearchResultData(),
                 Codes::HTTP_OK
-            )->setTemplate('OroSearchBundle:Api:results.html.twig')
+            )->setTemplate('OroSearchBundle:Search:searchSuggestion.html.twig')
         );
     }
 }

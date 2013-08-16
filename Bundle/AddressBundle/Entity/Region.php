@@ -4,7 +4,6 @@ namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -14,7 +13,9 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 /**
  * Region
  *
- * @ORM\Table("oro_dictionary_region")
+ * @ORM\Table("oro_dictionary_region", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionTranslation")
  */
@@ -34,7 +35,6 @@ class Region implements Translatable
      *
      * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions", cascade={"persist"})
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
-     * @Type("string")
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $country;

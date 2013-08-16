@@ -2,18 +2,19 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
 
-class AddressApiType extends AddressType
+use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
+
+class AddressApiType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function addEntityFields(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::addEntityFields($builder);
         $builder->addEventSubscriber(new PatchSubscriber());
     }
 
@@ -24,12 +25,17 @@ class AddressApiType extends AddressType
     {
         $resolver->setDefaults(
             array(
-                'data_class'           => $this->flexibleClass,
-                'intention'            => 'address',
-                'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
-                'csrf_protection'      => false,
+                'csrf_protection' => false,
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'oro_address';
     }
 
     /**

@@ -14,6 +14,7 @@ class Contact extends AbstractEntity implements Entity
     protected $email;
     protected $assignedto;
     protected $reportsto;
+    protected $addressCollection;
 
     public function __construct($testCase, $redirect = true)
     {
@@ -22,14 +23,13 @@ class Contact extends AbstractEntity implements Entity
 
     public function init()
     {
-        $this->nameprefix = $this->byId('orocrm_contact_form_values_name_prefix_varchar');
-        $this->firstname = $this->byId('orocrm_contact_form_values_first_name_varchar');
-        $this->lastname = $this->byId('orocrm_contact_form_values_last_name_varchar');
-        $this->namesuffix = $this->byId('orocrm_contact_form_values_name_suffix_varchar');
-        $this->email = $this->byId('orocrm_contact_form_values_email_varchar');
-        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_assigned_to_user']/a");
-        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_reports_to_contact']/a");
-        $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']");
+        $this->nameprefix = $this->byId('orocrm_contact_form_namePrefix');
+        $this->firstname = $this->byId('orocrm_contact_form_firstName');
+        $this->lastname = $this->byId('orocrm_contact_form_lastName');
+        $this->namesuffix = $this->byId('orocrm_contact_form_nameSuffix');
+        $this->email = $this->byId('orocrm_contact_form_emails_0_email');
+        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_assignedTo']/a");
+        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_reportsTo']/a");
         $this->addressCollection = $this->byId('orocrm_contact_form_addresses_collection');
 
         return $this;
@@ -73,16 +73,22 @@ class Contact extends AbstractEntity implements Entity
 
     public function verifyTag($tag)
     {
-        if ($this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tags']")) {
-            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']//input");
+        if ($this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tags_autocomplete']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags_autocomplete']//input");
             $this->tags->click();
             $this->tags->value(substr($tag, 0, (strlen($tag)-1)));
             $this->waitForAjax();
-            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+            $this->assertElementPresent(
+                "//div[@id='select2-drop']//div[contains(., '{$tag}')]",
+                "Tag's autocoplete doesn't return entity"
+            );
             $this->tags->clear();
         } else {
             if ($this->isElementPresent("//div[@id='tags-holder']")) {
-                $this->assertElementPresent("//div[@id='tags-holder'][contains(., '{$tag}')]", 'Tag is not assigned to entity');
+                $this->assertElementPresent(
+                    "//div[@id='tags-holder']//li[contains(., '{$tag}')]",
+                    'Tag is not assigned to entity'
+                );
             } else {
                 throw new \Exception("Tag field can't be found");
             }
@@ -90,17 +96,28 @@ class Contact extends AbstractEntity implements Entity
         return $this;
     }
 
+    /**
+     * @param $tag
+     * @return $this
+     * @throws \Exception
+     */
     public function setTag($tag)
     {
-        $this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tagss']");
-        $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags']//input");
-        $this->tags->click();
-        $this->tags->value($tag);
-        $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
-        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
+        if ($this->isElementPresent("//div[@id='s2id_orocrm_contact_form_tags_autocomplete']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_contact_form_tags_autocomplete']//input");
+            $this->tags->click();
+            $this->tags->value($tag);
+            $this->waitForAjax();
+            $this->assertElementPresent(
+                "//div[@id='select2-drop']//div[contains(., '{$tag}')]",
+                "Tag's autocoplete doesn't return entity"
+            );
+            $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
 
-        return $this;
+            return $this;
+        } else {
+            throw new \Exception("Tag field can't be found");
+        }
     }
 
     public function setAddressTypes($values, $addressId = 0)
@@ -266,7 +283,7 @@ class Contact extends AbstractEntity implements Entity
         )
         ) {
             //click Add
-            $this->byXpath("//a[@class='btn add-list-item']")->click();
+            $this->byXpath("//div[@class='row-oro'][div[@id='orocrm_contact_form_addresses_collection']]//a[@class='btn add-list-item']")->click();
             $this->waitForAjax();
         }
 

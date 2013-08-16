@@ -22,6 +22,7 @@ Oro.RegionUpdater.View = Backbone.View.extend({
 
         this.template = $('#region-chooser-template').html();
 
+        this.displaySelect2(this.showSelect);
         this.target.on('select2-init', _.bind(function() {
             this.displaySelect2(this.showSelect);
         }, this));

@@ -6,8 +6,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Sonata\AdminBundle\Filter\FilterInterface as SonataFilterInterface;
-
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -17,7 +15,13 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * TODO: This class should be refactored  (BAP-969).
+ */
 class Datagrid implements DatagridInterface
 {
     /**
@@ -51,6 +55,13 @@ class Datagrid implements DatagridInterface
      * @var bool
      */
     protected $parametersApplied = false;
+
+    /**
+     * Filters applied flag
+     *
+     * @var bool
+     */
+    protected $filtersApplied = false;
 
     /**
      * Pager applied flag
@@ -104,12 +115,32 @@ class Datagrid implements DatagridInterface
     /**
      * @var string
      */
+    protected $entityName;
+
+    /**
+     * @var string
+     */
     protected $entityHint;
 
     /**
      * @var ActionInterface[]
      */
-    protected $rowActions;
+    protected $rowActions = array ();
+
+    /**
+     * @var MassActionInterface[]
+     */
+    protected $massActions = array();
+
+    /**
+     * @var array
+     */
+    protected $toolbarOptions;
+
+    /**
+     * @var string|null
+     */
+    protected $identifierFieldName;
 
     /**
      * @param ProxyQueryInterface $query
@@ -120,7 +151,6 @@ class Datagrid implements DatagridInterface
      * @param ParametersInterface $parameters
      * @param EventDispatcherInterface $eventDispatcher
      * @param string $name
-     * @param string $entityHint
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -129,9 +159,7 @@ class Datagrid implements DatagridInterface
         FormBuilderInterface $formBuilder,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        EventDispatcherInterface $eventDispatcher,
-        $name,
-        $entityHint = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->query           = $query;
         $this->columns         = $columns;
@@ -140,8 +168,6 @@ class Datagrid implements DatagridInterface
         $this->routeGenerator  = $routeGenerator;
         $this->parameters      = $parameters;
         $this->eventDispatcher = $eventDispatcher;
-        $this->name            = $name;
-        $this->entityHint      = $entityHint;
         $this->properties      = new PropertyCollection();
 
         /** @var $field FieldDescriptionInterface */
@@ -165,7 +191,7 @@ class Datagrid implements DatagridInterface
     /**
      * Get properties
      *
-     * @return PropertyCollection
+     * @return array
      */
     public function getProperties()
     {
@@ -173,13 +199,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param SonataFilterInterface $filter
-     * @return void
+     * {@inheritDoc}
      */
-    public function addFilter(SonataFilterInterface $filter)
+    public function addFilter(FilterInterface $filter, $prepend = false)
     {
         $name = $filter->getName();
-        $this->filters[$name] = $filter;
+        if ($prepend) {
+            $this->filters = array_merge(array($name => $filter), $this->filters);
+        } else {
+            $this->filters[$name] = $filter;
+        }
         list($formType, $formOptions) = $filter->getRenderSettings();
         $this->formBuilder->add($name, $formType, $formOptions);
     }
@@ -195,7 +224,7 @@ class Datagrid implements DatagridInterface
     /**
      * @param string $name
      *
-     * @return SonataFilterInterface
+     * @return FilterInterface
      */
     public function getFilter($name)
     {
@@ -293,8 +322,12 @@ class Datagrid implements DatagridInterface
     /**
      * Apply filter data to ProxyQuery
      */
-    protected function applyFilters()
+    public function applyFilters()
     {
+        if ($this->filtersApplied) {
+            return;
+        }
+
         $form = $this->getForm();
 
         /** @var $filter FilterInterface */
@@ -306,6 +339,8 @@ class Datagrid implements DatagridInterface
                 $filter->apply($this->query, $data);
             }
         }
+
+        $this->filtersApplied = true;
     }
 
     /**
@@ -333,7 +368,7 @@ class Datagrid implements DatagridInterface
 
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
-        $this->pager->setMaxPerPage(!empty($pagerParameters['_per_page']) ? $pagerParameters['_per_page'] : 10);
+        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int)$pagerParameters['_per_page'] : 10);
         $this->pager->init();
 
         $this->pagerApplied = true;
@@ -383,14 +418,6 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @deprecated Use applyParameters instead
-     */
-    public function buildPager()
-    {
-        $this->applyParameters();
-    }
-
-    /**
      * @return array
      */
     public function getColumns()
@@ -399,30 +426,11 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * @return ParametersInterface
      */
     public function getParameters()
     {
-        return $this->parameters->toArray();
-    }
-
-    /**
-     * @param string $name
-     * @param string $operator
-     * @param mixed $value
-     * @deprecated Grid parameters are read-only
-     */
-    public function setValue($name, $operator, $value)
-    {
-    }
-
-    /**
-     * @return array
-     * @deprecated Use getParameters instead
-     */
-    public function getValues()
-    {
-        return $this->getParameters();
+        return $this->parameters;
     }
 
     /**
@@ -442,11 +450,43 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
+    /**
      * @return string
      */
     public function getEntityHint()
     {
         return $this->entityHint;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityHint($entityHint)
+    {
+        $this->entityHint = $entityHint;
     }
 
     /**
@@ -459,6 +499,15 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @param MassActionInterface $action
+     * @return void
+     */
+    public function addMassAction(MassActionInterface $action)
+    {
+        $this->massActions[] = $action;
+    }
+
+    /**
      * @return ActionInterface[]
      */
     public function getRowActions()
@@ -467,10 +516,63 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @return MassActionInterface[]
+     */
+    public function getMassActions()
+    {
+        return $this->massActions;
+    }
+
+    /**
      * @return DatagridView
      */
     public function createView()
     {
         return new DatagridView($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getToolbarOptions()
+    {
+        return $this->toolbarOptions;
+    }
+
+    /**
+     * @param $options
+     * @return $this
+     */
+    public function setToolbarOptions($options)
+    {
+        $this->toolbarOptions = $options;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierFieldName()
+    {
+        return $this->identifierFieldName;
+    }
+
+    /**
+     * @param string $identifierFieldName
+     */
+    public function setIdentifierFieldName($identifierFieldName)
+    {
+        $this->identifierFieldName = $identifierFieldName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierField()
+    {
+        $identifierFieldName = $this->getIdentifierFieldName();
+        if ($identifierFieldName && $this->columns->has($identifierFieldName)) {
+            return $this->columns->get($identifierFieldName);
+        }
+        throw new \RuntimeException(sprintf('There is no identifier field in grid "%s"', $this->getName()));
     }
 }

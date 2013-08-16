@@ -1,0 +1,16 @@
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > li {
+    height: auto;
+}
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a,
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a:hover,
+.a2lix_translations .a2lix_translationsLocales.nav.nav-tabs > .active > a:focus {
+    background-color: #fff;
+}
+.a2lix_translationsFields.tab-content .tab-pane input,
+.a2lix_translationsFields.tab-content .tab-pane textarea {
+    width: 700px;
+}
+.modal-body .loading-content {
+    background: #fff url('/bundles/orogrid/img/loader.gif') no-repeat center left;
+    padding-left: 30px;
+}

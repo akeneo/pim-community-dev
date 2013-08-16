@@ -27,11 +27,6 @@ abstract class AbstractAction implements ActionInterface
     protected $options;
 
     /**
-     * @var ManagerInterface
-     */
-    protected $aclManager;
-
-    /**
      * @var bool
      */
     protected $isProcessed = false;
@@ -40,14 +35,6 @@ abstract class AbstractAction implements ActionInterface
      * @var array
      */
     protected $requiredOptions = array();
-
-    /**
-     * @param ManagerInterface $aclManager
-     */
-    public function __construct(ManagerInterface $aclManager)
-    {
-        $this->aclManager   = $aclManager;
-    }
 
     /**
      * Filter name
@@ -132,19 +119,5 @@ abstract class AbstractAction implements ActionInterface
                 'There is no option "' . $optionName . '" for action "' . $this->name . '".'
             );
         }
-    }
-
-    /**
-     * Check whether action allowed for current user
-     *
-     * @return bool
-     */
-    public function isGranted()
-    {
-        if ($this->aclResource) {
-            return $this->aclManager->isResourceGranted($this->aclResource);
-        }
-
-        return true;
     }
 }

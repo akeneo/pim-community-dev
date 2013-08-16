@@ -1,0 +1,8 @@
+parameters:
+    oro_entity.form.type.audit.field_config.class:             Oro\Bundle\EntityBundle\Form\Type\Audit\FieldConfigType
+
+services:
+    oro_entity.form.type.audit.field_config:
+        class:                                                 %oro_entity.form.type.audit.field_config.class%
+        tags:
+            - { name: form.type, alias: entity_audit_field_config_type }
