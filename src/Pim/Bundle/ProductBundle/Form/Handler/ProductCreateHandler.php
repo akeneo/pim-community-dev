@@ -55,7 +55,7 @@ class ProductCreateHandler
     {
         $this->form->setData($entity);
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->isMethod('POST')) {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {

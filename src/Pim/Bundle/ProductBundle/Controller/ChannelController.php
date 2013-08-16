@@ -4,9 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 
@@ -16,8 +14,6 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/channel")
  */
 class ChannelController extends Controller
 {
@@ -26,13 +22,7 @@ class ChannelController extends Controller
      *
      * @param Request $request
      *
-     * @Route(
-     *     "/.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format" = "html"}
-     * )
      * @Template()
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -60,9 +50,7 @@ class ChannelController extends Controller
     /**
      * Create channel
      *
-     * @Route("/create")
      * @Template("PimProductBundle:Channel:edit.html.twig")
-     *
      * @return array
      */
     public function createAction()
@@ -77,9 +65,7 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
-     *
      * @return array
      */
     public function editAction(Channel $channel)
@@ -102,8 +88,6 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction(Channel $channel)

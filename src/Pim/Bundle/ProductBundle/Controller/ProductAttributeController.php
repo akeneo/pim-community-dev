@@ -5,9 +5,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
@@ -16,8 +14,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/product-attribute")
  */
 class ProductAttributeController extends Controller
 {
@@ -25,11 +21,6 @@ class ProductAttributeController extends Controller
      * List product attributes
      * @param Request $request
      *
-     * @Route("/.{_format}",
-     *      name="pim_product_productattribute_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
      * @return template
      */
     public function indexAction(Request $request)
@@ -50,9 +41,7 @@ class ProductAttributeController extends Controller
     /**
      * Create attribute
      *
-     * @Route("/create")
      * @Template("PimProductBundle:ProductAttribute:form.html.twig")
-     *
      * @return array
      */
     public function createAction()
@@ -80,9 +69,7 @@ class ProductAttributeController extends Controller
      *
      * @param ProductAttribute $attribute
      *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template("PimProductBundle:ProductAttribute:form.html.twig")
-     *
      * @return array
      */
     public function editAction(ProductAttribute $attribute)
@@ -119,9 +106,7 @@ class ProductAttributeController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/preprocess")
      * @Template("PimProductBundle:ProductAttribute:_form_parameters.html.twig")
-     *
      * @return array
      */
     public function preProcessAction(Request $request)
@@ -168,13 +153,11 @@ class ProductAttributeController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/sort")
-     *
      * @return Response
      */
     public function sortAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
+        if (!$request->isXmlHttpRequest()) {
             return $this->redirectToRoute('pim_product_productattribute_index');
         }
 
@@ -200,9 +183,6 @@ class ProductAttributeController extends Controller
      * Remove attribute
      *
      * @param Attribute $entity
-     *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
