@@ -18,11 +18,6 @@ services:
         tags:
             - { name: oro_service_link,  service: oro_entity_config.provider_bag }
 
-    oro_entity_config.link.provider_bag.method:
-        arguments:                                             ['rr', 'd']
-        tags:
-            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: testAction }
-
     oro_entity_config.config_manager:
         class:                                                  %oro_entity_config.config_manager.class%
         arguments:

@@ -14,6 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigProvider implements ConfigProviderInterface
 {
@@ -33,15 +34,16 @@ class ConfigProvider implements ConfigProviderInterface
     protected $scope;
 
     /**
-     * @param ConfigManager $configManager
-     * @param               $scope
-     * @param array         $config
+     * @param ConfigManager       $configManager
+     * @param ContainerInterface  $container
+     * @param                     $scope
+     * @param array               $config
      */
-    public function __construct(ConfigManager $configManager, $scope, array $config)
+    public function __construct(ConfigManager $configManager, ContainerInterface $container, $scope, array $config)
     {
-        $this->configManager           = $configManager;
-        $this->propertyConfigContainer = new PropertyConfigContainer($config);
         $this->scope                   = $scope;
+        $this->configManager           = $configManager;
+        $this->propertyConfigContainer = new PropertyConfigContainer($config, $container);
     }
 
     /**

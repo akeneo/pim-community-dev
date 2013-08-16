@@ -151,6 +151,7 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 if (isset($item['grid'])) {
+                    $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
                     $fieldObjectProvider->setOptions(

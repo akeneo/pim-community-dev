@@ -1,3 +1,6 @@
 parameters:
 
 services:
+    oro_entity_config.link.provider_bag.method:
+        tags:
+            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: testAction }

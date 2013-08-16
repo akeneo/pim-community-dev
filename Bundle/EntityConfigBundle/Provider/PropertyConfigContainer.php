@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PropertyConfigContainer
 {
@@ -19,11 +20,17 @@ class PropertyConfigContainer
     protected $config;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @param $config
      */
-    public function __construct($config)
+    public function __construct($config, ContainerInterface $container)
     {
-        $this->config = $config;
+        $this->config    = $config;
+        $this->container = $container;
     }
 
     /**
@@ -32,6 +39,14 @@ class PropertyConfigContainer
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * @param $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
     }
 
     /**
@@ -275,12 +290,18 @@ class PropertyConfigContainer
         return $result;
     }
 
+    /**
+     * @param $parameter
+     * @return mixed
+     */
     protected function initParameter($parameter)
     {
-        if (0 === strpos($parameter, '@')) {
-            return '';
-        } else {
-            return $parameter;
+        if ($this->container->has($parameter)) {
+            $callableService = $this->container->get($parameter);
+
+            return call_user_func($callableService);
         }
+
+        return $parameter;
     }
 }

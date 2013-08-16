@@ -13,17 +13,10 @@ use Symfony\Component\Yaml\Yaml;
 class EntityConfigPass implements CompilerPassInterface
 {
     /**
-     * @var ContainerBuilder
-     */
-    protected $container;
-
-    /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $this->container = $container;
-
         $providerBagDefinition = $container->getDefinition('oro_entity_config.provider_bag');
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
@@ -33,11 +26,11 @@ class EntityConfigPass implements CompilerPassInterface
 
                 if (isset($bundleConfig['oro_entity_config']) && count($bundleConfig['oro_entity_config'])) {
                     foreach ($bundleConfig['oro_entity_config'] as $scope => $config) {
-                        $this->initCallableProperty($config);
                         $provider = new Definition('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
                         $provider->setArguments(
                             array(
                                 new Reference('oro_entity_config.config_manager'),
+                                new Reference('service_container'),
                                 $scope,
                                 $config
                             )
@@ -48,26 +41,6 @@ class EntityConfigPass implements CompilerPassInterface
                         $providerBagDefinition->addMethodCall('addProvider', array($provider));
                     }
                 }
-            }
-        }
-    }
-
-    /**
-     * @param $config
-     * @return object
-     */
-    protected function initCallableProperty(&$config)
-    {
-        if (is_array($config)) {
-            foreach ($config as $item) {
-                $this->initCallableProperty($item);
-            }
-        } else {
-            if ($this->container->hasDefinition($config)) {
-                $definition = $this->container->getDefinition($config);
-                var_dump(class_exists($definition->getClass()));
-
-                return $this->container->get($config);
             }
         }
     }
