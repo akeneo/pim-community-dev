@@ -49,6 +49,8 @@ class TextFilterTypeTest extends AbstractTypeTestCase
                         TextFilterType::TYPE_CONTAINS => 'label_type_contains',
                         TextFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
                         TextFilterType::TYPE_EQUAL => 'label_type_equals',
+                        TextFilterType::TYPE_STARTS_WITH => 'label_type_start_with',
+                        TextFilterType::TYPE_ENDS_WITH => 'label_type_end_with',
                     )
                 )
             )
