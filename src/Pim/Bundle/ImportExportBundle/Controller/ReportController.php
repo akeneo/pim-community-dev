@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
@@ -17,11 +16,9 @@ class ReportController extends Controller
     /**
      * List the reports
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.report');
 
@@ -31,11 +28,9 @@ class ReportController extends Controller
     /**
      * List the export reports
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function exportAction(Request $request)
+    public function exportAction()
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.export_report');
 
@@ -45,11 +40,9 @@ class ReportController extends Controller
     /**
      * List the import reports
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function importAction(Request $request)
+    public function importAction()
     {
         $gridManager = $this->get('pim_import_export.datagrid.manager.import_report');
 

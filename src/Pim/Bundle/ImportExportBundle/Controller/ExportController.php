@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
