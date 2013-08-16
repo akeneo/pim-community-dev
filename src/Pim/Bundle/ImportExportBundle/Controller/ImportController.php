@@ -3,10 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
@@ -15,29 +12,12 @@ use Pim\Bundle\BatchBundle\Entity\Job;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/import")
  */
 class ImportController extends JobControllerAbstract
 {
     /**
      * {@inheritdoc}
      *
-     * @Route(
-     *     "/.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format" = "html"}
-     * )
-     */
-    public function indexAction(Request $request)
-    {
-        return parent::indexAction($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Route("/create")
      * @Template("PimImportExportBundle:Import:edit.html.twig")
      */
     public function createAction(Request $request)
@@ -48,7 +28,6 @@ class ImportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}")
      * @Template
      */
     public function showAction($id)
@@ -59,7 +38,6 @@ class ImportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/edit/{id}")
      * @Template
      */
     public function editAction($id)
@@ -70,22 +48,6 @@ class ImportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route("/{id}/remove", requirements={"id"="\d+"})
-     * @Method("DELETE")
-     */
-    public function removeAction($id)
-    {
-        return parent::removeAction($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Route(
-     *     "/show/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0}
-     * )
      * @Template
      */
     public function reportAction($id)
@@ -95,11 +57,6 @@ class ImportController extends JobControllerAbstract
     /**
      * {@inheritdoc}
      *
-     * @Route(
-     *     "/launch/{id}",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0}
-     * )
      * @Template
      */
     public function launchAction($id)

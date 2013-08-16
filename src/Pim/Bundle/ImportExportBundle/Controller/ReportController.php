@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\BatchBundle\Entity\Job;
-
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 
 /**
@@ -15,8 +11,6 @@ use Pim\Bundle\ProductBundle\Controller\Controller;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/report")
  */
 class ReportController extends Controller
 {
@@ -26,12 +20,6 @@ class ReportController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Route(
-     *     "/.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format"="html"}
-     * )
      */
     public function indexAction(Request $request)
     {
@@ -46,12 +34,6 @@ class ReportController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Route(
-     *     "/export.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format"="html"}
-     * )
      */
     public function exportAction(Request $request)
     {
@@ -66,12 +48,6 @@ class ReportController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Route(
-     *     "/import.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format"="html"}
-     * )
      */
     public function importAction(Request $request)
     {
