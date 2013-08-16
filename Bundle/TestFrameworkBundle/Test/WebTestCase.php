@@ -4,6 +4,7 @@ namespace Oro\Bundle\TestFrameworkBundle\Test;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
+use Doctrine\ORM\EntityManager;
 
 class WebTestCase extends BaseWebTestCase
 {
@@ -12,6 +13,11 @@ class WebTestCase extends BaseWebTestCase
 
     static protected $db_isolation = false;
     static protected $db_reindex = false;
+
+    /**
+     * @var Client
+     */
+    static protected $internalClient;
 
     /**
      * Creates a Client.
@@ -23,31 +29,56 @@ class WebTestCase extends BaseWebTestCase
      */
     protected static function createClient(array $options = array(), array $server = array())
     {
-        /** @var  \Oro\Bundle\TestFrameworkBundle\Test\Client $client */
-        $client = parent::createClient($options, $server);
+        if (!self::$internalClient) {
+            self::$internalClient = parent::createClient($options, $server);
 
-        if (self::$db_isolation && Client::getTransactionLevel() < 1) {
-            //workaround MyISAM search tables are not on transaction
-            if (self::$db_reindex) {
-                $kernel = $client->getKernel();
-                $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
-                $application->setAutoExit(false);
-                $options = array('command' => 'oro:search:reindex');
-                $options['--env'] = "test";
-                $options['--quiet'] = null;
-                $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+            if (self::$db_isolation) {
+                /** @var Client $client */
+                $client = self::$internalClient;
+
+                //workaround MyISAM search tables are not on transaction
+                if (self::$db_reindex) {
+                    $kernel = $client->getKernel();
+                    $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+                    $application->setAutoExit(false);
+                    $options = array('command' => 'oro:search:reindex');
+                    $options['--env'] = "test";
+                    $options['--quiet'] = null;
+                    $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+                }
+
+                $client->startTransaction();
+                $pdoConnection = Client::getPdoConnection();
+                if ($pdoConnection) {
+                    //set transaction level to 1 for entityManager
+                    $connection = $client->createConnection($pdoConnection);
+                    $client->getContainer()->set('doctrine.dbal.default_connection', $connection);
+
+                    /** @var EntityManager $entityManager */
+                    $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+                    if (spl_object_hash($entityManager->getConnection()) != spl_object_hash($connection)) {
+                        $reflection = new \ReflectionProperty('Doctrine\ORM\EntityManager', 'conn');
+                        $reflection->setAccessible(true);
+                        $reflection->setValue($entityManager, $connection);
+                    }
+                }
             }
-
-            $client->startTransaction();
         }
-        return $client;
+
+        return self::$internalClient;
     }
 
     public static function tearDownAfterClass()
     {
-        if (self::$db_isolation) {
-            Client::rollbackTransaction();
-            self::$db_isolation = false;
+        if (self::$internalClient) {
+            /** @var Client $client */
+            $client = self::$internalClient;
+            if (self::$db_isolation) {
+                $client->rollbackTransaction();
+                self::$db_isolation = false;
+            }
+            $client->setSoapClient(null);
+            self::$internalClient = null;
         }
     }
 
@@ -68,11 +99,17 @@ class WebTestCase extends BaseWebTestCase
         }
     }
 
+    /**
+     * @return bool
+     */
     public function getIsolation()
     {
         return self::$db_isolation;
     }
 
+    /**
+     * @param bool $dbIsolation
+     */
     public function setIsolation($dbIsolation = false)
     {
         self::$db_isolation = $dbIsolation;

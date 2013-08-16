@@ -56,3 +56,9 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: form.type, alias: oro_type_entity_filter }
+
+    oro_filter.form.type.filter.selectrow:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_selectrow_filter }

@@ -23,10 +23,10 @@ Oro.Datagrid.Action.RefreshCollectionAction = Oro.Datagrid.Action.AbstractAction
     initialize: function(options) {
         options = options || {};
 
-        if (!options.collection) {
-            throw new TypeError("'collection' is required");
+        if (!options.datagrid) {
+            throw new TypeError("'datagrid' is required");
         }
-        this.collection = options.collection;
+        this.collection = options.datagrid.collection;
 
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
     },

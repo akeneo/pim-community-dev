@@ -47,7 +47,12 @@ class SorterFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate($flexibleName, $serviceName)
     {
-        $sorterMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Sorter\SorterInterface', array(), '', false);
+        $sorterMock = $this->getMockForAbstractClass(
+            'Oro\Bundle\GridBundle\Sorter\SorterInterface',
+            array(),
+            '',
+            false
+        );
 
         $containerMock = $this->getMockForAbstractClass(
             'Symfony\Component\DependencyInjection\ContainerInterface',

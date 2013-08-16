@@ -14,7 +14,7 @@ js:
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.mousewheel.min.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.numeric.js'
         - '@OroUIBundle/Resources/public/lib/jquery/jquery.uniform.min.js'
-        - '@OroUIBundle/Resources/public/lib/jquery/select2.min.js'
+        - '@OroUIBundle/Resources/public/lib/jquery/select2.js'
     'bootstrap':
         - '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
         - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'
@@ -44,6 +44,10 @@ js:
         - '@OroUIBundle/Resources/public/js/form_buttons.js'
     'js_routes':
         - 'js/routes.js'
+    'widgets':
+        - '@OroUIBundle/Resources/public/js/backbone/widget/manager.js'
+        - '@OroUIBundle/Resources/public/js/backbone/widget/abstract.js'
+        - '@OroUIBundle/Resources/public/js/backbone/widget/block.js'
 css:
     'UI':
         - 'bundles/oroui/css/less/main.less'

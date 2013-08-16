@@ -2,17 +2,19 @@
 
 namespace Oro\Bundle\AddressBundle\Controller\Api\Rest;
 
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Response;
+
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Routing\ClassResourceInterface;
+
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
-use Oro\Bundle\SoapBundle\Controller\Api\Rest\FlexibleRestController;
+use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
 
 /**
@@ -25,7 +27,7 @@ use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
  *      parent="root"
  * )
  */
-class AddressController extends FlexibleRestController implements ClassResourceInterface
+class AddressController extends RestController implements ClassResourceInterface
 {
     /**
      * REST GET list

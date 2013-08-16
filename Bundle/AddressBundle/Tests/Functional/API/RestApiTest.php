@@ -18,11 +18,7 @@ class RestApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -83,6 +79,31 @@ class RestApiTest extends WebTestCase
         $this->assertArrayHasKey('id', $resultJson);
 
         $this->assertEquals($id, $resultJson['id']);
+    }
+
+    /**
+     * Test GET
+     *
+     * @depends testCreateAddress
+     */
+    public function testGetAddresses($id)
+    {
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_addresses')
+        );
+
+        /** @var $result Response */
+        $result = $this->client->getResponse();
+
+        ToolsAPI::assertJsonResponse($result, 200);
+        $resultJson = json_decode($result->getContent(), true);
+
+        $this->assertNotEmpty($resultJson);
+        $this->assertArrayHasKey(0, $resultJson);
+        $this->assertArrayHasKey('id', $resultJson[0]);
+
+        $this->assertEquals($id, $resultJson[0]['id']);
     }
 
     /**

@@ -68,24 +68,21 @@ class SoapApiTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-            $this->client->soap(
-                "http://localhost/api/soap",
-                array(
-                    'location' => 'http://localhost/api/soap',
-                    'soap_version' => SOAP_1_2
-                )
-            );
-        } else {
-            $this->client->restart();
-        }
-
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        $this->client->soap(
+            "http://localhost/api/soap",
+            array(
+                'location' => 'http://localhost/api/soap',
+                'soap_version' => SOAP_1_2
+            )
+        );
     }
 
     public function testCreateAddress()
     {
-        $this->assertTrue($this->client->soapClient->createAddress($this->addressData['Create Address Data']));
+        $id = $this->client->getSoap()->createAddress($this->addressData['Create Address Data']);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**
@@ -94,7 +91,7 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetAddresses()
     {
-        $result = $this->client->soapClient->getAddresses();
+        $result = $this->client->getSoap()->getAddresses();
         $result = ToolsAPI::classToArray($result);
         if (is_array(reset($result['item']))) {
             $actualData = $result['item'];
@@ -132,7 +129,7 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetAddress($id)
     {
-        $result = $this->client->soapClient->getAddress($id);
+        $result = $this->client->getSoap()->getAddress($id);
         $actualData = ToolsAPI::classToArray($result);
         unset($actualData['id']);
         $this->assertEquals($this->addressData['Expected Address Data'], $actualData);
@@ -144,8 +141,8 @@ class SoapApiTest extends WebTestCase
      */
     public function testUpdateAddress($id)
     {
-        $this->assertTrue($this->client->soapClient->updateAddress($id, $this->addressData['Update Address Data']));
-        $result = $this->client->soapClient->getAddress($id);
+        $this->assertTrue($this->client->getSoap()->updateAddress($id, $this->addressData['Update Address Data']));
+        $result = $this->client->getSoap()->getAddress($id);
         $actualData = ToolsAPI::classToArray($result);
         unset($actualData['id']);
         $this->assertEquals($this->addressData['Expected Updated Address Data'], $actualData);
@@ -157,9 +154,9 @@ class SoapApiTest extends WebTestCase
      */
     public function testDeleteAddress($id)
     {
-        $this->assertTrue($this->client->soapClient->deleteAddress($id));
+        $this->assertTrue($this->client->getSoap()->deleteAddress($id));
         $this->setExpectedException('SoapFault');
-        $this->client->soapClient->getAddress($id);
+        $this->client->getSoap()->getAddress($id);
     }
 
     /**
@@ -167,7 +164,7 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountries()
     {
-        $result = $this->client->soapClient->getCountries();
+        $result = $this->client->getSoap()->getCountries();
         $result = ToolsAPI::classToArray($result);
         return array_slice($result['item'], 0, 5);
     }
@@ -179,7 +176,7 @@ class SoapApiTest extends WebTestCase
     public function testGetCountry($countries)
     {
         foreach ($countries as $country) {
-            $result = $this->client->soapClient->getCountry($country['iso2Code']);
+            $result = $this->client->getSoap()->getCountry($country['iso2Code']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($country, $result);
         }
@@ -190,7 +187,7 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetRegions()
     {
-        $result = $this->client->soapClient->getRegions();
+        $result = $this->client->getSoap()->getRegions();
         $result = ToolsAPI::classToArray($result);
         return array_slice($result['item'], 0, 5);
     }
@@ -202,7 +199,7 @@ class SoapApiTest extends WebTestCase
     public function testGetRegion($regions)
     {
         foreach ($regions as $region) {
-            $result = $this->client->soapClient->getRegion($region['combinedCode']);
+            $result = $this->client->getSoap()->getRegion($region['combinedCode']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($region, $result);
         }
@@ -213,11 +210,11 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountryRegion()
     {
-        $result = $this->client->soapClient->getRegionByCountry('US');
+        $result = $this->client->getSoap()->getRegionByCountry('US');
         $result = ToolsAPI::classToArray($result);
         foreach ($result['item'] as $region) {
             $region['country'] = $region['country']['name'];
-            $expectedResult = $this->client->soapClient->getRegion($region['combinedCode']);
+            $expectedResult = $this->client->getSoap()->getRegion($region['combinedCode']);
             $expectedResult = ToolsAPI::classToArray($expectedResult);
             $this->assertEquals($expectedResult, $region);
         }

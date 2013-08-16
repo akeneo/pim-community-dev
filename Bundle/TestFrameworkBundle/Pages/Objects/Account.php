@@ -14,23 +14,18 @@ class Account extends AbstractEntity implements Entity
     protected $country;
     protected $state;
 
-    public function __construct($testCase, $redirect = true)
-    {
-        parent::__construct($testCase, $redirect);
-    }
-
     public function init()
     {
         $this->accountname = $this->byId('orocrm_account_form_name');
-        $this->street = $this->byId('orocrm_account_form_values_billing_address_address_street');
-        $this->city = $this->byId('orocrm_account_form_values_billing_address_address_city');
-        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_country']/a");
-        $this->zipcode = $this->byId('orocrm_account_form_values_billing_address_address_postalCode');
+        $this->street = $this->byId('orocrm_account_form_billingAddress_street');
+        $this->city = $this->byId('orocrm_account_form_billingAddress_city');
+        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_country']/a");
+        $this->zipcode = $this->byId('orocrm_account_form_billingAddress_postalCode');
 
-        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
-            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        if ($this->byId('orocrm_account_form_billingAddress_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_billingAddress_state_text');
         } else {
-            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_state']/a");
         }
 
         return $this;
@@ -45,16 +40,22 @@ class Account extends AbstractEntity implements Entity
 
     public function verifyTag($tag)
     {
-        if ($this->isElementPresent("//div[@id='s2id_orocrm_account_form_tags']")) {
-            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_account_form_tags']//input");
+        if ($this->isElementPresent("//div[@id='s2id_orocrm_account_form_tags_autocomplete']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_account_form_tags_autocomplete']//input");
             $this->tags->click();
             $this->tags->value(substr($tag, 0, (strlen($tag)-1)));
             $this->waitForAjax();
-            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
+            $this->assertElementPresent(
+                "//div[@id='select2-drop']//div[contains(., '{$tag}')]",
+                "Tag's autocoplete doesn't return entity"
+            );
             $this->tags->clear();
         } else {
             if ($this->isElementPresent("//div[@id='tags-holder']")) {
-                $this->assertElementPresent("//div[@id='tags-holder'][contains(., '{$tag}')]", 'Tag is not assigned to entity');
+                $this->assertElementPresent(
+                    "//div[@id='tags-holder']//li[contains(., '{$tag}')]",
+                    'Tag is not assigned to entity'
+                );
             } else {
                 throw new \Exception("Tag field can't be found");
             }
@@ -62,17 +63,28 @@ class Account extends AbstractEntity implements Entity
         return $this;
     }
 
+    /**
+     * @param $tag
+     * @return $this
+     * @throws \Exception
+     */
     public function setTag($tag)
     {
-        $this->isElementPresent("//div[@id='s2id_orocrm_account_form_tags']");
-        $this->tags = $this->byXpath("//div[@id='s2id_orocrm_account_form_tags']//input");
-        $this->tags->click();
-        $this->tags->value($tag);
-        $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$tag}')]", "Tag's autocoplete doesn't return entity");
-        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
+        if ($this->isElementPresent("//div[@id='s2id_orocrm_account_form_tags_autocomplete']")) {
+            $this->tags = $this->byXpath("//div[@id='s2id_orocrm_account_form_tags_autocomplete']//input");
+            $this->tags->click();
+            $this->tags->value($tag);
+            $this->waitForAjax();
+            $this->assertElementPresent(
+                "//div[@id='select2-drop']//div[contains(., '{$tag}')]",
+                "Tag's autocoplete doesn't return entity"
+            );
+            $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$tag}')]")->click();
 
-        return $this;
+            return $this;
+        } else {
+            throw new \Exception("Tag field can't be found");
+        }
     }
 
     public function getAccountName()
@@ -119,10 +131,10 @@ class Account extends AbstractEntity implements Entity
 
     public function setState($state)
     {
-        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
-            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        if ($this->byId('orocrm_account_form_billingAddress_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_billingAddress_state_text');
         } else {
-            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_state']/a");
         }
 
         $this->state->click();
