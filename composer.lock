@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "db07180d8cbb03d1bd974aaa72d9bbdc",
+    "hash": "8db334d08bec8a384d302666835fe4d4",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3025,12 +3025,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "ce3e331dc3e077a1e0292a06bf2e38194f130ddd"
+                "reference": "1471b6d380a02a057adae81ade3d88dbb9c3558b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/855036a1a99b60f06e9d9ed31094d2e7dd6fb713",
-                "reference": "ce3e331dc3e077a1e0292a06bf2e38194f130ddd",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/2632cbe136001a4c0891469638f54fe9b12ea69d",
+                "reference": "1471b6d380a02a057adae81ade3d88dbb9c3558b",
                 "shasum": ""
             },
             "require": {
@@ -3093,7 +3093,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-08-16 13:35:25"
+            "time": "2013-08-16 16:53:37"
         },
         {
             "name": "phpcollection/phpcollection",
