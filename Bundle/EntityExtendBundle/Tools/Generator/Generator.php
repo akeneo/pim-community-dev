@@ -50,8 +50,9 @@ class Generator
     /**
      * @param      $entityName
      * @param bool $force
+     * @param bool $extend
      */
-    public function checkEntityCache($entityName, $force = false)
+    public function checkEntityCache($entityName, $force = false, $extend = true)
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
@@ -65,9 +66,6 @@ class Generator
         }
         //$validatorYml = Yaml::parse($validator);
 
-//        echo $entityName, '***';
-//        return;
-
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
@@ -78,6 +76,7 @@ class Generator
                 ) . '.php',
                 "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
             );
+
 
             /** write Dynamic yml */
             file_put_contents(
@@ -96,7 +95,7 @@ class Generator
                     DIRECTORY_SEPARATOR,
                     $proxyClass
                 ) . '.php',
-                "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass)
+                "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass, $extend)
             );
         }
     }
@@ -261,18 +260,23 @@ class Generator
 
     /**
      * Generate Proxy class
+     *
      * @param $entityName
      * @param $className
-     * @return $this
+     * @param bool $extend
+     * @return string
      */
-    protected function generateProxyClass($entityName, $className)
+    protected function generateProxyClass($entityName, $className, $extend = true)
     {
         $this->writer = new Writer();
 
-        $class = PhpClass::create($this->generateClassName($entityName))
-            ->setName($className)
-            ->setParentClassName($entityName)
-            ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface'))
+        $class = PhpClass::create($this->generateClassName($entityName))->setName($className);
+
+        if ($extend) {
+            $class->setParentClassName($entityName);
+        }
+
+        $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface'))
             ->setProperty(PhpProperty::create('__proxy__extend')->setVisibility('protected'))
             ->setMethod(
                 $this->generateClassMethod(
