@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/family")
  */
 class FamilyController extends Controller
 {
@@ -25,9 +21,7 @@ class FamilyController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/create")
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function createAction(Request $request)
@@ -58,13 +52,7 @@ class FamilyController extends Controller
      * @param Request $request
      * @param integer $id
      *
-     * @Route(
-     *     "/{id}/edit",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0}
-     * )
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -115,9 +103,6 @@ class FamilyController extends Controller
      *
      * @param Family $entity
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
-     *
      * @return array
      */
     public function removeAction(Family $entity)
@@ -135,9 +120,6 @@ class FamilyController extends Controller
      * @param int $id The family id to which add attributes
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
-     *
      */
     public function addProductAttributesAction($id)
     {
@@ -164,9 +146,6 @@ class FamilyController extends Controller
      *
      * @param integer $familyId
      * @param integer $attributeId
-     *
-     * @Route("/{familyId}/attribute/{attributeId}/remove")
-     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

@@ -1,0 +1,45 @@
+pim_product_product_index:
+    path: "/.{_format}"
+    defaults: { _controller: PimProductBundle:Product:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_product_product_create:
+    path: /create/{dataLocale}
+    defaults: { _controller: PimProductBundle:Product:create, dataLocale: null }
+
+pim_product_product_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimProductBundle:Product:edit }
+    requirements:
+        id: \d+
+
+pim_product_product_addproductattributes:
+    path: /{id}/attributes
+    defaults: { _controller: PimProductBundle:Product:addProductAttributes }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_product_product_removeproductattribute:
+    path: /{productId}/attribute/{attributeId}/remove
+    defaults: { _controller: PimProductBundle:Product:removeProductAttribute }
+    requirements:
+        productId: \d+
+        attributeId: \d+
+    methods: [DELETE]
+
+pim_product_product_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimProductBundle:Product:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_product_product_listcategories:
+    path: /list-categories/product/{id}/parent/{category_id}.{_format}
+    defaults: { _controller: PimProductBundle:Product:listCategories }
+    requirements:
+        id: \d+
+        category_id: \d+
+        _format: json
