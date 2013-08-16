@@ -1,0 +1,32 @@
+pim_product_productattribute_index:
+    path: "/.{_format}"
+    defaults: { _controller: PimProductBundle:ProductAttribute:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_product_productattribute_create:
+    path: /create
+    defaults: { _controller: PimProductBundle:ProductAttribute:create }
+
+pim_product_productattribute_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimProductBundle:ProductAttribute:edit }
+    requirements:
+        id: \d+
+
+pim_product_productattribute_preprocess:
+    path: /preprocess
+    defaults: { _controller: PimProductBundle:ProductAttribute:preprocess }
+    methods: [POST]
+
+pim_product_productattribute_sort:
+    path: /sort
+    defaults: { _controller: PimProductBundle:ProductAttribute:sort }
+    methods: [POST]
+
+pim_product_productattribute_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimProductBundle:ProductAttribute:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]

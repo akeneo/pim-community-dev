@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 use Pim\Bundle\ProductBundle\Entity\Currency;
@@ -14,8 +13,6 @@ use Pim\Bundle\ProductBundle\Entity\Currency;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/currency")
  */
 class CurrencyController extends Controller
 {
@@ -24,13 +21,7 @@ class CurrencyController extends Controller
      *
      * @param Request $request
      *
-     * @Route(
-     *     "/.{_format}",
-     *     requirements={"_format"="html|json"},
-     *     defaults={"_format" = "html"}
-     * )
-     * @Template()
-     *
+     * @Template
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -59,8 +50,6 @@ class CurrencyController extends Controller
      * Activate/Desactivate a currency
      *
      * @param Currency $currency
-     *
-     * @Route("/{id}/toggle", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

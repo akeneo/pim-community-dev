@@ -55,7 +55,7 @@ class LocaleHandler
     {
         $this->form->setData($locale);
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->isMethod('POST')) {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {

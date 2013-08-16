@@ -34,13 +34,13 @@ Feature: Browse products by locale and scope
   Scenario: Successfully display relevant products data on products page
     Given I am on the products page
     When I switch the locale to "en_US"
-    And I filter per channel Ecommerce
+    And I filter by "Channel" with value "Ecommerce"
     Then I should see product "postit" with data postit, Post it, large.jpeg and My ecommerce description
-    When I filter per channel Mobile
+    When I filter by "Channel" with value "Mobile"
     Then I should see product "postit" with data postit, Post it, small.jpeg and My mobile description
     When I switch the locale to "fr_FR"
-    And I filter per channel Ecommerce
+    And I filter by "Channel" with value "Ecommerce"
     Then I should see product "postit" with data postit, Etiquette, large.jpeg and Ma description ecommerce
-    When I filter per channel Mobile
+    When I filter by "Channel" with value "Mobile"
     Then I should see product "postit" with data postit, Etiquette, small.jpeg and Ma description mobile
 

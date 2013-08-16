@@ -11,5 +11,5 @@ namespace Context\Page\Attribute;
  */
 class Edit extends Creation
 {
-    protected $path = '/configuration/product-attribute/edit/{id}';
+    protected $path = '/configuration/attribute/{id}/edit';
 }
