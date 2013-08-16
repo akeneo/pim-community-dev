@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
