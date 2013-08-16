@@ -4,6 +4,8 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Datagrid;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -22,6 +24,9 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
     const TEST_HINT                      = 'test_hint';
     const TEST_FILTERABLE_SORTABLE_FIELD = 'test_filterable_sortable_field';
     const TEST_SORTABLE_FIELD            = 'test_sortable_field';
+    const TEST_DOMAIN                    = 'someDomain';
+    const TEST_IDENTIFIER                = 'some_id';
+    const TEST_ALIAS                     = 'some_alias';
 
     /**
      * @var DatagridManager
@@ -43,7 +48,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         ),
         'simple_field' => array(
             'option_4' => 'value_4'
-        ),
+        )
     );
 
     protected $testProperties = array();
@@ -166,6 +171,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(self::TEST_NAME, 'name', $this->model);
     }
 
+    public function testSetTranslationDomain()
+    {
+        $this->assertAttributeEmpty('translationDomain', $this->model);
+        $this->model->setTranslationDomain(self::TEST_DOMAIN);
+        $this->assertAttributeEquals(self::TEST_DOMAIN, 'translationDomain', $this->model);
+    }
+
+    public function testSetIdentifierField()
+    {
+        $this->assertAttributeEmpty('identifierField', $this->model);
+        $this->model->setIdentifierField(self::TEST_IDENTIFIER);
+        $this->assertAttributeEquals(self::TEST_IDENTIFIER, 'identifierField', $this->model);
+    }
+
     public function testSetEntityHint()
     {
         $this->assertAttributeEmpty('entityHint', $this->model);
@@ -179,31 +198,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $queryMock          = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface');
         $routeGeneratorMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
         $parameters         = $this->createTestParameters();
+        $listCollection     = new FieldDescriptionCollection();
 
-        $listCollection = new FieldDescriptionCollection();
-
-        $listBuilderMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Builder\ListBuilderInterface',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('getBaseList')
-        );
+        $listBuilderMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Builder\ListBuilderInterface')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getBaseList'))
+            ->getMockForAbstractClass();
         $listBuilderMock->expects($this->once())
             ->method('getBaseList')
             ->will($this->returnValue($listCollection));
 
-        $queryFactoryMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Datagrid\QueryFactoryInterface',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('createQuery')
-        );
+        $queryFactoryMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('createQuery'))
+            ->getMock();
         $queryFactoryMock->expects($this->once())
             ->method('createQuery')
             ->will($this->returnValue($queryMock));
@@ -212,38 +220,25 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getBaseDatagrid', 'addFilter', 'addSorter', 'addRowAction'))
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-
         $datagridBuilderMock->expects($this->at(0))
             ->method('getBaseDatagrid')
-            ->with(
-                $queryMock,
-                $listCollection,
-                $routeGeneratorMock,
-                $parameters,
-                self::TEST_NAME,
-                self::TEST_HINT
-            )
+            ->with($queryMock, $listCollection, $routeGeneratorMock, $parameters, self::TEST_NAME)
             ->will($this->returnValue($datagridMock));
         $datagridBuilderMock->expects($this->at(1))
             ->method('addProperty')
             ->with($datagridMock, $this->testProperties[0]);
-
         $datagridBuilderMock->expects($this->at(2))
             ->method('addFilter')
             ->with($datagridMock, $this->testFields[self::TEST_FILTERABLE_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(3))
             ->method('addSorter')
             ->with($datagridMock, $this->testFields[self::TEST_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(4))
             ->method('addSorter')
             ->with($datagridMock, $this->testFields[self::TEST_FILTERABLE_SORTABLE_FIELD]);
-
         $datagridBuilderMock->expects($this->at(5))
             ->method('addRowAction')
             ->with($datagridMock, $this->testRowActions[1]);
-
         $datagridBuilderMock->expects($this->at(6))
             ->method('addRowAction')
             ->with($datagridMock, $this->testRowActions[2]);
@@ -254,9 +249,36 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->model->setRouteGenerator($routeGeneratorMock);
         $this->model->setParameters($parameters);
         $this->model->setName(self::TEST_NAME);
+        $this->model->setQueryEntityAlias(self::TEST_ALIAS);
         $this->model->setEntityHint(self::TEST_HINT);
+        $this->model->setIdentifierField(self::TEST_IDENTIFIER);
 
+        $translatorMock = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $this->model->setTranslator($translatorMock);
+        $translatorMock->expects($this->at(0))->method('trans')
+            ->with(self::TEST_IDENTIFIER, array(), null)
+            ->will(
+                $this->returnCallback(
+                    function ($string, $params, $domain) {
+                        return 'trans_' . $string;
+                    }
+                )
+            );
         $this->assertEquals($datagridMock, $this->model->getDatagrid());
+
+        $idField = $this->createFieldDescriptions(
+            array(
+                self::TEST_IDENTIFIER => array(
+                    'field_name'   => self::TEST_IDENTIFIER,
+                    'type'         => FieldDescriptionInterface::TYPE_INTEGER,
+                    'entity_alias' => self::TEST_ALIAS,
+                    'label'        => 'trans_' . self::TEST_IDENTIFIER,
+                    'filter_type'  => FilterInterface::TYPE_NUMBER,
+                    'show_column'  => false
+                )
+            )
+        );
+        $this->testFields = array_merge($this->testFields, $idField);
         $this->assertEquals($this->testFields, $listCollection->getElements());
 
         $defaultParameters = array(

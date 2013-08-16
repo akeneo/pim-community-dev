@@ -153,7 +153,7 @@ class ConfigProvider implements ConfigProviderInterface
         $result = array();
 
         foreach ($this->getConfigIds($className) as $configId) {
-            $result[] = $this->getConfig($configId);
+            $result[] = $this->getConfigById($configId);
         }
 
         return $result;

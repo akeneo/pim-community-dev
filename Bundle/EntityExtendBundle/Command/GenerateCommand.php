@@ -48,7 +48,8 @@ class GenerateCommand extends ContainerAwareCommand
         $configs = $em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
         foreach ($configs as $config) {
             if ($xm->isExtend($config->getClassName())) {
-                $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true);
+                $extend = 'Custom' != $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
+                $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true, $extend);
             };
         }
     }

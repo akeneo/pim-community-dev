@@ -28,6 +28,7 @@ services:
               entity_hint:                      fields
               route_name:                       oro_entityconfig_fields
               query_entity_alias:               cf
+              identifier_field:                 id
 
     oro_entity_config.audit_datagrid.manager:
         class:                                  %oro_entity_config.audit_datagrid.manager.class%

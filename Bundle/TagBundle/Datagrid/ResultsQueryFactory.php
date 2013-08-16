@@ -32,10 +32,6 @@ class ResultsQueryFactory extends EntityQueryFactory
         $em = $this->registry->getManagerForClass($this->className);
         $this->queryBuilder = $em->getRepository($this->className)->createQueryBuilder($this->alias);
 
-        if (!$this->queryBuilder) {
-            throw new \LogicException('Can\'t create datagrid query. Query builder is not configured.');
-        }
-
         return new ResultsQuery($this->queryBuilder, $em, $this->mapper);
     }
 }

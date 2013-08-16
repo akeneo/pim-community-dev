@@ -11,3 +11,4 @@ services:
               entity_name: %oro_email.emailtemplate.entity.class%
               entity_hint: email templates
               route_name: oro_email_emailtemplate_index
+              identifier_field: "id"

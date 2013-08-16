@@ -19,6 +19,44 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
     /** @property {Object} */
     launcherOptions: undefined,
 
+    /** @property {String} */
+    name: null,
+
+    /** @property {Oro.Datagrid.Grid} */
+    datagrid: null,
+
+    /** @property {string} */
+    route: null,
+
+    /** @property {Object} */
+    route_parameters: null,
+
+    /** @property {Boolean} */
+    confirmation: false,
+
+    /** @property {String} */
+    frontend_type: null,
+
+    /** @property {Object} */
+    frontend_options: null,
+
+    /** @property {string} */
+    identifierFieldName: 'id',
+
+    messages: {},
+
+    dispatched: false,
+
+    /** @property {Object} */
+    defaultMessages: {
+        confirm_title: _.__('Execution Confirmation'),
+        confirm_content: _.__('Are you sure you want to do this?'),
+        confirm_ok: _.__('Yes, do it'),
+        success: _.__('Action was successfully performed.'),
+        error: _.__('Action was not performed.'),
+        empty_selection: _.__('Please, select item to perform action.')
+    },
+
     /**
      * Initialize view
      *
@@ -27,6 +65,13 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
      */
     initialize: function(options) {
         options = options || {};
+
+        if (!options.datagrid) {
+            throw new TypeError("'datagrid' is required");
+        }
+        this.datagrid = options.datagrid;
+
+        _.defaults(this.messages, this.defaultMessages);
 
         if (options.launcherOptions) {
             this.launcherOptions = _.extend({}, this.launcherOptions, options.launcherOptions);
@@ -47,6 +92,9 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
      */
     createLauncher: function(options) {
         options = options || {};
+        if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
+            options.icon = this.icon;
+        }
         _.defaults(options, this.launcherOptions);
         return new (this.launcherPrototype)(options);
     },
@@ -69,6 +117,143 @@ Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
      * Execute action
      */
     execute: function() {
-        throw new Error("Method execute is abstract and must be implemented");
+        var eventName = this.getEventName();
+        Oro.Events.once(eventName, this.executeConfiguredAction, this);
+        this._confirmationExecutor(
+            _.bind(
+                function() {Oro.Events.trigger(eventName, this);},
+                this
+            )
+        );
+    },
+
+    getEventName: function() {
+        return 'grid_action_execute:' + this.datagrid.name + ':' + this.name;
+    },
+
+    executeConfiguredAction: function(action) {
+        if (action.frontend_type == 'ajax') {
+            this._handleAjax(action);
+        } else if (action.frontend_type == 'redirect') {
+            this._handleRedirect(action);
+        } else if (Oro.widget.Manager.isSupportedType(action.frontend_type)) {
+            this._handleWidget(action);
+        }
+    },
+
+    _confirmationExecutor: function(callback) {
+        if (this.confirmation) {
+            this.getConfirmDialog(callback).open();
+        } else {
+            callback();
+        }
+    },
+
+    _handleWidget: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
+        action.frontend_options.title = action.frontend_options.title || this.label;
+        Oro.widget.Manager.createWidget(action.frontend_type, action.frontend_options).render();
+    },
+
+    _handleRedirect: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        var url = action.getLinkWithParameters();
+        if (Oro.hashNavigationEnabled()) {
+            Oro.hashNavigationInstance.processRedirect({
+                fullRedirect: false,
+                location: url
+            });
+        } else {
+            location.href = url;
+        }
+    },
+
+    _handleAjax: function(action) {
+        if (action.dispatched) {
+            return;
+        }
+        action.datagrid.showLoading();
+        $.ajax({
+            url: action.getLink(),
+            data: action.getActionParameters(),
+            context: action,
+            dataType: 'json',
+            error: action._onAjaxError,
+            success: action._onAjaxSuccess
+        });
+    },
+
+    _onAjaxError: function(jqXHR, textStatus, errorThrown) {
+        Oro.BackboneError.Dispatch(null, jqXHR);
+        this.datagrid.hideLoading();
+    },
+
+    _onAjaxSuccess: function(data, textStatus, jqXHR) {
+        this.datagrid.hideLoading();
+        this.datagrid.collection.fetch();
+
+        var defaultMessage = data.successful ? this.messages.success : this.messages.error;
+        var message = data.message ? data.message : defaultMessage;
+        if (message) {
+            Oro.NotificationFlashMessage(
+                data.successful ? 'success' : 'error',
+                message
+            );
+        }
+    },
+
+    /**
+     * Get action url
+     *
+     * @return {String}
+     * @private
+     */
+    getLink: function(parameters) {
+        if (_.isUndefined(parameters)) {
+            parameters = {};
+        }
+        return Routing.generate(
+            this.route,
+            _.extend(
+                this.route_parameters,
+                parameters
+            )
+        );
+    },
+
+    /**
+     * Get action url with parameters added.
+     *
+     * @returns {String}
+     */
+    getLinkWithParameters: function() {
+        return this.getLink(this.getActionParameters());
+    },
+
+    /**
+     * Get action parameters
+     *
+     * @returns {Object}
+     */
+    getActionParameters: function() {
+        return {};
+    },
+
+    /**
+     * Get view for confirm modal
+     *
+     * @return {Oro.BootstrapModal}
+     */
+    getConfirmDialog: function(callback) {
+        return new Oro.BootstrapModal({
+            title: this.messages.confirm_title,
+            content: this.messages.confirm_content,
+            okText: this.messages.confirm_ok
+        }).on('ok', callback);
     }
 });

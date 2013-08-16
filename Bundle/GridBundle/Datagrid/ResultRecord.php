@@ -81,4 +81,18 @@ class ResultRecord implements ResultRecordInterface
             $property
         );
     }
+
+    /**
+     * Gets root entity from result record
+     *
+     * @return object|null
+     */
+    public function getRootEntity()
+    {
+        if (array_key_exists(0, $this->valueContainers) && is_object($this->valueContainers[0])) {
+            return $this->valueContainers[0];
+        }
+
+        return null;
+    }
 }

@@ -5,7 +5,7 @@
             <trans-unit id="oro_grid.no_data_hint">
                 <source>oro_grid.no_data_hint %entityHint%</source>
                 <target>No %entityHint% exists yet.
-                    Try creating new ...</target>
+                    Try creating one ...</target>
             </trans-unit>
             <trans-unit id="oro_grid.not_found_hint">
                 <source>oro_grid.not_found_hint %entityHint%</source>
