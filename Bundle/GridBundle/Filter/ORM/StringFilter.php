@@ -90,8 +90,6 @@ class StringFilter extends AbstractFilter
      */
     public function getFormatByComparisonType($comparisonType)
     {
-        $format = $this->getOption('format');
-
         // for other than listed comparison types - use default format
         switch ($comparisonType) {
             case TextFilterType::TYPE_STARTS_WITH:
@@ -100,6 +98,8 @@ class StringFilter extends AbstractFilter
             case TextFilterType::TYPE_ENDS_WITH:
                 $format = '%%%s';
                 break;
+            default:
+                $format = $this->getOption('format');
         }
 
         return $format;
