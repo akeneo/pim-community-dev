@@ -33,7 +33,7 @@ class EntityConfigPass implements CompilerPassInterface
 
                 if (isset($bundleConfig['oro_entity_config']) && count($bundleConfig['oro_entity_config'])) {
                     foreach ($bundleConfig['oro_entity_config'] as $scope => $config) {
-                        $this->initCallableProperty($config);
+                        //$this->initCallableProperty($config);
                         $provider = new Definition('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
                         $provider->setArguments(
                             array(
@@ -65,7 +65,7 @@ class EntityConfigPass implements CompilerPassInterface
         } else {
             if ($this->container->hasDefinition($config)) {
                 $definition = $this->container->getDefinition($config);
-                var_dump(class_exists($definition->getClass()));
+                //var_dump(class_exists($definition->getClass()));
 
                 return $this->container->get($config);
             }

@@ -3,12 +3,13 @@
 namespace Oro\Bundle\EmailBundle\Provider;
 
 use Doctrine\Common\Cache\Cache;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
 class EmailRenderer extends \Twig_Environment
 {
@@ -76,21 +77,19 @@ class EmailRenderer extends \Twig_Environment
     {
         $configuration = array();
 
-        /**
-         * @TODO Change when new code of entity config will be merged
-         */
-        foreach ($this->configProvider->getAllConfigurableEntityNames() as $className) {
-            $config = $this->configProvider->getConfig($className);
-            $fields = $config->getFields(
-                function (FieldConfig $field) {
-                    return $field->is('available_in_template');
-                }
+        foreach ($this->configProvider->getConfigIds() as $entityConfigId) {
+            $className = $entityConfigId->getClassName();
+            $fields = $this->configProvider->filter(
+                function (ConfigInterface $fieldConfig) {
+                    return $fieldConfig->is('available_in_template');
+                },
+                $className
             );
 
-            if (!$fields->isEmpty()) {
+            if (count($fields)) {
                 $configuration[$className] = array();
                 foreach ($fields as $field) {
-                    $configuration[$className][] = 'get' . strtolower($field->getCode());
+                    $configuration[$className][] = 'get' . strtolower($field->getConfigId()->getFieldName());
                 }
             }
         }

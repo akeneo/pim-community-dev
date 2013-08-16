@@ -14,7 +14,7 @@ class OroEntityConfigBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new ServiceLinkPass);
-        $container->addCompilerPass(new ServiceMethodPass);
+//        $container->addCompilerPass(new ServiceMethodPass);
         $container->addCompilerPass(new EntityConfigPass);
     }
 }

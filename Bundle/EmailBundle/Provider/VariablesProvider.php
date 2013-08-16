@@ -5,7 +5,7 @@ namespace Oro\Bundle\EmailBundle\Provider;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class VariablesProvider
@@ -35,27 +35,27 @@ class VariablesProvider
             'entity' => array(),
             'user'   => array()
         );
-        /**
-         * @TODO Change when new code of entity config will be merged
-         */
-        foreach ($this->configProvider->getAllConfigurableEntityNames() as $className) {
+
+        foreach ($this->configProvider->getConfigIds() as $entityConfigId) {
             // export variables of asked entity and current user entity class
+            $className = $entityConfigId->getClassName();
             if ($className == $entityName || $className == $userClassName) {
-                $config = $this->configProvider->getConfig($className);
-                $fields = $config->getFields(
-                    function (FieldConfig $field) {
-                        return $field->is('available_in_template');
-                    }
+                $fields = $this->configProvider->filter(
+                    function (ConfigInterface $config) {
+                        return $config->is('available_in_template');
+                    },
+                    $className
                 );
 
-                $fields = array_keys(
+                $fields = array_values(
                     array_map(
-                        function (FieldConfig $field) {
-                            return $field->getCode();
+                        function (ConfigInterface $field) {
+                            return $field->getConfigId()->getFieldName();
                         },
-                        $fields->toArray()
+                        $fields
                     )
                 );
+
                 switch ($className) {
                     case $entityName:
                         $allowedData['entity'] = $fields;

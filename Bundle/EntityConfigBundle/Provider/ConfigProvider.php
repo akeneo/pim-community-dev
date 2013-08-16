@@ -151,7 +151,7 @@ class ConfigProvider implements ConfigProviderInterface
         $result = array();
 
         foreach ($this->getConfigIds($className) as $configId) {
-            $result[] = $this->getConfig($configId);
+            $result[] = $this->getConfigById($configId);
         }
 
         return $result;
@@ -210,14 +210,6 @@ class ConfigProvider implements ConfigProviderInterface
     public function clearCache($className, $fieldName = null)
     {
         $this->configManager->clearCache($this->getConfigId($className, $fieldName));
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllConfigurableEntityNames()
-    {
-        return  $this->configManager->getAllConfigurableEntityNames();
     }
 
     /**
