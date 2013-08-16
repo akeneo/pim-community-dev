@@ -100,7 +100,7 @@ class StringFilterTest extends FilterTestCase
                 )
             ),
             'ends_with' => array(
-                'data' => array('value' => 'test', 'type' => TextFilterType::TYPE_STARTS_WITH),
+                'data' => array('value' => 'test', 'type' => TextFilterType::TYPE_ENDS_WITH),
                 'expectProxyQueryCalls' => array(
                     array('getUniqueParameterId', array(), 'p1'),
                     array('andWhere',
@@ -154,6 +154,9 @@ class StringFilterTest extends FilterTestCase
      */
     public function testGetFormatByComparisonType($comparisonType, $expected)
     {
+        // call set options in order to merge default options
+        $this->model->setOptions(array());
+
         $this->assertEquals(
             $expected,
             $this->model->getFormatByComparisonType($comparisonType)
