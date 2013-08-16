@@ -13,7 +13,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "oro/platform": "dev-master#ce3e331dc3e077a1e0292a06bf2e38194f130ddd",
+        "oro/platform": "dev-master#1471b6d380a02a057adae81ade3d88dbb9c3558b",
         "akeneo/DemoBundle": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
