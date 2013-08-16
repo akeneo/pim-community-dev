@@ -256,7 +256,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             case 'options':
                 $options = array();
                 foreach (explode(',', $value) as $val) {
-                    if ($option = $this->getOption($value)) {
+                    if ($option = $this->getOption($val)) {
                         $options[] = $option->getId();
                     }
                 }
