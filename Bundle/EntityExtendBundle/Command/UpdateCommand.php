@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateCommand extends ContainerAwareCommand
+class UpdateCommand extends ContainerAwareCommand
 {
     /**
      * @var EntityManager
@@ -24,8 +24,8 @@ class GenerateCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:generate')
-            ->setDescription('Generate class for doctrine');
+            ->setName('oro:entity-extend:update')
+            ->setDescription('Generate class and yml for doctrine');
     }
 
     /**
@@ -48,9 +48,11 @@ class GenerateCommand extends ContainerAwareCommand
         $configs = $em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
         foreach ($configs as $config) {
             if ($xm->isExtend($config->getClassName())) {
-                $extend = 'Custom' != $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
+                $extend = ExtendManager::OWNER_CUSTOM != $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
                 $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true, $extend);
             };
         }
+
+        $output->writeln('Done');
     }
 }

@@ -14,7 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
-class FindExtendCommand extends ContainerAwareCommand
+class CreateCommand extends ContainerAwareCommand
 {
     /**
      * @var ExtendManager
@@ -32,8 +32,8 @@ class FindExtendCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:find-entity')
-            ->setDescription('Find description about custom entity and custom field');
+            ->setName('oro:entity-extend:create')
+            ->setDescription('Find description about custom entities and fields');
     }
 
     /**
@@ -66,6 +66,8 @@ class FindExtendCommand extends ContainerAwareCommand
                 $output->writeln('Done');
             }
         }
+
+        $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
     }
 
     /**
@@ -83,7 +85,11 @@ class FindExtendCommand extends ContainerAwareCommand
                 $config = array(
                     'type' => 'integer',
                 );
+
                 $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
+
+                $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+                $entityConfig->set('is_extend', true);
             }
         }
 
