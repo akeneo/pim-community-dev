@@ -21,8 +21,8 @@ Feature: Browse channels
 
   Scenario: Successfully display channels
     Given I am on the channels page
-    Then the grid should contain 2 elements
-    And I should see channels FOO and BAR
+    Then the grid should contain 4 elements
+    And I should see channels FOO, BAR, BAZ and QUX
 
   Scenario: Successfully display columns
     Given I am on the channels page

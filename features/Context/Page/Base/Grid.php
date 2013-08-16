@@ -171,6 +171,32 @@ class Grid extends Index
     }
 
     /**
+     * Predicate to know if a column is sorted
+     *
+     * @param string $column
+     *
+     * @return boolean
+     */
+    public function isSortedColumn($column)
+    {
+        return (bool) $this->getColumn($column)->find('css', 'th.ascending')
+            || (bool) $this->getColumn($column)->find('css', 'th.descending');
+    }
+
+    /**
+     * Predicate to know if a column is sorted and ordered as we want
+     *
+     * @param string $column
+     * @param string $order
+     *
+     * @return boolean
+     */
+    public function isSortedAndOrdered($column, $order)
+    {
+        return (bool) $this->getColumn($column)->find('css', sprintf('th.%s', $order));
+    }
+
+    /**
      * Count columns in datagrid
      *
      * @return integer
@@ -212,6 +238,11 @@ class Grid extends Index
      */
     public function getColumnSorter($columnName)
     {
+        if (!$column = $this->getColumn($columnName)->find('css', 'a')) {
+            throw new \InvalidArgumentException(
+                sprintf('Column %s is not sortable', $columnName)
+            );
+        }
         return $this->getColumn($columnName)->find('css', 'a');
     }
 

@@ -143,6 +143,23 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $order
+     * @param string $columnName
+     *
+     * @Then /^the datas are sorted (ascending|descending) by (.*)$/
+     */
+    public function theDatasAreSortedBy($order, $columnName)
+    {
+        $columnName = strtoupper($columnName);
+
+        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
+            $this->createExpectationException(
+                sprintf('The datas are not sorted %s on column %s', $order, $columnName)
+            );
+        }
+    }
+
+    /**
      * @param string $actionName
      * @param string $element
      *
@@ -162,13 +179,45 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $columnName = strtoupper($columnName);
 
-        if ($order === 'ascending') {
-            $this->datagrid->getColumnSorter($columnName)->click();
-            $this->wait();
+        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
+            if ($this->datagrid->isSortedColumn($columnName)) {
+                $this->sortByColumn($columnName);
+            } else {
+                // if we ask sorting by descending we must sort twice
+                if ($order === 'descending') {
+                    $this->sortByColumn($columnName);
+                }
+                $this->sortByColumn($columnName);
+            }
         }
+    }
 
+    /**
+     * Sort by a column name
+     * @param strign $columnName
+     */
+    protected function sortByColumn($columnName)
+    {
         $this->datagrid->getColumnSorter($columnName)->click();
         $this->wait();
+    }
+
+    /**
+     * @param string $columns
+     *
+     * @Then /^the datas can be sorted by (.*)$/
+     */
+    public function theDatasCanBeSortedBy($columns)
+    {
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        try {
+            foreach ($columns as $columnName) {
+                $this->datagrid->getColumnSorter($columnName);
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->createExpectationException($e->getMessage());
+        }
     }
 
     /**
@@ -199,7 +248,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     $position
                 );
                 throw $this->createExpectationException(
-                    sprintf("The columns are not well sorted\n%s", $errorMsg)
+                    sprintf("The entities are not well sorted\n%s", $errorMsg)
                 );
             }
             $expectedPosition++;
