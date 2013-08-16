@@ -19,7 +19,7 @@ abstract class PimTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Create mock for locale manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected function getLocaleManagerMock()
     {
@@ -27,12 +27,12 @@ abstract class PimTestCase extends \PHPUnit_Framework_TestCase
         $securityContext = $this->getSecurityContextMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
+        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\LocaleManager')
                             ->setConstructorArgs(array($objectManager, $securityContext));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
+            'Pim\Bundle\ProductBundle\Manager\LocaleManager',
             array('getActiveCodes')
         );
         $localeManager->expects($this->any())

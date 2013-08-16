@@ -65,7 +65,7 @@ class ProductAttributeController extends Controller
             return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_config.manager.locale');
+        $localeManager = $this->get('pim_product.manager.locale');
 
         return array(
             'form'            => $this->get('pim_product.form.attribute')->createView(),
@@ -93,7 +93,7 @@ class ProductAttributeController extends Controller
             return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_config.manager.locale');
+        $localeManager = $this->get('pim_product.manager.locale');
         $datagrid = $this->getDataAuditDatagrid(
             $attribute,
             'pim_product_productattribute_edit',
@@ -136,7 +136,7 @@ class ProductAttributeController extends Controller
             ->get('pim_product.form.handler.attribute')
             ->preProcess($data['pim_product_attribute_form']);
 
-        $localeManager   = $this->get('pim_config.manager.locale');
+        $localeManager   = $this->get('pim_product.manager.locale');
         $locales         = $localeManager->getActiveLocales();
         $disabledLocales = $localeManager->getDisabledLocales();
         $form            = $this->get('pim_product.form.attribute')->createView();

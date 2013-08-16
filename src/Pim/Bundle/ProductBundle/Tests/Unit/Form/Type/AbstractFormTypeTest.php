@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
 /**
  * Abstract form type test
@@ -96,7 +96,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     /**
      * Create mock for locale manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected function getLocaleManagerMock()
     {
@@ -104,12 +104,12 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $securityContext = $this->getSecurityContextMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
+        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\LocaleManager')
             ->setConstructorArgs(array($objectManager, $securityContext));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
+            'Pim\Bundle\ProductBundle\Manager\LocaleManager',
             array('getActiveCodes')
         );
         $localeManager->expects($this->any())

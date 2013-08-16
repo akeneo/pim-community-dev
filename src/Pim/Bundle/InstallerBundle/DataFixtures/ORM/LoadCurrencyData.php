@@ -4,7 +4,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ConfigBundle\Entity\Currency;
+use Pim\Bundle\ProductBundle\Entity\Currency;
 
 /**
  * Load fixtures for currencies
@@ -21,7 +21,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allCurrencies = $this->container->getParameter('pim_config.currencies');
+        $allCurrencies = $this->container->getParameter('pim_product.currencies');
         $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
 
         foreach (array_keys($allCurrencies['currencies']) as $currencyCode) {
@@ -39,7 +39,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
      * @param string  $code      Currency code
      * @param boolean $activated Define if currency is activated or not
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
+     * @return \Pim\Bundle\ProductBundle\Entity\Currency
      */
     protected function createCurrency($code, $activated = false)
     {

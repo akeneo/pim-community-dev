@@ -12,10 +12,10 @@ pim_product:
 pim_product_api:
     resource: "@PimProductBundle/Resources/config/routing.yml"
 
-pim_config:
-    resource: "@PimConfigBundle/Controller/"
-    type:     annotation
-    prefix:   /configuration/
+# pim_config:
+#     resource: "@PimConfigBundle/Controller/"
+#     type:     annotation
+#     prefix:   /configuration/
 
 pim_importexport:
     resource: "@PimImportExportBundle/Controller/"

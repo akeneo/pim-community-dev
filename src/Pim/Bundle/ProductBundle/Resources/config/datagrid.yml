@@ -1,6 +1,10 @@
 parameters:
     pim_product.datagrid.manager.productattribute.class:  Pim\Bundle\ProductBundle\Datagrid\AttributeDatagridManager
     pim_product.datagrid.manager.product.class:           Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+    pim_product.datagrid.manager.channel_datagrid.class:  Pim\Bundle\ProductBundle\Datagrid\ChannelDatagridManager
+    pim_product.datagrid.manager.currency_datagrid.class: Pim\Bundle\ProductBundle\Datagrid\CurrencyDatagridManager
+    pim_product.datagrid.manager.locale_datagrid.class:   Pim\Bundle\ProductBundle\Datagrid\LocaleDatagridManager
+
 
 services:
     # Product attribute grid manager
@@ -34,3 +38,29 @@ services:
               datagrid_name: attributes
               entity_hint: attributes
               route_name: current
+
+    pim_product.datagrid.manager.channel:
+        class: %pim_product.datagrid.manager.channel_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: channels
+              entity_hint: channels
+              route_name: pim_product_channel_index
+        calls:
+            - [ setCategoryManager, [@pim_product.manager.category] ]
+
+    pim_product.datagrid.manager.currency:
+        class: %pim_product.datagrid.manager.currency_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: currencies
+              entity_hint: currencies
+              route_name: pim_product_currency_index
+
+    pim_product.datagrid.manager.locale:
+        class: %pim_product.datagrid.manager.locale_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: locales
+              entity_hint: locales
+              route_name: pim_product_locale_index

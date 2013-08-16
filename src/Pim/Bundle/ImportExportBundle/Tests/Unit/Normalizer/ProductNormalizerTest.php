@@ -131,7 +131,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannelMock()
     {
-        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
+        $channel = $this->getMock('Pim\Bundle\ProductBundle\Entity\Channel');
 
         $locales = new ArrayCollection(
             array(

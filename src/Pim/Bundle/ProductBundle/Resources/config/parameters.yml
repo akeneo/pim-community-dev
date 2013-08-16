@@ -43,3 +43,16 @@ parameters:
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
 
     pim_product.event_listener.add_hash_to_redirect_url.class: Pim\Bundle\ProductBundle\EventListener\AddHashtagToRedirectedUrlListener
+
+    pim_product.manager.currency.class:      Pim\Bundle\ProductBundle\Manager\CurrencyManager
+    pim_product.form.handler.currency.class: Pim\Bundle\ProductBundle\Form\Handler\CurrencyHandler
+    pim_product.form.type.currency.class:    Pim\Bundle\ProductBundle\Form\Type\CurrencyType
+
+    pim_product.manager.locale.class:        Pim\Bundle\ProductBundle\Manager\LocaleManager
+    pim_product.form.handler.locale.class:   Pim\Bundle\ProductBundle\Form\Handler\LocaleHandler
+    pim_product.form.type.locale.class:      Pim\Bundle\ProductBundle\Form\Type\LocaleType
+
+    pim_product.manager.channel.class:       Pim\Bundle\ProductBundle\Manager\ChannelManager
+    pim_product.form.handler.channel.class:  Pim\Bundle\ProductBundle\Form\Handler\ChannelHandler
+    pim_product.form.type.channel.class:     Pim\Bundle\ProductBundle\Form\Type\ChannelType
+    pim_product.event_listener.user_preferences.class:  Pim\Bundle\ProductBundle\EventListener\UserPreferencesListener

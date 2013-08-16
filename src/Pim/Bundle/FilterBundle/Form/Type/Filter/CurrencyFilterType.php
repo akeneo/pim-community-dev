@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+use Pim\Bundle\ProductBundle\Manager\CurrencyManager;
 
 /**
  * Currency filter type for products
