@@ -33,27 +33,16 @@ abstract class AbstractDateFilter extends AbstractFilter
         $startDateParameterName = $this->getNewParameterName($queryBuilder);
         $endDateParameterName = $this->getNewParameterName($queryBuilder);
 
-        if ($type == DateRangeFilterType::TYPE_NOT_BETWEEN) {
-            $this->applyFilterNotBetween(
-                $queryBuilder,
-                $dateStartValue,
-                $dateEndValue,
-                $startDateParameterName,
-                $endDateParameterName,
-                $alias,
-                $field
-            );
-        } else {
-            $this->applyFilterBetween(
-                $queryBuilder,
-                $dateStartValue,
-                $dateEndValue,
-                $startDateParameterName,
-                $endDateParameterName,
-                $alias,
-                $field
-            );
-        }
+        $this->applyDependingOnType(
+            $type,
+            $queryBuilder,
+            $dateStartValue,
+            $dateEndValue,
+            $startDateParameterName,
+            $endDateParameterName,
+            $alias,
+            $field
+        );
 
         /** @var $queryBuilder QueryBuilder */
         if ($dateStartValue) {
@@ -88,7 +77,15 @@ abstract class AbstractDateFilter extends AbstractFilter
 
         $data['type'] = isset($data['type']) ? $data['type'] : null;
 
-        if ($data['type'] != DateRangeFilterType::TYPE_NOT_BETWEEN) {
+        if (!in_array(
+            $data['type'],
+            array(
+                DateRangeFilterType::TYPE_BETWEEN,
+                DateRangeFilterType::TYPE_NOT_BETWEEN,
+                DateRangeFilterType::TYPE_MORE_THAN,
+                DateRangeFilterType::TYPE_LESS_THAN
+            )
+        )) {
             $data['type'] = DateRangeFilterType::TYPE_BETWEEN;
         }
 
@@ -162,6 +159,32 @@ abstract class AbstractDateFilter extends AbstractFilter
     }
 
     /**
+     * Apply expression using one condition (less or more)
+     *
+     * @param ProxyQueryInterface $queryBuilder
+     * @param $dateValue
+     * @param $dateParameterName
+     * @param string $alias
+     * @param string $field
+     * @param bool $isLess less/more mode, true if 'less than', false if 'more than'
+     */
+    protected function applyFilterLessMore(
+        $queryBuilder,
+        $dateValue,
+        $dateParameterName,
+        $alias,
+        $field,
+        $isLess
+    ) {
+        if ($dateValue) {
+            $this->applyFilterToClause(
+                $queryBuilder,
+                $this->createCompareFieldExpression($field, $alias, $isLess ? '<' : '>', $dateParameterName)
+            );
+        }
+    }
+
+    /**
      * Apply expression using "not between" filtering
      *
      * @param ProxyQueryInterface $queryBuilder
@@ -192,5 +215,74 @@ abstract class AbstractDateFilter extends AbstractFilter
         }
 
         $this->applyFilterToClause($queryBuilder, $orExpression);
+    }
+
+    /**
+     * Applies filter depending on it's type
+     *
+     * @param int $type
+     * @param ProxyQueryInterface $queryBuilder
+     * @param string $dateStartValue
+     * @param string $dateEndValue
+     * @param string $startDateParameterName
+     * @param string $endDateParameterName
+     * @param string $alias
+     * @param string $field
+     */
+    protected function applyDependingOnType(
+        $type,
+        $queryBuilder,
+        $dateStartValue,
+        $dateEndValue,
+        $startDateParameterName,
+        $endDateParameterName,
+        $alias,
+        $field
+    ) {
+        switch ($type) {
+            case DateRangeFilterType::TYPE_MORE_THAN:
+                $this->applyFilterLessMore(
+                    $queryBuilder,
+                    $dateStartValue,
+                    $startDateParameterName,
+                    $alias,
+                    $field,
+                    false
+                );
+                break;
+            case DateRangeFilterType::TYPE_LESS_THAN:
+                $this->applyFilterLessMore(
+                    $queryBuilder,
+                    $dateStartValue,
+                    $startDateParameterName,
+                    $alias,
+                    $field,
+                    true
+                );
+                break;
+            case DateRangeFilterType::TYPE_NOT_BETWEEN:
+                $this->applyFilterNotBetween(
+                    $queryBuilder,
+                    $dateStartValue,
+                    $dateEndValue,
+                    $startDateParameterName,
+                    $endDateParameterName,
+                    $alias,
+                    $field
+                );
+                break;
+            default:
+            case DateRangeFilterType::TYPE_BETWEEN:
+                $this->applyFilterBetween(
+                    $queryBuilder,
+                    $dateStartValue,
+                    $dateEndValue,
+                    $startDateParameterName,
+                    $endDateParameterName,
+                    $alias,
+                    $field
+                );
+                break;
+        }
     }
 }

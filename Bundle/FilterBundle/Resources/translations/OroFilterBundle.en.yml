@@ -20,3 +20,5 @@ label_date_type_null: is empty
 label_date_type_not_null: is not empty
 label_date_type_between: between
 label_date_not_between: not between
+label_date_type_more_than: more than
+label_date_type_less_than: less than

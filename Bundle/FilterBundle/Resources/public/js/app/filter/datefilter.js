@@ -109,7 +109,9 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
      */
     typeValues: {
         between:    1,
-        notBetween: 2
+        notBetween: 2,
+        moreThan:   3,
+        lessThan:   4
     },
 
     /**
@@ -194,6 +196,12 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             var type  = value.type ? value.type.toString() : '';
 
             switch (type) {
+                case this.typeValues.moreThan.toString():
+                    hint += ' more than ' + start;
+                    break;
+                case this.typeValues.lessThan.toString():
+                    hint += ' less than ' + start;
+                    break;
                 case this.typeValues.notBetween.toString():
                     if (start && end) {
                         hint += this.choices[this.typeValues.notBetween] + ' ' + start + ' and ' + end
