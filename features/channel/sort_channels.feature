@@ -19,14 +19,51 @@ Feature: Sort channels
       | QUX  | qux   | en_US        | ipad     |
     And I am logged in as "admin"
 
+  Scenario: Successfully display the sortable columns
+    Given I am on the channels page
+    Then the datas can be sorted by code, name and category tree
+    And the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
+
   Scenario: Successfully sort channels by code ascending
     Given I am on the channels page
-    Then I should see sorted channels BAR, BAZ, FOO and QUX
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
     When I sort by "code" value ascending
     Then I should see sorted channels BAR, BAZ, FOO and QUX
 
   Scenario: Successfully sort channels by code descending
     Given I am on the channels page
-    Then I should see sorted channels BAR, BAZ, FOO and QUX
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
     When I sort by "code" value descending
     Then I should see sorted channels QUX, FOO, BAZ and BAR
+
+  Scenario: Successfully sort channels by name ascending
+    Given I am on the channels page
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "name" value ascending
+    Then I should see sorted channels BAR, BAZ, FOO and QUX
+
+  Scenario: Successfully sort channels by name descending
+    Given I am on the channels page
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "name" value descending
+    Then I should see sorted channels QUX, FOO, BAZ and BAR
+
+  Scenario: Successfully sort channels by tree ascending
+    Given I am on the channels page
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "category tree" value ascending
+    Then I should see sorted channels QUX, FOO, BAR and BAZ
+
+  Scenario: Successfully sort channels by tree descending
+    Given I am on the channels page
+    Then the datas are sorted ascending by code
+    And I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "category tree" value descending
+    Then I should see sorted channels BAZ, FOO, BAR and QUX
+    
