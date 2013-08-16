@@ -17,10 +17,8 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @abstract
  */
-abstract class JobControllerAbstract extends Controller
+class JobController extends Controller
 {
     /**
      * List the jobs
@@ -37,7 +35,7 @@ abstract class JobControllerAbstract extends Controller
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = $this->getIndexLogicName();
+            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()));
         }
 
         return $this->render(
@@ -54,7 +52,7 @@ abstract class JobControllerAbstract extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
     public function createAction(Request $request)
     {
@@ -89,10 +87,13 @@ abstract class JobControllerAbstract extends Controller
             }
         }
 
-        return array(
-            'form'      => $form->createView(),
-            'connector' => $connector,
-            'alias'     => $alias,
+        return $this->render(
+            sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
+            array(
+                'form'      => $form->createView(),
+                'connector' => $connector,
+                'alias'     => $alias,
+            )
         );
     }
 
@@ -101,7 +102,7 @@ abstract class JobControllerAbstract extends Controller
      *
      * @param integer $id
      *
-     * @return array
+     * @return template
      */
     public function showAction($id)
     {
@@ -113,9 +114,12 @@ abstract class JobControllerAbstract extends Controller
             return $this->redirectToIndexView();
         }
 
-        return array(
-            'job'        => $job,
-            'violations' => $this->getValidator()->validate($job, array('Default', 'Execution')),
+        return $this->render(
+            sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
+            array(
+                'job'        => $job,
+                'violations' => $this->getValidator()->validate($job, array('Default', 'Execution')),
+            )
         );
     }
 
@@ -124,7 +128,7 @@ abstract class JobControllerAbstract extends Controller
      *
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
     public function editAction($id)
     {
@@ -152,7 +156,12 @@ abstract class JobControllerAbstract extends Controller
             }
         }
 
-        return array('form' => $form->createView());
+        return $this->render(
+            sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
+            array(
+                'form'      => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -275,54 +284,45 @@ abstract class JobControllerAbstract extends Controller
     }
 
     /**
+     * Return the job type of the controller
+     *
+     * @return string
+     */
+    protected function getJobType()
+    {
+        return null;
+    }
+
+    /**
      * Redirect to the index view
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function redirectToIndexView()
     {
-        return $this->redirectToRoute($this->getIndexRouteName());
+        return $this->redirectToRoute(sprintf('pim_importexport_%s_index', $this->getJobType()));
     }
-
-    /**
-     * Return the job type of the controller
-     *
-     * @abstract
-     * @return string
-     */
-    abstract protected function getJobType();
 
     /**
      * Redirect to the show view
      *
      * @param integer $jobId
      *
-     * @abstract
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    abstract protected function redirectToShowView($jobId);
-
-    /**
-     * Get the index route name
-     *
-     * @abstract
-     * @return string
-     */
-    abstract protected function getIndexRouteName();
-
-    /**
-     * Get the index action logic name
-     *
-     * @abstract
-     * @return string
-     */
-    abstract protected function getIndexLogicName();
+    protected function redirectToShowView($jobId)
+    {
+        return $this->redirectToRoute(sprintf('pim_importexport_%s_show', $this->getJobType()), array('id' => $jobId));
+    }
 
     /**
      * Get the datagrid manager
      *
-     * @abstract
      * @return \Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
      */
-    abstract protected function getDatagridManager();
+    protected function getDatagridManager()
+    {
+        $managerAlias = sprintf('pim_import_export.datagrid.manager.%s', $this->getJobType());
+        return $this->get($managerAlias);
+    }
 }
