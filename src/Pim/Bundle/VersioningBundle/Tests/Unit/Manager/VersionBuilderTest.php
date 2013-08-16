@@ -32,7 +32,7 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $version = $this->builder->build($this->getVersionableMock());
+        $version = $this->builder->buildVersion($this->getVersionableMock(), $this->getUserMock());
         $this->assertTrue($version instanceof Version);
     }
 
@@ -56,5 +56,13 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('field' => 'value')));
 
         return $versionable;
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUserMock()
+    {
+        return $this->getMock('Oro\Bundle\UserBundle\Entity\User');
     }
 }

@@ -3,8 +3,9 @@
 namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
+use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Resource version entity
@@ -24,6 +25,14 @@ class Version
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var User $user
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    protected $user;
 
     /**
      * @ORM\Column(type="string")
@@ -53,13 +62,37 @@ class Version
      * Constructor
      * @param VersionableInterface $resource
      */
-    public function __construct(VersionableInterface $resource)
+    public function __construct(VersionableInterface $resource, User $user)
     {
         $this->resourceName  = get_class($resource);
         $this->resourceId    = $resource->getId();
         $this->versionedData = $resource->getVersionedData();
         $this->version       = $resource->getVersion();
         $this->snapshotDate  = new \DateTime("now");
+        $this->user          = $user;
+    }
+
+    /**
+     * Set user
+     *
+     * @param  User  $user
+     * @return Version
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**

@@ -14,6 +14,7 @@ use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\ProductBundle\Manager\AuditManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 
 /**
@@ -38,7 +39,7 @@ class AddVersionListener implements EventSubscriber
     protected $builder;
 
     /**
-     * @param VersionBuilder
+     * @param VersionBuilder $builder
      */
     public function __construct(VersionBuilder $builder)
     {
@@ -113,62 +114,23 @@ class AddVersionListener implements EventSubscriber
     public function writeSnapshot(EntityManager $em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
-        if (!isset($this->pendingVersions[$oid])) {
-
-            $version = $this->builder->build($versionable); //new Version($versionable);
+        if (!isset($this->pendingVersions[$oid]) and $versionable->getId() !== null) {
 
             /** @var User $user */
             $user = $em->getRepository('OroUserBundle:User')
                 ->findOneBy(array('username' => 'admin')); // TODO : to fix !
 
-            $previousVersion = $em->getRepository('PimVersioningBundle:Version')
+            $version  = $this->builder->buildVersion($versionable, $user);
+            $previous = $em->getRepository('PimVersioningBundle:Version')
                 ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
 
-            if ($previousVersion) {
-                $oldData = $previousVersion->getVersionedData();
-            } else {
-                $oldData = array();
-            }
-            $newData = $version->getVersionedData();
-
-            $diff = array_diff($newData, $oldData);
-            $diffData = array();
-            foreach (array_keys($diff) as $changedField) {
-                if (isset($oldData[$changedField])) {
-                    $diffData[$changedField]= array('old' => $oldData[$changedField]);
-                } else {
-                    $diffData[$changedField]= array('old' => '');
-                }
-                if (isset($newData[$changedField])) {
-                    $diffData[$changedField]['new'] = $newData[$changedField];
-                } else {
-                    $diffData[$changedField]['new'] = '';
-                }
-                if (empty($diffData[$changedField]['new']) and empty($diffData[$changedField]['old'])) {
-                    unset($diffData[$changedField]);
-                }
-                if ($diffData[$changedField]['new'] == $diffData[$changedField]['old']) {
-                    unset($diffData[$changedField]);
-                }
-            }
-
-            $action = ($version->getVersion() > 1) ? 'update' : 'create';
-            $logEntry = new Audit();
-            $logEntry->setAction($action);
-            $logEntry->setObjectClass($version->getResourceName());
-            $logEntry->setLoggedAt();
-            $logEntry->setUser($user);
-            $logEntry->setObjectName($version->getResourceName());
-            $logEntry->setObjectId($version->getResourceId());
-            $logEntry->setVersion($version->getVersion());
-            $logEntry->setData($diffData);
+            $audit = $this->builder->buildAudit($version, $previous);
+            $diffData = $audit->getData();
 
             if (!empty($diffData)) {
-
+                $this->computeChangeSet($em, $audit);
                 $this->computeChangeSet($em, $version);
                 $this->pendingVersions[$oid]= $version;
-
-                $this->computeChangeSet($em, $logEntry);
             }
         }
     }

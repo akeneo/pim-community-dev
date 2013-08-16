@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Audit manager
@@ -19,14 +20,14 @@ class AuditManager
     /**
      * @var ObjectManager
      */
-    protected $objectManager;
+    protected $em;
 
     /**
      * {@inheritDoc}
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $em)
     {
-        $this->objectManager = $objectManager;
+        $this->em = $em;
     }
 
     /**
@@ -38,7 +39,7 @@ class AuditManager
      */
     public function getLogEntries(VersionableInterface $versionable)
     {
-        $repo = $this->objectManager->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
+        $repo = $this->em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
         $logs = $repo->getLogEntries($versionable);
 
         return $logs;

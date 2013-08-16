@@ -24,7 +24,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->version = new Version($this->getVersionableMock());
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $this->version = new Version($this->getVersionableMock(), $user);
     }
 
     /**
