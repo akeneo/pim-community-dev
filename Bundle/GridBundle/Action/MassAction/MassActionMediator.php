@@ -32,15 +32,15 @@ class MassActionMediator implements MassActionMediatorInterface
 
     /**
      * @param MassActionInterface $massAction
+     * @param DatagridInterface $datagrid
      * @param \Iterator|ResultRecordInterface[] $results
      * @param array $data
-     * @param DatagridInterface $datagrid
      */
     public function __construct(
         MassActionInterface $massAction,
+        DatagridInterface $datagrid,
         $results,
-        array $data = array(),
-        DatagridInterface $datagrid
+        array $data = array()
     ) {
         $this->massAction = $massAction;
         $this->results    = $results;
