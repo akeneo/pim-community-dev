@@ -161,6 +161,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iSortByValue($columnName, $order = 'ascending')
     {
         $columnName = strtoupper($columnName);
+
         if ($order === 'ascending') {
             $this->datagrid->getColumnSorter($columnName)->click();
             $this->wait();

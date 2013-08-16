@@ -976,6 +976,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $channels
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see sorted channels (.*)$/
+     */
+    public function iShouldSeeSortedChannels($channels)
+    {
+        return new Step\Then(
+            sprintf('I should see entities sorted as %s', $channels)
+        );
+    }
+
+    /**
      * @param string $channel
      * @param string $not
      * @param string $category
