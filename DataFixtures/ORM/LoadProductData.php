@@ -71,7 +71,7 @@ class LoadProductData extends AbstractDemoFixture
         $locales = array();
         foreach (array('en_US', 'fr_FR', 'de_DE') as $localeCode) {
             // TODO : must be get with reference or activated value
-            $locales[$localeCode] = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $localeCode));
+            $locales[$localeCode] = $manager->getRepository('PimProductBundle:Locale')->findOneBy(array('code' => $localeCode));
         }
 
         $scopes = array();
@@ -83,7 +83,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute color options
         $attColor  = $this->getReference('product-attribute.color');
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-                array('attribute' => $attColor)
+            array('attribute' => $attColor)
         );
         $colors = array();
         foreach ($optColors as $option) {
@@ -93,7 +93,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute size options
         $attSize  = $this->getReference('product-attribute.size');
         $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-                array('attribute' => $attSize)
+            array('attribute' => $attSize)
         );
         $sizes = array();
         foreach ($optSizes as $option) {
@@ -103,7 +103,7 @@ class LoadProductData extends AbstractDemoFixture
         // get attribute manufacturer options
         $attManufact = $this->getReference('product-attribute.manufacturer');
         $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-                array('attribute' => $attManufact)
+            array('attribute' => $attManufact)
         );
         $manufacturers = array();
         foreach ($optManufact as $option) {
@@ -219,4 +219,3 @@ class LoadProductData extends AbstractDemoFixture
         return 140;
     }
 }
-
