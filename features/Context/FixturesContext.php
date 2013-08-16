@@ -562,8 +562,8 @@ class FixturesContext extends RawMinkContext
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
-            $attribute->setScopable($data['scopable']);
-            $attribute->setTranslatable($data['localizable']);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
 
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
