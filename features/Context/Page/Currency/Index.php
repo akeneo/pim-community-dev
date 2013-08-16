@@ -25,7 +25,7 @@ class Index extends Grid
      */
     public function findActivatedCurrency($currency)
     {
-        return $this->getGridRow($currency)->find('css', 'span.label-success');
+        return $this->getRow($currency)->find('css', 'span.label-success');
     }
 
     /**
@@ -35,7 +35,17 @@ class Index extends Grid
      */
     public function findDeactivatedCurrency($currency)
     {
-        return $this->getGridRow($currency)->find('css', 'span.label-important');
+        return $this->getRow($currency)->find('css', 'span.label-important');
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findCurrency($currency)
+    {
+        return $this->getRow($currency);
     }
 
     /**

@@ -1,8 +1,8 @@
 @javascript
-Feature: Browse channels
-  In order to list the existing channels for the catalog
+Feature: Sort channels
+  In order to sort channels in the catalog
   As a user
-  I need to be able to see available channels
+  I need to be able to sort channels by several columns in the catalog
 
   Background:
     Given there is no channel
@@ -19,11 +19,14 @@ Feature: Browse channels
       | QUX  | qux   | en_US        | ipad     |
     And I am logged in as "admin"
 
-  Scenario: Successfully display channels
+  Scenario: Successfully sort channels by code ascending
     Given I am on the channels page
-    Then the grid should contain 2 elements
-    And I should see channels FOO and BAR
+    Then I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "code" value ascending
+    Then I should see sorted channels BAR, BAZ, FOO and QUX
 
-  Scenario: Successfully display columns
+  Scenario: Successfully sort channels by code descending
     Given I am on the channels page
-    Then I should see the columns Code, Name and Category tree
+    Then I should see sorted channels BAR, BAZ, FOO and QUX
+    When I sort by "code" value descending
+    Then I should see sorted channels QUX, FOO, BAZ and BAR
