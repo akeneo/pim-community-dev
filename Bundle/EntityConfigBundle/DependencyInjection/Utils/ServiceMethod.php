@@ -14,10 +14,30 @@ class ServiceMethod
      */
     protected $method;
 
-    public function __construct($service, $method)
+    /**
+     * @var array
+     */
+    protected $arguments;
+
+    public function __construct()
+    {
+        $this->arguments = func_get_args();
+    }
+
+    /**
+     * @param mixed $service
+     */
+    public function setService($service)
     {
         $this->service = $service;
-        $this->method  = $method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
     }
 
     /**
@@ -25,6 +45,14 @@ class ServiceMethod
      */
     public function execute()
     {
-        return $this->service->{$this->method};
+        return call_user_func_array(array($this->service, $this->method), $this->arguments);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function __invoke()
+    {
+        return $this->execute();
     }
 }

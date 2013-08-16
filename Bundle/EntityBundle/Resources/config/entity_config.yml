@@ -34,7 +34,7 @@ oro_entity_config:
                         sortable:           true
                         filterable:         true
                         show_filter:        true
-                        choices:            @oro_entity_config.link.provider_bag.method
+                        choices:            oro_entity_config.link.provider_bag.method
                     form:
                         type:               text
                         options:
