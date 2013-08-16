@@ -2,7 +2,7 @@ js:
     'less_compiller':
         - '@OroUIBundle/Resources/public/lib/less-1.3.1.min.js'
     'jquery':
-        - '@OroUIBundle/Resources/public/lib/jquery.min.js'
+        - '@OroUIBundle/Resources/public/lib/jquery-1.10.2.js'
         - '@OroUIBundle/Resources/public/lib/jquery-ui.min.js'
         - '@OroUIBundle/Resources/public/lib/base64.js'
     'backbone':
