@@ -15,12 +15,13 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
  *
  * @ORM\MappedSuperclass
  */
-abstract class AbstractTypedAddress extends AbstractAddress
+abstract class AbstractTypedAddress extends AbstractAddress implements PrimaryItem
 {
     /**
      * Many-to-many relation field, relation parameters must be in specific class
      *
      * @var Collection
+     *
      * @Soap\ComplexType("Oro\Bundle\AddressBundle\Entity\AddressType[]", nillable=true)
      */
     protected $types;
@@ -35,9 +36,8 @@ abstract class AbstractTypedAddress extends AbstractAddress
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->types = new ArrayCollection();
+        $this->primary = false;
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class AbstractTypedAddress extends AbstractAddress
      */
     public function setPrimary($primary)
     {
-        $this->primary = $primary;
+        $this->primary = (bool)$primary;
 
         return $this;
     }
@@ -148,7 +148,7 @@ abstract class AbstractTypedAddress extends AbstractAddress
      */
     public function isPrimary()
     {
-        return $this->primary;
+        return (bool)$this->primary;
     }
 
     /**
@@ -158,6 +158,6 @@ abstract class AbstractTypedAddress extends AbstractAddress
     {
         return parent::isEmpty()
             && $this->types->isEmpty()
-            && empty($this->primary);
+            && !$this->primary;
     }
 }

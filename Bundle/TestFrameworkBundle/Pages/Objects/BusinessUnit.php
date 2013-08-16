@@ -17,13 +17,13 @@ class BusinessUnit extends AbstractEntity implements Entity
     }
 
     /**
-     * @param $accountname
+     * @param $unitname
      * @return $this
      */
-    public function setBusinessUnitName($accountname)
+    public function setBusinessUnitName($unitname)
     {
         $this->businessunitname->clear();
-        $this->businessunitname->value($accountname);
+        $this->businessunitname->value($unitname);
         return $this;
     }
 

@@ -1,0 +1,33 @@
+{#
+    Available variables:
+    * entities - array of activity entities. Which items of this array is an associative array contains subset of fields of an activity entity
+#}
+{# TODO: This is a temporary template created for demo purposes. It will be removed when 'display activities' functionality is implemented  #}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+{% set format = oro_config_value('oro_user.name_format') %}
+<div id="emails-grid">
+    <div class="clearfix">
+        <div class="clearfix">
+            <div class="container-fluid">
+                <div class="grid-container">
+                    <table class="grid table-hover table table-bordered table-condensed" style="display: table;">
+                        <thead>
+                        <tr>
+                            <th style="display: none;"><span>ID</span></th>
+                            <th><span>From </span></th>
+                            <th><span>Subject </span></th>
+                            <th><span>Sent </span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            {% include 'OroEmailBundle:Email:activity.html.twig' with {'entity': entity} %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

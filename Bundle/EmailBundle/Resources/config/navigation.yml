@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         oro_email_emailtemplate_list:
-            label: 'Email templates'
+            label: 'Email Templates'
             route: 'oro_email_emailtemplate_index'
             extras:
                 routes: ['oro_email_emailtemplate_*']
@@ -13,6 +13,7 @@ oro_menu_config:
                         oro_email_emailtemplate_list: ~
 
 oro_titles:
+    oro_email_view: "%%subject%% - Email"
     oro_email_emailtemplate_index: ~
     oro_email_emailtemplate_update: "Edit Template %%name%%"
     oro_email_emailtemplate_create: "Create Email Template"

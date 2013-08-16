@@ -4,35 +4,16 @@ namespace Oro\Bundle\SoapBundle\Controller\Api\Soap;
 
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\SoapApiCrudInterface;
-use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormAwareInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormHandlerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 
-abstract class SoapController extends ContainerAware implements
+abstract class SoapController extends SoapGetController implements
      FormAwareInterface,
      FormHandlerAwareInterface,
-     EntityManagerAwareInterface,
      SoapApiCrudInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function handleGetListRequest($page = 1, $limit = 10)
-    {
-        return $this->getManager()->getList($limit, $page);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function handleGetRequest($id)
-    {
-        return $this->getEntity($id);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -46,7 +27,10 @@ abstract class SoapController extends ContainerAware implements
      */
     public function handleCreateRequest()
     {
-        return $this->processForm($this->getManager()->createEntity());
+        $entity = $this->getManager()->createEntity();
+        $this->processForm($entity);
+
+        return $this->getManager()->getEntityId($entity);
     }
 
     /**
@@ -61,24 +45,6 @@ abstract class SoapController extends ContainerAware implements
         $em->flush();
 
         return true;
-    }
-
-    /**
-     * Get entity by identifier.
-     *
-     * @param mixed $id
-     * @return object
-     * @throws \SoapFault
-     */
-    protected function getEntity($id)
-    {
-        $entity = $this->getManager()->find($id);
-
-        if (!$entity) {
-            throw new \SoapFault('NOT_FOUND', sprintf('Record #%u can not be found', $id));
-        }
-
-        return $entity;
     }
 
     /**
@@ -133,22 +99,37 @@ abstract class SoapController extends ContainerAware implements
             return;
         }
 
-        $data = array();
-        foreach ((array)$entityData as $field => $value) {
-            // special case for ordered arrays
-            if ($value instanceof \stdClass && isset($value->item) && is_array($value->item)) {
-                $value = (array) $value->item;
-            }
-
-            if ($value instanceof Collection) {
-                $value = $value->toArray();
-            }
-
-            if (!is_null($value)) {
-                $data[preg_replace('/[^\w+]+/i', '', $field)] = $value;
-            }
-        }
+        $data = $this->convertValueToArray($entityData);
 
         $request->request->set($this->getForm()->getName(), $data);
+    }
+
+    protected function convertValueToArray($value)
+    {
+        // special case for ordered arrays
+        if ($value instanceof \stdClass && isset($value->item) && is_array($value->item)) {
+            $value = (array) $value->item;
+        }
+
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (is_object($value)) {
+            $value = (array)$value;
+        }
+
+        if (is_array($value)) {
+            $convertedValue = array();
+            foreach ($value as $key => $item) {
+                $itemValue = $this->convertValueToArray($item);
+                if (!is_null($itemValue)) {
+                    $convertedValue[preg_replace('/[^\w+]+/i', '', $key)] = $itemValue;
+                }
+            }
+            $value = $convertedValue;
+        }
+
+        return $value;
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\AddressBundle\Validator\Constraints;
 
-use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+use Oro\Bundle\AddressBundle\Entity\PrimaryItem;
 
 class ContainsPrimaryValidator extends ConstraintValidator
 {
@@ -17,14 +18,12 @@ class ContainsPrimaryValidator extends ConstraintValidator
 
         $primaryItemsNumber = 0;
         $totalItemsNumber = 0;
-        /** @var AbstractTypedAddress $item */
+        /** @var PrimaryItem $item */
         foreach ($value as $item) {
-            if (!$item->isEmpty()) {
-                if ($item instanceof AbstractTypedAddress && $item->isPrimary()) {
-                    $primaryItemsNumber++;
-                }
-                $totalItemsNumber++;
+            if ($item instanceof PrimaryItem && $item->isPrimary()) {
+                $primaryItemsNumber++;
             }
+            $totalItemsNumber++;
         }
 
         if ($totalItemsNumber > 0 && $primaryItemsNumber != 1) {

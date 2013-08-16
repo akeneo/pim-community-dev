@@ -78,6 +78,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     private $fieldsCollection;
 
     /**
+     * @var array
+     */
+    protected $toolbarOptions = array();
+
+    /**
      * {@inheritDoc}
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
@@ -221,6 +226,9 @@ abstract class DatagridManager implements DatagridManagerInterface
         foreach ($this->getRowActions() as $actionParameters) {
             $this->datagridBuilder->addRowAction($datagrid, $actionParameters);
         }
+
+        // add toolbar options
+        $datagrid->setToolbarOptions($this->getToolbarOptions());
 
         return $datagrid;
     }
@@ -404,7 +412,52 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function getDefaultPager()
     {
-        return array();
+        $defaultPager = array();
+        $options = $this->getToolbarOptions();
+
+        $options = array_merge_recursive(
+            array(
+                'hide' => false,
+                'pageSize' => array(
+                    'hide' => false,
+                    'items' => array()
+                ),
+                'pagination' => array(
+                    'hide' => false,
+                )
+            ),
+            $options
+        );
+
+        // check all label exists
+        $zeroItem = array_filter(
+            $options['pageSize']['items'],
+            function ($item) {
+                $item = isset($item['size']) ? $item['size'] : $item;
+                return $item == 0;
+            }
+        );
+        $notExists = count($zeroItem) == 0;
+
+        $hidden = in_array(
+            true,
+            array($options['hide'] , $options['pagination']['hide'] , $options['pageSize']['hide'])
+        );
+
+        if ($hidden) {
+            $defaultPager['_per_page'] = 0;
+        }
+
+        // add 'all' pageSize
+        if ($notExists && $hidden) {
+            $options['pageSize']['items'][] = array(
+                'size' => 0,
+                'label' => $this->translate('oro.grid.datagrid.page_size.all')
+            );
+            $this->toolbarOptions = $options;
+        }
+
+        return $defaultPager;
     }
 
     /**
@@ -420,5 +473,15 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         return $this->translator->trans($id, $parameters, $domain);
+    }
+
+    /**
+     * Define grid toolbar options as assoc array
+     *
+     * @return array
+     */
+    public function getToolbarOptions()
+    {
+        return $this->toolbarOptions;
     }
 }

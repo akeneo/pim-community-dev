@@ -2,8 +2,6 @@ oro_address_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\AddressController
     type: rest
     prefix: api/rest/{version}/
-    requirements:
-        version: latest|v1
     defaults:
         version: latest
 
@@ -11,8 +9,6 @@ oro_address_type_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\AddressTypeController
     type: rest
     prefix: api/rest/{version}/
-    requirements:
-        version: latest|v1
     defaults:
         version: latest
 
@@ -20,8 +16,6 @@ oro_countries_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\CountryController
     type: rest
     prefix: api/rest/{version}/
-    requirements:
-        version: latest|v1
     defaults:
         version: latest
 
@@ -29,8 +23,6 @@ oro_regions_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\RegionController
     type: rest
     prefix: api/rest/{version}/
-    requirements:
-        version: latest|v1
     defaults:
         version: latest
 
@@ -38,7 +30,5 @@ oro_country_regions_api:
     resource: Oro\Bundle\AddressBundle\Controller\Api\Rest\CountryRegionsController
     type: rest
     prefix: api/rest/{version}/
-    requirements:
-        version: latest|v1
     defaults:
         version: latest
