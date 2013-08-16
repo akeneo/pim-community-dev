@@ -32,7 +32,7 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
      */
     protected $enclosure = '"';
 
-    protected $withHeader = false;
+    protected $withHeader = true;
 
     /**
      * @param SerializerInterface $serializer
