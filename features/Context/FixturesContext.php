@@ -286,6 +286,19 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there is no channel$/
+     */
+    public function thereIsNoChannel()
+    {
+        $em = $this->getEntityManager();
+        $channels = $em->getRepository('PimConfigBundle:Channel')->findAll();
+
+        foreach ($channels as $channel) {
+            $em->remove($channel);
+        }
+    }
+
+    /**
      * @param string $product
      * @param string $family
      *
