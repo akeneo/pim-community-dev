@@ -129,6 +129,20 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
         Oro.Filter.ChoiceFilter.prototype.initialize.apply(this, arguments);
     },
 
+    changeFilterType: function() {
+        var filterSelectSelector = '.filter-select-oro';
+        var select = this.$el.find(filterSelectSelector);
+        var selectedValue = select.val();
+
+        if (selectedValue in [this.typeValues.moreThan, this.typeValues.lessThan]) {
+            select.find(filterSelectSelector).hide();
+            select.find(this.criteriaValueSelectors.value.end).hide();
+        } else {
+            select.find(filterSelectSelector).show();
+            select.find(this.criteriaValueSelectors.value.end).show();
+        }
+    },
+
     /**
      * @inheritDoc
      */
@@ -138,6 +152,9 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             choices: this.choices,
             inputClass: this.inputClass
         }));
+
+        // TODO: fix
+        //$(el).find('.filter-select-oro').bind('change', _.bind(this.changeFilterType, this));
 
         _.each(this.criteriaValueSelectors.value, function(actualSelector, name) {
             this.dateWidgets[name] = this._initializeDateWidget(actualSelector);
