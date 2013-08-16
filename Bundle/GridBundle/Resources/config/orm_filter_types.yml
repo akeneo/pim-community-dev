@@ -29,6 +29,12 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_choice }
 
+    oro_grid.orm.filter.type.select_row:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\SelectRowFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_select_row }
+
     oro_grid.orm.filter.type.boolean:
         class:     Oro\Bundle\GridBundle\Filter\ORM\BooleanFilter
         arguments: ["@translator"]
@@ -82,4 +88,3 @@ services:
         arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.entity"]
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_entity }
-            

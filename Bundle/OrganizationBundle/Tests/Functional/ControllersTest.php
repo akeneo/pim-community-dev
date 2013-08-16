@@ -33,7 +33,29 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
     }
 
-    public function testCreate()
+    /**
+     * @return array
+     */
+    public function testUpdateUsers()
+    {
+        $id  = null;
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_business_update_unit_user_grid')
+        );
+
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $result = reset($result['data']);
+        return $result;
+    }
+
+    /**
+     * @depends testUpdateUsers
+     * @param array $user
+     */
+    public function testCreate($user)
     {
         $crawler = $this->client->request('GET', $this->client->generate('oro_business_unit_create'));
         /** @var Form $form */
@@ -41,7 +63,7 @@ class ControllersTest extends WebTestCase
         $form['oro_business_unit_form[name]'] = 'testBU';
         $form['oro_business_unit_form[organization]'] = 1;
         $form['oro_business_unit_form[parent]'] = null;
-        $form['oro_business_unit_form[appendUsers]'] = 1;
+        $form['oro_business_unit_form[appendUsers]'] = $user['id'];
         $form['oro_business_unit_form[email]'] = 'test@test.com';
         $form['oro_business_unit_form[phone]'] = '123-123-123';
         $form['oro_business_unit_form[fax]'] = '321-321-321';
@@ -132,9 +154,11 @@ class ControllersTest extends WebTestCase
 
     /**
      * @depends testUpdate
+     * @depends testUpdateUsers
      * @param string $id
+     * @param array $user
      */
-    public function testViewUsers($id)
+    public function testViewUsers($id, $user)
     {
         $this->client->request(
             'GET',
@@ -145,21 +169,6 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
-        $this->assertEquals('admin', $result['username']);
-    }
-
-    /**
-     * @depends testUpdate
-     * @param string $id
-     */
-    public function testUpdateUsers($id)
-    {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_business_update_unit_user_grid', array('_format' => 'html', 'id' => $id))
-        );
-
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
+        $this->assertEquals($user['username'], $result['username']);
     }
 }

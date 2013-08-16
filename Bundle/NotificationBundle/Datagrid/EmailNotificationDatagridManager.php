@@ -50,19 +50,6 @@ class EmailNotificationDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => $this->translate('ID'),
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'show_column' => false
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldEntityName = new FieldDescription();
         $fieldEntityName->setName('entityName');
         $fieldEntityName->setOptions(
