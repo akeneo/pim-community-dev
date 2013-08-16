@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 
 class FlexibleNumberFilter extends AbstractFlexibleFilter

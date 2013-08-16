@@ -7,13 +7,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 
-use Sonata\DoctrineORMAdminBundle\Filter\Filter as AbstractORMFilter;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
-abstract class AbstractFilter extends AbstractORMFilter implements FilterInterface
+abstract class AbstractFilter extends AbstractDescriptiveFilter implements FilterInterface
 {
     /**
      * @var Expr
@@ -36,6 +34,15 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
     /**
      * {@inheritdoc}
      */
+    public function initialize($name, array $options = array())
+    {
+        $this->name = $name;
+        $this->setOptions($options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function association(ProxyQueryInterface $queryBuilder, $value)
     {
         $alias = $queryBuilder->entityJoin($this->getParentAssociationMappings());
@@ -45,27 +52,6 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
             $alias = $fieldMapping['entityAlias'];
         }
         return array($alias, $this->getFieldName());
-    }
-
-    /**
-     * Apply filter expression to having or where clause depending on configuration
-     *
-     * @param ProxyQueryInterface $queryBuilder
-     * @param mixed $expression
-     */
-    protected function applyFilterToClause(ProxyQueryInterface $queryBuilder, $expression)
-    {
-        if ($this->isApplyFilterToHavingClause()) {
-            $this->applyHaving(
-                $queryBuilder,
-                $expression
-            );
-        } else {
-            $this->applyWhere(
-                $queryBuilder,
-                $expression
-            );
-        }
     }
 
     /**
@@ -148,6 +134,36 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function apply($queryBuilder, $value)
+    {
+        $this->value = $value;
+        if (is_array($value) && array_key_exists("value", $value)) {
+            list($alias, $field) = $this->association($queryBuilder, $value);
+
+            $this->filter($queryBuilder, $alias, $field, $value);
+        }
+    }
+
+    /**
+     * @param ProxyQueryInterface $queryBuilder
+     * @param mixed $parameter
+     */
+    protected function applyWhere(ProxyQueryInterface $queryBuilder, $parameter)
+    {
+        /** @var QueryBuilder $queryBuilder */
+        if ($this->getCondition() == self::CONDITION_OR) {
+            $queryBuilder->orWhere($parameter);
+        } else {
+            $queryBuilder->andWhere($parameter);
+        }
+
+        // filter is active since it's added to the queryBuilder
+        $this->active = true;
+    }
+
+    /**
      * Apply expression to having clause
      *
      * @param ProxyQueryInterface $queryBuilder
@@ -164,6 +180,21 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
 
         // filter is active since it's added to the queryBuilder
         $this->active = true;
+    }
+
+    /**
+     * Apply filter expression to having or where clause depending on configuration
+     *
+     * @param ProxyQueryInterface $queryBuilder
+     * @param mixed $expression
+     */
+    protected function applyFilterToClause(ProxyQueryInterface $queryBuilder, $expression)
+    {
+        if ($this->isApplyFilterToHavingClause()) {
+            $this->applyHaving($queryBuilder, $expression);
+        } else {
+            $this->applyWhere($queryBuilder, $expression);
+        }
     }
 
     /**
@@ -195,18 +226,14 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return string
      */
-    public function getFieldOptions()
+    protected function getNewParameterName(ProxyQueryInterface $proxyQuery)
     {
-        return $this->getOption('field_options', array());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNullable()
-    {
-        return $this->getOption('nullable', true);
+        // dots are not accepted in a DQL identifier so replace them
+        // by underscores.
+        return str_replace('.', '_', $this->getName()) . '_' . $proxyQuery->getUniqueParameterId();
     }
 }

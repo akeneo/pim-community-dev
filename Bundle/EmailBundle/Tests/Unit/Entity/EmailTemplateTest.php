@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
-use Oro\Bundle\EmailBundle\Tests\Unit\Form\Type\EmailTemplateTranslationTypeTest;
 
 class EmailTemplateTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,8 +46,9 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('abc', $this->emailTemplate->{'get'.ucfirst($field)}());
 
             $translation = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation');
-            $this->emailTemplate->setTranslations(array($translation));
-            $this->assertEquals($this->emailTemplate->getTranslations(), array($translation));
+            $this->emailTemplate->setTranslations(new ArrayCollection(array($translation)));
+            $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->emailTemplate->getTranslations());
+            $this->assertCount(1, $this->emailTemplate->getTranslations());
         }
     }
 
@@ -55,11 +57,16 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testCloneAndToString()
     {
+        $translation = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation');
+
+        $this->emailTemplate->getTranslations()->add($translation);
+
         $clone = clone $this->emailTemplate;
 
         $this->assertNull($clone->getId());
         $this->assertEquals($clone->getParent(), $this->emailTemplate->getId());
 
         $this->assertEquals($this->emailTemplate->getName(), (string)$this->emailTemplate);
+        $this->assertFalse($clone->getTranslations()->first() === $translation);
     }
 }

@@ -213,6 +213,14 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @return array
+     */
+    public function getAllConfigurableEntityNames()
+    {
+        return  $this->configManager->getAllConfigurableEntityNames();
+    }
+
+    /**
      * @param ConfigInterface $config
      */
     public function persist(ConfigInterface $config)

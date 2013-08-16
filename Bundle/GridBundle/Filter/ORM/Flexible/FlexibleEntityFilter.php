@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -54,7 +56,7 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
     /**
      * {@inheritdoc}
      */
-    public function filter(\Sonata\AdminBundle\Datagrid\ProxyQueryInterface $proxyQuery, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parentFilter->parseData($data);
         if (!$data) {
