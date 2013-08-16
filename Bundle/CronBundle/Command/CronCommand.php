@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use JMS\JobQueueBundle\Entity\Job;
 
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\CronBundle\Entity\Schedule;
 
 class CronCommand extends ContainerAwareCommand
@@ -54,9 +55,17 @@ class CronCommand extends ContainerAwareCommand
             if (empty($dbCommand)) {
                 $output->writeln('<comment>new command found, setting up schedule..</comment>');
 
+                if (!$command instanceof CronCommandInterface) {
+                    $output->writeln('<error>Unable to setup, command must be instance of CronCommandInterface</error>');
+
+                    continue;
+                }
+
                 $schedule = new Schedule();
 
-                $schedule->setCommand($name);
+                $schedule
+                    ->setCommand($name)
+                    ->setDefinition($command->getDefaultDefinition());
 
                 $em->persist($schedule);
 

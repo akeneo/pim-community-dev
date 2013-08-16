@@ -98,14 +98,14 @@ class Daemon
     public function getPid()
     {
         $cmd = defined('PHP_WINDOWS_VERSION_BUILD')
-            ? 'WMIC path win32_process get Caption,Processid,Commandline'
+            ? 'WMIC path win32_process get Processid,Commandline'
             : 'ps ax | grep "[j]ms-job-queue:run"';
 
         $process = new Process($cmd);
 
         $process->run();
 
-        return preg_match('#^.+app/console jms-job-queue:run#Usm', $process->getOutput(), $matches)
+        return preg_match('#^.+console jms-job-queue:run#Usm', $process->getOutput(), $matches)
             ? (int) $matches[0]
             : null;
     }
