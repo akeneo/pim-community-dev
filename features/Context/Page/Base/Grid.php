@@ -25,7 +25,7 @@ class Grid extends Index
             array(
                 'Grid'         => array('css' => 'table.grid'),
                 'Grid content' => array('css' => 'table.grid tbody'),
-                'Filters'      => array('css' => 'div.filter-item'),
+                'Filters'      => array('css' => 'div.filter-box'),
             )
         );
     }
@@ -37,7 +37,7 @@ class Grid extends Index
      * @throws \InvalidArgumentException
      * @return NodeElement
      */
-    public function getGridRow($value)
+    public function getRow($value)
     {
         $value = str_replace('"', '', $value);
         $gridRow = $this->getElement('Grid content')->find('css', sprintf('tr:contains("%s")', $value));
@@ -52,12 +52,42 @@ class Grid extends Index
     }
 
     /**
+     * Get row position
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     * @return int
+     */
+    public function getRowPosition($value)
+    {
+        foreach ($this->getRows() as $key => $row) {
+            if ($row->find('css', sprintf('td:contains("%s")', $value))) {
+                return $key;
+            }
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf('Couldn\'t find a row for value "%s"', $value)
+        );
+    }
+
+    /**
+     * Get rows
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    protected function getRows()
+    {
+        return $this->getElement('Grid content')->findAll('css', 'tr');
+    }
+
+    /**
      * @param string $element
      * @param string $actionName
      */
     public function clickOnAction($element, $actionName)
     {
-        $rowElement = $this->getGridRow($element);
+        $rowElement = $this->getRow($element);
         $rowElement->find('css', 'a.dropdown-toggle')->click();
 
         $action = $rowElement->find('css', sprintf('a.action[title=%s]', $actionName));
@@ -108,7 +138,7 @@ class Grid extends Index
      */
     public function getColumnValue($column, $row)
     {
-        return $this->getRowCell($this->getGridRow($row), $this->getColumnPosition($column))->getText();
+        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column))->getText();
     }
 
     /**
@@ -116,9 +146,9 @@ class Grid extends Index
      *
      * @return integer
      */
-    protected function getColumnPosition($column)
+    public function getColumnPosition($column)
     {
-        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+        $headers = $this->getColumnHeaders();
         foreach ($headers as $position => $header) {
             if ($column === $header->getText()) {
                 return $position;
@@ -128,6 +158,61 @@ class Grid extends Index
         throw new \InvalidArgumentException(
             sprintf('Couldn\'t find a column "%s"', $column)
         );
+    }
+
+    /**
+     * Get column headers
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    protected function getColumnHeaders()
+    {
+        return $this->getElement('Grid')->findAll('css', 'thead th');
+    }
+
+    /**
+     * Count columns in datagrid
+     *
+     * @return integer
+     */
+    public function countColumns()
+    {
+        return count($this->getColumnHeaders());
+    }
+
+    /**
+     * Get column
+     *
+     * @param string $columnName
+     *
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\Element
+     */
+    public function getColumn($columnName)
+    {
+        $columnHeaders = $this->getColumnHeaders();
+
+        foreach ($columnHeaders as $columnHeader) {
+            if ($columnHeader->getText() === $columnName) {
+                return $columnHeader;
+            }
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf('Couldn\'t find column "%s"', $columnName)
+        );
+    }
+
+    /**
+     * Get column sorter
+     *
+     * @param string $columnName
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    public function getColumnSorter($columnName)
+    {
+        return $this->getColumn($columnName)->find('css', 'a');
     }
 
     /**
@@ -178,11 +263,11 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
-        $filter = $this->getElement('Filters')->find('css', sprintf(':contains("%s")', $filterName));
+        $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
 
         if (!$filter) {
             throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a filter for name "%s"', $filterName)
+                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
             );
         }
 

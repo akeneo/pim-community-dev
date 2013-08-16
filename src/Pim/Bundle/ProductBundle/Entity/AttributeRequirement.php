@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * The attribute requirement for a channel and a family
@@ -43,7 +43,7 @@ class AttributeRequirement
     /**
      * @var Channel $channel
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Channel")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Channel")
      */
     protected $channel;
 
@@ -119,7 +119,7 @@ class AttributeRequirement
     /**
      * Getter channel
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Channel
+     * @return \Pim\Bundle\ProductBundle\Entity\Channel
      */
     public function getChannel()
     {

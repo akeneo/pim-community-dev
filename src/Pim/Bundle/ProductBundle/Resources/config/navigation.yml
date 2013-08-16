@@ -17,13 +17,41 @@ oro_menu_config:
             route: 'pim_product_productattribute_index'
         pim_enrich_family:
             label: 'Families'
-            route: 'pim_product_family_index'
+            route: 'pim_product_family_create'
         pim_enrich_attributegroup:
             label: 'Attribute groups'
-            route: 'pim_product_attributegroup_index'
+            route: 'pim_product_attributegroup_create'
         pim_enrich_categorytree:
             label: 'Categories'
             route: 'pim_product_categorytree_create'
+        pim_import_tab:
+            label: 'Extract'
+            uri: '#'
+            extras:
+                position: 10
+        pim_export_tab:
+            label: 'Spread'
+            uri: '#'
+            extras:
+                position: 30
+        pim_producturation_tab:
+            label: 'Settings'
+            uri: '#'
+            extras:
+                position: 50
+        system_tab:
+            label: 'System'
+            extras:
+                position: 60
+        pim_product_locale:
+            label: 'Locales'
+            route: 'pim_product_locale_index'
+        pim_product_currency:
+            label: 'Currencies'
+            route: 'pim_product_currency_index'
+        pim_product_channel:
+            label: 'Channels'
+            route: 'pim_product_channel_index'
 
     tree:
         application_menu:
@@ -33,15 +61,20 @@ oro_menu_config:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
 
-                pim_configuration_tab:
+                pim_producturation_tab:
                     children:
                         pim_enrich_attributegroup: ~
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
+                        pim_product_currency: ~
+                        pim_product_locale: ~
+
+                pim_export_tab:
+                    children:
+                        pim_product_channel: ~
 
 oro_titles:
     oro_default:                             Dashboard
-    pim_product_attributegroup_index:        Attribute groups
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit
     pim_product_attributegroup_sort:         Attribute groups | Sort
@@ -54,12 +87,11 @@ oro_titles:
     pim_product_product_index:               Products
     pim_product_product_create:              Products | Create
     pim_product_product_edit:                Products | Edit
-    pim_product_family_index:                Product families
     pim_product_family_create:               Product families | Create
     pim_product_family_edit:                 Product families | Edit
-    pim_config_channel_index:                Channels
-    pim_config_channel_create:               Channels | Create
-    pim_config_channel_edit:                 Channels | Edit
-    pim_config_currency_index:               Currencies
-    pim_config_locale_index:                 Locales
-    pim_config_locale_edit:                  Locales | Edit
+    pim_product_channel_index:                Channels
+    pim_product_channel_create:               Channels | Create
+    pim_product_channel_edit:                 Channels | Edit
+    pim_product_currency_index:               Currencies
+    pim_product_locale_index:                 Locales
+    pim_product_locale_edit:                  Locales | Edit

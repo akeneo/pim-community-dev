@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 use Symfony\Component\Validator\Constraint;
 
 /**

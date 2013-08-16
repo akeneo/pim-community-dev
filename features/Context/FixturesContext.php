@@ -17,8 +17,8 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
@@ -252,7 +252,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCurrencies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $currency = new \Pim\Bundle\ConfigBundle\Entity\Currency;
+            $currency = new \Pim\Bundle\ProductBundle\Entity\Currency;
             $currency->setCode($data['code']);
             $currency->setActivated($data['activated'] === 'yes');
 
@@ -269,7 +269,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $locale = $em->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $data['code']));
+            $locale = $em->getRepository('PimProductBundle:Locale')->findOneBy(array('code' => $data['code']));
             if (!$locale) {
                 $locale = new Locale();
                 $locale->setCode($data['code']);
@@ -283,6 +283,19 @@ class FixturesContext extends RawMinkContext
             $em->persist($locale);
         }
         $em->flush();
+    }
+
+    /**
+     * @Given /^there is no channel$/
+     */
+    public function thereIsNoChannel()
+    {
+        $em = $this->getEntityManager();
+        $channels = $em->getRepository('PimProductBundle:Channel')->findAll();
+
+        foreach ($channels as $channel) {
+            $em->remove($channel);
+        }
     }
 
     /**
@@ -799,7 +812,7 @@ class FixturesContext extends RawMinkContext
     private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array('code' => $code));
+            $lang = $this->getEntityOrException('PimProductBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
             $this->createLocale($code);
         }
@@ -816,7 +829,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCurrency($code)
     {
-        return $this->getEntityOrException('PimConfigBundle:Currency', array('code' => $code));
+        return $this->getEntityOrException('PimProductBundle:Currency', array('code' => $code));
     }
 
     /**

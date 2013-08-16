@@ -13,7 +13,7 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/enrich/family/create';
+    protected $path = '/configuration/family/create';
 
     /**
      * @param string $name

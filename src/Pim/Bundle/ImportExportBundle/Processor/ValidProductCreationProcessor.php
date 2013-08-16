@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 
 /**
  * Product form processor
@@ -256,7 +256,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             case 'options':
                 $options = array();
                 foreach (explode(',', $value) as $val) {
-                    if ($option = $this->getOption($value)) {
+                    if ($option = $this->getOption($val)) {
                         $options[] = $option->getId();
                     }
                 }

@@ -5,7 +5,7 @@ namespace Pim\Bundle\ProductBundle\Twig;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Locale\Locale;
 use Symfony\Component\Locale\Stub\StubLocale;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Pim\Bundle\ProductBundle\Manager\LocaleManager;
 
 /**
  * Display currency symbol from code

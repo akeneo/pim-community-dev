@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Routing\Router;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * A normalizer to transform a product entity into an array

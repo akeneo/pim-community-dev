@@ -16,7 +16,7 @@ class Creation extends Form
     /**
      * @var string
      */
-    protected $path = '/enrich/product-attribute/create';
+    protected $path = '/configuration/product-attribute/create';
 
     /**
      * {@inheritdoc}

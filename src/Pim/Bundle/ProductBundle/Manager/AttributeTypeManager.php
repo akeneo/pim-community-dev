@@ -5,7 +5,7 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Pim\Bundle\ProductBundle\Manager\LocaleManager;
 
 /**
  * Attribute type manager

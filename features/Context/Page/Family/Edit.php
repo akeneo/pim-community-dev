@@ -13,7 +13,7 @@ use Context\Page\Family\Creation;
  */
 class Edit extends Creation
 {
-    protected $path = '/enrich/family/{id}/edit';
+    protected $path = '/configuration/family/{id}/edit';
 
     /**
      * {@inheritdoc}

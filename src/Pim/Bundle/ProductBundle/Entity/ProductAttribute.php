@@ -103,7 +103,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     /**
      * @var $availableLocales ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\Locale")
      * @ORM\JoinTable(name="pim_product_attribute_locale")
      */
     protected $availableLocales;

@@ -74,21 +74,21 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_config.manager.locale');
+        return $this->container->get('pim_product.manager.locale');
     }
 
     /**
      * Get channel manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\ChannelManager
+     * @return \Pim\Bundle\ProductBundle\Manager\ChannelManager
      */
     protected function getChannelManager()
     {
-        return $this->container->get('pim_config.manager.channel');
+        return $this->container->get('pim_product.manager.channel');
     }
 
     /**

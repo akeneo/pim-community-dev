@@ -22,19 +22,6 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 class AttributeGroupController extends Controller
 {
     /**
-     * List attribute groups
-     *
-     * @return multitype
-     *
-     * @Route("/")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        return $this->redirectToRoute('pim_product_attributegroup_create');
-    }
-
-    /**
      * Create attribute group
      *
      * @Route("/create")
@@ -89,7 +76,7 @@ class AttributeGroupController extends Controller
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
-            return $this->redirectToRoute('pim_product_attributegroup_index');
+            return $this->redirectToRoute('pim_product_attributegroup_create');
         }
 
         $data = $request->request->all();
@@ -135,7 +122,7 @@ class AttributeGroupController extends Controller
             }
         }
 
-        return $this->redirectToRoute('pim_product_attributegroup_index');
+        return $this->redirectToRoute('pim_product_attributegroup_create');
     }
 
     /**

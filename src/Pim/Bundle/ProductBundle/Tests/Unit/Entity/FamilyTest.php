@@ -254,11 +254,11 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return Pim\Bundle\ConfigBundle\Entity\Channel
+     * @return Pim\Bundle\ProductBundle\Entity\Channel
      */
     protected function getChannelMock($code)
     {
-        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel');
+        $channel = $this->getMock('Pim\Bundle\ProductBundle\Entity\Channel');
 
         $channel->expects($this->any())
                   ->method('getCode')

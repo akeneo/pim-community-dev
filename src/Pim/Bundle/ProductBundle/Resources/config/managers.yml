@@ -40,4 +40,21 @@ services:
 
     pim_product.manager.attribute_type:
         class:     %pim_product.manager.attribute_type.class%
-        arguments: [@pim_product.manager.product, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
+        arguments: [@pim_product.manager.product, @pim_product.manager.locale, @oro_flexibleentity.attributetype.factory]
+
+    pim_product.manager.locale:
+        class: %pim_product.manager.locale.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.context
+
+    pim_product.manager.currency:
+        class: %pim_product.manager.currency.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    pim_product.manager.channel:
+        class: %pim_product.manager.channel.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.context
