@@ -2,7 +2,7 @@
 Feature: Browse currencies
   In order to check wether or not a currency is available in the catalog
   As a user
-  I need to be able to see active and inactive currencies by several filters in the catalog
+  I need to be able to see active and inactive currencies in the catalog
 
   Background:
     Given the following currencies:
