@@ -26,7 +26,9 @@ class EntitySubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+            //@codingStandardsIgnoreStart
             Events::onFlush
+            //@codingStandardsIgnoreEnd
         );
     }
 

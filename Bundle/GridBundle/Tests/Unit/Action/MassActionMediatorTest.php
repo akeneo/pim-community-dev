@@ -26,9 +26,9 @@ class MassActionMediatorTest extends \PHPUnit_Framework_TestCase
 
         $this->mediator = new MassActionMediator(
             $this->massAction,
+            $this->datagrid,
             array(),
-            array(),
-            $this->datagrid
+            array()
         );
     }
 

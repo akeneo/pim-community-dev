@@ -20,6 +20,10 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * TODO: This class should be refactored  (BAP-969).
+ */
 abstract class DatagridManager implements DatagridManagerInterface
 {
     /**

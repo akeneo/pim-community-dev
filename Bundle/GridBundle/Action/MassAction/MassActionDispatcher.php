@@ -13,7 +13,6 @@ use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
@@ -81,7 +80,7 @@ class MassActionDispatcher
         $massAction = $this->getMassActionByName($datagrid, $actionName);
         $proxyQuery = $this->getDatagridQuery($datagrid, $inset, $values);
         $resultIterator = $this->getResultIterator($proxyQuery);
-        $mediator = new MassActionMediator($massAction, $resultIterator, $data, $datagrid);
+        $mediator = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
 
         // perform mass action
         $handle = $this->getMassActionHandler($massAction);
