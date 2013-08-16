@@ -10,7 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+use Pim\Bundle\ProductBundle\Manager\CurrencyManager;
 
 /**
  * Product manager
@@ -340,7 +340,7 @@ class ProductManager extends FlexibleManager
      */
     protected function getChannels()
     {
-        return $this->storageManager->getRepository('PimConfigBundle:Channel')->findAll();
+        return $this->storageManager->getRepository('PimProductBundle:Channel')->findAll();
     }
 
     /**
@@ -350,7 +350,7 @@ class ProductManager extends FlexibleManager
      */
     protected function getLocales()
     {
-        return $this->storageManager->getRepository('PimConfigBundle:Locale')->getActivatedLocales();
+        return $this->storageManager->getRepository('PimProductBundle:Locale')->getActivatedLocales();
     }
 
     /**

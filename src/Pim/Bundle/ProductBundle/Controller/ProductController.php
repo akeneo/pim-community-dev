@@ -131,7 +131,7 @@ class ProductController extends Controller
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $channels = $this->getRepository('PimConfigBundle:Channel')->findAll();
+        $channels = $this->getRepository('PimProductBundle:Channel')->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
 
         $form     = $this->createForm(
@@ -368,11 +368,11 @@ class ProductController extends Controller
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_config.manager.locale');
+        return $this->container->get('pim_product.manager.locale');
     }
 
     /**
@@ -451,7 +451,7 @@ class ProductController extends Controller
 
         // TODO : Maybe just check if the locale is well activated
 
-        $currencyManager = $this->container->get('pim_config.manager.currency');
+        $currencyManager = $this->container->get('pim_product.manager.currency');
         $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;

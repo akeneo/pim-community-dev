@@ -50,7 +50,7 @@ services:
             - "prices"
             - "pim_product_price_collection"
             - @oro_flexibleentity.validator.attribute_constraint_guesser
-            - @pim_config.manager.currency
+            - @pim_product.manager.currency
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_price_collection }
 

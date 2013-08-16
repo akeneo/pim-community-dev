@@ -94,7 +94,7 @@ class ProductController extends FOSRestController
 
         $products = $manager->getFlexibleRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
 
-        $channels = $this->get('pim_config.manager.channel')->getChannels(array('code' => $scope));
+        $channels = $this->get('pim_product.manager.channel')->getChannels(array('code' => $scope));
         $channel = reset($channels);
 
         if (!$channel) {
@@ -129,7 +129,7 @@ class ProductController extends FOSRestController
             return new Response('', 404);
         }
 
-        $channels = $this->get('pim_config.manager.channel')->getChannels(array('code' => $scope));
+        $channels = $this->get('pim_product.manager.channel')->getChannels(array('code' => $scope));
         $channel = reset($channels);
 
         if (!$channel) {

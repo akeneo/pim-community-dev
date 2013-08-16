@@ -78,7 +78,7 @@ class FamilyController extends Controller
         }
 
         $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
-        $channels = $this->get('pim_config.manager.channel')->getChannels();
+        $channels = $this->get('pim_product.manager.channel')->getChannels();
         $form = $this->createForm(
             'pim_family',
             $family,

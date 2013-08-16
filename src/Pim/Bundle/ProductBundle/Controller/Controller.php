@@ -54,7 +54,7 @@ class Controller extends BaseController
         $result = $this->getRepository($repository)->find($id);
 
         if (!$result) {
-            throw $this->createNotFoundException(sprintf('%s entity not found', $repository));
+            throw $this->createNotFoundException(sprintf('%s entity not found', end(explode(':', $repository))));
         }
 
         return $result;

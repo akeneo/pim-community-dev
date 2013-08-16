@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
@@ -103,7 +103,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     /**
      * @var $availableLocales ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\Locale")
      * @ORM\JoinTable(name="pim_product_attribute_locale")
      * @Oro\Versioned
      */
