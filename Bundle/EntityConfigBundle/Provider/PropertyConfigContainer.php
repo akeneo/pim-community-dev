@@ -67,15 +67,20 @@ class PropertyConfigContainer
 
     /**
      * @param string|ConfigIdInterface $type
+     * @param null                     $fieldType
      * @return array
      */
-    public function getDefaultValues($type = self::TYPE_ENTITY)
+    public function getDefaultValues($type = self::TYPE_ENTITY, $fieldType = null)
     {
         $type = $this->getConfigType($type);
 
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
-            if (isset($item['options']['default_value'])) {
+            if (isset($item['options']['default_value'])
+                && ((!$fieldType || !isset($item['options']['allowed_type'])
+                    || in_array($fieldType, $item['options']['allowed_type']))
+                )
+            ) {
                 $result[$code] = $item['options']['default_value'];
             }
         }
@@ -112,7 +117,7 @@ class PropertyConfigContainer
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool) $item['options']['serializable'];
+                $result[$code] = (bool)$item['options']['serializable'];
             }
         }
 
@@ -128,7 +133,7 @@ class PropertyConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return (boolean) $this->getFormItems($type, $fieldType);
+        return (boolean)$this->getFormItems($type, $fieldType);
     }
 
     /**

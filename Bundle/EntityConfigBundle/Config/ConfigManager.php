@@ -216,7 +216,7 @@ class ConfigManager
      */
     public function isConfigurable($className, $fieldName = null)
     {
-        return (bool) $this->modelManager->findModel($className, $fieldName);
+        return (bool)$this->modelManager->findModel($className, $fieldName);
     }
 
     /**
@@ -261,7 +261,7 @@ class ConfigManager
             return true;
         }
 
-        return (bool) $this->modelManager->getModelByConfigId($configId);
+        return (bool)$this->modelManager->getModelByConfigId($configId);
     }
 
     /**
@@ -272,8 +272,8 @@ class ConfigManager
      */
     public function getConfig(ConfigIdInterface $configId)
     {
-        if ($this->localCache->containsKey($configId->getId())) {
-            return $this->localCache->get($configId->getId());
+        if ($this->localCache->containsKey($configId->toString())) {
+            return $this->localCache->get($configId->toString());
         }
 
         if (!$this->modelManager->checkDatabase()) {
@@ -475,11 +475,11 @@ class ConfigManager
             $entityModel = $this->modelManager->createEntityModel($className, $mode);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getPropertyConfig()->getDefaultValues();
 
                 $metadata = $this->getEntityMetadata($className);
+                $defaultValues = array();
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
+                    $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
                 $entityId = new EntityConfigId($className, $provider->getScope());
@@ -510,11 +510,10 @@ class ConfigManager
             $fieldModel = $this->modelManager->createFieldModel($className, $fieldName, $fieldType, $mode);
 
             foreach ($this->getProviders() as $provider) {
-                $defaultValues = $provider->getPropertyConfig()->getDefaultValues(PropertyConfigContainer::TYPE_FIELD);
-
+                $defaultValues = array();
                 $metadata = $this->getFieldMetadata($className, $fieldName);
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues = array_merge($defaultValues, $metadata->defaultValues[$provider->getScope()]);
+                    $defaultValues =  $metadata->defaultValues[$provider->getScope()];
                 }
 
                 $fieldId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);

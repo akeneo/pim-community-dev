@@ -30,7 +30,7 @@ class ConfigCache
      */
     public function loadConfigFromCache(ConfigIdInterface $configId)
     {
-        return unserialize($this->cache->fetch($configId->getId()));
+        return unserialize($this->cache->fetch($configId->toString()));
     }
 
     /**
@@ -48,7 +48,7 @@ class ConfigCache
      */
     public function removeConfigFromCache(ConfigIdInterface $configId)
     {
-        return $this->cache->delete($configId->getId());
+        return $this->cache->delete($configId->toString());
     }
 
     /**
