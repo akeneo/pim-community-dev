@@ -129,17 +129,14 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
         Oro.Filter.ChoiceFilter.prototype.initialize.apply(this, arguments);
     },
 
-    changeFilterType: function() {
-        var filterSelectSelector = '.filter-select-oro';
-        var select = this.$el.find(filterSelectSelector);
+    changeFilterType: function(e) {
+        var select = this.$el.find(e.currentTarget);
         var selectedValue = select.val();
 
-        if (selectedValue in [this.typeValues.moreThan, this.typeValues.lessThan]) {
-            select.find(filterSelectSelector).hide();
-            select.find(this.criteriaValueSelectors.value.end).hide();
+        if (_.indexOf([this.typeValues.moreThan, this.typeValues.lessThan], parseInt(selectedValue)) !== -1) {
+            this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
         } else {
-            select.find(filterSelectSelector).show();
-            select.find(this.criteriaValueSelectors.value.end).show();
+            this.$el.find('.filter-separator').show().end().find(this.criteriaValueSelectors.value.end).show();
         }
     },
 
@@ -153,8 +150,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             inputClass: this.inputClass
         }));
 
-        // TODO: fix
-        //$(el).find('.filter-select-oro').bind('change', _.bind(this.changeFilterType, this));
+        $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
 
         _.each(this.criteriaValueSelectors.value, function(actualSelector, name) {
             this.dateWidgets[name] = this._initializeDateWidget(actualSelector);
@@ -185,13 +181,15 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
 
         var widget = $(this.dateWidgetSelector);
         elements.push(widget);
-        elements = _.union(elements, widget.find('span'));
-
-        var clickedElement = _.find(elements, function(elem) {
-            return _.isEqual(elem.get(0), e.target) || elem.has(e.target).length;
+        widget.find('span').each(function(i, el) {
+            elements.push($(el));
         });
 
-        if (!clickedElement && $(e.target).prop('tagName') == 'BUTTON') {
+        var clickedElement = _.find(elements, function(elem) {
+            return elem.get(0) === e.target || elem.has(e.target).length;
+        });
+
+        if (!clickedElement && $(e.target).is(":button, .ui-icon")) {
             clickedElement = e.target;
         }
 
@@ -214,28 +212,28 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
 
             switch (type) {
                 case this.typeValues.moreThan.toString():
-                    hint += ' more than ' + start;
+                    hint += [_.__('more than'), start].join(' ');
                     break;
                 case this.typeValues.lessThan.toString():
-                    hint += ' less than ' + start;
+                    hint += [_.__('less than'), start].join(' ');
                     break;
                 case this.typeValues.notBetween.toString():
                     if (start && end) {
-                        hint += this.choices[this.typeValues.notBetween] + ' ' + start + ' and ' + end
+                        hint += [this.choices[this.typeValues.notBetween], start, _.__('and'), end].join(' ');
                     } else if (start) {
-                        hint += ' before ' + start;
+                        hint += [_.__('before'), start].join(' ');
                     } else if (end) {
-                        hint += ' after ' + end;
+                        hint += [_.__('after'), end].join(' ');
                     }
                     break;
                 case this.typeValues.between.toString():
                 default:
                     if (start && end) {
-                        hint += this.choices[this.typeValues.between] + ' ' + start + ' and ' + end
+                        hint += [this.choices[this.typeValues.between], start, _.__('and'), end].join(' ');
                     } else if (start) {
-                        hint += ' from ' + start;
+                        hint += [_.__('from'), start].join(' ');
                     } else if (end) {
-                        hint += ' to ' + end;
+                        hint += [_.__('to'), end].join(' ');
                     }
                     break;
             }
