@@ -454,13 +454,11 @@ class StepExecution
     {
         $this->failureExceptionsObjects[] = $e;
         $failureExceptions = array();
-        foreach ($failureExceptions as $failureException) {
-            $failureExceptions[] = array(
-                'class' => get_class($e),
-                'message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString()
-            );
-        }
+        $failureExceptions[] = array(
+            'class' => get_class($e),
+            'message' => $e->getMessage(),
+            'stack_trace' => $e->getTraceAsString()
+        );
 
         $this->failureExceptions = serialize($failureExceptions);
     }
