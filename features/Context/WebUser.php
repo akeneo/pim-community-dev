@@ -244,7 +244,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     *
      * @param string $currencies
      *
      * @return \Behat\Behat\Context\Step\Given
@@ -995,7 +994,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
-     * @Then /^I should see attributes? (.*)$/
+     * @Then /^I should see attributes? ((?!in group).)*$/
      */
     public function iShouldSeeAttributes($attributes)
     {
