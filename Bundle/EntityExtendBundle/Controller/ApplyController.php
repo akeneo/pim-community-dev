@@ -76,20 +76,20 @@ class ApplyController extends Controller
                 if ($fieldConfig->get('state') == 'New') {
                     $isValid = true;
                 } else {
-                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfig->getConfigId());
+                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfig->getId());
                 }
 
                 if ($isValid) {
                     $validation['success'][] = sprintf(
                         "Field '%s(%s)' is valid. State -> %s",
-                        $fieldConfig->getConfigId()->getFieldName(),
+                        $fieldConfig->getId()->getFieldName(),
                         $fieldConfig->get('owner'),
                         $fieldConfig->get('state')
                     );
                 } else {
                     $validation['error'][] = sprintf(
                         "Warning. Field '%s(%s)' has data.",
-                        $fieldConfig->getConfigId()->getFieldName(),
+                        $fieldConfig->getId()->getFieldName(),
                         $fieldConfig->get('owner')
                     );
                 }

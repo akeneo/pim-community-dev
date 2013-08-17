@@ -39,7 +39,7 @@ class ConfigCache
      */
     public function putConfigInCache(ConfigInterface $config)
     {
-        return $this->cache->save($config->getConfigId()->getId(), serialize($config));
+        return $this->cache->save($config->getId()->getId(), serialize($config));
     }
 
     /**

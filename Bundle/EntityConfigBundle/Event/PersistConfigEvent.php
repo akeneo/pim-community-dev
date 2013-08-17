@@ -40,7 +40,7 @@ class PersistConfigEvent extends Event
      */
     public function getConfigId()
     {
-        return $this->config->getConfigId();
+        return $this->config->getId();
     }
 
     /**

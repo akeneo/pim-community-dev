@@ -79,7 +79,7 @@ class EmailRenderer extends \Twig_Environment
 
         foreach ($this->configProvider->getConfigIds() as $entityConfigId) {
             $className = $entityConfigId->getClassName();
-            $fields = $this->configProvider->filter(
+            $fields    = $this->configProvider->filter(
                 function (ConfigInterface $fieldConfig) {
                     return $fieldConfig->is('available_in_template');
                 },
@@ -88,8 +88,8 @@ class EmailRenderer extends \Twig_Environment
 
             if (count($fields)) {
                 $configuration[$className] = array();
-                foreach ($fields as $field) {
-                    $configuration[$className][] = 'get' . strtolower($field->getConfigId()->getFieldName());
+                foreach ($fields as $fieldConfig) {
+                    $configuration[$className][] = 'get' . strtolower($fieldConfig->getId()->getFieldName());
                 }
             }
         }
@@ -113,8 +113,11 @@ class EmailRenderer extends \Twig_Environment
 
         $templateParams['user'] = $this->user;
 
-        $templateRendered = $this->render('{% verbatim %}'.$content.'{% endverbatim %}', $templateParams);
-        $subjectRendered  = $this->render('{% verbatim %}'.$entity->getSubject().'{% endverbatim %}', $templateParams);
+        $templateRendered = $this->render('{% verbatim %}' . $content . '{% endverbatim %}', $templateParams);
+        $subjectRendered  = $this->render(
+            '{% verbatim %}' . $entity->getSubject() . '{% endverbatim %}',
+            $templateParams
+        );
 
         return array($subjectRendered, $templateRendered);
     }

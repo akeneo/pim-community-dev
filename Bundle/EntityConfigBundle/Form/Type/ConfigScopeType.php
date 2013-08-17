@@ -79,17 +79,17 @@ class ConfigScopeType extends AbstractType
                         $configId = $property['config_id'];
 
                         $fieldName = isset($configId['field_name']) ? $configId['field_name'] : null;
-                        if (!$fieldName && $this->config->getConfigId() instanceof FieldConfigId) {
-                            $fieldName = $this->config->getConfigId()->getFieldName();
+                        if (!$fieldName && $this->config->getId() instanceof FieldConfigId) {
+                            $fieldName = $this->config->getId()->getFieldName();
                         }
 
                         $className = isset($configId['class_name'])
                             ? $configId['class_name']
-                            : $this->config->getConfigId()->getClassName();
+                            : $this->config->getId()->getClassName();
 
                         $scope = isset($configId['scope'])
                             ? $configId['scope']
-                            : $this->config->getConfigId()->getScope();
+                            : $this->config->getId()->getScope();
 
                         if ($fieldName) {
                             $configId = new FieldConfigId($className, $scope, $fieldName);
@@ -98,10 +98,10 @@ class ConfigScopeType extends AbstractType
                         }
 
                         //check if requirement property isset in this form
-                        if ($className == $this->config->getConfigId()->getClassName()) {
+                        if ($className == $this->config->getId()->getClassName()) {
                             if ($fieldName) {
-                                if ($this->config->getConfigId() instanceof FieldConfigId
-                                    && $this->config->getConfigId()->getFieldName() == $fieldName
+                                if ($this->config->getId() instanceof FieldConfigId
+                                    && $this->config->getId()->getFieldName() == $fieldName
                                 ) {
                                     $propertyOnForm = true;
                                 }
@@ -112,7 +112,7 @@ class ConfigScopeType extends AbstractType
                     } else {
                         $propertyOnForm = true;
 
-                        $configId = $this->config->getConfigId();
+                        $configId = $this->config->getId();
                     }
 
                     $requireConfig = $this->configManager->getConfig($configId);
@@ -137,7 +137,7 @@ class ConfigScopeType extends AbstractType
                     $options['constraints'] = $this->parseValidator($config['constraints']);
                 }
 
-                $options['attr']['data-property_id'] = $this->config->getConfigId()->getId() . $code;
+                $options['attr']['data-property_id'] = $this->config->getId()->getId() . $code;
 
                 $builder->add($code, $config['form']['type'], $options);
             }

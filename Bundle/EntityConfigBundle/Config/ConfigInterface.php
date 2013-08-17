@@ -9,7 +9,7 @@ interface ConfigInterface extends \Serializable
     /**
      * @return ConfigIdInterface
      */
-    public function getConfigId();
+    public function getId();
 
     /**
      * @param  string $code

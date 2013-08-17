@@ -68,8 +68,8 @@ class ConfigSubscriber implements EventSubscriberInterface
     {
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        $scope     = $event->getConfig()->getConfigId()->getScope();
-        $className = $event->getConfig()->getConfigId()->getClassName();
+        $scope     = $event->getConfig()->getId()->getScope();
+        $className = $event->getConfig()->getId()->getClassName();
 
         if ($scope == 'extend'
             && $event->getConfig()->is('is_extend')

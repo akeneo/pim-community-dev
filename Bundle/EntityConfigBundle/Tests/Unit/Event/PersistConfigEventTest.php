@@ -31,7 +31,7 @@ class PersistConfigEventTest extends \PHPUnit_Framework_TestCase
         $event  = new PersistConfigEvent($config, $this->configManager);
 
         $this->assertEquals($config, $event->getConfig());
-        $this->assertEquals($config->getConfigId(), $event->getConfigId());
+        $this->assertEquals($config->getId(), $event->getConfigId());
         $this->assertEquals($this->configManager, $event->getConfigManager());
     }
 }

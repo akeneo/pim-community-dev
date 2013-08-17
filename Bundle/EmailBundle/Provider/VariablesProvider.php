@@ -50,7 +50,7 @@ class VariablesProvider
                 $fields = array_values(
                     array_map(
                         function (ConfigInterface $field) {
-                            return $field->getConfigId()->getFieldName();
+                            return $field->getId()->getFieldName();
                         },
                         $fields
                     )

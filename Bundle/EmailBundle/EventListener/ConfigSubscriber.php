@@ -64,7 +64,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        if ($event->getConfig()->getConfigId()->getScope() == 'email' && isset($change['available_in_template'])) {
+        if ($event->getConfig()->getId()->getScope() == 'email' && isset($change['available_in_template'])) {
             $this->cache->delete($this->cacheKey);
         }
     }
