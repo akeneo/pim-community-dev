@@ -224,7 +224,7 @@ class ConfigManager
      * @param $className
      * @return array
      */
-    public function getConfigIds($scope, $className = null)
+    public function getIds($scope, $className = null)
     {
         $entityModels = $this->modelManager->getModels($className);
 
@@ -305,10 +305,10 @@ class ConfigManager
         }
 
         //local cache
-        $this->localCache->set($resultConfig->getConfigId()->getId(), $resultConfig);
+        $this->localCache->set($resultConfig->getId()->toString(), $resultConfig);
 
         //for calculate change set
-        $this->originalConfigs->set($resultConfig->getConfigId()->getId(), clone $resultConfig);
+        $this->originalConfigs->set($resultConfig->getId()->toString(), clone $resultConfig);
 
         return $resultConfig;
     }
@@ -397,8 +397,8 @@ class ConfigManager
     public function calculateConfigChangeSet(ConfigInterface $config)
     {
         $originConfigValue = array();
-        if ($this->originalConfigs->containsKey($config->getId()->getId())) {
-            $originConfig      = $this->originalConfigs->get($config->getId()->getId());
+        if ($this->originalConfigs->containsKey($config->getId()->toString())) {
+            $originConfig      = $this->originalConfigs->get($config->getId()->toString());
             $originConfigValue = $originConfig->getValues();
         }
 
@@ -431,13 +431,13 @@ class ConfigManager
         }
 
 
-        if (!$this->configChangeSets->containsKey($config->getId()->getId())) {
-            $this->configChangeSets->set($config->getId()->getId(), array());
+        if (!$this->configChangeSets->containsKey($config->getId()->toString())) {
+            $this->configChangeSets->set($config->getId()->toString(), array());
         }
 
         if (count($diff)) {
-            $changeSet = array_merge($this->configChangeSets->get($config->getId()->getId()), $diff);
-            $this->configChangeSets->set($config->getId()->getId(), $changeSet);
+            $changeSet = array_merge($this->configChangeSets->get($config->getId()->toString()), $diff);
+            $this->configChangeSets->set($config->getId()->toString(), $changeSet);
         }
     }
 
@@ -458,8 +458,8 @@ class ConfigManager
      */
     public function getConfigChangeSet(ConfigInterface $config)
     {
-        return $this->configChangeSets->containsKey($config->getId()->getId())
-            ? $this->configChangeSets->get($config->getId()->getId())
+        return $this->configChangeSets->containsKey($config->getId()->toString())
+            ? $this->configChangeSets->get($config->getId()->toString())
             : array();
     }
 
@@ -485,7 +485,7 @@ class ConfigManager
                 $entityId = new EntityConfigId($className, $provider->getScope());
                 $config   = $provider->createConfig($entityId, $defaultValues);
 
-                $this->localCache->set($config->getId()->getId(), $config);
+                $this->localCache->set($config->getId()->toString(), $config);
             }
 
             $this->eventDispatcher->dispatch(
@@ -520,7 +520,7 @@ class ConfigManager
                 $fieldId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
                 $config  = $provider->createConfig($fieldId, $defaultValues);
 
-                $this->localCache->set($config->getId()->getId(), $config);
+                $this->localCache->set($config->getId()->toString(), $config);
             }
 
             $this->eventDispatcher->dispatch(
@@ -539,7 +539,7 @@ class ConfigManager
     private function doMerge(ConfigInterface $config)
     {
         foreach ($this->persistConfigs as $persistConfig) {
-            if ($config->getId()->getId() == $persistConfig->getId()->getId()) {
+            if ($config->getId()->toString() == $persistConfig->getId()->toString()) {
                 $config = array_merge($persistConfig->getValues(), $config->getValues());
 
                 break;

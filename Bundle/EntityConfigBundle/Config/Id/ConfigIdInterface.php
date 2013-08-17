@@ -10,7 +10,7 @@ interface ConfigIdInterface extends \Serializable
     /**
      * @return string
      */
-    public function getId();
+    public function toString();
 
     /**
      * @return string
@@ -21,9 +21,4 @@ interface ConfigIdInterface extends \Serializable
      * @return string
      */
     public function getScope();
-
-    /**
-     * @return string
-     */
-    public function __toString();
 }

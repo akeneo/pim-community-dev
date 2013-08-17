@@ -128,7 +128,7 @@ class ConfigScopeType extends AbstractType
                     }
 
                     if ($propertyOnForm) {
-                        $options['attr']['data-requireProperty'] = $configId->getId() . $property['code'];
+                        $options['attr']['data-requireProperty'] = $configId->toString() . $property['code'];
                         $options['attr']['data-requireValue']    = $property['value'];
                     }
                 }
@@ -137,7 +137,7 @@ class ConfigScopeType extends AbstractType
                     $options['constraints'] = $this->parseValidator($config['constraints']);
                 }
 
-                $options['attr']['data-property_id'] = $this->config->getId()->getId() . $code;
+                $options['attr']['data-property_id'] = $this->config->getId()->toString() . $code;
 
                 $builder->add($code, $config['form']['type'], $options);
             }

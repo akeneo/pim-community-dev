@@ -77,7 +77,7 @@ class EmailRenderer extends \Twig_Environment
     {
         $configuration = array();
 
-        foreach ($this->configProvider->getConfigIds() as $entityConfigId) {
+        foreach ($this->configProvider->getIds() as $entityConfigId) {
             $className = $entityConfigId->getClassName();
             $fields    = $this->configProvider->filter(
                 function (ConfigInterface $fieldConfig) {

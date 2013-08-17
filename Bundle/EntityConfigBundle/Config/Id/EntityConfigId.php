@@ -40,21 +40,9 @@ class EntityConfigId implements EntityConfigIdInterface
     /**
      * @return string
      */
-    public function getId()
+    public function toString()
     {
         return sprintf('entity_%s_%s', $this->scope, strtr($this->className, '\\', '-'));
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf(
-            'Config for Entity "%s" in scope "%s"',
-            $this->getClassName(),
-            $this->getScope()
-        );
     }
 
     /**
@@ -62,10 +50,12 @@ class EntityConfigId implements EntityConfigIdInterface
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->className,
-            $this->scope,
-        ));
+        return serialize(
+            array(
+                $this->className,
+                $this->scope,
+            )
+        );
     }
 
     /**

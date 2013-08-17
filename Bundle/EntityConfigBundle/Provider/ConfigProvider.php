@@ -12,7 +12,6 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,10 +33,10 @@ class ConfigProvider implements ConfigProviderInterface
     protected $scope;
 
     /**
-     * @param ConfigManager       $configManager
-     * @param ContainerInterface  $container
-     * @param                     $scope
-     * @param array               $config
+     * @param ConfigManager      $configManager
+     * @param ContainerInterface $container
+     * @param string             $scope
+     * @param array              $config
      */
     public function __construct(ConfigManager $configManager, ContainerInterface $container, $scope, array $config)
     {
@@ -77,7 +76,7 @@ class ConfigProvider implements ConfigProviderInterface
      * @param null $fieldType
      * @return ConfigIdInterface
      */
-    public function getConfigId($className, $fieldName = null, $fieldType = null)
+    public function getId($className, $fieldName = null, $fieldType = null)
     {
         return $fieldName
             ? new FieldConfigId($this->getClassName($className), $this->getScope(), $fieldName, $fieldType)
@@ -91,7 +90,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function hasConfig($className, $fieldName = null)
     {
-        return $this->configManager->hasConfig($this->getConfigId($className, $fieldName));
+        return $this->configManager->hasConfig($this->getId($className, $fieldName));
     }
 
     /**
@@ -101,7 +100,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfig($className, $fieldName = null)
     {
-        return $this->configManager->getConfig($this->getConfigId($className, $fieldName));
+        return $this->configManager->getConfig($this->getId($className, $fieldName));
     }
 
     /**
@@ -139,9 +138,9 @@ class ConfigProvider implements ConfigProviderInterface
      * @param null $className
      * @return array|ConfigIdInterface[]
      */
-    public function getConfigIds($className = null)
+    public function getIds($className = null)
     {
-        return $this->configManager->getConfigIds($this->getScope(), $className);
+        return $this->configManager->getIds($this->getScope(), $className);
     }
 
     /**
@@ -152,7 +151,7 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $result = array();
 
-        foreach ($this->getConfigIds($className) as $configId) {
+        foreach ($this->getIds($className) as $configId) {
             $result[] = $this->getConfigById($configId);
         }
 
@@ -211,7 +210,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function clearCache($className, $fieldName = null)
     {
-        $this->configManager->clearCache($this->getConfigId($className, $fieldName));
+        $this->configManager->clearCache($this->getId($className, $fieldName));
     }
 
     /**

@@ -85,22 +85,9 @@ class FieldConfigId implements FieldConfigIdInterface
     /**
      * @return string
      */
-    public function getId()
+    public function toString()
     {
         return sprintf('field_%s_%s_%s', $this->scope, strtr($this->className, '\\', '-'), $this->fieldName);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf(
-            'Config for Entity "%s" Field "%s" in scope "%s"',
-            $this->getClassName(),
-            $this->getFieldName(),
-            $this->getScope()
-        );
     }
 
     /**
@@ -108,12 +95,14 @@ class FieldConfigId implements FieldConfigIdInterface
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->className,
-            $this->scope,
-            $this->fieldName,
-            $this->fieldType,
-        ));
+        return serialize(
+            array(
+                $this->className,
+                $this->scope,
+                $this->fieldName,
+                $this->fieldType,
+            )
+        );
     }
 
     /**

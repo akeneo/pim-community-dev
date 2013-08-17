@@ -57,8 +57,8 @@ class CreateCommand extends ContainerAwareCommand
             if (is_file($path)) {
                 $config = Yaml::parse(realpath($path));
 
-                foreach ($config as $entityName => $entityConfig) {
-                    $this->parseEntity($entityName, $entityConfig);
+                foreach ($config as $entityName => $entityOptions) {
+                    $this->parseEntity($entityName, $entityOptions);
                 }
 
                 $this->configManager->flush();
@@ -72,14 +72,14 @@ class CreateCommand extends ContainerAwareCommand
 
     /**
      * @param $entityName
-     * @param $entityConfig
+     * @param $entityOptions
      * @throws \InvalidArgumentException
      */
-    protected function parseEntity($entityName, $entityConfig)
+    protected function parseEntity($entityName, $entityOptions)
     {
         if (!$this->configManager->isConfigurable($entityName)) {
-            $this->createEntityModel($entityName, $entityConfig);
-            $this->setDefaultConfig($entityConfig, $entityName);
+            $this->createEntityModel($entityName, $entityOptions);
+            $this->setDefaultConfig($entityOptions, $entityName);
 
             if (!class_exists($entityName)) {
                 $config = array(
@@ -88,12 +88,13 @@ class CreateCommand extends ContainerAwareCommand
 
                 $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
 
+                $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
                 $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
                 $entityConfig->set('is_extend', true);
             }
         }
 
-        foreach ($entityConfig['fields'] as $fieldName => $fieldConfig) {
+        foreach ($entityOptions['fields'] as $fieldName => $fieldConfig) {
             if ($this->configManager->isConfigurable($entityName, $fieldName)) {
                 throw new \InvalidArgumentException(
                     sprintf('Field "%s" for Entity "%s" already added', $entityName, $fieldName)
@@ -103,7 +104,7 @@ class CreateCommand extends ContainerAwareCommand
             $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
             $this->extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
 
-            $this->setDefaultConfig($entityConfig, $entityName, $fieldName);
+            $this->setDefaultConfig($entityOptions, $entityName, $fieldName);
         }
     }
 
