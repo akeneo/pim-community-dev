@@ -1,11 +1,10 @@
 export:
     resource: "@PimImportExportBundle/Resources/config/routing/export.yml"
-    prefix: /extract
+    prefix: /spread/export
 
 import:
     resource: "@PimImportExportBundle/Resources/config/routing/import.yml"
-    prefix: /spread
+    prefix: /extract/import
 
 report:
     resource: "@PimImportExportBundle/Resources/config/routing/report.yml"
-    prefix: /report
