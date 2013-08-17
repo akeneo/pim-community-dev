@@ -91,14 +91,15 @@ abstract class AbstractDateFilter extends AbstractFilter
         }
 
         if ($data['type'] == DateRangeFilterType::TYPE_MORE_THAN
-            || $data['type'] == DateRangeFilterType::TYPE_LESS_THAN) {
+            || $data['type'] == DateRangeFilterType::TYPE_LESS_THAN
+        ) {
             $data['value']['end'] = null;
         }
 
         return array(
             'date_start' => $data['value']['start'],
-            'date_end' => $data['value']['end'],
-            'type' => $data['type']
+            'date_end'   => $data['value']['end'],
+            'type'       => $data['type']
         );
     }
 

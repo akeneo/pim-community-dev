@@ -52,6 +52,17 @@ class AbstractDateFilterTest extends FilterTestCase
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 )
             ),
+            'correct_dates_between_as_default_type' => array(
+                array(
+                    'value' => array('start' => new \DateTime('2013-04-08'), 'end' => new \DateTime('2013-05-08')),
+                    'type'  => 'SomeNotValidValue'
+                ),
+                array(
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_end'   => $this->dateTimeToString(new \DateTime('2013-05-08')),
+                    'type'       => DateRangeFilterType::TYPE_BETWEEN
+                )
+            ),
             'only_start_date' => array(
                 array(
                     'value' => array('start' => new \DateTime('2013-04-08')),
@@ -72,6 +83,28 @@ class AbstractDateFilterTest extends FilterTestCase
                     'date_start' => null,
                     'date_end' => $this->dateTimeToString(new \DateTime('2013-04-08')),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
+                )
+            ),
+            'more_than_date' => array(
+                array(
+                    'value' => array('start' => new \DateTime('2013-04-08')),
+                    'type'  => DateRangeFilterType::TYPE_MORE_THAN
+                ),
+                array(
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_end'   => null,
+                    'type'       => DateRangeFilterType::TYPE_MORE_THAN
+                )
+            ),
+            'less_than_date' => array(
+                array(
+                    'value' => array('start' => new \DateTime('2013-04-08')),
+                    'type'  => DateRangeFilterType::TYPE_LESS_THAN
+                ),
+                array(
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_end'   => null,
+                    'type'       => DateRangeFilterType::TYPE_LESS_THAN
                 )
             ),
         );
@@ -154,6 +187,56 @@ class AbstractDateFilterTest extends FilterTestCase
                     ),
                     array('setParameter',
                         array(self::TEST_NAME . '_p2', $this->dateTimeToString(new \DateTime('2013-01-01'))), null
+                    ),
+                )
+            ),
+            'date_more_than' => array(
+                'data'                  => array(
+                    'value' => array('start' => new \DateTime('2012-01-01')),
+                    'type'  => DateRangeFilterType::TYPE_MORE_THAN
+                ),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array('getUniqueParameterId', array(), 'p2'),
+                    array(
+                        'andWhere',
+                        array(
+                            $this->getExpressionFactory()->gt(
+                                self::TEST_ALIAS . '.' . self::TEST_FIELD,
+                                ':' . self::TEST_NAME . '_p1'
+                            )
+                        ),
+                        null
+                    ),
+                    array(
+                        'setParameter',
+                        array(self::TEST_NAME . '_p1', $this->dateTimeToString(new \DateTime('2012-01-01'))),
+                        null
+                    ),
+                )
+            ),
+            'date_less_than' => array(
+                'data'                  => array(
+                    'value' => array('start' => new \DateTime('2012-01-01')),
+                    'type'  => DateRangeFilterType::TYPE_LESS_THAN
+                ),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array('getUniqueParameterId', array(), 'p2'),
+                    array(
+                        'andWhere',
+                        array(
+                            $this->getExpressionFactory()->lt(
+                                self::TEST_ALIAS . '.' . self::TEST_FIELD,
+                                ':' . self::TEST_NAME . '_p1'
+                            )
+                        ),
+                        null
+                    ),
+                    array(
+                        'setParameter',
+                        array(self::TEST_NAME . '_p1', $this->dateTimeToString(new \DateTime('2012-01-01'))),
+                        null
                     ),
                 )
             )
