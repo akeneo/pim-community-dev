@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
- * Product family translation entity
+ * Family translation entity
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

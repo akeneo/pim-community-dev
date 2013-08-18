@@ -10,7 +10,7 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 
 /**
- * Type for product family form
+ * Type for family form
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

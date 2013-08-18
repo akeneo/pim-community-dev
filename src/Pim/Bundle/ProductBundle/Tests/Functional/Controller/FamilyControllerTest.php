@@ -30,17 +30,17 @@ class FamilyControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const FAMILY_CREATED_MSG = 'Product family successfully created';
+    const FAMILY_CREATED_MSG = 'Family successfully created';
 
     /**
      * @staticvar string
      */
-    const FAMILY_SAVED_MSG = 'Product family successfully updated';
+    const FAMILY_SAVED_MSG = 'Family successfully updated';
 
     /**
      * @staticvar string
      */
-    const FAMILY_REMOVED_MSG ='Product family successfully removed';
+    const FAMILY_REMOVED_MSG ='Family successfully removed';
 
     protected function setup()
     {
@@ -116,7 +116,7 @@ class FamilyControllerTest extends ControllerTest
      */
     public function testEdit()
     {
-        // get product family entity
+        // get family entity
         $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $uri = '/enrich/family/edit/'. $family->getId();
 
@@ -155,7 +155,7 @@ class FamilyControllerTest extends ControllerTest
         $this->assertEquals(self::FAMILY_EDITED_NAME, $family->getLabel());
         $this->assertEquals(self::FAMILY_CODE, $family->getCode());
 
-        // assert with unknown product family id and authentication
+        // assert with unknown family id and authentication
         $uri = '/enrich/family/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
@@ -167,7 +167,7 @@ class FamilyControllerTest extends ControllerTest
      */
     public function testRemove()
     {
-        // get product family entity
+        // get family entity
         $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $uri = '/enrich/family/remove/'. $family->getId();
 

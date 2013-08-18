@@ -205,7 +205,7 @@ class FixturesContext extends RawMinkContext
      * @param string    $family
      * @param TableNode $table
      *
-     * @Given /^the product family "([^"]*)" has the following attribute:$/
+     * @Given /^the family "([^"]*)" has the following attribute:$/
      */
     public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
     {

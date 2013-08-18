@@ -8,7 +8,7 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Product family controller
+ * Family controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FamilyController extends Controller
 {
     /**
-     * Create product family
+     * Create a family
      *
      * @param Request $request
      *
@@ -34,7 +34,7 @@ class FamilyController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->persist($family);
-                $this->addFlash('success', 'Product family successfully created');
+                $this->addFlash('success', 'Family successfully created');
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
             }
@@ -47,7 +47,7 @@ class FamilyController extends Controller
     }
 
     /**
-     * Edit product family
+     * Edit a family
      *
      * @param Request $request
      * @param integer $id
@@ -80,7 +80,7 @@ class FamilyController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->flush();
-                $this->addFlash('success', 'Product family successfully updated.');
+                $this->addFlash('success', 'Family successfully updated.');
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
@@ -99,7 +99,7 @@ class FamilyController extends Controller
     }
 
     /**
-     * Remove product family
+     * Remove a family
      *
      * @param Family $entity
      *
@@ -109,7 +109,7 @@ class FamilyController extends Controller
     {
         $this->remove($entity);
 
-        $this->addFlash('success', 'Product family successfully removed');
+        $this->addFlash('success', 'Family successfully removed');
 
         return $this->redirectToRoute('pim_product_family_create');
     }

@@ -1,4 +1,4 @@
-Feature: Browse product families
+Feature: Browse families
   In order to view the families that have been created
   As a user
   I need to be able to view a list of them

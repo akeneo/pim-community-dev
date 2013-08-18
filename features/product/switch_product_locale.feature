@@ -43,7 +43,7 @@ Feature: Switch product locale
     Given the following family:
       | code       |
       | technology |
-    And the product family "technology" has the following attribute:
+    And the family "technology" has the following attribute:
       | label | attribute as label |
       | name  | yes                |
     And the product "Computer" belongs to the family "Technology"
