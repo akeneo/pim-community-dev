@@ -142,6 +142,52 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $category
+     *
+     * @Given /^I expand the "([^"]*)" category$/
+     */
+    public function iExpandTheCategory($category)
+    {
+        $this->getCurrentPage()->expandCategory($category);
+        $this->wait();
+    }
+
+    /**
+     * @param string $category1
+     * @param string $category2
+     *
+     * @Given /^I drag the "([^"]*)" category to the "([^"]*)" category$/
+     */
+    public function iDragTheCategoryToTheCategory($category1, $category2)
+    {
+        $this->getCurrentPage()->dragCategoryTo($category1, $category2);
+        $this->wait();
+    }
+
+    /**
+     * @param string $child
+     * @param string $parent
+     *
+     * @Then /^I should see the "([^"]*)" category under the "([^"]*)" category$/
+     */
+    public function iShouldSeeTheCategoryUnderTheCategory($child, $parent)
+    {
+        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
+
+        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
+
+        if (!$childNode) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see category "%s" under the category "%s", not found',
+                    $child,
+                    $parent
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $page
      *
      * @Then /^I should be redirected on the (.*) page$/
