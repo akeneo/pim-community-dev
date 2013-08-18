@@ -40,6 +40,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'imports'    => 'Import index',
         'locales'    => 'Locale index',
         'products'   => 'Product index',
+        'categories' => 'Category tree creation',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -1194,6 +1195,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $this->getCategory($code)->getId()));
         $this->assertSession()->addressEquals($expectedAddress);
+    }
+
+    /**
+     * @param string $category
+     *
+     * @Given /^I right click on the "([^"]*)" category$/
+     */
+    public function iRightClickOnTheCategory($category)
+    {
+        $category = $this->getCurrentPage()->findCategoryInTree($category);
+
+        $category->rightClick();
+    }
+
+    /**
+     * @param string $action
+     *
+     * @Given /^I click on "([^"]*)" in the right click menu$/
+     */
+    public function iClickOnInTheRightClickMenu($action)
+    {
+        $this->getCurrentPage()->rightClickAction($action);
+        $this->wait();
     }
 
     /**
