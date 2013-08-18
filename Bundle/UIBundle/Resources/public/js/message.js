@@ -10,15 +10,11 @@
 }(function ($, _, Oro, __) {
     'use strict';
     var defaults = {
-            container: '#flash-messages .flash-messages-holder',
+            container: '',
             delay: false,
-            template: _.template(
-                '<div class="alert <% if (type) { %><%= \'alert-\' + type %><% } %> fade in top-messages ">' +
-                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                    '<div class="message"><%= message %></div>'+
-                '</div>'
-            )
+            template: $.noop
         },
+        queue = [],
 
         /**
          * Shows notification message
@@ -35,12 +31,24 @@
          * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
          */
         message = Oro.NotificationMessage = function(type, message, options) {
-            // if message is an array assume this is arguments for translation function
-            if (_.isArray(message)) {
-                message = _.__.apply(_, message);
+            var container = (options || {}).container ||  defaults.container,
+                args = Array.prototype.slice.call(arguments);
+            if (container && $(container).length) {
+                showMessage.apply(null, args);
+            } else {
+                // if container is not ready then save message for later
+                queue.push(args);
             }
-            var opt = _.extend({}, defaults, options || {}),
-                $el = jQuery(opt.template({type: type, message: message})).appendTo(opt.container),
+        },
+
+        /**
+         * Same arguments as for Oro.NotificationMessage
+         */
+        showMessage = function(type, message, options) {
+            // if message is an array assume this is arguments for translation function
+            var msg = _.isArray(message) ? __.apply(null, message): message,
+                opt = _.extend({}, defaults, options || {}),
+                $el = $(opt.template({type: type, message: msg})).appendTo(opt.container),
                 delay = opt.delay || (opt.flash && 5000);
             if (delay) {
                 _.delay(_.bind($el.alert, $el, 'close'), delay);
@@ -49,6 +57,9 @@
 
     message.setup = function(options) {
         _.extend(defaults, options);
+        while (queue.length) {
+            showMessage.apply(null, queue.shift());
+        }
     };
 
     return Oro.NotificationMessage;

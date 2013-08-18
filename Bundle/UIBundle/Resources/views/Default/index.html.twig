@@ -110,17 +110,27 @@
                             <div class="flash-messages-frame">
                                 <div class="flash-messages-holder"></div>
                             </div>
-                            {% if app.session.flashbag.peekAll|length > 0 %}
+                            <script type="text/template" id="message-item-template">
+                                <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div class="message"><%= message %></div>
+                                </div>
+                            </script>
                             <script type="text/javascript">
                                 $(function() {
-                                {% for type, messages in app.session.flashbag.all %}
-                                    {% for message in messages %}
-                                        Oro.NotificationMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }}, {flash: true});
+                                    Oro.NotificationMessage.setup({
+                                        container: '#flash-messages .flash-messages-holder',
+                                        template: _.template($.trim($('#message-item-template').html()))
+                                    });
+                                {% if app.session.flashbag.peekAll|length > 0 %}
+                                    {% for type, messages in app.session.flashbag.all %}
+                                        {% for message in messages %}
+                                            Oro.NotificationMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }}, {flash: true});
+                                        {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
+                                {% endif %}
                                 });
                             </script>
-                            {% endif %}
                         {% endblock messages %}
                     </div>
                     <div class="hash-loading-mask"></div>
