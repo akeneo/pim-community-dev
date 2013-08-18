@@ -504,6 +504,11 @@ class FixturesContext extends RawMinkContext
             $category->setCode($data['code']);
             $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
 
+            if (!empty($data['parent'])) {
+                $parent = $this->getCategoryOrCreate($data['parent']);
+                $category->setParent($parent);
+            }
+
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
@@ -926,6 +931,24 @@ class FixturesContext extends RawMinkContext
     public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    private function getCategoryOrCreate($code)
+    {
+        try {
+            $category = $this->getCategory($code);
+        } catch (\InvalidArgumentException $e) {
+            $category = new Category();
+            $category->setCode($code);
+            $this->persist($category);
+        }
+
+        return $category;
     }
 
     /**

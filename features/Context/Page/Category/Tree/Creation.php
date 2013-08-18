@@ -64,4 +64,34 @@ class Creation extends Form
 
         return $this;
     }
+
+    /**
+     * @param string $category
+     *
+     * @return Creation
+     */
+    public function expandCategory($category)
+    {
+        $category = $this->findCategoryInTree($category);
+
+        $category->getParent()->find('css', 'ins')->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category1
+     * @param string $category2
+     *
+     * @return Creation
+     */
+    public function dragCategoryTo($category1, $category2)
+    {
+        $category1 = $this->findCategoryInTree($category1);
+        $category2 = $this->findCategoryInTree($category2);
+
+        $category1->dragTo($category2);
+
+        return $this;
+    }
 }
