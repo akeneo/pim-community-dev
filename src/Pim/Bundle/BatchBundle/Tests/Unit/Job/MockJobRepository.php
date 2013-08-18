@@ -26,11 +26,9 @@ class MockJobRepository implements JobRepositoryInterface
     {
         $jobExecution = new JobExecution();
 
-        $this->jobExecutions[] = $jobExecutions;
+        $this->jobExecutions[] = $jobExecution;
 
-        $jobExecution->setId(count($this->jobExecutions) - 1);
-
-        return $ex;
+        return $jobExecution;
     }
 
     /**

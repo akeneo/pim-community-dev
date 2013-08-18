@@ -18,7 +18,7 @@ use Pim\Bundle\BatchBundle\Entity\JobExecution;
  */
 class SimpleStepHandler implements StepHandlerInterface
 {
-    /* @var JobRepositoryInterface $jobRepository */
+    /* @var JobRepositoryInterface */
     private $jobRepository = null;
 
     /* @var ExecutionContext $executionContext */
@@ -100,34 +100,6 @@ class SimpleStepHandler implements StepHandlerInterface
 
         $currentStepExecution = $execution->createStepExecution($step->getName());
 
-        /*
-        JobInstance jobInstance = execution.getJobInstance();
-
-        StepExecution lastStepExecution = jobRepository.getLastStepExecution(jobInstance, step.getName());
-        if (stepExecutionPartOfExistingJobExecution(execution, lastStepExecution)) {
-            // If the last execution of this step was in the same job, it's
-            // probably intentional so we want to run it again...
-            logger.info(String.format("Duplicate step [%s] detected in execution of job=[%s]. "
-                    + "If either step fails, both will be executed again on restart.", step.getName(), jobInstance
-                    .getJobName()));
-            lastStepExecution = null;
-        }
-        StepExecution currentStepExecution = lastStepExecution;
-        if ($this->shouldStart(lastStepExecution, jobInstance, step)) {
-
-            currentStepExecution = execution.createStepExecution(step.getName());
-
-            boolean isRestart = (lastStepExecution != null && !lastStepExecution.getStatus().equals(
-                    BatchStatus.COMPLETED));
-
-            if (isRestart) {
-                currentStepExecution.setExecutionContext(lastStepExecution.getExecutionContext());
-            } else {
-                currentStepExecution.setExecutionContext(new ExecutionContext(executionContext));
-            }
-
-            jobRepository.add(currentStepExecution);
-            */
         $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
         try {
             $step->execute($currentStepExecution);
@@ -135,11 +107,9 @@ class SimpleStepHandler implements StepHandlerInterface
             // Ensure that the job gets the message that it is stopping
             // and can pass it on to other steps that are executing
             // concurrently.
-            $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw $e;
         }
-
-        //jobRepository.updateExecutionContext(execution);
 
         if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
                 || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
@@ -147,75 +117,7 @@ class SimpleStepHandler implements StepHandlerInterface
             $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw new JobInterruptedException("Job interrupted by step execution");
         }
-            /*
-
-        } else {
-            // currentStepExecution.setExitStatus(ExitStatus.NOOP);
-        }
-        */
 
         return $currentStepExecution;
     }
-
-    /**
-     * Detect whether a step execution belongs to this job execution.
-     * @param jobExecution the current job execution
-     * @param stepExecution an existing step execution
-     * @return
-     */
-    /*
-    private boolean stepExecutionPartOfExistingJobExecution(JobExecution jobExecution, StepExecution stepExecution) {
-        return stepExecution != null && stepExecution.getJobExecutionId() != null
-                && stepExecution.getJobExecutionId().equals(jobExecution.getId());
-    }
-    */
-
-    /**
-     * Given a step and configuration, return true if the step should start,
-     * false if it should not, and throw an exception if the job should finish.
-     * @param lastStepExecution the last step execution
-     * @param jobInstance
-     * @param step
-     *
-     * @throws StartLimitExceededException if the start limit has been exceeded
-     * for this step
-     * @throws JobRestartException if the job is in an inconsistent state from
-     * an earlier failure
-     */
-    /*
-    private boolean shouldStart(StepExecution lastStepExecution, JobInstance jobInstance, Step step)
-            throws JobRestartException, StartLimitExceededException {
-
-        BatchStatus stepStatus;
-        if (lastStepExecution == null) {
-            stepStatus = BatchStatus.STARTING;
-        } else {
-            stepStatus = lastStepExecution.getStatus();
-        }
-
-        if (stepStatus == BatchStatus.UNKNOWN) {
-            throw new JobRestartException("Cannot restart step from UNKNOWN status. "
-                    + "The last execution ended with a failure that could not be rolled back, "
-                    + "so it may be dangerous to proceed. Manual intervention is probably necessary.");
-        }
-
-        if ((stepStatus == BatchStatus.COMPLETED && step.isAllowStartIfComplete() == false)
-                || stepStatus == BatchStatus.ABANDONED) {
-            // step is complete, false should be returned, indicating that the
-            // step should not be started
-            logger.info("Step already complete or not restartable, so no action to execute: " + lastStepExecution);
-
-            return false;
-        }
-
-        if (jobRepository.getStepExecutionCount(jobInstance, step.getName()) < step.getStartLimit()) {
-            // step start count is less than start max, return true
-            return true;
-        } else {
-            // start max has been exceeded, throw an exception.
-            throw new StartLimitExceededException("Maximum start limit exceeded for step: " + step.getName()
-                    + "StartMax: " + step.getStartLimit());
-        }
-    }
-    */
 }

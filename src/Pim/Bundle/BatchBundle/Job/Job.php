@@ -20,8 +20,6 @@ class Job implements JobInterface
 {
     protected $name;
 
-    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
@@ -195,14 +193,12 @@ class Job implements JobInterface
         $this->getLogger()->debug("Job execution starting: " . $execution);
 
         try {
-            //jobParametersValidator.validate(execution.getJobParameters());
-
             if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
                 $execution->setStartTime(new \DateTime());
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
-                //listener.beforeJob(execution);
+                // Todo Listener beforeJob
                  $this->doExecute($execution);
             } else {
 

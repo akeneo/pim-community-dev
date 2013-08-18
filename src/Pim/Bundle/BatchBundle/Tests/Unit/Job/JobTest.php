@@ -7,6 +7,7 @@ use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\Job;
+use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
@@ -54,10 +55,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->markTestSkipped();
-        $beforeExecute = time();
+        $beforeExecute = new \DateTime();
 
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
         $this->assertEquals(0, $jobExecution->getStartTime());
         $this->assertEquals(0, $jobExecution->getEndTIme());
@@ -90,10 +92,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteException()
     {
-        $this->markTestSkipped();
         $exception = new \Exception('My test exception');
 
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
         $this->job->setJobRepository($this->jobRepository);
 
         $mockStep = $this->getMockForAbstractClass(
@@ -126,8 +128,8 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteStoppingWithNoStep()
     {
-        $this->markTestSkipped();
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
         $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
 
         $this->job->setJobRepository($this->jobRepository);
@@ -140,10 +142,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteInterrupted()
     {
-        $this->markTestSkipped();
         $exception = new \Exception('My test exception');
 
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
         $step = new InterruptedStep('my_interrupted_step');
         $step->setLogger($this->logger);

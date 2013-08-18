@@ -26,9 +26,7 @@ abstract class AbstractStep implements StepInterface
 
     private $logger;
 
-    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-
-    /* @var JobRepositoryInterace $jobRepository */
+    /* @var JobRepositoryInterace */
     private $jobRepository;
 
     /**
@@ -165,12 +163,7 @@ abstract class AbstractStep implements StepInterface
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
-        //StepSynchronizationManager.register(stepExecution);
-
         try {
-            //getCompositeListener().beforeStep(stepExecution);
-            //$this->open($stepExecution->getExecutionContext());
-
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
@@ -203,33 +196,22 @@ abstract class AbstractStep implements StepInterface
             // listeners can act on it
             $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
             $stepExecution->setExitStatus($exitStatus);
-            //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
+
         } catch (\Exception $e) {
             $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
-        }
-
-        try {
-            //getJobRepository().updateExecutionContext(stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
-            $stepExecution->addFailureException($e);
-            $errorMsg =  "Encountered an error saving batch meta data."
-                ."This job is now in an unknown state and should not be restarted.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
         try {
-            //getJobRepository().update(stepExecution);
+            $this->getJobRepository()->updateStepExecution($stepExecution);
         } catch (\Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
             $stepExecution->addFailureException($e);
             $errorMsg = "Encountered an error saving batch meta data. "
-                . "This job is now in an unknown state and should not be restarted.";
+                . "This job is now in an unknown state.";
             $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
@@ -239,8 +221,6 @@ abstract class AbstractStep implements StepInterface
             $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
             $stepExecution->addFailureException($e);
         }
-
-        //StepSynchronizationManager.release();
 
         $this->getLogger()->debug("Step execution complete: " . $stepExecution->getSummary());
     }
@@ -275,8 +255,6 @@ abstract class AbstractStep implements StepInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-            /*} elseif (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
-                exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());*/
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
