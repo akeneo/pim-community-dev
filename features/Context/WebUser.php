@@ -1202,7 +1202,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheCategoryNodeCreationPage($code)
     {
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $this->getCategory($code)->getId()));
+        $id = $this->getCategory($code)->getId();
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $id));
         $this->assertAddress($expectedAddress);
     }
 
