@@ -5,11 +5,11 @@ Feature: Edit a category
 
   Background:
   Given the following categories:
-    | code        | title       |
-    | computers   | Computers   |
-    | laptops     | Laptops     |
-    | hard_drives | Hard drives |
-    | pcs         | PC's        |
+    | code        | title       | parent    |
+    | computers   | Computers   |           |
+    | laptops     | Laptops     | computers |
+    | hard_drives | Hard drives | laptops   |
+    | pc          | PC          | computers |
   And I am logged in as "admin"
 
   Scenario: Edit a category
@@ -17,7 +17,7 @@ Feature: Edit a category
     And I change the Code to "notebooks"
     And I save the category
     Then I should be on the category "notebooks" edit page
-    And I should see "Tree successfully updated"
+    And I should see "Category successfully updated"
 
   @javascript
   Scenario: Go to category edit page from the category tree right click menu
@@ -25,3 +25,10 @@ Feature: Edit a category
     And I right click on the "Computers" category
     And I click on "Edit" in the right click menu
     Then I should be on the category "computers" edit page
+
+  @javascript
+  Scenario: Move category to a different position in the tree
+    Given I am on the categories page
+    And I expand the "Laptops" category
+    And I drag the "Hard drives" category to the "Computers" category
+    Then I should see the "Hard drives" category under the "Computers" category
