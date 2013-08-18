@@ -99,10 +99,10 @@ class JobExecution
     private $exitDescription;
 
     /* @var array */
-    private $failureExceptionsObjects;
+//    private $failureExceptionsObjects;
 
     /**
-     * @var string
+     * @var array
      *
      * @ORM\Column(name="failure_exceptions", type="text", nullable=true)
      */
@@ -117,6 +117,7 @@ class JobExecution
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->stepExecutions = array();
         $this->createTime = new \DateTime();
+        $this->failureExceptions = array();
     }
 
     /**
@@ -331,7 +332,6 @@ class JobExecution
     public function createStepExecution($stepName)
     {
         $stepExecution = new StepExecution($stepName, $this);
-        $this->stepExecutions[] = $stepExecution;
 
         return $stepExecution;
     }
@@ -359,7 +359,7 @@ class JobExecution
      */
     public function isRunning()
     {
-        return $this->endTime == null;
+        return ($this->startTime != null && $this->endTime == null);
     }
 
     /**
@@ -382,7 +382,9 @@ class JobExecution
         foreach ($this->stepExecutions as $stepExecution) {
             $stepExecution->setTerminateOnly();
         }
-        $this->status = new BatchStatus(BatchStatus::STOPPING);
+        $this->status = BatchStatus::STOPPING;
+
+        return $this;
     }
 
     /**
@@ -391,7 +393,7 @@ class JobExecution
      */
     public function getFailureExceptions()
     {
-        return $this->failureExceptionsObjects;
+        return $this->failureExceptions;
     }
 
     /**
@@ -402,17 +404,7 @@ class JobExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptionsObjects[] = $e;
-        $failureExceptions = array();
-        foreach ($this->failureExceptionsObjects as $failureException) {
-            $failureExceptions[] = array(
-                'class' => get_class($failureException),
-                'message' => $failureException->getMessage(),
-                'stack_trace' => $failureException->getTraceAsString()
-            );
-        }
-
-        $this->failureExceptions = serialize($failureExceptions);
+        $this->failureExceptions[] = $e;
 
         return $this;
     }
@@ -429,7 +421,7 @@ class JobExecution
         $allExceptions = $this->failureExceptions;
 
         foreach ($this->stepExecutions as $stepExecution) {
-            $allExceptions = array_merge($stepExecution->getFailureExceptions());
+            $allExceptions = array_merge($allExceptions, $stepExecution->getFailureExceptions());
         }
 
         return $allExceptions;
