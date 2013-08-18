@@ -23,3 +23,15 @@ Feature: Create a category
     And I save the category
     Then I should be on the category "flipflap" edit page
     And I should see "Category successfully created"
+
+  @javascript
+  Scenario: Go to category creation page from the category tree right click menu
+    Given the following category:
+    | code | title |
+    | shoe | Shoe  |
+    Given I am logged in as "admin"
+    And I am on the categories page
+    When I right click on the "Shoe" category
+    And I click on "Create" in the right click menu
+    And I blur the field
+    Then I should be on the category "shoe" node creation page

@@ -1196,6 +1196,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @Given /^I should be on the category "([^"]*)" node creation page$/
+     */
+    public function iShouldBeOnTheCategoryNodeCreationPage($code)
+    {
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $this->getCategory($code)->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param string $category
      *
      * @Given /^I right click on the "([^"]*)" category$/
@@ -1215,6 +1226,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnInTheRightClickMenu($action)
     {
         $this->getCurrentPage()->rightClickAction($action);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I blur (.*)$/
+     */
+    public function iBlur()
+    {
+        $this->getCurrentPage()->find('css', 'body')->click();
         $this->wait();
     }
 
