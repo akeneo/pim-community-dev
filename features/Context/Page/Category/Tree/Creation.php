@@ -50,7 +50,7 @@ class Creation extends Form
     /**
      * @param string $action
      *
-     * @return NodeElement
+     * @return Creation
      */
     public function rightClickAction($action)
     {

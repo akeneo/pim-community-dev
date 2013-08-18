@@ -75,6 +75,32 @@ class Base extends Page
     }
 
     /**
+     * Overriden for compatibility with links
+     *
+     * @param string $locator
+     */
+    public function pressButton($locator)
+    {
+        $button = $this->findButton($locator);
+
+        if (!$button) {
+            $button =  $this->find(
+                'named',
+                array(
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                )
+            );
+        }
+
+        if (null === $button) {
+            throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
+        }
+
+        $button->click();
+    }
+
+    /**
      * Confirm the dialog action
      */
     public function confirmDialog()
