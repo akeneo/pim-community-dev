@@ -1,6 +1,13 @@
 /* jshint browser:true, devel:true */
-/* global Translator, Oro, _ */
-(function (Translator, _, Oro) {
+(function (factory) {
+    'use strict';
+    /* global define, _, Translator */
+    if (typeof define === 'function' && define.amd) {
+        define(['JSON', '_', 'Translator'], factory);
+    } else {
+        factory(JSON, _, Translator);
+    }
+}(function (JSON, _, Translator) {
     "use strict";
     var dict = {},
         debug = false,
@@ -70,4 +77,4 @@
          */
         __: _.bind(Translator.get, Translator)
     });
-}(Translator, _, Oro));
+}));

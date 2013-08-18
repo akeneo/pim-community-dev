@@ -1,4 +1,9 @@
 <script type="text/javascript">
+    $(document).on('click.action.data-api', '[data-action=sync-connect]', function (e) {
+        Oro.Synchronizer.reconnect();
+        $(e.target).closest('.alert').alert('close');
+        e.preventDefault();
+    });
     /*Oro.Synchronizer(new Oro.Synchronizer.Ajax({
         url: '/sync_ap.php'
     }));*/

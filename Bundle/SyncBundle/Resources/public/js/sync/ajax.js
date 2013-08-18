@@ -56,36 +56,36 @@
                 data: {
                     action: 'fetchUpdates',
                     payload: JSON.stringify(payload)
-                },
-                success: function (payload) {
-                    _.each(payload, function (obj) {
-                        if (!obj.channel || !obj.attributes) {
-                            return;
-                        }
-                        var channel = channels[obj.channel];
-                        if (channel) {
-                            _.each(channel.callbacks, function(callback){
-                                callback(obj.attributes);
-                            });
-                        }
-                    });
-                },
-                complete: _.bind(function(xhr, status) {
-                    var retries = status === 'error' ? attempt + 1 : 0;
-                    if (status === 'error') {
-                        this.trigger('connection_lost', {
-                            delay: this.options.period,
-                            maxretries: this.options.maxRetries,
-                            retries: retries
+                }
+            }).done(function (payload) {
+                _.each(payload, function (obj) {
+                    if (!obj.channel || !obj.attributes) {
+                        return;
+                    }
+                    var channel = channels[obj.channel];
+                    if (channel) {
+                        _.each(channel.callbacks, function(callback){
+                            callback(obj.attributes);
                         });
-                    } else if (attempt > 0) {
-                        this.trigger('connection_established');
                     }
-                    if (retries <= this.options.maxRetries) {
-                        fetchUpdates.call(this, retries);
-                    }
-                }, this)
-            });
+                });
+            }).always(_.bind(function(xhr, status) {
+                var retries = status === 'error' ? attempt + 1 : 0;
+                if (retries <= this.options.maxRetries) {
+                    fetchUpdates.call(this, retries);
+                } else {
+                    retries = null;
+                }
+                if (status === 'error') {
+                    this.trigger('connection_lost', {
+                        delay: this.options.period,
+                        maxretries: this.options.maxRetries,
+                        retries: retries
+                    });
+                } else if (attempt > 0) {
+                    this.trigger('connection_established');
+                }
+            }, this));
         },
 
         /**
@@ -126,37 +126,34 @@
                 data: {
                     action: 'subscribe',
                     payload: JSON.stringify(payload)
-                },
-                success: function (payload) {
-                    _.each(payload, function (obj) {
-                        if (!obj.channel) {
-                            return;
-                        }
-                        if (obj.token) {
-                            channels[obj.channel].token = obj.token;
-                        } else {
-                            // assumed user have no permission to listening to this channel
-                            delete channels[obj.channel];
-                        }
-                    });
-                },
-                error: function () {
-                    // on error remove all tokens for sent channels
-                    _.each(payload, function (channel) {
-                        channels[channel].token = '';
-                    });
-                },
-                complete: _.bind(function (xhr, status) {
-                    var retries = status === 'error' ? attempt + 1 : 0;
-                    if (retries > this.options.maxRetries) {
-                        this.once('connection_established', _.bind(this.subscribe, this));
-                    } else if (status === 'error' || _.some(channels, function (obj) {
-                        return obj.token === '';
-                    })) {
-                        subscribe.call(this, retries);
+                }
+            }).done(function (payload) {
+                _.each(payload, function (obj) {
+                    if (!obj.channel) {
+                        return;
                     }
-                }, this)
-            });
+                    if (obj.token) {
+                        channels[obj.channel].token = obj.token;
+                    } else {
+                        // assumed user have no permission to listening to this channel
+                        delete channels[obj.channel];
+                    }
+                });
+            }).fail(function () {
+                // on error remove all tokens for sent channels
+                _.each(payload, function (channel) {
+                    channels[channel].token = '';
+                });
+            }).always(_.bind(function (xhr, status) {
+                var retries = status === 'error' ? attempt + 1 : 0;
+                if (retries > this.options.maxRetries) {
+                    this.once('connection_established', _.bind(this.subscribe, this));
+                } else if (status === 'error' || _.some(channels, function (obj) {
+                    return obj.token === '';
+                })) {
+                    subscribe.call(this, retries);
+                }
+            }, this));
         };
 
     /**

@@ -31,6 +31,7 @@
          */
         onConnect = function(session){
             this.session = session;
+            this.trigger('connection_established');
             _.each(this.channels, function(callbacks, channel) {
                 _.each(callbacks, function(callback) {
                     session.subscribe(channel, callback);
@@ -90,8 +91,10 @@
          * Initiate connection process
          */
         connect: function() {
-            var wsuri = 'ws://' + this.options.host + ':' + this.options.port;
-            ab.connect(wsuri, _.bind(onConnect, this), _.bind(onHangup, this), this.options);
+            if (!this.session) {
+                var wsuri = 'ws://' + this.options.host + ':' + this.options.port;
+                ab.connect(wsuri, _.bind(onConnect, this), _.bind(onHangup, this), this.options);
+            }
         },
 
         /**

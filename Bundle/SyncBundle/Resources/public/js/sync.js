@@ -1,14 +1,14 @@
 /* jshint browser:true */
 (function (factory) {
-    "use strict";
-    /* global define, Oro, _, Backbone */
+    'use strict';
+    /* global define, jQuery, _, Backbone, Oro */
     if (typeof define === 'function' && define.amd) {
-        define(['Oro', '_', 'Backbone'], factory);
+        define(['jQuery', '_', 'Backbone', 'Oro', 'OroNotificationMessage'], factory);
     } else {
-        factory(Oro, _, Backbone);
+        factory(jQuery, _, Backbone, Oro, Oro.NotificationMessage);
     }
-}(function (Oro, _, Backbone) {
-    "use strict";
+}(function ($, _, Backbone, Oro, message) {
+    'use strict';
     var service,
 
         /**
@@ -27,6 +27,16 @@
                 throw new Error('Synchronization service does not fit requirements');
             }
             service = serv;
+            var onConnectionEstablished = function(){
+                message('success', ['sync.connection.established'], {flash: true});
+            };
+            service.on('connection_lost', function(data){
+                data = data || {};
+                var attempt = data.retries || 0;
+                message('error', ['sync.connection.lost', data, attempt], {flash: Boolean(attempt)});
+                service.off('connection_established', onConnectionEstablished)
+                    .once('connection_established', onConnectionEstablished);
+            });
             return sync;
         },
 
@@ -113,6 +123,13 @@
             unsubscribeModel(obj);
         }
         return this;
+    };
+
+    /**
+     * Makes service to give a try to connect to server
+     */
+    sync.reconnect = function() {
+        service.connect();
     };
 
     return Oro.Synchronizer;
