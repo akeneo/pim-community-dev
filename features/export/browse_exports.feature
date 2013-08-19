@@ -1,5 +1,5 @@
 @javascript
-Feature: Browse exports
+Feature: Browse export profiles
   In order to view the list of export jobs that have been created
   As a user
   I need to be able to view a list of them
@@ -16,8 +16,8 @@ Feature: Browse exports
   Scenario: Successfully display the export jobs
     Given I am on the exports page
     Then the grid should contain 3 elements
-    And I should see export profiles "acme_product_export", "acme_attribute_export" and "foo_product_export"
-    And I should not see export profile "acme_product_import"
+    And I should see export profiles acme_product_export, acme_attribute_export and foo_product_export
+    And I should not see export profile acme_product_import
     And the column "connector" of the row "acme_product_export" should contain the value "Akeneo"
 
   Scenario: Successfully display columns
