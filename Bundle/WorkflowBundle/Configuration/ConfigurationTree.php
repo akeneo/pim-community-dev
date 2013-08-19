@@ -116,28 +116,10 @@ class ConfigurationTree
      */
     protected function getAttributesNode()
     {
-        $allowedTypes = array('bool', 'boolean', 'int', 'integer', 'float', 'string', 'array', 'object', 'entity');
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root(self::NODE_ATTRIBUTES);
         $rootNode
             ->prototype('array')
-                ->validate()
-                    ->always(
-                        function ($value) {
-                            $classRequired = ($value['type'] == 'object' || $value['type'] == 'entity');
-                            if ($classRequired && empty($value['options']['class'])) {
-                                throw new \Exception(
-                                    sprintf('Option "class" is required for type "%s"', $value['type'])
-                                );
-                            } elseif (!$classRequired && !empty($value['options']['class'])) {
-                                throw new \Exception(
-                                    sprintf('Option "class" cannot be used with type "%s"', $value['type'])
-                                );
-                            }
-                            return $value;
-                        }
-                    )
-                ->end()
                 ->children()
                     ->scalarNode('label')
                         ->isRequired()
@@ -146,24 +128,8 @@ class ConfigurationTree
                     ->scalarNode('type')
                         ->isRequired()
                         ->cannotBeEmpty()
-                        ->validate()
-                        ->ifNotInArray($allowedTypes)
-                            ->thenInvalid('Invalid type %s, allowed types are "' . implode('", "', $allowedTypes) . '"')
-                        ->end()
                     ->end()
                     ->arrayNode('options')
-                        ->validate()
-                        ->always(
-                            function ($value) {
-                                if (isset($value['class']) && !class_exists($value['class'])) {
-                                    throw new \Exception(
-                                        sprintf('Class "%s" referenced by "class" option not found', $value['class'])
-                                    );
-                                }
-                                return $value;
-                            }
-                        )
-                        ->end()
                     ->end()
                 ->end()
             ->end();

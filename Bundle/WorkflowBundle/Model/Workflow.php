@@ -254,6 +254,22 @@ class Workflow
     }
 
     /**
+     * Get step attributes.
+     *
+     * @return Attribute|null
+     */
+    public function getManagedEntityAttribute()
+    {
+        /** @var Attribute $attribute */
+        foreach ($this->getAttributes() as $attribute) {
+            if ($attribute->getOption('managed_entity')) {
+                return $attribute;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Set transitions.
      *
      * @param Transition[]|Collection $transitions

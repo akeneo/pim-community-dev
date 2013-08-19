@@ -144,69 +144,6 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    //@codingStandardsIgnoreStart
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "configuration.attributes.first_attribute.type": Invalid type "text", allowed types are "bool", "boolean", "int", "integer", "float", "string", "array", "object", "entity"
-     */
-    //@codingStandardsIgnoreEnd
-    public function testUnexpectedAttributeType()
-    {
-        $configuration = $this->maximumConfiguration;
-        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
-            'first_attribute' => array(
-                'label'   => 'First Attribute',
-                'type'    => 'text',
-                'options' => array('class' => 'DateTime'),
-            ),
-        );
-
-        $configurationTree = new ConfigurationTree();
-        $configurationTree->parseConfiguration($configuration);
-    }
-
-    //@codingStandardsIgnoreStart
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "configuration.attributes.first_attribute.options": Class "InvalidClass" referenced by "class" option not found
-     */
-    //@codingStandardsIgnoreEnd
-    public function testInvalidAttributeClassOption()
-    {
-        $configuration = $this->maximumConfiguration;
-        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
-            'first_attribute' => array(
-                'label'   => 'First Attribute',
-                'type'    => 'object',
-                'options' => array('class' => 'InvalidClass'),
-            ),
-        );
-
-        $configurationTree = new ConfigurationTree();
-        $configurationTree->parseConfiguration($configuration);
-    }
-
-    //@codingStandardsIgnoreStart
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "configuration.attributes.first_attribute": Option "class" cannot be used with type "string"
-     */
-    //@codingStandardsIgnoreEnd
-    public function testInvalidAttributeTypeAndClassOption()
-    {
-        $configuration = $this->maximumConfiguration;
-        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
-            'first_attribute' => array(
-                'label'   => 'First Attribute',
-                'type'    => 'string',
-                'options' => array('class' => 'stdClass'),
-            ),
-        );
-
-        $configurationTree = new ConfigurationTree();
-        $configurationTree->parseConfiguration($configuration);
-    }
-
     /**
      * @dataProvider nodesWithRequiredElementsDataProvider
      *
@@ -232,33 +169,6 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
             array(ConfigurationTree::NODE_TRANSITION_DEFINITIONS),
             array(ConfigurationTree::NODE_TRANSITIONS),
         );
-    }
-
-    /**
-     * @dataProvider attributeOptionClassTypesDataProvider
-     *
-     * @param string $type
-     */
-    public function testAttributeOptionClassIsMissing($type)
-    {
-        $this->setExpectedException(
-            'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',
-            sprintf(
-                'Invalid configuration for path "configuration.attributes.first_attribute": '
-                . 'Option "class" is required for type "%s"',
-                $type
-            )
-        );
-        $configuration = $this->maximumConfiguration;
-        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
-            'first_attribute' => array(
-                'label'   => 'First Attribute',
-                'type'    => $type,
-            ),
-        );
-
-        $configurationTree = new ConfigurationTree();
-        $configurationTree->parseConfiguration($configuration);
     }
 
     public function attributeOptionClassTypesDataProvider()

@@ -8,12 +8,16 @@ use Oro\Bundle\WorkflowBundle\Model\AttributeAssembler;
 class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
      * @dataProvider invalidOptionsDataProvider
+     *
      * @param array $configuration
+     * @param string $exception
+     * @param string $message
      */
-    public function testAssembleRequiredOptionException($configuration)
+    public function testAssembleRequiredOptionException($configuration, $exception, $message)
     {
+        $this->setExpectedException($exception, $message);
+
         $assembler = new AttributeAssembler();
         $assembler->assemble($configuration);
     }
@@ -21,25 +25,112 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
     public function invalidOptionsDataProvider()
     {
         return array(
-            'no options' => array(
+            'no_options' => array(
                 array(
                     'name' => array()
-                )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
+                'Option "label" is required'
             ),
-            'no form_type' => array(
+            'no_type' => array(
                 array(
                     'name' => array(
                         'label' => 'test'
                     )
-                )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
+                'Option "type" is required'
             ),
-            'no label' => array(
+            'no_label' => array(
                 array(
                     'name' => array(
-                        'form_type' => 'test'
+                        'type' => 'test'
                     )
-                )
-            )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
+                'Option "label" is required'
+            ),
+            'invalid_type' => array(
+                array(
+                    'name' => array(
+                        'label' => 'Label',
+                        'type' => 'text'
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                //@codingStandardsIgnoreStart
+                'Invalid attribute type "text", allowed types are "bool", "boolean", "int", "integer", "float", "string", "array", "object", "entity"'
+                //@codingStandardsIgnoreEnd
+            ),
+            'invalid_type_class' => array(
+                array(
+                    'name' => array(
+                        'label'   => 'Label',
+                        'type'    => 'string',
+                        'options' => array('class' => 'stdClass'),
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'Option "class" cannot be used in attribute with type "string"'
+            ),
+            'missing_object_class' => array(
+                array(
+                    'name' => array(
+                        'label'   => 'Label',
+                        'type'    => 'object',
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'Option "class" is required for attribute with type "object"'
+            ),
+            'missing_entity_class' => array(
+                array(
+                    'name' => array(
+                        'label'   => 'Label',
+                        'type'    => 'entity',
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'Option "class" is required for attribute with type "entity"'
+            ),
+            'invalid_class' => array(
+                array(
+                    'name' => array(
+                        'label'   => 'Label',
+                        'type'    => 'object',
+                        'options' => array('class' => 'InvalidClass'),
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'Class "InvalidClass" referenced by "class" option not found'
+            ),
+            'invalid_type_with_managed_entity_option' => array(
+                array(
+                    'name' => array(
+                        'label'   => 'Label',
+                        'type'    => 'object',
+                        'options' => array('class' => 'DateTime', 'managed_entity' => true),
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'Option "managed_entity" cannot be used with attribute type "object"'
+            ),
+            'more_than_one_managed_entity_attributes' => array(
+                array(
+                    'first_attribute' => array(
+                        'label'   => 'First',
+                        'type'    => 'entity',
+                        'options' => array('class' => 'stdClass', 'managed_entity' => true),
+                    ),
+                    'second_attribute' => array(
+                        'label'   => 'Second',
+                        'type'    => 'entity',
+                        'options' => array('class' => 'stdClass', 'managed_entity' => true),
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
+                'More than one attribute with "managed_entity" option is not allowed'
+            ),
         );
     }
 

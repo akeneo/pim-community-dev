@@ -4,6 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
 class AttributeAssembler extends AbstractAssembler
@@ -15,9 +16,17 @@ class AttributeAssembler extends AbstractAssembler
     public function assemble(array $configuration)
     {
         $attributes = new ArrayCollection();
+        $managedEntityAttributes = 0;
         foreach ($configuration as $name => $options) {
             $attribute = $this->assembleAttribute($name, $options);
+            if ($attribute->getOption('managed_entity')) {
+                $managedEntityAttributes++;
+            }
             $attributes->set($name, $attribute);
+        }
+
+        if ($managedEntityAttributes > 1) {
+            throw new AssembleAttributeException('More than one attribute with "managed_entity" option is not allowed');
         }
 
         return $attributes;
@@ -38,6 +47,47 @@ class AttributeAssembler extends AbstractAssembler
         $attribute->setType($options['type']);
         $attribute->setOptions($this->getOption($options, 'options', array()));
 
+        $this->validateAttribute($attribute);
+
         return $attribute;
+    }
+
+    protected function validateAttribute(Attribute $attribute)
+    {
+        $attributeType = $attribute->getType();
+        $allowedTypes = array('bool', 'boolean', 'int', 'integer', 'float', 'string', 'array', 'object', 'entity');
+
+        if (!in_array($attributeType, $allowedTypes)) {
+            throw new AssembleAttributeException(
+                sprintf(
+                    'Invalid attribute type "%s", allowed types are "%s"',
+                    $attributeType,
+                    implode('", "', $allowedTypes)
+                )
+            );
+        }
+
+        $classRequired = ($attributeType == 'object' || $attributeType == 'entity');
+        if ($classRequired && !$attribute->hasOption('class')) {
+            throw new AssembleAttributeException(
+                sprintf('Option "class" is required for attribute with type "%s"', $attributeType)
+            );
+        } elseif (!$classRequired && $attribute->hasOption('class')) {
+            throw new AssembleAttributeException(
+                sprintf('Option "class" cannot be used in attribute with type "%s"', $attributeType)
+            );
+        }
+
+        if ($attribute->hasOption('class') && !class_exists($attribute->getOption('class'))) {
+            throw new AssembleAttributeException(
+                sprintf('Class "%s" referenced by "class" option not found', $attribute->getOption('class'))
+            );
+        }
+
+        if ($attribute->hasOption('managed_entity') && $attribute->getType() !== 'entity') {
+            throw new AssembleAttributeException(
+                sprintf('Option "managed_entity" cannot be used with attribute type "%s"', $attributeType)
+            );
+        }
     }
 }
