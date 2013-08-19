@@ -56,15 +56,16 @@ class Generator
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
+        $validators  = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
 
-        $validator = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
-        if (!file_exists($validator)) {
-            file_put_contents(
-                $validator,
-                ''
-            );
+        if (!file_exists($validators)) {
+            file_put_contents($validators, '');
         }
-        //$validatorYml = Yaml::parse($validator);
+
+        file_put_contents(
+            $validators,
+            Yaml::dump($this->generateValidator($entityName, Yaml::parse($validators)))
+        );
 
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
@@ -113,6 +114,72 @@ class Generator
     protected function generateClassName($entityName)
     {
         return str_replace('\\', '', $entityName);
+    }
+
+
+    protected function generateValidator($entityName, $validators)
+    {
+        /** Constraints */
+        $yml['constraints'] = array();
+
+        $uniqueKeys = $this->configProvider->getConfig($entityName)->get('unique_key');
+        if ($uniqueKeys) {
+            foreach ($uniqueKeys['keys'] as $keys) {
+                $yml['constraints'][]['ExtendUniqueEntity'] = $keys['key'];
+            }
+        }
+
+        /** properties */
+        $yml['properties'] = array();
+
+        if ($fieldIds = $this->configProvider->getIds($entityName)) {
+            foreach ($fieldIds as $fieldId) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                    $config = $this->configProvider->getConfigById($fieldId);
+                    switch ($fieldId->getFieldType()) {
+                        case 'integer':
+                        case 'smallint':
+                        case 'bigint':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'Regex' => '/\d+/'
+                            );
+                            break;
+                        case 'string':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'Length' => array('max' => $config->get('length'))
+                            );
+                            break;
+                        case 'decimal':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'Regex' => '/\d{1,'.$config->get('precision').'}\.\d{1,'.$config->get('scale').'}/'
+                            );
+                            break;
+                        case 'date':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'Date' => '~'
+                            );
+                            break;
+                        case 'time':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'Time' => '~'
+                            );
+                            break;
+                        case 'datetime':
+                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                                'DateTime' => '~'
+                            );
+                            break;
+                        case 'boolean':
+                        case 'text':
+                        case 'float':
+                            break;
+                    }
+                }
+            }
+        }
+
+        $validators[$entityName] = $yml;
+        return $validators;
     }
 
     protected function generateDynamicYml($entityName, $extendClass)
