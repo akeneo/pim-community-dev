@@ -73,11 +73,13 @@ Pim.tree.view = function(elementId) {
                 $('#'+tree_select_id).select2({ width: '100%' });
             }
         })
-        .on('after_tree_loaded.jstree', function (root_node_id) {
-            $el.jstree('create', root_node_id, 'last', {
-                'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
-                'data': { 'title': unclassifiedNodeTitle }
-            }, false, true);
+        .on('after_tree_loaded.jstree', function (event, root_node_id) {
+            $(document).one('ajaxStop', function() {
+                $el.jstree('create', '#node_' + root_node_id, 'last', {
+                    'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
+                    'data': { 'title': unclassifiedNodeTitle }
+                }, false, true);
+            });
         })
         .on('select_node.jstree', function (event, data) {
             var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', '');
