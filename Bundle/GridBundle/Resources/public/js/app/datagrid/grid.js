@@ -357,6 +357,7 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
     _runRowClickAction: function(row) {
         if (this.rowClickAction) {
             var action = new this.rowClickAction({
+                datagrid: this,
                 model: row.model
             });
             action.run();
