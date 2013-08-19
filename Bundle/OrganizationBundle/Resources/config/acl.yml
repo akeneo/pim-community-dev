@@ -1,0 +1,4 @@
+oro_change_record_owner:
+    name: Change record owner
+    description: Permission for record owner changing
+    parent: root

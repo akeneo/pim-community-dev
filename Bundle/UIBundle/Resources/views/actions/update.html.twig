@@ -60,6 +60,7 @@
             </div>
             <div class="layout-content">
                 {% block content_data %}
+                    {% set data = oro_form_process(data, form) %}
                     {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>

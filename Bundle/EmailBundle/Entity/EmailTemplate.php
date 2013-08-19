@@ -21,13 +21,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  *          @ORM\Index(name="email_is_system_idx", columns={"isSystem"}),
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
  * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
- * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")*
- * @Configurable(
- *  defaultValues={
- *      "entity"={"label"="Email Template", "plural_label"="Email Templates"},
- *      "acl"={"owner_type"="NONE"}
- *  }
- * )
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")
  */
 class EmailTemplate implements Translatable
 {

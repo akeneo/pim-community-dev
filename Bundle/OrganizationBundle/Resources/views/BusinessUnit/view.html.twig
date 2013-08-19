@@ -4,7 +4,6 @@
 {% block head_script %}
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
-{% set entityClass = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
 
 {% block navButtons %}
     {% if resource_granted('oro_business_unit_update') %}

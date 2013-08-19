@@ -17,6 +17,8 @@ use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 
 class RecordOwnerDataListener
 {
+    const OWNER_FIELD_NAME = 'owner';
+
     /**
      * @var SecurityContextInterface
      */
@@ -35,7 +37,6 @@ class RecordOwnerDataListener
     /**
      * @param ContainerInterface $container
      * @param ConfigProvider $configProvider
-     * @param ObjectManager $om
      */
     public function __construct(ContainerInterface $container, ConfigProvider $configProvider)
     {
@@ -66,50 +67,28 @@ class RecordOwnerDataListener
         if ($token) {
             $user = $token->getUser();
             if ($user) {
-                $ownerId = null;
-                $post = $this->container->get('request')->request->all();
-                if ($post) {
-                    foreach ($post as $params) {
-                        if (is_array($params)) {
-                            foreach ($params as $key => $formParam) {
-                                if ($key === 'owner') {
-                                    $ownerId = $formParam;
-                                }
-                            }
-                        }
-                    }
-                }
                 $entity = $args->getEntity();
                 if ($this->configProvider->hasConfig(get_class($entity))) {
-                    /** @var $config EntityConfig */
-                    $config = $this->configProvider->getConfig(get_class($entity));
-                    $entityValues = $config->getValues();
-
                     $owner = null;
-                    if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
-                        if ($ownerId) {
-                            $owner = $args->getEntityManager()
-                                ->getRepository('OroUserBundle:User')
-                                ->find($ownerId);
-                        } else {
+                    if (method_exists($entity, 'getOwner')) {
+                        $owner = $entity->getOwner();
+                    }
+                    if (!$owner) {
+                        /** @var $config EntityConfig */
+                        $config = $this->configProvider->getConfig(get_class($entity));
+                        $entityValues = $config->getValues();
+                        if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
                             $owner = $user;
-                        }
-                    } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
-                        if ($ownerId) {
-                            $owner = $args->getEntityManager()
-                                ->getRepository('OroOrganizationBundle:BusinessUnit')
-                                ->find($ownerId);
-                        } else {
+                        } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
                             $businessUnits = $user->getBusinessUnits();
                             $owner = $businessUnits->first();
+                        } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
+                            $businessUnits = $user->getBusinessUnits();
+                            $owner = $businessUnits->first()->getOrganization();
                         }
-                    } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
-                        $businessUnits = $user->getBusinessUnits();
-                        $owner = $businessUnits->first()->getOrganization();
-                    }
-
-                    if ($owner && method_exists($entity, 'setOwner')) {
-                        $entity->setOwner($owner);
+                        if ($owner && method_exists($entity, 'setOwner')) {
+                            $entity->setOwner($owner);
+                        }
                     }
                 }
             }

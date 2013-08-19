@@ -20,8 +20,6 @@ class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInte
 
         $this->addReference('default_organization', $defaultOrganization);
 
-        $defaultOrganization->setOwner($this->getReference('default_organization'));
-
         $manager->persist($defaultOrganization);
         $manager->flush();
     }

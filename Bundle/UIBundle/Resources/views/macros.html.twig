@@ -284,23 +284,8 @@
     {% endif %}
 
     {% set dataBlocks = data.dataBlocks %}
+    {# Adding record owner field if needed #}}
 
-    {% if isForm and form.owner is defined %}
-        {% set dataBlocks = dataBlocks|merge(
-            [{
-            'title' : 'Record owner',
-            'subblocks':
-                [
-                    {
-                        'title' : null,
-                        'useSpan': false,
-                        'data' : [form_row(form.owner)]
-                    }
-                ]
-            }]
-        )
-        %}
-    {% endif %}
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="container-fluid" style="width: auto;">

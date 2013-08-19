@@ -454,6 +454,11 @@ class User extends AbstractEntityFlexible implements
         );
     }
 
+    public function getName()
+    {
+        return $this->getFullname();
+    }
+
     /**
      * Return birthday
      *

@@ -148,7 +148,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
                 'label' => $this->translate('orocrm.business_unit.datagrid.created_at'),
-                'field_name'  => 'created_at',
+                'field_name'  => 'createdAt',
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => false,
                 'sortable'    => true,

@@ -15,7 +15,7 @@ class BusinessUnitRepository extends EntityRepository
      * @param User $user
      * @return array
      */
-    public function getBusinessUnitsTree(User $user)
+    public function getBusinessUnitsTree(User $user = null)
     {
         $businessUnits = $this->createQueryBuilder('businessUnit')
                     ->select(
@@ -25,7 +25,7 @@ class BusinessUnitRepository extends EntityRepository
                             'IDENTITY(businessUnit.parent) parent',
                         )
                     );
-        if ($user->getId()) {
+        if ($user && $user->getId()) {
             $units = $user->getBusinessUnits()->map(
                 function (BusinessUnit $businessUnit) {
                     return $businessUnit->getId();
