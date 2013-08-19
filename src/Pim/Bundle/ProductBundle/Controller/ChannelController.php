@@ -5,7 +5,6 @@ namespace Pim\Bundle\ProductBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\ProductBundle\Controller\Controller;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**

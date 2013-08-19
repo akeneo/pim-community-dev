@@ -8,9 +8,7 @@ pim_product:
     resource: "@PimProductBundle/Resources/config/routing.yml"
 
 pim_importexport:
-    resource: "@PimImportExportBundle/Controller/"
-    type:     annotation
-    prefix:   /ie/
+    resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"

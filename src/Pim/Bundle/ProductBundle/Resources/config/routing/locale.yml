@@ -1,5 +1,5 @@
 pim_product_locale_index:
-    path: "/.{_format}"
+    path: /.{_format}
     defaults: { _controller: PimProductBundle:Locale:index, _format: html }
     requirements:
         _format: html|json

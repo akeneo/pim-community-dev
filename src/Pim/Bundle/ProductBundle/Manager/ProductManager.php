@@ -240,7 +240,7 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Add empty values for product family and product-specific attributes for relevant scopes and locales
+     * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values
      * in the required locales/channels exist. If the attribute is not scopable or

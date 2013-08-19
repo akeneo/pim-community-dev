@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\GridBundle\Tests\Unit\Filter\ORM;
 
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Pim\Bundle\GridBundle\Filter\ORM\ScopeFilter;

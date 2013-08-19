@@ -16,7 +16,7 @@ class Show extends JobShow
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/{id}';
+    protected $path = '/extract/import/{id}';
 
     /**
      * Click the job execution link

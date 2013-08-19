@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Category Tree Controller

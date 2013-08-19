@@ -15,12 +15,11 @@ Feature: Filter locales
   Scenario: Successfully display filters
     Given I am on the locales page
     Then I should see the filters Code and Activated
+    And the grid should contain 3 elements
+    And I should see locales de_DE, en_US and fr_FR
 
   Scenario: Successfully filter by code
     Given I am on the locales page
-    Then the grid should contain 3 elements
-    And I should see locales de_DE, en_US and fr_FR
-    And I should see the filters "Code" and "Activated"
     When I filter by "Code" with value "e"
     Then the grid should contain 2 elements
     And I should see locales de_DE and en_US
@@ -28,9 +27,6 @@ Feature: Filter locales
 
   Scenario: Successfully filter by activated "yes"
     Given I am on the locales page
-    Then the grid should contain 3 elements
-    And I should see locales de_DE, en_US and fr_FR
-    And I should see the filters "Code" and "Activated"
     When I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
     And I should see locales en_US and fr_FR
@@ -38,9 +34,6 @@ Feature: Filter locales
 
   Scenario: Successfully filter by activated "no"
     Given I am on the locales page
-    Then the grid should contain 3 elements
-    And I should see locales de_DE, en_US and fr_FR
-    And I should see the filters "Code" and "Activated"
     When I filter by "Activated" with value "no"
     Then the grid should contain 1 element
     And I should see locales de_DE

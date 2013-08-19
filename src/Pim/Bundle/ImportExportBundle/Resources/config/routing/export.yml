@@ -1,0 +1,40 @@
+pim_importexport_export_index:
+    path: /.{_format}
+    defaults: { _controller: PimImportExportBundle:Export:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_export_create:
+    path: /create
+    defaults: { _controller: PimImportExportBundle:Export:create }
+
+pim_importexport_export_show:
+    path: /{id}
+    defaults: { _controller: PimImportExportBundle:Export:show }
+    requirements:
+        id: \d+
+
+pim_importexport_export_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimImportExportBundle:Export:edit }
+    requirements:
+        id: \d+
+
+pim_importexport_export_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimImportExportBundle:Export:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_importexport_export_report:
+    path: /{id}/reports
+    defaults: { _controller: PimImportExportBundle:Export:report }
+    requirements:
+        id: \d+
+
+pim_importexport_export_launch:
+    path: /{id}/launch
+    defaults: { _controller: PimImportExportBundle:Export:launch }
+    requirements:
+        id: \d+

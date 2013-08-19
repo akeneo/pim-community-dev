@@ -56,4 +56,3 @@ Feature: Sort channels
     Given I am on the channels page
     When I sort by "category tree" value descending
     Then I should see sorted channels BAZ, FOO, BAR and QUX
-    

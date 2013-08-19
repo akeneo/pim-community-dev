@@ -17,7 +17,7 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
         - Pim\Bundle\ProductBundle\Validator\Constraints\ValidNumberRange:
             groups:
                 - pim_product_number
-                - pim_product_price
+                - pim_product_price_collection
                 - pim_product_metric
         - Callback:
             methods:
@@ -151,7 +151,7 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
                 groups:
                     - pim_product_text
                     - pim_product_identifier
-        allowedFileExtensions:
+        allowedExtensions:
             - NotNull:
                 groups: [pim_product_file, pim_product_image]
 Pim\Bundle\ProductBundle\Entity\AttributeOption:

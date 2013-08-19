@@ -205,7 +205,7 @@ class FixturesContext extends RawMinkContext
      * @param string    $family
      * @param TableNode $table
      *
-     * @Given /^the product family "([^"]*)" has the following attribute:$/
+     * @Given /^the family "([^"]*)" has the following attribute:$/
      */
     public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
     {
@@ -295,6 +295,19 @@ class FixturesContext extends RawMinkContext
 
         foreach ($channels as $channel) {
             $em->remove($channel);
+        }
+    }
+
+    /**
+     * @Given /^there is no attribute$/
+     */
+    public function thereIsNoAttribute()
+    {
+        $em = $this->getEntityManager();
+        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')->findAll();
+
+        foreach ($attributes as $attribute) {
+            $em->remove($attribute);
         }
     }
 
@@ -491,6 +504,11 @@ class FixturesContext extends RawMinkContext
             $category->setCode($data['code']);
             $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
 
+            if (!empty($data['parent'])) {
+                $parent = $this->getCategoryOrCreate($data['parent']);
+                $category->setParent($parent);
+            }
+
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
@@ -535,6 +553,30 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($channel);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attributes:$/
+     */
+    public function theFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getProductManager()->createAttribute($data['type']);
+
+            $attribute->setCode($data['code']);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
+
+            $attribute->setLocale('en_US');
+            $attribute->setLabel($data['label']);
+
+            $group = $this->getGroup($data['group']);
+            $attribute->setGroup($group);
+
+            $this->persist($attribute);
         }
     }
 
@@ -889,6 +931,24 @@ class FixturesContext extends RawMinkContext
     public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    private function getCategoryOrCreate($code)
+    {
+        try {
+            $category = $this->getCategory($code);
+        } catch (\InvalidArgumentException $e) {
+            $category = new Category();
+            $category->setCode($code);
+            $this->persist($category);
+        }
+
+        return $category;
     }
 
     /**

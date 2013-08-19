@@ -1,5 +1,5 @@
 @javascript @info https://akeneo.atlassian.net/browse/PIM-355
-Feature: Add attribute to a product family
+Feature: Add attribute to a family
   In order to validate exported product attributes
   As a user
   I need to be able to define which attributes belong to a family

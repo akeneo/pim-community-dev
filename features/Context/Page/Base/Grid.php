@@ -238,7 +238,7 @@ class Grid extends Index
      */
     public function getColumnSorter($columnName)
     {
-        if (!$column = $this->getColumn($columnName)->find('css', 'a')) {
+        if (!$this->getColumn($columnName)->find('css', 'a')) {
             throw new \InvalidArgumentException(
                 sprintf('Column %s is not sortable', $columnName)
             );

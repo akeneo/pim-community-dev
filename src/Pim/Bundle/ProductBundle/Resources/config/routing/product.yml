@@ -1,5 +1,5 @@
 pim_product_product_index:
-    path: "/.{_format}"
+    path: /.{_format}
     defaults: { _controller: PimProductBundle:Product:index, _format: html }
     requirements:
         _format: html|json
