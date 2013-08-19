@@ -21,8 +21,8 @@ Feature: Delete export
     And I confirm the deletion
     Then I should see "Item was deleted"
     And the grid should contain 2 elements
-    And the grid should contain the elements "acme_product_export" and "acme_attribute_export"
-    And the grid should not contain the elements "foo_product_export" and "acme_product_import"
+    And I should see export profiles "acme_product_export" and "acme_attribute_export"
+    And I should not see export profiles "foo_product_export" and "acme_product_import"
 
   Scenario: Successfully cancel the deletion of an export job
     Given I am on the exports page
@@ -30,5 +30,5 @@ Feature: Delete export
     When I delete the "foo_product_export" job
     And I cancel the deletion
     Then the grid should contain 3 elements
-    And the grid should contain the elements "acme_product_export", "acme_attribute_export" and "foo_product_export"
-    And the grid should not contain the elements "acme_product_import"
+    And I should see export profiles "acme_product_export", "acme_attribute_export" and "foo_product_export"
+    And I should not see export profile "acme_product_import"
