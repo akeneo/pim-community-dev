@@ -242,30 +242,45 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $currencies
      *
+     * @return \Behat\Behat\Context\Step\Then
+     *
      * @Then /^I should see currency (.*)$/
      * @Then /^I should see currencies (.*)$/
      */
     public function iShouldSeeCurrencies($currencies)
     {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" not found', $currency));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should see entities %s', $currencies)
+        );
+    }
+
+    /**
+     * @param string $currencies
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should not see currency (.*)$/
+     * @Then /^I should not see currencies (.*)$/
+     */
+    public function iShouldNotSeeCurrencies($currencies)
+    {
+        return new Step\Then(
+            sprintf('I should not see entities %s', $currencies)
+        );
     }
 
     /**
      * @param string $locales
      *
+     * @return \Behat\Behat\Context\Step\Then
+     *
      * @Then /^I should see locales? (.*)$/
      */
     public function iShouldSeeLocales($locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findLocale($locale)) {
-                throw $this->createExpectationException(sprintf('Locale "%s" not found', $locale));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should see entities %s', $locales)
+        );
     }
 
     /**
@@ -300,7 +315,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedCurrencies($currencies)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $currencies)
+            sprintf('I should see sorted entities %s', $currencies)
         );
     }
 
@@ -363,7 +378,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedLocales($locales)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $locales)
+            sprintf('I should see sorted entities %s', $locales)
         );
     }
 
@@ -374,17 +389,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeLocales($locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            try {
-                $this->getPage('Locale index')->getRow($locale);
-                $this->createExpectationException(
-                    sprintf('Locale "%s" should not be seen', $locale)
-                );
-            } catch (\InvalidArgumentException $e) {
-                // here we must catch an exception because the row is not found
-                continue;
-            }
-        }
+        return new Step\Then(
+            sprintf('I should not see entities %s', $locales)
+        );
     }
 
     /**
@@ -1005,19 +1012,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
-     * @throws ExpectationException
+     * @return \Behat\Behat\Context\Step\Then
      *
      * @Then /^I should see channels? (.*)$/
      */
     public function iShouldSeeChannels($channels)
     {
-        $channels = $this->listToArray($channels);
-
-        foreach ($channels as $channel) {
-            if (!$this->getPage('Channel index')->getRow($channel)) {
-                throw $this->createExpectationException(sprintf('Expecting to see channel %s, not found', $channel));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should see entities %s', $channels)
+        );
     }
 
     /**
@@ -1030,26 +1033,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedChannels($channels)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $channels)
+            sprintf('I should see sorted entities %s', $channels)
+        );
+    }
+
+    /**
+     * @param string $channels
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should not see channels? (.*)$/
+     */
+    public function iShouldNotSeeChannels($channels)
+    {
+        return new Step\Then(
+            sprintf('I should not see entities %s', $channels)
         );
     }
 
     /**
      * @param string $attributes
      *
-     * @throws ExpectationException
+     * @return \Behat\Behat\Context\Step\Then
      *
      * @Then /^I should see attributes? ((?!in group).)*$/
      */
     public function iShouldSeeAttributes($attributes)
     {
-        $attributes = $this->listToArray($attributes);
-
-        foreach ($attributes as $attribute) {
-            if (!$this->getPage('Attribute index')->getRow($attribute)) {
-                throw $this->createExpectationException(sprintf('Expecting to see attribute %s', $attribute));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should see entities %s', $attributes)
+        );
     }
 
     /**
@@ -1062,7 +1075,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedAttributes($attributes)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $attributes)
+            sprintf('I should see sorted entities %s', $attributes)
+        );
+    }
+
+    /**
+     * @param string $attributes
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should not see attributes (.*)$/
+     */
+    public function iShouldNotSeeAttributes($attributes)
+    {
+        return new Step\Then(
+            sprintf('I should not see entities %s', $attributes)
         );
     }
 
@@ -1152,24 +1179,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeProducts($products)
     {
-        $products = $this->listToArray($products);
-        foreach ($products as $product) {
-            if (!$this->getPage('Product index')->getRow($product)) {
-                throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
-            }
-        }
-    }
-
-    /**
-     * @param string $product
-     *
-     * @Then /^I should see product "([^"]*)"$/
-     */
-    public function iShouldSeeProduct($product)
-    {
-        if (!$this->getPage('Product index')->getRow($product)) {
-            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
-        }
+        return new Step\Then(
+            sprintf('I should see entities %s', $products)
+        );
     }
 
     /**
@@ -1200,34 +1212,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $products
      *
-     * @Then /^I should not see products (.*)$/
+     * @Then /^I should not see products? (.*)$/
      */
     public function iShouldNotSeeProducts($products)
     {
-        $products = $this->listToArray($products);
-        foreach ($products as $product) {
-            try {
-                $this->getPage('Product index')->getRow($product);
-            } catch (\InvalidArgumentException $e) {
-                continue;
-            }
-            throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
-        }
-    }
-
-    /**
-     * @param string $product
-     *
-     * @Then /^I should not see product "([^"]*)"$/
-     */
-    public function iShouldNotSeeProduct($product)
-    {
-        try {
-            $this->getPage('Product index')->getRow($product);
-        } catch (\InvalidArgumentException $e) {
-            return;
-        }
-        throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
+        return new Step\Then(
+            sprintf('I should not see entities %s', $products)
+        );
     }
 
     /**
