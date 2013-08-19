@@ -17,7 +17,7 @@ Feature: Browse imports
     Given I am on the imports page
     Then the grid should contain 3 element
     And I should see import profiles acme_product_import, acme_category_import and foo_category_import
-    And I should not see import profiles acme_product_export
+    And I should not see import profile acme_product_export
     And the column "connector" of the row "acme_product_import" should contain the value "Akeneo"
 
   Scenario: Successfully display columns
