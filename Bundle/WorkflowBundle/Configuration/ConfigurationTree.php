@@ -129,6 +129,10 @@ class ConfigurationTree
                                 throw new \Exception(
                                     sprintf('Option "class" is required for type "%s"', $value['type'])
                                 );
+                            } elseif (!$classRequired && !empty($value['options']['class'])) {
+                                throw new \Exception(
+                                    sprintf('Option "class" cannot be used with type "%s"', $value['type'])
+                                );
                             }
                             return $value;
                         }
@@ -148,6 +152,18 @@ class ConfigurationTree
                         ->end()
                     ->end()
                     ->arrayNode('options')
+                        ->validate()
+                        ->always(
+                            function ($value) {
+                                if (isset($value['class']) && !class_exists($value['class'])) {
+                                    throw new \Exception(
+                                        sprintf('Class "%s" referenced by "class" option not found', $value['class'])
+                                    );
+                                }
+                                return $value;
+                            }
+                        )
+                        ->end()
                     ->end()
                 ->end()
             ->end();
