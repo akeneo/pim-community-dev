@@ -158,7 +158,7 @@ class FixturesContext extends RawMinkContext
                 $product->setFamily($this->getFamily($data['family']));
             }
 
-            if ($data['enabled']) {
+            if (isset($data['enabled'])) {
                 $product->setEnabled($data['enabled'] === 'yes');
             }
 
