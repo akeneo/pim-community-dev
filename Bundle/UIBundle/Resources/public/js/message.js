@@ -29,16 +29,21 @@
          *      or false - means to not close automatically
          * @param {Function} options.template template function
          * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
+         *
+         * @return {Object} collection of methods - actions over message element,
+         *      at the moment there's only one method 'close', allows to close the message
          */
         message = Oro.NotificationMessage = function(type, message, options) {
             var container = (options || {}).container ||  defaults.container,
-                args = Array.prototype.slice.call(arguments);
+                args = Array.prototype.slice.call(arguments),
+                actions = {close: $.noop};
             if (container && $(container).length) {
-                showMessage.apply(null, args);
+                actions = showMessage.apply(null, args);
             } else {
                 // if container is not ready then save message for later
-                queue.push(args);
+                queue.push([args, actions]);
             }
+            return actions;
         },
 
         /**
@@ -49,16 +54,19 @@
             var msg = _.isArray(message) ? __.apply(null, message): message,
                 opt = _.extend({}, defaults, options || {}),
                 $el = $(opt.template({type: type, message: msg})).appendTo(opt.container),
-                delay = opt.delay || (opt.flash && 5000);
+                delay = opt.delay || (opt.flash && 5000),
+                actions = {close: _.bind($el.alert, $el, 'close')};
             if (delay) {
-                _.delay(_.bind($el.alert, $el, 'close'), delay);
+                _.delay(actions.close, delay);
             }
+            return actions;
         };
 
     message.setup = function(options) {
         _.extend(defaults, options);
         while (queue.length) {
-            showMessage.apply(null, queue.shift());
+            var args = queue.shift();
+            _.extend(args[1], showMessage.apply(null, args[0]));
         }
     };
 
