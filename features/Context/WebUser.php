@@ -1313,7 +1313,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see export profiles (.*)$/
+     * @Then /^I should see export profiles? (.*)$/
      */
     public function iShouldSeeExportProfiles($exports)
     {
@@ -1327,7 +1327,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should not see export profiles (.*)$/
+     * @Then /^I should not see export profiles? (.*)$/
      */
     public function iShouldNotSeeExportProfiles($exports)
     {
@@ -1341,7 +1341,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Given
      *
-     * @Then /^I should see sorted export profiles (.*)$/
+     * @Then /^I should see sorted export profiles? (.*)$/
      */
     public function iShouldSeeSortedExportProfiles($exports)
     {
@@ -1355,7 +1355,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see import profiles (.*)$/
+     * @Then /^I should see import profiles? (.*)$/
      */
     public function iShouldSeeImportProfiles($imports)
     {
@@ -1369,7 +1369,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should not see import profiles (.*)$/
+     * @Then /^I should not see import profiles? (.*)$/
      */
     public function iShouldNotSeeImportProfiles($imports)
     {
@@ -1383,7 +1383,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Given
      *
-     * @Then /^I should see sorted import profiles (.*)$/
+     * @Then /^I should see sorted import profiles? (.*)$/
      */
     public function iShouldSeeSortedImportProfiles($imports)
     {
