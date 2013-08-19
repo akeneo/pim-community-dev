@@ -475,7 +475,7 @@ class JobExecution
                 $this->updatedTime,
                 $this->status,
                 $this->exitStatus,
-                $this->job
+                $this->job->getCode()
             );
         } catch (\Exception $e) {
             $string = $e->getMessage();
