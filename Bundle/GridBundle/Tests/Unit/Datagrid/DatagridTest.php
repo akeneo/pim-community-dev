@@ -196,15 +196,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $arrayParameters = array('test');
         $parameters = $this->createParameters($arrayParameters);
         $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getParameters());
-    }
-
-    public function testGetValues()
-    {
-        $arrayParameters = array('test');
-        $parameters = $this->createParameters($arrayParameters);
-        $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getValues());
+        $this->assertEquals($parameters, $datagrid->getParameters());
     }
 
     public function testGetRouteGenerator()
@@ -214,18 +206,20 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($routeGenerator, $datagrid->getRouteGenerator());
     }
 
-    public function testGetName()
+    public function testName()
     {
-        $datagridName = 'datagrid';
-        $datagrid = $this->createDatagrid(array('name' => $datagridName));
-        $this->assertEquals($datagridName, $datagrid->getName());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getName());
+        $datagrid->setName('datagrid');
+        $this->assertEquals('datagrid', $datagrid->getName());
     }
 
-    public function testGetEntityHint()
+    public function testEntityHint()
     {
-        $entityHint = 'Entity Hint';
-        $datagrid = $this->createDatagrid(array('entityHint' => $entityHint));
-        $this->assertEquals($entityHint, $datagrid->getEntityHint());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getEntityHint());
+        $datagrid->setEntityHint('Entity Hint');
+        $this->assertEquals('Entity Hint', $datagrid->getEntityHint());
     }
 
     public function testAddRowAction()
@@ -250,13 +244,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expectedActions, $datagrid->getRowActions());
-    }
-
-    public function testSetValue()
-    {
-        // method is empty, do nothing
-        $datagrid = $this->createDatagrid();
-        $datagrid->setValue('name', '=', 'value');
     }
 
     public function testGetPager()
@@ -493,9 +480,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             $arguments['formBuilder'],
             $arguments['routeGenerator'],
             $arguments['parameters'],
-            $arguments['eventDispatcher'],
-            $arguments['name'],
-            $arguments['entityHint']
+            $arguments['eventDispatcher']
         );
     }
 
@@ -559,7 +544,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $result = $this->getMockBuilder('Oro\Bundle\GridBundle\Filter\FilterInterface')
-            ->setMethods(array('getName', 'isActive', 'getFormName', 'apply', 'getRenderSettings'))
+            ->setMethods(array('getName', 'isActive', 'apply', 'getRenderSettings'))
             ->getMockForAbstractClass();
 
         $result->expects($this->any())

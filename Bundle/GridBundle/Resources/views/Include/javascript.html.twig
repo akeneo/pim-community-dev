@@ -13,22 +13,23 @@
     {% set actionTypePrefix = 'Oro\\Bundle\\GridBundle\\Action\\ActionInterface::' %}
     {% set parameterTypePrefix = 'Oro\\Bundle\\GridBundle\\Datagrid\\ParametersInterface::' %}
 
-    {% set datagridParameters = [] %}
-    {% if datagrid.name in datagrid.parameters|keys %}
-        {% set datagridParameters = datagrid.parameters[datagrid.name] %}
+    {% set datagridParameters = datagrid.parameters.toArray() %}
+    {% set currentDatagridParameters = [] %}
+    {% if datagrid.name in datagridParameters|keys %}
+        {% set currentDatagridParameters = datagridParameters[datagrid.name] %}
     {% endif %}
 
     {% set parametersSorterType = constant(parameterTypePrefix ~ 'SORT_PARAMETERS') %}
     {% set parametersFilterType = constant(parameterTypePrefix ~ 'FILTER_PARAMETERS') %}
 
     {% set sorterData = [] %}
-    {% if parametersSorterType in datagridParameters|keys %}
-        {% set sorterData = datagridParameters[parametersSorterType] %}
+    {% if parametersSorterType in currentDatagridParameters|keys %}
+        {% set sorterData = currentDatagridParameters[parametersSorterType] %}
     {% endif %}
 
     {% set filterData = [] %}
-    {% if parametersFilterType in datagridParameters|keys %}
-        {% set filterData = datagridParameters[parametersFilterType] %}
+    {% if parametersFilterType in currentDatagridParameters|keys %}
+        {% set filterData = currentDatagridParameters[parametersFilterType] %}
     {% endif %}
 
     {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
@@ -36,6 +37,7 @@
     $(function() {
         var datagridOptions = {
             grid: {
+                name: '{{ datagrid.name }}',
                 columns: [
                     {% for column in datagrid.columns %}
                     {
@@ -84,18 +86,25 @@
                         {{ action.name|json_encode|raw }}:
                         {% set currentOptions = action.options %}
                         {% if action.type == constant(actionTypePrefix ~ 'TYPE_DELETE') %}
+                            {% set currentOptions = currentOptions|merge({'name': action.name}) %}
                             Oro.Datagrid.Action.DeleteAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
                             {# merge additional options to navigateAction to use execute method #}
-                            {% set currentOptions = currentOptions|merge({'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
+                            {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
                             Oro.Datagrid.Action.NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
+                massActions: {
+                    {% for action in datagrid.massActions %}
+                        {{ action.name|json_encode|raw }}: Oro.Datagrid.Action.MassAction.extend({{ action.options|json_encode|raw }})
+                        {% if not loop.last %},{% endif %}
+                    {% endfor %}
+                },
                 entityHint : {{ datagrid.entityHint|capitalize|json_encode|raw }},
-                noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }},
-                noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint}, 'OroGridBundle')|json_encode|raw }},
+                noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
+                noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
                 toolbarOptions: {{ datagrid.toolbarOptions|json_encode|raw }},
             },
             collection: {
@@ -139,12 +148,17 @@
             var datagridParameters = _.extend({
                 collection: datagridCollection.collection,
                 loadingMask: Oro.LoadingMask.extend({
-                    loadingHint: {{ 'oro_grid.label_loading_mask'|trans({}, 'OroGridBundle')|json_encode|raw }}
+                    loadingHint: {{ 'oro_grid.label_loading_mask'|trans|json_encode|raw }}
                 })
             }, datagridOptions.grid);
             var datagrid = new Oro.Datagrid.Grid(datagridParameters);
             $(datagridBodySelector).html(datagrid.render().$el);
             Oro.Registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
+
+            {# @TODO Filter should not know anything about collection. #}
+            {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}
+                datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
+            {% endfor %}
 
             // Title
             var titleParameters = _.extend({
@@ -154,7 +168,7 @@
 
             // Filters
             var filterListParameters = _.extend({
-                addButtonHint: {{ 'oro_grid.label_add_filter'|trans({}, 'OroGridBundle')|json_encode|raw }},
+                addButtonHint: {{ 'oro_grid.label_add_filter'|trans|json_encode|raw }},
                 collection: datagridCollection.collection
             }, datagridOptions.grid);
             var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);

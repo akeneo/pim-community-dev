@@ -74,30 +74,4 @@ class ResultsQueryFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Oro\Bundle\TagBundle\Datagrid\ResultsQuery', $this->queryFactory->createQuery());
     }
-
-    /**
-     * @expectedException \LogicException
-     */
-    public function testCreateQueryException()
-    {
-        $this->registry->expects($this->once())
-            ->method('getManagerForClass')
-            ->with('testClassName')
-            ->will($this->returnValue($this->em));
-
-        $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->em->expects($this->once())
-            ->method('getRepository')
-            ->with('testClassName')
-            ->will($this->returnValue($repositoryMock));
-
-        $repositoryMock->expects($this->once())
-            ->method('createQueryBuilder')
-            ->will($this->returnValue(false));
-
-        $this->queryFactory->createQuery();
-    }
 }
