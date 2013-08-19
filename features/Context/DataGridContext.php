@@ -239,7 +239,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param array $currencies
+     * @param array $elements
      *
      * @throws \InvalidArgumentException
      *
