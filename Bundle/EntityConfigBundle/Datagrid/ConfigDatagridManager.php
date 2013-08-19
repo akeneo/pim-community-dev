@@ -90,9 +90,22 @@ class ConfigDatagridManager extends DatagridManager
                     $result = array();
                     foreach ($filters as $action => $filter) {
                         foreach ($filter as $key => $value) {
-                            if ($record->getValue($key) != $value) {
-                                $result[$action] = false;
-                                break;
+                            if (is_array($value)) {
+                                $error = true;
+                                foreach ($value as $v) {
+                                    if ($record->getValue($key) == $v) {
+                                        $error = false;
+                                    }
+                                }
+                                if ($error) {
+                                    $result[$action] = false;
+                                    break;
+                                }
+                            } else {
+                                if ($record->getValue($key) != $value) {
+                                    $result[$action] = false;
+                                    break;
+                                }
                             }
                         }
                     }

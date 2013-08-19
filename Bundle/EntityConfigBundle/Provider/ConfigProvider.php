@@ -210,6 +210,16 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @param $className
+     * @param null $fieldName
+     * @return string
+     */
+    public function getModelMode($className, $fieldName = null)
+    {
+        return $this->configManager->getModelMode($className, $fieldName);
+    }
+
+    /**
      * @param      $className
      * @param null $fieldName
      */

@@ -239,10 +239,10 @@ class ConfigEntityGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        $this->getDoctrine()->getManager()->remove($entity);
-        $this->getDoctrine()->getManager()->flush();
+        $entityConfig->set('state', ExtendManager::STATE_DELETED);
 
-        $configManager->clearCacheAll();
+        $configManager->persist($entityConfig);
+        $configManager->flush();
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }

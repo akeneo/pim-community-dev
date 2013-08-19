@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Symfony\Component\Yaml\Yaml;
 
 use CG\Core\DefaultGeneratorStrategy;
@@ -134,7 +136,9 @@ class Generator
 
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
+                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                ) {
                     $config = $this->configProvider->getConfigById($fieldId);
                     switch ($fieldId->getFieldType()) {
                         case 'integer':
@@ -212,7 +216,9 @@ class Generator
 
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
+                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                ) {
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['code'] = $fieldId->getFieldName();
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['type'] = $fieldId->getFieldType();
 
@@ -291,7 +297,9 @@ class Generator
         $toArray = '';
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
+                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                ) {
                     $fieldName = $fieldId->getFieldName();
                     $class
                         ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
@@ -378,7 +386,9 @@ class Generator
             foreach ($fieldIds as $fieldId) {
                 $fieldName = $fieldId->getFieldName();
 
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
+                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                ) {
                     $class->setMethod(
                         $this->generateClassMethod(
                             'set' . ucfirst($fieldName),

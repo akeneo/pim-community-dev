@@ -227,10 +227,10 @@ class ConfigFieldGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        $this->getDoctrine()->getManager()->remove($field);
-        $this->getDoctrine()->getManager()->flush($field);
+        $fieldConfig->set('state', ExtendManager::STATE_DELETED);
 
-        $configManager->clearCacheAll();
+        $configManager->persist($fieldConfig);
+        $configManager->flush();
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }

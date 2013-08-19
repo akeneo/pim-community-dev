@@ -8,7 +8,7 @@ oro_entity_config:
                     type:                   'delete'
                     icon:                   'trash'
                     acl_resource:           'root'
-                    filter:                 { owner: 'Custom' }
+                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active']}
                     args:                   ['id']
             layout_action:
                 -
@@ -77,7 +77,7 @@ oro_entity_config:
                     type:                   'delete'
                     icon:                   'trash'
                     acl_resource:           'root'
-                    filter:                 { owner: 'Custom' }
+                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active'] }
                     args:                   ['id']
             layout_action:
                 -
