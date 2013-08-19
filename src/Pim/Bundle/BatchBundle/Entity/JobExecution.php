@@ -458,15 +458,14 @@ class JobExecution
         $string = "";
         try {
             $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s,"
-                . "exitStatus=%s, job=[%s]";
+                . "exitStatus=%s";
             $string = sprintf(
                 $message,
-                $this->startTime,
-                $this->endTime,
-                $this->updatedTime,
+                $this->startTime->format() ,
+                $this->endTime->format(),
+                $this->updatedTime->format(),
                 $this->status,
-                $this->exitStatus,
-                $this->job
+                $this->exitStatus
             );
         } catch (\Exception $e) {
             $string = $e->getMessage();
