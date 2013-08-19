@@ -85,7 +85,7 @@ class ProductAttributeHandler
             function ($locale) {
                 return $locale->getCode();
             },
-            $this->manager->getRepository('PimConfigBundle:Locale')->getActivatedLocales()
+            $this->manager->getRepository('PimProductBundle:Locale')->getActivatedLocales()
         );
 
         foreach ($entity->getOptions() as $option) {
@@ -106,7 +106,7 @@ class ProductAttributeHandler
         }
         $this->form->setData($entity);
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->isMethod('POST')) {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {

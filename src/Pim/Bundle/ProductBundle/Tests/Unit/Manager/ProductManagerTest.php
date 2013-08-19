@@ -298,11 +298,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $scope
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Channel
+     * @return \Pim\Bundle\ProductBundle\Entity\Channel
      */
     private function getChannelMock($scope = null)
     {
-        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel', array('getCode'));
+        $channel = $this->getMock('Pim\Bundle\ProductBundle\Entity\Channel', array('getCode'));
 
         $channel->expects($this->any())
                  ->method('getCode')

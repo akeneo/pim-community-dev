@@ -4,9 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
@@ -16,30 +14,13 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/attribute-group")
  */
 class AttributeGroupController extends Controller
 {
     /**
-     * List attribute groups
-     *
-     * @return multitype
-     *
-     * @Route("/")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        return $this->redirectToRoute('pim_product_attributegroup_create');
-    }
-
-    /**
      * Create attribute group
      *
-     * @Route("/create")
      * @Template("PimProductBundle:AttributeGroup:edit.html.twig")
-     *
      * @return array
      */
     public function createAction()
@@ -54,9 +35,7 @@ class AttributeGroupController extends Controller
      *
      * @param AttributeGroup $group
      *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
-     *
      * @return array
      */
     public function editAction(AttributeGroup $group)
@@ -82,14 +61,12 @@ class AttributeGroupController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/sort")
-     *
      * @return Response
      */
     public function sortAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
-            return $this->redirectToRoute('pim_product_attributegroup_index');
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('pim_product_attributegroup_create');
         }
 
         $data = $request->request->all();
@@ -115,9 +92,6 @@ class AttributeGroupController extends Controller
      *
      * @param AttributeGroup $group
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(AttributeGroup $group)
@@ -135,7 +109,7 @@ class AttributeGroupController extends Controller
             }
         }
 
-        return $this->redirectToRoute('pim_product_attributegroup_index');
+        return $this->redirectToRoute('pim_product_attributegroup_create');
     }
 
     /**
@@ -144,9 +118,6 @@ class AttributeGroupController extends Controller
      * @param int $id The group id to add attributes to
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
-     *
      */
     public function addProductAttributesAction($id)
     {
@@ -174,9 +145,6 @@ class AttributeGroupController extends Controller
      *
      * @param integer $groupId
      * @param integer $attributeId
-     *
-     * @Route("/{groupId}/attribute/{attributeId}/remove")
-     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

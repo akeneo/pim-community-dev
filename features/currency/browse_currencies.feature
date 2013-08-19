@@ -12,18 +12,27 @@ Feature: Browse currencies
       | GBP  | no        |
     And I am logged in as "admin"
 
-  Scenario: Succesfully display currencies
+  Scenario: Successfully display currencies
+    Given I am on the currencies page
+    Then the grid should contain 3 elements
+    And I should see activated currencies USD and EUR
+    And I should see deactivated currency GBP
+
+  Scenario: Successfully display columns
+    Given I am on the currencies page
+    Then I should see the columns Code and Activated
+
+  Scenario: Successfully activate a currency
     Given I am on the currencies page
     Then I should see activated currencies USD and EUR
     And I should see deactivated currency GBP
-
-  Scenario: Succesfully activate a currency
-    Given I am on the currencies page
     When I activate the GBP currency
     Then I should see activated currencies GBP, USD and EUR
 
-  Scenario: Succesfully deactivate a currency
+  Scenario: Successfully deactivate a currency
     Given I am on the currencies page
+    Then I should see activated currencies USD and EUR
+    And I should see deactivated currency GBP
     When I deactivate the USD currency
     Then I should see activated currency EUR
     And I should see deactivated currencies GBP and USD

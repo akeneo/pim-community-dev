@@ -15,6 +15,17 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
  */
 class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
+
+    /**
+     * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
+     */
+    protected $pageFactory;
+
+    /**
+     * @var \Context\Page\Base\Grid
+     */
+    protected $datagrid;
+
     /**
      * @param PageFactory $pageFactory
      */
@@ -55,7 +66,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($elements as $element) {
             if ($not) {
                 try {
-                    $this->datagrid->getGridRow($element);
+                    $this->datagrid->getRow($element);
                 } catch (\InvalidArgumentException $e) {
                     continue;
                 }
@@ -63,7 +74,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     sprintf('The grid should not contain the element %s', $element)
                 );
             } else {
-                $this->datagrid->getGridRow($element);
+                $this->datagrid->getRow($element);
             }
         }
     }
@@ -78,7 +89,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
     {
         $column = strtoupper($column);
-        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row, $expectation)) {
+        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting column "%s" to contain "%s", got "%s".',
@@ -104,6 +115,51 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $columns
+     *
+     * @Then /^I should see the columns? (.*)$/
+     */
+    public function iShouldSeeTheColumns($columns)
+    {
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        $expectedColumns = count($columns);
+        $countColumns    = $this->datagrid->countColumns()-1;
+        if ($expectedColumns !== $countColumns) {
+            throw $this->createExpectationException(
+                'Expected %d columns but contains %d',
+                $expectedColumns,
+                $countColumns
+            );
+        }
+
+        $expectedPosition = 0;
+        foreach ($columns as $column) {
+            $position = $this->datagrid->getColumnPosition(strtoupper($column));
+            if ($expectedPosition++ !== $position) {
+                throw $this->createExpectationException("The columns are not well ordered");
+            }
+        }
+    }
+
+    /**
+     * @param string $order
+     * @param string $columnName
+     *
+     * @Then /^the datas are sorted (ascending|descending) by (.*)$/
+     */
+    public function theDatasAreSortedBy($order, $columnName)
+    {
+        $columnName = strtoupper($columnName);
+
+        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
+            $this->createExpectationException(
+                sprintf('The datas are not sorted %s on column %s', $order, $columnName)
+            );
+        }
+    }
+
+    /**
      * @param string $actionName
      * @param string $element
      *
@@ -115,13 +171,110 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $column
+     *
+     * @When /^I sort by "(.*)" value (ascending|descending)$/
+     */
+    public function iSortByValue($columnName, $order = 'ascending')
+    {
+        $columnName = strtoupper($columnName);
+
+        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
+            if ($this->datagrid->isSortedColumn($columnName)) {
+                $this->sortByColumn($columnName);
+            } else {
+                // if we ask sorting by descending we must sort twice
+                if ($order === 'descending') {
+                    $this->sortByColumn($columnName);
+                }
+                $this->sortByColumn($columnName);
+            }
+        }
+    }
+
+    /**
+     * Sort by a column name
+     * @param strign $columnName
+     */
+    protected function sortByColumn($columnName)
+    {
+        $this->datagrid->getColumnSorter($columnName)->click();
+        $this->wait();
+    }
+
+    /**
+     * @param string $columns
+     *
+     * @Then /^the datas can be sorted by (.*)$/
+     */
+    public function theDatasCanBeSortedBy($columns)
+    {
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        try {
+            foreach ($columns as $columnName) {
+                $this->datagrid->getColumnSorter($columnName);
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param array $currencies
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @Then /^I should see entities sorted as (.*)$/
+     */
+    public function iShouldSeeEntitiesSortedAs($elements)
+    {
+        $elements = $this->getMainContext()->listToArray($elements);
+
+        if ($this->datagrid->countRows() !== count($elements)) {
+            throw $this->createExpectationException(
+                'You must define all the entities in the grid to check the sorting'
+            );
+        }
+
+        $expectedPosition = 0;
+        foreach ($elements as $element) {
+            $position = $this->datagrid->getRowPosition($element);
+            if ($expectedPosition !== $position) {
+                $errorMsg = sprintf(
+                    'Value %s is expected at position %d but is at position %d',
+                    $element,
+                    $expectedPosition,
+                    $position
+                );
+                throw $this->createExpectationException(
+                    sprintf("The entities are not well sorted\n%s", $errorMsg)
+                );
+            }
+            $expectedPosition++;
+        }
+    }
+
+    /**
+     * @param string $filter
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/
+     */
+    public function iFilterBy($filterName, $value)
+    {
+        $this->datagrid->filterBy($filterName, $value);
+        $this->wait();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
      */
     public function iClickOnTheRow($row)
     {
-        $this->datagrid->getGridRow($row)->click();
+        $this->datagrid->getRow($row)->click();
         $this->wait(5000, null);
     }
 

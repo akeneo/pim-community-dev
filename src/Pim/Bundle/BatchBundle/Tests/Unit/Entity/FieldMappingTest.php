@@ -31,18 +31,18 @@ class FieldMappingTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->field->getId());
         $this->assertNull($this->field->getSource());
         $this->assertNull($this->field->getDestination());
-        $this->assertFalse($this->field->getIsIdentifier());
+        $this->assertFalse($this->field->isIdentifier());
         $this->assertNull($this->field->getItem());
 
         $this->field->setSource('my-code-src');
         $this->field->setDestination('my-code-dest');
-        $this->field->setIsIdentifier(true);
+        $this->field->setIdentifier(true);
         $item = new ItemMapping();
         $this->field->setItem($item);
 
         $this->assertEquals($this->field->getSource(), 'my-code-src');
         $this->assertEquals($this->field->getDestination(), 'my-code-dest');
-        $this->assertTrue($this->field->getIsIdentifier());
+        $this->assertTrue($this->field->isIdentifier());
         $this->assertEquals($this->field->getItem(), $item);
     }
 }

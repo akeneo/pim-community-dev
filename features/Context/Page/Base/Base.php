@@ -35,6 +35,22 @@ class Base extends Page
     }
 
     /**
+     * @param array $options
+     *
+     * @return string
+     */
+    public function getUrl(array $options = array())
+    {
+        $url = $this->getPath();
+
+        foreach ($options as $parameter => $value) {
+            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
+        }
+
+        return $url;
+    }
+
+    /**
      * Get page title
      * @return string
      */
@@ -56,6 +72,32 @@ class Base extends Page
             trim($separator->getText()),
             trim($name->getText())
         );
+    }
+
+    /**
+     * Overriden for compatibility with links
+     *
+     * @param string $locator
+     */
+    public function pressButton($locator)
+    {
+        $button = $this->findButton($locator);
+
+        if (!$button) {
+            $button =  $this->find(
+                'named',
+                array(
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                )
+            );
+        }
+
+        if (null === $button) {
+            throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
+        }
+
+        $button->click();
     }
 
     /**

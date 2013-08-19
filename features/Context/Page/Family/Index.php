@@ -13,7 +13,7 @@ use Context\Page\Base\Index as BaseIndex;
  */
 class Index extends BaseIndex
 {
-    protected $path = '/enrich/family/';
+    protected $path = '/configuration/family/create';
 
     /**
      * {@inheritdoc}

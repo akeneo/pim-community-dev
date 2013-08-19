@@ -36,8 +36,8 @@ class FileType extends OroFileType
                 'fieldType' => 'integer'
             ),
             array(
-                'name'    => 'allowedFileExtensions',
-                'data'    => implode(',', $attribute->getAllowedFileExtensions()),
+                'name'    => 'allowedExtensions',
+                'data'    => implode(',', $attribute->getAllowedExtensions()),
                 'options' => array(
                     'by_reference' => false,
                     'attr'         => array(

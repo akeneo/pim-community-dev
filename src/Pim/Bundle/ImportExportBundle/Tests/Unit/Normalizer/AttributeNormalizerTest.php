@@ -7,7 +7,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 
 /**
  * Test class for AttributeNormalizer
@@ -38,7 +38,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         'metric_family',
         'default_metric_unit',
         'allowed_file_sources',
-        'allowed_file_extensions',
+        'allowed_extensions',
         'max_file_size',
     );
 

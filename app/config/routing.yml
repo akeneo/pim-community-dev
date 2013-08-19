@@ -5,22 +5,10 @@ oro_default:
         _controller: FrameworkBundle:Template:template
 
 pim_product:
-    resource: "@PimProductBundle/Controller/"
-    type:     annotation
-    prefix:   /enrich/
-
-pim_product_api:
     resource: "@PimProductBundle/Resources/config/routing.yml"
 
-pim_config:
-    resource: "@PimConfigBundle/Controller/"
-    type:     annotation
-    prefix:   /configuration/
-
 pim_importexport:
-    resource: "@PimImportExportBundle/Controller/"
-    type:     annotation
-    prefix:   /ie/
+    resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"

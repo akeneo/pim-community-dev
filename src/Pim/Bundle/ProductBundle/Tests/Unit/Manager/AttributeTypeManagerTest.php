@@ -41,7 +41,7 @@ class AttributeTypeManagerTest extends WebTestCase
     protected $productManager;
 
     /**
-     * @var Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @var Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected $localeManager;
 
@@ -64,7 +64,7 @@ class AttributeTypeManagerTest extends WebTestCase
         static::$kernel->boot();
 
         $this->productManager = static::$kernel->getContainer()->get('pim_product.manager.product');
-        $this->localeManager = static::$kernel->getContainer()->get('pim_config.manager.locale');
+        $this->localeManager = static::$kernel->getContainer()->get('pim_product.manager.locale');
         $this->factory = static::$kernel->getContainer()
             ->get('oro_flexibleentity.attributetype.factory');
 

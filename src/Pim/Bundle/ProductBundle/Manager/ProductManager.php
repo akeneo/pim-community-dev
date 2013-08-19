@@ -10,7 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+use Pim\Bundle\ProductBundle\Manager\CurrencyManager;
 
 /**
  * Product manager
@@ -115,7 +115,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->computeRequiredValues($product, $attribute);
+        $requiredValues = $this->computeRequiredValues($attribute);
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -240,7 +240,7 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Add empty values for product family and product-specific attributes for relevant scopes and locales
+     * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values
      * in the required locales/channels exist. If the attribute is not scopable or
@@ -263,7 +263,7 @@ class ProductManager extends FlexibleManager
         $attributes = array_unique($attributes);
 
         foreach ($attributes as $attribute) {
-            $requiredValues = $this->computeRequiredValues($product, $attribute);
+            $requiredValues = $this->computeRequiredValues($attribute);
             $existingValues = array();
 
             foreach ($product->getValues() as $value) {
@@ -300,12 +300,11 @@ class ProductManager extends FlexibleManager
      * Returns an array of values that are required to link product to an attribute
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param ProductInterface $product
      * @param ProductAttribute $attribute
      *
      * @return array:array
      */
-    protected function computeRequiredValues(ProductInterface $product, ProductAttribute $attribute)
+    protected function computeRequiredValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
 
@@ -341,7 +340,7 @@ class ProductManager extends FlexibleManager
      */
     protected function getChannels()
     {
-        return $this->storageManager->getRepository('PimConfigBundle:Channel')->findAll();
+        return $this->storageManager->getRepository('PimProductBundle:Channel')->findAll();
     }
 
     /**
@@ -351,7 +350,7 @@ class ProductManager extends FlexibleManager
      */
     protected function getLocales()
     {
-        return $this->storageManager->getRepository('PimConfigBundle:Locale')->getActivatedLocales();
+        return $this->storageManager->getRepository('PimProductBundle:Locale')->getActivatedLocales();
     }
 
     /**

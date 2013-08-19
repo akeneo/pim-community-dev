@@ -16,5 +16,5 @@ class Launch extends Show
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/{id}/launch';
+    protected $path = '/extract/import/{id}/launch';
 }

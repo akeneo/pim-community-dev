@@ -17,8 +17,8 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\Job;
 
 /**
@@ -205,7 +205,7 @@ class FixturesContext extends RawMinkContext
      * @param string    $family
      * @param TableNode $table
      *
-     * @Given /^the product family "([^"]*)" has the following attribute:$/
+     * @Given /^the family "([^"]*)" has the following attribute:$/
      */
     public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
     {
@@ -252,7 +252,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCurrencies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $currency = new \Pim\Bundle\ConfigBundle\Entity\Currency;
+            $currency = new \Pim\Bundle\ProductBundle\Entity\Currency;
             $currency->setCode($data['code']);
             $currency->setActivated($data['activated'] === 'yes');
 
@@ -269,7 +269,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $locale = $em->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $data['code']));
+            $locale = $em->getRepository('PimProductBundle:Locale')->findOneBy(array('code' => $data['code']));
             if (!$locale) {
                 $locale = new Locale();
                 $locale->setCode($data['code']);
@@ -283,6 +283,32 @@ class FixturesContext extends RawMinkContext
             $em->persist($locale);
         }
         $em->flush();
+    }
+
+    /**
+     * @Given /^there is no channel$/
+     */
+    public function thereIsNoChannel()
+    {
+        $em = $this->getEntityManager();
+        $channels = $em->getRepository('PimProductBundle:Channel')->findAll();
+
+        foreach ($channels as $channel) {
+            $em->remove($channel);
+        }
+    }
+
+    /**
+     * @Given /^there is no attribute$/
+     */
+    public function thereIsNoAttribute()
+    {
+        $em = $this->getEntityManager();
+        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')->findAll();
+
+        foreach ($attributes as $attribute) {
+            $em->remove($attribute);
+        }
     }
 
     /**
@@ -478,6 +504,11 @@ class FixturesContext extends RawMinkContext
             $category->setCode($data['code']);
             $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
 
+            if (!empty($data['parent'])) {
+                $parent = $this->getCategoryOrCreate($data['parent']);
+                $category->setParent($parent);
+            }
+
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
@@ -522,6 +553,30 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($channel);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attributes:$/
+     */
+    public function theFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getProductManager()->createAttribute($data['type']);
+
+            $attribute->setCode($data['code']);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
+
+            $attribute->setLocale('en_US');
+            $attribute->setLabel($data['label']);
+
+            $group = $this->getGroup($data['group']);
+            $attribute->setGroup($group);
+
+            $this->persist($attribute);
         }
     }
 
@@ -799,7 +854,7 @@ class FixturesContext extends RawMinkContext
     private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array('code' => $code));
+            $lang = $this->getEntityOrException('PimProductBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
             $this->createLocale($code);
         }
@@ -816,7 +871,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCurrency($code)
     {
-        return $this->getEntityOrException('PimConfigBundle:Currency', array('code' => $code));
+        return $this->getEntityOrException('PimProductBundle:Currency', array('code' => $code));
     }
 
     /**
@@ -876,6 +931,24 @@ class FixturesContext extends RawMinkContext
     public function getCategory($code)
     {
         return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    private function getCategoryOrCreate($code)
+    {
+        try {
+            $category = $this->getCategory($code);
+        } catch (\InvalidArgumentException $e) {
+            $category = new Category();
+            $category->setCode($code);
+            $this->persist($category);
+        }
+
+        return $category;
     }
 
     /**

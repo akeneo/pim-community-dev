@@ -17,7 +17,6 @@ use Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator;
 class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
 {
     protected $context;
-    protected $validator;
 
     /**
      * {@inheritDoc}
@@ -27,7 +26,6 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
-        $this->validator = new ProductAttributeValidator();
     }
 
     /**
@@ -36,7 +34,6 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $this->context = null;
-        $this->validator = null;
 
         parent::tearDown();
     }

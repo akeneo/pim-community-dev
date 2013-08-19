@@ -4,8 +4,6 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
@@ -18,9 +16,6 @@ use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/product")
- *
  */
 class ProductController extends Controller
 {
@@ -33,10 +28,6 @@ class ProductController extends Controller
      *
      * @param Request $request the request
      *
-     * @Route("/.{_format}",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
      * @return template
      */
     public function indexAction(Request $request)
@@ -68,9 +59,7 @@ class ProductController extends Controller
      *
      * @param string $dataLocale data locale
      *
-     * @Route("/create/{dataLocale}", defaults={"dataLocale" = null})
-     * @Template("PimProductBundle:Product:create.html.twig")
-     *
+     * @Template
      * @return array
      */
     public function createAction($dataLocale)
@@ -105,14 +94,10 @@ class ProductController extends Controller
     /**
      * Edit product
      *
-     * @param integer $id the product id
+     * @param Request $request
+     * @param integer $id
      *
-     * @Route(
-     *     "/{id}/edit",
-     *     requirements={"id"="\d+"}
-     * )
-     * @Template("PimProductBundle:Product:edit.html.twig")
-     *
+     * @Template
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -130,7 +115,7 @@ class ProductController extends Controller
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $channels = $this->getRepository('PimConfigBundle:Channel')->findAll();
+        $channels = $this->getRepository('PimProductBundle:Channel')->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
 
         $form     = $this->createForm(
@@ -139,7 +124,7 @@ class ProductController extends Controller
             array('currentLocale' => $this->getDataLocale())
         );
 
-        if ($request->getMethod() === 'POST') {
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
@@ -181,9 +166,6 @@ class ProductController extends Controller
      * @param int $id The product id to which add attributes
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
-     *
      */
     public function addProductAttributesAction($id)
     {
@@ -212,9 +194,7 @@ class ProductController extends Controller
      *
      * @param integer $id Id of the product to remove
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function removeAction($id)
     {
@@ -234,8 +214,6 @@ class ProductController extends Controller
      * @param int $productId
      * @param int $attributeId
      *
-     * @Route("/{productId}/attribute/{attributeId}/remove")
-     * @Method("DELETE")
      * @return array
      */
     public function removeProductAttributeAction($productId, $attributeId)
@@ -247,7 +225,7 @@ class ProductController extends Controller
             throw $this->createNotFoundException(
                 sprintf(
                     'Attribute %s can not be removed from the product %s',
-                    $atttribute->getCode(),
+                    $attribute->getCode(),
                     $product->getCode()
                 )
             );
@@ -269,11 +247,8 @@ class ProductController extends Controller
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @Route("/list-categories/product/{id}/parent/{category_id}.{_format}",
-     *        requirements={"id"="\d+", "category_id"="\d+", "_format"="json"})
      * @ParamConverter("parent", class="PimProductBundle:Category", options={"id" = "category_id"})
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function listCategoriesAction($id, Category $parent)
@@ -367,11 +342,11 @@ class ProductController extends Controller
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_config.manager.locale');
+        return $this->container->get('pim_product.manager.locale');
     }
 
     /**
@@ -450,7 +425,7 @@ class ProductController extends Controller
 
         // TODO : Maybe just check if the locale is well activated
 
-        $currencyManager = $this->container->get('pim_config.manager.currency');
+        $currencyManager = $this->container->get('pim_product.manager.currency');
         $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;

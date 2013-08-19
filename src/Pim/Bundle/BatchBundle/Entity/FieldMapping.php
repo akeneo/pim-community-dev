@@ -43,9 +43,9 @@ class FieldMapping extends FieldMappingModel
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_identifier", type="boolean")
+     * @ORM\Column(name="identifier", type="boolean")
      */
-    protected $isIdentifier;
+    protected $identifier;
 
     /**
      * @var ItemMapping
@@ -59,7 +59,7 @@ class FieldMapping extends FieldMappingModel
      */
     public function __construct()
     {
-        $this->isIdentifier = false;
+        $this->identifier = false;
     }
 
     /**
@@ -121,27 +121,27 @@ class FieldMapping extends FieldMappingModel
     }
 
     /**
-     * Set isIdentifier
+     * Set identifier
      *
-     * @param boolean $isIdentifier
+     * @param boolean $identifier
      *
      * @return FieldMapping
      */
-    public function setIsIdentifier($isIdentifier)
+    public function setIdentifier($identifier)
     {
-        $this->isIdentifier = $isIdentifier;
+        $this->identifier = $identifier;
 
         return $this;
     }
 
     /**
-     * Get isIdentifier
+     * Get identifier
      *
      * @return boolean
      */
-    public function getIsIdentifier()
+    public function isIdentifier()
     {
-        return $this->isIdentifier;
+        return $this->identifier;
     }
 
     /**

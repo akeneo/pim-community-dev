@@ -64,3 +64,23 @@ services:
         arguments: [%pim_product.entity.category.class%, %pim_product.entity.category_translation.class%]
         tags:
             - { name: form.type, alias: pim_category }
+
+    pim_product.form.type.channel:
+        class: %pim_product.form.type.channel.class%
+        arguments:
+            - @pim_product.manager.locale
+            - @pim_product.helper.locale
+        tags:
+            - { name: form.type, alias: pim_product_channel }
+
+    pim_product.form.type.currency:
+        class: %pim_product.form.type.currency.class%
+        arguments:
+            - %pim_product.currencies%
+        tags:
+            - { name: form.type, alias: pim_product_currency }
+
+    pim_product.form.type.locale:
+        class: %pim_product.form.type.locale.class%
+        tags:
+            - { name: form.type, alias: pim_product_locale }

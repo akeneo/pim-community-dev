@@ -8,7 +8,7 @@ use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 
 /**
- * Load fixtures for Product families
+ * Load fixtures for families
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -36,11 +36,11 @@ class LoadFamilyData extends AbstractInstallerFixture
     }
 
     /**
-     * Create product family
-     * @param string $code Product family code
-     * @param array  $data Product family attributes
+     * Create a family
+     * @param string $code
+     * @param array  $data
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     protected function createFamily($code, $data)
     {

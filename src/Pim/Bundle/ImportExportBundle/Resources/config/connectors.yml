@@ -24,7 +24,7 @@ services:
         class: %pim_import_export.reader.product.class%
         arguments:
             - @pim_product.manager.product
-            - @pim_config.manager.channel
+            - @pim_product.manager.channel
 
     pim_import_export.reader.category:
         class: %pim_import_export.reader.category.class%
@@ -60,9 +60,9 @@ services:
         class: %pim_import_export.processor.valid_product_creation.class%
         arguments:
             - @doctrine.orm.default_entity_manager
-            - @form.factory
+            - @form.factory
             - @pim_product.manager.product
-            - @pim_config.manager.channel
+            - @pim_product.manager.channel
 
     # writers
     pim_import_export.writer.file:

@@ -3,7 +3,7 @@ services:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
         arguments:
             - @translator
-            - @pim_config.manager.currency
+            - @pim_product.manager.currency
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
@@ -11,6 +11,6 @@ services:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
         arguments:
             - @translator
-            - @pim_config.manager.channel
+            - @pim_product.manager.channel
         tags:
             - { name: form.type, alias: pim_type_scope_filter }

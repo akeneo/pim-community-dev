@@ -13,7 +13,7 @@ use Context\Page\Family\Creation;
  */
 class Edit extends Creation
 {
-    protected $path = '/enrich/family/{id}/edit';
+    protected $path = '/configuration/family/{id}/edit';
 
     /**
      * {@inheritdoc}
@@ -51,22 +51,6 @@ class Edit extends Creation
         }
 
         return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return string
-     */
-    public function getUrl(array $options = array())
-    {
-        $url = $this->getPath();
-
-        foreach ($options as $parameter => $value) {
-            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
-        }
-
-        return $url;
     }
 
     /**

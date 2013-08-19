@@ -10,7 +10,7 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 
 /**
- * Type for product family form
+ * Type for family form
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -42,7 +42,7 @@ class FamilyType extends AbstractType
             )
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($options['channels'], $options['attributes']));
+            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes));
     }
 
     /**

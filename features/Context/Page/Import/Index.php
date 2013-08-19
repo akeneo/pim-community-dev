@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobIndex;
+use Context\Page\Job\Index as JobIndex;
 
 /**
  * Import index page
@@ -16,7 +16,7 @@ class Index extends JobIndex
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/';
+    protected $path = '/extract/import/';
 
     /**
      * @param string $importLink

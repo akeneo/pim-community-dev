@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Job\JobIndex;
+use Context\Page\Job\Index as JobIndex;
 
 /**
  * Export index page
@@ -16,7 +16,7 @@ class Index extends JobIndex
     /**
      * @var string $path
      */
-    protected $path = '/ie/export/';
+    protected $path = '/spread/export/';
 
     /**
      * @param string $exportLink

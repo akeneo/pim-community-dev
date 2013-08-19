@@ -13,7 +13,7 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/enrich/family/create';
+    protected $path = '/configuration/family/create';
 
     /**
      * @param string $name
@@ -24,15 +24,5 @@ class Creation extends Form
     public function getFieldLocator($name, $locale)
     {
         return sprintf('pim_family_%s_%s', strtolower($name), $locale);
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return string
-     */
-    public function getUrl(array $options = array())
-    {
-        return $this->getPath();
     }
 }

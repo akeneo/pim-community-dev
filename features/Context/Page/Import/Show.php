@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobShow;
+use Context\Page\Job\Show as JobShow;
 
 /**
  * Import show page
@@ -16,7 +16,7 @@ class Show extends JobShow
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/{id}';
+    protected $path = '/extract/import/{id}';
 
     /**
      * Click the job execution link

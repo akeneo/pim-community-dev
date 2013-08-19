@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
@@ -103,7 +103,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     /**
      * @var $availableLocales ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\Locale")
      * @ORM\JoinTable(name="pim_product_attribute_locale")
      * @Oro\Versioned
      */
@@ -238,12 +238,12 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     protected $maxFileSize;
 
     /**
-     * @var array $allowedFileExtensions
+     * @var array $allowedExtensions
      *
-     * @ORM\Column(name="allowed_file_extensions", type="string", length=255, nullable=true)
+     * @ORM\Column(name="allowed_extensions", type="string", length=255, nullable=true)
      * @Oro\Versioned
      */
-    protected $allowedFileExtensions;
+    protected $allowedExtensions;
 
     /**
      * Used locale to override Translation listener's locale
@@ -1003,25 +1003,25 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     }
 
     /**
-     * Get allowedFileExtensions
+     * Get allowedExtensions
      *
-     * @return array $allowedFileExtensions
+     * @return array $allowedExtensions
      */
-    public function getAllowedFileExtensions()
+    public function getAllowedExtensions()
     {
-        return $this->allowedFileExtensions ? array_map('trim', explode(',', $this->allowedFileExtensions)) : array();
+        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : array();
     }
 
     /**
-     * Set allowedFileExtensions
+     * Set allowedExtensions
      *
-     * @param string $allowedFileExtensions
+     * @param string $allowedExtensions
      *
      * @return ProductAttribute
      */
-    public function setAllowedFileExtensions($allowedFileExtensions)
+    public function setAllowedExtensions($allowedExtensions)
     {
-        $this->allowedFileExtensions = $allowedFileExtensions;
+        $this->allowedExtensions = $allowedExtensions;
 
         return $this;
     }

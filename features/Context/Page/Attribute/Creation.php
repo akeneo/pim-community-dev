@@ -13,7 +13,10 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/enrich/product-attribute/create';
+    /**
+     * @var string
+     */
+    protected $path = '/configuration/attribute/create';
 
     /**
      * {@inheritdoc}
@@ -67,7 +70,7 @@ class Creation extends Form
 
         $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
 
-        foreach ($rows as $key => $row) {
+        foreach ($rows as $row) {
             if (!$row->find('css', '[id*="_code"]')->getValue()) {
                 $row->find('css', '[id*="_code"]')->setValue($name);
                 if ($selectedByDefault) {

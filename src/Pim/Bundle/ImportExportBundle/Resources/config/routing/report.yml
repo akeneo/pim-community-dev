@@ -1,0 +1,17 @@
+pim_importexport_report_index:
+    path: report/.{_format}
+    defaults: { _controller: PimImportExportBundle:Report:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_report_export:
+    path: spread/report.{_format}
+    defaults: { _controller: PimImportExportBundle:Report:export, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_report_import:
+    path: extract/report.{_format}
+    defaults: { _controller: PimImportExportBundle:Report:import, _format: html }
+    requirements:
+        _format: html|json

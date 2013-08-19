@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
@@ -58,6 +58,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     protected $enabled = true;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         parent::__construct();
@@ -65,7 +68,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->categories = new ArrayCollection;
     }
     /**
-     * Get product family
+     * Get family
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
@@ -75,7 +78,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
-     * Set product family
+     * Set family
      *
      * @param Family $family
      *
@@ -234,12 +237,21 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         return $this->categories;
     }
 
+    /**
+     * Set the product categories
+     *
+     * @param ArrayCollection $categories
+     *
+     * @return Procuct
+     */
     public function setCategories($categories)
     {
         foreach ($categories as $category) {
             $category->addProduct($this);
         }
         $this->categories = $categories;
+
+        return $this;
     }
 
     /**

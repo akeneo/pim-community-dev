@@ -23,3 +23,27 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments: ["pim_family_form", "pim_family"]
+
+    pim_product.form.channel:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_product_channel_form"
+            - "pim_product_channel"
+
+    pim_product.form.currency:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_product_currency_form"
+            - "pim_product_currency"
+
+    pim_product.form.locale:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_product_locale_form"
+            - "pim_product_locale"

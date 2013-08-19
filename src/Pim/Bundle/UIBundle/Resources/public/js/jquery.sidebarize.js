@@ -8,6 +8,19 @@
 (function ($) {
     'use strict';
 
+    function getState(key) {
+        if (typeof(Storage) !== 'undefined') {
+            return sessionStorage[key] || null;
+        }
+        return null;
+    }
+
+    function saveState(key, value) {
+        if (typeof(Storage) !== 'undefined') {
+            sessionStorage[key] = value;
+        }
+    }
+
     function getAvailableHeight($element) {
         var height = $(window).height() - $element.offset().top;
         // @todo: remove in production environment
@@ -25,6 +38,7 @@
         });
         $('>.content', $element).css('left', opts.collapsedSeparatorWidth).width($(window).width() - opts.collapsedSeparatorWidth);
         $element.find('.separator i.' + opts.expandIcon).show();
+        saveState(opts.stateStorageKey, 0);
     }
 
     function expand($element, opts) {
@@ -36,6 +50,7 @@
         });
         $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth).width($(window).width() - opts.separatorWidth - sidebarWidth);
         $element.find('.separator i.' + opts.expandIcon).hide();
+        saveState(opts.stateStorageKey, 1);
     }
 
     function adjustHeight($element) {
@@ -57,7 +72,7 @@
         var $sidebar = $element.children().first();
         var $content = $element.children().last();
 
-        var sidebarWidth = parseInt($.cookie(opts.widthCookie), 10) || opts.sidebarWidth;
+        var sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
 
         $element.addClass('sidebarized').css('position', 'relative');
 
@@ -121,10 +136,6 @@
     $.fn.sidebarize = function (options) {
         var opts = $.extend({}, $.fn.sidebarize.defaults, options);
 
-        if (!$.cookie) {
-            throw new Error('Sidebarize: jQuery cookie plugin is required');
-        }
-
         return this.each(function () {
             var $element = $(this);
 
@@ -162,40 +173,13 @@
                 $(document).off('mousemove', doSplit).off('mouseup', endSplit);
 
                 $element.children().css('-webkit-user-select', 'text');
+                saveState(opts.widthStorageKey, parseInt($('>.sidebar', $element).width(), 10));
             }
 
             $('>.separator', $element).on('mousedown', startSplit);
 
-            if (opts.stateCookie) {
-                if ($.cookie(opts.stateCookie) === 'collapsed') {
-                    collapse($element, opts);
-                }
-            }
-
-            if (opts.widthCookie) {
-                $(window).on('unload', function () {
-                    $.cookie(
-                        opts.widthCookie,
-                        parseInt($('>.sidebar', $element).width(), 10),
-                        {
-                            expires: opts.cookieExpiration || 365,
-                            path: document.location.pathname
-                        }
-                    );
-                });
-            }
-
-            if (opts.stateCookie) {
-                $(window).on('unload', function () {
-                    $.cookie(
-                        opts.stateCookie,
-                        $('>.separator', $element).hasClass('expanded') ? 'expanded' : 'collapsed',
-                        {
-                            expires: opts.cookieExpiration || 365,
-                            path: document.location.pathname
-                        }
-                    );
-                });
+            if (parseInt(getState(opts.stateStorageKey), 10) === 0) {
+                collapse($element, opts);
             }
 
             $(window).on('resize', function () {
@@ -215,9 +199,8 @@
         sidebarWidth: 250,
         minSidebarWidth: 200,
         maxSidebarWidth: null,
-        widthCookie: 'sidebar_width',
-        stateCookie: 'sidebar_state',
-        cookieExpiration: 365,
+        widthStorageKey: 'sidebar_width',
+        stateStorageKey: 'sidebar_state',
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
         controlsHeight: 25,

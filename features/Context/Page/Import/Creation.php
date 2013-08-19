@@ -2,7 +2,7 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Job\JobCreation;
+use Context\Page\Job\Creation as JobCreation;
 
 /**
  * Import creation page
@@ -16,5 +16,5 @@ class Creation extends JobCreation
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/create';
+    protected $path = '/extract/import/create';
 }

@@ -13,7 +13,7 @@ use Context\Page\Base\Form;
  */
 class Edit extends Form
 {
-    protected $path = '/enrich/attribute-group/edit/{id}';
+    protected $path = '/configuration/attribute-group/{id}/edit';
 
     /**
      * {@inheritdoc}

@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Job\JobCreation;
+use Context\Page\Job\Creation as JobCreation;
 
 /**
  * Export creation page
@@ -16,5 +16,5 @@ class Creation extends JobCreation
     /**
      * @var string $path
      */
-    protected $path = '/ie/export/create';
+    protected $path = '/spread/export/create';
 }

@@ -36,10 +36,10 @@ class FieldMappingTest extends \PHPUnit_Framework_TestCase
         $this->createFieldMapping()
              ->setSource('test-source')
              ->setDestination('test-destination')
-             ->setIsIdentifier(true);
+             ->setIdentifier(true);
 
         $this->assertEquals('test-source', $this->field->getSource());
         $this->assertEquals('test-destination', $this->field->getDestination());
-        $this->assertTrue($this->field->getIsIdentifier());
+        $this->assertTrue($this->field->isIdentifier());
     }
 }

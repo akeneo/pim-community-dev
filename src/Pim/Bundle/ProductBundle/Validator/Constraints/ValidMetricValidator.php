@@ -42,9 +42,9 @@ class ValidMetricValidator extends ConstraintValidator
         $unit = $entity->getDefaultMetricUnit();
 
         if (!array_key_exists($type, $this->measures)) {
-            $this->context->addViolationAt('metricFamily', $constraint->invalidFamilyMessage);
+            $this->context->addViolationAt('metricFamily', $constraint->familyMessage);
         } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
-            $this->context->addViolationAt('defaultMetricUnit', $constraint->invalidMetricUnitMessage);
+            $this->context->addViolationAt('defaultMetricUnit', $constraint->unitMessage);
         }
     }
 }

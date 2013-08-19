@@ -3,7 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 
 /**
  * Load fixtures for locales
@@ -20,7 +20,7 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allLocales = $this->container->getParameter('pim_config.locales');
+        $allLocales = $this->container->getParameter('pim_product.locales');
 
         foreach (array_keys($allLocales['locales']) as $localeCode) {
             $locale = new Locale();
