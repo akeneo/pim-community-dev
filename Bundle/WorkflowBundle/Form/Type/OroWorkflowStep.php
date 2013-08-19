@@ -82,19 +82,6 @@ class OroWorkflowStep extends AbstractType
     }
 
     /**
-     * @param Attribute $attribute
-     * @return array
-     */
-    protected function getAttributeFormOptions(Attribute $attribute)
-    {
-        $formOptions = $attribute->getOption('form_options');
-        $formOptions = $formOptions ? $formOptions : array();
-        $formOptions['label'] = $attribute->getLabel();
-
-        return $formOptions;
-    }
-
-    /**
      * Custom options:
      * - "workflow" - required, instance of current Workflow entity
      * - "step"     - required, instance of current Step entity
