@@ -66,20 +66,20 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'attribute_one' => array(
                         'label' => 'label',
-                        'form_type' => 'form_type'
+                        'type' => 'string'
                     )
                 ),
-                $this->getAttribute('attribute_one', 'label', 'form_type', array())
+                $this->getAttribute('attribute_one', 'label', 'string', array())
             ),
             'full' => array(
                 array(
                     'attribute_two' => array(
                         'label' => 'label',
-                        'form_type' => 'form_type',
+                        'type' => 'string',
                         'options' => array('key' => 'value')
                     )
                 ),
-                $this->getAttribute('attribute_two', 'label', 'form_type', array('key' => 'value'))
+                $this->getAttribute('attribute_two', 'label', 'string', array('key' => 'value'))
             )
         );
     }
@@ -87,16 +87,16 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $name
      * @param string $label
-     * @param string $formType
+     * @param string $type
      * @param array $options
      * @return Attribute
      */
-    protected function getAttribute($name, $label, $formType, array $options = array())
+    protected function getAttribute($name, $label, $type, array $options = array())
     {
         $attribute = new Attribute();
         $attribute->setName($name);
         $attribute->setLabel($label);
-        $attribute->setFormTypeName($formType);
+        $attribute->setType($type);
         $attribute->setOptions($options);
         return $attribute;
     }

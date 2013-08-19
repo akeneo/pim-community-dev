@@ -27,7 +27,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         return array(
             'name' => array('name', 'test'),
             'label' => array('label', 'test'),
-            'formTypeName' => array('formTypeName', 'test'),
+            'type' => array('type', 'string'),
             'options' => array('options', array('key' => 'value'))
         );
     }

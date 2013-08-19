@@ -16,11 +16,10 @@ workflows:
                     - first_attribute
         attributes:
             first_attribute:
-                form_type: text
                 label: 'First Attribute'
+                type: object
                 options:
-                    required: true
-                    # ... other attributes
+                    class: DateTime
         transitions:
             first_transition:
                 label: 'First Transition'

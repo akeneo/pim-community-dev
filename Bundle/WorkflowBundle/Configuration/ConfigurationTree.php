@@ -62,7 +62,7 @@ class ConfigurationTree
         $rootNode = $treeBuilder->root(self::NODE_STEPS);
         $rootNode
             ->isRequired()
-            ->cannotBeEmpty()
+            ->requiresAtLeastOneElement()
             ->prototype('array')
                 ->children()
                     ->scalarNode('label')
@@ -97,18 +97,38 @@ class ConfigurationTree
      */
     protected function getAttributesNode()
     {
+        $allowedTypes = array('bool', 'boolean', 'int', 'integer', 'float', 'string', 'array', 'object', 'entity');
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root(self::NODE_ATTRIBUTES);
         $rootNode
             ->prototype('array')
+                ->validate()
+                    ->always(
+                        function ($value) {
+                            $classRequired = ($value['type'] == 'object' || $value['type'] == 'entity');
+                            if ($classRequired && empty($value['options']['class'])) {
+                                throw new \Exception(
+                                    sprintf(
+                                        'Option "class" is required for type "%s"', $value['type']
+                                    )
+                                );
+                            }
+                            return $value;
+                        }
+                    )
+                ->end()
                 ->children()
                     ->scalarNode('label')
                         ->isRequired()
                         ->cannotBeEmpty()
                     ->end()
-                    ->scalarNode('form_type')
+                    ->scalarNode('type')
                         ->isRequired()
                         ->cannotBeEmpty()
+                        ->validate()
+                        ->ifNotInArray($allowedTypes)
+                            ->thenInvalid('Invalid type %s, allowed types are "' . implode('", "', $allowedTypes) . '"')
+                        ->end()
                     ->end()
                     ->arrayNode('options')
                     ->end()
@@ -127,7 +147,7 @@ class ConfigurationTree
         $rootNode = $treeBuilder->root(self::NODE_TRANSITIONS);
         $rootNode
             ->isRequired()
-            ->cannotBeEmpty()
+            ->requiresAtLeastOneElement()
             ->prototype('array')
                 ->children()
                     ->scalarNode('label')
@@ -157,7 +177,7 @@ class ConfigurationTree
         $rootNode = $treeBuilder->root(self::NODE_TRANSITION_DEFINITIONS);
         $rootNode
             ->isRequired()
-            ->cannotBeEmpty()
+            ->requiresAtLeastOneElement()
             ->prototype('array')
                 ->children()
                     ->arrayNode('conditions')

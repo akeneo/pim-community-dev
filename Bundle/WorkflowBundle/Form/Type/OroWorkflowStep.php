@@ -31,6 +31,7 @@ class OroWorkflowStep extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // TODO Refactor this method to use form_options from step
         /** @var Attribute[]|Collection $attributes */
         $attributes = $options['attributes'];
         foreach ($attributes as $attribute) {

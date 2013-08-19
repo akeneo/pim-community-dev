@@ -30,14 +30,14 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
         ),
         ConfigurationTree::NODE_ATTRIBUTES => array(
             'first_attribute' => array(
-                'form_type' => 'text',
-                'label'     => 'First Attribute',
-                'options'   => array('required' => true),
+                'label'   => 'First Attribute',
+                'type'    => 'object',
+                'options' => array('class' => 'DateTime'),
             ),
             'second_attribute' => array(
-                'form_type' => 'text',
-                'label'     => 'Second Attribute',
-                'options'   => array('required' => true),
+                'type'  => 'entity',
+                'label' => 'Second Attribute',
+                'options' => array('class' => 'SomeEntity', 'managed_entity' => true),
             )
         ),
         ConfigurationTree::NODE_TRANSITIONS => array(
@@ -133,6 +133,89 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             )
+        );
+    }
+
+    //@codingStandardsIgnoreStart
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid configuration for path "configuration.attributes.first_attribute.type": Invalid type "text", allowed types are "bool", "boolean", "int", "integer", "float", "string", "array", "object", "entity"
+     */
+    //@codingStandardsIgnoreEnd
+    public function testUnexpectedAttributeType()
+    {
+        $configuration = $this->maximumConfiguration;
+        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
+            'first_attribute' => array(
+                'label'   => 'First Attribute',
+                'type'    => 'text',
+                'options' => array('class' => 'DateTime'),
+            ),
+        );
+
+        $configurationTree = new ConfigurationTree();
+        $configurationTree->parseConfiguration($configuration);
+    }
+
+    /**
+     * @dataProvider nodesWithRequiredElementsDataProvider
+     *
+     * @param string $nodeName
+     */
+    public function testNodesWithRequiredElementsAreEmpty($nodeName)
+    {
+        $this->setExpectedException(
+            'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',
+            sprintf('The path "configuration.%s" should have at least 1 element(s) defined.', $nodeName)
+        );
+        $configuration = $this->maximumConfiguration;
+        $configuration[$nodeName] = array();
+
+        $configurationTree = new ConfigurationTree();
+        $configurationTree->parseConfiguration($configuration);
+    }
+
+    public function nodesWithRequiredElementsDataProvider()
+    {
+        return array(
+            array(ConfigurationTree::NODE_STEPS),
+            array(ConfigurationTree::NODE_TRANSITION_DEFINITIONS),
+            array(ConfigurationTree::NODE_TRANSITIONS),
+        );
+    }
+
+    /**
+     * @dataProvider attributeOptionClassTypesDataProvider
+     *
+     * @param string $type
+     */
+    public function testAttributeOptionClassIsMissing($type)
+    {
+        $this->setExpectedException(
+            'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',
+            sprintf(
+                'Invalid configuration for path "configuration.attributes.first_attribute": '
+                . 'Option "class" is required for type "%s"',
+                $type
+            )
+        );
+        $configuration = $this->maximumConfiguration;
+        $configuration[ConfigurationTree::NODE_ATTRIBUTES] = array(
+            'first_attribute' => array(
+                'label'   => 'First Attribute',
+                'type'    => $type,
+            ),
+        );
+
+        $configurationTree = new ConfigurationTree();
+        $configurationTree->parseConfiguration($configuration);
+    }
+
+    public function attributeOptionClassTypesDataProvider()
+    {
+        return array(
+            array('object'),
+            array('entity'),
         );
     }
 }

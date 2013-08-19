@@ -12,7 +12,7 @@ class Attribute
     /**
      * @var string
      */
-    protected $formTypeName;
+    protected $type;
 
     /**
      * @var string
@@ -25,25 +25,25 @@ class Attribute
     protected $options = array();
 
     /**
-     * Set form type name.
+     * Set attribute type
      *
-     * @param string $formType
+     * @param string $type
      * @return Attribute
      */
-    public function setFormTypeName($formType)
+    public function setType($type)
     {
-        $this->formTypeName = $formType;
+        $this->type = $type;
         return $this;
     }
 
     /**
-     * Get form type name.
+     * Get attribute type
      *
      * @return string
      */
-    public function getFormTypeName()
+    public function getType()
     {
-        return $this->formTypeName;
+        return $this->type;
     }
 
     /**
