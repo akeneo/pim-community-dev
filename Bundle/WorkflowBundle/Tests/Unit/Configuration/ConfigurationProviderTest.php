@@ -4,11 +4,11 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration;
 
 use Symfony\Component\Yaml\Yaml;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\CorrectConfiguration\CorrectConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\EmptyConfiguration\EmptyConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\IncorrectConfiguration\IncorrectConfigurationBundle;
+use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\DuplicateConfiguration\DuplicateConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,17 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     {
         $bundles = array(new IncorrectConfigurationBundle());
         $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
-        $configurationProvider->getWorkflowDefinitions();
+        $configurationProvider->getWorkflowDefinitionConfiguration();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testGetWorkflowDefinitionsDuplicateConfiguration()
+    {
+        $bundles = array(new CorrectConfigurationBundle(), new DuplicateConfigurationBundle());
+        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
+        $configurationProvider->getWorkflowDefinitionConfiguration();
     }
 
     public function testGetWorkflowDefinitions()
@@ -29,33 +39,15 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 
         $bundles = array(new CorrectConfigurationBundle(), new EmptyConfigurationBundle());
         $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
-        $actualWorkflowDefinitions = $configurationProvider->getWorkflowDefinitions();
+        $actualWorkflowDefinitions = $configurationProvider->getWorkflowDefinitionConfiguration();
 
         $this->assertSameSize($expectedWorkflowConfiguration, $actualWorkflowDefinitions);
 
-        $namedWorkflowDefinitions = array();
-        /** @var WorkflowDefinition $workflowDefinition */
-        foreach ($actualWorkflowDefinitions as $workflowDefinition) {
-            $namedWorkflowDefinitions[$workflowDefinition->getName()] = $workflowDefinition;
-        }
-
         foreach ($expectedWorkflowConfiguration as $workflowName => $workflowConfiguration) {
-            // must be in array
-            $this->assertArrayHasKey($workflowName, $namedWorkflowDefinitions);
-            $workflowDefinition = $namedWorkflowDefinitions[$workflowName];
+            $this->assertArrayHasKey($workflowName, $actualWorkflowDefinitions);
+            $actualWorkflowDefinition = $actualWorkflowDefinitions[$workflowName];
 
-            // must contain correct configuration
-            $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition', $workflowDefinition);
-            $this->assertEquals($workflowName, $workflowDefinition->getName());
-            $this->assertEquals($workflowConfiguration['label'], $workflowDefinition->getLabel());
-            $expectedEnabled = isset($workflowConfiguration['enabled']) ? $workflowConfiguration['enabled'] : true;
-            $this->assertEquals($expectedEnabled, $workflowDefinition->isEnabled());
-            $this->assertEquals($workflowConfiguration['start_step'], $workflowDefinition->getStartStep());
-            $expectedManagedEntityClass = isset($workflowConfiguration['managed_entity_class'])
-                ? $workflowConfiguration['managed_entity_class']
-                : null;
-            $this->assertEquals($expectedManagedEntityClass, $workflowDefinition->getManagedEntityClass());
-            $this->assertEquals($workflowConfiguration, $workflowDefinition->getConfiguration());
+            $this->assertEquals($workflowConfiguration, $actualWorkflowDefinition);
         }
     }
 

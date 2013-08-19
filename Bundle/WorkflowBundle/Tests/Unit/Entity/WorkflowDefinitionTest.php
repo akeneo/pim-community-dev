@@ -62,4 +62,45 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->workflowDefinition->setConfiguration($value);
         $this->assertEquals($value, $this->workflowDefinition->getConfiguration());
     }
+
+    public function testImport()
+    {
+        $expectedData = array(
+            'name' => 'test_name',
+            'label' => 'test_label',
+            'enabled' => false,
+            'managed_entity_class' => 'TestClass',
+            'start_step' => 'test_step',
+            'configuration' => array('test', 'configuration')
+        );
+
+        $this->assertNotEquals($expectedData, $this->getDataAsArray($this->workflowDefinition));
+
+        $newDefinition = new WorkflowDefinition();
+        $newDefinition->setName($expectedData['name'])
+            ->setLabel($expectedData['label'])
+            ->setEnabled($expectedData['enabled'])
+            ->setManagedEntityClass($expectedData['managed_entity_class'])
+            ->setStartStep($expectedData['start_step'])
+            ->setConfiguration($expectedData['configuration']);
+
+        $this->workflowDefinition->import($newDefinition);
+        $this->assertEquals($expectedData, $this->getDataAsArray($this->workflowDefinition));
+    }
+
+    /**
+     * @param WorkflowDefinition $definition
+     * @return array
+     */
+    protected function getDataAsArray(WorkflowDefinition $definition)
+    {
+        return array(
+            'name' => $definition->getName(),
+            'label' => $definition->getLabel(),
+            'enabled' => $definition->isEnabled(),
+            'managed_entity_class' => $definition->getManagedEntityClass(),
+            'start_step' => $definition->getStartStep(),
+            'configuration' => $definition->getConfiguration()
+        );
+    }
 }

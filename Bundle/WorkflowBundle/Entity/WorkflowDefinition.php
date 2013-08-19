@@ -201,4 +201,20 @@ class WorkflowDefinition
     {
         return $this->startStep;
     }
+
+    /**
+     * @param WorkflowDefinition $definition
+     * @return $this
+     */
+    public function import(WorkflowDefinition $definition)
+    {
+        $this->setName($definition->getName())
+            ->setLabel($definition->getLabel())
+            ->setEnabled($definition->isEnabled())
+            ->setManagedEntityClass($definition->getManagedEntityClass())
+            ->setConfiguration($definition->getConfiguration())
+            ->setStartStep($definition->getStartStep());
+
+        return $this;
+    }
 }

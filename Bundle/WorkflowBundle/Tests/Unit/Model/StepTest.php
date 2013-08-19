@@ -31,6 +31,8 @@ class StepTest extends \PHPUnit_Framework_TestCase
             'template' => array('template', 'test'),
             'allowedTransitions' => array('allowedTransitions', array('one', 'two')),
             'label' => array('label', 'Value'),
+            'form_type' => array('formType', 'custom_workflow_step'),
+            'form_options' => array('formOptions', array('one', 'two')),
         );
     }
 
@@ -72,41 +74,5 @@ class StepTest extends \PHPUnit_Framework_TestCase
         // Check isAllowed
         $this->assertTrue($obj->isAllowedTransition('test'), 'Expected transition not allowed');
         $this->assertFalse($obj->isAllowedTransition('test2'), 'Unexpected transition allowed');
-    }
-
-    public function testGetAttributesEmpty()
-    {
-        $obj = new Step();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $obj->getAttributes());
-    }
-
-    public function testSetAttributes()
-    {
-        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
-            ->getMock();
-        $attributeOne->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('attr1'));
-
-        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
-            ->getMock();
-        $attributeTwo->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('attr2'));
-
-        $obj = new Step();
-
-        $obj->setAttributes(array($attributeOne, $attributeTwo));
-        $attributes = $obj->getAttributes();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
-        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
-        $this->assertEquals($expected, $attributes->toArray());
-
-        $attributeCollection = new ArrayCollection(array('attr1' => $attributeOne, 'attr2' => $attributeTwo));
-        $obj->setAttributes($attributeCollection);
-        $attributes = $obj->getAttributes();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
-        $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
-        $this->assertEquals($expected, $attributes->toArray());
     }
 }

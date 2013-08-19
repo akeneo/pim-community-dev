@@ -17,7 +17,11 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
                 'order'               => 1,
                 'is_final'            => false,
                 'allowed_transitions' => array('first_transition', 'second_transition'),
-                'attributes'          => array('first_attribute'),
+                'form_type'           => 'custom_workflow_step',
+                'form_options'        => array(
+                    'key'              => 'value',
+                    'attribute_fields' => array()
+                ),
             ),
             'second_step' => array(
                 'label'               => 'Second Step',
@@ -25,7 +29,11 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
                 'order'               => 2,
                 'is_final'            => true,
                 'allowed_transitions' => array(),
-                'attributes'          => array('second_attribute'),
+                'form_type'           => 'custom_workflow_step',
+                'form_options'        => array(
+                    'key'              => 'value',
+                    'attribute_fields' => array()
+                ),
             )
         ),
         ConfigurationTree::NODE_ATTRIBUTES => array(
@@ -117,7 +125,7 @@ class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
                             'order'               => 0,
                             'is_final'            => false,
                             'allowed_transitions' => array(),
-                            'attributes'          => array(),
+                            'form_type'           => 'oro_workflow_step',
                         ),
                     ),
                     ConfigurationTree::NODE_ATTRIBUTES => array(),

@@ -2,11 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Oro\Bundle\WorkflowBundle\Model\Attribute;
-
 class Step
 {
     /**
@@ -35,19 +30,19 @@ class Step
     protected $isFinal = false;
 
     /**
-     * @var Collection
+     * @var string
      */
-    protected $attributes;
+    protected $formType;
+
+    /**
+     * @var array
+     */
+    protected $formOptions = array();
 
     /**
      * @var string[]
      */
     protected $allowedTransitions = array();
-
-    public function __construct()
-    {
-        $this->attributes = new ArrayCollection();
-    }
 
     /**
      * Set allowed transitions.
@@ -114,38 +109,6 @@ class Step
         if ($this->isAllowedTransition($transitionName)) {
             array_splice($this->allowedTransitions, array_search($transitionName, $this->allowedTransitions), 1);
         }
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param Attribute[]|Collection $attributes
-     * @return Step
-     */
-    public function setAttributes($attributes)
-    {
-        if ($attributes instanceof Collection) {
-            $this->attributes = $attributes;
-        } else {
-            $data = array();
-            foreach ($attributes as $attribute) {
-                $data[$attribute->getName()] = $attribute;
-            }
-            unset($attributes);
-            $this->attributes = new ArrayCollection($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get attributes.
-     *
-     * @return Collection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
     }
 
     /**
@@ -256,5 +219,41 @@ class Step
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @param string $formType
+     * @return Step
+     */
+    public function setFormType($formType)
+    {
+        $this->formType = $formType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormType()
+    {
+        return $this->formType;
+    }
+
+    /**
+     * @param array $formOptions
+     * @return Step
+     */
+    public function setFormOptions(array $formOptions)
+    {
+        $this->formOptions = $formOptions;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return $this->formOptions;
     }
 }

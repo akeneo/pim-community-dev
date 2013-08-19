@@ -4,7 +4,8 @@ namespace Oro\Bundle\WorkflowBundle\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\Config\Definition\NodeInterface;
+
+use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
 
 class ConfigurationTree
 {
@@ -78,8 +79,26 @@ class ConfigurationTree
                      ->booleanNode('is_final')
                         ->defaultFalse()
                     ->end()
-                    ->arrayNode('attributes')
-                        ->prototype('scalar')
+                    ->scalarNode('form_type')
+                        ->defaultValue(OroWorkflowStep::NAME)
+                    ->end()
+                    ->arrayNode('form_options')
+                        ->children()
+                            ->arrayNode('attribute_fields')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('label')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->scalarNode('form_type')
+                                            ->isRequired()
+                                            ->cannotBeEmpty()
+                                        ->end()
+                                        ->arrayNode('options')
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                     ->arrayNode('allowed_transitions')
@@ -108,9 +127,7 @@ class ConfigurationTree
                             $classRequired = ($value['type'] == 'object' || $value['type'] == 'entity');
                             if ($classRequired && empty($value['options']['class'])) {
                                 throw new \Exception(
-                                    sprintf(
-                                        'Option "class" is required for type "%s"', $value['type']
-                                    )
+                                    sprintf('Option "class" is required for type "%s"', $value['type'])
                                 );
                             }
                             return $value;

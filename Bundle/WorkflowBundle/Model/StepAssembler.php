@@ -2,17 +2,19 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
+use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
 
 class StepAssembler extends AbstractAssembler
 {
     /**
      * @param array $configuration
-     * @param Attribute[]|ArrayCollection $attributes
+     * @param Attribute[]|Collection $attributes
      * @return ArrayCollection
      */
     public function assemble(array $configuration, $attributes)
@@ -29,47 +31,53 @@ class StepAssembler extends AbstractAssembler
     /**
      * @param string $name
      * @param array $options
-     * @param Attribute[]|ArrayCollection $attributes
+     * @param Attribute[]|Collection $attributes
      * @return Step
+     * @throws UnknownAttributeException
      */
     protected function assembleStep($name, array $options, $attributes)
     {
         $this->assertOptions($options, array('label'));
 
-        $stepAttributes = $this->assembleStepAttributes(
-            $this->getOption($options, 'attributes', array()),
-            $attributes
-        );
+        $formOptions = $this->getOption($options, 'form_options', array());
+
+        // each attribute field must be correspond to existing attribute
+        $existingAttributeNames = $this->getAttributeNames($attributes);
+        $attributeFields = $this->getOption($formOptions, 'attribute_fields', array());
+        foreach (array_keys($attributeFields) as $attributeName) {
+            if (!in_array($attributeName, $existingAttributeNames)) {
+                throw new UnknownAttributeException(
+                    sprintf('Unknown attribute "%s" at step "%s"', $attributeName, $name)
+                );
+            }
+        }
 
         $step = new Step();
-        $step->setName($name);
-        $step->setLabel($options['label']);
-        $step->setTemplate($this->getOption($options, 'template', null));
-        $step->setOrder($this->getOption($options, 'order', 0));
-        $step->setIsFinal($this->getOption($options, 'is_final', false));
-        $step->setAllowedTransitions($this->getOption($options, 'allowed_transitions', array()));
-        $step->setAttributes($stepAttributes);
+        $step->setName($name)
+            ->setLabel($options['label'])
+            ->setTemplate($this->getOption($options, 'template', null))
+            ->setOrder($this->getOption($options, 'order', 0))
+            ->setIsFinal($this->getOption($options, 'is_final', false))
+            ->setAllowedTransitions($this->getOption($options, 'allowed_transitions', array()))
+            ->setFormType($this->getOption($options, 'form_type', OroWorkflowStep::NAME))
+            ->setFormOptions($formOptions);
 
         return $step;
     }
 
     /**
-     * @param array $stepAttributeNames
-     * @param Attribute[]|ArrayCollection $attributes
-     * @return ArrayCollection
-     * @throws UnknownAttributeException
+     * @param Attribute[]|Collection $attributes
+     * @return array
      */
-    protected function assembleStepAttributes(array $stepAttributeNames, $attributes)
+    protected function getAttributeNames($attributes)
     {
-        $stepAttributes = new ArrayCollection();
-        foreach ($stepAttributeNames as $stepAttributeName) {
-            if (!isset($attributes[$stepAttributeName])) {
-                throw new UnknownAttributeException(sprintf('Unknown attribute %s', $stepAttributeName));
+        $attributeNames = array();
+        if ($attributes) {
+            foreach ($attributes as $attribute) {
+                $attributeNames[] = $attribute->getName();
             }
-
-            $stepAttributes->set($stepAttributeName, $attributes[$stepAttributeName]);
         }
 
-        return $stepAttributes;
+        return $attributeNames;
     }
 }

@@ -37,24 +37,3 @@ workflows:
                     @true: ~
                 post_actions:
                     - @custom_post_action: ~
-    second_workflow:
-        label: 'Second Workflow'
-        enabled: false
-        start_step: second_step
-        managed_entity_class: Oro\Bundle\FooBundle\Entity\BazEntity
-        steps:
-            second_step:
-                label: 'Second Step'
-                template: ~
-                order: 1
-                is_final: false
-                form_type: custom_workflow_step
-                allowed_transitions: []
-        attributes: []
-        transitions:
-            first_transition:
-                label: 'Second Transition'
-                step_to: first_step
-                transition_definition: second_transition_definition
-        transition_definitions:
-            second_transition_definition: []

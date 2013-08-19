@@ -8,6 +8,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
+use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationWorkflowDefinitionBuilder;
+use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 
 class LoadWorkflowDefinitionData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -23,9 +26,24 @@ class LoadWorkflowDefinitionData extends AbstractFixture implements ContainerAwa
     {
         /** @var ConfigurationProvider $configurationProvider */
         $configurationProvider = $this->container->get('oro_workflow.configuration_provider');
+        /** @var ConfigurationWorkflowDefinitionBuilder $configurationBuilder */
+        $configurationBuilder = $this->container->get('oro_workflow.configuration_workflow_definition_builder');
 
-        foreach ($configurationProvider->getWorkflowDefinitions() as $workflowDefinition) {
-            $manager->persist($workflowDefinition);
+        $workflowConfiguration = $configurationProvider->getWorkflowDefinitionConfiguration();
+        $workflowDefinitions = $configurationBuilder->buildFromConfiguration($workflowConfiguration);
+
+        /** @var WorkflowDefinitionRepository $workflowDefinitionRepository */
+        $workflowDefinitionRepository = $manager->getRepository('OroWorkflowBundle:WorkflowDefinition');
+        foreach ($workflowDefinitions as $workflowDefinition) {
+            /** @var WorkflowDefinition $existingWorkflowDefinition */
+            $existingWorkflowDefinition = $workflowDefinitionRepository->find($workflowDefinition->getName());
+
+            // workflow definition should be overridden if workflow definition with such name already exists
+            if ($existingWorkflowDefinition) {
+                $existingWorkflowDefinition->import($workflowDefinition);
+            } else {
+                $manager->persist($workflowDefinition);
+            }
         }
 
         $manager->flush();

@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
+use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
 class StepAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,12 +46,17 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssemble($configuration, $attributes, $expectedStep)
     {
-        if (array_key_exists('attributes', $configuration[$expectedStep->getName()])) {
-            $stepAttributes = new ArrayCollection();
-            foreach ($configuration[$expectedStep->getName()]['attributes'] as $attributeName) {
-                $stepAttributes->set($attributeName, $attributes[$attributeName]);
+        if (array_key_exists('form_options', $configuration[$expectedStep->getName()])) {
+            $expectedFormOptions = array('attribute_fields' => array());
+
+            $actualFormOptions = $configuration[$expectedStep->getName()]['form_options'];
+            $this->assertArrayHasKey('attribute_fields', $actualFormOptions);
+            $attributeFields = $actualFormOptions['attribute_fields'];
+
+            foreach ($attributeFields as $attributeName => $attributeOptions) {
+                $expectedFormOptions['attribute_fields'][$attributeName] = $attributeOptions;
             }
-            $expectedStep->setAttributes($stepAttributes);
+            $expectedStep->setFormOptions($expectedFormOptions);
         }
 
         $assembler = new StepAssembler();
@@ -82,17 +88,27 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                         'order' => 10,
                         'is_final' => true,
                         'allowed_transitions' => array('transition_one'),
-                        'attributes' => array('attribute_one')
+                        'form_type' => 'custom_workflow_step',
+                        'form_options' => array(
+                            'attribute_fields' => array(
+                                'attribute_one' => array('form_type' => 'text'),
+                                'attribute_two' => array('form_type' => 'text'),
+                            )
+                        )
                     )
                 ),
-                array('attribute_one' => $this->getAttribute(), 'attribute_two' => $this->getAttribute()),
+                array(
+                    $this->getAttribute('attribute_one'),
+                    $this->getAttribute('attribute_two'),
+                ),
                 $this->getStep(
                     'step_two',
                     'label',
                     'template',
                     10,
                     true,
-                    array('transition_one')
+                    array('transition_one'),
+                    'custom_workflow_step'
                 )
             )
         );
@@ -100,17 +116,21 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException
-     * @expectedExceptionMessage Unknown attribute unknown
+     * @expectedExceptionMessage Unknown attribute "unknown_attribute" at step "step_one"
      */
     public function testUnknownAttributeException()
     {
         $configuration = array(
             'step_one' => array(
                 'label' => 'label',
-                'attributes' => array('unknown')
+                'form_options' => array(
+                    'attribute_fields' => array(
+                        'unknown_attribute' => array()
+                    )
+                )
             )
         );
-        $attributes = array('attribute_one' => $this->getAttribute());
+        $attributes = array($this->getAttribute('attribute_one'));
         $assembler = new StepAssembler();
         $assembler->assemble($configuration, $attributes);
     }
@@ -122,10 +142,20 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      * @param int $order
      * @param bool $isFinal
      * @param array $transitions
+     * @param string $formType
+     * @param array $formOptions
      * @return Step
      */
-    protected function getStep($name, $label, $template, $order, $isFinal, $transitions)
-    {
+    protected function getStep(
+        $name,
+        $label,
+        $template,
+        $order,
+        $isFinal,
+        array $transitions,
+        $formType = OroWorkflowStep::NAME,
+        array $formOptions = array()
+    ) {
         $step = new Step();
         $step->setName($name);
         $step->setLabel($label);
@@ -133,13 +163,21 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
         $step->setOrder($order);
         $step->setIsFinal($isFinal);
         $step->setAllowedTransitions($transitions);
+        $step->setFormType($formType);
+        $step->setFormOptions($formOptions);
 
         return $step;
     }
 
-    protected function getAttribute()
+    /**
+     * @param string $name
+     * @return Attribute
+     */
+    protected function getAttribute($name)
     {
-        return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
-            ->getMock();
+        $attribute = new Attribute();
+        $attribute->setName($name);
+
+        return $attribute;
     }
 }

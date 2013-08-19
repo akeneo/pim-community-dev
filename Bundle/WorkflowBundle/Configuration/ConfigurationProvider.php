@@ -46,10 +46,10 @@ class ConfigurationProvider
     }
 
     /**
-     * @return WorkflowDefinition[]
+     * @return array
      * @throws InvalidConfigurationException
      */
-    public function getWorkflowDefinitions()
+    public function getWorkflowDefinitionConfiguration()
     {
         $configDirectories = $this->getConfigDirectories();
 
@@ -58,7 +58,7 @@ class ConfigurationProvider
 
         $treeNode = $this->getConfigurationTree();
 
-        $workflowDefinitions = array();
+        $configuration = array();
         /** @var $file \SplFileInfo */
         foreach ($finder as $file) {
             $realPathName = $file->getRealPath();
@@ -78,13 +78,18 @@ class ConfigurationProvider
                 throw new InvalidConfigurationException($message);
             }
 
-            $workflowDefinitions = array_merge(
-                $workflowDefinitions,
-                $this->buildWorkflowDefinitions($finalizedData)
-            );
+            foreach ($finalizedData as $workflowName => $workflowConfiguration) {
+                if (isset($configuration[$workflowName])) {
+                    throw new InvalidConfigurationException(
+                        sprintf('Duplicated workflow name "%s" in %s', $workflowName, $realPathName)
+                    );
+                }
+
+                $configuration[$workflowName] = $workflowConfiguration;
+            }
         }
 
-        return $workflowDefinitions;
+        return $configuration;
     }
 
     /**
@@ -138,28 +143,5 @@ class ConfigurationProvider
         }
 
         return $treeBuilder->buildTree();
-    }
-
-    /**
-     * @param array $finalizedData
-     * @return WorkflowDefinition[]
-     */
-    protected function buildWorkflowDefinitions($finalizedData)
-    {
-        $workflowDefinitions = array();
-        foreach ($finalizedData as $workflowName => $workflowConfiguration) {
-            $workflowDefinition = new WorkflowDefinition();
-            $workflowDefinition
-                ->setName($workflowName)
-                ->setLabel($workflowConfiguration['label'])
-                ->setEnabled($workflowConfiguration['enabled'])
-                ->setStartStep($workflowConfiguration['start_step'])
-                ->setManagedEntityClass($workflowConfiguration['managed_entity_class'])
-                ->setConfiguration($workflowConfiguration);
-
-            $workflowDefinitions[] = $workflowDefinition;
-        }
-
-        return $workflowDefinitions;
     }
 }
