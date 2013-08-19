@@ -35,14 +35,4 @@ class Index extends Grid
             )
         );
     }
-
-    /**
-     * @param string $channel
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findChannel($channel)
-    {
-        return $this->getRow($channel);
-    }
 }
