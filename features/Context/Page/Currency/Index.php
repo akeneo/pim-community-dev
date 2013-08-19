@@ -39,16 +39,6 @@ class Index extends Grid
     }
 
     /**
-     * @param string $currency
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findCurrency($currency)
-    {
-        return $this->getRow($currency);
-    }
-
-    /**
      * @param array $currencies
      */
     public function activateCurrencies(array $currencies)

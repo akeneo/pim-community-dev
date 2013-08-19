@@ -20,8 +20,8 @@ Feature: Delete import
     And I confirm the deletion
     Then I should see "Item was deleted"
     And the grid should contain 1 element
-    And the grid should contain the elements "acme_attribute_import"
-    And the grid should not contain the elements "acme_product_export", "acme_product_import"
+    And I should see import profile "acme_attribute_import"
+    And I should not see import profiles "acme_product_export" and "acme_product_import"
 
   Scenario: Successfully cancel the deletion of an import job
     Given I am on the imports page
@@ -29,5 +29,5 @@ Feature: Delete import
     When I delete the "acme_product_import" job
     And I cancel the deletion
     Then the grid should contain 2 elements
-    And the grid should contain the elements "acme_product_import", "acme_attribute_import"
-    And the grid should not contain the elements "acme_product_export"
+    And I should see import profiles "acme_product_import" and "acme_attribute_import"
+    And I should not see import profile "acme_product_export"
