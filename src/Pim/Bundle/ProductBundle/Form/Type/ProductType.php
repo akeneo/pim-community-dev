@@ -46,8 +46,9 @@ class ProductType extends FlexibleType
                     'categories',
                     'entity',
                     array(
-                        'multiple' => true,
-                        'class'    => 'PimProductBundle:Category',
+                        'multiple'     => true,
+                        'class'        => 'PimProductBundle:Category',
+                        'by_reference' => false,
                     )
                 )
                 ->add(

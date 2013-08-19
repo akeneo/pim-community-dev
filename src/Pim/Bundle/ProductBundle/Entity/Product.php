@@ -236,6 +236,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
     public function setCategories($categories)
     {
+        foreach ($categories as $category) {
+            $category->addProduct($this);
+        }
         $this->categories = $categories;
     }
 
