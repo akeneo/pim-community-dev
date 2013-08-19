@@ -37,9 +37,13 @@ table.grid tbody tr.row-click-action {
 .no-data {
     text-align: center;
     font-size: 16px;
-    padding: 10px;
-    border: 1px solid #dddddd;
-    margin-top: 20px;
+    padding: 20px;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border: 1px solid #ddd;
+    background:#f9f9f9;
+    margin:10px 0;
 }
 
 .loading-mask .loading-frame .box {

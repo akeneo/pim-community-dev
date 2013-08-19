@@ -1,15 +1,14 @@
-<div class="dropdown dropdown-search">
+<div class="dropdown header-dropdown-search header-utility-dropdown">
     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="{% trans %}Search{% endtrans %}"><i class="icon-search"></i></a>
     <ul class="dropdown-menu">
         <li class="nav-header nav-header-title">{% trans %}Search{% endtrans %}</li>
-        <li class="divider"></li>
         <li class="dark">
             <form method="get" action="{{ path('oro_search_results') }}" style="margin: 0" autocomplete="off" id="top-search-form" class="search-form">
                 <div id="search-div" class="input-append input-prepend pull-left header-search">
                     <div class="btn-group">
                         <button data-toggle="dropdown" class="btn dropdown-toggle" id="search-bar-button">
                             <span class="search-bar-type">{% trans %}All{% endtrans %}</span>
-                            <span class="caret"></span>
+                            <span class="icon-caret-down"></span>
                         </button>
                         <ul class="dropdown-menu" id="search-bar-dropdown">
                             <li data-alias="">
