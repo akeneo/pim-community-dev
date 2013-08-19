@@ -136,6 +136,25 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedExceptionMessage Option "attribute_fields" at step "step_one" must be an array
+     */
+    public function testInvalidAttributeException()
+    {
+        $configuration = array(
+            'step_one' => array(
+                'label' => 'label',
+                'form_options' => array(
+                    'attribute_fields' => 'string'
+                )
+            )
+        );
+        $attributes = array($this->getAttribute('attribute_one'));
+        $assembler = new StepAssembler();
+        $assembler->assemble($configuration, $attributes);
+    }
+
+    /**
      * @param string $name
      * @param string $label
      * @param string $template

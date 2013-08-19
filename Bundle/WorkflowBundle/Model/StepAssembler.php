@@ -9,6 +9,7 @@ use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 
 class StepAssembler extends AbstractAssembler
 {
@@ -33,6 +34,7 @@ class StepAssembler extends AbstractAssembler
      * @param array $options
      * @param Attribute[]|Collection $attributes
      * @return Step
+     * @throws InvalidParameterException
      * @throws UnknownAttributeException
      */
     protected function assembleStep($name, array $options, $attributes)
@@ -44,6 +46,12 @@ class StepAssembler extends AbstractAssembler
         // each attribute field must be correspond to existing attribute
         $existingAttributeNames = $this->getAttributeNames($attributes);
         $attributeFields = $this->getOption($formOptions, 'attribute_fields', array());
+        if (!is_array($attributeFields)) {
+            throw new InvalidParameterException(
+                sprintf('Option "attribute_fields" at step "%s" must be an array', $name)
+            );
+        }
+
         foreach (array_keys($attributeFields) as $attributeName) {
             if (!in_array($attributeName, $existingAttributeNames)) {
                 throw new UnknownAttributeException(

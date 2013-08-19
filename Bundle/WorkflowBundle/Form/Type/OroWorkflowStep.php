@@ -7,10 +7,13 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 
 class OroWorkflowStep extends AbstractType
 {
@@ -27,19 +30,54 @@ class OroWorkflowStep extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     * @throws UnexpectedTypeException
+     * @throws UnknownAttributeException
+     * @throws InvalidParameterException
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO Refactor this method to use form_options from step
-        /** @var Attribute[]|Collection $attributes */
-        $attributes = $options['attributes'];
-        foreach ($attributes as $attribute) {
-            $builder->add(
-                $attribute->getName(),
-                $attribute->getFormTypeName(),
-                $this->getAttributeFormOptions($attribute)
-            );
+        /** @var Workflow $workflow */
+        $workflow = $options['workflow'];
+        /** @var Step $step */
+        $step = $options['step'];
+
+        $stepFormOptions = $step->getFormOptions();
+        if (empty($stepFormOptions['attribute_fields'])) {
+            return;
+        }
+
+        foreach ($stepFormOptions['attribute_fields'] as $attributeName => $attributeOptions) {
+            /** @var Attribute $attribute */
+            $attribute = $workflow->getAttributes()->get($attributeName);
+            if (!$attribute) {
+                throw new UnknownAttributeException(
+                    sprintf('Unknown attribute "%s" in workflow "%s"', $attributeName, $workflow->getName())
+                );
+            }
+
+            // get form type
+            if (empty($attributeOptions['form_type'])) {
+                throw new InvalidParameterException(
+                    sprintf(
+                        'Parameter "form_type" must be defined for attribute "%s" in workflow "%s"',
+                        $attributeName,
+                        $workflow->getName()
+                    )
+                );
+            }
+            $formType = $attributeOptions['form_type'];
+
+            // get form options
+            $formOptions = array();
+            if (isset($attributeOptions['options'])) {
+                $formOptions = $attributeOptions['options'];
+            }
+            if (!isset($formOptions['label'])) {
+                $formOptions['label'] = isset($attributeOptions['label'])
+                    ? $attributeOptions['label']
+                    : $attribute->getLabel();
+            }
+
+            $builder->add($attributeName, $formType, $formOptions);
         }
     }
 
@@ -58,15 +96,14 @@ class OroWorkflowStep extends AbstractType
 
     /**
      * Custom options:
-     * - "step" - required, must be instance of Step entity
-     * - "attributes" - not required, by default is extracted from step,
-     *                  otherwise must be array or Collection of Attribute entities
+     * - "workflow" - required, instance of current Workflow entity
+     * - "step"     - required, instance of current Step entity
      *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('step'));
+        $resolver->setRequired(array('workflow', 'step'));
 
         $resolver->setDefaults(
             array(
@@ -77,31 +114,26 @@ class OroWorkflowStep extends AbstractType
 
         $resolver->setNormalizers(
             array(
-                'attributes' => function (Options $options, $attributes) {
-                    if (!empty($attributes)) {
-                        if (!is_array($attributes) && !$attributes instanceof Collection) {
-                            throw new UnexpectedTypeException($attributes, 'array or Collection');
-                        }
-
-                        foreach ($attributes as $attribute) {
-                            if (!$attribute instanceof Attribute) {
-                                throw new UnexpectedTypeException(
-                                    $attribute,
-                                    'Oro\Bundle\WorkflowBundle\Model\Attribute'
-                                );
-                            }
-                        }
-
-                        return $attributes;
+                'workflow' => function (Options $options, $workflow) {
+                    if (!$workflow instanceof Workflow) {
+                        throw new UnexpectedTypeException($workflow, 'Oro\Bundle\WorkflowBundle\Model\Workflow');
                     }
 
-                    $step = $options->get('step');
+                    return $workflow;
+                },
+                'step' => function (Options $options, $step) {
                     if (!$step instanceof Step) {
                         throw new UnexpectedTypeException($step, 'Oro\Bundle\WorkflowBundle\Model\Step');
                     }
 
-                    return $step->getAttributes();
-                }
+                    /** @var Workflow $workflow */
+                    $workflow = $options['workflow'];
+                    if (!$workflow->getSteps()->contains($step)) {
+                        throw new UnknownStepException($step->getName());
+                    }
+
+                    return $step;
+                },
             )
         );
     }
