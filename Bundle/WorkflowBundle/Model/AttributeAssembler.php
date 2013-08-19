@@ -12,6 +12,7 @@ class AttributeAssembler extends AbstractAssembler
     /**
      * @param array $configuration
      * @return ArrayCollection
+     * @throws AssembleAttributeException If configuration is invalid
      */
     public function assemble(array $configuration)
     {
@@ -52,6 +53,10 @@ class AttributeAssembler extends AbstractAssembler
         return $attribute;
     }
 
+    /**
+     * @param Attribute $attribute
+     * @throws AssembleAttributeException If attribute is invalid
+     */
     protected function validateAttribute(Attribute $attribute)
     {
         $attributeType = $attribute->getType();
