@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -458,7 +457,7 @@ class JobExecution
         $string = "";
         try {
             $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s,"
-                . "exitStatus=%s";
+                . "exitStatus=%s, job=%s";
             $string = sprintf(
                 $message,
                 $this->startTime->format() ,
@@ -466,6 +465,8 @@ class JobExecution
                 $this->updatedTime->format(),
                 $this->status,
                 $this->exitStatus
+                $this->exitStatus,
+                $this->job->getCode()
             );
         } catch (\Exception $e) {
             $string = $e->getMessage();

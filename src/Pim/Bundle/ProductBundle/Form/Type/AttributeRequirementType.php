@@ -5,7 +5,6 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\ProductBundle\Form\DataTransformer\BooleanToStringTransformer;
 
 /**
  * Attribute requirement form type

@@ -323,6 +323,7 @@ class JobController extends Controller
     protected function getDatagridManager()
     {
         $managerAlias = sprintf('pim_import_export.datagrid.manager.%s', $this->getJobType());
+
         return $this->get($managerAlias);
     }
 }

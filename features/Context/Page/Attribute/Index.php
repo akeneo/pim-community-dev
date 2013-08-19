@@ -17,14 +17,4 @@ class Index extends Grid
      * @var string
      */
     protected $path = '/configuration/attribute/';
-
-    /**
-     * @param string $attribute
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findAttribute($attribute)
-    {
-        return $this->getRow($attribute);
-    }
 }

@@ -14,7 +14,7 @@ class SortHelper
     /**
      * Sort ascending an array of objects using a public property
      *
-     * @param array  $values    Array of objects
+     * @param array  $values   Array of objects
      * @param string $property The property on which sorts (must be public)
      *
      * @return array The sorted array

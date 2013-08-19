@@ -1,4 +1,3 @@
 parameters:
     pim_translation.form.type.translatable_field.class: Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType
     pim_translation.listener.add_locale.class:          Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener
-

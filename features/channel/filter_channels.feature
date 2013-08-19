@@ -30,12 +30,14 @@ Feature: Filter channels
     When I filter by "Code" with value "BA"
     Then the grid should contain 2 elements
     And I should see channels BAR and BAZ
+    And I should not see channels FOO and QUX
 
   Scenario: Successfully filter by name
     Given I am on the channels page
     When I filter by "Name" with value "Ba"
     Then the grid should contain 2 elements
     And I should see channels BAR and BAZ
+    And I should not see channels FOO and QUX
 
   Scenario: Successfully filter by name and code
     Given I am on the channels page
@@ -43,9 +45,11 @@ Feature: Filter channels
     And I filter by "Code" with value "R"
     Then the grid should contain 1 element
     And I should see channel BAR
+    And I should not see channels BAZ, FOO and QUX
 
   Scenario: Successfully filter by category
     Given I am on the channels page
     When I filter by "Category tree" with value "Master"
     Then the grid should contain 2 elements
     And I should see channels FOO and BAR
+    And I should not see channels BAZ and QUX
