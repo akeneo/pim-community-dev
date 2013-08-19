@@ -45,12 +45,13 @@ abstract class AbstractTranslation
     /**
      * Set locale
      *
-     * @param string $locale
+     * @param  string              $locale
      * @return AbstractTranslation
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
         return $this;
     }
 

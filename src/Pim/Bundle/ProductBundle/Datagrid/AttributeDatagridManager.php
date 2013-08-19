@@ -12,7 +12,6 @@ use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Product attribute grid manager
