@@ -1151,18 +1151,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $products
-     *
-     * @Then /^I should not see products? (.*)$/
-     */
-    public function iShouldNotSeeProducts($products)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $products)
-        );
-    }
-
-    /**
      * @param string $code
      *
      * @Then /^I should be on the category "([^"]*)" edit page$/
