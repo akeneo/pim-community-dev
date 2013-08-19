@@ -131,7 +131,8 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string    $sku
      *
-     * @return Product
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     *
      * @Given /^a "([^"]*)" product$/
      */
     public function aProduct($sku)
@@ -155,6 +156,10 @@ class FixturesContext extends RawMinkContext
             $product = $this->aProduct($data['sku']);
             if ($data['family']) {
                 $product->setFamily($this->getFamily($data['family']));
+            }
+
+            if ($data['enabled']) {
+                $product->setEnabled($data['enabled'] === 'yes');
             }
 
             $this->getProductManager()->save($product);

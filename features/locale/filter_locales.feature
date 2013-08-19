@@ -3,7 +3,7 @@ Feature: Filter locales
   In order to filter locales in the catalog
   As an user
   I need to be able to filter locales in the catalog
-  
+
   Background:
     Given the following locales:
       | code  | fallback | activated |

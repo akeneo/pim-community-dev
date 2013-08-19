@@ -164,6 +164,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('enabled');
+        $field->setOptions(
+            array(
+                'type'        => false,
+                'label'       => $this->translate('Enabled'),
+                'field_name'  => 'enabled',
+                'filter_type' => FilterInterface::TYPE_BOOLEAN,
+                'required'    => false,
+                'sortable'    => false,
+                'filterable'  => true,
+                'show_filter' => true,
+                'show_column' => false
+            )
+        );
+        $fieldsCollection->add($field);
     }
 
     /**
