@@ -78,9 +78,9 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
             ->with(array('entityType' => self::TEST_FLEXIBLE_NAME, 'code' => self::TEST_FIELD))
             ->will($this->returnValue($attribute));
 
-        $optionsRepository = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $optionsRepository = $this->getMockBuilder(
+            'Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository'
+        )->disableOriginalConstructor()->getMock();
         $optionsRepository->expects($this->once())->method('findAllForAttributeWithValues')
             ->with($attribute)
             ->will($this->returnValue($this->createFlexibleOptions($flexibleOptionsData)));

@@ -9,9 +9,12 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 interface DatagridBuilderInterface
 {
+    const SELECTED_ROW_FILTER_NAME = 'selected_row_filter';
+
     /**
      * Add property to datagrid
      *
@@ -33,6 +36,13 @@ interface DatagridBuilderInterface
 
     /**
      * @param DatagridInterface $datagrid
+     * @param array $options
+     * @return void
+     */
+    public function addSelectedRowFilter(DatagridInterface $datagrid, array $options);
+
+    /**
+     * @param DatagridInterface $datagrid
      * @param FieldDescriptionInterface $field
      * @return void
      */
@@ -46,12 +56,17 @@ interface DatagridBuilderInterface
     public function addRowAction(DatagridInterface $datagrid, array $parameters);
 
     /**
+     * @param DatagridInterface $datagrid
+     * @param MassActionInterface $massAction
+     */
+    public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction);
+
+    /**
      * @param ProxyQueryInterface $query
      * @param FieldDescriptionCollection $fieldCollection
      * @param RouteGeneratorInterface $routeGenerator,
      * @param ParametersInterface $parameters
      * @param string $name
-     * @param string $entityHint
      *
      * @return DatagridInterface
      */
@@ -60,7 +75,6 @@ interface DatagridBuilderInterface
         FieldDescriptionCollection $fieldCollection,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        $name,
-        $entityHint = null
+        $name
     );
 }

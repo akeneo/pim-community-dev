@@ -97,7 +97,7 @@ Oro.Filter.DateTimeFilter = Oro.Filter.DateFilter.extend({
      */
     _formatDatetime: function(value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat) {
         var datePart = this._formatDate(value, dateFromFormat, dateToFormat);
-        var dateBefore = this._formatDate(value, dateToFormat, dateFromFormat);
+        var dateBefore = this._formatDate(datePart, dateToFormat, dateFromFormat);
         var timePart = value.substr(dateBefore.length + this.dateWidgetOptions.altSeparator.length);
         timePart = this._formatTime(timePart, timeFromFormat, timeToToFormat);
         return datePart + this.dateWidgetOptions.altSeparator + timePart;
