@@ -15,7 +15,6 @@ Feature: Browse locales
   Scenario: Successfully display locales
     Given I am on the locales page
     Then the grid should contain 3 elements
-    And the grid should contain the elements "de_DE", "en_US" and "fr_FR"
     And I should see activated locales en_US and fr_FR
     And I should see deactivated locales de_DE
     

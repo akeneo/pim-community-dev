@@ -210,76 +210,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Other methods -------------------- */
 
     /**
+     * @param string $deactivated
      * @param string $currencies
      *
-     * @Then /^I should see activated currency (.*)$/
-     * @Then /^I should see activated currencies (.*)$/
+     * @Then /^I should see (de)?activated currency (.*)$/
+     * @Then /^I should see (de)?activated currencies (.*)$/
      */
-    public function iShouldSeeActivatedCurrencies($currencies)
+    public function iShouldSeeActivatedCurrencies($deactivated, $currencies)
     {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
+        $currencies = $this->listToArray($currencies);
+
+        foreach ($currencies as $currency) {
+            if ($deactivated) {
+                if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
+                    throw $this->createExpectationException(sprintf('Currency "%s" is not deactivated.', $currency));
+                }
+            } else {
+                if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
+                    throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
+                }
             }
         }
     }
 
     /**
-     * @param string $currencies
-     *
-     * @Given /^I should see deactivated currency (.*)$/
-     * @Given /^I should see deactivated currencies (.*)$/
-     */
-    public function iShouldSeeDeactivatedCurrencies($currencies)
-    {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
-            }
-        }
-    }
-
-    /**
+     * @param string $not
      * @param string $currencies
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see currency (.*)$/
-     * @Then /^I should see currencies (.*)$/
+     * @Then /^I should (not )?see currency (.*)$/
+     * @Then /^I should (not )?see currencies (.*)$/
      */
-    public function iShouldSeeCurrencies($currencies)
+    public function iShouldSeeCurrencies($not, $currencies)
     {
         return new Step\Then(
-            sprintf('I should see entities %s', $currencies)
-        );
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should not see currency (.*)$/
-     * @Then /^I should not see currencies (.*)$/
-     */
-    public function iShouldNotSeeCurrencies($currencies)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $currencies)
-        );
-    }
-
-    /**
-     * @param string $locales
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should see locales? (.*)$/
-     */
-    public function iShouldSeeLocales($locales)
-    {
-        return new Step\Then(
-            sprintf('I should see entities %s', $locales)
+            sprintf('I should %ssee entities %s', $not, $currencies)
         );
     }
 
@@ -337,35 +303,47 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $deactivated
      * @param string $locales
      *
-     * @When /^I should see activated locales? (.*)$/
+     * @throws ExpectationException
+     *
+     * @When /^I should see (de)?activated locales? (.*)$/
      */
-    public function iShouldSeeActivatedLocales($locales)
+    public function iShouldSeeActivatedLocales($deactivated, $locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
-                throw $this->createExpectationException(
-                    sprintf('Locale "%s" is not activated', $locale)
-                );
+        $locales = $this->listToArray($locales);
+
+        foreach ($locales as $locale) {
+            if ($deactivated) {
+                if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
+                    throw $this->createExpectationException(
+                        sprintf('Locale "%s" is not deactivated', $locale)
+                    );
+                }
+            } else {
+                if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
+                    throw $this->createExpectationException(
+                        sprintf('Locale "%s" is not activated', $locale)
+                    );
+                }
             }
         }
     }
 
     /**
+     * @param string $not
      * @param string $locales
      *
-     * @When /^I should see deactivated locales? (.*)$/
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should (not )?see locales? (.*)$/
      */
-    public function iShouldSeeDeactivatedLocales($locales)
+    public function iShouldSeeLocales($not, $locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
-                throw $this->createExpectationException(
-                    sprintf('Locale "%s" is not deactivated', $locale)
-                );
-            }
-        }
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $locales)
+        );
     }
 
     /**
@@ -379,18 +357,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         return new Step\Then(
             sprintf('I should see sorted entities %s', $locales)
-        );
-    }
-
-    /**
-     * @param string $locales
-     *
-     * @When /^I should not see locales? (.*)$/
-     */
-    public function iShouldNotSeeLocales($locales)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $locales)
         );
     }
 
@@ -1010,16 +976,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $channels
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see channels? (.*)$/
+     * @Then /^I should (not )?see channels? (.*)$/
      */
-    public function iShouldSeeChannels($channels)
+    public function iShouldSeeChannels($not, $channels)
     {
         return new Step\Then(
-            sprintf('I should see entities %s', $channels)
+            sprintf('I should %ssee entities %s', $not, $channels)
         );
     }
 
@@ -1038,30 +1005,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $channels
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should not see channels? (.*)$/
-     */
-    public function iShouldNotSeeChannels($channels)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $channels)
-        );
-    }
-
-    /**
+     * @param string $not
      * @param string $attributes
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see attributes? ((?!in group).)*$/
+     * @Then /^I should (not )?see attributes? ((?!in group).)*$/
      */
-    public function iShouldSeeAttributes($attributes)
+    public function iShouldSeeAttributes($not, $attributes)
     {
         return new Step\Then(
-            sprintf('I should see entities %s', $attributes)
+            sprintf('I should %ssee entities %s', $not, $attributes)
         );
     }
 
@@ -1076,20 +1030,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         return new Step\Then(
             sprintf('I should see sorted entities %s', $attributes)
-        );
-    }
-
-    /**
-     * @param string $attributes
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should not see attributes? (.*)$/
-     */
-    public function iShouldNotSeeAttributes($attributes)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $attributes)
         );
     }
 
@@ -1173,14 +1113,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $products
      *
-     * @Then /^I should see products (.*)$/
+     * @Then /^I should (not )?see products (.*)$/
      */
-    public function iShouldSeeProducts($products)
+    public function iShouldSeeProducts($not, $products)
     {
         return new Step\Then(
-            sprintf('I should see entities %s', $products)
+            sprintf('I should %ssee entities %s', $not, $products)
         );
     }
 
@@ -1309,87 +1250,37 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $exports
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should see export profiles? (.*)$/
-     */
-    public function iShouldSeeExportProfiles($exports)
-    {
-        return new Step\Then(
-            sprintf('I should see entities %s', $exports)
-        );
-    }
-
-    /**
-     * @param string $exports
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should not see export profiles? (.*)$/
-     */
-    public function iShouldNotSeeExportProfiles($exports)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $exports)
-        );
-    }
-
-    /**
-     * @param string $exports
+     * @param string $profiles
      *
      * @return \Behat\Behat\Context\Step\Given
      *
-     * @Then /^I should see sorted export profiles? (.*)$/
+     * @Then /^I should see sorted (?:import|export) profiles? (.*)$/
      */
-    public function iShouldSeeSortedExportProfiles($exports)
+    public function iShouldSeeSortedProfiles($profiles)
     {
         return new Step\Then(
-            sprintf('I should see sorted entities %s', $exports)
+            sprintf('I should see sorted entities %s', $profiles)
         );
     }
 
     /**
-     * @param string $exports
+     * @param string $profiles
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see import profiles? (.*)$/
+     * @Then /^I should (not )?see (?:import|export) profiles? (.*)$/
      */
-    public function iShouldSeeImportProfiles($imports)
+    public function iShouldSeeProfiles($not, $profiles)
     {
-        return new Step\Then(
-            sprintf('I should see entities %s', $imports)
-        );
-    }
-
-    /**
-     * @param string $imports
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @Then /^I should not see import profiles? (.*)$/
-     */
-    public function iShouldNotSeeImportProfiles($imports)
-    {
-        return new Step\Then(
-            sprintf('I should not see entities %s', $imports)
-        );
-    }
-
-    /**
-     * @param string $imports
-     *
-     * @return \Behat\Behat\Context\Step\Given
-     *
-     * @Then /^I should see sorted import profiles? (.*)$/
-     */
-    public function iShouldSeeSortedImportProfiles($imports)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $imports)
-        );
+        if ($not) {
+            return new Step\Then(
+                sprintf('I should not see entities %s', $profiles)
+            );
+        } else {
+            return new Step\Then(
+                sprintf('I should see entities %s', $profiles)
+            );
+        }
     }
 
     /**
