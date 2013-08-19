@@ -455,22 +455,22 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        try {
-            $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s,"
-                . "exitStatus=%s, job=%s";
-            $string = sprintf(
-                $message,
-                $this->startTime->format() ,
-                $this->endTime->format(),
-                $this->updatedTime->format(),
-                $this->status,
-                $this->exitStatus
-                $this->exitStatus,
-                $this->job->getCode()
-            );
-        } catch (\Exception $e) {
-            $string = $e->getMessage();
-        }
+        $startTime = $this->startTime != null ? $this ->startTime->format(\DateTime::ATOM) : '';
+        $endTime = $this->endTime != null ? $this ->endTime->format(\DateTime::ATOM) : '';
+        $updatedTime = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
+        $jobCode = $this->job != null ? $this->job->getCode() : '';
+
+        $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s, "
+            . "exitStatus=%s, job=%s";
+        $string = sprintf(
+            $message,
+            $startTime,
+            $endTime,
+            $updatedTime,
+            $this->status,
+            $this->exitStatus,
+            $jobCode
+        );
 
         return $string;
     }

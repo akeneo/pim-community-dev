@@ -24,12 +24,17 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     protected $stepExecution;
 
     /**
+     * @var JobExecution
+     */
+    protected $jobExecution;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $jobExecution = new JobExecution();
-        $this->stepExecution = new StepExecution('my_step_execution',$jobExecution);
+        $this->jobExecution = new JobExecution();
+        $this->stepExecution = new StepExecution('my_step_execution',$this->jobExecution);
     }
 
     public function testGetId()
@@ -109,6 +114,51 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array($exception1, $exception2), $this->stepExecution->getFailureExceptions());
     }
+
+    public function testGetSetReadCount()
+    {
+        $this->assertEquals(0, $this->stepExecution->getReadCount());
+        $this->assertEntity($this->stepExecution->setReadCount(8));
+        $this->assertEquals(8, $this->stepExecution->getReadCount());
+    }
+
+    public function testGetSetWriteCount()
+    {
+        $this->assertEquals(0, $this->stepExecution->getWriteCount());
+        $this->assertEntity($this->stepExecution->setWriteCount(6));
+        $this->assertEquals(6, $this->stepExecution->getWriteCount());
+    }
+
+    public function testGetSetFilterCount()
+    {
+        $this->assertEquals(0, $this->stepExecution->getFilterCount());
+        $this->assertEntity($this->stepExecution->setFilterCount(5));
+        $this->assertEquals(5, $this->stepExecution->getFilterCount());
+    }
+
+    public function testTerminateOnly()
+    {
+        $this->assertFalse($this->stepExecution->isTerminateOnly());
+        $this->assertEntity($this->stepExecution->setTerminateOnly());
+        $this->assertTrue($this->stepExecution->isTerminateOnly());
+    }
+
+    public function testGetStepName()
+    {
+        $this->assertEquals('my_step_execution', $this->stepExecution->getStepName());
+    }
+
+    public function testGetJobExecution()
+    {
+        $this->assertEquals($this->jobExecution, $this->stepExecution->getJobExecution());
+    }
+
+    public function testToString()
+    {
+        $expectedString = "id=0, name=my_step_execution, status=2, exitStatus=EXECUTING, readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0";
+        $this->assertEquals($expectedString, (string) $this->stepExecution);
+    }
+
 
     /**
      * Assert the entity tested

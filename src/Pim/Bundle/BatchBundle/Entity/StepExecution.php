@@ -126,7 +126,7 @@ class StepExecution
      *
      * @ORM\Column(name="terminate_only", type="boolean", nullable=true)
      */
-    private $terminateOnly;
+    private $terminateOnly = false;
 
     /**
      * @var integer
@@ -302,10 +302,14 @@ class StepExecution
     /**
      * Set a flag that will signal to an execution environment that this
      * execution (and its surrounding job) wishes to exit.
+     *
+     * @return $this
      */
     public function setTerminateOnly()
     {
         $this->terminateOnly = true;
+
+        return $this;
     }
 
     /**
@@ -442,23 +446,6 @@ class StepExecution
      * @return string
      */
     public function __toString()
-    {
-        $string = '';
-
-        try {
-            $string = $this->getSummary();
-        } catch (\Exception $e) {
-            $string = $e->getMessage();
-        }
-
-        return $string;
-    }
-
-    /**
-     * Get summary
-     * @return string
-     */
-    public function getSummary()
     {
         $summary = "id=%d, name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
             . ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"

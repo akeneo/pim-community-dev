@@ -201,17 +201,20 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $updatedTime = new \DateTime('2013-02-03 23:45:01');
         $status = BatchStatus::STOPPED;
         $exitStatus = ExitStatus::FAILED;
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');  
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance->setCode('job instance code');
         $endTime = new \DateTime('2013-03-04 21:43:05');
 
         $this->jobExecution->setStartTime($startTime);
         $this->jobExecution->setUpdatedTime($updatedTime);
         $this->jobExecution->setStatus(new BatchStatus($status));
-        $this->jobExecution->setExitStatus(new ExitStatus($status));
+        $this->jobExecution->setExitStatus(new ExitStatus($exitStatus, 'Test description'));
         $this->jobExecution->setJob($jobInstance);
         $this->jobExecution->setEndTime($endTime);
 
-        $expectedOutput = 'startTime=xxxx, endTime=yyyyy, updatedTime=ttttt, status=2 exitStatus=1';
+        $expectedOutput = 'startTime=2013-02-01T12:34:56+01:00, endTime=2013-03-04T21:43:05+01:00, '.
+            'updatedTime=2013-02-03T23:45:01+01:00, status=5, exitStatus=[FAILED] Test description, '
+            .'job=job instance code';
 
         $this->assertEquals($expectedOutput, (string) $this->jobExecution);
     }
