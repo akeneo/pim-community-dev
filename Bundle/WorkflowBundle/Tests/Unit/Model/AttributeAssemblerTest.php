@@ -26,37 +26,22 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'no_options' => array(
-                array(
-                    'name' => array()
-                ),
+                array('name' => array()),
                 'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
                 'Option "label" is required'
             ),
             'no_type' => array(
-                array(
-                    'name' => array(
-                        'label' => 'test'
-                    )
-                ),
+                array('name' => array('label' => 'test')),
                 'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
                 'Option "type" is required'
             ),
             'no_label' => array(
-                array(
-                    'name' => array(
-                        'type' => 'test'
-                    )
-                ),
+                array('name' => array('type' => 'test')),
                 'Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
                 'Option "label" is required'
             ),
             'invalid_type' => array(
-                array(
-                    'name' => array(
-                        'label' => 'Label',
-                        'type' => 'text'
-                    )
-                ),
+                array('name' => array('label' => 'Label', 'type' => 'text')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
                 //@codingStandardsIgnoreStart
                 'Invalid attribute type "text", allowed types are "bool", "boolean", "int", "integer", "float", "string", "array", "object", "entity"'
@@ -65,40 +50,26 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
             'invalid_type_class' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label',
-                        'type'    => 'string',
-                        'options' => array('class' => 'stdClass'),
+                        'label'   => 'Label', 'type'    => 'string', 'options' => array('class' => 'stdClass')
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
                 'Option "class" cannot be used in attribute with type "string"'
             ),
             'missing_object_class' => array(
-                array(
-                    'name' => array(
-                        'label'   => 'Label',
-                        'type'    => 'object',
-                    )
-                ),
+                array('name' => array('label'   => 'Label', 'type'    => 'object')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
                 'Option "class" is required for attribute with type "object"'
             ),
             'missing_entity_class' => array(
-                array(
-                    'name' => array(
-                        'label'   => 'Label',
-                        'type'    => 'entity',
-                    )
-                ),
+                array('name' => array('label'   => 'Label', 'type'    => 'entity')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
                 'Option "class" is required for attribute with type "entity"'
             ),
             'invalid_class' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label',
-                        'type'    => 'object',
-                        'options' => array('class' => 'InvalidClass'),
+                        'label'   => 'Label', 'type'    => 'object', 'options' => array('class' => 'InvalidClass')
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
@@ -107,9 +78,8 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
             'invalid_type_with_managed_entity_option' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label',
-                        'type'    => 'object',
-                        'options' => array('class' => 'DateTime', 'managed_entity' => true),
+                        'label'   => 'Label', 'type'    => 'object',
+                        'options' => array('class' => 'DateTime', 'managed_entity' => true)
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
@@ -118,14 +88,12 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
             'more_than_one_managed_entity_attributes' => array(
                 array(
                     'first_attribute' => array(
-                        'label'   => 'First',
-                        'type'    => 'entity',
-                        'options' => array('class' => 'stdClass', 'managed_entity' => true),
+                        'label'   => 'First', 'type'    => 'entity',
+                        'options' => array('class' => 'stdClass', 'managed_entity' => true)
                     ),
                     'second_attribute' => array(
-                        'label'   => 'Second',
-                        'type'    => 'entity',
-                        'options' => array('class' => 'stdClass', 'managed_entity' => true),
+                        'label'   => 'Second', 'type'    => 'entity',
+                        'options' => array('class' => 'stdClass', 'managed_entity' => true)
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssembleAttributeException',
@@ -155,19 +123,14 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
         return array(
             'minimal' => array(
                 array(
-                    'attribute_one' => array(
-                        'label' => 'label',
-                        'type' => 'string'
-                    )
+                    'attribute_one' => array('label' => 'label', 'type' => 'string')
                 ),
                 $this->getAttribute('attribute_one', 'label', 'string', array())
             ),
             'full' => array(
                 array(
                     'attribute_two' => array(
-                        'label' => 'label',
-                        'type' => 'string',
-                        'options' => array('key' => 'value')
+                        'label' => 'label', 'type' => 'string', 'options' => array('key' => 'value')
                     )
                 ),
                 $this->getAttribute('attribute_two', 'label', 'string', array('key' => 'value'))
