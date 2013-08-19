@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * Product writer using ORM method
@@ -35,7 +33,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
 
     /**
      * @param ProductManager $productManager Product manager
-     * @param EntityManager $entityManager   Doctrine's entity manager
+     * @param EntityManager  $entityManager  Doctrine's entity manager
      */
     public function __construct(
         ProductManager $productManager,

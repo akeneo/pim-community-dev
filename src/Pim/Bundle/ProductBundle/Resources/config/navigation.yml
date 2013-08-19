@@ -77,7 +77,6 @@ oro_titles:
     oro_default:                         Dashboard
     pim_product_attributegroup_create:   Attribute groups | Create
     pim_product_attributegroup_edit:     Attribute groups | Edit
-    pim_product_attributegroup_sort:     Attribute groups | Sort
     pim_product_categorytree_listtree:   Category trees | List
     pim_product_categorytree_create:     Category trees | Create
     pim_product_categorytree_edit:       Category trees | Edit
