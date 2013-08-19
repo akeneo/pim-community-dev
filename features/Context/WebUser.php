@@ -1084,7 +1084,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should not see attributes (.*)$/
+     * @Then /^I should not see attributes? (.*)$/
      */
     public function iShouldNotSeeAttributes($attributes)
     {
