@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
-use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\Constraint;
 

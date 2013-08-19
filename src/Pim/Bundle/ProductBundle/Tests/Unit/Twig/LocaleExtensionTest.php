@@ -84,7 +84,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      *
-     * @param array  $expectedResults
+     * @param array $expectedResults
      *
      * @dataProvider dataProviderForLocalizedLabel
      */

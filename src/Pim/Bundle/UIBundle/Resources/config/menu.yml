@@ -10,4 +10,3 @@ oro_menu_config:
                 home:
                     children:
                         demo_dashboard: ~
-

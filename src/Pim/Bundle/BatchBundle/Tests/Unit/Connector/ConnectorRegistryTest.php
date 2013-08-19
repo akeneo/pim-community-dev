@@ -134,6 +134,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
+
         return $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\Job', array(), array('TestJob', $logger));
     }
 

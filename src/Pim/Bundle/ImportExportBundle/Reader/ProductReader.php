@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraints as Assert;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
