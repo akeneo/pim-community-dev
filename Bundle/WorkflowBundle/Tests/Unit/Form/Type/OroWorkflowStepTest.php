@@ -47,12 +47,8 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
      * @param array $formOptions
      * @param array $childrenOptions
      */
-    public function testSubmit(
-        $submitData,
-        $formData,
-        array $formOptions,
-        array $childrenOptions
-    ) {
+    public function testSubmit($submitData, $formData, array $formOptions, array $childrenOptions)
+    {
         $form = $this->factory->create($this->type, null, $formOptions);
 
         $this->assertSameSize($childrenOptions, $form->all());
@@ -86,7 +82,8 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
         $step = new Step();
         $step->setName('test_step');
 
-        $stepWithAttributes = clone $step;
+        $stepWithAttributes = new Step();
+        $stepWithAttributes->setName('test_step');
         $stepWithAttributes->setFormOptions(
             array(
                 'attribute_fields' => array(
