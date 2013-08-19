@@ -1309,6 +1309,90 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $exports
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should see export profiles (.*)$/
+     */
+    public function iShouldSeeExportProfiles($exports)
+    {
+        return new Step\Then(
+            sprintf('I should see entities %s', $exports)
+        );
+    }
+
+    /**
+     * @param string $exports
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should not see export profiles (.*)$/
+     */
+    public function iShouldNotSeeExportProfiles($exports)
+    {
+        return new Step\Then(
+            sprintf('I should not see entities %s', $exports)
+        );
+    }
+
+    /**
+     * @param string $exports
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see sorted export profiles (.*)$/
+     */
+    public function iShouldSeeSortedExportProfiles($exports)
+    {
+        return new Step\Then(
+            sprintf('I should see sorted entities %s', $exports)
+        );
+    }
+
+    /**
+     * @param string $exports
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should see import profiles (.*)$/
+     */
+    public function iShouldSeeImportProfiles($imports)
+    {
+        return new Step\Then(
+            sprintf('I should see entities %s', $imports)
+        );
+    }
+
+    /**
+     * @param string $imports
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should not see import profiles (.*)$/
+     */
+    public function iShouldNotSeeImportProfiles($imports)
+    {
+        return new Step\Then(
+            sprintf('I should not see entities %s', $imports)
+        );
+    }
+
+    /**
+     * @param string $imports
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see sorted import profiles (.*)$/
+     */
+    public function iShouldSeeSortedImportProfiles($imports)
+    {
+        return new Step\Then(
+            sprintf('I should see sorted entities %s', $imports)
+        );
+    }
+
+    /**
      * @Given /^I try to create an unknown import$/
      */
     public function iTryToCreateAnUnknownImport()
