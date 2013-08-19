@@ -70,9 +70,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             _.extend(this.state, options.state);
         }
 
-        // this was commented due to this cause a bug when grid is restored after reload
-        // "reset" button will reset grid to state that was in url
-        // this.initialState = Oro.deepClone(this.state);
+        this.initialState = Oro.deepClone(this.state);
 
         if (options.url) {
             this.url = options.url;

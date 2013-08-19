@@ -189,7 +189,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             return elem.get(0) === e.target || elem.has(e.target).length;
         });
 
-        if (!clickedElement && $(e.target).is(":button, .ui-icon")) {
+        if (!clickedElement && $(e.target).is(":button, .ui-icon, :has(.ui-icon)")) {
             clickedElement = e.target;
         }
 
