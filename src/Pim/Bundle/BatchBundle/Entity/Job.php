@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
-use Pim\Bundle\BatchBundle\Job\JobInterface;
 
 /**
  * Entity job

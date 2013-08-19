@@ -35,8 +35,8 @@ class IndexValueListener
      * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
      *
      * @param ContainerInterface $container
-     * @param bool               $realtime Realtime update flag
-     * @param array              $entities Entities config array from search.yml
+     * @param bool               $realtime  Realtime update flag
+     * @param array              $entities  Entities config array from search.yml
      */
     public function __construct(ContainerInterface $container, $realtime, $entities)
     {
