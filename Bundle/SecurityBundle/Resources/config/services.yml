@@ -1,0 +1,8 @@
+parameters:
+    oro_security.factory.object_identity.class:   Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+
+services:
+    oro_security.factory.object_identity:
+        class: %oro_security.factory.object_identity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
