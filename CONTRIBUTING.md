@@ -12,4 +12,4 @@ Fixes the following jira:
  - ...
 ```
 
-* Use http://cs.sensiolabs.org/
+*Use http://cs.sensiolabs.org/
