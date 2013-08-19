@@ -9,7 +9,7 @@
 
 {{ JSFV(form) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
     {% set buttons %}
@@ -19,7 +19,13 @@
         {{ elements.submitBtn }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons) }}
+    {% set right %}
+        <div class="pull-right entity-updated">
+            <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+        </div>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, right) }}
 
     {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
 
