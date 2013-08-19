@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Process\Process;
 
@@ -145,18 +147,41 @@ class ApplyController extends Controller
             }
         }
 
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
         $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
 
-        $extendConfig->set('state', ExtendManager::STATE_ACTIVE);
-        $extendConfigProvider->persist($extendConfig);
+        if ($extendConfig->get('state') == ExtendManager::STATE_DELETED) {
+            /*
+            $entity->setMode(ConfigModelManager::MODE_HIDDEN);
+            $entityManager->persist($entity);
+            $entityManager->flush();
+            */
+        } else {
+            $extendConfig->set('state', ExtendManager::STATE_ACTIVE);
+            $extendConfigProvider->persist($extendConfig);
+        }
 
         foreach ($extendFieldConfigs as $fieldConfig) {
-            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM) {
+            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
+                && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+            ) {
                 $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
                 $extendConfigProvider->persist($fieldConfig);
+            }
+
+            if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
+                /*
+                var_dump($fieldConfig->getId()->getFieldName());
+                var_dump($extendConfigProvider->getModelMode($fieldConfig->getId()->getClassName(), $fieldConfig->getId()->getFieldName()));
+                */
             }
         }
 

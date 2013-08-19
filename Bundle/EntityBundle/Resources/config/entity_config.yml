@@ -4,6 +4,7 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
+                        title:              'General'
                         priority:           20
 
             items:
@@ -77,7 +78,7 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
-                        title:              'Field Information'
+                        title:              'General'
                         priority:           20
             items:
                 label:

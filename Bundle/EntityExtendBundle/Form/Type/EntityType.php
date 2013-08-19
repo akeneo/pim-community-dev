@@ -10,23 +10,34 @@ class EntityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('className', 'text', array(
-            'label' => 'Class Name',
-            'block' => 'class',
-        ));
+        $builder->add(
+            'className',
+            'text',
+            array(
+                'label'    => 'Name',
+                'block'    => 'entity',
+                'subblock' => 'second'
+            )
+        );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class'   => 'Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel',
-            'block_config' => array(
-                'class' => array(
-                    'title'    => 'Doctrine Setting',
-                    'priority' => 20,
+        $resolver->setDefaults(
+            array(
+                'data_class'   => 'Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel',
+                'block_config' => array(
+                    'entity' => array(
+                        'title' => 'General',
+                        'subblocks' => array(
+                            'second' => array(
+                                'priority' => 10
+                            )
+                        )
+                    )
                 )
             )
-        ));
+        );
     }
 
     /**

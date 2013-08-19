@@ -95,6 +95,7 @@ oro_entity_config:
                     entity_id:              true
                     aClass:                 'btn-danger entity-extend-apply'
                     void:                   true
+                    filter:                 { state: ['New', 'Updated', 'Deleted'] }
             items:
                 owner:
                     options:

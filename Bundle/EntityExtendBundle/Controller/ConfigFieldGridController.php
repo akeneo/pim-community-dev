@@ -160,6 +160,12 @@ class ConfigFieldGridController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
+                $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
+                $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
+
+                $configManager->persist($extendEntityConfig);
+                $configManager->flush();
+
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
                         'route'      => 'oro_entityconfig_field_update',
@@ -227,10 +233,17 @@ class ConfigFieldGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        $fieldConfig->set('state', ExtendManager::STATE_DELETED);
+        if ($fieldConfig->get('state') == ExtendManager::STATE_NEW) {
+            $this->getDoctrine()->getManager()->remove($field);
+            $this->getDoctrine()->getManager()->flush($field);
 
-        $configManager->persist($fieldConfig);
-        $configManager->flush();
+            $configManager->clearCacheAll();
+        } else {
+            $fieldConfig->set('state', ExtendManager::STATE_DELETED);
+
+            $configManager->persist($fieldConfig);
+            $configManager->flush();
+        }
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }

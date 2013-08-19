@@ -60,15 +60,6 @@ class Generator
         $proxyClass  = $this->generateProxyClassName($entityName);
         $validators  = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
 
-        if (!file_exists($validators)) {
-            file_put_contents($validators, '');
-        }
-
-        file_put_contents(
-            $validators,
-            Yaml::dump($this->generateValidator($entityName, Yaml::parse($validators)))
-        );
-
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
@@ -101,6 +92,15 @@ class Generator
                 "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass, $extend)
             );
         }
+
+        if (!file_exists($validators)) {
+            file_put_contents($validators, '');
+        }
+
+        file_put_contents(
+            $validators,
+            Yaml::dump($this->generateValidator($entityName, Yaml::parse($validators)))
+        );
     }
 
     public function generateExtendClassName($entityName)
@@ -137,7 +137,7 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
                 ) {
                     $config = $this->configProvider->getConfigById($fieldId);
                     switch ($fieldId->getFieldType()) {
@@ -217,7 +217,7 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
                 ) {
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['code'] = $fieldId->getFieldName();
                     $yml[$extendClass]['fields'][$fieldId->getFieldName()]['type'] = $fieldId->getFieldType();
@@ -298,7 +298,7 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    && $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
+                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
                 ) {
                     $fieldName = $fieldId->getFieldName();
                     $class

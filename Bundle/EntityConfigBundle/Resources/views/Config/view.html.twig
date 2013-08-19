@@ -58,13 +58,12 @@
     {% endfor %}
 
     {% set general_fields = [
+        UI.attibuteRow('Name', entity_name),
         UI.attibuteRow('Icon', entity_config.get('icon')),
         UI.attibuteRow('Label', entity_config.get('label')),
         UI.attibuteRow('Plural Label', entity_config.get('plural_label')),
         UI.attibuteRow('Type', entity_extend.get('owner')),
         UI.attibuteRow('Description', entity_config.get('description')),
-
-        UI.attibuteRow('Name', entity_name),
         UI.attibuteRow('Module', module_name),
     ]%}
 

@@ -141,12 +141,17 @@ class ConfigController extends Controller
          */
         $entityName = $moduleName = '';
         $className  = explode('\\', $entity->getClassName());
-        foreach ($className as $i => $name) {
-            if (count($className) - 1 == $i) {
-                $entityName = $name;
-            } elseif (!in_array($name, array('Bundle', 'Entity'))) {
-                $moduleName .= $name;
+        if (count($className) > 1) {
+            foreach ($className as $i => $name) {
+                if (count($className) - 1 == $i) {
+                    $entityName = $name;
+                } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                    $moduleName .= $name;
+                }
             }
+        } else {
+            $entityName = $className[0];
+            $moduleName = 'Custom';
         }
 
         /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */

@@ -239,10 +239,17 @@ class ConfigEntityGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        $entityConfig->set('state', ExtendManager::STATE_DELETED);
+        if ($entityConfig->get('state') == ExtendManager::STATE_NEW) {
+            $this->getDoctrine()->getManager()->remove($entity);
+            $this->getDoctrine()->getManager()->flush();
 
-        $configManager->persist($entityConfig);
-        $configManager->flush();
+            $configManager->clearCacheAll();
+        } else {
+            $entityConfig->set('state', ExtendManager::STATE_DELETED);
+
+            $configManager->persist($entityConfig);
+            $configManager->flush();
+        }
 
         return new Response('', Codes::HTTP_NO_CONTENT);
     }

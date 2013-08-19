@@ -66,7 +66,17 @@ class EntityFieldsDatagridManager extends DatagridManager
             foreach ($provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 if (isset($config['filter'])) {
                     foreach ($config['filter'] as $key => $value) {
-                        if ($provider->getConfig($entity->getClassName())->get($key) != $value) {
+                        if (is_array($value)) {
+                            $error = true;
+                            foreach ($value as $v) {
+                                if ($provider->getConfig($entity->getClassName())->get($key) == $v) {
+                                    $error = false;
+                                }
+                            }
+                            if ($error) {
+                                continue 2;
+                            }
+                        } elseif ($provider->getConfig($entity->getClassName())->get($key) != $value) {
                             continue 2;
                         }
                     }
@@ -139,7 +149,6 @@ class EntityFieldsDatagridManager extends DatagridManager
                 }
             );
         }
-
 
         return $properties;
     }
