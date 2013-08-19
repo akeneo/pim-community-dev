@@ -42,8 +42,6 @@ parameters:
     pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
 
-    pim_product.event_listener.add_hash_to_redirect_url.class: Pim\Bundle\ProductBundle\EventListener\AddHashtagToRedirectedUrlListener
-
     pim_product.manager.currency.class:      Pim\Bundle\ProductBundle\Manager\CurrencyManager
     pim_product.form.handler.currency.class: Pim\Bundle\ProductBundle\Form\Handler\CurrencyHandler
     pim_product.form.type.currency.class:    Pim\Bundle\ProductBundle\Form\Type\CurrencyType

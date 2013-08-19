@@ -10,6 +10,7 @@ Pim.tree.view = function(elementId) {
     listTreeUrl = $el.attr('data-list-tree-url'),
     childrenUrl = $el.attr('data-children-url'),
     unclassifiedNodeTitle = $el.attr('data-unclassified-title'),
+    allTitle = $el.attr('data-all-title'),
     self = this;
 
     this.config = {
@@ -66,6 +67,34 @@ Pim.tree.view = function(elementId) {
         }
     };
 
+    function updateGrid(treeId, nodeId) {
+        var treePattern = /(&treeId=(\d+))/,
+        nodePattern = /(&categoryId=(\d+))/;
+
+        var datagrid = Oro.Registry.getElement('datagrid', 'products');
+        var url = datagrid.collection.url;
+
+        var treeString = nodeId === '' ? '' : '&treeId=' + treeId;
+        var nodeString = nodeId === '' ? '' : '&categoryId=' + nodeId;
+
+        if (url.match(treePattern)) {
+            url = url.replace(treePattern, treeString);
+        } else {
+            url += treeString;
+        }
+
+        if (url.match(nodePattern)) {
+            url = url.replace(nodePattern, nodeString);
+        } else {
+            url += nodeString;
+        }
+
+        if (datagrid.collection.url !== url) {
+            datagrid.collection.url = url;
+            $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
+        }
+    }
+
     this.init = function() {
         $el.jstree(self.config)
         .on('trees_loaded.jstree', function (event, tree_select_id) {
@@ -75,18 +104,22 @@ Pim.tree.view = function(elementId) {
         })
         .on('after_tree_loaded.jstree', function (event, root_node_id) {
             $(document).one('ajaxStop', function() {
+                $el.jstree('create', -1, 'last', {
+                    'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
+                    'data': { 'title': allTitle }
+                }, null, true);
+                $el.jstree('select_node', '#node_');
+
                 $el.jstree('create', '#node_' + root_node_id, 'last', {
                     'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
                     'data': { 'title': unclassifiedNodeTitle }
-                }, false, true);
+                }, null, true);
             });
         })
         .on('select_node.jstree', function (event, data) {
             var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', '');
             var treeId = $('#tree li').first().attr('id').replace('node_', '');
-            var datagrid = Oro.Registry.getElement('datagrid', 'products');
-            datagrid.collection.url = datagrid.collection.url + '&treeId=' + treeId + '&categoryId=' + nodeId;
-            $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
+            updateGrid(treeId, nodeId);
         });
     };
 
