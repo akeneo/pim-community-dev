@@ -580,7 +580,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -668,7 +668,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -716,7 +716,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -755,12 +755,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8"
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/9c6b8615a988117dec83bdbb0fad80afef23eab8",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/f28a39065d455b6df1c989ea6590e971a1f0256d",
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d",
                 "shasum": ""
             },
             "require": {
@@ -788,7 +788,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -806,7 +806,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -821,7 +821,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2013-07-30 05:35:10"
+            "time": "2013-08-17 18:48:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -913,7 +913,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -1103,7 +1103,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -1121,9 +1121,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1238,7 +1238,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -1542,12 +1542,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "e96cbd02225541821cebd0f4a3fc8e1fe9e1c71e"
+                "reference": "v2.3.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/e96cbd02225541821cebd0f4a3fc8e1fe9e1c71e",
-                "reference": "e96cbd02225541821cebd0f4a3fc8e1fe9e1c71e",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/v2.3.7",
+                "reference": "v2.3.7",
                 "shasum": ""
             },
             "require": {
@@ -1614,7 +1614,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-08-14 20:38:51"
+            "time": "2013-08-18 07:18:44"
         },
         {
             "name": "genemu/form-bundle",
@@ -1689,16 +1689,16 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "v0.4.1",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "v0.4.1"
+                "reference": "v0.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/v0.4.1",
-                "reference": "v0.4.1",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/v0.5.0",
+                "reference": "v0.5.0",
                 "shasum": ""
             },
             "require": {
@@ -1706,6 +1706,11 @@
             },
             "require-dev": {
                 "sami/sami": "dev-master"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
             },
             "type": "library",
             "autoload": {
@@ -1732,7 +1737,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2012-12-13 18:31:18"
+            "time": "2013-07-10 17:25:36"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2226,17 +2231,17 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "dev-master",
+            "version": "0.12.0",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "5531198a73c4adee669a8a2d1452999349822771"
+                "reference": "0.12.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/5531198a73c4adee669a8a2d1452999349822771",
-                "reference": "5531198a73c4adee669a8a2d1452999349822771",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/0.12.0",
+                "reference": "0.12.0",
                 "shasum": ""
             },
             "require": {
@@ -2300,12 +2305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "cde6149b2cf021b728eb33e7d8f819e6fb3cb508"
+                "reference": "b1919b5717890fd0686f9ad349adfd69f97da256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/cde6149b2cf021b728eb33e7d8f819e6fb3cb508",
-                "reference": "cde6149b2cf021b728eb33e7d8f819e6fb3cb508",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/b1919b5717890fd0686f9ad349adfd69f97da256",
+                "reference": "b1919b5717890fd0686f9ad349adfd69f97da256",
                 "shasum": ""
             },
             "require": {
@@ -2313,6 +2318,7 @@
             },
             "require-dev": {
                 "amazonwebservices/aws-sdk-for-php": "1.5.*",
+                "aws/aws-sdk-php": "~2",
                 "doctrine/dbal": ">=2.3",
                 "dropbox-php/dropbox-php": "*",
                 "herzult/php-ssh": "*",
@@ -2323,7 +2329,8 @@
                 "rackspace/php-opencloud": "dev-master"
             },
             "suggest": {
-                "amazonwebservices/aws-sdk-for-php": "to use the Amazon S3 adapter",
+                "amazonwebservices/aws-sdk-for-php": "to use the legacy Amazon S3 adapters",
+                "aws/aws-sdk-php": "to use the Amazon S3 adapter",
                 "doctrine/dbal": "to use the Doctrine DBAL adapter",
                 "dropbox-php/dropbox-php": "to use the Dropbox adapter",
                 "ext-apc": "to use the APC adapter",
@@ -2369,7 +2376,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-07-01 17:35:01"
+            "time": "2013-08-19 10:34:05"
         },
         {
             "name": "knplabs/knp-components",
@@ -2788,16 +2795,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "v0.11.1"
+                "reference": "v0.13.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.11.1",
-                "reference": "v0.11.1",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.13.0",
+                "reference": "v0.13.0",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "0.4.*",
+                "imagine/imagine": "0.5.*",
                 "php": ">=5.3.2",
                 "symfony/filesystem": ">=2.0.16,~2.0",
                 "symfony/finder": ">=2.0.16,~2.0",
@@ -2833,7 +2840,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2013-08-05 08:09:13"
+            "time": "2013-08-19 09:22:48"
         },
         {
             "name": "monolog/monolog",
@@ -2958,12 +2965,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "96b40b8a8cdd0bb9daa8c1cefda3f760c0d37359"
+                "reference": "a2dc56d6e5131cd5b45f35d74880a03a3124034c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/96b40b8a8cdd0bb9daa8c1cefda3f760c0d37359",
-                "reference": "96b40b8a8cdd0bb9daa8c1cefda3f760c0d37359",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/a2dc56d6e5131cd5b45f35d74880a03a3124034c",
+                "reference": "a2dc56d6e5131cd5b45f35d74880a03a3124034c",
                 "shasum": ""
             },
             "require": {
@@ -3017,7 +3024,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-08-13 10:28:09"
+            "time": "2013-08-18 20:44:37"
         },
         {
             "name": "oro/platform",
@@ -3714,12 +3721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "91e5b10d0595c077c73564e2e4a6246810651dbf"
+                "reference": "49eb608b724f4534bc6ea3e84df8f9c3450df490"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/91e5b10d0595c077c73564e2e4a6246810651dbf",
-                "reference": "91e5b10d0595c077c73564e2e4a6246810651dbf",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/49eb608b724f4534bc6ea3e84df8f9c3450df490",
+                "reference": "49eb608b724f4534bc6ea3e84df8f9c3450df490",
                 "shasum": ""
             },
             "require": {
@@ -3814,7 +3821,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-08-15 17:08:02"
+            "time": "2013-08-17 16:34:49"
         },
         {
             "name": "twig/extensions",
@@ -4651,7 +4658,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 },
                 {
@@ -4662,7 +4669,7 @@
                 {
                     "name": "Jakub Zalas",
                     "email": "jakub@zalas.pl",
-                    "homepage": "http://www.zalas.eu"
+                    "homepage": "http://www.zalas.eu/"
                 },
                 {
                     "name": "Geoffrey Bachelet",
@@ -4747,12 +4754,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Mink.git",
-                "reference": "93cda551e454cce0867d3578e8a556549c086b19"
+                "reference": "6983f2a4ed9439803f8df57e1486995e2a8129a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Mink/zipball/93cda551e454cce0867d3578e8a556549c086b19",
-                "reference": "93cda551e454cce0867d3578e8a556549c086b19",
+                "url": "https://api.github.com/repos/Behat/Mink/zipball/6983f2a4ed9439803f8df57e1486995e2a8129a2",
+                "reference": "6983f2a4ed9439803f8df57e1486995e2a8129a2",
                 "shasum": ""
             },
             "require": {
@@ -4794,7 +4801,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2013-08-12 10:13:56"
+            "time": "2013-08-19 07:31:35"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -4853,25 +4860,25 @@
         },
         {
             "name": "behat/mink-extension",
-            "version": "dev-master",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "4c935932ed3f73a143c6c17ef0646085b2a9c3a3"
+                "reference": "v1.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/4c935932ed3f73a143c6c17ef0646085b2a9c3a3",
-                "reference": "4c935932ed3f73a143c6c17ef0646085b2a9c3a3",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/v1.1.4",
+                "reference": "v1.1.4",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "~2.4.5",
+                "behat/behat": ">=2.4.5,<2.5",
                 "behat/mink": ">=1.4.3,<1.6-dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "~1.0"
+                "behat/mink-goutte-driver": ">=1.0,<2.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -4903,7 +4910,7 @@
                 "test",
                 "web"
             ],
-            "time": "2013-08-12 12:32:13"
+            "time": "2013-06-04 12:18:22"
         },
         {
             "name": "behat/mink-selenium2-driver",
@@ -4965,28 +4972,28 @@
         },
         {
             "name": "behat/symfony2-extension",
-            "version": "dev-master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Symfony2Extension.git",
-                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea"
+                "reference": "v1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/17b306a2f3904dc478aef006d3412dfbae542fea",
-                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea",
+                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/v1.0.2",
+                "reference": "v1.0.2",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "~2.4.5",
+                "behat/behat": ">=2.4.5,<2.5",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.0"
+                "symfony/framework-bundle": ">=2.0,<3.0"
             },
             "require-dev": {
-                "behat/mink": "~1.4.3",
-                "behat/mink-browserkit-driver": "~1.0.4",
-                "behat/mink-extension": "~1.0.1",
-                "symfony/symfony": "~2.1"
+                "behat/mink": ">=1.4.3,<1.5",
+                "behat/mink-browserkit-driver": ">=1.0.4,<1.1",
+                "behat/mink-extension": ">=1.0.1,<1.1",
+                "symfony/symfony": ">=2.1,<3.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -5017,7 +5024,7 @@
                 "framework",
                 "symfony"
             ],
-            "time": "2013-07-09 08:46:53"
+            "time": "2013-06-06 20:36:08"
         },
         {
             "name": "instaclick/php-webdriver",
@@ -5064,7 +5071,7 @@
                 {
                     "name": "Anthon Pang",
                     "email": "apang@softwaredevelopment.ca",
-                    "role": "Fork Maintainer"
+                    "role": "developer"
                 }
             ],
             "description": "PHP WebDriver for Selenium 2",
