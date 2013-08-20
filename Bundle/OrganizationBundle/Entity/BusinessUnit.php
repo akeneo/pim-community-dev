@@ -47,16 +47,6 @@ class BusinessUnit
     protected $name;
 
     /**
-     * @var BusinessUnit
-     *
-     * @ORM\ManyToOne(targetEntity="BusinessUnit")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
-     */
-    protected $parent;
-
-    /**
      * @var Organization
      *
      * @ORM\ManyToOne(targetEntity="Organization")

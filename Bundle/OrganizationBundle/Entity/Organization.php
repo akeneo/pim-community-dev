@@ -53,13 +53,6 @@ class Organization
     protected $precision;
 
     /**
-     * @var Organization
-     * @ORM\ManyToOne(targetEntity="Organization")
-     * @ORM\JoinColumn(name="organization_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organizationOwner;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -144,24 +137,5 @@ class Organization
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOwner()
-    {
-        return $this->organizationOwner;
-    }
-
-    /**
-     * @param Organization $organizationOwner
-     * @return Organization
-     */
-    public function setOwner(Organization $organizationOwner)
-    {
-        $this->organizationOwner = $organizationOwner;
-
-        return $this;
     }
 }

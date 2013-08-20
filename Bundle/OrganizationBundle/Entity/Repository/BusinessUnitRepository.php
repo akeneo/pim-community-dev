@@ -22,7 +22,7 @@ class BusinessUnitRepository extends EntityRepository
                         array(
                             'businessUnit.id',
                             'businessUnit.name',
-                            'IDENTITY(businessUnit.parent) parent',
+                            'IDENTITY(businessUnit.businessUnitOwner) parent',
                         )
                     );
         if ($user && $user->getId()) {
@@ -50,7 +50,6 @@ class BusinessUnitRepository extends EntityRepository
             }
         }
         unset($businessUnit);
-
         if (isset($children[0])) {
             $children = $children[0];
         }

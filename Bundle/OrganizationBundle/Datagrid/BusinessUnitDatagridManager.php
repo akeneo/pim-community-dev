@@ -84,13 +84,13 @@ class BusinessUnitDatagridManager extends DatagridManager
         $fieldsCollection->add($fieldPhone);
 
         $parent = new FieldDescription();
-        $parent->setName('parent');
+        $parent->setName('owner');
         $parent->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('oro.business_unit.datagrid.parent'),
-                'field_name'  => 'parentName',
-                'expression'  => 'parent',
+                'label' => $this->translate('oro.business_unit.datagrid.owner'),
+                'field_name'  => 'ownerName',
+                'expression'  => 'owner',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
                 'sortable'    => true,
@@ -149,10 +149,10 @@ class BusinessUnitDatagridManager extends DatagridManager
     {
         $entityAlias = $query->getRootAlias();
         $query->addSelect('organization.name as organizationName', true);
-        $query->addSelect('parent.name as parentName', true);
+        $query->addSelect('owner.name as ownerName', true);
         /** @var $query QueryBuilder */
         $query->leftJoin($entityAlias . '.organization', 'organization');
-        $query->leftJoin($entityAlias . '.parent', 'parent');
+        $query->leftJoin($entityAlias . '.businessUnitOwner', 'owner');
     }
 
     /**

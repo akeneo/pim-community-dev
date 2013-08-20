@@ -132,13 +132,11 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
-
         $config->expects($this->any())->method('getDataClass')->will($this->returnValue('User'));
 
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
-
         $form->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
         $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
@@ -146,7 +144,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->builder->expects($this->any())->method('getForm')->will($this->returnValue($form));
-
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
 
         $this->extension = new FormTypeExtension(

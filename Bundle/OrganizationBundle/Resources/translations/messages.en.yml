@@ -10,6 +10,6 @@ oro:
             name: "Name"
             email: "Email"
             phone: "Phone"
-            parent: "Parent"
+            owner: "Owner Business Unit"
             organization: "Organization"
             created_at: "Created At"
