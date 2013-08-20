@@ -47,7 +47,13 @@ class BatchCommand extends ContainerAwareCommand
 
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
-            throw new \RuntimeException(sprintf('jobInstance instance "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+            throw new \RuntimeException(
+                sprintf(
+                    "Job instance \"%s\" is invalid:\n%s",
+                    $code,
+                    $errors
+                )
+            );
         }
         $this->getJobLauncher()->launch($job);
 
@@ -95,10 +101,5 @@ class BatchCommand extends ContainerAwareCommand
     protected function getJobDataCollector()
     {
         return $this->getContainer()->get('pim_batch.job_data_collector');
-    }
-
-    private function getErrorMessages(ConstraintViolationList $errors)
-    {
-        return implode("\n - ", $errors);
     }
 }

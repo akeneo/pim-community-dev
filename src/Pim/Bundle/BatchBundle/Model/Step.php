@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -11,8 +13,20 @@ namespace Pim\Bundle\BatchBundle\Model;
 class Step
 {
     protected $name;
+
+    /**
+     * @Assert\Valid
+     */
     protected $reader;
+
+    /**
+     * @Assert\Valid
+     */
     protected $processor;
+
+    /**
+     * @Assert\Valid
+     */
     protected $writer;
 
     public function setName($name)

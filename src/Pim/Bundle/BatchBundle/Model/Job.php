@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -12,6 +14,9 @@ class Job
 {
     protected $code;
 
+    /**
+     * @Assert\Valid
+     */
     protected $steps;
 
     public function setCode($code)
