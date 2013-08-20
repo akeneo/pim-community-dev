@@ -64,6 +64,14 @@ class CreateCommand extends ContainerAwareCommand
 
                 $this->configManager->flush();
 
+                //fix state "Update" for existing class.
+                foreach ($config as $entityName => $entityOptions) {
+                    $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
+                    $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
+                    $this->configManager->persist($entityConfig);
+                }
+                $this->configManager->flush();
+
                 $output->writeln('Done');
             }
         }
