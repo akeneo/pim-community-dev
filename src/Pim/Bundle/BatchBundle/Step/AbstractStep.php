@@ -222,7 +222,7 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
         }
 
-        $this->getLogger()->debug("Step execution complete: " . $stepExecution->getSummary());
+        $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
     }
 
     /**
