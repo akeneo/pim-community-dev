@@ -12,7 +12,7 @@ class BusinessUnitSelectType extends AbstractType
             array(
                 'configs' => array(
                     'width' => '400px',
-                    'placeholder' => 'oro.organization.form.choose_business_user',
+                    'placeholder' => 'oro.business_unit.form.choose_business_user',
                     'result_template_twig' => 'OroOrganizationBundle:Js:businessUnitResult.html.twig',
                     'selection_template_twig' => 'OroOrganizationBundle:Js:businessUnitSelection.html.twig'
                 ),

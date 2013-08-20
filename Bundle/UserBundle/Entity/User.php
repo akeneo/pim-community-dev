@@ -42,8 +42,8 @@ use DateTime;
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
  * @Configurable(
+ *  routeName="oro_user_index",
  *  defaultValues={
- *      routeName="oro_user_index",
  *      "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
  *      "acl"={"owner_type"="BUSINESS_UNIT"}
  *  }

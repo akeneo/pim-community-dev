@@ -40,7 +40,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('orocrm.business_unit.datagrid.name'),
+                'label' => $this->translate('oro.business_unit.datagrid.name'),
                 'field_name'  => 'name',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -56,7 +56,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $fieldEmail->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('orocrm.business_unit.datagrid.email'),
+                'label' => $this->translate('oro.business_unit.datagrid.email'),
                 'field_name'  => 'email',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -72,7 +72,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $fieldPhone->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('orocrm.business_unit.datagrid.phone'),
+                'label' => $this->translate('oro.business_unit.datagrid.phone'),
                 'field_name'  => 'phone',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -88,7 +88,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $parent->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('orocrm.business_unit.datagrid.parent'),
+                'label' => $this->translate('oro.business_unit.datagrid.parent'),
                 'field_name'  => 'parentName',
                 'expression'  => 'parent',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
@@ -109,7 +109,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $organization->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label' => $this->translate('orocrm.business_unit.datagrid.organization'),
+                'label' => $this->translate('oro.business_unit.datagrid.organization'),
                 'field_name'  => 'organizationName',
                 'expression'  => 'organization',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
@@ -130,7 +130,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $fieldCreated->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label' => $this->translate('orocrm.business_unit.datagrid.created_at'),
+                'label' => $this->translate('oro.business_unit.datagrid.created_at'),
                 'field_name'  => 'createdAt',
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => false,
@@ -165,7 +165,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_business_unit_view',
             'options'      => array(
-                'label'         => $this->translate('orocrm.business_unit.datagrid.view'),
+                'label'         => $this->translate('oro.business_unit.datagrid.view'),
                 'link'          => 'view_link',
                 'runOnRowClick' => true,
             )
@@ -176,7 +176,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_business_unit_view',
             'options'      => array(
-                'label' => $this->translate('orocrm.business_unit.datagrid.view'),
+                'label' => $this->translate('oro.business_unit.datagrid.view'),
                 'icon'  => 'user',
                 'link'  => 'view_link',
             )
@@ -187,7 +187,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_business_unit_update',
             'options'      => array(
-                'label' => $this->translate('orocrm.business_unit.datagrid.update'),
+                'label' => $this->translate('oro.business_unit.datagrid.update'),
                 'icon'  => 'edit',
                 'link'  => 'update_link',
             )
@@ -198,7 +198,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'oro_business_unit_delete',
             'options'      => array(
-                'label' => $this->translate('orocrm.business_unit.datagrid.delete'),
+                'label' => $this->translate('oro.business_unit.datagrid.delete'),
                 'icon'  => 'trash',
                 'link'  => 'delete_link',
             )
