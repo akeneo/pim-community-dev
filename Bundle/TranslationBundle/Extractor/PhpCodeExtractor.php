@@ -50,8 +50,9 @@ class PhpCodeExtractor implements ExtractorInterface
 
                 if ($message) {
                     if (substr_count($message, '.') >= 2
-                        && preg_match('#^[\w\d]+\.[\w\d]+\.[\w\d]+(\.[\w\d]+)?$#Ui', $message)
-                        && !$this->container->has($message)) {
+                        && preg_match('#^[\w\d_]+\.[\w\d_]+\.[\w\d_]+(\.[\w\d_]+)?$#Ui', $message)
+                        && !$this->container->has($message)
+                        && !$this->container->hasParameter($message)) {
 
                         $catalog->set($message, $this->prefix . $message);
                     }
