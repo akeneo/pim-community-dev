@@ -23,11 +23,16 @@ class JobFactory
 
     /**
      * @param Logger $logger Logger where to log output of the job
-     * @param JobRepositoryInterface $jobRepository Object responsible for persisting jobExecution and stepExection states
-     * @param StepHandlerInterface $stepHandler Object to which the step management is delegated
+     * @param JobRepositoryInterface $jobRepository Object responsible
+     *              for persisting jobExecution and stepExection states
+     * @param StepHandlerInterface $stepHandler Object to which
+     *              the step management is delegated
      */
-    public function __construct(Logger $logger, JobRepositoryInterface $jobRepository, StepHandlerInterface $stepHandler)
-    {
+    public function __construct(
+        Logger $logger,
+        JobRepositoryInterface $jobRepository,
+        StepHandlerInterface $stepHandler
+    ) {
         $this->logger        = $logger;
         $this->jobRepository = $jobRepository;
         $this->stepHandler   = $stepHandler;

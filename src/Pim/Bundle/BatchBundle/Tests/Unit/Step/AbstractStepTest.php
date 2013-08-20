@@ -69,5 +69,4 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Pim\Bundle\BatchBundle\Step\AbstractStep', $entity);
     }
-
 }

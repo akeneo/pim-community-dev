@@ -58,7 +58,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $beforeExecute = new \DateTime();
 
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
 
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
@@ -95,7 +95,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('My test exception');
 
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
         $this->job->setJobRepository($this->jobRepository);
 
@@ -129,7 +129,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteStoppingWithNoStep()
     {
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
         $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
 
@@ -145,7 +145,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('My test exception');
 
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
         $step = new InterruptedStep('my_interrupted_step');
@@ -172,7 +172,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteIncomplete()
     {
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
         $step = new IncompleteStep('my_incomplete_step');

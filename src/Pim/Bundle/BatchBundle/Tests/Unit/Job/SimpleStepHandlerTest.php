@@ -121,7 +121,7 @@ class SimpleStepHandlerTest extends \PHPUnit_Framework_TestCase
         try {
             $this->simpleStepHandler->handleStep($step, $jobExecution);
             $this->assertFalse(true, "We shouldn't get there, a JobInterruptedException should have been threw");
-        } catch(JobInterruptedException $e) {
+        } catch (JobInterruptedException $e) {
         }
 
         $this->assertEquals(BatchStatus::STOPPING, $jobExecution->getStatus()->getValue());
@@ -146,12 +146,12 @@ class SimpleStepHandlerTest extends \PHPUnit_Framework_TestCase
         try {
             $this->simpleStepHandler->handleStep($step, $jobExecution);
             $this->assertFalse(true, "We shouldn't get there, a JobInterruptedException should have been threw");
-        } catch(JobInterruptedException $e) {
+        } catch (JobInterruptedException $e) {
         }
 
         $this->markTestIncomplete();
         //Fixme, the mock object should not mocked the setStatus() method
-//        $this->assertEquals(BatchStatus::STOPPING, $jobExecution->getStatus()->getValue());
+        //$this->assertEquals(BatchStatus::STOPPING, $jobExecution->getStatus()->getValue());
     }
 
     /**

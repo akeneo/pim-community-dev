@@ -34,7 +34,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->jobExecution = new JobExecution();
-        $this->stepExecution = new StepExecution('my_step_execution',$this->jobExecution);
+        $this->stepExecution = new StepExecution('my_step_execution', $this->jobExecution);
     }
 
     public function testGetId()
@@ -155,7 +155,8 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $expectedString = "id=0, name=my_step_execution, status=2, exitStatus=EXECUTING, readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0";
+        $expectedString = "id=0, name=my_step_execution, status=2, exitStatus=EXECUTING, '.
+            'readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0";
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
 
