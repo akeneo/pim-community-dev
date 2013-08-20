@@ -52,7 +52,13 @@ class BatchCommand extends ContainerAwareCommand
         $this->getJobLauncher()->launch($job);
 
         $collector = $this->getJobDataCollector();
-        $output->writeln(sprintf('<info>Reader executed %d time(s)</info>', $collector->getReaderExecutionCount()));
+        $output->writeln(
+            sprintf(
+                '<info>Reader executed %d time(s) (%d item(s) read)</info>',
+                $collector->getReaderExecutionCount(),
+                $collector->getReadItemCount()
+            )
+        );
         $output->writeln(sprintf('<info>Processor executed %d time(s)</info>', $collector->getProcessorExecutionCount()));
         $output->writeln(sprintf('<info>Writer executed %d time(s)</info>', $collector->getWriterExecutionCount()));
     }

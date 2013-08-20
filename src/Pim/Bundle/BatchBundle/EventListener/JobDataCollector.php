@@ -15,6 +15,7 @@ use Pim\Bundle\BatchBundle\Event\JobEvent;
  */
 class JobDataCollector implements EventSubscriberInterface
 {
+    private $readItemCount = 0;
     private $readerExecutionCount = 0;
     private $readerExecutionStatuses = array();
     private $processorExecutionCount = 0;
@@ -54,6 +55,14 @@ class JobDataCollector implements EventSubscriberInterface
 
     public function afterRead(ItemEvent $event)
     {
+        $item = $event->getItem();
+
+        if (is_array($item)) {
+            $this->readItemCount += count($item);
+        } else {
+            ++$this->readItemCount;
+        }
+
         ++$this->readerExecutionCount;
         ++$this->readerExecutionStatuses[$this->statuses[$event->getResult()]];
     }
@@ -68,6 +77,11 @@ class JobDataCollector implements EventSubscriberInterface
     {
         ++$this->writerExecutionCount;
         ++$this->writerExecutionStatuses[$this->statuses[$event->getResult()]];
+    }
+
+    public function getReadItemCount()
+    {
+        return $this->readItemCount;
     }
 
     public function getReaderExecutionCount()
