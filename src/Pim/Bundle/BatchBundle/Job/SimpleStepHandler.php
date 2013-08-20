@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
+use Monolog\Logger;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
@@ -21,18 +22,19 @@ class SimpleStepHandler implements StepHandlerInterface
     /* @var JobRepositoryInterface */
     private $jobRepository = null;
 
-    /* @var ExecutionContext $executionContext */
+    /* @var ExecutionContext */
     private $executionContext = null;
 
+    /* @var Logger */
     private $logger = null;
 
     /**
-     * @param object                 $logger
+     * @param Logger                 $logger
      * @param JobRepositoryInterface $jobRepository    Job repository
      * @param ExecutionContext       $executionContext Execution context
      */
     public function __construct(
-        $logger,
+        Logger $logger,
         JobRepositoryInterface $jobRepository,
         ExecutionContext $executionContext = null
     ) {
@@ -49,7 +51,7 @@ class SimpleStepHandler implements StepHandlerInterface
      *
      * @param object $logger The logger
      */
-    public function setLogger($logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
