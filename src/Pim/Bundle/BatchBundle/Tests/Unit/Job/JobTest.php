@@ -12,6 +12,7 @@ use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
 use Pim\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
+use Pim\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
 use Pim\Bundle\BatchBundle\Tests\Unit\Job\MockJobRepository;
 
 /**
@@ -167,6 +168,28 @@ class JobTest extends \PHPUnit_Framework_TestCase
             'Exit description'
         );
 
+    }
+
+    public function testExecuteIncomplete()
+    {
+        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
+
+        $step = new IncompleteStep('my_incomplete_step');
+        $step->setLogger($this->logger);
+        $step->setJobRepository($this->jobRepository);
+
+        $this->job->setJobRepository($this->jobRepository);
+        $this->job->addStep($step);
+        $this->job->execute($jobExecution);
+
+        $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue(), 'Batch status stopped');
+
+        $this->assertEquals(
+            ExitStatus::COMPLETED,
+            $jobExecution->getExitStatus()->getExitCode(),
+            'Exit status code stopped'
+        );
     }
 
     public function testToString()
