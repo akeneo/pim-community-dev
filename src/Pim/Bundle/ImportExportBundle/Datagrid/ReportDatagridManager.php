@@ -33,26 +33,7 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $field = new FieldDescription();
-        $field->setName('code');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_TEXT,
-                'label'           => $this->translate('Code'),
-                'field_name'      => 'jobCode',
-                'expression'      => 'job.id',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
-                'sortable'        => false,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
-                'property'        => 'code',
-                'query_builder'   => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
-                },
-                'filter_by_where' => true,
-            )
-        );
+        $field = $this->createCodeField();
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
@@ -107,6 +88,37 @@ class ReportDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create status field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCodeField()
+    {
+        $field = new FieldDescription();
+        $field->setName('code');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Code'),
+                'field_name'      => 'jobCode',
+                'expression'      => 'job.id',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'sortable'        => false,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'class'           => 'PimBatchBundle:Job',
+                'property'        => 'code',
+                'query_builder'   => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
+                },
+                'filter_by_where' => true,
+            )
+        );
+
+        return $field;
     }
 
     /**

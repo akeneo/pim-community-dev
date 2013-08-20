@@ -127,4 +127,20 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
         $starting = new BatchStatus(BatchStatus::STARTING);
         $this->assertFalse($starting->isUnsuccessful());
     }
+
+    public function testGetAllLabels()
+    {
+        $expectedLabels = array(
+            BatchStatus::COMPLETED => 'COMPLETED',
+            BatchStatus::STARTING  => 'STARTING',
+            BatchStatus::STARTED   => 'STARTED',
+            BatchStatus::STOPPING  => 'STOPPING',
+            BatchStatus::STOPPED   => 'STOPPED',
+            BatchStatus::FAILED    => 'FAILED',
+            BatchStatus::ABANDONED => 'ABANDONED',
+            BatchStatus::UNKNOWN   => 'UNKNOWN'
+        );
+
+        $this->assertEquals($expectedLabels, BatchStatus::getAllLabels());
+    }
 }
