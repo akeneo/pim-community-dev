@@ -344,13 +344,29 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         return $this->productCompletenesses;
     }
 
+    /**
+     * Add product completeness
+     *
+     * @param ProductCompleteness $productCompleteness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
     public function addProductCompleteness(ProductCompleteness $productCompleteness)
     {
-        $this->productCompletenesses->add($productCompleteness);
+        if (!$this->productCompletenesses->contains($productCompleteness)) {
+            $this->productCompletenesses->add($productCompleteness);
+        }
 
         return $this;
     }
 
+    /**
+     * Remove product completeness
+     *
+     * @param ProductCompleteness $productCompleteness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
     public function removeProductCompleteness(ProductCompleteness $productCompleteness)
     {
         $this->productCompletenesses->remove($productCompleteness);
@@ -358,13 +374,21 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         return $this;
     }
 
-    public function getProductCompleteness($locale, $scope)
+    /**
+     * Get the completeness from a locale and a scope
+     *
+     * @param string $locale
+     * @param string $channel
+     *
+     * @return boolean|mixed
+     */
+    public function getProductCompleteness($locale, $channel)
     {
         $productCompleteness = array_filter(
             $this->productCompletenesses->toArray(),
-            function ($productCompleteness) use ($locale, $scope) {
+            function ($productCompleteness) use ($locale, $channel) {
                 return $productCompleteness->getLocale() === $locale
-                    && $productCompleteness->getChannel()->getCode() === $scope;
+                    && $productCompleteness->getChannel()->getCode() === $channel;
             }
         );
 
@@ -373,5 +397,19 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         } else {
             return array_shift($productCompleteness);
         }
+    }
+
+    /**
+     * Set product completenesses
+     *
+     * @param array $productCompletenesses
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function setProductCompletenesses($productCompletenesses)
+    {
+        $this->productCompletenesses = new ArrayCollection($productCompletenesses);
+
+        return $this;
     }
 }
