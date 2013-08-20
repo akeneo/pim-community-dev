@@ -327,7 +327,13 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function getGroupSequence()
     {
-        return array('Default', $this->getAttributeType());
+        $groups = array('Default', $this->getAttributeType());
+
+        if ($rule = $this->getValidationRule()) {
+            $groups[] = $rule;
+        }
+
+        return $groups;
     }
 
     /**
