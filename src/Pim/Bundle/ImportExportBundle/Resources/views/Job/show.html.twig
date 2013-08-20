@@ -23,13 +23,13 @@
     {% set left %}
         <ul class="inline">
            <li>{{ 'Code'|trans }}: {{ job.code|upper }}</li>
-           <li>{{ 'Connector'|trans }}: {{ job.jobDefinition.name|trans }}</li>
+           <li>{{ 'Connector'|trans }}: {{ job.jobDefinition.code|trans }}</li>
        </ul>
     {% endset %}
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {% if job.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\Job::STATUS_IN_PROGRESS') %}
+        {% if job.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if violations|length == 0 %}

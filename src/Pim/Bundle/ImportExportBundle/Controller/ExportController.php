@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Export controller
@@ -18,6 +18,6 @@ class ExportController extends JobController
      */
     protected function getJobType()
     {
-        return Job::TYPE_EXPORT;
+        return JobInstance::TYPE_EXPORT;
     }
 }

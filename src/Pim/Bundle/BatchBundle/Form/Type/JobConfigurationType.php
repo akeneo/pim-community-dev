@@ -37,7 +37,7 @@ class JobConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\\Bundle\\BatchBundle\\Job\\Job',
+                'data_class' => 'Pim\\Bundle\\BatchBundle\\Model\\Job',
             )
         );
     }

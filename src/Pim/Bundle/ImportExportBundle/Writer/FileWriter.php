@@ -3,8 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Model\Writer;
 
 /**
  * Write data into a file on the filesystem
@@ -13,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
+class FileWriter extends Writer
 {
     /**
      * @Assert\NotBlank
@@ -45,15 +44,13 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     /**
      * {@inheritDoc}
      */
-    public function write(array $data)
+    public function write($item)
     {
         if (!$this->handler) {
             $this->handler = fopen($this->path, 'w');
         }
 
-        foreach ($data as $entry) {
-            fwrite($this->handler, $entry);
-        }
+        fwrite($this->handler, $item);
     }
 
     /**

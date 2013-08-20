@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
-use Pim\Bundle\BatchBundle\Entity\Job;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -16,6 +13,8 @@ use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Pim\Bundle\BatchBundle\ConnectorRegistry;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Job datagrid manager
@@ -266,7 +265,7 @@ class JobDatagridManager extends DatagridManager
     {
         // create choices
         $choices = array(
-            Job::STATUS_READY => $this->translate('pim_import_export.status.'. Job::STATUS_READY)
+            JobInstance::STATUS_READY => $this->translate('pim_import_export.status.'. JobInstance::STATUS_READY)
         );
 
         // create field description

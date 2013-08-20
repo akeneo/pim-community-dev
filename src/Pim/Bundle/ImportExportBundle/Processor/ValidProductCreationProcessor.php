@@ -6,13 +6,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
+use Pim\Bundle\BatchBundle\Model\Processor;
 
 /**
  * Product form processor
@@ -22,7 +22,7 @@ use Pim\Bundle\ProductBundle\Manager\ChannelManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ValidProductCreationProcessor extends Processor
 {
     protected $entityManager;
     protected $formFactory;
@@ -200,7 +200,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             throw new InvalidObjectException($form);
         }
 
-        return $product;
+        return $item;
     }
 
     /**

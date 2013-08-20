@@ -4,8 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ProductBundle\Validator\Constraints as PimAssert;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Pim\Bundle\BatchBundle\Model\Reader;
 
 /**
  * Csv reader
@@ -14,7 +13,7 @@ use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class CsvReader extends Reader
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})

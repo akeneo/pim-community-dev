@@ -26,7 +26,6 @@ class PimImportExportExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('connectors.yml');
         $loader->load('serializer.yml');
         $loader->load('datagrid.yml');
     }

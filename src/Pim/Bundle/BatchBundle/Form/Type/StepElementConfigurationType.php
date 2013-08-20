@@ -71,7 +71,7 @@ class StepElementConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\\Bundle\\ImportExportBundle\\AbstractConfigurableStepElement',
+                'data_class' => 'Pim\\Bundle\\BatchBundle\\Model\\AbstractConfigurableStepElement',
             )
         );
     }

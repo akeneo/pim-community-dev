@@ -8,9 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Validator\Validator;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Batch command
@@ -27,9 +25,9 @@ class BatchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:batch:job')
-            ->setDescription('Launch a registered job')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job code');
+            ->setName('pim:job:launch')
+            ->setDescription('Launch a configured jobInstance instance')
+            ->addArgument('code', InputArgument::REQUIRED, 'jobInstance instance code');
     }
 
     /**
@@ -38,27 +36,25 @@ class BatchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->getArgument('code');
-        $job = $this->getEntityManager()->getRepository('PimBatchBundle:Job')->findOneByCode($code);
-        if (!$job) {
-            throw new \InvalidArgumentException(sprintf('Could not find job "%s".', $code));
+        $jobInstance = $this->getEntityManager()->getRepository('PimBatchBundle:JobInstance')->findOneByCode($code);
+        if (!$jobInstance) {
+            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
-        $definition = $this->getConnectorRegistry()->getJob($job);
-        $job->setJobDefinition($definition);
+        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        // FIXME Usefull?
+        $jobInstance->setJobDefinition($job);
 
-        $errors = $this->getValidator()->validate($job, array('Default', 'Execution'));
+        $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
-            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+            throw new \RuntimeException(sprintf('jobInstance instance "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
-        $jobExecution = new JobExecution;
-        $jobExecution->setJob($job);
-        $definition->execute($jobExecution);
+        $this->getJobLauncher()->launch($job);
 
-        if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
-            $output->writeln(sprintf('<info>%s has been successfully executed.</info>', ucfirst($job->getType())));
-        } else {
-            $output->writeln(sprintf('<error>An error occured during the %s execution.</error>', $job->getType()));
-        }
+        $collector = $this->getJobDataCollector();
+        $output->writeln(sprintf('<info>Reader executed %d time(s)</info>', $collector->getReaderExecutionCount()));
+        $output->writeln(sprintf('<info>Processor executed %d time(s)</info>', $collector->getProcessorExecutionCount()));
+        $output->writeln(sprintf('<info>Writer executed %d time(s)</info>', $collector->getWriterExecutionCount()));
     }
 
     /**
@@ -82,16 +78,21 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getConnectorRegistry()
     {
-        return $this->getContainer()->get('pim_batch.connectors');
+        return $this->getContainer()->get('pim_batch.connectors_registry');
+    }
+
+    protected function getJobLauncher()
+    {
+        return $this->getContainer()->get('pim_batch.job_launcher');
+    }
+
+    protected function getJobDataCollector()
+    {
+        return $this->getContainer()->get('pim_batch.job_data_collector');
     }
 
     private function getErrorMessages(ConstraintViolationList $errors)
     {
-        $str = '';
-        foreach ($errors as $error) {
-            $str .= sprintf("\n  - %s", $error);
-        }
-
-        return $str;
+        return implode("\n - ", $errors);
     }
 }

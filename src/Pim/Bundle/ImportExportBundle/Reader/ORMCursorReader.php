@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Model\Reader;
 
 /**
  * ORM cursor reader
@@ -13,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMCursorReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class ORMCursorReader extends Reader
 {
     protected $query;
     private $cursor;

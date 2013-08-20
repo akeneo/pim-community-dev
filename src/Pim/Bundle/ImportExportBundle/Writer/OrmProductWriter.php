@@ -3,9 +3,9 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\BatchBundle\Model\Writer;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Product writer using ORM method
@@ -14,7 +14,7 @@ use Pim\Bundle\ProductBundle\Manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
+class OrmProductWriter extends Writer
 {
     /**
      * @var ProductManager
@@ -55,11 +55,13 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write($item)
     {
-        foreach ($items as $product) {
-            $this->productManager->getStorageManager()->persist($product);
+        if (!$item instanceof Product) {
+            throw new \InvalidArgumentException('Expecting instance of Pim\Bundle\ProductBundle\Entity\Product.');
         }
+
+        $this->productManager->getStorageManager()->persist($item);
         $this->productManager->getStorageManager()->flush();
 
         $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductValue');

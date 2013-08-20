@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
+use Pim\Bundle\BatchBundle\Connector;
 
 /**
  * The Pim Import Export Bundle
@@ -13,7 +14,7 @@ use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSeriali
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimImportExportBundle extends Bundle
+class PimImportExportBundle extends Connector
 {
     /**
      * {@inheritDoc}

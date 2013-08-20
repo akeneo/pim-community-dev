@@ -1,40 +1,24 @@
-parameters:
-    pim_batch.connectors.class:     Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
-    pim_batch.step_handler.class:   Pim\Bundle\BatchBundle\Job\SimpleStepHandler
-    pim_batch.job_factory.class:    Pim\Bundle\BatchBundle\Job\JobFactory
-    pim_batch.step_factory.class:   Pim\Bundle\BatchBundle\Step\StepFactory
-    pim_batch.connectors_config:    ~
-    pim_batch.jobs_config:          ~
-
 services:
-    # connectors registry
-    pim_batch.connectors:
-        class: %pim_batch.connectors.class%
+    pim_batch.job_launcher:
+        class: Pim\Bundle\BatchBundle\JobLauncher
+        arguments:
+            - @event_dispatcher
+
+    pim_batch.job_data_collector:
+        class: Pim\Bundle\BatchBundle\EventListener\JobDataCollector
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_batch.connectors_registry:
+        class: Pim\Bundle\BatchBundle\ConnectorRegistry
         arguments:
             - @pim_batch.job_factory
             - @pim_batch.step_factory
 
-    pim_batch.job_repository:
-        class: %pim_batch.job_repository.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-
-    pim_batch.step_handler:
-        class: %pim_batch.step_handler.class%
-        arguments:
-            - @logger
-            - @pim_batch.job_repository
-
     pim_batch.job_factory:
-        class: %pim_batch.job_factory.class%
-        arguments:
-            - @logger
-            - @pim_batch.job_repository
-            - @pim_batch.step_handler
+        public: false
+        class: Pim\Bundle\BatchBundle\JobFactory
 
     pim_batch.step_factory:
-        class: %pim_batch.step_factory.class%
-        arguments:
-            - @logger
-            - @pim_batch.job_repository
+        public: false
+        class: Pim\Bundle\BatchBundle\StepFactory

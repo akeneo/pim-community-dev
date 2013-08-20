@@ -1,5 +1,5 @@
 parameters:
-    pim_import_export.entity.job.class:              Pim\Bundle\BatchBundle\Entity\Job
+    pim_import_export.entity.job.class:              Pim\Bundle\BatchBundle\Entity\JobInstance
     pim_import_export.entity.job_execution.class:    Pim\Bundle\BatchBundle\Entity\JobExecution
 
     pim_import_export.datagrid.manager.job.class:    Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
@@ -17,7 +17,7 @@ services:
               route_name: pim_importexport_export_index
         calls:
             - [ setJobType, ['export'] ]
-            - [ setConnectorRegistry, [@pim_batch.connectors] ]
+            - [ setConnectorRegistry, [@pim_batch.connectors_registry] ]
 
     pim_import_export.datagrid.manager.import:
         class: %pim_import_export.datagrid.manager.job.class%
@@ -30,7 +30,7 @@ services:
               route_name: pim_importexport_import_index
         calls:
             - [ setJobType, ['import'] ]
-            - [ setConnectorRegistry, [@pim_batch.connectors] ]
+            - [ setConnectorRegistry, [@pim_batch.connectors_registry] ]
 
     pim_import_export.datagrid.manager.report:
         class: %pim_import_export.datagrid.manager.report.class%

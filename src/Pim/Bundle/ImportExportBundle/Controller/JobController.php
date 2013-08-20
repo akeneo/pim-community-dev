@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Pim\Bundle\ProductBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
@@ -60,7 +60,7 @@ class JobController extends Controller
         $alias     = $request->query->get('alias');
         $registry  = $this->getConnectorRegistry();
 
-        $job = new Job($connector, $this->getJobType(), $alias);
+        $job = new JobInstance($connector, $this->getJobType(), $alias);
         if (!$jobDefinition = $registry->getJob($job)) {
             $this->addFlash(
                 'error',
@@ -246,9 +246,9 @@ class JobController extends Controller
      */
     protected function getJob($id, $checkStatus = true)
     {
-        $job = $this->findOr404('PimBatchBundle:Job', $id);
+        $job = $this->findOr404('PimBatchBundle:JobInstance', $id);
 
-        if ($checkStatus && $job->getStatus() === Job::STATUS_IN_PROGRESS) {
+        if ($checkStatus && $job->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
             throw $this->createNotFoundException(
                 sprintf('The %s "%s" is currently in progress', $job->getJobType(), $job->getLabel())
             );
@@ -280,7 +280,7 @@ class JobController extends Controller
      */
     protected function getConnectorRegistry()
     {
-        return $this->get('pim_batch.connectors');
+        return $this->get('pim_batch.connectors_registry');
     }
 
     /**
