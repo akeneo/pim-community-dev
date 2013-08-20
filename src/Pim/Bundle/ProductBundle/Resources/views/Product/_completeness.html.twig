@@ -1,0 +1,23 @@
+<div class="tab-content">
+    {% set columnWidth = 100/(channels|length + 1) %}
+    <table class="table groups">
+        <thead>
+            <th width="{{ columnWidth }}%">{{ 'Label'|upper }}</th>
+            {% for channel in channels %}
+                <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
+            {% endfor %}
+            <th>&nbsp;</th>
+        </thead>
+
+        <tbody>
+            {% for locale in locales %}
+            <tr>
+                <td>{{ locale }}</td>
+                {% for channel in channels %}
+                <td>{{ product.productCompleteness(locale, channel) }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
