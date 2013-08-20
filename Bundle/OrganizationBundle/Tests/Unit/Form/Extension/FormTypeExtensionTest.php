@@ -83,6 +83,17 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getBusinessUnitsTree')
             ->will($this->returnValue($businessUnitsTree));
 
+        $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->organizations = array($organization);
+        $businessUnit = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $businessUnit->expects($this->any())->method('getOrganization')->will($this->returnValue($organization));
+        $this->businessUnits = array($businessUnit);
+        $entityClassName = get_class($businessUnit);
+
         $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -97,12 +108,12 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->configProvider->expects($this->any())
             ->method('getConfig')
-            ->with('User')
+            ->with($entityClassName)
             ->will($this->returnValue($this->config));
 
         $this->configProvider->expects($this->any())
             ->method('hasConfig')
-            ->with('User')
+            ->with($entityClassName)
             ->will($this->returnValue(true));
 
         $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
@@ -110,15 +121,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
 
-        $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->organizations = array($organization);
-        $businessUnit = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $businessUnit->expects($this->any())->method('getOrganization')->will($this->returnValue($organization));
-        $this->businessUnits = array($businessUnit);
         $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
 
         $token->expects($this->any())
@@ -132,7 +134,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $config->expects($this->any())->method('getDataClass')->will($this->returnValue('User'));
+        $config->expects($this->any())->method('getDataClass')->will($this->returnValue($entityClassName));
 
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
@@ -311,5 +313,11 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
         $configs = array('owner_type' => $values['owner_type']);
         $this->config->expects($this->once())->method('getValues')->will($this->returnValue($configs));
+        $this->extension = new FormTypeExtension(
+            $this->securityContext,
+            $this->configProvider,
+            $this->manager,
+            $this->aclManager
+        );
     }
 }

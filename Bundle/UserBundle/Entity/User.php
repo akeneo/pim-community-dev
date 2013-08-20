@@ -221,7 +221,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $businessUnitOwner;
+    protected $owningBusinessUnit;
 
     /**
      * Set name formatting using "%first%" and "%last%" placeholders
@@ -1263,16 +1263,16 @@ class User extends AbstractEntityFlexible implements
      */
     public function getOwner()
     {
-        return $this->businessUnitOwner;
+        return $this->owningBusinessUnit;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param BusinessUnit $owningBusinessUnit
      * @return User
      */
-    public function setOwner(BusinessUnit $businessUnitOwner)
+    public function setOwner(BusinessUnit $owningBusinessUnit)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->owningBusinessUnit = $owningBusinessUnit;
 
         return $this;
     }

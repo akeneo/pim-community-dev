@@ -46,16 +46,4 @@ class OrganizationTest extends \PHPUnit_Framework_TestCase
         $this->organization->setPrecision($precision);
         $this->assertEquals($precision, $this->organization->getPrecision());
     }
-
-    public function testOwner()
-    {
-        $entity = $this->organization;
-        $organization = new Organization();
-
-        $this->assertEmpty($entity->getOwner());
-
-        $entity->setOwner($organization);
-
-        $this->assertEquals($organization, $entity->getOwner());
-    }
 }

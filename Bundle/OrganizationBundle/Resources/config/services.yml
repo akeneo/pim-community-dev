@@ -80,15 +80,6 @@ services:
         tags:
             - { name: form.type_extension, alias: form }
 
-    # Autocomplete search handler
-    oro_organization.autocomplete.business_unit.search_handler:
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - %oro_organization.business_unit.entity.class%
-            - ["name"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: business_unit, acl_resource: oro_business_unit_list }
-
     oro_organization.form.transformer.business_unit_select:
         class: %oro_organization.form.transformer.business_unit_select.class%
         arguments: [@oro_organization.business_unit_manager]
