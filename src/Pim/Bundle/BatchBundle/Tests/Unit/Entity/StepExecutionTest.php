@@ -98,7 +98,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
         $expectedExecutionContext = new ExecutionContext();
         $this->assertEntity($this->stepExecution->setExecutionContext($expectedExecutionContext));
-        $this->assertEquals($expectedExecutionContext, $this->stepExecution->getExecutionContext());
+        $this->assertSame($expectedExecutionContext, $this->stepExecution->getExecutionContext());
     }
 
     public function testGetAddFailureExceptions()
@@ -150,7 +150,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetJobExecution()
     {
-        $this->assertEquals($this->jobExecution, $this->stepExecution->getJobExecution());
+        $this->assertSame($this->jobExecution, $this->stepExecution->getJobExecution());
     }
 
     public function testToString()

@@ -5,6 +5,7 @@ namespace Pim\Bundle\BatchBundle\Job;
 use Monolog\Logger;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 
 /**
  * Implementation of {@link StepHandler} that manages repository and restart
@@ -39,7 +40,7 @@ class SimpleStepHandler implements StepHandlerInterface
         ExecutionContext $executionContext = null
     ) {
         $this->jobRepository = $jobRepository;
-        if ($executionContext = null) {
+        if ($executionContext == null) {
             $executionContext = new ExecutionContext();
         }
         $this->executionContext = $executionContext;
@@ -50,15 +51,20 @@ class SimpleStepHandler implements StepHandlerInterface
      * Set the logger
      *
      * @param object $logger The logger
+     *
+     * @return $this
      */
     public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
+
+        return $this;
     }
 
     /**
      * Get the logger for internal use
-     * @return object
+     *
+     * @return Logger
      */
     protected function getLogger()
     {
@@ -67,10 +73,14 @@ class SimpleStepHandler implements StepHandlerInterface
 
     /**
      * @param JobRepositoryInterface $jobRepository the jobRepository to set
+     *
+     * @return $this
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
+
+        return $this;
     }
 
     /**
@@ -78,10 +88,24 @@ class SimpleStepHandler implements StepHandlerInterface
      * is handled.
      *
      * @param ExecutionContext $executionContext the execution context to set
+     *
+     * @return $this
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
         $this->executionContext = $executionContext;
+
+        return $this;
+    }
+
+    /**
+     * Get the current executionContext object
+     *
+     * @return ExecutionContext $this->executionContext
+     */
+    public function getExecutionContext()
+    {
+        return $this->executionContext;
     }
 
     /**

@@ -62,16 +62,20 @@ abstract class AbstractStep implements StepInterface
      * Public setter for {@link JobRepositoryInterface}.
      *
      * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
+     *
+     * @return $this
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
+
+        return $this;
     }
 
     /**
      * @return JobRepositoryInterface
      */
-    protected function getJobRepository()
+    public function getJobRepository()
     {
         return $this->jobRepository;
     }
@@ -86,11 +90,16 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * Set the name property
+     *
      * @param string $name
+     *
+     * @return this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**

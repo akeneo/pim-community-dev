@@ -62,8 +62,8 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
 
-        $this->assertEquals(0, $jobExecution->getStartTime());
-        $this->assertEquals(0, $jobExecution->getEndTIme());
+        $this->assertNull($jobExecution->getStartTime());
+        $this->assertNull($jobExecution->getEndTIme());
         $this->assertEquals(BatchStatus::STARTING, $jobExecution->getStatus()->getValue(), 'Batch status starting');
 
         $this->job->setJobRepository($this->jobRepository);
