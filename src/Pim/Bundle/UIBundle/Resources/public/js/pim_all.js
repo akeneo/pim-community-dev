@@ -215,7 +215,7 @@ function init() {
     var $localizableIcon = $('<i>', {
         'class': 'fa-icon-globe',
         'attr': {
-            'data-original-title': 'This value is localizable',
+            'data-original-title': _.__('Localized value'),
             'rel': 'tooltip'
         }
     });
