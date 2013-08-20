@@ -54,10 +54,13 @@ class PhpCodeExtractorTest extends \PHPUnit_Framework_TestCase
         $this->extractor->extract(__DIR__ . '/../Fixtures/Resources/views', $catalogue);
 
         // Assert
-        $this->assertCount(3, $catalogue->all('messages'), '->extract() should find 3 translations');
+        $this->assertCount(2, $catalogue->all('messages'), '->extract() should find 3 translations');
         $this->assertTrue($catalogue->has(SomeClass::STRING_TO_TRANSLATE), '->extract() should extract constants');
         $this->assertTrue($catalogue->has(self::MESSAGE_FROM_VARIABLE), '->extract() should extract variables');
-        $this->assertTrue($catalogue->has(self::MESSAGE_FROM_ARGUMENT), '->extract() should extract arguments');
+        $this->assertFalse(
+            $catalogue->has(self::MESSAGE_FROM_ARGUMENT),
+            '->extract() should not extract messages from another vendor namespace'
+        );
         $this->assertFalse(
             $catalogue->has(SomeClass::STRING_NOT_TO_TRANSLATE),
             '->extract() should not extract existed services'
