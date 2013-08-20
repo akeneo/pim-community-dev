@@ -73,19 +73,6 @@ class Version
     }
 
     /**
-     * Set user
-     *
-     * @param  User  $user
-     * @return Version
-     */
-    public function setUser(User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
      * Get user
      *
      * @return User
