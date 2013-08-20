@@ -1,0 +1,8 @@
+services:
+    pim_batch2.job_executor:
+        class: Pim\Bundle\Batch2Bundle\Executor
+
+    pim_batch2.job_data_collector:
+        class: Pim\Bundle\Batch2Bundle\EventListener\JobDataCollector
+        tags:
+            - { name: kernel.event_subscriber }
