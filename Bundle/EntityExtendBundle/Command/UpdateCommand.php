@@ -48,7 +48,8 @@ class UpdateCommand extends ContainerAwareCommand
         $configs = $em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
         foreach ($configs as $config) {
             if ($xm->isExtend($config->getClassName())) {
-                $extend = ExtendManager::OWNER_CUSTOM != $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
+                $owner  = $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
+                $extend = ExtendManager::OWNER_CUSTOM != $owner;
                 $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true, $extend);
             };
         }

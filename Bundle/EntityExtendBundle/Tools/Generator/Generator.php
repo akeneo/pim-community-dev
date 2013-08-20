@@ -155,7 +155,9 @@ class Generator
                             break;
                         case 'decimal':
                             $yml['properties'][$fieldId->getfieldName()][] = array(
-                                'Regex' => '/\d{1,'.$config->get('precision').'}\.\d{1,'.$config->get('scale').'}/'
+                                'Regex' => '/\d{1,' . $config->get('precision') . '}\.\d{1,' . $config->get(
+                                    'scale'
+                                ) . '}/'
                             );
                             break;
                         case 'date':
@@ -183,6 +185,7 @@ class Generator
         }
 
         $validators[$entityName] = $yml;
+
         return $validators;
     }
 
@@ -335,9 +338,8 @@ class Generator
 
     /**
      * Generate Proxy class
-     *
-     * @param $entityName
-     * @param $className
+     * @param      $entityName
+     * @param      $className
      * @param bool $extend
      * @return string
      */
@@ -405,9 +407,8 @@ class Generator
                         )
                     );
 
-                    $toArray .= '    \'' . $fieldName . '\' => $this->__proxy__extend->get' . ucfirst(
-                            $fieldName
-                        ) . '(),' . "\n";
+                    $toArray .= '    \'' . $fieldName . '\' => $this->__proxy__extend->get' .
+                        ucfirst($fieldName) . '(),' . "\n";
                 } else {
                     $toArray .= '    \'' . $fieldName . '\' => $this->get' . ucfirst($fieldName) . '(),' . "\n";
                 }

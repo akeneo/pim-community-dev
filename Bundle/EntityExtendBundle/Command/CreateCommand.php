@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -67,7 +68,21 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
+        $this->getApplication()->find('cache:clear')->run($input, $output);
         $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
+
+        $arguments = array_merge(
+            $input->getArguments(),
+            array(
+                '--force' => true,
+            )
+        );
+
+        $arrayInput = new ArrayInput($arguments);
+
+        $this->getApplication()->find('doctrine:schema:update')->run($arrayInput, $output);
+        $this->getApplication()->find('oro:search:create-index')->run($input, $output);
+        $this->getApplication()->find('cache:clear')->run($input, $output);
     }
 
     /**
@@ -89,7 +104,6 @@ class CreateCommand extends ContainerAwareCommand
                 $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
 
                 $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
-                $entityConfig->set('state', ExtendManager::STATE_NEW);
                 $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
                 $entityConfig->set('is_extend', true);
             }
@@ -106,6 +120,10 @@ class CreateCommand extends ContainerAwareCommand
             $this->extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
 
             $this->setDefaultConfig($entityOptions, $entityName, $fieldName);
+
+            $config = $this->extendManager->getConfigProvider()->getConfig($entityName, $fieldName);
+            $config->set('state', ExtendManager::STATE_ACTIVE);
+            $this->configManager->persist($config);
         }
     }
 
