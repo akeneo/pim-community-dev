@@ -46,11 +46,13 @@ class PhpCodeExtractor implements ExtractorInterface
         foreach ($tokens as $token) {
             if (is_array($token) && $token[0] == T_CONSTANT_ENCAPSED_STRING) {
                 $message = $token[1];
-
-                $message = trim($message, '\'""');
+                $message = trim($message, '\'"');
 
                 if ($message) {
-                    if (substr_count($message, '.') >= 2 && !$this->container->has($message)) {
+                    if (substr_count($message, '.') >= 2
+                        && preg_match('#^[\w\d]+\.[\w\d]+\.[\w\d]+(\.[\w\d]+)?$#Ui', $message)
+                        && !$this->container->has($message)) {
+
                         $catalog->set($message, $this->prefix . $message);
                     }
                 }

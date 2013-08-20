@@ -7,9 +7,10 @@ use Symfony\Component\Translation\MessageCatalogue;
 use Oro\Bundle\TranslationBundle\Extractor\PhpCodeExtractor;
 use Oro\Bundle\TranslationBundle\Tests\Unit\Fixtures\SomeClass;
 
-class PhpExtractorTest extends \PHPUnit_Framework_TestCase
+class PhpCodeExtractorTest extends \PHPUnit_Framework_TestCase
 {
     const MESSAGE_FROM_VARIABLE = 'oro.translation.some_another_string';
+    const MESSAGE_FROM_ARGUMENT = 'vendor.bundle.type.message_string';
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $container;
@@ -53,9 +54,10 @@ class PhpExtractorTest extends \PHPUnit_Framework_TestCase
         $this->extractor->extract(__DIR__ . '/../Fixtures/Resources/views', $catalogue);
 
         // Assert
-        $this->assertCount(2, $catalogue->all('messages'), '->extract() should find 2 translation');
+        $this->assertCount(3, $catalogue->all('messages'), '->extract() should find 3 translations');
         $this->assertTrue($catalogue->has(SomeClass::STRING_TO_TRANSLATE), '->extract() should extract constants');
         $this->assertTrue($catalogue->has(self::MESSAGE_FROM_VARIABLE), '->extract() should extract variables');
+        $this->assertTrue($catalogue->has(self::MESSAGE_FROM_ARGUMENT), '->extract() should extract arguments');
         $this->assertFalse(
             $catalogue->has(SomeClass::STRING_NOT_TO_TRANSLATE),
             '->extract() should not extract existed services'
