@@ -24,6 +24,13 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory = new ObjectIdentityFactory($this->em);
     }
 
+    public function testRoot()
+    {
+        $id = $this->factory->root();
+        $this->assertEquals('root', $id->getIdentifier());
+        $this->assertEquals('Root', $id->getType());
+    }
+
     /**
      * @dataProvider fromObjectProvider
      */

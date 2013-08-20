@@ -139,6 +139,9 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
                 MaskBuilder::MASK_ASSIGN_DEEP,
                 MaskBuilder::MASK_ASSIGN_GLOBAL,
             )),
+            array('EXECUTE', array(
+                MaskBuilder::MASK_VIEW_BASIC,
+            )),
         );
     }
 
@@ -154,6 +157,7 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
             array('OPERATOR', true),
             array('SHARE_OPERATOR', true),
             array('MASTER', true),
+            array('EXECUTE', true),
             array('OTHER', false),
         );
     }

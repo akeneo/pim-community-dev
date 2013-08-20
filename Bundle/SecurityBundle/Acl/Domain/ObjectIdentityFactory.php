@@ -29,6 +29,11 @@ class ObjectIdentityFactory
     protected $em;
 
     /**
+     * @var ObjectIdentity
+     */
+    protected $root;
+
+    /**
      * An associative array of entity class names
      * The key of this array if an entity name, for example: AcmeBundle:SomeEntity
      * The value is the full class name, for example: AcmeBundle\Entity\SomeEntity
@@ -45,6 +50,18 @@ class ObjectIdentityFactory
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->root = new ObjectIdentity('root', 'Root');
+    }
+
+    /**
+     * Constructs an ObjectIdentity is used for grant default permissions
+     * if more appropriate permissions are not specified
+     *
+     * @return ObjectIdentity
+     */
+    public function root()
+    {
+        return $this->root;
     }
 
     /**

@@ -19,6 +19,7 @@ class PermissionMap implements PermissionMapInterface
     const PERMISSION_OPERATOR       = 'OPERATOR';
     const PERMISSION_SHARE_OPERATOR = 'SHARE_OPERATOR';
     const PERMISSION_MASTER         = 'MASTER';
+    const PERMISSION_EXECUTE        = 'EXECUTE';
 
     protected $map;
 
@@ -139,6 +140,10 @@ class PermissionMap implements PermissionMapInterface
                 MaskBuilder::MASK_ASSIGN_LOCAL,
                 MaskBuilder::MASK_ASSIGN_DEEP,
                 MaskBuilder::MASK_ASSIGN_GLOBAL,
+            ),
+
+            self::PERMISSION_EXECUTE => array(
+                MaskBuilder::MASK_VIEW_BASIC,
             ),
         );
     }

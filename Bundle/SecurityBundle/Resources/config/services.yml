@@ -1,8 +1,34 @@
 parameters:
-    oro_security.factory.object_identity.class:   Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+    oro_security.factory.object_identity.class:                Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+    oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
+    oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
+    oro_security.acl.permission_granting_strategy.class:       Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy
+    oro_security.acl.permission.map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
 
 services:
     oro_security.factory.object_identity:
         class: %oro_security.factory.object_identity.class%
         arguments:
             - @doctrine.orm.entity_manager
+
+    oro_security.acl.provider:
+        public: false
+        class: %oro_security.acl.provider.class%
+        arguments:
+            - @oro_security.factory.object_identity
+
+    oro_security.acl.permission_granting_strategy:
+        public: false
+        class: %oro_security.acl.permission_granting_strategy.class%
+        calls:
+             - [setAuditLogger, ["@?security.acl.audit_logger"]]
+
+    oro_security.acl.object_identity_retrieval_strategy:
+        public: false
+        class: %oro_security.acl.object_identity_retrieval_strategy.class%
+        arguments:
+            - @oro_security.factory.object_identity
+
+    oro_security.acl.permission.map:
+        public: false
+        class: %oro_security.acl.permission.map.class%

@@ -1,0 +1,41 @@
+<?php
+
+namespace Oro\Bundle\SecurityBundle\Acl\Domain;
+
+use Symfony\Component\Security\Acl\Model\ObjectIdentityRetrievalStrategyInterface;
+use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
+
+/**
+ * Strategy to be used for retrieving object identities
+ */
+class ObjectIdentityRetrievalStrategy implements ObjectIdentityRetrievalStrategyInterface
+{
+    /**
+     * @var ObjectIdentityFactory
+     */
+    protected $objectIdentityFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectIdentityFactory $objectIdentityFactory
+     */
+    public function __construct(ObjectIdentityFactory $objectIdentityFactory)
+    {
+        $this->objectIdentityFactory = $objectIdentityFactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getObjectIdentity($domainObject)
+    {
+        try {
+            return is_string($domainObject)
+                ? $this->objectIdentityFactory->get($domainObject)
+                : $this->objectIdentityFactory->fromDomainObject($domainObject);
+        } catch (InvalidDomainObjectException $failed) {
+            return null;
+        }
+    }
+}
