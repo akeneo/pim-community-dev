@@ -25,7 +25,7 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 class Product extends AbstractEntityFlexible implements ProductInterface
 {
     /**
-     * @var Value
+     * @var ArrayCollection $values
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface",
@@ -37,7 +37,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $values;
 
     /**
-     * @var family
+     * @var Pim\Bundle\ProductBundle\Entity\Family $family
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
@@ -53,10 +53,19 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $categories;
 
     /**
+     * @var boolean $enabled
+     *
      * @ORM\Column(name="is_enabled", type="boolean")
      * @Oro\Versioned
      */
     protected $enabled = true;
+
+    /**
+     * @var Pim\Bundle\ProductBundle\Entity\ProductCompleteness $productCompleteness
+     *
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductCompleteness", mappedBy="product")
+     */
+    protected $productCompleteness;
 
     /**
      * {@inheritdoc}
@@ -319,5 +328,29 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function __toString()
     {
         return (string) $this->getLabel();
+    }
+
+    /**
+     * Getter for product completeness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     */
+    public function getProductCompleteness()
+    {
+        return $this->productCompleteness;
+    }
+
+    /**
+     * Setter for product completeness
+     *
+     * @param ProductCompleteness $productCompleteness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function setProductCompleteness(ProductCompleteness $productCompleteness)
+    {
+        $this->productCompleteness = $productCompleteness;
+
+        return $this;
     }
 }
