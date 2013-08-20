@@ -64,11 +64,23 @@ class PhpExtractor extends BaseExtractor
     {
         $vendorName = false;
 
-        foreach ($tokens as $k => $token) {
-            if (is_array($token) && $token[0] == T_NS_SEPARATOR) {
-                $vendorName = strtolower($tokens[$k - 1][1]);
+        $sequence = array(
+            'namespace',
+            ' ',
+            self::MESSAGE_TOKEN,
+        );
 
-                break;
+        foreach ($tokens as $k => $token) {
+            foreach ($sequence as $id => $item) {
+                if ($this->normalizeToken($tokens[$k + $id]) == $item) {
+                    continue;
+                } elseif (self::MESSAGE_TOKEN == $item) {
+                    $vendorName = strtolower($this->normalizeToken($tokens[$k + $id]));
+                } elseif (self::IGNORE_TOKEN == $item) {
+                    continue;
+                } else {
+                    break;
+                }
             }
         }
 
