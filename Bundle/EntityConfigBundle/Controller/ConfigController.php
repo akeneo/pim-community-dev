@@ -22,7 +22,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 /**
  * EntityConfig controller.
- * @Route("/oro_entityconfig")
+ * @Route("/entity/config")
  * @Acl(
  *      id="oro_entityconfig",
  *      name="Entity config manipulation",

@@ -22,7 +22,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 /**
  * EntityExtendBundle controller.
- * @Route("/oro_entityextend")
+ * @Route("/entity/extend")
  * @Acl(
  *      id="oro_entityextend",
  *      name="Entity extend manipulation",

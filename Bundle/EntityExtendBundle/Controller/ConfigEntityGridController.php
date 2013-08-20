@@ -27,7 +27,7 @@ use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 /**
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
- * @Route("/entityextend/entity")
+ * @Route("/entity/extend/entity")
  * @Acl(
  *      id="oro_entityextend",
  *      name="Entity extend manipulation",

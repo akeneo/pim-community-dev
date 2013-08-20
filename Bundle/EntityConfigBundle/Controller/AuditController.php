@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager;
 
 /**
  * EntityBundle controller.
- * @Route("/oro_entityconfig")
+ * @Route("/entity/config")
  * @Acl(
  *      id="oro_entityconfig",
  *      name="Entity config manipulation",

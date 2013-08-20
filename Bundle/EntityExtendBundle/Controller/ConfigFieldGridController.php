@@ -27,7 +27,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 /**
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
- * @Route("/entityextend/field")
+ * @Route("/entity/extend/field")
  * @Acl(
  *      id="oro_entityextend",
  *      name="Entity extend manipulation",
