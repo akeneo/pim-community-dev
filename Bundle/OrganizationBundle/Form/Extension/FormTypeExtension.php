@@ -69,7 +69,11 @@ class FormTypeExtension extends AbstractTypeExtension
         $token = $this->securityContext->getToken();
         if ($token) {
             $user = $token->getUser();
-            if ($user && $dataClassName && $this->configProvider->hasConfig($dataClassName)) {
+            if ($user
+                && $dataClassName
+                && $this->configProvider->hasConfig($dataClassName)
+                && method_exists($dataClassName, 'getOwner')
+            ) {
                 $config = $this->configProvider->getConfig($dataClassName);
                 $entityValues = $config->getValues();
                 if (isset($entityValues['owner_type'])) {
