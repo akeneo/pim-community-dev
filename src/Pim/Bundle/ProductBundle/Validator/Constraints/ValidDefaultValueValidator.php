@@ -26,67 +26,103 @@ class ValidDefaultValueValidator extends ConstraintValidator
 
         switch ($entity->getAttributeType()) {
             case 'pim_product_date':
-                if (!$value instanceof \Datetime) {
-                    $message = $constraint->dateFormatMessage;
-                    break;
-                }
-                if ($min = $entity->getDateMin()) {
-                    if ($min->getTimestamp() > $value->getTimestamp()) {
-                        $message = $constraint->dateMessage;
-                        break;
-                    }
-                }
-                if ($max = $entity->getDateMax()) {
-                    if ($max->getTimestamp() < $value->getTimestamp()) {
-                        $message = $constraint->dateMessage;
-                        break;
-                    }
-                }
-
-                return;
+                $this->validateDate($entity, $constraint);
+                break;
             case 'pim_product_price_collection':
             case 'pim_product_number':
             case 'pim_product_metric':
-                if ($entity->isNegativeAllowed() === false && $value < 0) {
-                    $message = $constraint->negativeMessage;
-                    break;
-                }
-                if ($entity->getNumberMin() !== null && $value < $entity->getNumberMin()) {
-                    $message = $constraint->numberMessage;
-                    break;
-                }
-                if ($entity->getNumberMax() !== null && $value > $entity->getNumberMax()) {
-                    $message = $constraint->numberMessage;
-                    break;
-                }
-                if ($entity->isDecimalsAllowed() === false && $value != (int) $value) {
-                    $message = $constraint->decimalsMessage;
-                    break;
-                }
-
-                return;
+                $this->validateNumber($entity, $constraint);
+                break;
             case 'pim_product_text':
             case 'pim_product_textarea':
-                if ($entity->getMaxCharacters() !== null) {
-                    if (strlen($value) > $entity->getMaxCharacters()) {
-                        $message = $constraint->charactersMessage;
-                        break;
-                    }
-                }
-
-                if ($entity->getAttributeType() === 'pim_product_text' && $entity->getValidationRule() == 'regexp') {
-                    if (@preg_match($entity->getValidationRegexp(), $value)) {
-                        return;
-                    }
-                    $message = $constraint->regexpMessage;
-                    break;
-                }
-
-                return;
+                $this->validateText($entity, $constraint);
+                break;
             default:
-                return;
+                break;
+        }
+    }
+
+    /**
+     * Validate a date defaultValue
+     *
+     * @param mixed      $entity
+     * @param Constraint $constraint
+     */
+    protected function validateDate($entity, Constraint $constraint)
+    {
+        $value = $entity->getDefaultValue();
+
+        if (!$value instanceof \Datetime) {
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->dateFormatMessage);
+            return;
         }
 
-        $this->context->addViolationAt($constraint->propertyPath, $message);
+        if ($min = $entity->getDateMin()) {
+            if ($min->getTimestamp() > $value->getTimestamp()) {
+                $this->context->addViolationAt($constraint->propertyPath, $constraint->dateMessage);
+                return;
+            }
+        }
+
+        if ($max = $entity->getDateMax()) {
+            if ($max->getTimestamp() < $value->getTimestamp()) {
+                $this->context->addViolationAt($constraint->propertyPath, $constraint->dateMessage);
+            }
+        }
+    }
+
+    /**
+     * Validate a number defaultValue
+     *
+     * @param mixed      $entity
+     * @param Constraint $constraint
+     */
+    protected function validateNumber($entity, Constraint $constraint)
+    {
+        $value = $entity->getDefaultValue();
+
+        if ($entity->isNegativeAllowed() === false && $value < 0) {
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->negativeMessage);
+            return;
+        }
+
+        if ($entity->getNumberMin() !== null && $value < $entity->getNumberMin()) {
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->numberMessage);
+            return;
+        }
+
+        if ($entity->getNumberMax() !== null && $value > $entity->getNumberMax()) {
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->numberMessage);
+            return;
+        }
+
+        if ($entity->isDecimalsAllowed() === false && $value != (int) $value) {
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->decimalsMessage);
+        }
+    }
+
+    /**
+     * Validate a text defaultValue
+     *
+     * @param mixed      $entity
+     * @param Constraint $constraint
+     */
+    protected function validateText($entity, Constraint $constraint)
+    {
+        $value = $entity->getDefaultValue();
+
+        if ($entity->getMaxCharacters() !== null) {
+            if (strlen($value) > $entity->getMaxCharacters()) {
+                $this->context->addViolationAt($constraint->propertyPath, $constraint->charactersMessage);
+                return;
+            }
+        }
+
+        if ($entity->getAttributeType() === 'pim_product_text' && $entity->getValidationRule() == 'regexp') {
+            if (@preg_match($entity->getValidationRegexp(), $value)) {
+                return;
+            }
+            $this->context->addViolationAt($constraint->propertyPath, $constraint->regexpMessage);
+        }
     }
 }
