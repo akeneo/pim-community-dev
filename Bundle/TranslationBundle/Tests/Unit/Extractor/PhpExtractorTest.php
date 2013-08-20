@@ -2,24 +2,55 @@
 
 namespace Oro\Bundle\TranslationBundle\Tests\Unit\Extractor;
 
-use Oro\Bundle\TranslationBundle\Tests\Unit\Fixtures\SomeClass;
 use Symfony\Component\Translation\MessageCatalogue;
 
-use Oro\Bundle\TranslationBundle\Extractor\PhpExtractor;
+use Oro\Bundle\TranslationBundle\Extractor\PhpCodeExtractor;
+use Oro\Bundle\TranslationBundle\Tests\Unit\Fixtures\SomeClass;
 
 class PhpExtractorTest extends \PHPUnit_Framework_TestCase
 {
     const MESSAGE_FROM_VARIABLE = 'oro.translation.some_another_string';
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $container;
+
+    /** @var PhpCodeExtractor */
+    protected $extractor;
+
+    public function setUp()
+    {
+        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->extractor = new PhpCodeExtractor($this->container);
+    }
+
+    public function tearDown()
+    {
+        unset($this->container);
+        unset($this->extractor);
+    }
+
     public function testExtraction()
     {
         // Arrange
-        $extractor = new PhpExtractor();
-        $extractor->setPrefix('prefix');
+        $this->extractor->setPrefix('prefix');
         $catalogue = new MessageCatalogue('en');
+        $this->container->expects($this->atLeastOnce())->method('has')
+            ->will(
+                $this->returnCallback(
+                    function ($id) {
+                        if ($id == SomeClass::STRING_NOT_TO_TRANSLATE) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                )
+            );
 
         // Act
-        $extractor->extract(__DIR__.'/../Fixtures', $catalogue);
+        $this->extractor->extract(__DIR__ . '/../Fixtures/Resources/views', $catalogue);
 
         // Assert
         $this->assertCount(2, $catalogue->all('messages'), '->extract() should find 2 translation');
@@ -27,7 +58,7 @@ class PhpExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($catalogue->has(self::MESSAGE_FROM_VARIABLE), '->extract() should extract variables');
         $this->assertFalse(
             $catalogue->has(SomeClass::STRING_NOT_TO_TRANSLATE),
-            '->extract() should not translate messages that start not with vendor name'
+            '->extract() should not extract existed services'
         );
         $this->assertEquals(
             'prefix' . SomeClass::STRING_TO_TRANSLATE,
