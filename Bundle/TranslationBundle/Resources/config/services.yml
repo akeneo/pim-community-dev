@@ -1,7 +1,7 @@
 parameters:
     translator.class: Oro\Bundle\TranslationBundle\Translation\Translator
     oro_translation.controller.class: Oro\Bundle\TranslationBundle\Controller\Controller
-    oro_translation.extractor.php_extractor.class: Oro\Bundle\TranslationBundle\Extractor\PhpExtractor
+    oro_translation.extractor.php_extractor.class: Oro\Bundle\TranslationBundle\Extractor\PhpCodeExtractor
 
 services:
     oro_translation.controller:
