@@ -10,5 +10,6 @@ services:
 
     oro_translation.extractor.php_extractor:
         class: %oro_translation.extractor.php_extractor.class%
+        arguments: [@service_container]
         tags:
             - { name: translation.extractor, alias: oro_translation_php_extractor }
