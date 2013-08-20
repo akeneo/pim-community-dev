@@ -172,9 +172,9 @@ class Job implements JobInterface
     /**
      * Set the step handler
      *
-     * @param SimpleStepHandler $stepHandler
+     * @param StepHandlerInterface $stepHandler
      */
-    public function setStepHandler(SimpleStepHandler $stepHandler)
+    public function setStepHandler(StepHandlerInterface $stepHandler)
     {
         $this->stepHandler = $stepHandler;
     }
