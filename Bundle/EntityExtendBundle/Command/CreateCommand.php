@@ -89,6 +89,7 @@ class CreateCommand extends ContainerAwareCommand
                 $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
 
                 $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
+                $entityConfig->set('state', ExtendManager::STATE_NEW);
                 $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
                 $entityConfig->set('is_extend', true);
             }
