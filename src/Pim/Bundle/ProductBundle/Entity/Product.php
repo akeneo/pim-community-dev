@@ -72,6 +72,17 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
         $this->categories = new ArrayCollection;
     }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
     /**
      * Get family
      *

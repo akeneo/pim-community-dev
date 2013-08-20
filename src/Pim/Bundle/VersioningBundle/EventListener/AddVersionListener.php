@@ -99,7 +99,7 @@ class AddVersionListener implements EventSubscriber
 
         foreach ($uow->getScheduledCollectionUpdates() AS $entity) {
             if ($entity->getOwner() instanceof VersionableInterface) {
-                // special case for product to category
+                // special case for product to category ?
                 $this->writeSnapshot($em, $entity->getOwner());
             }
         }
