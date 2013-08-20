@@ -1,8 +1,7 @@
 <?php
+namespace Pim\Bundle\BatchBundle\Job;
 
 use Monolog\Logger;
-
-namespace Pim\Bundle\BatchBundle\Job;
 
 /**
  * A job instance factory
@@ -13,6 +12,7 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class JobFactory
 {
+    /* @var Logger */
     protected $logger;
 
     /* @var JobRepositoryInterface */
