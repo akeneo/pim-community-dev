@@ -4,4 +4,4 @@ parameters:
 services:
     oro_cron.job_daemon:
         class:                        %oro_cron.job_daemon.class%
-        arguments:                    [%kernel.root_dir%, %kernel.cache_dir%, %oro_cron.max_jobs%]
+        arguments:                    [%kernel.root_dir%, %oro_cron.max_jobs%]

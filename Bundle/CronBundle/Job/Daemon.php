@@ -14,13 +14,6 @@ class Daemon
     protected $rootDir;
 
     /**
-     * Cache dir
-     *
-     * @var string
-     */
-    protected $cacheDir;
-
-    /**
      * Maximum number of concurrent jobs
      *
      * @var int
@@ -30,14 +23,12 @@ class Daemon
     /**
      *
      * @param string $rootDir
-     * @param string $cacheDir
      * @param string $maxJobs
      */
-    public function __construct($rootDir, $cacheDir, $maxJobs = 5)
+    public function __construct($rootDir, $maxJobs = 5)
     {
-        $this->rootDir  = $rootDir;
-        $this->cacheDir = $cacheDir;
-        $this->maxJobs  = (int) $maxJobs;
+        $this->rootDir = $rootDir;
+        $this->maxJobs = (int) $maxJobs;
     }
 
     /**
@@ -52,13 +43,21 @@ class Daemon
             throw false;
         }
 
-        $process = new Process(
-            sprintf(
-                'php %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u',
-                $this->rootDir . DIRECTORY_SEPARATOR,
-                max($this->maxJobs, 1)
-            )
+        $cmd = sprintf(
+            'php %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u',
+            $this->rootDir . DIRECTORY_SEPARATOR,
+            max($this->maxJobs, 1)
         );
+
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $wsh = new \COM('WScript.shell');
+
+            $wsh->Run($cmd, 0, false);
+
+            return $this->getPid();
+        }
+
+        $process = new Process($cmd);
 
         $process->start();
 
@@ -97,11 +96,15 @@ class Daemon
      */
     public function getPid()
     {
-        $cmd = defined('PHP_WINDOWS_VERSION_BUILD')
-            ? 'WMIC path win32_process get Processid,Commandline'
-            : 'ps ax | grep "[j]ms-job-queue:run"';
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $output = shell_exec('WMIC path win32_process get Processid,Commandline');
 
-        $process = new Process($cmd);
+            return preg_match('#console jms-job-queue:run.+(\d+)\s*$#Usm', $output, $matches)
+                ? (int) $matches[1]
+                : null;
+        }
+
+        $process = new Process('ps ax | grep "[j]ms-job-queue:run"');
 
         $process->run();
 
