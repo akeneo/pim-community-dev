@@ -61,11 +61,14 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $enabled = true;
 
     /**
-     * @var Pim\Bundle\ProductBundle\Entity\ProductCompleteness $productCompleteness
+     * @var ArrayCollection $productCompletenesses
      *
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductCompleteness", mappedBy="product")
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductCompleteness",
+     *     mappedBy="product"
+     * )
      */
-    protected $productCompleteness;
+    protected $productCompletenesses;
 
     /**
      * {@inheritdoc}
@@ -74,7 +77,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     {
         parent::__construct();
 
-        $this->categories = new ArrayCollection;
+        $this->categories            = new ArrayCollection();
+        $this->productCompletenesses = new ArrayCollection();
     }
     /**
      * Get family
@@ -331,26 +335,43 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
-     * Getter for product completeness
+     * Getter for product completenesses
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getProductCompleteness()
+    public function getProductCompletenesses()
     {
-        return $this->productCompleteness;
+        return $this->productCompletenesses;
     }
 
-    /**
-     * Setter for product completeness
-     *
-     * @param ProductCompleteness $productCompleteness
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function setProductCompleteness(ProductCompleteness $productCompleteness)
+    public function addProductCompleteness(ProductCompleteness $productCompleteness)
     {
-        $this->productCompleteness = $productCompleteness;
+        $this->productCompletenesses->add($productCompleteness);
 
         return $this;
+    }
+
+    public function removeProductCompleteness(ProductCompleteness $productCompleteness)
+    {
+        $this->productCompletenesses->remove($productCompleteness);
+
+        return $this;
+    }
+
+    public function getProductCompleteness($locale, $scope)
+    {
+        $productCompleteness = array_filter(
+            $this->productCompletenesses->toArray(),
+            function ($productCompleteness) use ($locale, $scope) {
+                return $productCompleteness->getLocale() === $locale
+                    && $productCompleteness->getChannel()->getCode() === $scope;
+            }
+        );
+
+        if (count($productCompleteness) === 0) {
+            echo "must be calculated";
+        } else {
+            return array_shift($productCompleteness);
+        }
     }
 }

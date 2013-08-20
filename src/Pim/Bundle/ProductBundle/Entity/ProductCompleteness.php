@@ -73,7 +73,10 @@ class ProductCompleteness
     /**
      * @var \Pim\Bundle\ProductBundle\Entity\Product
      *
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Product", inversedBy="productCompleteness")
+     * @ORM\ManyToOne(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\Product",
+     *     inversedBy="productCompleteness"
+     * )
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected $product;
@@ -244,5 +247,10 @@ class ProductCompleteness
         $this->product = $product;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->locale .' - '. $this->channel->getCode();
     }
 }
