@@ -82,7 +82,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->manager->expects($this->any())
             ->method('getBusinessUnitsTree')
             ->will($this->returnValue($businessUnitsTree));
-
         $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
             ->disableOriginalConstructor()
             ->getMock();
@@ -120,7 +119,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
-
         $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
 
         $token->expects($this->any())

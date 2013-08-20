@@ -152,7 +152,7 @@ class BusinessUnitDatagridManager extends DatagridManager
         $query->addSelect('owner.name as ownerName', true);
         /** @var $query QueryBuilder */
         $query->leftJoin($entityAlias . '.organization', 'organization');
-        $query->leftJoin($entityAlias . '.businessUnitOwner', 'owner');
+        $query->leftJoin($entityAlias . '.owningBusinessUnit', 'owner');
     }
 
     /**
