@@ -19,7 +19,7 @@ class ExecutionContext
     /* @var array */
     protected $context = array();
 
-    /** 
+    /**
      * Get the dirty state
      */
     public function isDirty()
@@ -27,7 +27,7 @@ class ExecutionContext
         return $this->dirty;
     }
 
-    /** 
+    /**
      * Clear the dirty flag
      *
      * @return $this
@@ -59,7 +59,7 @@ class ExecutionContext
      * Put a key-value pair in the context
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return $this
      */
@@ -85,6 +85,7 @@ class ExecutionContext
         if (isset($this->context[$key])) {
             unset($this->context[$key]);
         }
+
         return $this;
     }
 

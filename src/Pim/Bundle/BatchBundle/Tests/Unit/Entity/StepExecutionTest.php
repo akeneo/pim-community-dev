@@ -19,7 +19,7 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
 class StepExecutionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var StepExecution 
+     * @var StepExecution
      */
     protected $stepExecution;
 
@@ -159,7 +159,6 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
             "readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0";
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
-
 
     /**
      * Assert the entity tested

@@ -116,12 +116,13 @@ abstract class AbstractStep implements StepInterface
      * Extension point for subclasses to provide callbacks to their collaborators at the beginning of a step, to open or
      * acquire resources. Does nothing by default.
      *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
+     * @param ExecutionContext $executionContext the {@link ExecutionContext} to use
      *
      * @throws Exception
      */
-    protected function open(ExecutionContext $ctx)
+    protected function open(ExecutionContext $executionContext)
     {
+        return $executionContext;
     }
 
     /**
@@ -142,12 +143,13 @@ abstract class AbstractStep implements StepInterface
      * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
      * of the finally block), to close or release resources. Does nothing by default.
      *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
+     * @param ExecutionContext $executionContext the {@link ExecutionContext} to use
      *
      * @throws Exception
      */
-    protected function close(ExecutionContext $ctx)
+    protected function close(ExecutionContext $executionContext)
     {
+        return $executionContext;
     }
 
     /**

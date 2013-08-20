@@ -97,7 +97,6 @@ class JobExecution
      */
     private $exitDescription;
 
-
     /**
      * @var array
      *
@@ -455,10 +454,10 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        $startTime = $this->startTime != null ? $this ->startTime->format(\DateTime::ATOM) : '';
-        $endTime = $this->endTime != null ? $this ->endTime->format(\DateTime::ATOM) : '';
+        $startTime   = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
+        $endTime     = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
         $updatedTime = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
-        $jobCode = $this->job != null ? $this->job->getCode() : '';
+        $jobCode     = $this->job         != null ? $this->job->getCode()                        : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s, "
             . "exitStatus=%s, job=%s";

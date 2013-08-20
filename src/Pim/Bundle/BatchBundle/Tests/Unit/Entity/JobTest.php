@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
 
 /**
  * Test related class

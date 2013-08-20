@@ -22,11 +22,11 @@ class JobFactory
     protected $stepHandler;
 
     /**
-     * @param Logger $logger Logger where to log output of the job
+     * @param Logger                 $logger        Logger where to log output of the job
      * @param JobRepositoryInterface $jobRepository Object responsible
-     *              for persisting jobExecution and stepExection states
+     *     for persisting jobExecution and stepExection states
      * @param StepHandlerInterface $stepHandler Object to which
-     *              the step management is delegated
+     *     the step management is delegated
      */
     public function __construct(
         Logger $logger,

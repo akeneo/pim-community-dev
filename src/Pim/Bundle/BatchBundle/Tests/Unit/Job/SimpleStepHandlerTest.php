@@ -76,7 +76,7 @@ class SimpleStepHandlerTest extends \PHPUnit_Framework_TestCase
     public function testGetSetExecutionContext()
     {
         $executionContext = new ExecutionContext();
-        
+
         $this->assertEntity($this->simpleStepHandler->setExecutionContext($executionContext));
         $this->assertSame($executionContext, $this->simpleStepHandler->getExecutionContext());
     }
@@ -132,7 +132,6 @@ class SimpleStepHandlerTest extends \PHPUnit_Framework_TestCase
         $step = $this->getMock('Pim\\Bundle\\BatchBundle\\Step\\StepInterface');
         $step->expects($this->once())
             ->method('execute');
-
 
         $jobExecution = $this->getMock('Pim\\Bundle\\BatchBundle\\Entity\JobExecution');
 
