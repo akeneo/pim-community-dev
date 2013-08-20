@@ -13,32 +13,30 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValidDefaultValueValidator extends ConstraintValidator
 {
+    protected $methodMapping = array(
+        'pim_product_date'             => 'validateDate',
+        'pim_product_price_collection' => 'validateNumber',
+        'pim_product_number'           => 'validateNumber',
+        'pim_product_metric'           => 'validateNumber',
+        'pim_product_text'             => 'validateText',
+        'pim_product_textarea'         => 'validateText'
+    );
+
     /**
      * @param mixed      $entity
      * @param Constraint $constraint
      */
     public function validate($entity, Constraint $constraint)
     {
-        $value = $entity->getDefaultValue();
-        if ($value === null) {
+        if ($entity->getDefaultValue() === null) {
             return;
         }
 
-        switch ($entity->getAttributeType()) {
-            case 'pim_product_date':
-                $this->validateDate($entity, $constraint);
-                break;
-            case 'pim_product_price_collection':
-            case 'pim_product_number':
-            case 'pim_product_metric':
-                $this->validateNumber($entity, $constraint);
-                break;
-            case 'pim_product_text':
-            case 'pim_product_textarea':
-                $this->validateText($entity, $constraint);
-                break;
-            default:
-                break;
+        $type = $entity->getAttributeType();
+
+        if (isset($this->methodMapping[$type])) {
+            $method = $this->methodMapping[$type];
+            $this->$method($entity, $constraint);
         }
     }
 
