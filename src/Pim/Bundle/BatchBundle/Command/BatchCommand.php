@@ -42,8 +42,6 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
-        // FIXME Usefull?
-        $jobInstance->setJobDefinition($job);
 
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
