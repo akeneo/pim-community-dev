@@ -20,5 +20,6 @@ class OroWorkflowExtension extends Extension
         $loader->load('post_actions.yml');
         $loader->load('assemblers.yml');
         $loader->load('form_types.yml');
+        $loader->load('serializer.yml');
     }
 }

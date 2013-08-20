@@ -254,6 +254,17 @@ class Workflow
     }
 
     /**
+     * Get attribute by name
+     *
+     * @param string $name
+     * @return Attribute|null
+     */
+    public function getAttribute($name)
+    {
+        return $this->attributes->get($name);
+    }
+
+    /**
      * Get step attributes.
      *
      * @return Attribute|null
@@ -379,8 +390,8 @@ class Workflow
                 throw new \LogicException(sprintf('Managed entity must be instance of %s', $this->managedEntityClass));
             }
 
+            $workflowItem->getData()->set($this->getManagedEntityAttribute()->getName(), $entity);
             $this->entityBinder->bind($workflowItem, $entity);
-            $workflowItem->getData()->set(self::MANAGED_ENTITY_KEY, $entity);
         }
 
         return $workflowItem;

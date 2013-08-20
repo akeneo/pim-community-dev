@@ -12,10 +12,22 @@ class OroWorkflowBundleTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('addCompilerPass'))
             ->getMock();
-        $compilerClass = 'Oro\Bundle\WorkflowBundle\DependencyInjection\Compiler\AddConditionAndPostActionCompilerPass';
-        $containerBuilder->expects($this->once())
+
+        $containerBuilder->expects($this->at(0))
             ->method('addCompilerPass')
-            ->with($this->isInstanceOf($compilerClass));
+            ->with(
+                $this->isInstanceOf(
+                    'Oro\Bundle\WorkflowBundle\DependencyInjection\Compiler\AddConditionAndPostActionCompilerPass'
+                )
+            );
+
+        $containerBuilder->expects($this->at(1))
+            ->method('addCompilerPass')
+            ->with(
+                $this->isInstanceOf(
+                    'Oro\Bundle\WorkflowBundle\DependencyInjection\Compiler\AddAttributeNormalizerCompilerPass'
+                )
+            );
 
         $bundle = new OroWorkflowBundle();
         $bundle->build($containerBuilder);

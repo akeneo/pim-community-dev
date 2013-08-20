@@ -1,0 +1,38 @@
+parameters:
+    oro_workflow.data_serialize.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
+    oro_workflow.data_serialize.normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
+    oro_workflow.data_serialize.attribute_normalizer.standard.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\StandardAttributeNormalizer
+    oro_workflow.data_serialize.attribute_normalizer.entity.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\EntityAttributeNormalizer
+    oro_workflow.data_serialize.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
+
+services:
+    # Services for WorkflowData serialization
+    oro_workflow.data_serialize.serializer:
+        class: %oro_workflow.data_serialize.serializer.class%
+        arguments:
+          - [@oro_workflow.data_serialize.normalizer]
+          - [@serializer.encoder.json]
+        calls:
+          - [setWorkflowRegistry, [@oro_workflow.registry]]
+
+    oro_workflow.data_serialize.normalizer:
+        class: %oro_workflow.data_serialize.normalizer.class%
+
+    oro_workflow.data_serialize.attribute_normalizer.standard:
+        class: %oro_workflow.data_serialize.attribute_normalizer.standard.class%
+        tags:
+            - { name: oro_workflow.attribute_normalizer }
+
+    oro_workflow.data_serialize.attribute_normalizer.entity:
+        class: %oro_workflow.data_serialize.attribute_normalizer.entity.class%
+        arguments:
+            - @doctrine
+        tags:
+            - { name: oro_workflow.attribute_normalizer }
+
+    oro_workflow.data_serialize.doctrine_subscriber:
+        class: %oro_workflow.data_serialize.doctrine_subscriber.class%
+        arguments:
+            - @oro_workflow.data_serialize.serializer
+        tags:
+            - { name: doctrine.event_subscriber }

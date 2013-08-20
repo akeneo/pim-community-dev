@@ -35,6 +35,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->markTestSkipped('Refacotor this test in scope of CRM-313');
         $this->attributeNormalizer =
             $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer')
                 ->setMethods(array('normalize', 'denormalize'))
