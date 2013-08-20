@@ -60,8 +60,7 @@ class VersionBuilder
             }
             if (empty($diffData[$changedField]['new']) and empty($diffData[$changedField]['old'])) {
                 unset($diffData[$changedField]);
-            }
-            if ($diffData[$changedField]['new'] == $diffData[$changedField]['old']) {
+            } elseif ($diffData[$changedField]['new'] == $diffData[$changedField]['old']) {
                 unset($diffData[$changedField]);
             }
         }

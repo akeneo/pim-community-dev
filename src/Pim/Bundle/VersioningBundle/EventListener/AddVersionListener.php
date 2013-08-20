@@ -7,6 +7,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
+use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -130,22 +131,18 @@ class AddVersionListener implements EventSubscriber
      * Write snapshot
      *
      * @param EntityManager        $em
-     * @param VersionableInterfaceInterface $entity
+     * @param VersionableInterface $entity
      */
     public function writeSnapshot(EntityManager $em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
         if (!isset($this->pendingVersions[$oid]) and $versionable->getId() !== null) {
 
-            /** @var User $user */
-            $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+            $user = $this->getUser($em);
             if ($user) {
-
-                $version  = $this->builder->buildVersion($versionable, $user);
-                $previous = $em->getRepository('PimVersioningBundle:Version')
-                    ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
-
-                $audit = $this->builder->buildAudit($version, $previous);
+                $version  = $this->buildVersion($versionable, $user);
+                $previous = $this->getPreviousVersion($em, $version);
+                $audit    = $this->buildAudit($version, $previous);
                 $diffData = $audit->getData();
 
                 if (!empty($diffData)) {
@@ -155,6 +152,55 @@ class AddVersionListener implements EventSubscriber
                 }
             }
         }
+    }
+
+    /**
+     * @param VersionableInterface $versionable
+     * @param User                 $user
+     *
+     * @return Version
+     */
+    protected function buildVersion(VersionableInterface $versionable, User $user)
+    {
+        return $this->builder->buildVersion($versionable, $user);
+    }
+
+    /**
+     * @param Version $version
+     * @param Version $previous
+     *
+     * @return Audit
+     */
+    protected function buildAudit(Version $version, Version $previous = null)
+    {
+        return $this->builder->buildAudit($version, $previous);
+    }
+
+    /**
+     * @param EntityManager $em
+     *
+     * @return User
+     */
+    protected function getUser(EntityManager $em)
+    {
+        /** @var User $user */
+        $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+
+        return $user;
+    }
+
+    /**
+     * @param EntityManager $em
+     *
+     * @return Version
+     */
+    protected function getPreviousVersion(EntityManager $em, Version $version)
+    {
+        /** @var Version $version */
+        $previous = $em->getRepository('PimVersioningBundle:Version')
+            ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
+
+        return $previous;
     }
 
     /**
