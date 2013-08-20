@@ -2,13 +2,23 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Organization
  *
  * @ORM\Table(name="oro_organization")
  * @ORM\Entity
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Organization", "plural_label"="Organizations"},
+ *      "acl"={"owner_type"="ORGANIZATION"}
+ *  }
+ * )
  */
 class Organization
 {

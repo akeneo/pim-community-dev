@@ -5,6 +5,12 @@ parameters:
     oro_organization.business_unit.manager.api.class:                   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_organization.business_unit.entity.class:                        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
     oro_organization.business_unit.manager.class:                       Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
+    oro_organization.type.ownership_type.class:                         Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType
+    oro_organization.form.type.business_unit_tree_select_type.class:    Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitTreeSelectType
+    oro_organization.type.form_type.class:                              Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension
+    oro_organization.form.transformer.business_unit_select.class:       Oro\Bundle\OrganizationBundle\Form\Transformer\BusinessUnitTransformer
+    oro_organization.form.listener.class:                               Oro\Bundle\OrganizationBundle\Event\FormListener
+
 services:
     oro_organization.form.business_unit:
         class:                        Symfony\Component\Form\Form
@@ -51,3 +57,43 @@ services:
     oro_organization.business_unit_manager:
         class:                        %oro_organization.business_unit.manager.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
+
+    oro_entity.config.acl_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: acl }
+
+    oro_organization.form.type.ownership_type:
+        class:                        %oro_organization.type.ownership_type.class%
+        arguments:                    ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_choice_ownership_type }
+
+    oro_organization.form.type.business_unit_tree_select_type:
+        class:                        %oro_organization.form.type.business_unit_tree_select_type.class%
+        arguments:                    ["@oro_organization.form.transformer.business_unit_select"]
+        tags:
+            - { name: form.type, alias: oro_business_unit_tree_select }
+
+    oro_organization.form.type.form_type:
+        class:                        %oro_organization.type.form_type.class%
+        arguments: [@security.context, "@oro_entity.config.acl_config_provider", "@oro_organization.business_unit_manager", "@oro_user.acl_manager"]
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    # Autocomplete search handler
+    oro_organization.autocomplete.business_unit.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %oro_organization.business_unit.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: business_unit, acl_resource: oro_business_unit_list }
+
+    oro_organization.form.transformer.business_unit_select:
+        class: %oro_organization.form.transformer.business_unit_select.class%
+        arguments: [@oro_organization.business_unit_manager]
+
+    oro_organization.form.listener:
+        class: %oro_organization.form.listener.class%
+        tags:
+            - { name: kernel.event_listener, event: entity_form.render.before, method: addOwnerField }

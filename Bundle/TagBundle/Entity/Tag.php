@@ -7,6 +7,7 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 /**
  * Tag
@@ -14,6 +15,12 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Tag", "plural_label"="Tags"},
+ *      "acl"={"owner_type"="USER"}
+ *  }
+ * )
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
@@ -64,6 +71,13 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $updatedBy;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $userOwner;
 
     /**
      * Constructor
@@ -221,5 +235,24 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function doUpdate()
     {
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * @param User $userOwner
+     * @return Tag
+     */
+    public function setOwner(User $userOwner)
+    {
+        $this->userOwner = $userOwner;
+
+        return $this;
     }
 }

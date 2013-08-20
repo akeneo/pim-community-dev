@@ -1,11 +1,11 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class BusinessUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -117,5 +117,17 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
         $businessUnit->addUser($user);
 
         $this->assertContains($user, $businessUnit->getUsers());
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->unit;
+        $businessUnit = new BusinessUnit();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($businessUnit);
+
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }

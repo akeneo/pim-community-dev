@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationTest extends \PHPUnit_Framework_TestCase
@@ -43,5 +45,17 @@ class OrganizationTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->organization->getPrecision());
         $this->organization->setPrecision($precision);
         $this->assertEquals($precision, $this->organization->getPrecision());
+    }
+
+    public function testOwner()
+    {
+        $entity = $this->organization;
+        $organization = new Organization();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($organization);
+
+        $this->assertEquals($organization, $entity->getOwner());
     }
 }

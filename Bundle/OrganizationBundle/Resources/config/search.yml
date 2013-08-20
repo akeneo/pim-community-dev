@@ -1,0 +1,14 @@
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+    alias:                          oro_business_unit
+    label: Business Units
+    route:
+        name: oro_business_unit_view
+        parameters:
+            id: id
+    search_template:                OroOrganizationBundle:Search:result.html.twig
+    fields:
+        -
+            name:                   name
+            target_type:            text
+            target_fields:          [name]
+
