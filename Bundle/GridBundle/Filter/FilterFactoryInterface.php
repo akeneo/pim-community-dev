@@ -2,8 +2,13 @@
 
 namespace Oro\Bundle\GridBundle\Filter;
 
-use Sonata\AdminBundle\Filter\FilterFactoryInterface as BaseFilterFactoryInterface;
-
-interface FilterFactoryInterface extends BaseFilterFactoryInterface
+interface FilterFactoryInterface
 {
+    /**
+     * @param string $name
+     * @param string $type
+     * @param array  $options
+     * @return FilterInterface
+     */
+    public function create($name, $type, array $options = array());
 }

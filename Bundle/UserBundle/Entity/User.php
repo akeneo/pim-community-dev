@@ -19,7 +19,6 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
@@ -27,6 +26,8 @@ use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 
 use DateTime;
 
@@ -42,7 +43,8 @@ use DateTime;
  * @Oro\Loggable
  * @Configurable(
  *  defaultValues={
- *      "entity"={"label"="User", "plural_label"="Users"},
+ *      routeName="oro_user_index",
+ *      "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
  *      "acl"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )

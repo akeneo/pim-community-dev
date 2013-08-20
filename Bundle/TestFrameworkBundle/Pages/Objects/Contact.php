@@ -23,13 +23,13 @@ class Contact extends AbstractEntity implements Entity
 
     public function init()
     {
-        $this->nameprefix = $this->byId('orocrm_contact_form_values_name_prefix_varchar');
-        $this->firstname = $this->byId('orocrm_contact_form_values_first_name_varchar');
-        $this->lastname = $this->byId('orocrm_contact_form_values_last_name_varchar');
-        $this->namesuffix = $this->byId('orocrm_contact_form_values_name_suffix_varchar');
-        $this->email = $this->byId('orocrm_contact_form_values_email_varchar');
-        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_assigned_to_user']/a");
-        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_reports_to_contact']/a");
+        $this->nameprefix = $this->byId('orocrm_contact_form_namePrefix');
+        $this->firstname = $this->byId('orocrm_contact_form_firstName');
+        $this->lastname = $this->byId('orocrm_contact_form_lastName');
+        $this->namesuffix = $this->byId('orocrm_contact_form_nameSuffix');
+        $this->email = $this->byId('orocrm_contact_form_emails_0_email');
+        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_assignedTo']/a");
+        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_reportsTo']/a");
         $this->addressCollection = $this->byId('orocrm_contact_form_addresses_collection');
 
         return $this;
@@ -283,7 +283,7 @@ class Contact extends AbstractEntity implements Entity
         )
         ) {
             //click Add
-            $this->byXpath("//a[@class='btn add-list-item']")->click();
+            $this->byXpath("//div[@class='row-oro'][div[@id='orocrm_contact_form_addresses_collection']]//a[@class='btn add-list-item']")->click();
             $this->waitForAjax();
         }
 

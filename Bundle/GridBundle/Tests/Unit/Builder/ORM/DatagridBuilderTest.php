@@ -14,7 +14,6 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
     const TEST_ENTITY_NAME   = 'test_entity_name';
     const TEST_ENTITY_TYPE   = 'test_entity_type';
     const TEST_ACL_RESOURCE  = 'test_acl_resource';
-    const TEST_HINT          = 'test_hint';
     /**#@-*/
 
     /**
@@ -56,6 +55,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             'eventDispatcher' => $this->getMockForAbstractClass(
                 'Symfony\Component\EventDispatcher\EventDispatcherInterface'
             ),
+            'aclManager'      => $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface'),
             'filterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Filter\FilterFactoryInterface'),
             'sorterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface'),
             'actionFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Action\ActionFactoryInterface'),
@@ -67,6 +67,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->model = new DatagridBuilder(
             $arguments['formFactory'],
             $arguments['eventDispatcher'],
+            $arguments['aclManager'],
             $arguments['filterFactory'],
             $arguments['sorterFactory'],
             $arguments['actionFactory'],
@@ -77,7 +78,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddFilter()
     {
         // test filter
-        $testFilter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\FilterInterface');
+        $testFilter = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Filter\FilterInterface');
 
         // field description
         $fieldDescription = new FieldDescription();
@@ -196,6 +197,21 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
                     'options'      => $this->testActionOptions
                 )
             ),
+            'granted_with_full_data' => array(
+                '$isGranted' => true,
+                '$actualParameters' => array(
+                    'name'         => self::TEST_ENTITY_NAME,
+                    'type'         => self::TEST_ENTITY_TYPE,
+                    'acl_resource' => self::TEST_ACL_RESOURCE,
+                    'options'      => $this->testActionOptions
+                ),
+                '$expectedParameters' => array(
+                    'name'         => self::TEST_ENTITY_NAME,
+                    'type'         => self::TEST_ENTITY_TYPE,
+                    'acl_resource' => self::TEST_ACL_RESOURCE,
+                    'options'      => $this->testActionOptions
+                )
+            ),
         );
     }
 
@@ -208,21 +224,17 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddRowAction($isGranted, array $actualParameters, array $expectedParameters)
     {
-        // action mock
-        $actionMock = $this->getMockForAbstractClass(
-            'Oro\Bundle\GridBundle\Action\AbstractAction',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('isGranted')
-        );
-        $actionMock->expects($this->once())
-            ->method('isGranted')
-            ->will($this->returnValue($isGranted));
+        // ACL manager mock
+        $aclManager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
+        if (!empty($actualParameters['aclResource'])) {
+            $aclManager->expects($this->once())
+                ->method('isResourceGranted')
+                ->with($actualParameters['aclResource'])
+                ->will($this->returnValue($isGranted));
+        }
 
-        // action factory
+        // action and action factory mocks
+        $actionMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Action\AbstractAction');
         $actionFactoryMock = $this->getMockForAbstractClass(
             'Oro\Bundle\GridBundle\Action\ActionFactoryInterface',
             array(),
@@ -252,15 +264,91 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             true,
             array('addSorter')
         );
-        if ($isGranted) {
+        $isAclResource = !empty($actualParameters['aclResource']);
+        if (!$isAclResource || $isAclResource && $isGranted) {
             $datagridMock->expects($this->once())
                 ->method('addRowAction')
                 ->with($actionMock);
+        } else {
+            $datagridMock->expects($this->never())
+                ->method('addRowAction');
         }
 
         // test
-        $this->initializeDatagridBuilder(array('actionFactory' => $actionFactoryMock));
+        $this->initializeDatagridBuilder(array('actionFactory' => $actionFactoryMock, 'aclManager' => $aclManager));
         $this->model->addRowAction($datagridMock, $actualParameters);
+    }
+
+    /**
+     * @return array
+     */
+    public function addMassActionDataProvider()
+    {
+        return array(
+            'no_acl' => array(
+                'expectAdd'   => true,
+                'aclResource' => null,
+                'isGranted'   => false,
+            ),
+            'acl_not_granted' => array(
+                'expectAdd'   => false,
+                'aclResource' => self::TEST_ACL_RESOURCE,
+                'isGranted'   => false,
+            ),
+            'acl_granted' => array(
+                'expectAdd'   => true,
+                'aclResource' => self::TEST_ACL_RESOURCE,
+                'isGranted'   => true,
+            ),
+        );
+    }
+
+    /**
+     * @param boolean $expectAdd
+     * @param string|null $aclResource
+     * @param boolean $isGranted
+     * @dataProvider addMassActionDataProvider
+     */
+    public function testAddMassAction($expectAdd, $aclResource, $isGranted)
+    {
+        $massActionMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface')
+            ->setMethods(array('getAclResource'))
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $massActionMock->expects($this->any())
+            ->method('getAclResource')
+            ->will($this->returnValue($aclResource));
+
+        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\ManagerInterface')
+            ->setMethods(array('isResourceGranted'))
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        if ($aclResource) {
+            $aclManager->expects($this->once())
+                ->method('isResourceGranted')
+                ->with($aclResource)
+                ->will($this->returnValue($isGranted));
+        } else {
+            $aclManager->expects($this->never())
+                ->method('isResourceGranted');
+        }
+
+        $datagridMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\DatagridInterface')
+            ->setMethods(array('addMassAction'))
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+
+        if ($expectAdd) {
+            $datagridMock->expects($this->once())
+                ->method('addMassAction')
+                ->with($massActionMock);
+        } else {
+            $datagridMock->expects($this->never())
+                ->method('addMassAction');
+        }
+
+        $this->initializeDatagridBuilder(array('aclManager' => $aclManager));
+        $this->model->addMassAction($datagridMock, $massActionMock);
     }
 
     public function testAddProperty()
@@ -328,8 +416,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             $fieldDescriptionCollection,
             $routeGeneratorMock,
             $parametersMock,
-            self::TEST_ENTITY_NAME,
-            self::TEST_HINT
+            self::TEST_ENTITY_NAME
         );
 
         $this->assertInstanceOf(self::DATAGRID_CLASS, $datagrid);
@@ -339,8 +426,6 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($eventDispatcherMock, 'eventDispatcher', $datagrid);
         $this->assertAttributeEquals($routeGeneratorMock, 'routeGenerator', $datagrid);
         $this->assertAttributeEquals($parametersMock, 'parameters', $datagrid);
-        $this->assertAttributeEquals(self::TEST_ENTITY_NAME, 'name', $datagrid);
-        $this->assertAttributeEquals(self::TEST_HINT, 'entityHint', $datagrid);
 
         // test pager
         $pager = $datagrid->getPager();

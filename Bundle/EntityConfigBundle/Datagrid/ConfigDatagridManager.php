@@ -166,23 +166,6 @@ class ConfigDatagridManager extends DatagridManager
     {
         $this->getDynamicFields($fieldsCollection);
 
-        $fieldObjectId = new FieldDescription();
-        $fieldObjectId->setName('id');
-        $fieldObjectId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldObjectId);
-
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('name');
         $fieldObjectName->setOptions(

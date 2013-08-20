@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -13,8 +15,15 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Property\PropertyInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * TODO: This class should be refactored  (BAP-969).
+ */
 abstract class DatagridManager implements DatagridManagerInterface
 {
     /**
@@ -36,6 +45,11 @@ abstract class DatagridManager implements DatagridManagerInterface
      * @var TranslatorInterface
      */
     protected $translator;
+
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
 
     /**
      * @var string
@@ -65,6 +79,16 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * @var string
      */
+    protected $entityName;
+
+    /**
+     * @var string
+     */
+    protected $queryEntityAlias;
+
+    /**
+     * @var string
+     */
     protected $entityHint;
 
     /**
@@ -76,6 +100,11 @@ abstract class DatagridManager implements DatagridManagerInterface
      * @var FieldDescriptionCollection
      */
     private $fieldsCollection;
+
+    /**
+     * @var string|null
+     */
+    private $identifierField;
 
     /**
      * @var array
@@ -157,9 +186,53 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setQueryEntityAlias($queryEntityAlias)
+    {
+        $this->queryEntityAlias = $queryEntityAlias;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setEntityHint($entityHint)
     {
         $this->entityHint = $entityHint;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdentifierField($identifierField)
+    {
+        $this->identifierField = $identifierField;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentifierField()
+    {
+        if (null == $this->identifierField && $this->entityName && $this->entityManager) {
+            $this->identifierField =
+                current($this->entityManager->getClassMetadata($this->entityName)->getIdentifierFieldNames());
+        }
+        return $this->identifierField;
     }
 
     /**
@@ -179,7 +252,7 @@ abstract class DatagridManager implements DatagridManagerInterface
         $listCollection = $this->listBuilder->getBaseList();
 
         /** @var $fieldDescription FieldDescriptionInterface */
-        foreach ($this->getListFields() as $fieldDescription) {
+        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
             $listCollection->add($fieldDescription);
         }
 
@@ -201,10 +274,21 @@ abstract class DatagridManager implements DatagridManagerInterface
             $listCollection,
             $this->routeGenerator,
             $this->parameters,
-            $this->name,
-            $this->entityHint
+            $this->name
         );
 
+        $this->configureDatagrid($datagrid);
+
+        return $datagrid;
+    }
+
+    /**
+     * Process datagrid configuration
+     *
+     * @param DatagridInterface $datagrid
+     */
+    protected function configureDatagrid(DatagridInterface $datagrid)
+    {
         // add properties
         foreach ($this->getProperties() as $property) {
             $this->datagridBuilder->addProperty($datagrid, $property);
@@ -227,10 +311,50 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->datagridBuilder->addRowAction($datagrid, $actionParameters);
         }
 
-        // add toolbar options
-        $datagrid->setToolbarOptions($this->getToolBarOptions());
+        $massActions = $this->getMassActions();
+        // add mass actions
+        foreach ($massActions as $massAction) {
+            $this->datagridBuilder->addMassAction($datagrid, $massAction);
+        }
 
-        return $datagrid;
+        // add "selected rows: filter if mass actions exist and identifier is configured
+        if (count($massActions) && $this->identifierField) {
+            $this->datagridBuilder->addSelectedRowFilter(
+                $datagrid,
+                $this->getSelectedRowFilterDefaultOptions()
+            );
+        }
+
+        // add toolbar options
+        $datagrid->setToolbarOptions($this->getToolbarOptions());
+
+        // set identifier field name
+        if ($this->getIdentifierField()) {
+            $datagrid->setIdentifierFieldName($this->getIdentifierField());
+        }
+
+        // set identifier field name
+        $datagrid->setEntityName($this->entityName);
+        $datagrid->setName($this->name);
+        $datagrid->setEntityHint($this->entityHint);
+    }
+
+    /**
+     * Provide ability to override default "selected rows" filter setting
+     * e.g label, show/hide filter, field name
+     *
+     * @return array
+     */
+    protected function getSelectedRowFilterDefaultOptions()
+    {
+        return array(
+            'field_mapping' => array(
+                'fieldName' => $this->identifierField
+            ),
+            'field_name'    => $this->identifierField,
+            'show_filter'   => true,
+            'label'         => $this->translate('oro.grid.mass_action.selected_rows')
+        );
     }
 
     /**
@@ -277,9 +401,52 @@ abstract class DatagridManager implements DatagridManagerInterface
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
             $this->configureFields($this->fieldsCollection);
+            $this->configureIdentifierField($this->fieldsCollection);
         }
 
         return $this->fieldsCollection;
+    }
+
+    /**
+     * @param FieldDescriptionCollection $fieldCollection
+     */
+    protected function configureIdentifierField(FieldDescriptionCollection $fieldCollection)
+    {
+        $identifierField = $this->createIdentifierField();
+        if ($identifierField && !$fieldCollection->has($identifierField->getName())) {
+            $fieldCollection->add($identifierField);
+            $this->identifierField = $identifierField->getName();
+        }
+    }
+
+    /**
+     * @return FieldDescription|null
+     */
+    protected function createIdentifierField()
+    {
+        $identifierFieldName = $this->getIdentifierField();
+
+        if (!$identifierFieldName) {
+            return null;
+        }
+
+        $field = new FieldDescription();
+        $field->setName($identifierFieldName);
+        $options = array(
+            'field_name'   => $identifierFieldName,
+            'type'         => FieldDescriptionInterface::TYPE_INTEGER,
+            'label'        => $this->translate($this->identifierField),
+            'filter_type'  => FilterInterface::TYPE_NUMBER,
+            'show_column'  => false
+        );
+
+        if ($this->queryEntityAlias) {
+            $options['entity_alias'] = $this->queryEntityAlias;
+        }
+
+        $field->setOptions($options);
+
+        return $field;
     }
 
     /**
@@ -302,19 +469,9 @@ abstract class DatagridManager implements DatagridManagerInterface
     }
 
     /**
-     * Get list of datagrid fields
-     *
-     * @return FieldDescriptionInterface[]
-     */
-    protected function getListFields()
-    {
-        return $this->getFieldDescriptionCollection()->getElements();
-    }
-
-    /**
      * Get list of properties
      *
-     * @return PropertyInterface
+     * @return PropertyInterface[]
      */
     protected function getProperties()
     {
@@ -368,6 +525,16 @@ abstract class DatagridManager implements DatagridManagerInterface
     }
 
     /**
+     * Get list of mass actions
+     *
+     * @return MassActionInterface[]
+     */
+    protected function getMassActions()
+    {
+        return array();
+    }
+
+    /**
      * Get default parameters
      *
      * @return array
@@ -413,43 +580,48 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected function getDefaultPager()
     {
         $defaultPager = array();
-        $options = $this->getToolBarOptions();
+        $options = $this->getToolbarOptions();
 
-        switch (true) {
-            case isset($options['hide']) && $options['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
-            case isset($options['pagination']['hide']) && $options['pagination']['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
-            case isset($options['pageSize']['hide']) && $options['pageSize']['hide']:
-                $defaultPager['_per_page'] = 0;
-                break;
+        $options = array_merge_recursive(
+            array(
+                'hide' => false,
+                'pageSize' => array(
+                    'hide' => false,
+                    'items' => array()
+                ),
+                'pagination' => array(
+                    'hide' => false,
+                )
+            ),
+            $options
+        );
+
+        // check all label exists
+        $zeroItem = array_filter(
+            $options['pageSize']['items'],
+            function ($item) {
+                $item = isset($item['size']) ? $item['size'] : $item;
+                return $item == 0;
+            }
+        );
+        $notExists = count($zeroItem) == 0;
+
+        $hidden = in_array(
+            true,
+            array($options['hide'] , $options['pagination']['hide'] , $options['pageSize']['hide'])
+        );
+
+        if ($hidden) {
+            $defaultPager['_per_page'] = 0;
         }
 
         // add 'all' pageSize
-        if (isset($defaultPager['_per_page']) && $defaultPager['_per_page'] == 0) {
-            $notExists = true;
-            if (isset($options['pageSize']['items']) && is_array($options['pageSize']['items'])) {
-                foreach ($options['pageSize']['items'] as $item) {
-                    if ($item == 0 || isset($item['size']) && $item['size'] == 0) {
-                        $notExists = false;
-                        break;
-                    }
-                }
-            }
-
-            if ($notExists) {
-                $options['pageSize'] = isset($options['pageSize']) ? $options['pageSize'] : array();
-                $options['pageSize']['items'] = isset($options['pageSize']['items']) && is_array($options['pageSize']['items'])
-                    ? $options['pageSize']['items']
-                    : array();
-                $options['pageSize']['items'][] = array(
-                    'size' => 0,
-                    'label' => $this->translate('oro.grid.datagrid.page_size.all')
-                );
-                $this->toolbarOptions = $options;
-            }
+        if ($notExists && $hidden) {
+            $options['pageSize']['items'][] = array(
+                'size' => 0,
+                'label' => $this->translate('oro.grid.datagrid.page_size.all')
+            );
+            $this->toolbarOptions = $options;
         }
 
         return $defaultPager;
@@ -475,7 +647,7 @@ abstract class DatagridManager implements DatagridManagerInterface
      *
      * @return array
      */
-    public function getToolBarOptions()
+    public function getToolbarOptions()
     {
         return $this->toolbarOptions;
     }

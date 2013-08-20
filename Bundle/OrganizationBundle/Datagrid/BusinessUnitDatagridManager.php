@@ -35,23 +35,6 @@ class BusinessUnitDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type' => FieldDescriptionInterface::TYPE_INTEGER,
-                'label' => $this->translate('orocrm.business_unit.datagrid.business_unit_id'),
-                'field_name' => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required' => false,
-                'sortable' => false,
-                'filterable' => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldName = new FieldDescription();
         $fieldName->setName('name');
         $fieldName->setOptions(
