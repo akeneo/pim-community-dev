@@ -136,6 +136,7 @@ class AddVersionListener implements EventSubscriber
     public function writeSnapshot(EntityManager $em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
+
         if (!isset($this->pendingVersions[$oid]) and $versionable->getId() !== null) {
 
             $user = $this->getUser($em);
