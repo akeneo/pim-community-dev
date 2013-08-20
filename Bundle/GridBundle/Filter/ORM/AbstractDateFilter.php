@@ -76,7 +76,9 @@ abstract class AbstractDateFilter extends AbstractFilter
             $data['value']['end'] = null;
         }
 
-        $data['type'] = isset($data['type']) ? $data['type'] : null;
+        if (!isset($data['type'])) {
+            $data['type'] = null;
+        }
 
         if (!in_array(
             $data['type'],

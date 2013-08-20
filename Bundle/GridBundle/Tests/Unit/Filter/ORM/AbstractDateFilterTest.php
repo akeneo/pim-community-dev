@@ -123,6 +123,7 @@ class AbstractDateFilterTest extends FilterTestCase
 
     /**
      * @return array
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function filterDataProvider()
     {
