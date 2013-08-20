@@ -3,8 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Pim\Bundle\ProductBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\ProductBundle\Form\Subscriber\LocaleSubscriber;
-use Pim\Bundle\ProductBundle\Helper\LocaleHelper;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;

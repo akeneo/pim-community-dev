@@ -46,7 +46,7 @@ class InvalidObjectException extends \Exception
         if ($form->count()) {
             foreach ($form as $child) {
                 if (!$child->isValid()) {
-                    $errors[$child->getName()] = $this->getErrorMessages($child);
+                    $errors[(string) $child->getPropertyPath()] = $this->getErrorMessages($child);
                 }
             }
         }

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 

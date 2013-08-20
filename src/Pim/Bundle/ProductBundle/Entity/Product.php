@@ -63,6 +63,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      */
     protected $enabled = true;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         parent::__construct();
@@ -70,17 +73,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->categories = new ArrayCollection;
     }
     /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * Get product family
+     * Get family
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
@@ -90,7 +83,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
-     * Set product family
+     * Set family
      *
      * @param Family $family
      *
@@ -249,9 +242,21 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         return $this->categories;
     }
 
+    /**
+     * Set the product categories
+     *
+     * @param ArrayCollection $categories
+     *
+     * @return Procuct
+     */
     public function setCategories($categories)
     {
+        foreach ($categories as $category) {
+            $category->addProduct($this);
+        }
         $this->categories = $categories;
+
+        return $this;
     }
 
     /**

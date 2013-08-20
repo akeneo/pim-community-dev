@@ -14,5 +14,5 @@ use Pim\Bundle\ProductBundle\Entity\Category;
  */
 class Edit extends Form
 {
-    protected $path = '/enrich/category-tree/edit/{id}';
+    protected $path = '/enrich/category-tree/{id}/edit';
 }

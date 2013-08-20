@@ -455,16 +455,16 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for allowedFileExtensions property
+     * Test getter/setter for allowedExtensions property
      */
-    public function testGetSetAllowedFileExtensions()
+    public function testGetSetAllowedExtensions()
     {
-        $this->assertEmpty($this->attribute->getAllowedFileExtensions());
+        $this->assertEmpty($this->attribute->getAllowedExtensions());
 
         // Change value and assert new
         $extensions = array('jpg', 'png', 'gif');
-        $this->assertEntity($this->attribute->setAllowedFileExtensions(' jpg, png,gif'));
-        $this->assertEquals($extensions, $this->attribute->getAllowedFileExtensions());
+        $this->assertEntity($this->attribute->setAllowedExtensions(' jpg, png,gif'));
+        $this->assertEquals($extensions, $this->attribute->getAllowedExtensions());
     }
 
     /**

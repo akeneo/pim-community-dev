@@ -16,7 +16,7 @@ class Index extends JobIndex
     /**
      * @var string $path
      */
-    protected $path = '/ie/export/';
+    protected $path = '/spread/export/';
 
     /**
      * @param string $exportLink

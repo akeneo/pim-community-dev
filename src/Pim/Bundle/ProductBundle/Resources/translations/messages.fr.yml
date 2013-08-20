@@ -62,7 +62,7 @@
 'Cancel': '__Cancel'
 'New product': '__New product'
 'Create a new product': '__Create a new product'
-'Choose a product family': '__Choose a product family'
+'Choose a family': '__Choose a family'
 'Activated locales': '__Activated locales'
 'Attributes are added to the product form.': '__Attributes are added to the product form.'
 'Product successfully saved': '__Product successfully saved'
@@ -112,12 +112,12 @@
 'Max file size': '__Max file size'
 'Allowed file extensions': '__Allowed file extensions'
 
-# Product family
-'Product families overview': '__Product families overview'
-'New product family': '__New product family'
+# Family
+'Families overview': '__Families overview'
+'New family': '__New family'
 'Attributes': '__Attributes'
-'Edit product family': '__Edit product family'
-'Add product family': '__Add product family'
+'Edit family': '__Edit family'
+'Add family': '__Add family'
 
 # Category
 'Category successfully saved': '__Category successfully saved'
@@ -159,9 +159,8 @@
 'Products | Create'            : '__Products | Create'
 'Products | Edit'              : '__Products | Edit'
 'Families'                     : '__Families'
-'Product families'             : '__Product families'
-'Product families | Create'    : '__Product families | Create'
-'Product families | Edit'      : '__Product families | Edit'
+'Families | Create'            : '__Families | Create'
+'Families | Edit'              : '__Families | Edit'
 'Channels'                     : '__Channels'
 'Channels | Create'            : '__Channels | Create'
 'Channels | Edit'              : '__Channels | Edit'

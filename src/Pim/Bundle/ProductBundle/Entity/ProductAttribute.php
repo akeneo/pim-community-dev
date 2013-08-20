@@ -221,11 +221,11 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     protected $maxFileSize;
 
     /**
-     * @var array $allowedFileExtensions
+     * @var array $allowedExtensions
      *
-     * @ORM\Column(name="allowed_file_extensions", type="string", length=255, nullable=true)
+     * @ORM\Column(name="allowed_extensions", type="string", length=255, nullable=true)
      */
-    protected $allowedFileExtensions;
+    protected $allowedExtensions;
 
     /**
      * Used locale to override Translation listener's locale
@@ -989,25 +989,25 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     }
 
     /**
-     * Get allowedFileExtensions
+     * Get allowedExtensions
      *
-     * @return array $allowedFileExtensions
+     * @return array $allowedExtensions
      */
-    public function getAllowedFileExtensions()
+    public function getAllowedExtensions()
     {
-        return $this->allowedFileExtensions ? array_map('trim', explode(',', $this->allowedFileExtensions)) : array();
+        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : array();
     }
 
     /**
-     * Set allowedFileExtensions
+     * Set allowedExtensions
      *
-     * @param string $allowedFileExtensions
+     * @param string $allowedExtensions
      *
      * @return ProductAttribute
      */
-    public function setAllowedFileExtensions($allowedFileExtensions)
+    public function setAllowedExtensions($allowedExtensions)
     {
-        $this->allowedFileExtensions = $allowedFileExtensions;
+        $this->allowedExtensions = $allowedExtensions;
 
         return $this;
     }

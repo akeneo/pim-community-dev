@@ -43,4 +43,3 @@ Feature: Browse products by locale and scope
     Then I should see product "postit" with data postit, Etiquette, large.jpeg and Ma description ecommerce
     When I filter by "Channel" with value "Mobile"
     Then I should see product "postit" with data postit, Etiquette, small.jpeg and Ma description mobile
-

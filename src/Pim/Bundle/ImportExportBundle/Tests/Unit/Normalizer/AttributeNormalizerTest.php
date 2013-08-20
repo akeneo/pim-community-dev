@@ -38,7 +38,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         'metric_family',
         'default_metric_unit',
         'allowed_file_sources',
-        'allowed_file_extensions',
+        'allowed_extensions',
         'max_file_size',
     );
 

@@ -2,7 +2,7 @@
 Feature: Browse channels
   In order to list the existing channels for the catalog
   As a user
-  I need to be able to see available channels
+  I need to be able to see channels
 
   Background:
     Given there is no channel

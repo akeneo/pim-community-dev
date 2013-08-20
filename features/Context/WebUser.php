@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Mink\Exception\ExpectationException;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -30,6 +32,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
+        'attributes' => 'Attribute index',
         'channels'   => 'Channel index',
         'currencies' => 'Currency index',
         'exports'    => 'Export index',
@@ -37,6 +40,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'imports'    => 'Import index',
         'locales'    => 'Locale index',
         'products'   => 'Product index',
+        'categories' => 'Category tree creation',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -138,13 +142,59 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $category
+     *
+     * @Given /^I expand the "([^"]*)" category$/
+     */
+    public function iExpandTheCategory($category)
+    {
+        $this->getCurrentPage()->expandCategory($category);
+        $this->wait();
+    }
+
+    /**
+     * @param string $category1
+     * @param string $category2
+     *
+     * @Given /^I drag the "([^"]*)" category to the "([^"]*)" category$/
+     */
+    public function iDragTheCategoryToTheCategory($category1, $category2)
+    {
+        $this->getCurrentPage()->dragCategoryTo($category1, $category2);
+        $this->wait();
+    }
+
+    /**
+     * @param string $child
+     * @param string $parent
+     *
+     * @Then /^I should see the "([^"]*)" category under the "([^"]*)" category$/
+     */
+    public function iShouldSeeTheCategoryUnderTheCategory($child, $parent)
+    {
+        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
+
+        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
+
+        if (!$childNode) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see category "%s" under the category "%s", not found',
+                    $child,
+                    $parent
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $page
      *
      * @Then /^I should be redirected on the (.*) page$/
      */
     public function iShouldBeRedirectedOnThePage($page)
     {
-        $this->assertSession()->addressEquals($this->getPage($page)->getUrl());
+        $this->assertAddress($this->getPage($page)->getUrl());
     }
 
     /**
@@ -160,62 +210,43 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Other methods -------------------- */
 
     /**
+     * @param string $deactivated
      * @param string $currencies
      *
-     * @Then /^I should see activated currency (.*)$/
-     * @Then /^I should see activated currencies (.*)$/
+     * @Then /^I should see (de)?activated currency (.*)$/
+     * @Then /^I should see (de)?activated currencies (.*)$/
      */
-    public function iShouldSeeActivatedCurrencies($currencies)
+    public function iShouldSeeActivatedCurrencies($deactivated, $currencies)
     {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
+        $currencies = $this->listToArray($currencies);
+
+        foreach ($currencies as $currency) {
+            if ($deactivated) {
+                if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
+                    throw $this->createExpectationException(sprintf('Currency "%s" is not deactivated.', $currency));
+                }
+            } else {
+                if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
+                    throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
+                }
             }
         }
     }
 
     /**
+     * @param string $not
      * @param string $currencies
      *
-     * @Given /^I should see deactivated currency (.*)$/
-     * @Given /^I should see deactivated currencies (.*)$/
-     */
-    public function iShouldSeeDeactivatedCurrencies($currencies)
-    {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
-            }
-        }
-    }
-
-    /**
-     * @param string $currencies
+     * @return \Behat\Behat\Context\Step\Then
      *
-     * @Then /^I should see currency (.*)$/
-     * @Then /^I should see currencies (.*)$/
+     * @Then /^I should (not )?see currency (.*)$/
+     * @Then /^I should (not )?see currencies (.*)$/
      */
-    public function iShouldSeeCurrencies($currencies)
+    public function iShouldSeeCurrencies($not, $currencies)
     {
-        foreach ($this->listToArray($currencies) as $currency) {
-            if (!$this->getPage('Currency index')->findCurrency($currency)) {
-                throw $this->createExpectationException(sprintf('Currency "%s" not found', $currency));
-            }
-        }
-    }
-
-    /**
-     * @param string $locales
-     *
-     * @Then /^I should see locales? (.*)$/
-     */
-    public function iShouldSeeLocales($locales)
-    {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findLocale($locale)) {
-                throw $this->createExpectationException(sprintf('Locale "%s" not found', $locale));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $currencies)
+        );
     }
 
     /**
@@ -241,7 +272,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     *
      * @param string $currencies
      *
      * @return \Behat\Behat\Context\Step\Given
@@ -251,7 +281,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedCurrencies($currencies)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $currencies)
+            sprintf('I should see sorted entities %s', $currencies)
         );
     }
 
@@ -260,9 +290,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheLocalesPage()
     {
-        $this->assertSession()->addressEquals(
-            $this->getPage('Locale index')->getUrl()
-        );
+        $this->assertAddress($this->getPage('Locale index')->getUrl());
     }
 
     /**
@@ -275,35 +303,47 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $deactivated
      * @param string $locales
      *
-     * @When /^I should see activated locales? (.*)$/
+     * @throws ExpectationException
+     *
+     * @When /^I should see (de)?activated locales? (.*)$/
      */
-    public function iShouldSeeActivatedLocales($locales)
+    public function iShouldSeeActivatedLocales($deactivated, $locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
-                throw $this->createExpectationException(
-                    sprintf('Locale "%s" is not activated', $locale)
-                );
+        $locales = $this->listToArray($locales);
+
+        foreach ($locales as $locale) {
+            if ($deactivated) {
+                if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
+                    throw $this->createExpectationException(
+                        sprintf('Locale "%s" is not deactivated', $locale)
+                    );
+                }
+            } else {
+                if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
+                    throw $this->createExpectationException(
+                        sprintf('Locale "%s" is not activated', $locale)
+                    );
+                }
             }
         }
     }
 
     /**
+     * @param string $not
      * @param string $locales
      *
-     * @When /^I should see deactivated locales? (.*)$/
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should (not )?see locales? (.*)$/
      */
-    public function iShouldSeeDeactivatedLocales($locales)
+    public function iShouldSeeLocales($not, $locales)
     {
-        foreach ($this->listToArray($locales) as $locale) {
-            if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
-                throw $this->createExpectationException(
-                    sprintf('Locale "%s" is not deactivated', $locale)
-                );
-            }
-        }
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $locales)
+        );
     }
 
     /**
@@ -316,28 +356,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeSortedLocales($locales)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $locales)
+            sprintf('I should see sorted entities %s', $locales)
         );
-    }
-
-    /**
-     * @param string $locales
-     *
-     * @When /^I should not see locales? (.*)$/
-     */
-    public function iShouldNotSeeLocales($locales)
-    {
-        foreach ($this->listToArray($locales) as $locale) {
-            try {
-                $this->getPage('Locale index')->getRow($locale);
-                $this->createExpectationException(
-                    sprintf('Locale "%s" should not be seen', $locale)
-                );
-            } catch (\InvalidArgumentException $e) {
-                // here we must catch an exception because the row is not found
-                continue;
-            }
-        }
     }
 
     /**
@@ -705,7 +725,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheFamilyPage($family)
     {
         $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $this->getFamily($family)->getId()));
-        $this->assertSession()->addressEquals($expectedAddress);
+        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -956,32 +976,60 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $channels
      *
-     * @Then /^I should see channels? (.*)$/
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should (not )?see channels? (.*)$/
      */
-    public function iShouldSeeChannels($channels)
+    public function iShouldSeeChannels($not, $channels)
     {
-        $channels = $this->listToArray($channels);
-
-        foreach ($channels as $channel) {
-            if (!$this->getPage('Channel index')->getRow($channel)) {
-                throw $this->createExpectationException(sprintf('Expecting to see channel %s, not found', $channel));
-            }
-        }
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $channels)
+        );
     }
 
     /**
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return \Behat\Behat\Context\Step\Then
      *
      * @Then /^I should see sorted channels (.*)$/
      */
     public function iShouldSeeSortedChannels($channels)
     {
         return new Step\Then(
-            sprintf('I should see entities sorted as %s', $channels)
+            sprintf('I should see sorted entities %s', $channels)
+        );
+    }
+
+    /**
+     * @param string $not
+     * @param string $attributes
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should (not )?see attributes? ((?!in group).)*$/
+     */
+    public function iShouldSeeAttributes($not, $attributes)
+    {
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $attributes)
+        );
+    }
+
+    /**
+     * @param string $attributes
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should see sorted attributes (.*)$/
+     */
+    public function iShouldSeeSortedAttributes($attributes)
+    {
+        return new Step\Then(
+            sprintf('I should see sorted entities %s', $attributes)
         );
     }
 
@@ -1065,30 +1113,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $products
      *
-     * @Then /^I should see products (.*)$/
+     * @Then /^I should (not )?see products (.*)$/
      */
-    public function iShouldSeeProducts($products)
+    public function iShouldSeeProducts($not, $products)
     {
-        $products = $this->listToArray($products);
-        foreach ($products as $product) {
-            if (!$this->getPage('Product index')->getRow($product)) {
-                throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
-            }
-        }
-    }
-
-    /**
-     * @param string $product
-     *
-     * @Then /^I should see product "([^"]*)"$/
-     */
-    public function iShouldSeeProduct($product)
-    {
-        if (!$this->getPage('Product index')->getRow($product)) {
-            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
-        }
+        return new Step\Then(
+            sprintf('I should %ssee entities %s', $not, $products)
+        );
     }
 
     /**
@@ -1117,39 +1151,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $products
-     *
-     * @Then /^I should not see products (.*)$/
-     */
-    public function iShouldNotSeeProducts($products)
-    {
-        $products = $this->listToArray($products);
-        foreach ($products as $product) {
-            try {
-                $this->getPage('Product index')->getRow($product);
-            } catch (\InvalidArgumentException $e) {
-                continue;
-            }
-            throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
-        }
-    }
-
-    /**
-     * @param string $product
-     *
-     * @Then /^I should not see product "([^"]*)"$/
-     */
-    public function iShouldNotSeeProduct($product)
-    {
-        try {
-            $this->getPage('Product index')->getRow($product);
-        } catch (\InvalidArgumentException $e) {
-            return;
-        }
-        throw $this->createExpectationException(sprintf('Expecting not to see product %s, but I see it', $product));
-    }
-
-    /**
      * @param string $code
      *
      * @Then /^I should be on the category "([^"]*)" edit page$/
@@ -1157,7 +1158,51 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheCategoryEditPage($code)
     {
         $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $this->getCategory($code)->getId()));
-        $this->assertSession()->addressEquals($expectedAddress);
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Given /^I should be on the category "([^"]*)" node creation page$/
+     */
+    public function iShouldBeOnTheCategoryNodeCreationPage($code)
+    {
+        $id = $this->getCategory($code)->getId();
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $id));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param string $category
+     *
+     * @Given /^I right click on the "([^"]*)" category$/
+     */
+    public function iRightClickOnTheCategory($category)
+    {
+        $category = $this->getCurrentPage()->findCategoryInTree($category);
+
+        $category->rightClick();
+    }
+
+    /**
+     * @param string $action
+     *
+     * @Given /^I click on "([^"]*)" in the right click menu$/
+     */
+    public function iClickOnInTheRightClickMenu($action)
+    {
+        $this->getCurrentPage()->rightClickAction($action);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I blur (.*)$/
+     */
+    public function iBlur()
+    {
+        $this->getCurrentPage()->find('css', 'body')->click();
+        $this->wait();
     }
 
     /**
@@ -1193,6 +1238,40 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $profiles
+     *
+     * @return \Behat\Behat\Context\Step\Given
+     *
+     * @Then /^I should see sorted (?:import|export) profiles? (.*)$/
+     */
+    public function iShouldSeeSortedProfiles($profiles)
+    {
+        return new Step\Then(
+            sprintf('I should see sorted entities %s', $profiles)
+        );
+    }
+
+    /**
+     * @param string $profiles
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @Then /^I should (not )?see (?:import|export) profiles? (.*)$/
+     */
+    public function iShouldSeeProfiles($not, $profiles)
+    {
+        if ($not) {
+            return new Step\Then(
+                sprintf('I should not see entities %s', $profiles)
+            );
+        } else {
+            return new Step\Then(
+                sprintf('I should see entities %s', $profiles)
+            );
+        }
+    }
+
+    /**
      * @Given /^I try to create an unknown import$/
      */
     public function iTryToCreateAnUnknownImport()
@@ -1208,7 +1287,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheImportJobPage($job)
     {
         $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJob($job)->getId()));
-        $this->assertSession()->addressEquals($expectedAddress);
+        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -1260,7 +1339,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheExportJobPage($job)
     {
         $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJob($job)->getId()));
-        $this->assertSession()->addressEquals($expectedAddress);
+        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -1416,6 +1495,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
         $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+    }
+
+    /**
+     * @param string $expected
+     */
+    private function assertAddress($expected)
+    {
+        $actual = $this->getSession()->getCurrentUrl();
+        $result = strpos($actual, $expected) !== false;
+        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
 
     /**

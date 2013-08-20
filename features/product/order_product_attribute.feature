@@ -24,7 +24,7 @@ Feature: Order product attributes
     Then the attribute "Price" should be in position 1
     And the attribute "Color" should be in position 3
 
-  Scenario: Display a produt attribute fields ordered by their position
+  Scenario: Display product attribute fields ordered by their position
     Given a "Car" product
     And the following attribute groups:
       | name    |

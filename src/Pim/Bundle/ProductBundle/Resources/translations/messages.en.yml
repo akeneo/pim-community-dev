@@ -62,7 +62,7 @@
 'Cancel': 'Cancel'
 'New product': 'New product'
 'Create a new product': 'Create a new product'
-'Choose a product family': 'Choose a product family'
+'Choose a family': 'Choose a family'
 'Activated locales': 'Activated locales'
 'Attributes are added to the product form.': 'Attributes are added to the product form.'
 'Product successfully saved': 'Product successfully saved'
@@ -112,12 +112,12 @@
 'Max file size': 'Max file size'
 'Allowed file extensions': 'Allowed file extensions'
 
-# Product family
-'Product families overview': 'Product families overview'
-'New product family': 'New product family'
+# Family
+'Families overview': 'Families overview'
+'New family': 'New family'
 'Attributes': 'Attributes'
-'Edit product family': 'Edit product family'
-'Add product family': 'Add product family'
+'Edit family': 'Edit family'
+'Add family': 'Add family'
 
 # Category
 'Category successfully saved': 'Category successfully saved'
@@ -159,9 +159,8 @@
 'Products | Create'            : 'Products | Create'
 'Products | Edit'              : 'Products | Edit'
 'Families'                     : 'Families'
-'Product families'             : 'Product families'
-'Product families | Create'    : 'Product families | Create'
-'Product families | Edit'      : 'Product families | Edit'
+'Families | Create'            : 'Families | Create'
+'Families | Edit'              : 'Families | Edit'
 'Channels'                     : 'Channels'
 'Channels | Create'            : 'Channels | Create'
 'Channels | Edit'              : 'Channels | Edit'

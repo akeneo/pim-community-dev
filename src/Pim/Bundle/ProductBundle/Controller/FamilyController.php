@@ -2,32 +2,26 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Product family controller
+ * Family controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/family")
  */
 class FamilyController extends Controller
 {
     /**
-     * Create product family
+     * Create a family
      *
      * @param Request $request
      *
-     * @Route("/create")
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function createAction(Request $request)
@@ -40,7 +34,7 @@ class FamilyController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->persist($family);
-                $this->addFlash('success', 'Product family successfully created');
+                $this->addFlash('success', 'Family successfully created');
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
             }
@@ -53,18 +47,12 @@ class FamilyController extends Controller
     }
 
     /**
-     * Edit product family
+     * Edit a family
      *
      * @param Request $request
      * @param integer $id
      *
-     * @Route(
-     *     "/{id}/edit",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0}
-     * )
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -92,7 +80,7 @@ class FamilyController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->flush();
-                $this->addFlash('success', 'Product family successfully updated.');
+                $this->addFlash('success', 'Family successfully updated.');
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
@@ -111,12 +99,9 @@ class FamilyController extends Controller
     }
 
     /**
-     * Remove product family
+     * Remove a family
      *
      * @param Family $entity
-     *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
-     * @Method("DELETE")
      *
      * @return array
      */
@@ -124,7 +109,7 @@ class FamilyController extends Controller
     {
         $this->remove($entity);
 
-        $this->addFlash('success', 'Product family successfully removed');
+        $this->addFlash('success', 'Family successfully removed');
 
         return $this->redirectToRoute('pim_product_family_create');
     }
@@ -135,9 +120,6 @@ class FamilyController extends Controller
      * @param int $id The family id to which add attributes
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
-     *
      */
     public function addProductAttributesAction($id)
     {
@@ -164,9 +146,6 @@ class FamilyController extends Controller
      *
      * @param integer $familyId
      * @param integer $attributeId
-     *
-     * @Route("/{familyId}/attribute/{attributeId}/remove")
-     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -70,33 +69,7 @@ class ReportDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($field);
 
-        $jobType = $this->jobType;
-        $field = new FieldDescription();
-        $field->setName('alias');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_TEXT,
-                'label'           => $this->translate('Job'),
-                'field_name'      => 'jobAlias',
-                'expression'      => 'job.id',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
-                'sortable'        => false,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
-                'property'        => 'alias',
-                'query_builder'   => function (EntityRepository $repository) use ($jobType) {
-                    $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
-                    if ($jobType !== null) {
-                        $qb->where('j.type = :job_type')
-                           ->setParameter('job_type', $jobType);
-                    }
-
-                    return $qb;
-                },
-                'filter_by_where' => true,
-            )
-        );
+        $field = $this->createJobField();
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
@@ -134,6 +107,44 @@ class ReportDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create job field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createJobField()
+    {
+        $jobType = $this->jobType;
+        $field = new FieldDescription();
+        $field->setName('alias');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Job'),
+                'field_name'      => 'jobAlias',
+                'expression'      => 'job.id',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'sortable'        => false,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'class'           => 'PimBatchBundle:Job',
+                'property'        => 'alias',
+                'query_builder'   => function (EntityRepository $repository) use ($jobType) {
+                    $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
+                    if ($jobType !== null) {
+                        $qb->where('j.type = :job_type')
+                        ->setParameter('job_type', $jobType);
+                    }
+
+                    return $qb;
+                },
+                'filter_by_where' => true,
+            )
+        );
+
+        return $field;
     }
 
     /**

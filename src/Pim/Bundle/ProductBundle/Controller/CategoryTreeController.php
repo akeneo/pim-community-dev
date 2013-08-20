@@ -7,12 +7,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\ArrayCollection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Category Tree Controller
@@ -20,8 +17,6 @@ use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Route("/category-tree")
  */
 class CategoryTreeController extends Controller
 {
@@ -30,9 +25,7 @@ class CategoryTreeController extends Controller
      * allow to send back the tree where the node belongs with a selected
      * attribute
      *
-     * @Route("/list-tree.{_format}", requirements={"_format"="json"})
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function listTreeAction()
@@ -60,8 +53,6 @@ class CategoryTreeController extends Controller
      * @param Request $request
      *
      * @return Response
-     *
-     * @Route("/move-node")
      */
     public function moveNodeAction(Request $request)
     {
@@ -88,9 +79,7 @@ class CategoryTreeController extends Controller
      * If the node to select is not a direct child of the parent category, the tree
      * is expanded until the selected node is found amongs the children
      *
-     * @Route("/children.{_format}", requirements={"_format"="json"})
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function childrenAction()
@@ -146,11 +135,8 @@ class CategoryTreeController extends Controller
      *
      * @param Category $category
      *
-     * @Route("/list-items.{_format}/{id}", requirements={"_format"="json", "id"="\d+"})
-     * @Template()
-     *
+     * @Template
      * @return array
-     *
      */
     public function listItemsAction(Category $category)
     {
@@ -170,9 +156,7 @@ class CategoryTreeController extends Controller
      *
      * @param integer $parent
      *
-     * @Route("/create/{parent}")
      * @Template("PimProductBundle:CategoryTree:edit.html.twig")
-     *
      * @return array
      */
     public function createAction($parent = null)
@@ -217,11 +201,7 @@ class CategoryTreeController extends Controller
      *
      * @param Category $category
      *
-     * @Route("/edit/{id}",
-     *     requirements={"id"="\d+"}
-     * )
-     * @Template()
-     *
+     * @Template
      * @return array
      */
     public function editAction(Category $category)
@@ -267,9 +247,6 @@ class CategoryTreeController extends Controller
      * Remove category tree
      *
      * @param Category $category
-     *
-     * @Route("/{id}/remove")
-     * @Method("DELETE")
      *
      * @return RedirectResponse
      */

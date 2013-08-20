@@ -9,7 +9,7 @@
 
 {{ JSFV(form) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
     {% set buttons %}
@@ -19,7 +19,13 @@
         {{ elements.submitBtn }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons) }}
+    {% set right %}
+        <div class="pull-right entity-updated">
+            <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+        </div>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, right) }}
 
     {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
 
@@ -94,39 +100,25 @@
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
             });
 
-            $('.attribute-requirement i')
-                .each(function() {
-                    var $input = $(this).siblings('input[type="checkbox"]');
-                    if ($input.attr('checked')) {
-                        $(this).attr('data-original-title', $(this).parent().data('required-title'));
-                    } else {
-                        $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
-                    }
-                })
-                .click(function() {
-                    $(this).toggleClass('fa-icon-ok required');
-                    $(this).toggleClass('fa-icon-circle non-required');
-
-                    var $input = $(this).siblings('input[type="checkbox"]');
-                    if ($input.attr('checked')) {
-                        $(this)
-                            .attr('data-original-title', $(this).parent().data('not-required-title'))
-                            .tooltip('show');
-                        $input.removeAttr('checked').trigger('change');
-                    } else {
-                        $(this)
-                            .attr('data-original-title', $(this).parent().data('required-title'))
-                            .tooltip('show');
-                        $input.attr('checked', 'checked').trigger('change');
-                    }
-                });
-
-            $('form').on('submit', function() {
-                var hash = $('#form-navbar .nav li.active a').attr('href');
-                if (hash) {
-                    $(this).attr('action', $(this).attr('action') + '?hash=' + hash.substr(1));
+            $('.attribute-requirement i').each(function() {
+                var $input = $(this).siblings('input[type="checkbox"]');
+                if ($input.attr('checked')) {
+                    $(this).attr('data-original-title', $(this).parent().data('required-title'));
+                } else {
+                    $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
                 }
-                return true;
+            }).click(function() {
+                $(this).toggleClass('fa-icon-ok required');
+                $(this).toggleClass('fa-icon-circle non-required');
+
+                var $input = $(this).siblings('input[type="checkbox"]');
+                if ($input.attr('checked')) {
+                    $(this).attr('data-original-title', $(this).parent().data('not-required-title')).tooltip('show');
+                    $input.removeAttr('checked').trigger('change');
+                } else {
+                    $(this).attr('data-original-title', $(this).parent().data('required-title')).tooltip('show');
+                    $input.attr('checked', 'checked').trigger('change');
+                }
             });
         });
     </script>

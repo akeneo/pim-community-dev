@@ -55,7 +55,7 @@ class FileGuesserTest extends ConstraintGuesserTest
             $this->getAttributeMock(
                 array(
                     'attributeType'         => 'pim_product_file',
-                    'allowedFileExtensions' => array('gif', 'jpg'),
+                    'allowedExtensions' => array('gif', 'jpg'),
                 )
             )
         );
@@ -75,7 +75,7 @@ class FileGuesserTest extends ConstraintGuesserTest
                 array(
                     'attributeType'         => 'pim_product_file',
                     'maxFileSize'           => 5000,
-                    'allowedFileExtensions' => array('gif', 'jpg'),
+                    'allowedExtensions' => array('gif', 'jpg'),
                 )
             )
         );

@@ -16,5 +16,5 @@ class Creation extends JobCreation
     /**
      * @var string $path
      */
-    protected $path = '/ie/import/create';
+    protected $path = '/extract/import/create';
 }
