@@ -38,7 +38,7 @@ class CreateCommand extends ContainerAwareCommand
 
     /**
      * Runs command
-     * @param  InputInterface $input
+     * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
      * @return int|null|void
@@ -134,19 +134,25 @@ class CreateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $options
+     * @param array  $options
      * @param string $entityName
      * @param string $fieldName
      */
     protected function setDefaultConfig($options, $entityName, $fieldName = null)
     {
-        if (isset($options['configs']) && is_array($options['configs'])) {
-            foreach ($options['configs'] as $scope => $values) {
-                $config = $this->configManager->getProvider($scope)->getConfig($entityName, $fieldName);
+        if ($fieldName) {
+            $config = isset($options['fields'][$fieldName]['configs'])
+                ? $options['fields'][$fieldName]['configs']
+                : array();
+        } else {
+            $config = isset($options['configs']) ? $options['configs'] : array();
+        }
 
-                foreach ($values as $key => $value) {
-                    $config->set($key, $value);
-                }
+        foreach ($config as $scope => $values) {
+            $config = $this->configManager->getProvider($scope)->getConfig($entityName, $fieldName);
+
+            foreach ($values as $key => $value) {
+                $config->set($key, $value);
             }
         }
     }

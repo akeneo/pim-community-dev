@@ -62,13 +62,6 @@ class ExtendFactory
 
         $configManager->persist($extendConfig);
 
-        $configManager->createConfigFieldModel($entityName, 'id', 'integer');
-
-        $extendFieldConfig = $configProvider->getConfig($entityName, 'id');
-        $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
-        $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
-        $extendFieldConfig->set('is_extend', true);
-
         $entityFieldConfig = $configManager->getProvider('entity')->getConfig($entityName, 'id');
         $entityFieldConfig->set('label', 'Id');
     }

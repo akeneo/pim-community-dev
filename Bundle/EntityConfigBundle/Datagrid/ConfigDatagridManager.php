@@ -82,6 +82,11 @@ class ConfigDatagridManager extends DatagridManager
                     $filters[strtolower($config['name'])] = $config['filter'];
                 }
             }
+
+            if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
+                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
+                $filters['rowClick'] = $provider->getPropertyConfig()->getUpdateActionFilter();
+            }
         }
 
         if (count($filters)) {
@@ -132,7 +137,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $result = $query->getQuery()->getArrayResult();
 
-        foreach ((array)$result as $value) {
+        foreach ((array) $result as $value) {
             $className = explode('\\', $value['className']);
 
             $options['name'][$value['className']]   = '';
@@ -164,7 +169,7 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 if (isset($item['grid'])) {
-                    $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
+                    $item['grid']        = $provider->getPropertyConfig()->initConfig($item['grid']);
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
                     $fieldObjectProvider->setOptions(
@@ -349,6 +354,12 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 $alias = 'cev' . $code;
+
+                if (isset($item['grid']['query'])) {
+                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
+                    $query->setParameter($alias, $item['grid']['query']['value']);
+                }
+
                 $query->leftJoin(
                     'ce.values',
                     $alias,

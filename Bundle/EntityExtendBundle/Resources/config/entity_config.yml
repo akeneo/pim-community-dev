@@ -1,6 +1,7 @@
 oro_entity_config:
     extend:
         entity:
+            update_filter:                  { state: ['New', 'Updated', 'Active'] }
             grid_action:
                 -
                     name:                   'Remove'
@@ -56,6 +57,15 @@ oro_entity_config:
                         filterable:         false
                         show_filter:        false
 
+                is_deleted:
+                    options:
+                        default_value:      false
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true
+
                 extend_class:
                     options:
                         internal:           true
@@ -70,6 +80,7 @@ oro_entity_config:
                         internal:           true
 
         field:
+            update_filter:                  { state: ['New', 'Updated', 'Active'] }
             grid_action:
                 -
                     name:                   'Remove'
@@ -199,3 +210,12 @@ oro_entity_config:
                             label:          'Scale'
                             block:          entity
                             subblock:       properties
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true

@@ -10,7 +10,7 @@ use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 
 /**
- * @ORM\Table(name="oro_config_field")
+ * @ORM\Table(name="oro_entity_config_field")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */

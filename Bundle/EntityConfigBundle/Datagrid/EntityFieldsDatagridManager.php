@@ -117,6 +117,11 @@ class EntityFieldsDatagridManager extends DatagridManager
                     $filters[strtolower($config['name'])] = $config['filter'];
                 }
             }
+
+            if ($provider->getPropertyConfig()->getUpdateActionFilter(PropertyConfigContainer::TYPE_FIELD)) {
+                $filters['update']   = $provider->getPropertyConfig()->getUpdateActionFilter();
+                $filters['rowClick'] = $provider->getPropertyConfig()->getUpdateActionFilter();
+            }
         }
 
         if (count($filters)) {
@@ -158,6 +163,19 @@ class EntityFieldsDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $fieldObjectClassName = new FieldDescription();
+        $fieldObjectClassName->setName('className');
+        $fieldObjectClassName->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'ClassName',
+                'field_name'  => 'className',
+                'show_column' => false,
+                'expression'  => 'ce.className'
+            )
+        );
+        $fieldsCollection->add($fieldObjectClassName);
+
         $fieldCode = new FieldDescription();
         $fieldCode->setName('fieldName');
         $fieldCode->setOptions(
@@ -307,6 +325,12 @@ class EntityFieldsDatagridManager extends DatagridManager
             foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 //$code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
+
+                if (isset($item['grid']['query'])) {
+                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
+                    $query->setParameter($alias, $item['grid']['query']['value']);
+                }
+
                 $query->leftJoin(
                     'cf.values',
                     $alias,

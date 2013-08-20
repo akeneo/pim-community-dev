@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 
 /**
- * @ORM\Table(name="oro_config_entity")
+ * @ORM\Table(name="oro_entity_config")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Table(name="oro_config_log")
+ * @ORM\Table(name="oro_entity_config_log")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */

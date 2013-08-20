@@ -532,16 +532,6 @@ class ConfigManager
     }
 
     /**
-     * @param $className
-     * @param null $fieldName
-     * @return string
-     */
-    public function getModelMode($className, $fieldName = null)
-    {
-        return $this->modelManager->getModel($className, $fieldName)->getMode();
-    }
-
-    /**
      * @param ConfigInterface $config
      * @return ConfigInterface
      */

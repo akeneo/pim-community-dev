@@ -219,6 +219,22 @@ class PropertyConfigContainer
      * @param string $type
      * @return array
      */
+    public function getUpdateActionFilter($type = self::TYPE_ENTITY)
+    {
+        $type = $this->getConfigType($type);
+
+        $entityGridActions = null;
+        if (isset($this->config[$type]) && isset($this->config[$type]['update_filter'])) {
+            $entityGridActions = $this->config[$type]['update_filter'];
+        }
+
+        return $entityGridActions;
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
     public function getLayoutActions($type = self::TYPE_ENTITY)
     {
         $type = $this->getConfigType($type);
