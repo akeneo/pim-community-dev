@@ -39,6 +39,11 @@ class AddVersionListener implements EventSubscriber
     protected $builder;
 
     /**
+     * @var string
+     */
+    protected $username;
+
+    /**
      * @param VersionBuilder $builder
      */
     public function __construct(VersionBuilder $builder)
@@ -54,6 +59,22 @@ class AddVersionListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array('onFlush');
+    }
+
+    /**
+     * @param $username
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setUsername($username)
+    {
+        if (is_string($username)) {
+            $this->username = $username;
+        } elseif (is_object($username) && method_exists($username, 'getUsername')) {
+            $this->username = (string) $username->getUsername();
+        } else {
+            throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
+        }
     }
 
     /**
@@ -117,20 +138,21 @@ class AddVersionListener implements EventSubscriber
         if (!isset($this->pendingVersions[$oid]) and $versionable->getId() !== null) {
 
             /** @var User $user */
-            $user = $em->getRepository('OroUserBundle:User')
-                ->findOneBy(array('username' => 'admin')); // TODO : to fix !
+            $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+            if ($user) {
 
-            $version  = $this->builder->buildVersion($versionable, $user);
-            $previous = $em->getRepository('PimVersioningBundle:Version')
-                ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
+                $version  = $this->builder->buildVersion($versionable, $user);
+                $previous = $em->getRepository('PimVersioningBundle:Version')
+                    ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
 
-            $audit = $this->builder->buildAudit($version, $previous);
-            $diffData = $audit->getData();
+                $audit = $this->builder->buildAudit($version, $previous);
+                $diffData = $audit->getData();
 
-            if (!empty($diffData)) {
-                $this->computeChangeSet($em, $audit);
-                $this->computeChangeSet($em, $version);
-                $this->pendingVersions[$oid]= $version;
+                if (!empty($diffData)) {
+                    $this->computeChangeSet($em, $audit);
+                    $this->computeChangeSet($em, $version);
+                    $this->pendingVersions[$oid]= $version;
+                }
             }
         }
     }
