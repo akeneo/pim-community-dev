@@ -95,7 +95,6 @@ class JobInstance
     protected $rawConfiguration = array();
 
     /**
-     * @var BatchJob
      * @Assert\Valid
      */
     protected $jobDefinition;

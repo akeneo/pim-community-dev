@@ -65,8 +65,18 @@ class BatchCommand extends ContainerAwareCommand
                 $collector->getReadItemCount()
             )
         );
-        $output->writeln(sprintf('<info>Processor executed %d time(s)</info>', $collector->getProcessorExecutionCount()));
-        $output->writeln(sprintf('<info>Writer executed %d time(s)</info>', $collector->getWriterExecutionCount()));
+        $output->writeln(
+            sprintf(
+                '<info>Processor executed %d time(s)</info>',
+                $collector->getProcessorExecutionCount()
+            )
+        );
+        $output->writeln(
+            sprintf(
+                '<info>Writer executed %d time(s)</info>',
+                $collector->getWriterExecutionCount()
+            )
+        );
     }
 
     /**
