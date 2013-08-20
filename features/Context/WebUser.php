@@ -1116,7 +1116,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $products
      *
-     * @Then /^I should (not )?see products (.*)$/
+     * @Then /^I should (not )?see products? ((?!with data).)*$/
      */
     public function iShouldSeeProducts($not, $products)
     {
