@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
@@ -115,18 +116,24 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testStepExecutions()
     {
-        $this->assertEmpty($this->jobExecution->getStepExecutions());
+        $this->assertEquals(0, $this->jobExecution->getStepExecutions()->count());
 
         $jobExecution = new JobExecution();
 
         $stepExecution1 = new StepExecution('my_step_name_1', $jobExecution);
         $this->jobExecution->addStepExecution($stepExecution1);
 
-        $this->assertEquals(array($stepExecution1), $this->jobExecution->getStepExecutions());
+        $this->assertEquals(
+            new ArrayCollection(array($stepExecution1)),
+            $this->jobExecution->getStepExecutions()
+        );
 
         $stepExecution2 = $this->jobExecution->createStepExecution('my_step_name_2');
 
-        $this->assertEquals(array($stepExecution1, $stepExecution2), $this->jobExecution->getStepExecutions());
+        $this->assertEquals(
+            new ArrayCollection(array($stepExecution1, $stepExecution2)),
+            $this->jobExecution->getStepExecutions()
+        );
     }
 
     public function testIsRunning()
