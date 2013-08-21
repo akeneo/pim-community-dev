@@ -6,7 +6,6 @@ use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
-use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**

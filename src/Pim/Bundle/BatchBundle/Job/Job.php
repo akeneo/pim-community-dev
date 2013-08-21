@@ -5,6 +5,12 @@ namespace Pim\Bundle\BatchBundle\Job;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
+use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Pim\Bundle\BatchBundle\Event\StepEvent;
+use Symfony\Component\EventDispatcher\Event;
+use Pim\Bundle\BatchBundle\Step\AbstractStep;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -20,6 +26,8 @@ class Job implements JobInterface
 {
     protected $name;
 
+    protected $eventDispatcher;
+
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
@@ -30,8 +38,6 @@ class Job implements JobInterface
      */
     protected $steps;
 
-    protected $logger = null;
-
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
@@ -41,24 +47,6 @@ class Job implements JobInterface
     {
         $this->name   = $name;
         $this->steps  = array();
-    }
-
-    /**
-     * Set the logger
-     * @param object $logger
-     */
-    public function setLogger($logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
-     * Get the logger for internal use
-     * @return object
-     */
-    protected function getLogger()
-    {
-        return $this->logger;
     }
 
     /**
@@ -81,6 +69,13 @@ class Job implements JobInterface
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
 
         return $this;
     }
@@ -177,7 +172,7 @@ class Job implements JobInterface
      */
     final public function execute(JobExecution $jobExecution)
     {
-        $this->getLogger()->debug("Job execution starting: " . $jobExecution);
+        $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
 
         try {
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
@@ -193,26 +188,24 @@ class Job implements JobInterface
                 // with it in the same way as any other interruption.
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
                 $jobExecution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                $this->getLogger()->debug("Job execution was stopped: ". $jobExecution);
 
+                $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
             }
 
         } catch (JobInterruptedException $e) {
-            $this->getLogger()->info("Encountered interruption executing job: " . $e->getMessage());
-            $this->getLogger()->debug("Full exception", array('exception', $e));
-
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
             $jobExecution->addFailureException($e);
+            $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_INTERRUPTED, $jobExecution);
         } catch (\Exception $e) {
-            $this->getLogger()->error("Encountered fatal error executing job", array('exception', $e));
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $jobExecution->addFailureException($e);
+            $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_FATAL_ERROR, $jobExecution);
         }
 
         if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
-                && (count($jobExecution->getStepExecutions()) == 0)
+                && (count($jobExecution->getStepExecutions()) === 0)
         ) {
             /* @var ExitStatus */
             $exitStatus = $jobExecution->getExitStatus();
@@ -334,7 +327,7 @@ class Job implements JobInterface
 
         // Update the job status to be the same as the last step
         if ($stepExecution !== null) {
-            $this->getLogger()->debug("Upgrading JobExecution status: " . $stepExecution);
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
         }
@@ -359,7 +352,7 @@ class Job implements JobInterface
 
         $stepExecution = $jobExecution->createStepExecution($step->getName());
 
-        $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
+        $this->dispatchStepEvent(EventInterface::BEFORE_STEP_EXECUTION, $step);
         try {
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
@@ -374,5 +367,22 @@ class Job implements JobInterface
         }
 
         return $stepExecution;
+    }
+
+    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
+    {
+        $event = new JobExecutionEvent($jobExecution);
+        $this->dispatch($eventName, $event);
+    }
+
+    private function dispatchStepEvent($eventName, AbstractStep $step)
+    {
+        $event = new StepEvent($step);
+        $this->dispatch($eventName, $event);
+    }
+
+    private function dispatch($eventName, Event $event)
+    {
+        $this->eventDispatcher->dispatch($eventName, $event);
     }
 }
