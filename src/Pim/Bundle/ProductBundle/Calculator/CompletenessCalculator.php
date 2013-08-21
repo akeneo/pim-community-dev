@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
+use Pim\Bundle\ProductBundle\Entity\Locale;
+
 use Pim\Bundle\ProductBundle\Entity\Channel;
 
 use Pim\Bundle\ProductBundle\Entity\Completeness;
@@ -168,12 +170,9 @@ class CompletenessCalculator
         $countRequiredAttributes = count($requiredAttributes);
 
         foreach ($this->getLocales() as $locale) {
-
-            $localeCode = $locale->getCode();
-
-            $completeness = $product->getCompleteness($localeCode, $channelCode);
+            $completeness = $product->getCompleteness($locale->getCode(), $channel->getCode());
             if (!$completeness) {
-                $completeness = $this->createCompleteness($product, $channel, $localeCode);
+                $completeness = $this->createCompleteness($product, $channel, $locale);
             }
 
             // initialize counting
@@ -184,7 +183,7 @@ class CompletenessCalculator
                 $attribute     = $requiredAttribute->getAttribute();
                 $attributeCode = $attribute->getCode();
 
-                $value = $product->getValue($attributeCode, $localeCode, $channelCode);
+                $value = $product->getValue($attributeCode, $locale->getCode(), $channel->getCode());
 
                 //TODO : Use NotBlank validator
                 if (!$value || $value->getData() === null || $value->getData() === "") {
@@ -210,17 +209,17 @@ class CompletenessCalculator
      *
      * @param Product $product
      * @param Channel $channel
-     * @param string $localeCode
+     * @param Locale  $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    protected function createCompleteness(Product $product, Channel $channel, $localeCode)
+    protected function createCompleteness(Product $product, Channel $channel, Locale $locale)
     {
         $completeness = new Completeness();
 
         $completeness->setProduct($product);
         $completeness->setChannel($channel);
-        $completeness->setLocale($localeCode);
+        $completeness->setLocale($locale->getCode());
 
         return $completeness;
     }
