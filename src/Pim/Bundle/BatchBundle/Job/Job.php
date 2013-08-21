@@ -202,7 +202,11 @@ class Job implements JobInterface
             $this->getLogger()->debug("Full exception", array('exception', $e));
 
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            $jobExecution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
+            $jobExecution->setStatus(
+                new BatchStatusi(
+                    BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())
+                )
+            );
             $jobExecution->addFailureException($e);
         } catch (\Exception $e) {
             $this->getLogger()->error("Encountered fatal error executing job", array('exception', $e));
