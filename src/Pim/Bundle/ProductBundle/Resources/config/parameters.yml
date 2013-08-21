@@ -56,4 +56,4 @@ parameters:
 
     pim_product.event_listener.user_preferences.class:  Pim\Bundle\ProductBundle\EventListener\UserPreferencesListener
 
-    pim_product.calculator.product_completeness.class: Pim\Bundle\ProductBundle\Calculator\ProductCompletenessCalculator
+    pim_product.calculator.completeness.class: Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator

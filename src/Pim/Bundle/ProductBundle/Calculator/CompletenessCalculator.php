@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
-use Pim\Bundle\ProductBundle\Entity\ProductCompleteness;
+use Pim\Bundle\ProductBundle\Entity\Channel;
+
+use Pim\Bundle\ProductBundle\Entity\Completeness;
 
 use Symfony\Component\Validator\Constraints\Collection;
 
@@ -23,7 +25,7 @@ use Pim\Bundle\ProductBundle\Entity\Product;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductCompletenessCalculator
+class CompletenessCalculator
 {
     /**
      * @var ChannelManager
@@ -56,38 +58,47 @@ class ProductCompletenessCalculator
      * Calculate the completeness of a product
      * @param Product $product
      */
-    public function calculate(Product $product)
+    public function calculate(Product $product, $channels = null, $locales = null)
     {
-        foreach ($this->getChannels() as $channel) {
+        if ($channels === null) {
+            $channels = $this->channelManager->getChannels();
+        }
+
+        if ($locales === null) {
+            $locales = $this->localeManager->getActiveLocales();
+        }
+
+        foreach ($channels as $channel) {
+
+            $channelCode = $channel->getCode();
+
             // get required attributes for this channel
             $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
             $requiredAttributes = $repo->findBy(array('channel' => $channel, 'required' => true));
             $countRequiredAttributes = count($requiredAttributes);
+            if ($countRequiredAttributes === 0) {
+                continue;
+            }
 
-            echo "<hr />CHANNEL CODE --> ". $channel->getCode() ."<br />";
-            echo $countRequiredAttributes ." required attributes<br />";
+            foreach ($locales as $locale) {
 
-            foreach ($this->getActiveLocales() as $localeCode) {
+                $localeCode = $locale->getCode();
 
-                $completeness = $this->createCompleteness();
-                $completeness->setProduct($product);
-                $completeness->setChannel($channel);
-                $completeness->setLocale($localeCode);
+                // Create product completeness entity
+                $completeness = $product->getCompleteness($localeCode, $channelCode);
+                if (!$completeness) {
+                    $completeness = $this->createCompleteness($product, $channel, $localeCode);
+                }
 
-
-
-                echo "LOCALE CODE --> ". $localeCode ."<br />";
-                $wellCount    = 0;
+                // initialize counting
                 $missingCount = 0;
+                $wellCount    = 0;
 
                 foreach ($requiredAttributes as $requiredAttribute) {
-
                     $attribute     = $requiredAttribute->getAttribute();
-                    $scopable      = $attribute->getScopable() ? true : null;
-                    $localizable   = $attribute->getTranslatable() ? true : null;
                     $attributeCode = $attribute->getCode();
 
-                    $value = $product->getValue($attributeCode, $localeCode, $channel->getCode());
+                    $value = $product->getValue($attributeCode, $localeCode, $channelCode);
 
                     //TODO : Use NotBlank validator
                     if (!$value || $value->getData() === null || $value->getData() === "") {
@@ -97,43 +108,35 @@ class ProductCompletenessCalculator
                     }
                 }
 
-                echo $wellCount ." well filled values<br />";
-                echo $missingCount ." missing values<br />";
                 $ratio = $wellCount / $countRequiredAttributes * 100;
-                echo "Calculating the ratio... : ". $ratio ."%<br />";
-
 
                 $completeness->setMissingCount($missingCount);
+                $completeness->setRatio($ratio);
 
-                echo "<br />";
+                $this->em->persist($completeness);
             }
-
-//             $product->getValue($attributeCode, $localeCode, $scopeCode);
-
-            var_dump($channel->getCode());
-            var_dump(count($requiredAttributes));
-            echo "<hr />";
         }
 
-        die;
-    }
-
-    protected function getChannels()
-    {
-        return $this->channelManager->getChannels();
-    }
-
-    protected function getActiveLocales()
-    {
-        return $this->localeManager->getActiveCodes();
+        $this->em->flush();
     }
 
     /**
      * Create a product completeness
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     *
+     * @param Product $product
+     * @param Channel $channel
+     * @param string $localeCode
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    protected function createCompleteness()
+    protected function createCompleteness(Product $product, Channel $channel, $localeCode)
     {
-        return new ProductCompleteness();
+        $completeness = new Completeness();
+
+        $completeness->setProduct($product);
+        $completeness->setChannel($channel);
+        $completeness->setLocale($localeCode);
+
+        return $completeness;
     }
 }
