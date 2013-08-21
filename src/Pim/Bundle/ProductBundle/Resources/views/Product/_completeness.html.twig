@@ -16,19 +16,8 @@
                 {% for channel in channels %}
 
                 <td>
-                    {% if channel.hasLocale(locale) == false %}
-                        Not required
-                    {% endif %}
-                    {% set completeness = product.completeness(locale.code, channel.code) %}
-                    {% if completeness is null %}
-                        Not calculated !!!!
-                    {% else %}
-                        {% set ratio = completeness.ratio %}
-                        {{ ratio }}%
-                        {{ healthBar(ratio)|raw }}
-                        {{ completeness.missingCount }} missing values
-                    {% endif %}
-
+                    {% include 'PimProductBundle:Product:_healthbar.html.twig'
+                        with {'channel': channel, 'completeness': product.completeness(locale.code, channel.code)} %}
                 </td>
                 {% endfor %}
             </tr>

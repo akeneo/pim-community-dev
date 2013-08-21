@@ -1,0 +1,27 @@
+{% if channel.hasLocale(locale) == false %}
+    Not required
+{% endif %}
+{% set completeness = product.completeness(locale.code, channel.code) %}
+{% if completeness is null %}
+    {{ 'Impossible to calculate' | trans }}
+{% else %}
+    {% set titleProgressBar = completeness.ratio ~'% completed ( required values)' %}
+    <div class="progress progress-striped" title="{{ titleProgressBar }}">
+    {% if channel.hasLocale(locale) == false %}
+        {% set progressClass = 'bar-info' %}
+    {% elseif completeness.ratio == 100 %}
+        {% set progressClass = 'bar-success' %}
+    {% elseif completeness.ratio >= 50 %}
+        {% set progressClass = 'bar-warning' %}
+    {% else %}
+        {% set progressClass = 'bar-danger' %}
+    {% endif %}
+        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%">
+        </div>
+    </div>
+
+    {% set ratio = completeness.ratio %}
+    {{ ratio }}%
+
+    {{ completeness.missingCount }} missing values
+{% endif %}
