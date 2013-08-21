@@ -104,3 +104,4 @@ services:
           - @pim_product.manager.channel
           - @pim_product.manager.locale
           - @doctrine.orm.entity_manager
+          - @validator

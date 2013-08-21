@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
+use Symfony\Component\Validator\Validator;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use Pim\Bundle\ProductBundle\Entity\Locale;
 
 use Pim\Bundle\ProductBundle\Entity\Channel;
@@ -45,6 +49,11 @@ class CompletenessCalculator
     protected $em;
 
     /**
+     * @var Validator
+     */
+    protected $validator;
+
+    /**
      * @var array $channels
      */
     protected $channels;
@@ -55,15 +64,23 @@ class CompletenessCalculator
     protected $locales;
 
     /**
+     * @var \Symfony\Component\Validator\Constraints\NotBlank
+     */
+    protected $notBlankConstraint;
+
+    /**
      * Constructor
      * @param ChannelManager $channelManager
      * @param LocaleManager  $localeManager
      */
-    public function __construct(ChannelManager $channelManager, LocaleManager $localeManager, EntityManager $em)
+    public function __construct(ChannelManager $channelManager, LocaleManager $localeManager, EntityManager $em, Validator $validator)
     {
         $this->channelManager = $channelManager;
         $this->localeManager  = $localeManager;
         $this->em             = $em;
+
+        $this->validator      = $validator;
+        $this->notBlankConstraint = new NotBlank();
     }
 
     /**
@@ -185,11 +202,12 @@ class CompletenessCalculator
 
                 $value = $product->getValue($attributeCode, $locale->getCode(), $channel->getCode());
 
-                //TODO : Use NotBlank validator
-                if (!$value || $value->getData() === null || $value->getData() === "") {
-                    $missingCount++;
-                } else {
+                $errorList = $this->validator->validateValue($value->getData(), $this->notBlankConstraint);
+
+                if (count($errorList) === 0) {
                     $wellCount++;
+                } else {
+                    $missingCount++;
                 }
             }
 
