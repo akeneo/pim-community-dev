@@ -60,10 +60,13 @@ function init() {
     // Disable the oro scrollable container
     $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
-    // Move scope filter to the proper location
+    // Move scope filter to the proper location and remove it from the 'Manage filters' selector
     Oro.Events.once('datagrid_filters:rendered', function() {
         $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
         $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
+
+        $('#add-filter-select').find('option[value="scope"]').remove();
+        $('#add-filter-select').multiselect('refresh');
     });
 
     // Instantiate sidebar
