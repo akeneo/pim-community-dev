@@ -43,6 +43,16 @@ class CompletenessCalculator
     protected $em;
 
     /**
+     * @var array $channels
+     */
+    protected $channels;
+
+    /**
+     * @var array $locales
+     */
+    protected $locales;
+
+    /**
      * Constructor
      * @param ChannelManager $channelManager
      * @param LocaleManager  $localeManager
@@ -55,69 +65,144 @@ class CompletenessCalculator
     }
 
     /**
-     * Calculate the completeness of a product
-     * @param Product $product
+     * Set the channels for which the products must be calculated
+     *
+     * @param array $channels
+     *
+     * @return \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
      */
-    public function calculate(Product $product, $channels = null, $locales = null)
+    public function setChannels(array $channels = array())
     {
-        if ($channels === null) {
-            $channels = $this->channelManager->getChannels();
+        $this->channels = $channels;
+
+        return $this;
+    }
+
+    /**
+     * Set the locales for which the products must be calculated
+     *
+     * @param array $locales
+     *
+     * @return \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
+     */
+    public function setLocales(array $locales = array())
+    {
+        $this->locales = $locales;
+
+        return $this;
+    }
+
+    /**
+     * Get the channels for which the products must be calculated
+     *
+     * @return array
+     */
+    protected function getChannels()
+    {
+        if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
+            $this->channels = $this->channelManager->getChannels()->toArray();
         }
 
-        if ($locales === null) {
-            $locales = $this->localeManager->getActiveLocales();
+        return $this->channels;
+    }
+
+    /**
+     * Get the locales for which the products must be calculated
+     *
+     * @return array
+     */
+    protected function getLocales()
+    {
+        if ($this->locales === null || !is_array($this->locales) || empty($this->locales)) {
+            $this->locales = $this->localeManager->getActiveLocales();
         }
 
-        foreach ($channels as $channel) {
+        return $this->locales;
+    }
 
-            $channelCode = $channel->getCode();
+    /**
+     * Calculate the completeness of a product list
+     *
+     * @param array $products
+     */
+    public function calculate(array $products = array())
+    {
+        $completenesses = array();
 
-            // get required attributes for this channel
-            $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
-            $requiredAttributes = $repo->findBy(array('channel' => $channel, 'required' => true));
-            $countRequiredAttributes = count($requiredAttributes);
-            if ($countRequiredAttributes === 0) {
-                continue;
+        foreach ($products as $product) {
+            $completenesses[$product->getSku()] = $this->calculateForAProduct($product);
+        }
+
+        return $completenesses;
+    }
+
+    /**
+     * Calculate the completeness of a product
+     *
+     * @param Product $product
+     * @param array   $completenesses List of completenesses
+     *
+     * @return $completenesses
+     */
+    public function calculateForAProduct(Product $product, array $completenesses = array())
+    {
+        foreach ($this->getChannels() as $channel) {
+            $newCompletenesses = $this->calculateForAProductByChannel($product, $channel, $completenesses);
+
+            $completenesses = array_merge($completenesses, $newCompletenesses);
+        }
+
+        return $completenesses;
+    }
+
+    /**
+     * Calculate the completeness of a product for a specific channel
+     * @param Product $product
+     * @param Channel $channel
+     */
+    public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
+    {
+        // get required attributes for this channel
+        $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
+        $requiredAttributes = $repo->findBy(array('channel' => $channel, 'required' => true));
+        $countRequiredAttributes = count($requiredAttributes);
+
+        foreach ($this->getLocales() as $locale) {
+
+            $localeCode = $locale->getCode();
+
+            $completeness = $product->getCompleteness($localeCode, $channelCode);
+            if (!$completeness) {
+                $completeness = $this->createCompleteness($product, $channel, $localeCode);
             }
 
-            foreach ($locales as $locale) {
+            // initialize counting
+            $missingCount = 0;
+            $wellCount    = 0;
 
-                $localeCode = $locale->getCode();
+            foreach ($requiredAttributes as $requiredAttribute) {
+                $attribute     = $requiredAttribute->getAttribute();
+                $attributeCode = $attribute->getCode();
 
-                // Create product completeness entity
-                $completeness = $product->getCompleteness($localeCode, $channelCode);
-                if (!$completeness) {
-                    $completeness = $this->createCompleteness($product, $channel, $localeCode);
+                $value = $product->getValue($attributeCode, $localeCode, $channelCode);
+
+                //TODO : Use NotBlank validator
+                if (!$value || $value->getData() === null || $value->getData() === "") {
+                    $missingCount++;
+                } else {
+                    $wellCount++;
                 }
-
-                // initialize counting
-                $missingCount = 0;
-                $wellCount    = 0;
-
-                foreach ($requiredAttributes as $requiredAttribute) {
-                    $attribute     = $requiredAttribute->getAttribute();
-                    $attributeCode = $attribute->getCode();
-
-                    $value = $product->getValue($attributeCode, $localeCode, $channelCode);
-
-                    //TODO : Use NotBlank validator
-                    if (!$value || $value->getData() === null || $value->getData() === "") {
-                        $missingCount++;
-                    } else {
-                        $wellCount++;
-                    }
-                }
-
-                $ratio = $wellCount / $countRequiredAttributes * 100;
-
-                $completeness->setMissingCount($missingCount);
-                $completeness->setRatio($ratio);
-
-                $this->em->persist($completeness);
             }
+
+            $ratio = ($countRequiredAttributes === 0) ? 100 : $wellCount / $countRequiredAttributes * 100;
+
+            $completeness->setMissingCount($missingCount);
+            $completeness->setRatio($ratio);
+
+            $completenesses[] = $completeness;
         }
 
-        $this->em->flush();
+        return $completenesses;
     }
 
     /**

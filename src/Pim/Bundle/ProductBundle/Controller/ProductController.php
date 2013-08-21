@@ -105,7 +105,7 @@ class ProductController extends Controller
         $product  = $this->findProductOr404($id);
 
         $calculator = $this->container->get('pim_product.calculator.completeness');
-        $calculator->calculate($product);
+        $calculator->calculateForAProduct($product);
 
         $datagrid = $this->getDataAuditDatagrid(
             $product,
