@@ -460,6 +460,10 @@ class Family implements TranslatableInterface, VersionableInterface
         return sprintf('%s_%s', $attributeCode, $channelCode);
     }
 
+    /**
+     * TODO : will be replace by the use of normalizer
+     * @return array
+     */
     public function getVersionedData()
     {
         $attributes = array();

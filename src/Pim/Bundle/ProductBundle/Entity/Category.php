@@ -339,6 +339,10 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
         return $this->getTitle();
     }
 
+    /**
+     * TODO : will be replace by the use of normalizer
+     * @return array
+     */
     public function getVersionedData()
     {
         $data = array(

@@ -60,16 +60,21 @@ class Version
 
     /**
      * Constructor
-     * @param VersionableInterface $resource
+     *
+     * @param string  $resourceName
+     * @param string  $resourceId
+     * @param integer $numVersion
+     * @param array   $data
+     * @param User    $user
      */
-    public function __construct(VersionableInterface $resource, User $user)
+    public function __construct($resourceName, $resourceId, $numVersion, $data, User $user)
     {
-        $this->resourceName  = get_class($resource);
-        $this->resourceId    = $resource->getId();
-        $this->versionedData = $resource->getVersionedData();
-        $this->version       = $resource->getVersion();
-        $this->snapshotDate  = new \DateTime("now");
+        $this->resourceName  = $resourceName;
+        $this->resourceId    = $resourceId;
+        $this->versionedData = $data;
+        $this->version       = $numVersion;
         $this->user          = $user;
+        $this->snapshotDate  = new \DateTime("now");
     }
 
     /**

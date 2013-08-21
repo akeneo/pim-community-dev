@@ -25,7 +25,13 @@ class VersionBuilder
      */
     public function buildVersion(VersionableInterface $versionable, User $user)
     {
-        return new Version($versionable, $user);
+        $resourceName = get_class($versionable);
+        $resourceId   = $versionable->getId();
+        $numVersion   = $versionable->getVersion();
+        // TODO : will be replaced soon by structural normalizer (which could be used for xml, json formats)
+        $data         = $versionable->getVersionedData();
+
+        return new Version($resourceName, $resourceId, $numVersion, $data, $user);
     }
 
     /**

@@ -1163,21 +1163,13 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     }
 
     /**
+     * TODO : will be replace by the use of normalizer
      * @return array
      */
     public function getVersionedData()
     {
         $normalizer = new \Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer();
         $data = $normalizer->normalize($this);
-
-        /*
-        $data = array(
-            'code' => $this->getCode(),
-        );
-
-        foreach ($this->getTranslations() as $translation) {
-            $data['label_'.$translation->getLocale()]= $translation->getLabel();
-        }*/
 
         return $data;
     }
