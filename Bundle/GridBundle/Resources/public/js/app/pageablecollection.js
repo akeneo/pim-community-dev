@@ -69,6 +69,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             }
             _.extend(this.state, options.state);
         }
+
         this.initialState = Oro.deepClone(this.state);
 
         if (options.url) {

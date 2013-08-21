@@ -267,7 +267,7 @@ Oro.Filter.SelectFilter = Oro.Filter.AbstractFilter.extend({
      * @inheritDoc
      */
     _isNewValueUpdated: function(newValue) {
-        return !_.isEqual(this.getValue().value, newValue.value);
+        return !_.isEqual(this.getValue().value || '', newValue.value);
     },
 
     /**

@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 class VariablesConstraint extends Constraint
 {
-    public $message = 'oro_email.validators.emailtemplate.contains.not_allowed_calls';
+    public $message = 'Template contains calls to not allowed methods and properties';
 
     /**
      * {@inheritdoc}

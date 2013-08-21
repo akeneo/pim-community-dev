@@ -18,7 +18,7 @@ Oro.Filter.ChoiceFilter = Oro.Filter.TextFilter.extend({
             '<div class="input-prepend">' +
                 '<div class="btn-group">' +
                     '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                        'Action' +
+                        '<%= first = _.first(_.values(choices)) %>' +
                         '<span class="caret"></span>' +
                     '</button>' +
                     '<ul class="dropdown-menu">' +
@@ -27,9 +27,8 @@ Oro.Filter.ChoiceFilter = Oro.Filter.TextFilter.extend({
                         '<% }); %>' +
                     '</ul>' +
                     '<input type="text" name="value" value="">' +
-                    '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value=""/>' +
+                    '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.invert(choices)[first] %>"/>' +
                     '</div>' +
-
                 '</div>' +
                 '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>' +

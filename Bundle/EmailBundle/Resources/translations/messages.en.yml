@@ -26,6 +26,8 @@ oro:
                         no:  "No"
                 page_size:
                     all: "All"
+        handler:
+            attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
 "%subject% - Email": "%subject% - Email"
 "Emails": "Emails"
 "Email": "Email"

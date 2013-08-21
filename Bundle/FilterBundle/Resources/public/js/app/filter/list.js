@@ -104,6 +104,14 @@ Oro.Filter.List = Backbone.View.extend({
         }
 
         Backbone.View.prototype.initialize.apply(this, arguments);
+
+        // destroy events bindings
+        Oro.Events.once('hash_navigation_request:start', function() {
+            _.each(this.filters, function(filter) {
+                this.stopListening(filter, "update", this._onFilterUpdated);
+                this.stopListening(filter, "disable", this._onFilterDisabled);
+            }, this);
+        }, this);
     },
 
     /**
@@ -169,15 +177,7 @@ Oro.Filter.List = Backbone.View.extend({
      * @return {*}
      */
     enableFilter: function(filter) {
-        filter.enable();
-        var optionSelector = this.filterSelector + ' option[value="' + filter.name + '"]';
-        this.$(optionSelector).attr('selected', true);
-        var checkbox = this.selectWidget.multiselect('widget').find('input[value="' + filter.name + '"]');
-        if (!checkbox.is(':checked')) {
-            checkbox.click();
-        }
-        this.selectWidget.multiselect('refresh');
-        return this;
+        return this.enableFilters([filter]);
     },
 
     /**
@@ -186,11 +186,55 @@ Oro.Filter.List = Backbone.View.extend({
      * @param {Oro.Filter.AbstractFilter} filter
      * @return {*}
      */
-    disableFilter : function(filter) {
-        filter.disable();
-        var optionSelector = this.filterSelector + ' option[value="' + filter.name + '"]';
-        this.$(optionSelector).removeAttr('selected');
+    disableFilter: function(filter) {
+        return this.disableFilters([filter]);
+    },
+
+    /**
+     * Enable filters
+     *
+     * @param filters []
+     * @return {*}
+     */
+    enableFilters: function(filters) {
+        var optionsSelectors = [];
+
+        _.each(filters, function(filter) {
+            filter.enable();
+            optionsSelectors.push('option[value="' + filter.name + '"]:not(:selected)');
+        }, this);
+
+        var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
+        if (options.length) {
+            options.attr('selected', true);
+        }
+
         this.selectWidget.multiselect('refresh');
+
+        return this;
+    },
+
+    /**
+     * Disable filters
+     *
+     * @param filters []
+     * @return {*}
+     */
+    disableFilters: function(filters) {
+        var optionsSelectors = [];
+
+        _.each(filters, function(filter) {
+            filter.disable();
+            optionsSelectors.push('option[value="' + filter.name + '"]:selected');
+        }, this);
+
+        var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
+        if (options.length) {
+            options.removeAttr('selected');
+        }
+
+        this.selectWidget.multiselect('refresh');
+
         return this;
     },
 
@@ -201,25 +245,24 @@ Oro.Filter.List = Backbone.View.extend({
      */
     render: function () {
         this.$el.empty();
+        var fragment = document.createDocumentFragment();
 
         _.each(this.filters, function(filter) {
             filter.render();
             if (!filter.enabled) {
                 filter.hide();
             }
-            this.$el.append(filter.$el);
+            fragment.appendChild(filter.$el.get(0));
         }, this);
-
-        this.$el.prepend(this.addButtonTemplate({
-            filters: this.filters
-        }));
-
-        this._initializeSelectWidget();
 
         this.trigger("rendered");
 
         if (_.isEmpty(this.filters)) {
             this.$el.hide();
+        } else {
+            this.$el.append(this.addButtonTemplate({filters: this.filters}));
+            this.$el.append(fragment);
+            this._initializeSelectWidget();
         }
 
         return this;
