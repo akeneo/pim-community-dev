@@ -1168,8 +1168,23 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function getVersionedData()
     {
-        $normalizer = new \Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer();
-        $data = $normalizer->normalize($this);
+        $data = array('code' => $this->getCode());
+
+        $options = array();
+        foreach ($this->getOptions() as $option) {
+            $str = $option->getCode();
+            foreach ($option->getOptionValues() as $value) {
+                $str .= ' '.$value->getLocale().':'.$value->getValue();
+            }
+            $options[]= $str;
+        }
+        if (!empty($options)) {
+            $data['options'] = implode(',', $options);
+        }
+
+        foreach ($this->getTranslations() as $translation) {
+            $data['label_'.$translation->getLocale()]= $translation->getLabel();
+        }
 
         return $data;
     }

@@ -19,6 +19,8 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\ProductBundle\Manager\AuditManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -146,6 +148,14 @@ class AddVersionListener implements EventSubscriber
             if ($translatedEntity instanceof VersionableInterface) {
                 $this->addPendingVersioning($translatedEntity);
             }
+
+        } else if ($entity instanceof AttributeOption) {
+            $attribute = $entity->getAttribute();
+            $this->addPendingVersioning($attribute);
+
+        } else if ($entity instanceof AttributeOptionValue) {
+            $attribute = $entity->getOption()->getAttribute();
+            $this->addPendingVersioning($attribute);
         }
     }
 
