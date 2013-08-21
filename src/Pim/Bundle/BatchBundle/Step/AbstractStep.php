@@ -159,7 +159,7 @@ abstract class AbstractStep implements StepInterface
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
             $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
@@ -172,16 +172,6 @@ abstract class AbstractStep implements StepInterface
             } else {
                 $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
             }
-        }
-
-        try {
-            // Update the step execution to the latest known value so the
-            // listeners can act on it
-            $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
-            $stepExecution->setExitStatus($exitStatus);
-
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
         }
 
         $stepExecution->setEndTime(new \DateTime());

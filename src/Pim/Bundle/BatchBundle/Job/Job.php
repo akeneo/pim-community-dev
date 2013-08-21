@@ -175,25 +175,25 @@ class Job implements JobInterface
      * @throws StartLimitExceededException
      *             if start limit of one of the steps was exceeded
      */
-    final public function execute(JobExecution $execution)
+    final public function execute(JobExecution $jobExecution)
     {
-        $this->getLogger()->debug("Job execution starting: " . $execution);
+        $this->getLogger()->debug("Job execution starting: " . $jobExecution);
 
         try {
-            if ($execution->getStatus()->getValue() !== BatchStatus::STOPPING) {
+            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
 
-                $execution->setStartTime(new \DateTime());
-                $this->updateStatus($execution, BatchStatus::STARTED);
+                $jobExecution->setStartTime(new \DateTime());
+                $this->updateStatus($jobExecution, BatchStatus::STARTED);
 
                 // Todo Listener beforeJob
-                 $this->doExecute($execution);
+                 $this->doExecute($jobExecution);
             } else {
 
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
-                $execution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-                $execution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                $this->getLogger()->debug("Job execution was stopped: ". $execution);
+                $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
+                $this->getLogger()->debug("Job execution was stopped: ". $jobExecution);
 
             }
 
@@ -201,37 +201,29 @@ class Job implements JobInterface
             $this->getLogger()->info("Encountered interruption executing job: " . $e->getMessage());
             $this->getLogger()->debug("Full exception", array('exception', $e));
 
-            $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
-            $execution->addFailureException($e);
+            $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
+            $jobExecution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())));
+            $jobExecution->addFailureException($e);
         } catch (\Exception $e) {
             $this->getLogger()->error("Encountered fatal error executing job", array('exception', $e));
-            $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
-            $execution->addFailureException($e);
+            $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
+            $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
+            $jobExecution->addFailureException($e);
         }
 
-        if (($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
-                && (count($execution->getStepExecutions()) == 0)
+        if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
+                && (count($jobExecution->getStepExecutions()) == 0)
         ) {
             /* @var ExitStatus */
-            $exitStatus = $execution->getExitStatus();
+            $exitStatus = $jobExecution->getExitStatus();
             $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
             $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
-            $execution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
+            $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
         }
 
-        $execution->setEndTime(new \DateTime());
+        $jobExecution->setEndTime(new \DateTime());
 
-        /*
-        try {
-            $listener->afterJob($execution);
-        } catch (Exception $e) {
-            $this->logger->error("Exception encountered in afterStep callback", array('exception', $e));
-        }
-        */
-
-        $this->jobRepository->updateJobExecution($execution);
+        $this->jobRepository->updateJobExecution($jobExecution);
         $this->jobRepository->flush();
     }
 
@@ -320,19 +312,19 @@ class Job implements JobInterface
      * before moving to the next. Returns the last {@link StepExecution}
      * successfully processed if it exists, and null if none were processed.
      *
-     * @param JobExecution $execution the current {@link JobExecution}
+     * @param JobExecution $jobExecution the current {@link JobExecution}
      *
      * @throws JobInterruptedException
      * @throws JobRestartException
      * @throws StartLimitExceededException
      */
-    protected function doExecute(JobExecution $execution)
+    protected function doExecute(JobExecution $jobExecution)
     {
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $execution);
+            $stepExecution = $this->handleStep($step, $jobExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
                 // Terminate the job if a step fails
@@ -343,15 +335,15 @@ class Job implements JobInterface
         // Update the job status to be the same as the last step
         if ($stepExecution !== null) {
             $this->getLogger()->debug("Upgrading JobExecution status: " . $stepExecution);
-            $execution->upgradeStatus($stepExecution->getStatus()->getValue());
-            $execution->setExitStatus($stepExecution->getExitStatus());
+            $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
+            $jobExecution->setExitStatus($stepExecution->getExitStatus());
         }
     }
 
     /**
      * Handle a step and return the execution for it.
-     * @param StepInterface $step      Step
-     * @param JobExecution  $execution Job execution
+     * @param StepInterface $step         Step
+     * @param JobExecution  $jobExecution Job execution
      *
      * @throws JobInterruptedException
      * @throws JobRestartException
@@ -359,28 +351,28 @@ class Job implements JobInterface
      *
      * @return StepExecution
      */
-    public function handleStep(StepInterface $step, JobExecution $execution)
+    public function handleStep(StepInterface $step, JobExecution $jobExecution)
     {
-        if ($execution->isStopping()) {
+        if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $currentStepExecution = $execution->createStepExecution($step->getName());
+        $stepExecution = $jobExecution->createStepExecution($step->getName());
 
         $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
         try {
-            $step->execute($currentStepExecution);
+            $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
-            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw $e;
         }
 
-        if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
-                || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+        if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
+                || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+            $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw new JobInterruptedException("Job interrupted by step execution");
         }
 
-        return $currentStepExecution;
+        return $stepExecution;
     }
 }
