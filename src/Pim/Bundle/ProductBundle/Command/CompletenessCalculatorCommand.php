@@ -2,14 +2,26 @@
 
 namespace Pim\Bundle\ProductBundle\Command;
 
-use Symfony\Component\Console\Input\InputOption;
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Console\Input\InputInterface;
-
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+/**
+ * Calculate the completeness of the products
+ *
+ * Launch command :
+ * php app/console pim:product:completeness-calculator
+ *
+ * You can add options :
+ *     - channels : List of channels code on which you want to calculate completeness
+ *     - locales  : List of locales code on which you want to calculate completeness
+ *     - forced   : Predicate allowing to forced to recalculate a value even if don't need to be reindexed
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CompletenessCalculatorCommand extends ContainerAwareCommand
 {
     /**
@@ -72,13 +84,12 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
             $this->calculator->setLocales($locales);
         }
 
-        // define the products where the completeness must be recalculated
+        // TODO : define the products where the completeness must be recalculated
+        // depending of the forced option
         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
 
-        // call calculator
+        // Call calculator and persists entities
         $completenesses = $this->calculator->calculate($products);
-
-        // persists product completeness entities
         foreach ($completenesses as $productCompleteness) {
             foreach ($productCompleteness as $completeness) {
                 $this->getEntityManager()->persist($completeness);
