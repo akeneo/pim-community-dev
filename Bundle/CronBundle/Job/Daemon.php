@@ -32,7 +32,7 @@ class Daemon
     }
 
     /**
-     * Run daemon
+     * Run daemon in background
      *
      * @throws \RuntimeException
      * @return bool|int Process id if started successfully, false otherwise
@@ -40,7 +40,7 @@ class Daemon
     public function run()
     {
         if ($this->getPid()) {
-            throw false;
+            throw new \RuntimeException('Daemon process already started');
         }
 
         $cmd = sprintf(
@@ -49,6 +49,7 @@ class Daemon
             max($this->maxJobs, 1)
         );
 
+        // workaround for Windows
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $wsh = new \COM('WScript.shell');
 
@@ -82,7 +83,9 @@ class Daemon
             throw new \RuntimeException('Daemon process not found');
         }
 
-        $process = new Process(sprintf('kill -9 %u', $pid));
+        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /PID %u' : 'kill -9 %u';
+
+        $process = new Process(sprintf($cmd, $pid));
 
         $process->run();
 
@@ -96,6 +99,7 @@ class Daemon
      */
     public function getPid()
     {
+        // workaround for Windows
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $output = shell_exec('WMIC path win32_process get Processid,Commandline');
 
