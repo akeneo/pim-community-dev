@@ -51,6 +51,20 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
+    public function testcheckScheduledUpdate()
+    {
+        $builder  = new VersionBuilder();
+        $listener = new AddVersionListener($builder);
+
+        $emMock          = $this->getEntityManagerMock();
+        $versionableMock = $this->getVersionableMock(array('field1' => 'value1'));
+
+        $listener->checkScheduledUpdate($emMock, $versionableMock);
+    }
+
+    /**
+     * Test related method
+     */
     public function testWriteSnapshot()
     {
         $builder  = new VersionBuilder();
@@ -113,7 +127,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
             array('OroUserBundle:User', $this->getUserRepositoryMock()),
             array('PimVersioningBundle:Version', $this->getVersionRepositoryMock()),
         );
-        $emMock->expects($this->exactly(1))
+        $emMock->expects($this->any())
             ->method('getRepository')
             ->will($this->returnValueMap($repos));
         $emMock->expects($this->any())
