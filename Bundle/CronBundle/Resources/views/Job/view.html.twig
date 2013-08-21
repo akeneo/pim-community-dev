@@ -26,28 +26,28 @@
         <div class="span10">
         <table class="table table-bordered table-striped">
             <tr>
-                <th width="20%">Command</th>
+                <th width="20%">{{ 'oro.cron.header.command'|trans }}</th>
                 <td>{{ macros.command(job) }}</td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ 'oro.cron.header.state'|trans }}</th>
                 <td>{{ macros.state(job) }}</td>
             </tr>
             <tr>
-                <th>Created</th>
+                <th>{{ 'oro.cron.header.created'|trans }}</th>
                 <td>{{ macros.ago(job.createdAt) }}</td>
             </tr>
 
             {% if job.isRetryJob() %}
             <tr>
-                <th>Original Job</th>
+                <th>{{ 'oro.cron.view.original'|trans }}</th>
                 <td><a href="{{ path('oro_cron_job_view', { id: job.originalJob.id }) }}">#{{ job.originalJob.id }}</a> {{ macros.state(job.originalJob) }}</td>
             </tr>
             {% endif %}
 
             {% if relatedEntities|length > 0 %}
             <tr>
-                <th>Related Entities</th>
+                <th>{{ 'oro.cron.view.related'|trans }}</th>
                 <td>
                     {%- for entity in relatedEntities %}
                         {%- if entity.raw is jms_job_queue_linkable -%}
@@ -64,7 +64,7 @@
 
             {% if job.dependencies|length > 0 %}
             <tr>
-                <th>Dependencies</th>
+                <th>{{ 'oro.cron.view.deps'|trans }}</th>
                 <td>
                     {%- for dep in job.dependencies -%}
                     <a href="{{ path('oro_cron_job_view', { id: dep.id }) }}" title="{{ dep.command }}{% for arg in dep.args %} {{ arg }}{% endfor %} (ID {{ dep.id }})">{{ dep.command }}</a> {{ macros.state(dep) }}
@@ -74,11 +74,11 @@
             </tr>
             {% endif %}
 
-            {% if incomingDependencies|length > 0 %}
+            {% if dependencies|length > 0 %}
             <tr>
-                <th>Incoming Dependencies</th>
+                <th>{{ 'oro.cron.view.in_deps'|trans }}</th>
                 <td>
-                    {%- for dep in incomingDependencies -%}
+                    {%- for dep in dependencies -%}
                     <a href="{{ path('oro_cron_job_view', { id: dep.id }) }}" title="{{ dep.command }}{% for arg in dep.args %} {{ arg }}{% endfor %} (ID {{ dep.id }})">{{ dep.command }}</a> {{ macros.state(dep) }}
                     {%- endfor -%}
                 </td>
@@ -87,14 +87,14 @@
         </table>
 
         {% if job.retryJobs|length > 0 %}
-        <h3>Retry Jobs</h3>
+        <h3>{{ 'oro.cron.header.retry'|trans }}</h3>
 
         <table class="table table-bordered table-striped table-condensed">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Created</th>
-                    <th>State</th>
+                    <th>{{ 'oro.cron.header.id'|trans }}</th>
+                    <th>{{ 'oro.cron.header.created'|trans }}</th>
+                    <th>{{ 'oro.cron.header.state'|trans }}</th>
                 </tr>
             </thead>
 
@@ -112,8 +112,8 @@
         {% endif %}
 
         {% if job.stackTrace is not empty %}
-        <h3>Stack Trace</h3>
-        {% for position, ex in job.stackTrace.toarray %}
+        <h3>{{ 'oro.cron.header.trace'|trans }}</h3>
+            {% for position, ex in job.stackTrace.toarray %}
             <div class="block">
                 <h4>
                     {{ ex.class|abbr_class }}: <small>{{ ex.message|nl2br|format_file_from_text }}</small>&nbsp;
@@ -133,26 +133,25 @@
                     {% endfor %}
                 </ol>
             </div>
-        {% endfor %}
+            {% endfor %}
         {% endif %}
 
         {% if job.output is not empty %}
-        <h3>Output</h3>
+        <h3>{{ 'oro.cron.header.output'|trans }}</h3>
         <pre style="max-height:300px; overflow:auto;">{{ job.output }}</pre>
         {% endif %}
 
         {% if job.errorOutput is not empty %}
-        <h3>Error Output</h3>
+        <h3>{{ 'oro.cron.header.error'|trans }}</h3>
         <pre style="max-height:300px; overflow:auto;">{{ job.errorOutput }}</pre>
         {% endif %}
 
-        {% if statisticData is not empty %}
-        <h3>Statistics</h3>
+        {% if statistics is not empty %}
+        <h3>{{ 'oro.cron.header.statistics'|trans }}</h3>
         <div id="statistics" style="width:900px; height:300px;"></div>
         <script type="text/javascript">
             Oro.Job = Oro.Job || {};
-            Oro.Job.statistics = {{ statisticData|json_encode|raw }};
-            Oro.Job.options = {{ statisticOptions|json_encode|raw }};
+            Oro.Job.statistics = {{ statistics|json_encode|raw }};
         </script>
         {% endif %}
 

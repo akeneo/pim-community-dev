@@ -12,7 +12,7 @@ $(function() {
                 alert(data.message);
             } else {
                 el
-                  .closest('div').find('span:first').toggleClass('label-success label-important').text($.isNumeric(data.message) ? 'Running' : 'Not running').end()
+                  .closest('div').find('span:first').toggleClass('label-success label-important').text($.isNumeric(data.message) ? _.__('Running') : _.__('Not running')).end()
                   .closest('div').find('span:last').text(data.message).end();
 
                 switchButtons(!$.isNumeric(data.message));
@@ -31,8 +31,8 @@ $(function() {
             data = parseInt(data);
 
             statusDaemon
-              .closest('div').find('span:first').removeClass(data > 0 ? 'label-important' : 'label-success').addClass(data > 0 ? 'label-success' : 'label-important').text(data > 0 ? 'Running' : 'Not running').end()
-              .closest('div').find('span:last').text(data > 0 ? data : 'N/A').end();
+              .closest('div').find('span:first').removeClass(data > 0 ? 'label-important' : 'label-success').addClass(data > 0 ? 'label-success' : 'label-important').text(data > 0 ? _.__('Running') : _.__('Not running')).end()
+              .closest('div').find('span:last').text(data > 0 ? data : _.__('N/A')).end();
 
             switchButtons(!data);
 

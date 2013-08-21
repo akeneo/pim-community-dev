@@ -31,26 +31,13 @@ class JobController extends Controller
      */
     public function indexAction($page, $limit)
     {
-        $em     = $this->getDoctrine()->getManagerForClass('JMSJobQueueBundle:Job');
-        $failed = $em->getRepository('JMSJobQueueBundle:Job')->findLastJobsWithError(5);
-        $query  = $em->createQueryBuilder();
-
-        $query
-            ->select('j')
-            ->from('JMSJobQueueBundle:Job', 'j')
-            ->where($query->expr()->isNull('j.originalJob'))
-            ->orderBy('j.id', 'desc');
-
-        foreach ($failed as $i => $job) {
-            $query
-                ->andWhere($query->expr()->neq('j.id', '?' . $i))
-                ->setParameter($i, $job->getId());
-        }
-
         return array(
-            'failed' => $failed,
-            'pid'    => $this->get('oro_cron.job_daemon')->getPid(),
-            'pager'  => $this->get('knp_paginator')->paginate($query, $page, $limit),
+            'pid'   => $this->get('oro_cron.job_daemon')->getPid(),
+            'pager' => $this->get('knp_paginator')->paginate(
+                $this->get('oro_cron.job_manager')->getListQuery(),
+                (int) $page,
+                (int) $limit
+            ),
         );
     }
 
@@ -60,71 +47,17 @@ class JobController extends Controller
      */
     public function viewAction(Job $job)
     {
-        $relatedEntities = array();
-
-        foreach ($job->getRelatedEntities() as $entity) {
-            $class = \Doctrine\Common\Util\ClassUtils::getClass($entity);
-            $relatedEntities[] = array(
-                'class' => $class,
-                'raw'   => $entity,
-                'id'    => json_encode(
-                    $this->getDoctrine()
-                        ->getManagerForClass($class)
-                        ->getClassMetadata($class)
-                        ->getIdentifierValues($entity)
-                ),
-            );
-        }
-
-        $statisticData = $statisticOptions = array();
-
-        if ($this->statisticsEnabled) {
-            $dataPerCharacteristic = array();
-            foreach ($this->getDoctrine()->getManagerForClass('JMSJobQueueBundle:Job')->getConnection()->query(
-                "SELECT * FROM jms_job_statistics WHERE job_id = ".$job->getId()
-            ) as $row) {
-                $dataPerCharacteristic[$row['characteristic']][] = array(
-                    $row['createdAt'],
-                    $row['charValue'],
-                );
-            }
-
-            if ($dataPerCharacteristic) {
-                $statisticData = array(array_merge(array('Time'), $chars = array_keys($dataPerCharacteristic)));
-                $startTime     = strtotime($dataPerCharacteristic[$chars[0]][0][0]);
-                $endTime       = strtotime($dataPerCharacteristic[$chars[0]][count($dataPerCharacteristic[$chars[0]])-1][0]);
-                $scaleFactor   = $endTime - $startTime > 300 ? 1/60 : 1;
-
-                // this assumes that we have the same number of rows for each characteristic.
-                for ($i = 0, $c = count(reset($dataPerCharacteristic)); $i < $c; $i++) {
-                    $row = array((strtotime($dataPerCharacteristic[$chars[0]][$i][0]) - $startTime) * $scaleFactor);
-
-                    foreach ($chars as $name) {
-                        $value = (float) $dataPerCharacteristic[$name][$i][1];
-
-                        switch ($name) {
-                            case 'memory':
-                                $value /= 1024 * 1024;
-
-                                break;
-                        }
-
-                        $row[] = $value;
-                    }
-
-                    $statisticData[] = $row;
-                }
-            }
-        }
+        $manager    = $this->get('oro_cron.job_manager');
+        $statistics = $this->statisticsEnabled
+            ? $manager->getJobStatistics($job)
+            : array();
 
         return array(
-            'job'                  => $job,
-            'pid'                  => $this->get('oro_cron.job_daemon')->getPid(),
-            'relatedEntities'      => $relatedEntities,
-            'statisticData'        => $statisticData,
-            'statisticOptions'     => $statisticOptions,
-            'incomingDependencies' => $this->getDoctrine()
-                ->getManagerForClass('JMSJobQueueBundle:Job')
+            'job'             => $job,
+            'pid'             => $this->get('oro_cron.job_daemon')->getPid(),
+            'relatedEntities' => $manager->getRelatedEntities($job),
+            'statistics'      => $statistics,
+            'dependencies'    => $this->getDoctrine()
                 ->getRepository('JMSJobQueueBundle:Job')
                 ->getIncomingDependencies($job),
         );

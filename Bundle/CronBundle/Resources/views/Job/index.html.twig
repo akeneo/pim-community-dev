@@ -4,7 +4,7 @@
 
 {% block page_container %}
 <div class="container-fluid">
-    <h1>Jobs</h1>
+    <h1>{{ 'oro.cron.header.jobs'|trans }}</h1>
     <div class="row-fluid">
         <div class="span2">
             {{ block('sidebar') }}
@@ -23,32 +23,15 @@
 <table class="table table-bordered table-striped table-condensed">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Command</th>
-            <th>State</th>
-            <th>Created At</th>
-            <th>Runtime, s</th>
-            <th>Memory usage, MB</th>
+            <th>{{ 'oro.cron.header.id'|trans }}</th>
+            <th>{{ 'oro.cron.header.command'|trans }}</th>
+            <th>{{ 'oro.cron.header.state'|trans }}</th>
+            <th>{{ 'oro.cron.header.created'|trans }}</th>
+            <th>{{ 'oro.cron.header.runtime'|trans }}</th>
+            <th>{{ 'oro.cron.header.memory'|trans }}</th>
         </tr>
     </thead>
-
     <tbody>
-        {% if pager.paginationData.current == 1 and failed|length > 0 %}
-        {% for job in failed %}
-        <tr>
-            <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ job.id }}</a></td>
-            <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ macros.command(job) }}</a></td>
-            <td>{{ macros.state(job) }}</td>
-            <td>{{ macros.ago(job.createdAt) }}</td>
-            <td>{{ job.runtime }}</td>
-            <td>{{ (job.memoryUsageReal / 1048576)|number_format(2) }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td style="height:4px; background-color: #ccc;" colspan="6"></td>
-        </tr>
-        {% endif %}
-
         {% for job in pager %}
         <tr>
             <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ job.id }}</a></td>
@@ -60,7 +43,7 @@
         </tr>
         {% else %}
         <tr>
-            <td colspan="6">There are no jobs.</td>
+            <td colspan="6">{{ 'oro.cron.no_jobs'|trans }}</td>
         </tr>
         {% endfor %}
     </tbody>
