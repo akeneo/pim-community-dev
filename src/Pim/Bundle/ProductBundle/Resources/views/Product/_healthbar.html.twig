@@ -1,7 +1,4 @@
-{% if channel.hasLocale(locale) == false %}
-    Not required
-{% endif %}
-{% set completeness = product.completeness(locale.code, channel.code) %}
+
 {% if completeness is null %}
     {{ 'Impossible to calculate' | trans }}
 {% else %}
@@ -16,12 +13,8 @@
     {% else %}
         {% set progressClass = 'bar-danger' %}
     {% endif %}
-        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%">
-        </div>
+        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%"></div>
     </div>
-
-    {% set ratio = completeness.ratio %}
-    {{ ratio }}%
 
     {{ completeness.missingCount }} missing values
 {% endif %}
