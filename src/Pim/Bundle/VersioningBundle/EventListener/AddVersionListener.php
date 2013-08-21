@@ -168,7 +168,7 @@ class AddVersionListener implements EventSubscriber
     public function checkScheduledCollection(EntityManager $em, $entity)
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
-            // special case, when the product collection of a category is updated, we update each product
+            // TODO : special case, when the product collection of a category is updated, we update each product
             /*
             if ($entity->getOwner() instanceof CategoryInterface) {
                 $mapping = $entity->getMapping();
@@ -180,9 +180,8 @@ class AddVersionListener implements EventSubscriber
                         $this->addPendingVersioning($product);
                     }
                 }
-            } else {*/
-                $this->addPendingVersioning($entity->getOwner());
-            //}
+            }*/
+            $this->addPendingVersioning($entity->getOwner());
         }
     }
 
