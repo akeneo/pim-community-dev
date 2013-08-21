@@ -68,15 +68,16 @@ class JobController extends Controller
      */
     public function runDaemonAction()
     {
-        $daemon = $this->get('oro_cron.job_daemon');
-        $ret    = array('error' => 1);
+        $daemon     = $this->get('oro_cron.job_daemon');
+        $translator = $this->get('translator');
+        $ret        = array('error' => 1);
 
         try {
             if ($pid = $daemon->run()) {
                 $ret['error']   = 0;
                 $ret['message'] = $pid;
             } else {
-                $ret['message'] = 'Failed to start daemon';
+                $ret['message'] = $translator->trans('oro.cron.message.start.fail');
             }
         } catch (\RuntimeException $e) {
             $ret['message'] = $e->getMessage();
@@ -88,7 +89,7 @@ class JobController extends Controller
             if ($ret['error']) {
                 $this->get('session')->getFlashBag()->add('error', $ret['message']);
             } else {
-                $this->get('session')->getFlashBag()->add('success', 'Daemon started');
+                $this->get('session')->getFlashBag()->add('success', $translator->trans('oro.cron.message.start.success'));
             }
 
             return $this->redirect($this->generateUrl('oro_cron_job_index'));
@@ -100,15 +101,16 @@ class JobController extends Controller
      */
     public function stopDaemonAction()
     {
-        $daemon = $this->get('oro_cron.job_daemon');
-        $ret    = array('error' => 1);
+        $daemon     = $this->get('oro_cron.job_daemon');
+        $translator = $this->get('translator');
+        $ret        = array('error' => 1);
 
         try {
             if ($daemon->stop()) {
                 $ret['error']   = 0;
-                $ret['message'] = 'Daemon stopped';
+                $ret['message'] = $translator->trans('oro.cron.message.stop.success');
             } else {
-                $ret['message'] = 'Failed to stop daemon';
+                $ret['message'] = $translator->trans('oro.cron.message.stop.fail');
             }
         } catch (\RuntimeException $e) {
             $ret['message'] = $e->getMessage();
