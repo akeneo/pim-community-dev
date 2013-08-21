@@ -61,14 +61,14 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $enabled = true;
 
     /**
-     * @var ArrayCollection $productCompletenesses
+     * @var ArrayCollection $completenesses
      *
      * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductCompleteness",
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\Completeness",
      *     mappedBy="product"
      * )
      */
-    protected $productCompletenesses;
+    protected $completenesses;
 
     /**
      * {@inheritdoc}
@@ -77,8 +77,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     {
         parent::__construct();
 
-        $this->categories            = new ArrayCollection();
-        $this->productCompletenesses = new ArrayCollection();
+        $this->categories     = new ArrayCollection();
+        $this->completenesses = new ArrayCollection();
     }
     /**
      * Get family
@@ -339,22 +339,22 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getProductCompletenesses()
+    public function getCompletenesses()
     {
-        return $this->productCompletenesses;
+        return $this->completenesses;
     }
 
     /**
      * Add product completeness
      *
-     * @param ProductCompleteness $productCompleteness
+     * @param Completeness $completeness
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function addProductCompleteness(ProductCompleteness $productCompleteness)
+    public function addCompleteness(Completeness $completeness)
     {
-        if (!$this->productCompletenesses->contains($productCompleteness)) {
-            $this->productCompletenesses->add($productCompleteness);
+        if (!$this->completenesses->contains($completeness)) {
+            $this->completenesses->add($completeness);
         }
 
         return $this;
@@ -363,52 +363,52 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Remove product completeness
      *
-     * @param ProductCompleteness $productCompleteness
+     * @param Completeness $completeness
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function removeProductCompleteness(ProductCompleteness $productCompleteness)
+    public function removeCompleteness(Completeness $completeness)
     {
-        $this->productCompletenesses->remove($productCompleteness);
+        $this->completenesses->remove($completeness);
 
         return $this;
     }
 
     /**
-     * Get the completeness from a locale and a scope
+     * Get the product completeness from a locale and a scope
      *
      * @param string $locale
      * @param string $channel
      *
-     * @return boolean|mixed
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness|null
      */
-    public function getProductCompleteness($locale, $channel)
+    public function getCompleteness($locale, $channel)
     {
-        $productCompleteness = array_filter(
-            $this->productCompletenesses->toArray(),
-            function ($productCompleteness) use ($locale, $channel) {
-                return $productCompleteness->getLocale() === $locale
-                    && $productCompleteness->getChannel()->getCode() === $channel;
+        $completeness = array_filter(
+            $this->completenesses->toArray(),
+            function ($completeness) use ($locale, $channel) {
+                return $completeness->getLocale() === $locale
+                    && $completeness->getChannel()->getCode() === $channel;
             }
         );
 
-        if (count($productCompleteness) === 0) {
-            echo "must be calculated";
+        if (count($completeness) === 0) {
+            return null;
         } else {
-            return array_shift($productCompleteness);
+            return array_shift($completeness);
         }
     }
 
     /**
      * Set product completenesses
      *
-     * @param array $productCompletenesses
+     * @param array $completenesses
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function setProductCompletenesses($productCompletenesses)
+    public function setCompletenesses($completenesses)
     {
-        $this->productCompletenesses = new ArrayCollection($productCompletenesses);
+        $this->completenesses = new ArrayCollection($completenesses);
 
         return $this;
     }

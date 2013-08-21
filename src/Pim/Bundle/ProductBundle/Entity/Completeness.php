@@ -16,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @ORM\Table(name="pim_product_completeness")
  */
-class ProductCompleteness
+class Completeness
 {
     /**
      * @var integer $id
@@ -60,7 +60,7 @@ class ProductCompleteness
      *
      * @ORM\Column(name="to_reindex", type="boolean")
      */
-    protected $toReindex;
+    protected $toReindex = false;
 
     /**
      * @var datetime $updated
@@ -75,7 +75,7 @@ class ProductCompleteness
      *
      * @ORM\ManyToOne(
      *     targetEntity="Pim\Bundle\ProductBundle\Entity\Product",
-     *     inversedBy="productCompleteness"
+     *     inversedBy="completenesses"
      * )
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
@@ -96,7 +96,7 @@ class ProductCompleteness
      *
      * @param string $locale
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setLocale($locale)
     {
@@ -120,7 +120,7 @@ class ProductCompleteness
      *
      * @param Channel $channel
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setChannel(Channel $channel)
     {
@@ -144,7 +144,7 @@ class ProductCompleteness
      *
      * @param float $ratio
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setRatio($ratio)
     {
@@ -168,7 +168,7 @@ class ProductCompleteness
      *
      * @param integer $missingCount
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setMissingCount($missingCount)
     {
@@ -192,7 +192,7 @@ class ProductCompleteness
      *
      * @param boolean $toReindex
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setToReindex($toReindex)
     {
@@ -216,7 +216,7 @@ class ProductCompleteness
      *
      * @param datetime $updated
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setUpdated($updated)
     {
@@ -240,7 +240,7 @@ class ProductCompleteness
      *
      * @param Product $product
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductCompleteness
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
     public function setProduct(Product $product)
     {
