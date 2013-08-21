@@ -387,7 +387,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $completeness = array_filter(
             $this->completenesses->toArray(),
             function ($completeness) use ($locale, $channel) {
-                return $completeness->getLocale() === $locale
+                return $completeness->getLocale()->getCode() === $locale
                     && $completeness->getChannel()->getCode() === $channel;
             }
         );

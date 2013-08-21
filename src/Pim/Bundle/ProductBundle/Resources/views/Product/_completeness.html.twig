@@ -20,10 +20,15 @@
                         Not required
                     {% endif %}
                     {% set completeness = product.completeness(locale.code, channel.code) %}
-                    {% set ratio = completeness.ratio %}
-                    {{ ratio }}%
-                    {{ healthBar(ratio)|raw }}
-                    {{ completeness.missingCount }} missing values
+                    {% if completeness is null %}
+                        Not calculated !!!!
+                    {% else %}
+                        {% set ratio = completeness.ratio %}
+                        {{ ratio }}%
+                        {{ healthBar(ratio)|raw }}
+                        {{ completeness.missingCount }} missing values
+                    {% endif %}
+
                 </td>
                 {% endfor %}
             </tr>
