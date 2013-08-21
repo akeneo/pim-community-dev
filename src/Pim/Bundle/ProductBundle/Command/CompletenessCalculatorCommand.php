@@ -62,9 +62,9 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $forced   = $input->getOption('forced');
         $channels = $input->getOption('channels');
         $locales  = $input->getOption('locales');
+        $forced   = $input->getOption('forced');
 
         $this->calculator = $this->getCompletenessCalculator();
 
@@ -87,6 +87,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
         // TODO : define the products where the completeness must be recalculated
         // depending of the forced option
         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
+
 
         // Call calculator and persists entities
         $completenesses = $this->calculator->calculate($products);
