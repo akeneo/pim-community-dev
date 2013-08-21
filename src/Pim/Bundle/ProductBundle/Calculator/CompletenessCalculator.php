@@ -2,29 +2,30 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
-use Symfony\Component\Validator\Validator;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
-
-use Pim\Bundle\ProductBundle\Entity\Locale;
-
-use Pim\Bundle\ProductBundle\Entity\Channel;
-
-use Pim\Bundle\ProductBundle\Entity\Completeness;
-
-use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Validator;
 
 use Doctrine\ORM\EntityManager;
 
 use Pim\Bundle\ProductBundle\Manager\LocaleManager;
-
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 
+use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Completeness;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
+ * Product completeness calculator
  *
- * Enter description here ...
+ * Purposes different calculations
+ * - from a list of products (method calculate)
+ * - from a product (method calculateForAProduct)
+ * - from a product and a specific channel (method calculateForAProductByChannel)
+ *
+ * The calculation algorithm get the required attributes for each channel
+ * and validate if the value of each required attributes is not blank
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -34,22 +35,22 @@ use Pim\Bundle\ProductBundle\Entity\Product;
 class CompletenessCalculator
 {
     /**
-     * @var ChannelManager
+     * @var \Pim\Bundle\ProductBundle\Manager\ChannelManager
      */
     protected $channelManager;
 
     /**
-     * @var LocaleManager
+     * @var \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
     protected $localeManager;
 
     /**
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
 
     /**
-     * @var Validator
+     * @var Symfony\Component\Validator\Validator
      */
     protected $validator;
 
@@ -70,11 +71,18 @@ class CompletenessCalculator
 
     /**
      * Constructor
+     *
      * @param ChannelManager $channelManager
      * @param LocaleManager  $localeManager
+     * @param EntityManager  $em
+     * @param Validator      $validator
      */
-    public function __construct(ChannelManager $channelManager, LocaleManager $localeManager, EntityManager $em, Validator $validator)
-    {
+    public function __construct(
+        ChannelManager $channelManager,
+        LocaleManager $localeManager,
+        EntityManager $em,
+        Validator $validator
+    ) {
         $this->channelManager = $channelManager;
         $this->localeManager  = $localeManager;
         $this->em             = $em;
@@ -113,6 +121,7 @@ class CompletenessCalculator
 
     /**
      * Get the channels for which the products must be calculated
+     * If no locale, all of them are recovered from database
      *
      * @return array
      */
@@ -127,6 +136,7 @@ class CompletenessCalculator
 
     /**
      * Get the locales for which the products must be calculated
+     * If no locale, all of them are recovered from database
      *
      * @return array
      */
@@ -140,9 +150,22 @@ class CompletenessCalculator
     }
 
     /**
-     * Calculate the completeness of a product list
+     * Calculate the completeness of a products list
+     *
+     * Returns an associative array of completeness entities like
+     * array(
+     *     product-sku-1 => array(
+     *         completeness entity,
+     *         completeness entity
+     *     ),
+     *     product-sku-2 => array(
+     *         completeness entity
+     *     )
+     * )
      *
      * @param array $products
+     *
+     * @return array $completenesses
      */
     public function calculate(array $products = array())
     {
@@ -160,12 +183,13 @@ class CompletenessCalculator
      * Calculate the completeness of a product
      *
      * @param Product $product
-     * @param array   $completenesses List of completenesses
      *
-     * @return $completenesses
+     * @return $completenesses List of completeness entities for the product
      */
-    public function calculateForAProduct(Product $product, array $completenesses = array())
+    public function calculateForAProduct(Product $product)
     {
+        $completenesses = array();
+
         foreach ($this->getChannels() as $channel) {
             $newCompletenesses = $this->calculateForAProductByChannel($product, $channel, $completenesses);
 
@@ -177,12 +201,15 @@ class CompletenessCalculator
 
     /**
      * Calculate the completeness of a product for a specific channel
+     *
      * @param Product $product
      * @param Channel $channel
+     * @param array   $completenesses
+     *
+     * @return array $completenesses List of completeness entities
      */
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
-        // get required attributes for this channel
         $requiredAttributes = $this->getRequiredAttributes($channel);
         $countRequiredAttributes = count($requiredAttributes);
 
@@ -198,12 +225,9 @@ class CompletenessCalculator
 
             foreach ($requiredAttributes as $requiredAttribute) {
                 $attribute     = $requiredAttribute->getAttribute();
-                $attributeCode = $attribute->getCode();
-
-                $value = $product->getValue($attributeCode, $locale->getCode(), $channel->getCode());
+                $value = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
 
                 $errorList = $this->validator->validateValue($value->getData(), $this->notBlankConstraint);
-
                 if (count($errorList) === 0) {
                     $wellCount++;
                 } else {
@@ -243,7 +267,7 @@ class CompletenessCalculator
     }
 
     /**
-     * Get the required attributes
+     * Get the required attributes for a specific channel
      *
      * @param Channel $channel
      *
