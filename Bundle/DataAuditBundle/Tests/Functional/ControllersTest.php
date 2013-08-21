@@ -21,7 +21,7 @@ class ControllersTest extends WebTestCase
         'birthday' => '07/01/2013',
         'enabled' => 1,
         'roles' => 'Superadmin',
-        'groups' => 'Marketing',
+        'groups' => 'Sales',
         'company' => 'company',
         'gender' => 'Male'
     );
