@@ -103,6 +103,10 @@ class ProductController extends Controller
     public function editAction(Request $request, $id)
     {
         $product  = $this->findProductOr404($id);
+
+        $calculator = $this->container->get('pim_product.calculator.completeness');
+        $calculator->calculate($product);
+
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',

@@ -14,7 +14,7 @@
             <tr>
                 <td>{{ locale }}</td>
                 {% for channel in channels %}
-                <td>{{ product.productCompleteness(locale, channel.code) }}</td>
+                <td>{{ product.completeness(locale, channel.code).ratio }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
