@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
-
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator;
 
 use Doctrine\ORM\EntityManager;
+
+use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
 
 use Pim\Bundle\ProductBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
@@ -65,7 +65,7 @@ class CompletenessCalculator
     protected $locales;
 
     /**
-     * @var \Symfony\Component\Validator\Constraints\NotBlank
+     * @var \Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank
      */
     protected $notBlankConstraint;
 
@@ -88,7 +88,7 @@ class CompletenessCalculator
         $this->em             = $em;
 
         $this->validator      = $validator;
-        $this->notBlankConstraint = new NotBlank();
+        $this->notBlankConstraint = new ProductValueNotBlank();
     }
 
     /**
@@ -227,7 +227,7 @@ class CompletenessCalculator
                 $attribute     = $requiredAttribute->getAttribute();
                 $value = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
 
-                $errorList = $this->validator->validateValue($value->getData(), $this->notBlankConstraint);
+                $errorList = $this->validator->validateValue($value, $this->notBlankConstraint);
                 if (count($errorList) === 0) {
                     $wellCount++;
                 } else {
