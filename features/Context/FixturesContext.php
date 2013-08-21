@@ -653,7 +653,7 @@ class FixturesContext extends RawMinkContext
         }
         $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
-        $job->setJobDefinition($jobDefinition);
+        $jobInstance->setJob($job);
 
         $this->flush();
     }
