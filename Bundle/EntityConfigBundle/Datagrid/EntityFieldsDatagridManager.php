@@ -103,6 +103,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         );
 
         $filters = array();
+        $actions = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
@@ -116,6 +117,8 @@ class EntityFieldsDatagridManager extends DatagridManager
                 if (isset($config['filter'])) {
                     $filters[strtolower($config['name'])] = $config['filter'];
                 }
+
+                $actions[strtolower($config['name'])] = true;
             }
 
             if ($provider->getPropertyConfig()->getUpdateActionFilter(PropertyConfigContainer::TYPE_FIELD)) {
@@ -126,31 +129,42 @@ class EntityFieldsDatagridManager extends DatagridManager
 
         if (count($filters)) {
             $properties[] = new ActionConfigurationProperty(
-                function (ResultRecord $record) use ($filters) {
-                    $result = array();
-                    foreach ($filters as $action => $filter) {
-                        foreach ($filter as $key => $value) {
-                            if (is_array($value)) {
-                                $error = true;
-                                foreach ($value as $v) {
-                                    if ($record->getValue($key) == $v) {
-                                        $error = false;
+                function (ResultRecord $record) use ($filters, $actions) {
+                    if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
+                        $actions = array_map(
+                            function () {
+                                return false;
+                            },
+                            $actions
+                        );
+
+                        $actions['update']   = false;
+                        $actions['rowClick'] = false;
+                    } else {
+                        foreach ($filters as $action => $filter) {
+                            foreach ($filter as $key => $value) {
+                                if (is_array($value)) {
+                                    $error = true;
+                                    foreach ($value as $v) {
+                                        if ($record->getValue($key) == $v) {
+                                            $error = false;
+                                        }
                                     }
-                                }
-                                if ($error) {
-                                    $result[$action] = false;
-                                    break;
-                                }
-                            } else {
-                                if ($record->getValue($key) != $value) {
-                                    $result[$action] = false;
-                                    break;
+                                    if ($error) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
+                                } else {
+                                    if ($record->getValue($key) != $value) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
 
-                    return $result;
+                    return $actions;
                 }
             );
         }
