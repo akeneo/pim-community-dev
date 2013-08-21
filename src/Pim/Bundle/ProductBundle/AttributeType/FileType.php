@@ -41,7 +41,8 @@ class FileType extends OroFileType
                 'options' => array(
                     'by_reference' => false,
                     'attr'         => array(
-                        'class' => 'multiselect'
+                        'class' => 'multiselect',
+                        'data-tags' => 'doc,docx,rtf,txt,csv,ppt,pptx,mp3,wav,svg,pdf'
                     )
                 )
             ),

@@ -23,7 +23,15 @@ $(function() {
         $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
         $('#'+formName+' a.validation-tooltip').tooltip();
         $('#'+formName+' select').select2();
-        $('#'+formName+' input.multiselect').select2({ tags: $('#'+formName+' input.multiselect').val() });
+        $('#'+formName+' input.multiselect').each(function() {
+            $el = $(this);
+            var value = $el.val() ? $el.val().split(',') : [];
+            tags = $el.attr('data-tags') ? $el.attr('data-tags').split(',') : [];
+            value = _.map(value, $.trim);
+            tags = _.map(tags, $.trim);
+            tags = _.union(tags, value).sort();
+            $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
+        });
         initializeOptions();
         $('#'+formName+'_attributeType').select2().on('change', function() {
             updateForm();
