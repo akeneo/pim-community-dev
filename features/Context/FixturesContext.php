@@ -996,7 +996,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return FamilyTranslation
      */
-    private function createFamilyTranslation(Family $family, $content, $locale = 'default')
+    private function createFamilyTranslation(Family $family, $content, $locale = 'en_US')
     {
         $translation = new FamilyTranslation();
         $translation->setLabel($content);
