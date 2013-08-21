@@ -6,10 +6,18 @@ oro_entity_config:
                 -
                     name:                   'Remove'
                     route:                  'oro_entityextend_entity_remove'
-                    type:                   'delete'
+                    type:                   'ajax'
                     icon:                   'trash'
                     acl_resource:           'root'
                     filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active']}
+                    args:                   ['id']
+                -
+                    name:                   'UnRemove'
+                    route:                  'oro_entityextend_entity_unremove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted']}
                     args:                   ['id']
             layout_action:
                 -
@@ -85,10 +93,18 @@ oro_entity_config:
                 -
                     name:                   'Remove'
                     route:                  'oro_entityextend_field_remove'
-                    type:                   'delete'
+                    type:                   'ajax'
                     icon:                   'trash'
                     acl_resource:           'root'
                     filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active'] }
+                    args:                   ['id']
+                -
+                    name:                   'UnRemove'
+                    route:                  'oro_entityextend_field_unremove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted'] }
                     args:                   ['id']
             layout_action:
                 -

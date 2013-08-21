@@ -1,5 +1,4 @@
 TestClassExtend:
-    mode:                           readonly
     configs:
         entity:
             label:                  TestClassExtend

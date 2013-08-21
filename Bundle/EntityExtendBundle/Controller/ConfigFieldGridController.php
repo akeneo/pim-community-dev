@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,6 +27,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 /**
  * Class ConfigGridController
+ *
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/field")
  * @Acl(
@@ -48,6 +50,7 @@ class ConfigFieldGridController extends Controller
      *      description="Update entity create custom field",
      *      parent="oro_entityextend"
      * )
+     *
      * @Template
      */
     public function createAction(EntityConfigModel $entity)
@@ -233,18 +236,53 @@ class ConfigFieldGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        if ($fieldConfig->get('state') == ExtendManager::STATE_NEW) {
-            $this->getDoctrine()->getManager()->remove($field);
-            $this->getDoctrine()->getManager()->flush($field);
+        $fieldConfig->set('state', ExtendManager::STATE_DELETED);
 
-            $configManager->clearCacheAll();
-        } else {
-            $fieldConfig->set('state', ExtendManager::STATE_DELETED);
+        $configManager->persist($fieldConfig);
+        $configManager->flush();
 
-            $configManager->persist($fieldConfig);
-            $configManager->flush();
+        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+    }
+
+    /**
+     * @Route(
+     *      "/unremove/{id}",
+     *      name="oro_entityextend_field_unremove",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entityextend_field_unremove",
+     *      name="UnRemove custom field",
+     *      description="Update entity Unremove custom field",
+     *      parent="oro_entityextend"
+     * )
+     */
+    public function unremoveAction(FieldConfigModel $field)
+    {
+        if (!$field) {
+            throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
-        return new Response('', Codes::HTTP_NO_CONTENT);
+        /** @var ExtendManager $extendManager */
+        $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
+            $field->getEntity()->getClassName(),
+            $field->getFieldName()
+        );
+
+        if (!$fieldConfig->is('is_extend')) {
+            return new Response('', Codes::HTTP_FORBIDDEN);
+        }
+
+        $fieldConfig->set('state', ExtendManager::STATE_UPDATED);
+
+        $configManager->persist($fieldConfig);
+        $configManager->flush();
+
+        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
     }
 }

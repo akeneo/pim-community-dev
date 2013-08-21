@@ -311,6 +311,9 @@ class EntityFieldsDatagridManager extends DatagridManager
                         case 'redirect':
                             $configItem['type'] = ActionInterface::TYPE_REDIRECT;
                             break;
+                        case 'ajax':
+                            $configItem['type'] = ActionInterface::TYPE_AJAX;
+                            break;
                     }
                 } else {
                     $configItem['type'] = ActionInterface::TYPE_REDIRECT;

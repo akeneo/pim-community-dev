@@ -6,6 +6,7 @@ use FOS\Rest\Util\Codes;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -239,18 +240,50 @@ class ConfigEntityGridController extends Controller
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
-        if ($entityConfig->get('state') == ExtendManager::STATE_NEW) {
-            $this->getDoctrine()->getManager()->remove($entity);
-            $this->getDoctrine()->getManager()->flush();
+        $entityConfig->set('state', ExtendManager::STATE_DELETED);
 
-            $configManager->clearCacheAll();
-        } else {
-            $entityConfig->set('state', ExtendManager::STATE_DELETED);
+        $configManager->persist($entityConfig);
+        $configManager->flush();
 
-            $configManager->persist($entityConfig);
-            $configManager->flush();
+        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+    }
+
+    /**
+     * @Route(
+     *      "/unremove/{id}",
+     *      name="oro_entityextend_entity_unremove",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entityextend_entity_unremove",
+     *      name="Unremove custom entity",
+     *      description="Unremove custom entity",
+     *      parent="oro_entityextend"
+     * )
+     */
+    public function unremoveAction(EntityConfigModel $entity)
+    {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find EntityConfigModel entity.');
         }
 
-        return new Response('', Codes::HTTP_NO_CONTENT);
+        /** @var ExtendManager $extendManager */
+        $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $entityConfig = $extendManager->getConfigProvider()->getConfig($entity->getClassName());
+
+        if ($entityConfig->get('owner') == ExtendManager::OWNER_SYSTEM) {
+            return new Response('', Codes::HTTP_FORBIDDEN);
+        }
+
+        $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+
+        $configManager->persist($entityConfig);
+        $configManager->flush();
+
+        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
     }
 }
