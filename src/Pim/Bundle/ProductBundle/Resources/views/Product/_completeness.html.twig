@@ -2,7 +2,7 @@
     {% set columnWidth = 100/(channels|length + 1) %}
     <table class="table groups">
         <thead>
-            <th width="{{ columnWidth }}%">{{ 'Label'|upper }}</th>
+            <th width="{{ columnWidth }}%">{{ 'Locales'|upper }}</th>
             {% for channel in channels %}
                 <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
             {% endfor %}
@@ -14,7 +14,14 @@
             <tr>
                 <td>{{ locale }}</td>
                 {% for channel in channels %}
-                <td>{{ product.completeness(locale, channel.code).ratio }}</td>
+
+                <td>
+                    {% set completeness = product.completeness(locale, channel.code) %}
+                    {% set ratio = completeness.ratio %}
+                    {{ ratio }}%
+                    {{ healthBar(ratio)|raw }}
+                    {{ completeness.missingCount }} missing values
+                </td>
                 {% endfor %}
             </tr>
             {% endfor %}

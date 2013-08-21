@@ -104,9 +104,6 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
 
-        $calculator = $this->container->get('pim_product.calculator.completeness');
-        $calculator->calculateForAProduct($product);
-
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',
@@ -149,6 +146,10 @@ class ProductController extends Controller
         }
 
         $auditManager = $this->container->get('pim_product.manager.audit');
+
+        $calculator = $this->container->get('pim_product.calculator.completeness');
+        $completenesses = $calculator->calculateForAProduct($product);
+        $product->setCompletenesses($completenesses);
 
         return array(
             'form'           => $form->createView(),

@@ -82,6 +82,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    pim_product.twig.completeness_extension:
+        class: Pim\Bundle\ProductBundle\Twig\CompletenessExtension
+        tags:
+            - { name: twig.extension }
+
     # extension listener
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_product.listener.user_context.class%
