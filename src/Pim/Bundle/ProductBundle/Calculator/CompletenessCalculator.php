@@ -102,7 +102,7 @@ class CompletenessCalculator
     protected function getChannels()
     {
         if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
-            $this->channels = $this->channelManager->getChannels()->toArray();
+            $this->channels = $this->channelManager->getChannels();
         }
 
         return $this->channels;
@@ -132,7 +132,8 @@ class CompletenessCalculator
         $completenesses = array();
 
         foreach ($products as $product) {
-            $completenesses[$product->getSku()] = $this->calculateForAProduct($product);
+            $sku = $product->getSku()->__toString();
+            $completenesses[$sku] = $this->calculateForAProduct($product);
         }
 
         return $completenesses;

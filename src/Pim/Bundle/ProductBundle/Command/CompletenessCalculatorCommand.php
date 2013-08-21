@@ -13,16 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 class CompletenessCalculatorCommand extends ContainerAwareCommand
 {
     /**
-     * @var array $channels
-     */
-    protected $channels;
-
-    /**
-     * @var array $locales
-     */
-    protected $locales;
-
-    /**
      * @var \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
      */
     protected $calculator;
@@ -37,13 +27,13 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
             ->setDescription('Launch the product completeness calculator')
             ->addOption(
                 'channels',
-                InputOption::VALUE_IS_ARRAY,
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'list of channels'
             )
             ->addOption(
                 'locales',
-                InputOption::VALUE_IS_ARRAY,
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'list of locales'
             )
@@ -60,28 +50,42 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $forced         = $input->getOption('forced');
-        $this->channels = $input->getOption('channels');
-        $this->locales  = $input->getOption('locales');
-
-        if ($this->channels === null) {
-            $this->channels = $this->getChannels();
-        } else {
-            // transforms string to array
-            // transforms code to channel
-        }
-
-        if ($this->locales === null) {
-            $this->locales = $this->getLocales();
-        } else {
-            // transforms string to array
-            // transforms code to locale
-        }
+        $forced   = $input->getOption('forced');
+        $channels = $input->getOption('channels');
+        $locales  = $input->getOption('locales');
 
         $this->calculator = $this->getCompletenessCalculator();
-        $this->calculator->setChannels($channels);
-        $this->calculator->setLocales($locales);
 
+        // define channels
+        if ($channels !== null) {
+            $channels = explode(',', $channels);
+            $channels = $this->getChannelManager()->getChannels(array('code' => $channels));
+
+            $this->calculator->setChannels($channels);
+        }
+
+        // define locales
+        if ($locales !== null) {
+            $locales = explode(',', $locales);
+            $locales = $this->getLocaleManager()->getLocales(array('code' => $locales));
+
+            $this->calculator->setLocales($locales);
+        }
+
+        // define the products where the completeness must be recalculated
+        $products = $this->getProductManager()->getFlexibleRepository()->findAll();
+
+        // call calculator
+        $completenesses = $this->calculator->calculate($products);
+
+        // persists product completeness entities
+        foreach ($completenesses as $productCompleteness) {
+            foreach ($productCompleteness as $completeness) {
+                $this->getEntityManager()->persist($completeness);
+            }
+        }
+
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -105,12 +109,32 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
     }
 
     /**
-     * Get all channels
+     * Get the locale manager
      *
-     * @return \Doctrine\Common\Persistence\ArrayCollection
+     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
      */
-    protected function getChannels()
+    protected function getLocaleManager()
     {
-        return $this->getChannelManager()->getChannels();
+        return $this->getContainer()->get('pim_product.manager.locale');
+    }
+
+    /**
+     * Get the product manager
+     *
+     * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
+     */
+    protected function getProductManager()
+    {
+        return $this->getContainer()->get('pim_product.manager.product');
+    }
+
+    /**
+     * Get the entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 }
