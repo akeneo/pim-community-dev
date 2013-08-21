@@ -56,6 +56,9 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
                 message: "Attribute code may contain only letters, numbers and underscores"
             - Length:
                 max: 255
+            - Regex:
+                pattern: "/^(?!(treeId|categoryId|scope|enabled|family)$)/"
+                message: This code is not available.
         description:
             - Length:
                 max: 255
