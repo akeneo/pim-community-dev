@@ -1,17 +1,17 @@
 parameters:
-    pim_import_export.entity.job.class:              Pim\Bundle\BatchBundle\Entity\Job
-    pim_import_export.entity.job_execution.class:    Pim\Bundle\BatchBundle\Entity\JobExecution
+    pim_import_export.entity.job_instance.class:           Pim\Bundle\BatchBundle\Entity\JobInstance
+    pim_import_export.entity.job_execution.class:          Pim\Bundle\BatchBundle\Entity\JobExecution
 
-    pim_import_export.datagrid.manager.job.class:    Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
-    pim_import_export.datagrid.manager.report.class: Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+    pim_import_export.datagrid.manager.job_instance.class: Pim\Bundle\ImportExportBundle\Datagrid\JobInstanceDatagridManager
+    pim_import_export.datagrid.manager.report.class:       Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
 
 services:
     pim_import_export.datagrid.manager.export:
-        class: %pim_import_export.datagrid.manager.job.class%
+        class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: jobs
-              entity_name: %pim_import_export.entity.job.class%
+              entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
               route_name: pim_importexport_export_index
@@ -20,11 +20,11 @@ services:
             - [ setConnectorRegistry, [@pim_batch.connectors] ]
 
     pim_import_export.datagrid.manager.import:
-        class: %pim_import_export.datagrid.manager.job.class%
+        class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: jobs
-              entity_name: %pim_import_export.entity.job.class%
+              entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
               route_name: pim_importexport_import_index

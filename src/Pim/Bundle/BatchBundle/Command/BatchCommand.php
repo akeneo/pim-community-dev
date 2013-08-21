@@ -28,8 +28,8 @@ class BatchCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:batch:job')
-            ->setDescription('Launch a registered job')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job code');
+            ->setDescription('Launch a registered job instance')
+            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code');
     }
 
     /**
@@ -38,21 +38,21 @@ class BatchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->getArgument('code');
-        $job = $this->getEntityManager()->getRepository('PimBatchBundle:Job')->findOneByCode($code);
-        if (!$job) {
-            throw new \InvalidArgumentException(sprintf('Could not find job "%s".', $code));
+        $jobInstance = $this->getEntityManager()->getRepository('PimBatchBundle:JobInstance')->findOneByCode($code);
+        if (!$jobInstance) {
+            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
-        $definition = $this->getConnectorRegistry()->getJob($job);
-        $job->setJobDefinition($definition);
+        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        $jobInstance->setJob($job);
 
-        $errors = $this->getValidator()->validate($job, array('Default', 'Execution'));
+        $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
         $jobExecution = new JobExecution;
-        $jobExecution->setJob($job);
-        $definition->execute($jobExecution);
+        $jobExecution->setJobInstance($jobInstance);
+        $job->execute($jobExecution);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(sprintf('<info>%s has been successfully executed.</info>', ucfirst($job->getType())));

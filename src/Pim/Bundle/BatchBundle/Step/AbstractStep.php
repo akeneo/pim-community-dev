@@ -113,19 +113,6 @@ abstract class AbstractStep implements StepInterface
     abstract protected function doExecute(StepExecution $stepExecution);
 
     /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the beginning of a step, to open or
-     * acquire resources. Does nothing by default.
-     *
-     * @param ExecutionContext $executionContext the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function open(ExecutionContext $executionContext)
-    {
-        return $executionContext;
-    }
-
-    /**
      * Provide the configuration of the step
      *
      * @return array
@@ -140,22 +127,7 @@ abstract class AbstractStep implements StepInterface
     abstract public function setConfiguration(array $config);
 
     /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
-     * of the finally block), to close or release resources. Does nothing by default.
-     *
-     * @param ExecutionContext $executionContext the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function close(ExecutionContext $executionContext)
-    {
-        return $executionContext;
-    }
-
-    /**
-     * Template method for step execution logic - calls abstract methods for resource initialization (
-     * {@link #open(ExecutionContext)}), execution logic ({@link #doExecute(StepExecution)}) and resource closing (
-     * {@link #close(ExecutionContext)}).
+     * Template method for step execution logic
      *
      * @param StepExecution $stepExecution
      *
@@ -224,13 +196,6 @@ abstract class AbstractStep implements StepInterface
             $errorMsg = "Encountered an error saving batch meta data. "
                 . "This job is now in an unknown state.";
             $this->getLogger()->error($errorMsg, array('exception' => $e));
-        }
-
-        try {
-            $this->close($stepExecution->getExecutionContext());
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
-            $stepExecution->addFailureException($e);
         }
 
         $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());

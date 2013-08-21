@@ -23,11 +23,7 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
 
         $jobRepository = new MockJobRepository();
 
-        $stepHandler = $this->getMock(
-            'Pim\\Bundle\\BatchBundle\\Job\\StepHandlerInterface'
-        );
-
-        $jobFactory = new JobFactory($logger, $jobRepository, $stepHandler);
+        $jobFactory = new JobFactory($logger, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(

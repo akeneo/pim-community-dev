@@ -24,4 +24,4 @@ Feature: Create an export
     Given I am logged in as "admin"
     And I try to create an unknown export
     Then I should be redirected on the export index page
-    And I should see "Failed to create an export with an unknown job definition."
+    And I should see "Failed to create an export with an unknown job."

@@ -8,14 +8,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Job form type
+ * Job instance form type
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class JobType extends AbstractType
+class JobInstanceType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class JobType extends AbstractType
             ->add('code', 'text')
             ->add('label')
             ->add(
-                'jobDefinition',
+                'job',
                 new JobConfigurationType(),
                 array(
                     'required'     => false,
@@ -40,6 +40,6 @@ class JobType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_import_export_job';
+        return 'pim_import_export_jobInstance';
     }
 }

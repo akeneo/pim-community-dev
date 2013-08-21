@@ -21,7 +21,7 @@ Feature: View an export detail page
     And I am on the "acme_product_export" export job page
     Then I should see "This value should not be blank." next to the channel
 
-  Scenario: Fail to show a job for which job definition does not exist anymore
+  Scenario: Fail to show a job instance for which the job does not exist anymore
     Given the following job:
       | connector | alias          | code                        | label                       | type   |
       | Akeneo    | removed_export | removed_acme_product_export | Product export for Acme.com | export |

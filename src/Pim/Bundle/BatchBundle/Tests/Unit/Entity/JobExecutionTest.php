@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
@@ -190,12 +190,12 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSetGetJob()
+    public function testSetGetJobInstance()
     {
-        $this->assertNull($this->jobExecution->getJob());
+        $this->assertNull($this->jobExecution->getJobInstance());
         $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
-        $this->assertEntity($this->jobExecution->setJob($jobInstance));
-        $this->assertEquals($jobInstance, $this->jobExecution->getJob());
+        $this->assertEntity($this->jobExecution->setJobInstance($jobInstance));
+        $this->assertSame($jobInstance, $this->jobExecution->getJobInstance());
     }
 
     public function testToString()
@@ -212,7 +212,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->jobExecution->setUpdatedTime($updatedTime);
         $this->jobExecution->setStatus(new BatchStatus($status));
         $this->jobExecution->setExitStatus(new ExitStatus($exitStatus, 'Test description'));
-        $this->jobExecution->setJob($jobInstance);
+        $this->jobExecution->setJobInstance($jobInstance);
         $this->jobExecution->setEndTime($endTime);
 
         $expectedOutput = 'startTime=2013-02-01T12:34:56+01:00, endTime=2013-03-04T21:43:05+01:00, '.

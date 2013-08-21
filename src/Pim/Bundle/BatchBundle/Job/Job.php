@@ -23,9 +23,6 @@ class Job implements JobInterface
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /* @var StepHandler */
-    protected $stepHandler;
-
     /**
      * @var array
      *
@@ -167,16 +164,6 @@ class Job implements JobInterface
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
-    }
-
-    /**
-     * Set the step handler
-     *
-     * @param StepHandlerInterface $stepHandler
-     */
-    public function setStepHandler(StepHandlerInterface $stepHandler)
-    {
-        $this->stepHandler = $stepHandler;
     }
 
     /**
@@ -335,7 +322,6 @@ class Job implements JobInterface
      *
      * @param JobExecution $execution the current {@link JobExecution}
      *
-     * @see AbstractJob#handleStep(Step, JobExecution)
      * @throws JobInterruptedException
      * @throws JobRestartException
      * @throws StartLimitExceededException
@@ -346,22 +332,55 @@ class Job implements JobInterface
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = $this->stepHandler->handleStep($step, $execution);
+            $stepExecution = $this->handleStep($step, $execution);
+
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
-                //
                 // Terminate the job if a step fails
-                //
                 break;
             }
         }
 
-        //
         // Update the job status to be the same as the last step
-        //
         if ($stepExecution !== null) {
             $this->getLogger()->debug("Upgrading JobExecution status: " . $stepExecution);
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }
+    }
+
+    /**
+     * Handle a step and return the execution for it.
+     * @param StepInterface $step      Step
+     * @param JobExecution  $execution Job execution
+     *
+     * @throws JobInterruptedException
+     * @throws JobRestartException
+     * @throws StartLimitExceededException
+     *
+     * @return StepExecution
+     */
+    public function handleStep(StepInterface $step, JobExecution $execution)
+    {
+        if ($execution->isStopping()) {
+            throw new JobInterruptedException("JobExecution interrupted.");
+        }
+
+        $currentStepExecution = $execution->createStepExecution($step->getName());
+
+        $this->getLogger()->info("Executing step: [" . $step->getName() . "]");
+        try {
+            $step->execute($currentStepExecution);
+        } catch (JobInterruptedException $e) {
+            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            throw $e;
+        }
+
+        if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
+                || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+            $execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+            throw new JobInterruptedException("Job interrupted by step execution");
+        }
+
+        return $currentStepExecution;
     }
 }

@@ -7,10 +7,9 @@ use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\Job;
-use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
 use Pim\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 use Pim\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
 use Pim\Bundle\BatchBundle\Tests\Unit\Job\MockJobRepository;
@@ -40,7 +39,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $this->job = new Job(self::JOB_TEST_NAME);
         $this->job->setLogger($this->logger);
-        $this->job->setStepHandler(new SimpleStepHandler($this->logger, $this->jobRepository));
     }
 
     public function testGetName()

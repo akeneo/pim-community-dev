@@ -19,7 +19,7 @@ use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\Channel;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * A context for creating entities
@@ -624,14 +624,14 @@ class FixturesContext extends RawMinkContext
         $registry = $this->getContainer()->get('pim_batch.connectors');
 
         foreach ($table->getHash() as $data) {
-            $job = new Job($data['connector'], $data['type'], $data['alias']);
-            $job->setCode($data['code']);
-            $job->setLabel($data['label']);
+            $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
+            $jobInstance->setCode($data['code']);
+            $jobInstance->setLabel($data['label']);
 
-            $jobDefinition = $registry->getJob($job);
-            $job->setJobDefinition($jobDefinition);
+            $job = $registry->getJob($jobInstance);
+            $jobInstance->setJob($job);
 
-            $this->persist($job);
+            $this->persist($jobInstance);
         }
     }
 
@@ -643,10 +643,10 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $registry      = $this->getContainer()->get('pim_batch.connectors');
-        $job           = $this->getJob($code);
-        $jobDefinition = $registry->getJob($job);
-        $steps         = $jobDefinition->getSteps();
+        $registry    = $this->getContainer()->get('pim_batch.connectors');
+        $jobInstance = $this->getJobInstance($code);
+        $job         = $registry->getJob($jobInstance);
+        $steps       = $job->getSteps();
 
         foreach ($table->getHash() as $data) {
             $config[$data['element']][$data['property']] = $data['value'];
@@ -961,9 +961,9 @@ class FixturesContext extends RawMinkContext
      *
      * @return Job
      */
-    public function getJob($code)
+    public function getJobInstance($code)
     {
-        return $this->getEntityOrException('PimBatchBundle:Job', array('code' => $code));
+        return $this->getEntityOrException('PimBatchBundle:JobInstance', array('code' => $code));
     }
 
     /**

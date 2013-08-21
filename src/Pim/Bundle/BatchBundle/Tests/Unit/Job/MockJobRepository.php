@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Pim\Bundle\BatchBundle\Entity\Job as JobEntity;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
@@ -22,7 +22,7 @@ class MockJobRepository implements JobRepositoryInterface
     /**
      * {@inheritDoc}}
      */
-    public function createJobExecution(JobEntity $job)
+    public function createJobExecution(JobInstance $job)
     {
         $jobExecution = new JobExecution();
 

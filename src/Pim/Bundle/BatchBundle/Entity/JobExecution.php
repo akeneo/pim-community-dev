@@ -36,11 +36,11 @@ class JobExecution
     private $stepExecutions;
 
     /**
-     * @var Job
-     * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     * @var JobInstance
+     * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
+     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
      */
-    private $job;
+    private $jobInstance;
 
     /**
      * @var integer
@@ -426,25 +426,25 @@ class JobExecution
     /**
      * Set the associated job
      *
-     * @param Job $job The job to associate the JobExecution to
+     * @param Job $job The job instance to associate the JobExecution to
      *
      * @return JobExecution
      */
-    public function setJob(Job $job)
+    public function setJobInstance(JobInstance $jobInstance)
     {
-        $this->job = $job;
+        $this->jobInstance = $jobInstance;
 
         return $this;
     }
 
     /**
-     * Get the associated job
+     * Get the associated jobInstance
      *
      * @return $job The job to which the JobExecution is associated
      */
-    public function getJob()
+    public function getJobInstance()
     {
-        return $this->job;
+        return $this->jobInstance;
     }
 
     /**
@@ -454,10 +454,10 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        $startTime   = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
-        $endTime     = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
-        $updatedTime = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
-        $jobCode     = $this->job         != null ? $this->job->getCode()                        : '';
+        $startTime       = $this->startTime       != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
+        $endTime         = $this->endTime         != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
+        $updatedTime     = $this->updatedTime     != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
+        $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode()                : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s, "
             . "exitStatus=%s, job=%s";
@@ -468,7 +468,7 @@ class JobExecution
             $updatedTime,
             $this->status,
             $this->exitStatus,
-            $jobCode
+            $jobInstanceCode
         );
 
         return $string;
