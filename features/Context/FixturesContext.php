@@ -231,27 +231,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following family translations:$/
-     */
-    public function theFollowingFamilyTranslations(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $family      = $this->getFamily($data['family']);
-            $translation = $this->createFamilyTranslation(
-                $family,
-                $data['label'],
-                $this->getLocaleCode($data['language'])
-            );
-
-            $family->addTranslation($translation);
-        }
-
-        $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Given /^the following currencies:$/
      */
     public function theFollowingCurrencies(TableNode $table)

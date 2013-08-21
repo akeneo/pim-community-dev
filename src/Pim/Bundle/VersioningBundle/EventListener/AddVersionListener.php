@@ -137,7 +137,9 @@ class AddVersionListener implements EventSubscriber
 
         } else if($entity instanceof ProductValueInterface) {
             $product = $entity->getEntity();
-            $this->addPendingVersioning($product);
+            if ($product) {
+                $this->addPendingVersioning($product);
+            }
 
         } else if ($entity instanceof ProductPrice) {
             $product = $entity->getValue()->getEntity();

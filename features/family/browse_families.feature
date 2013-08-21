@@ -9,11 +9,6 @@ Feature: Browse families
       | smartphone |
       | bags       |
       | jewels     |
-    And the following family translations:
-      | family     | language | label      |
-      | jewels     | english  | Jewels     |
-      | smartphone | english  | Smartphone |
-      | bags       | english  | Bags       |
     And I am logged in as "admin"
     When I am on the families page
-    Then I should see the families Bags, Jewels and Smartphone
+    Then I should see the families bags, jewels and smartphone
