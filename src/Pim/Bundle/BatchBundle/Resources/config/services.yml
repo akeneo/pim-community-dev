@@ -1,10 +1,11 @@
 parameters:
-    pim_batch.connectors.class:     Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
-    pim_batch.job_factory.class:    Pim\Bundle\BatchBundle\Job\JobFactory
-    pim_batch.step_factory.class:   Pim\Bundle\BatchBundle\Step\StepFactory
-    pim_batch.connectors_config:    ~
-    pim_batch.jobs_config:          ~
+    pim_batch.connectors.class:         Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+    pim_batch.job_repository.class:     Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
+    pim_batch.job_factory.class:        Pim\Bundle\BatchBundle\Job\JobFactory
+    pim_batch.step_factory.class:       Pim\Bundle\BatchBundle\Step\StepFactory
+    pim_batch.logger_subscriber.class:  Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    pim_batch.connectors_config:        ~
+    pim_batch.jobs_config:              ~
 
 services:
     # connectors registry
@@ -22,8 +23,15 @@ services:
     pim_batch.job_factory:
         class: %pim_batch.job_factory.class%
         arguments:
-            - @logger
+            - @event_dispatcher
             - @pim_batch.job_repository
+
+    pim_batch.logger_subscriber:
+        class: %pim_batch.logger_subscriber.class%
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_subscriber }
 
     pim_batch.step_factory:
         class: %pim_batch.step_factory.class%
