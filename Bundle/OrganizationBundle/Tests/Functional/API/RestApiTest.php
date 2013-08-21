@@ -24,7 +24,6 @@ class RestApiTest extends WebTestCase
                 'website' => 'http://localhost',
                 'email' => 'email@email.localhost',
                 'fax' => '321-321-321',
-                'parent' => null,
                 'appendUsers' => null,
             )
     );
@@ -69,31 +68,31 @@ class RestApiTest extends WebTestCase
      *
      * @return string
      */
-    public function testCreateParent($id)
-    {
-        $requestData = $this->fixtureData;
-        $requestData['business_unit']['name'] = 'Child';
-        $requestData['business_unit']['parent'] = $id;
-
-        $this->client->request(
-            'POST',
-            $this->client->generate('oro_api_post_businessunit'),
-            $requestData
-        );
-
-        /** @var $result Response */
-        $result = $this->client->getResponse();
-
-        ToolsAPI::assertJsonResponse($result, 201);
-
-        $responseData = $result->getContent();
-        $this->assertNotEmpty($responseData);
-        $responseData = ToolsAPI::jsonToArray($responseData);
-        $this->assertInternalType('array', $responseData);
-        $this->assertArrayHasKey('id', $responseData);
-
-        return $responseData['id'];
-    }
+//    public function testCreateParent($id)
+//    {
+//        $requestData = $this->fixtureData;
+//        $requestData['business_unit']['name'] = 'Child';
+//        $requestData['business_unit']['parent'] = $id;
+//
+//        $this->client->request(
+//            'POST',
+//            $this->client->generate('oro_api_post_businessunit'),
+//            $requestData
+//        );
+//
+//        /** @var $result Response */
+//        $result = $this->client->getResponse();
+//
+//        ToolsAPI::assertJsonResponse($result, 201);
+//
+//        $responseData = $result->getContent();
+//        $this->assertNotEmpty($responseData);
+//        $responseData = ToolsAPI::jsonToArray($responseData);
+//        $this->assertInternalType('array', $responseData);
+//        $this->assertArrayHasKey('id', $responseData);
+//
+//        return $responseData['id'];
+//    }
 
     /**
      * Test GET
@@ -124,7 +123,6 @@ class RestApiTest extends WebTestCase
                 $this->assertEquals($this->fixtureData['business_unit']['email'], $row['email']);
                 $this->assertEquals($this->fixtureData['business_unit']['website'], $row['website']);
                 $this->assertEquals('default', $row['organization']);
-                $this->assertEmpty($row['parent']);
                 $this->assertEmpty($row['users']);
             }
         }
@@ -170,31 +168,31 @@ class RestApiTest extends WebTestCase
      * @depends testCreateParent
      * @param string $id
      */
-    public function testGetParent($id)
-    {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_api_get_businessunit', array('id' => $id))
-        );
-
-        /** @var $result Response */
-        $result = $this->client->getResponse();
-
-        ToolsAPI::assertJsonResponse($result, 200);
-        $responseData = ToolsAPI::jsonToArray($result->getContent());
-
-        $this->assertNotEmpty($responseData);
-        $this->assertArrayHasKey('id', $responseData);
-        $this->assertEquals($id, $responseData['id']);
-        $this->assertEquals('Child', $responseData['name']);
-        $this->assertEquals($this->fixtureData['business_unit']['phone'], $responseData['phone']);
-        $this->assertEquals($this->fixtureData['business_unit']['fax'], $responseData['fax']);
-        $this->assertEquals($this->fixtureData['business_unit']['email'], $responseData['email']);
-        $this->assertEquals($this->fixtureData['business_unit']['website'], $responseData['website']);
-        $this->assertEquals('default', $responseData['organization']);
-        $this->assertEquals('BU Name', $responseData['parent']);
-        $this->assertEmpty($responseData['users']);
-    }
+//    public function testGetParent($id)
+//    {
+//        $this->client->request(
+//            'GET',
+//            $this->client->generate('oro_api_get_businessunit', array('id' => $id))
+//        );
+//
+//        /** @var $result Response */
+//        $result = $this->client->getResponse();
+//
+//        ToolsAPI::assertJsonResponse($result, 200);
+//        $responseData = ToolsAPI::jsonToArray($result->getContent());
+//
+//        $this->assertNotEmpty($responseData);
+//        $this->assertArrayHasKey('id', $responseData);
+//        $this->assertEquals($id, $responseData['id']);
+//        $this->assertEquals('Child', $responseData['name']);
+//        $this->assertEquals($this->fixtureData['business_unit']['phone'], $responseData['phone']);
+//        $this->assertEquals($this->fixtureData['business_unit']['fax'], $responseData['fax']);
+//        $this->assertEquals($this->fixtureData['business_unit']['email'], $responseData['email']);
+//        $this->assertEquals($this->fixtureData['business_unit']['website'], $responseData['website']);
+//        $this->assertEquals('default', $responseData['organization']);
+//        $this->assertEquals('BU Name', $responseData['parent']);
+//        $this->assertEmpty($responseData['users']);
+//    }
 
     /**
      * Test PUT
