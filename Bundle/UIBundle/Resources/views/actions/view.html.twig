@@ -19,16 +19,17 @@
                                     {{ 'Owner'|trans }}:
                                     {% if (ownerType == 'USER') %}
                                         {% if resource_granted('oro_user_user_view') %}
-                                            <a href="{{ path('oro_user_view', {'id': entity.owner.id}) }}">{{ entity.owner.name }}</a>
-                                        {% else %}
-                                            {{ entity.owner.name }}
+                                            {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
                                         {% endif %}
                                     {% elseif (ownerType == 'BUSINESS_UNIT') %}
                                         {% if resource_granted('oro_business_unit_view') %}
-                                            <a href="{{ path('oro_business_unit_view', {'id': entity.owner.id}) }}">{{ entity.owner.name }}</a>
-                                        {% else %}
-                                            {{ entity.owner.name }}
+                                            {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
                                         {% endif %}
+                                    {% endif %}
+                                    {% if ownerPath is defined %}
+                                        <a href="{{ ownerPath }}">{{ entity.owner.name }}</a>
+                                    {% else %}
+                                        {{ entity.owner.name }}
                                     {% endif %}
                                 </li>
                             {% endif %}

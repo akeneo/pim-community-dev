@@ -84,6 +84,9 @@ var jsfv = new function () {
 {% endblock %}
 
     function checkError(field, checkFunction, parameters, value) {
+        if (!$("#" + field).length) {
+            return true;
+        }
         field = jsfv.id(field);
         // Remove old errors of the field
         {% block removeErrors %}{% spaceless %}jsfv.removeErrors(field);{% endspaceless %}{% endblock %}

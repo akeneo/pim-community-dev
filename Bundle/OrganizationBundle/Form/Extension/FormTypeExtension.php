@@ -108,7 +108,14 @@ class FormTypeExtension extends AbstractTypeExtension
                      * Showing user owner box for entities with owner type USER if change owner permission is
                      * granted.
                      */
-                    $builder->add($this->fieldName, 'oro_user_select', array('required' => true));
+                    $builder->add(
+                        $this->fieldName,
+                        'oro_user_select',
+                        array(
+                            'required' => true,
+                            'constraints' => array(new NotBlank())
+                        )
+                    );
                 } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $ownerType) {
                     $this->addBusinessUnitOwnerField($builder, $user);
                 } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $ownerType) {
@@ -175,17 +182,21 @@ class FormTypeExtension extends AbstractTypeExtension
                 )
             );
         } else {
-            $builder->add(
-                $this->fieldName,
-                'entity',
-                array(
-                    'class' => 'OroOrganizationBundle:BusinessUnit',
-                    'property' => 'name',
-                    'choices' => $user->getBusinessUnits(),
-                    'mapped' => true,
-                    'required' => true,
-                )
-            );
+            $businessUnits = $user->getBusinessUnits();
+            if (count($businessUnits)) {
+                $builder->add(
+                    $this->fieldName,
+                    'entity',
+                    array(
+                        'class' => 'OroOrganizationBundle:BusinessUnit',
+                        'property' => 'name',
+                        'choices' => $businessUnits,
+                        'mapped' => true,
+                        'required' => true,
+                        'constraints' => array(new NotBlank())
+                    )
+                );
+            }
         }
     }
 
@@ -199,7 +210,8 @@ class FormTypeExtension extends AbstractTypeExtension
             'class' => 'OroOrganizationBundle:Organization',
             'property' => 'name',
             'mapped' => true,
-            'required' => false,
+            'required' => true,
+            'constraints' => array(new NotBlank())
         );
         if (!$this->changeOwnerGranted) {
             $organizations = array();
