@@ -2,6 +2,7 @@
 
 namespace {{ namespace }};
 
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
@@ -55,5 +56,26 @@ class {{ className }} extends EmailAddress
 {% endfor %}
 
         return $this;
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = EmailUtil::currentUTCDateTime();
+        $this->updated = EmailUtil::currentUTCDateTime();
+    }
+
+    /**
+     * Pre update event listener
+     *
+     * @ORM\PreUpdate
+     */
+    public function beforeUpdate()
+    {
+        $this->updated = EmailUtil::currentUTCDateTime();
     }
 }

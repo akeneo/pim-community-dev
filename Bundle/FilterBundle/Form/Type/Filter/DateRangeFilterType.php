@@ -14,6 +14,8 @@ class DateRangeFilterType extends AbstractType
 {
     const TYPE_BETWEEN = 1;
     const TYPE_NOT_BETWEEN = 2;
+    const TYPE_MORE_THAN = 3;
+    const TYPE_LESS_THAN = 4;
     const NAME = 'oro_type_date_range_filter';
 
     /**
@@ -55,11 +57,17 @@ class DateRangeFilterType extends AbstractType
                 => $this->translator->trans('label_date_type_between', array(), 'OroFilterBundle'),
             self::TYPE_NOT_BETWEEN
                 => $this->translator->trans('label_date_type_not_between', array(), 'OroFilterBundle'),
+            self::TYPE_MORE_THAN
+                => $this->translator->trans('label_date_type_more_than', array(), 'OroFilterBundle'),
+            self::TYPE_LESS_THAN
+                => $this->translator->trans('label_date_type_less_than', array(), 'OroFilterBundle'),
         );
 
         $typeValues = array(
             'between'    => self::TYPE_BETWEEN,
-            'notBetween' => self::TYPE_NOT_BETWEEN
+            'notBetween' => self::TYPE_NOT_BETWEEN,
+            'moreThan'   => self::TYPE_MORE_THAN,
+            'lessThan'   => self::TYPE_LESS_THAN
         );
 
         $resolver->setDefaults(

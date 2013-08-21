@@ -27,6 +27,8 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 use DateTime;
 
 /**
@@ -39,6 +41,10 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Configurable(
+ *      routeName="oro_user_index",
+ *      defaultValues={"entity"={"icon"="icon-user","label"="User", "plural_label"="Users"}}
+ * )
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
@@ -360,7 +366,7 @@ class User extends AbstractEntityFlexible implements
 
     /**
      * Get entity class name.
-     *
+     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
      * @return string
      */
     public function getClass()

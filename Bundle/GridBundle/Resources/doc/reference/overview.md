@@ -137,8 +137,6 @@ Dependencies
 * Oro UIBundle - https://github.com/laboro/UIBundle;
 * Oro FilterBundle - https://github.com/laboro/FilterBundle;
 * Oro FlexibleEntityBundle - https://github.com/laboro/FlexibleEntityBundle;
-* Sonata AdminBundle  2.1 (Oro fork) - https://github.com/laboro/SonataAdminBundle;
-* Sonata DoctrineORM AdminBundle 2.1 - https://github.com/sonata-project/SonataDoctrineORMAdminBundle.
 
 #### Frontend Dependencies
 

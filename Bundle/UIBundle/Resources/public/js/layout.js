@@ -110,7 +110,13 @@ $(document).ready(function () {
  * ============================================================ */
     var dropdownToggles = $('.oro-dropdown-toggle');
     dropdownToggles.click(function(e) {
-        $(this).parent().toggleClass('open')
+        var $parent = $(this).parent().toggleClass('open');
+        if ($parent.hasClass('open')) {
+            $parent.find('input[type=text]').first().focus().select();
+        }
+    });
+    $('body').on('focus.dropdown.data-api', '[data-toggle=dropdown]', function (e) {
+        $(e.target).parent().find('input[type=text]').first().focus();
     });
 
     $('html').click(function(e) {

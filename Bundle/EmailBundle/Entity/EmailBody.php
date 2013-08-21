@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Entity;
 
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
@@ -81,7 +82,8 @@ class EmailBody
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="EmailAttachment", mappedBy="emailBody", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EmailAttachment", mappedBy="emailBody",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
      * @Soap\ComplexType("Oro\Bundle\EmailBundle\Entity\EmailAttachment[]")
      * @Exclude
      */
@@ -264,6 +266,6 @@ class EmailBody
      */
     public function beforeSave()
     {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->created = EmailUtil::currentUTCDateTime();
     }
 }

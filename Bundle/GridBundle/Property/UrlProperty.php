@@ -43,9 +43,16 @@ class UrlProperty extends AbstractProperty
      * @param string $routeName
      * @param array $placeholders
      * @param bool $isAbsolute
+     * @param null $anchor
      */
-    public function __construct($name, Router $router, $routeName, array $placeholders = array(), $isAbsolute = false, $anchor = null)
-    {
+    public function __construct(
+        $name,
+        Router $router,
+        $routeName,
+        array $placeholders = array(),
+        $isAbsolute = false,
+        $anchor = null
+    ) {
         $this->name = $name;
         $this->router = $router;
         $this->routeName = $routeName;

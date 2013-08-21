@@ -98,23 +98,6 @@ class EntityFieldsDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldCode = new FieldDescription();
         $fieldCode->setName('code');
         $fieldCode->setOptions(

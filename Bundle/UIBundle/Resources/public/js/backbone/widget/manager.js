@@ -5,6 +5,10 @@ Oro.widget.Manager = {
     types: {},
     widgets: {},
 
+    isSupportedType: function(type) {
+        return this.types.hasOwnProperty(type);
+    },
+
     registerWidgetContainer: function(type, initializer) {
         this.types[type] = initializer;
     },

@@ -47,7 +47,8 @@ class EmailAttachment
     /**
      * @var EmailAttachmentContent
      *
-     * @ORM\OneToOne(targetEntity="EmailAttachmentContent", mappedBy="emailAttachment", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="EmailAttachmentContent", mappedBy="emailAttachment",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
      * @Exclude
      */
     protected $attachmentContent;

@@ -1,9 +1,12 @@
 parameters:
     oro_email.email.entity.class:                 Oro\Bundle\EmailBundle\Entity\Email
     oro_email.email.cache.manager.class:          Oro\Bundle\EmailBundle\Cache\EmailCacheManager
+    oro_email.email.address.manager.class:        Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager
     oro_email.email.owner.provider.class:         Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider
     oro_email.email.owner.provider.storage.class: Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage
-    oro_email.email.address.manager.class:        Oro\Bundle\EmailBundle\EventListener\EmailAddressManager
+    oro_email.email.owner.manager.class:          Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager
+    oro_email.email.entity.builder.class:         Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder
+    oro_email.email.entity.batch_processor.class: Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor
     oro_email.listener.entity_subscriber.class:   Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
@@ -24,6 +27,19 @@ parameters:
     oro_email.manager.emailtemplate.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
 
+    # Entity config event listener
+    oro_email.listener.config_subscriber.class: Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber
+
+    # Providers
+    oro_email.provider.variable_provider.class: Oro\Bundle\EmailBundle\Provider\VariablesProvider
+
+    # Cache keys
+    oro_email.cache.available_in_template_key: 'oro_email.available_in_template_fields'
+
+    # Email renderer, twig instance
+    oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
+    oro_email.twig.email_security_policy.class: Twig_Sandbox_SecurityPolicy
+
 services:
     oro_email.entity.cache.warmer:
         public: false
@@ -32,6 +48,7 @@ services:
             - @oro_email.email.owner.provider.storage
             - %oro_email.entity.cache_dir%
             - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
         tags:
             - { name: kernel.cache_warmer, priority: 30 }
 
@@ -41,6 +58,7 @@ services:
         arguments:
             - %oro_email.entity.cache_dir%
             - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
         tags:
             - { name: kernel.cache_clearer }
 
@@ -48,6 +66,13 @@ services:
         class: %oro_email.email.cache.manager.class%
         arguments:
             - @doctrine.orm.entity_manager
+
+    oro_email.email.address.manager:
+        public: false
+        class: %oro_email.email.address.manager.class%
+        arguments:
+            - %oro_email.entity.cache_namespace%
+            - %oro_email.entity.proxy_name_template%
 
     oro_email.email.owner.provider.storage:
         public: false
@@ -58,19 +83,34 @@ services:
         class: %oro_email.email.owner.provider.class%
         arguments:
             - @oro_email.email.owner.provider.storage
-            - @doctrine.orm.entity_manager
 
-    oro_email.email.address.manager:
+    oro_email.email.owner.manager:
         public: false
-        class: %oro_email.email.address.manager.class%
+        class: %oro_email.email.owner.manager.class%
         arguments:
             - @oro_email.email.owner.provider.storage
+            - @oro_email.email.address.manager
+
+    oro_email.email.entity.builder:
+        class: %oro_email.email.entity.builder.class%
+        scope: prototype
+        arguments:
+            - @oro_email.email.entity.batch_processor
+            - @oro_email.email.address.manager
+
+    oro_email.email.entity.batch_processor:
+        class: %oro_email.email.entity.batch_processor.class%
+        public: false
+        scope: prototype
+        arguments:
+            - @oro_email.email.address.manager
+            - @oro_email.email.owner.provider
 
     oro_email.listener.entity_subscriber:
         public: false
         class: %oro_email.listener.entity_subscriber.class%
         arguments:
-            - @oro_email.email.address.manager
+            - @oro_email.email.owner.manager
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
@@ -146,3 +186,68 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @translator
+
+    oro_email.cache:
+          parent: oro.cache.abstract
+          calls:
+              - [setNamespace, ['oro_email.cache']]
+
+    # Available variables services
+    oro_email.listener.config_subscriber:
+        class:      %oro_email.listener.config_subscriber.class%
+        arguments:  [@oro_email.cache, %oro_email.cache.available_in_template_key%]
+        tags:
+            - { name: kernel.event_subscriber}
+
+    # email template twig instance
+    oro_email.twig.string_loader:
+        class: Twig_Loader_String
+
+    oro_email.email_renderer:
+        class: %oro_email.email_renderer.class%
+        arguments:
+            - @oro_email.twig.string_loader
+            - [] # twig environment options
+            - @oro_email.config.available_in_templates
+            - @oro_email.cache
+            - %oro_email.cache.available_in_template_key%
+            - @security.context
+            - @oro_email.twig.email_sandbox
+
+    oro_email.twig.email_security_policy:
+        class: %oro_email.twig.email_security_policy.class%
+        arguments:
+            # tags
+            - [ 'if', 'app' ]
+            # filters
+            - [ 'upper', 'escape' ]
+            # methods
+            - []
+            # properties
+            - []
+            # functions
+            - []
+
+    oro_email.twig.email_sandbox:
+        class: Twig_Extension_Sandbox
+        arguments:
+            - @oro_email.twig.email_security_policy
+            - true # use sandbox globally in instance
+
+    oro_email.config.available_in_templates:
+        tags:
+            - { name: oro_entity_config.provider, scope: email }
+
+    oro_email.provider.variable_provider:
+        class: %oro_email.provider.variable_provider.class%
+        arguments:
+            - @security.context
+            - @oro_email.config.available_in_templates
+
+    oro_email.validator.variables_validator:
+        class: Oro\Bundle\EmailBundle\Validator\VariablesValidator
+        arguments:
+            - @oro_email.email_renderer
+            - @security.context
+        tags:
+            - { name: validator.constraint_validator, alias: oro_email.variables_validator }

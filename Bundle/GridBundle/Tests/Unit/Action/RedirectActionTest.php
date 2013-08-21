@@ -5,29 +5,31 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\RedirectAction;
 
-class RedirectActionTest extends AbstractActionTestCase
+class RedirectActionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Prepare redirect action model
-     *
-     * @param array $arguments
+     * @var RedirectAction
      */
-    protected function initializeAbstractActionMock($arguments = array())
+    protected $model;
+
+    protected function setUp()
     {
-        $arguments = $this->getAbstractActionArguments($arguments);
-        $this->model = new RedirectAction($arguments['aclManager']);
+        $this->model = new RedirectAction();
         $this->model->setName('redirect');
+    }
+
+    protected function tearDown()
+    {
+        unset($this->model);
     }
 
     public function testGetType()
     {
-        $this->initializeAbstractActionMock();
         $this->assertEquals(ActionInterface::TYPE_REDIRECT, $this->model->getType());
     }
 
     public function testSetOptions()
     {
-        $this->initializeAbstractActionMock();
         $options = array(
             'link' => '/redirect_link',
             'backUrl' => true,
@@ -43,7 +45,6 @@ class RedirectActionTest extends AbstractActionTestCase
      */
     public function testSetOptionsError()
     {
-        $this->initializeAbstractActionMock();
         $this->model->setOptions(array());
     }
 }

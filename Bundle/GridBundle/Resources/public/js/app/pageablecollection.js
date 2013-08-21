@@ -69,6 +69,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             }
             _.extend(this.state, options.state);
         }
+
         this.initialState = Oro.deepClone(this.state);
 
         if (options.url) {
@@ -142,13 +143,22 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      *
      * @param {Object} data
      * @param {Object} state
+     * @param {String} prefix
      * @return {Object}
      */
-    processFiltersParams: function(data, state) {
+    processFiltersParams: function(data, state, prefix) {
+        if (!state) {
+            state = this.state;
+        }
+
+        if (!prefix) {
+            prefix = this.inputName + '[_filter]'
+        }
+
         if (state.filters) {
             _.extend(
                 data,
-                this._generateParameterStrings(state.filters, this.inputName + '[_filter]')
+                this.generateParameterStrings(state.filters, prefix)
             );
         }
         return data;
@@ -160,9 +170,8 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      * @param {Object} parameters
      * @param {String} prefix
      * @return {Object}
-     * @private
      */
-    _generateParameterStrings: function(parameters, prefix) {
+    generateParameterStrings: function(parameters, prefix) {
         var localStrings = {};
         var localPrefix = prefix;
         _.each(parameters, function(filterParameters, filterKey) {
@@ -172,7 +181,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
                 if (_.isObject(filterParameters)) {
                     _.extend(
                         localStrings,
-                        this._generateParameterStrings(filterParameters, filterKeyString)
+                        this.generateParameterStrings(filterParameters, filterKeyString)
                     );
                 } else {
                     localStrings[filterKeyString] = filterParameters;

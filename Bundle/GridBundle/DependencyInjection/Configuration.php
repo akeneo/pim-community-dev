@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     const TRANSLATION_DOMAIN_NODE    = 'translation_domain';
-    const DEFAULT_TRANSLATION_DOMAIN = 'datagrid';
+    const DEFAULT_TRANSLATION_DOMAIN = 'messages';
 
     /**
      * {@inheritDoc}

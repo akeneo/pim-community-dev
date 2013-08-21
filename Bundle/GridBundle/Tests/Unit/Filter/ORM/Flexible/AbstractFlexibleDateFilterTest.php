@@ -18,12 +18,12 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
             ->getMockForAbstractClass();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Parent filter must be an instance of Oro\Bundle\GridBundle\Filter\ORM\AbstractDateFilter
-     */
     public function testConstructWithIncorrectFilter()
     {
+        $this->setExpectedException(
+            '\InvalidArgumentException',
+            'Parent filter must be an instance of Oro\Bundle\GridBundle\Filter\ORM\AbstractDateFilter'
+        );
         $flexibleRegistry = $this->getMock('\Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
         $incorrectParentFilter = $this->getMockForAbstractClass(
             '\Oro\Bundle\GridBundle\Filter\FilterInterface',

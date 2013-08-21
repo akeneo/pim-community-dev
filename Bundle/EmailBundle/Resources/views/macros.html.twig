@@ -1,3 +1,119 @@
+{% macro renderAvailableVariablesWidget(entityName, dependentFieldId) %}
+    <script type="text/javascript">
+        $(function() {
+            'use strict';
+
+            var availableVariables = {{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}};
+
+            new Oro.Email.VariablesUpdater.View({
+                el:         $('#oro-email-available-variables'),
+                template:   $('#available-variables-lists-template'),
+                target:     $('#{{ dependentFieldId }}'),
+                model:      new Oro.Email.VariablesUpdater.Variable(availableVariables)
+            });
+        })
+    </script>
+
+    <script type="text/template" id="available-variables-lists-template">
+        <% if (userVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Logged in user:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(userVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ user.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+        <% if (entityVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Related entity:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(entityVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ entity.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+    </script>
+
+    <div class="well well-small span5" id="oro-email-available-variables"></div>
+{% endmacro %}
+
+{% macro renderPreviewDialog(formName, title) %}
+    <script type="text/javascript">
+        $(function () {
+            var showEmailPreviewDialog = function (el) {
+                var iframeId = 'preview-frame';
+                var iframe = $('<iframe />',
+                        {
+                            name: iframeId,
+                            id: iframeId,
+                            class: "scrollable-container",
+                            frameborder: 0,
+                            marginwidth: 0,
+                            marginheight: 0,
+                            allowfullscreen: true,
+                            width: '100%',
+                            height: '99%'
+                        });
+
+                var form = $('#{{ formName }}');
+                var formAction = form.attr('action');
+
+                form.bindFirst('submit', function(e) {
+                    if (!$(this).data('preview')) {
+                        return;
+                    }
+
+                    var confirmModal = new Oro.BootstrapModal({
+                        title: _.__('Preview'),
+                        content: '<div class="loading-content">Loading...</div>',
+                        okText: _.__('Ok'),
+                        className: 'modal oro-modal-normal',
+                        template: _.template('<% if (title) { %>' +
+                            '<div class="modal-header">' +
+                                '<% if (allowCancel) { %>' +
+                                '<a class="close">×</a>' +
+                                '<% } %>' +
+                                '<h3><%- title %></h3>' +
+                            '</div>' +
+                            '<% } %>' +
+                            '<div class="modal-body"><%= content %></div>'
+                        )
+                    });
+                    confirmModal.open();
+                    confirmModal.$content.append(iframe)
+                    $('.modal-body .loading-content').show();
+
+                    form.attr('target', iframeId);
+                    form.attr('action', $(el).attr('href'));
+
+                    // prevent hash navigation form processing
+                    e.stopImmediatePropagation();
+                });
+                form.data('preview', true);
+
+                iframe.load(function() {
+                    $(this).show();
+                    form.attr('action', formAction);
+                    form.removeAttr('target');
+                    form.data('preview', false);
+
+                    $('.modal-body .loading-content').hide();
+                });
+
+                form.submit();
+            };
+
+            $('.dialog-form-renderer').click(function (e) {
+                showEmailPreviewDialog(this);
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endmacro %}
+
 {#
     Render email address name, owner name or a link to owner view page can be rendered depends on given parameters
     Parameters:
@@ -47,15 +163,11 @@
 #}
 {% macro attachments(attachments) -%}
     {% macro attachment_row_data(values) -%}
-        <ul class="inline">
-            {%- for val in values -%}
-            <li>
-                <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
-                    <span class="label label-info">{{ val.fileName }}</span>
-                </a>
-            </li>
-            {%- endfor -%}
-        </ul>
+        {%- for val in values -%}
+        <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
+            <span class="label label-info">{{ val.fileName }}</span>
+        </a>
+        {%- endfor -%}
     {%- endmacro -%}
     {{ _self.attachment_row_data(attachments)|raw }}
 {%- endmacro %}

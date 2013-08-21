@@ -29,23 +29,6 @@ abstract class UserRelationDatagridManager extends DatagridManager
             $fieldsCollection->add($relationColumn);
         }
 
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'ID',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_column' => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldFirstName = new FieldDescription();
         $fieldFirstName->setName('firstName');
         $fieldFirstName->setOptions(

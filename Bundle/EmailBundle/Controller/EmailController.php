@@ -14,6 +14,7 @@ use Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
+use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
@@ -48,18 +49,21 @@ class EmailController extends Controller
 
     /**
      * Get email list
-     * TODO: This is a temporary action created for demo purposes. It will be removed when 'display activities' functionality is implemented
+     * TODO: This is a temporary action created for demo purposes. It will be removed when 'display activities'
+     *       functionality is implemented
      *
      * @AclAncestor("oro_email_view")
      * @Template
      */
-    public function activitiesAction(array $emails)
+    public function activitiesAction($emails)
     {
         /** @var $emailRepository EmailRepository */
         $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');
-        $qb = $emailRepository->getEmailListQueryBuilder($emails);
 
-        $rows = $qb->getQuery()->execute();
+        $emails = $this->extractEmailAddresses($emails);
+        $rows = empty($emails)
+            ? array()
+            : $emailRepository->getEmailListQueryBuilder($emails)->getQuery()->execute();
 
         return array(
             'entities' => $rows
@@ -104,5 +108,40 @@ class EmailController extends Controller
     protected function getEmailCacheManager()
     {
         return $this->container->get('oro_email.email.cache.manager');
+    }
+
+    /**
+     * Extract email addresses from the given argument.
+     * Always return an array, even if no any email is given.
+     *
+     * @param $emails
+     * @return string[]
+     * @throws \InvalidArgumentException
+     */
+    protected function extractEmailAddresses($emails)
+    {
+        if (is_string($emails)) {
+            return empty($emails)
+                ? array()
+                : array($emails);
+        }
+        if (!is_array($emails) && !($emails instanceof \Traversable)) {
+            throw new \InvalidArgumentException('The emails argument must be a string, array or collection.');
+        }
+
+        $result = array();
+        foreach ($emails as $email) {
+            if (is_string($email)) {
+                $result[] = $email;
+            } elseif ($email instanceof EmailInterface) {
+                $result[] = $email->getEmail();
+            } else {
+                throw new \InvalidArgumentException(
+                    'Each item of the emails collection must be a string or an object of EmailInterface.'
+                );
+            }
+        }
+
+        return $result;
     }
 }

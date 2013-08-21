@@ -12,16 +12,14 @@ class EmailRepository extends EntityRepository
      * Return a query builder for get a list of emails which were sent to or from given email addresses
      * The emails are ordered by Sent date in reverse order
      *
-     * @param string|string[]|\Traversable $emails The list of email addresses
+     * @param string[] $emails The list of email addresses
      * @param null|integer $firstResult The index of the first result to retrieve
      * @param null|integer $maxResults The maximum number of results to retrieve
      * @return \Doctrine\ORM\QueryBuilder
+     * @throws \InvalidArgumentException
      */
-    public function getEmailListQueryBuilder($emails, $firstResult = null, $maxResults = null)
+    public function getEmailListQueryBuilder(array $emails, $firstResult = null, $maxResults = null)
     {
-        if (is_string($emails)) {
-            $emails = array($emails);
-        }
         $qbRecipients =
             $this->getEntityManager()->createQueryBuilder()
                 ->select('re.id')
