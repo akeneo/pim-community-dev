@@ -29,8 +29,8 @@ Pim.Filter.ScopeFilter = Oro.Filter.SelectFilter.extend({
      */
     template: _.template(
         '<div class="btn filter-select filter-criteria-selector pull-right scope-filter">' +
-            '<i class="fa-icon-eye-open hide-text"><%= label %></i>: ' +
-            '<select id="pim_product_grid_scope">' +
+            '<i class="fa-icon-eye-open" title="<%= label %>"></i>: ' +
+            '<select>' +
                 '<% _.each(options, function (hint, value) { %>' +
                     '<option value="<%= value %>"><%= hint %></option>' +
                 '<% }); %>' +

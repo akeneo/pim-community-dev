@@ -62,8 +62,8 @@ function init() {
 
     // Move scope filter to the proper location
     Oro.Events.once('datagrid_filters:rendered', function() {
-        $('.scope-filter').show().css('min-width', '130px').parent().addClass('pull-right').insertBefore($('.actions-panel'));
-        $('#pim_product_grid_scope').multiselect({classes: 'select-filter-widget scope-filter-select'});
+        $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
+        $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
     });
 
     // Instantiate sidebar
