@@ -1,7 +1,6 @@
 oro_entity_config:
     extend:
         entity:
-            update_filter:                  { state: ['New', 'Updated', 'Active'] }
             grid_action:
                 -
                     name:                   'Remove'
@@ -88,7 +87,6 @@ oro_entity_config:
                         internal:           true
 
         field:
-            update_filter:                  { state: ['New', 'Updated', 'Active'] }
             grid_action:
                 -
                     name:                   'Remove'

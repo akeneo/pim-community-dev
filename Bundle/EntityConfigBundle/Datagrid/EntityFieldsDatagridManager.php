@@ -120,11 +120,6 @@ class EntityFieldsDatagridManager extends DatagridManager
 
                 $actions[strtolower($config['name'])] = true;
             }
-
-            if ($provider->getPropertyConfig()->getUpdateActionFilter(PropertyConfigContainer::TYPE_FIELD)) {
-                $filters['update']   = $provider->getPropertyConfig()->getUpdateActionFilter();
-                $filters['rowClick'] = $provider->getPropertyConfig()->getUpdateActionFilter();
-            }
         }
 
         if (count($filters)) {
