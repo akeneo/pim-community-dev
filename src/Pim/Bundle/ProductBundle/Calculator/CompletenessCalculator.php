@@ -191,7 +191,7 @@ class CompletenessCalculator
         $completenesses = array();
 
         foreach ($this->getChannels() as $channel) {
-            $newCompletenesses = $this->calculateForAProductByChannel($product, $channel, $completenesses);
+            $newCompletenesses = $this->calculateForAProductByChannel($product, $channel);
 
             $completenesses = array_merge($completenesses, $newCompletenesses);
         }
@@ -242,6 +242,8 @@ class CompletenessCalculator
 
             $completenesses[] = $completeness;
         }
+
+        var_dump("COUNT ---> ". count($completenesses));
 
         return $completenesses;
     }
