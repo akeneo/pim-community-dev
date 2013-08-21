@@ -138,7 +138,7 @@ class StepExecution
     /**
      * @var array
      *
-     * @ORM\Column(name="failure_exceptions", type="text", nullable=true)
+     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions = null;
 

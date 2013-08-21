@@ -26,6 +26,7 @@ class Grid extends Index
                 'Grid'         => array('css' => 'table.grid'),
                 'Grid content' => array('css' => 'table.grid tbody'),
                 'Filters'      => array('css' => 'div.filter-box'),
+                'Grid toolbar' => array('css' => 'div.grid-toolbar'),
             )
         );
     }
@@ -294,7 +295,11 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
-        $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        if (strtolower($filterName) === 'channel') {
+            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
+        } else {
+            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        }
 
         if (!$filter) {
             throw new \InvalidArgumentException(
