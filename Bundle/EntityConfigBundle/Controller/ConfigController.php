@@ -172,6 +172,10 @@ class ConfigController extends Controller
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
+        /** @var ConfigProvider $aclConfigProvider */
+        $aclConfigProvider = $this->get('oro_entity.config.acl_config_provider');
+        $aclConfig = $aclConfigProvider->getConfig($entity->getClassName());
+
         /*
         var_dump($this->getRequest()->headers->get('referer'));
         if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
@@ -182,6 +186,7 @@ class ConfigController extends Controller
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend' => $extendConfig,
+            'entity_acl'    => $aclConfig,
             'entity_count'  => count($this->getDoctrine()->getRepository($entity->getClassName())->findAll()),
             'entity_fields' => $datagrid->createView(),
 

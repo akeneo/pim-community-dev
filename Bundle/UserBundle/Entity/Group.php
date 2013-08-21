@@ -61,8 +61,9 @@ class Group
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("int", nillable=true)
      */
-    protected $owningBusinessUnit;
+    protected $owner;
 
     /**
      * @param string $name [optional] Group name
@@ -230,7 +231,7 @@ class Group
      */
     public function getOwner()
     {
-        return $this->owningBusinessUnit;
+        return $this->owner;
     }
 
     /**
@@ -239,7 +240,7 @@ class Group
      */
     public function setOwner(BusinessUnit $owningBusinessUnit)
     {
-        $this->owningBusinessUnit = $owningBusinessUnit;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

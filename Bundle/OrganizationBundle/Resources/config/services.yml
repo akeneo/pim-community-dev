@@ -10,6 +10,7 @@ parameters:
     oro_organization.type.form_type.class:                              Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension
     oro_organization.form.transformer.business_unit_select.class:       Oro\Bundle\OrganizationBundle\Form\Transformer\BusinessUnitTransformer
     oro_organization.form.listener.class:                               Oro\Bundle\OrganizationBundle\Event\FormListener
+    oro_organization.twig.get_owner.class:                              Oro\Bundle\OrganizationBundle\Twig\OwnerTypeExtension
 
 services:
     oro_organization.form.business_unit:
@@ -88,3 +89,10 @@ services:
         class: %oro_organization.form.listener.class%
         tags:
             - { name: kernel.event_listener, event: entity_form.render.before, method: addOwnerField }
+
+    oro_organization.twig.get_owner:
+        class: %oro_organization.twig.get_owner.class%
+        arguments:
+            - @oro_entity.config.acl_config_provider
+        tags:
+            - { name: twig.extension }

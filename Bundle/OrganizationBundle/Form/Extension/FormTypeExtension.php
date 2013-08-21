@@ -17,6 +17,7 @@ use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FormTypeExtension extends AbstractTypeExtension
 {
@@ -107,7 +108,7 @@ class FormTypeExtension extends AbstractTypeExtension
                      * Showing user owner box for entities with owner type USER if change owner permission is
                      * granted.
                      */
-                    $builder->add($this->fieldName, 'oro_user_select', array('required' => false));
+                    $builder->add($this->fieldName, 'oro_user_select', array('required' => true));
                 } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $ownerType) {
                     $this->addBusinessUnitOwnerField($builder, $user);
                 } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $ownerType) {
@@ -165,10 +166,12 @@ class FormTypeExtension extends AbstractTypeExtension
                 $this->fieldName,
                 'oro_business_unit_tree_select',
                 array(
+                    'empty_value' => 'Please select',
                     'choices' => $businessUnits,
                     'mapped' => true,
-                    'required' => false,
+                    'required' => true,
                     'attr' => array('is_safe' => true),
+                    'constraints' => array(new NotBlank()),
                 )
             );
         } else {
@@ -180,7 +183,7 @@ class FormTypeExtension extends AbstractTypeExtension
                     'property' => 'name',
                     'choices' => $user->getBusinessUnits(),
                     'mapped' => true,
-                    'required' => false,
+                    'required' => true,
                 )
             );
         }

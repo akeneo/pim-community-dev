@@ -77,7 +77,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $owningUser;
+    protected $owner;
 
     /**
      * Constructor
@@ -242,7 +242,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      */
     public function getOwner()
     {
-        return $this->owningUser;
+        return $this->owner;
     }
 
     /**
@@ -251,7 +251,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      */
     public function setOwner(User $owningUser)
     {
-        $this->owningUser = $owningUser;
+        $this->owner = $owningUser;
 
         return $this;
     }
