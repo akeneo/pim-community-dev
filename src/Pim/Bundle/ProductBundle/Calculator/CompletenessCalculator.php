@@ -166,8 +166,7 @@ class CompletenessCalculator
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
         // get required attributes for this channel
-        $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
-        $requiredAttributes = $repo->findBy(array('channel' => $channel, 'required' => true));
+        $requiredAttributes = $this->getRequiredAttributes($channel);
         $countRequiredAttributes = count($requiredAttributes);
 
         foreach ($this->getLocales() as $locale) {
@@ -223,5 +222,19 @@ class CompletenessCalculator
         $completeness->setLocale($locale->getCode());
 
         return $completeness;
+    }
+
+    /**
+     * Get the required attributes
+     *
+     * @param Channel $channel
+     *
+     * @return array
+     */
+    protected function getRequiredAttributes(Channel $channel)
+    {
+        $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
+
+        return $repo->findBy(array('channel' => $channel, 'required' => true));
     }
 }
