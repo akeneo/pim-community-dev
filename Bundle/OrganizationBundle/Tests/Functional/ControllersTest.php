@@ -62,7 +62,6 @@ class ControllersTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $form['oro_business_unit_form[name]'] = 'testBU';
         $form['oro_business_unit_form[organization]'] = 1;
-        $form['oro_business_unit_form[parent]'] = null;
         $form['oro_business_unit_form[appendUsers]'] = $user['id'];
         $form['oro_business_unit_form[email]'] = 'test@test.com';
         $form['oro_business_unit_form[phone]'] = '123-123-123';

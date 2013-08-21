@@ -158,7 +158,6 @@ class RestApiTest extends WebTestCase
         $this->assertEquals($this->fixtureData['business_unit']['email'], $responseData['email']);
         $this->assertEquals($this->fixtureData['business_unit']['website'], $responseData['website']);
         $this->assertEquals('default', $responseData['organization']);
-        $this->assertEmpty($responseData['parent']);
         $this->assertEmpty($responseData['users']);
     }
 
