@@ -210,6 +210,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Other methods -------------------- */
 
     /**
+     * @param string $error
+     *
+     * @Then /^I should see validation error "([^"]*)"$/
+     */
+    public function iShouldSeeValidationError($error)
+    {
+        $errors = $this->getCurrentPage()->getValidationErrors();
+        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+    }
+
+    /**
      * @param string $deactivated
      * @param string $currencies
      *
@@ -237,7 +248,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $currencies
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see currency (.*)$/
      * @Then /^I should (not )?see currencies (.*)$/
@@ -274,7 +285,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $currencies
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted currencies (.*)$/
      */
@@ -335,7 +346,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $locales
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see locales? (.*)$/
      */
@@ -349,7 +360,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $locales
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted locales (.*)$/
      */
@@ -979,7 +990,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see channels? (.*)$/
      */
@@ -993,7 +1004,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should see sorted channels (.*)$/
      */
@@ -1008,7 +1019,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $attributes
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see attributes? ((?!in group).)*$/
      */
@@ -1022,7 +1033,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $attributes
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should see sorted attributes (.*)$/
      */
@@ -1115,6 +1126,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $not
      * @param string $products
+     *
+     * @return Step\Then
      *
      * @Then /^I should (not )?see products? ((?!with data).)*$/
      */
@@ -1240,7 +1253,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $profiles
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted (?:import|export) profiles? (.*)$/
      */
@@ -1252,9 +1265,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $profiles
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see (?:import|export) profiles? (.*)$/
      */
@@ -1316,7 +1330,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $exportCode
      * @param string $status
      *
-     * @return Step
+     * @return Step\Given
      * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
      */
     public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
@@ -1356,7 +1370,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $jobCode
      *
-     * @return Step
+     * @return Step\Given
      * @When /^I delete the "([^"]*)" job$/
      */
     public function iDeleteTheJob($jobCode)

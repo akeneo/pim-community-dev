@@ -69,7 +69,6 @@ class ExecutionContextTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedKeys, $this->executionContext->getKeys());
     }
 
-
     /**
      * Assert the entity tested
      *
@@ -79,6 +78,4 @@ class ExecutionContextTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Pim\Bundle\BatchBundle\Item\ExecutionContext', $entity);
     }
-
-
 }

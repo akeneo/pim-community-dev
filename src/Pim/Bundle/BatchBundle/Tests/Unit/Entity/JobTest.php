@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\BatchBundle\Entity\Job;
-use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
 
 /**
  * Test related class
@@ -157,5 +156,4 @@ class JobTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Pim\Bundle\BatchBundle\Entity\Job', $entity);
     }
-
 }

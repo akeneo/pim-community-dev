@@ -184,13 +184,16 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $stepExecution->addFailureException($stepException);
 
         $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getFailureExceptions());
-        $this->assertEquals(array($exception1, $exception2, $stepException), $this->jobExecution->getAllFailureExceptions());
+        $this->assertEquals(
+            array($exception1, $exception2, $stepException),
+            $this->jobExecution->getAllFailureExceptions()
+        );
     }
 
     public function testSetGetJob()
     {
         $this->assertNull($this->jobExecution->getJob());
-        $jobInstance = new JobInstance('test_connector',JobInstance::TYPE_IMPORT, 'test_job_instance');  
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $this->assertEntity($this->jobExecution->setJob($jobInstance));
         $this->assertEquals($jobInstance, $this->jobExecution->getJob());
     }

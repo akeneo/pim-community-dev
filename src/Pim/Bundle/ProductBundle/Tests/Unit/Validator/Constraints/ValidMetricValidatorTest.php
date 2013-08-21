@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetric;
 use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator;
@@ -13,9 +12,8 @@ use Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
-class ValidMetricValidatorTest extends WebTestCase
+class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
 {
     protected $context;
     protected $validator;

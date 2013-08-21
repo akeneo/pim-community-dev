@@ -41,7 +41,8 @@ class ImageType extends OroImageType
                 'options' => array(
                     'by_reference' => false,
                     'attr'         => array(
-                        'class' => 'multiselect'
+                        'class'     => 'multiselect',
+                        'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
                     )
                 )
             ),

@@ -26,6 +26,7 @@ class Form extends Base
                 'Tabs'                            => array('css' => '#form-navbar'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
+                'Validation errors'               => array('css' => '.validation-tooltip'),
                 'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
@@ -81,6 +82,23 @@ class Form extends Base
         }
 
         return parent::findField($name);
+    }
+
+    /**
+     * Get validation errors
+     *
+     * @return array:string
+     */
+    public function getValidationErrors()
+    {
+        $tooltips = $this->findAll('css', $this->elements['Validation errors']['css']);
+        $errors = array();
+
+        foreach ($tooltips as $tooltip) {
+            $errors[] = $tooltip->getAttribute('data-original-title');
+        }
+
+        return $errors;
     }
 
     /**

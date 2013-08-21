@@ -2,18 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
-use Pim\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
-use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
-use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
-use Pim\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
-use Pim\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
-use Pim\Bundle\BatchBundle\Tests\Unit\Job\MockJobRepository;
 
 /**
  * Tests related to the JobInterruptedException
