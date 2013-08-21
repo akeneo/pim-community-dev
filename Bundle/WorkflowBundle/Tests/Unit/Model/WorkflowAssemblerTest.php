@@ -264,7 +264,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @expectedExceptionMessage Option "steps" is required
      */
     public function testAssembleNoStepsConfigurationException()
@@ -278,7 +278,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @expectedExceptionMessage Option "transitions" is required
      */
     public function testAssembleNoTransitionsConfigurationException()
@@ -292,7 +292,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @expectedExceptionMessage Option "transition_definitions" is required
      */
     public function testAssembleNoTransitionDefinitionsConfigurationException()

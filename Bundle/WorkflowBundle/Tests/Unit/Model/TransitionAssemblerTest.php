@@ -36,7 +36,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @dataProvider missedTransitionDefinitionDataProvider
      * @param array $configuration
      */
@@ -64,7 +64,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionDefinitionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @dataProvider incorrectTransitionDefinitionDataProvider
      * @param array $definitions
      */
@@ -91,7 +91,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @dataProvider incorrectStepsDataProvider
      * @param array $steps
      */

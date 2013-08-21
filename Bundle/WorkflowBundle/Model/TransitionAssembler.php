@@ -5,8 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Transition;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionDefinitionException;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
+use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
@@ -41,7 +40,7 @@ class TransitionAssembler extends AbstractAssembler
      * @param array $definitionsConfiguration
      * @param Step[]|ArrayCollection $steps
      * @return ArrayCollection
-     * @throws UnknownTransitionDefinitionException
+     * @throws AssemblerException
      */
     public function assemble(array $configuration, array $definitionsConfiguration, $steps)
     {
@@ -52,7 +51,7 @@ class TransitionAssembler extends AbstractAssembler
             $this->assertOptions($options, array('transition_definition'));
             $definitionName = $options['transition_definition'];
             if (!isset($definitions[$definitionName])) {
-                throw new UnknownTransitionDefinitionException(
+                throw new AssemblerException(
                     sprintf('Unknown transition definition %s', $definitionName)
                 );
             }
@@ -88,14 +87,14 @@ class TransitionAssembler extends AbstractAssembler
      * @param array $definition
      * @param Step[]|ArrayCollection $steps
      * @return Transition
-     * @throws UnknownStepException
+     * @throws AssemblerException
      */
     protected function assembleTransition($name, array $options, array $definition, $steps)
     {
         $this->assertOptions($options, array('step_to', 'label'));
         $stepToName = $options['step_to'];
         if (empty($steps[$stepToName])) {
-            throw new UnknownStepException($stepToName);
+            throw new AssemblerException(sprintf('Step "%s" not found', $stepToName));
         }
         $stepTo = $steps[$stepToName];
 

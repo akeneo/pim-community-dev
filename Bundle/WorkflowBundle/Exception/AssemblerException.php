@@ -2,6 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Exception;
 
-class AssembleAttributeException extends WorkflowException
+class AssemblerException extends WorkflowException
 {
 }

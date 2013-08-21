@@ -10,7 +10,7 @@ use Oro\Bundle\WorkflowBundle\Model\Attribute;
 class StepAssemblerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @dataProvider invalidOptionsDataProvider
      * @param array $configuration
      */
