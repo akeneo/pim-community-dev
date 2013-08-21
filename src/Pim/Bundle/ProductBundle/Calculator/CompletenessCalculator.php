@@ -261,7 +261,7 @@ class CompletenessCalculator
 
         $completeness->setProduct($product);
         $completeness->setChannel($channel);
-        $completeness->setLocale($locale->getCode());
+        $completeness->setLocale($locale);
 
         return $completeness;
     }

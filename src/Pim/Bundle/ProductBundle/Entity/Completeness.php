@@ -28,9 +28,9 @@ class Completeness
     protected $id;
 
     /**
-     * @var string $locale
+     * @var \Pim\Bundle\ProductBundle\Entity\Locale $locale
      *
-     * @ORM\Column(type="string", length=8)
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Locale")
      */
     protected $locale;
 
@@ -84,7 +84,7 @@ class Completeness
     /**
      * Getter locale
      *
-     * @return string
+     * @return \Pim\Bundle\ProductBundle\Entity\Locale
      */
     public function getLocale()
     {
@@ -94,11 +94,11 @@ class Completeness
     /**
      * Setter locale
      *
-     * @param string $locale
+     * @param Locale $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    public function setLocale($locale)
+    public function setLocale(Locale $locale)
     {
         $this->locale = $locale;
 
@@ -247,10 +247,5 @@ class Completeness
         $this->product = $product;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->locale .' - '. $this->channel->getCode();
     }
 }
