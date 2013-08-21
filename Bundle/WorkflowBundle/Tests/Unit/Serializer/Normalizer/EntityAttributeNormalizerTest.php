@@ -7,16 +7,6 @@ use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\EntityAttributeNormalizer;
 class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var string
-     */
-    protected $testWorkflowName = 'test_workflow';
-
-    /**
-     * @var string
-     */
-    protected $testAttributeName = 'test_attribute';
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $workflow;
@@ -64,37 +54,13 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getAttribute', 'getName'))
             ->disableOriginalConstructor()
             ->getMock();
-        $this->workflow->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($this->testWorkflowName));
 
         $this->attribute = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
             ->setMethods(array('getType', 'getOption', 'getName'))
             ->disableOriginalConstructor()
             ->getMock();
-        $this->attribute->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($this->testAttributeName));
 
         $this->normalizer = new EntityAttributeNormalizer($this->registry);
-    }
-
-    /**
-     * @dataProvider normalizeDirectionDataProvider
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException
-     * @expectedExceptionMessage Attribute "test_attribute" of workflow "test_workflow" must exist
-     */
-    public function testNormalizeAndDenormalizeExceptionNoAttribute($direction)
-    {
-        $attributeValue = $this->getEntityMock();
-
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName);
-
-        if ($direction == 'normalization') {
-            $this->normalizer->normalize($this->workflow, $this->testAttributeName, $attributeValue);
-        } else {
-            $this->normalizer->denormalize($this->workflow, $this->testAttributeName, $attributeValue);
-        }
     }
 
     /**
@@ -103,15 +69,21 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeExceptionNotInstanceofAttributeClassOption()
     {
+        $workflowName = 'test_workflow';
+        $attributeName = 'test_attribute';
+
         $attributeValue = $this->getEntityMock();
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->once())->method('getName')->will($this->returnValue($workflowName));
 
         $fooClass = $this->getMockClass('FooClass');
 
         $this->attribute->expects($this->once())->method('getOption')->with('class')
             ->will($this->returnValue($fooClass));
+
+        $this->attribute->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue($attributeName));
 
         $this->setExpectedException(
             'Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException',
@@ -121,7 +93,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                 get_class($attributeValue)
             )
         );
-        $this->normalizer->normalize($this->workflow, $this->testAttributeName, $attributeValue);
+        $this->normalizer->normalize($this->workflow, $this->attribute, $attributeValue);
     }
 
     /**
@@ -130,13 +102,19 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeExceptionNoEntityManager()
     {
+        $workflowName = 'test_workflow';
+        $attributeName = 'test_attribute';
+
         $attributeValue = $this->getEntityMock();
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->once())->method('getName')->will($this->returnValue($workflowName));
 
         $this->attribute->expects($this->exactly(2))->method('getOption')->with('class')
             ->will($this->returnValue(get_class($attributeValue)));
+
+        $this->attribute->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue($attributeName));
 
         $this->registry->expects($this->once())->method('getManagerForClass')->with(get_class($attributeValue));
 
@@ -144,20 +122,19 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException',
             sprintf(
                 'Attribute "%s" of workflow "%s" contains object of "%s", but it\'s not managed entity class',
-                $this->testAttributeName,
-                $this->testWorkflowName,
+                $attributeName,
+                $workflowName,
                 get_class($attributeValue)
             )
         );
-        $this->normalizer->normalize($this->workflow, $this->testAttributeName, $attributeValue);
+        $this->normalizer->normalize($this->workflow, $this->attribute, $attributeValue);
     }
 
     public function testNormalizeEntity()
     {
         $attributeValue = $this->getEntityMock();
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->exactly(3))->method('getOption')->with('class')
             ->will($this->returnValue(get_class($attributeValue)));
@@ -176,7 +153,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectedId,
-            $this->normalizer->normalize($this->workflow, $this->testAttributeName, $attributeValue)
+            $this->normalizer->normalize($this->workflow, $this->attribute, $attributeValue)
         );
     }
 
@@ -187,16 +164,15 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $attributeValue = null;
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         if ($direction == 'normalization') {
             $this->assertNull(
-                $this->normalizer->normalize($this->workflow, $this->testAttributeName, $attributeValue)
+                $this->normalizer->normalize($this->workflow, $this->attribute, $attributeValue)
             );
         } else {
             $this->assertNull(
-                $this->normalizer->denormalize($this->workflow, $this->testAttributeName, $attributeValue)
+                $this->normalizer->denormalize($this->workflow, $this->attribute, $attributeValue)
             );
         }
     }
@@ -206,8 +182,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $expectedValue = $this->getMock('EntityReference');
         $attributeValue = array('id' => 123);
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->exactly(2))->method('getOption')->with('class')
             ->will($this->returnValue(get_class($expectedValue)));
@@ -221,7 +196,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectedValue,
-            $this->normalizer->denormalize($this->workflow, $this->testAttributeName, $attributeValue)
+            $this->normalizer->denormalize($this->workflow, $this->attribute, $attributeValue)
         );
     }
 
@@ -232,28 +207,12 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $attributeValue = 'bar';
 
+        $this->workflow->expects($this->never())->method($this->anything());
+
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue('entity'));
 
-        $this->workflow->expects($this->once())
-            ->method('getAttribute')
-            ->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
-
         $method = 'supports' . ucfirst($direction);
-        $this->assertTrue($this->normalizer->$method($this->workflow, $this->testAttributeName, $attributeValue));
-    }
-
-    /**
-     * @dataProvider normalizeDirectionDataProvider
-     */
-    public function testNotSupportsNormalizationWhenNoAttribute($direction)
-    {
-        $attributeValue = 'bar';
-
-        $this->workflow->expects($this->once())->method('getAttribute');
-
-        $method = 'supports' . ucfirst($direction);
-        $this->assertFalse($this->normalizer->$method($this->workflow, $this->testAttributeName, $attributeValue));
+        $this->assertTrue($this->normalizer->$method($this->workflow, $this->attribute, $attributeValue));
     }
 
     /**
@@ -263,15 +222,12 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $attributeValue = 'bar';
 
+        $this->workflow->expects($this->never())->method($this->anything());
+
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue('object'));
 
-        $this->workflow->expects($this->once())
-            ->method('getAttribute')
-            ->with($this->testAttributeName)
-            ->will($this->returnValue($this->attribute));
-
         $method = 'supports' . ucfirst($direction);
-        $this->assertFalse($this->normalizer->$method($this->workflow, $this->testAttributeName, $attributeValue));
+        $this->assertFalse($this->normalizer->$method($this->workflow, $this->attribute, $attributeValue));
     }
 
     public function normalizeDirectionDataProvider()

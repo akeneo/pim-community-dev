@@ -28,9 +28,8 @@ class EntityAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize(Workflow $workflow, $attributeName, $attributeValue)
+    public function normalize(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $this->getAttribute($workflow, $attributeName);
         if (null === $attributeValue) {
             return null;
         }
@@ -45,23 +44,6 @@ class EntityAttributeNormalizer implements AttributeNormalizer
             $metadata = $em->getClassMetadata($attribute->getOption('class'));
             return $metadata->getIdentifierValues($attributeValue);
         }
-    }
-
-    /**
-     * @param Workflow $workflow
-     * @param string $attributeName
-     * @return Attribute
-     * @throws SerializeWorkflowDataException
-     */
-    protected function getAttribute(Workflow $workflow, $attributeName)
-    {
-        $result = $workflow->getAttribute($attributeName);
-        if (!$result) {
-            throw new SerializeWorkflowDataException(
-                sprintf('Attribute "%s" of workflow "%s" must exist', $attributeName, $workflow->getName())
-            );
-        }
-        return $result;
     }
 
     /**
@@ -117,9 +99,8 @@ class EntityAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize(Workflow $workflow, $attributeName, $attributeValue)
+    public function denormalize(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $this->getAttribute($workflow, $attributeName);
         if (null === $attributeValue || !is_array($attributeValue)) {
             return null;
         }
@@ -130,18 +111,16 @@ class EntityAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization(Workflow $workflow, $attributeName, $attributeValue)
+    public function supportsNormalization(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
-        return $attribute && $attribute->getType() == 'entity';
+        return $attribute->getType() == 'entity';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization(Workflow $workflow, $attributeName, $attributeValue)
+    public function supportsDenormalization(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
-        return $attribute && $attribute->getType() == 'entity';
+        return $attribute->getType() == 'entity';
     }
 }

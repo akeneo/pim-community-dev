@@ -47,14 +47,11 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeScalarsAndArray($type, $value, $expected)
     {
-        $attributeName = 'foo';
-
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue($type));
 
-        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $attributeName, $value));
+        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $this->attribute, $value));
     }
 
     public function normalizeScalarsAndArrayDataProvider()
@@ -118,17 +115,15 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeObject($value, $class, $expected)
     {
         $type = 'object';
-        $attributeName = 'foo';
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue($type));
         $this->attribute->expects($this->once())
             ->method('getOption')->with('class')
             ->will($this->returnValue($class));
 
-        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $attributeName, $value));
+        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $this->attribute, $value));
     }
 
     public function normalizeObjectDataProvider()
@@ -161,14 +156,11 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDenormalizeScalarsAndArray($type, $value, $expected)
     {
-        $attributeName = 'foo';
-
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue($type));
 
-        $this->assertEquals($expected, $this->normalizer->denormalize($this->workflow, $attributeName, $value));
+        $this->assertEquals($expected, $this->normalizer->denormalize($this->workflow, $this->attribute, $value));
     }
 
     /**
@@ -181,17 +173,15 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testDenormalizeObject($value, $class, $expected)
     {
         $type = 'object';
-        $attributeName = 'foo';
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
-            ->will($this->returnValue($this->attribute));
+        $this->workflow->expects($this->never())->method($this->anything());
 
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue($type));
         $this->attribute->expects($this->once())
             ->method('getOption')->with('class')
             ->will($this->returnValue($class));
 
-        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $attributeName, $value));
+        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $this->attribute, $value));
     }
 
     /**
@@ -203,16 +193,13 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupportsNormalizeAndDenormalize($direction, $type, $expected)
     {
-        $attributeName = 'foo';
         $attributeValue = 'bar';
 
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
-            ->will($this->returnValue($this->attribute));
-
+        $this->workflow->expects($this->never())->method($this->anything());
         $this->attribute->expects($this->once())->method('getType')->will($this->returnValue($type));
 
         $method = 'supports' . ucfirst($direction);
-        $this->assertEquals($expected, $this->normalizer->$method($this->workflow, $attributeName, $attributeValue));
+        $this->assertEquals($expected, $this->normalizer->$method($this->workflow, $this->attribute, $attributeValue));
     }
 
     public function supportsNormalizeAndDenormalizeDataProvider()
@@ -234,28 +221,6 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             array('denormalization', 'array', true),
             array('denormalization', 'object', true),
             array('denormalization', 'entity', false),
-        );
-    }
-
-    public function testNotSupportsNormalizeWithoutAttribute()
-    {
-        $attributeName = 'foo';
-        $attributeValue = 'bar';
-
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName);
-
-        $this->assertFalse($this->normalizer->supportsNormalization($this->workflow, $attributeName, $attributeValue));
-    }
-
-    public function testNotSupportsDenormalizeWithoutAttribute()
-    {
-        $attributeName = 'foo';
-        $attributeValue = 'bar';
-
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName);
-
-        $this->assertFalse(
-            $this->normalizer->supportsDenormalization($this->workflow, $attributeName, $attributeValue)
         );
     }
 }

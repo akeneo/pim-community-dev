@@ -21,9 +21,8 @@ class StandardAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize(Workflow $workflow, $attributeName, $attributeValue)
+    public function normalize(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
         $normalType = $this->normalTypes[$attribute->getType()];
         $normalizeMethod = 'normalize' . ucfirst($normalType);
         return (null === $attributeValue) ? $attributeValue : $this->$normalizeMethod($attributeValue, $attribute);
@@ -100,9 +99,8 @@ class StandardAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize(Workflow $workflow, $attributeName, $attributeValue)
+    public function denormalize(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
         $normalType = $this->normalTypes[$attribute->getType()];
         $denormalizeMethod = 'denormalize' . ucfirst($normalType);
         return (null === $attributeValue) ? $attributeValue : $this->$denormalizeMethod($attributeValue, $attribute);
@@ -176,18 +174,16 @@ class StandardAttributeNormalizer implements AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization(Workflow $workflow, $attributeName, $attributeValue)
+    public function supportsNormalization(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
-        return $attribute && !empty($this->normalTypes[$attribute->getType()]);
+        return !empty($this->normalTypes[$attribute->getType()]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization(Workflow $workflow, $attributeName, $attributeValue)
+    public function supportsDenormalization(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
-        $attribute = $workflow->getAttribute($attributeName);
-        return $attribute && !empty($this->normalTypes[$attribute->getType()]);
+        return !empty($this->normalTypes[$attribute->getType()]);
     }
 }
