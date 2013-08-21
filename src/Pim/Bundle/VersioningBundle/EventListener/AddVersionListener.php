@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -17,6 +18,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\ProductBundle\Manager\AuditManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
+use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
@@ -28,10 +30,11 @@ use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 class AddVersionListener implements EventSubscriber
 {
     /**
-     * Versions to save
+     * Entities to version
+     *
      * @var array
      */
-    protected $pendingVersions = array();
+    protected $pendingEntities;
 
     /**
      * Version builder
@@ -59,7 +62,7 @@ class AddVersionListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush');
+        return array('onFlush', 'postFlush');
     }
 
     /**
@@ -79,6 +82,22 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
+     * @param PostFlushEventArgs $args
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        if (!empty($this->pendingEntities)) {
+            $em   = $args->getEntityManager();
+            $user = $this->getUser($em);
+            if ($user) {
+                foreach ($this->pendingEntities as $oid => $versionable) {
+                    $this->writeSnapshot($em, $versionable, $user);
+                }
+                $this->pendingEntities = array();
+            }
+        }
+    }
+    /**
      * @param OnFlushEventArgs $args
      */
     public function onFlush(OnFlushEventArgs $args)
@@ -87,43 +106,86 @@ class AddVersionListener implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() AS $entity) {
-            // TODO add same coverage than update, pb with unexisting entity id
+            $this->checkScheduledUpdate($em, $entity);
         }
 
         foreach ($uow->getScheduledEntityUpdates() AS $entity) {
-
-            if ($entity instanceof VersionableInterface) {
-                $this->writeSnapshot($em, $entity);
-
-            } else if($entity instanceof ProductValueInterface) {
-                 $product = $entity->getEntity();
-                 if ($product) {
-                     $this->writeSnapshot($em, $product);
-                 }
-
-            } else if ($entity instanceof ProductPrice) {
-                 $product = $entity->getValue()->getEntity();
-                 $this->writeSnapshot($em, $product);
-
-            } else if ($entity instanceof AbstractTranslation) {
-                $translatedEntity = $entity->getForeignKey();
-                if ($translatedEntity instanceof VersionableInterface) {
-                    $this->writeSnapshot($em, $translatedEntity);
-                }
-            }
+            $this->checkScheduledUpdate($em, $entity);
         }
 
         foreach ($uow->getScheduledCollectionDeletions() AS $entity) {
-            if ($entity->getOwner() instanceof VersionableInterface) {
-                $this->writeSnapshot($em, $entity->getOwner());
-            }
+            $this->checkScheduledCollection($em, $entity);
         }
 
         foreach ($uow->getScheduledCollectionUpdates() AS $entity) {
-            if ($entity->getOwner() instanceof VersionableInterface) {
-                // special case for product to category ?
-                $this->writeSnapshot($em, $entity->getOwner());
+            $this->checkScheduledCollection($em, $entity);
+        }
+    }
+
+    /**
+     * Check if an entity must be versioned due to entity changes
+     *
+     * @param EntityManager $em
+     * @param object        $entity
+     */
+    public function checkScheduledUpdate(EntityManager $em, $entity)
+    {
+        if ($entity instanceof VersionableInterface) {
+            $this->addPendingVersioning($entity);
+
+        } else if($entity instanceof ProductValueInterface) {
+            $product = $entity->getEntity();
+            $this->addPendingVersioning($product);
+
+        } else if ($entity instanceof ProductPrice) {
+            $product = $entity->getValue()->getEntity();
+            $this->addPendingVersioning($product);
+
+        } else if ($entity instanceof AbstractTranslation) {
+            $translatedEntity = $entity->getForeignKey();
+            if ($translatedEntity instanceof VersionableInterface) {
+                $this->addPendingVersioning($translatedEntity);
             }
+        }
+    }
+
+    /**
+     * Check if an entity must be versioned due to collection changes
+     *
+     * @param EntityManager $em
+     * @param object        $entity
+     */
+    public function checkScheduledCollection(EntityManager $em, $entity)
+    {
+        if ($entity->getOwner() instanceof VersionableInterface) {
+            // special case, when the product collection of a category is updated, we update each product
+            /*
+            if ($entity->getOwner() instanceof CategoryInterface) {
+                $mapping = $entity->getMapping();
+                if (isset($mapping['fieldName']) and $mapping['fieldName'] == 'products') {
+                    foreach ($entity->getInsertDiff() as $product) {
+                        $this->addPendingVersioning($product);
+                    }
+                    foreach ($entity->getDeleteDiff() as $product) {
+                        $this->addPendingVersioning($product);
+                    }
+                }
+            } else {*/
+                $this->addPendingVersioning($entity->getOwner());
+            //}
+        }
+    }
+
+    /**
+     * Mark entity as to be versioned
+     *
+     * @param VersionableInterface $versionable
+     */
+    protected function addPendingVersioning(VersionableInterface $versionable)
+    {
+        $oid = spl_object_hash($versionable);
+        if (!isset($this->pendingEntities[$oid])) {
+            $this->pendingEntities[$oid] = $versionable;
         }
     }
 
@@ -132,26 +194,19 @@ class AddVersionListener implements EventSubscriber
      *
      * @param EntityManager        $em
      * @param VersionableInterface $entity
+     * @param User                 $user
      */
-    public function writeSnapshot(EntityManager $em, VersionableInterface $versionable)
+    public function writeSnapshot(EntityManager $em, VersionableInterface $versionable, User $user)
     {
-        $oid = spl_object_hash($versionable);
+        $version  = $this->buildVersion($versionable, $user);
+        $previous = $this->getPreviousVersion($em, $version);
+        $audit    = $this->buildAudit($version, $previous);
+        $diffData = $audit->getData();
 
-        if (!isset($this->pendingVersions[$oid]) and $versionable->getId() !== null) {
-
-            $user = $this->getUser($em);
-            if ($user) {
-                $version  = $this->buildVersion($versionable, $user);
-                $previous = $this->getPreviousVersion($em, $version);
-                $audit    = $this->buildAudit($version, $previous);
-                $diffData = $audit->getData();
-
-                if (!empty($diffData)) {
-                    $this->computeChangeSet($em, $audit);
-                    $this->computeChangeSet($em, $version);
-                    $this->pendingVersions[$oid]= $version;
-                }
-            }
+        if (!empty($diffData)) {
+            $em->persist($version);
+            $em->persist($audit);
+            $em->flush();
         }
     }
 
@@ -199,7 +254,10 @@ class AddVersionListener implements EventSubscriber
     {
         /** @var Version $version */
         $previous = $em->getRepository('PimVersioningBundle:Version')
-            ->findOneBy(array('resourceId' => $version->getResourceId()), array('snapshotDate' => 'desc'));
+            ->findOneBy(
+                array('resourceId' => $version->getResourceId(), 'resourceName' => $version->getResourceName()),
+                array('snapshotDate' => 'desc')
+            );
 
         return $previous;
     }

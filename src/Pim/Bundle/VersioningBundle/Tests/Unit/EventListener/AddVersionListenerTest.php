@@ -22,7 +22,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     {
         $builder  = new VersionBuilder();
         $listener = new AddVersionListener($builder);
-        $this->assertEquals($listener->getSubscribedEvents(), array('onFlush'));
+        $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
     }
 
     /**
@@ -53,42 +53,14 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteSnapshot()
     {
-        $uowMock = $this
-            ->getMockBuilder('Doctrine\ORM\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $uowMock->expects($this->any())
-            ->method('computeChangeSet')
-            ->will($this->returnValue(true));
-
-        $metaMock = $this
-            ->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $emMock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repos = array(
-            array('OroUserBundle:User', $this->getUserRepositoryMock()),
-            array('PimVersioningBundle:Version', $this->getVersionRepositoryMock()),
-        );
-        $emMock->expects($this->exactly(2))
-            ->method('getRepository')
-            ->will($this->returnValueMap($repos));
-        $emMock->expects($this->any())
-            ->method('getUnitOfWork')
-            ->will($this->returnValue($uowMock));
-        $emMock->expects($this->any())
-            ->method('getClassMetadata')
-            ->will($this->returnValue($metaMock));
-
-        $versionableMock = $this->getVersionableMock(array('field1' => 'value1'));
-
         $builder  = new VersionBuilder();
         $listener = new AddVersionListener($builder);
-        $listener->writeSnapshot($emMock, $versionableMock);
+
+        $emMock          = $this->getEntityManagerMock();
+        $versionableMock = $this->getVersionableMock(array('field1' => 'value1'));
+        $userMock        = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $listener->writeSnapshot($emMock, $versionableMock, $userMock);
     }
 
     /**
@@ -114,6 +86,46 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
 
         return $versionable;
     }
+
+    /**
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getEntityManagerMock()
+    {
+        $uowMock = $this
+            ->getMockBuilder('Doctrine\ORM\UnitOfWork')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $uowMock->expects($this->any())
+            ->method('computeChangeSet')
+            ->will($this->returnValue(true));
+
+        $metaMock = $this
+            ->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $emMock = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repos = array(
+            array('OroUserBundle:User', $this->getUserRepositoryMock()),
+            array('PimVersioningBundle:Version', $this->getVersionRepositoryMock()),
+        );
+        $emMock->expects($this->exactly(1))
+            ->method('getRepository')
+            ->will($this->returnValueMap($repos));
+        $emMock->expects($this->any())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($uowMock));
+        $emMock->expects($this->any())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($metaMock));
+
+        return $emMock;
+    }
+
 
     /**
      * @return Doctrine\ORM\EntityRepository
