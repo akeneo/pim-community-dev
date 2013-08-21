@@ -38,15 +38,15 @@
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
-                        <li class="{{ locale == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale}) }}" title="{{ localeLabel(locale) }}">
+                        <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
+                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
                                 {% if locale == dataLocale %}
                                     <span class="icon">
                                         <i class="icon-bullet"></i>
                                     </span>
                                 {% endif %}
-                                {{ locale|flag }}
-                                <span class="title">{{ product.label(locale) }}</span>
+                                {{ locale.code|flag }}
+                                <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
                     {% endfor %}

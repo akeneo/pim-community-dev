@@ -12,11 +12,14 @@
         <tbody>
             {% for locale in locales %}
             <tr>
-                <td>{{ locale }}</td>
+                <td>{{ locale.code }}</td>
                 {% for channel in channels %}
 
                 <td>
-                    {% set completeness = product.completeness(locale, channel.code) %}
+                    {% if channel.hasLocale(locale) == false %}
+                        Not required
+                    {% endif %}
+                    {% set completeness = product.completeness(locale.code, channel.code) %}
                     {% set ratio = completeness.ratio %}
                     {{ ratio }}%
                     {{ healthBar(ratio)|raw }}
