@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -18,6 +19,8 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
  */
 class ItemStep extends AbstractStep
 {
+
+    const BATCH_SIZE=100;
     /**
      * @Assert\Valid
      */
@@ -104,14 +107,23 @@ class ItemStep extends AbstractStep
     {
         $readCounter = 0;
         $writeCounter = 0;
+        $itemsToWrite = array();
 
         while (($item = $this->reader->read()) !== null) {
             $readCounter ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {
+                $itemsToWrite[] = $processedItem;
                 $writeCounter ++;
-                $this->writer->write(array($processedItem));
+                if (($writeCounter % self::BATCH_SIZE) == 0) {
+                    $this->writer->write($itemsToWrite);
+                    $itemsToWrite = array();
+                }
             }
         }
+        if (count($itemsToWrite) > 0) {
+            $this->writer->write($itemsToWrite);
+        }
+
     }
 }
