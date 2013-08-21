@@ -33,8 +33,12 @@ class StepExecution
      */
     private $id;
 
-    /* @var JobExecution $jobExecution */
-    /* TODO: link with the jobExecution entity */
+    /**
+     * @var JobExecution
+     *
+     * @ORM\ManyToOne(targetEntity="JobExecution", inversedBy="stepExecutions")
+     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id")
+     */
     private $jobExecution = null;
 
     /**
@@ -131,14 +135,14 @@ class StepExecution
     /**
      * @var integer
      *
-     * @orm\column(name="filter_count", type="integer")
+     * @ORM\Column(name="filter_count", type="integer")
      */
     private $filterCount = 0;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="failure_exceptions", type="text", nullable=true)
+     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions = null;
 

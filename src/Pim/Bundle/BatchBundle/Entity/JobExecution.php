@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -31,12 +32,15 @@ class JobExecution
     private $id;
 
     /**
-     *  @var array
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution")
      */
     private $stepExecutions;
 
     /**
      * @var JobInstance
+     *
      * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
      * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
      */
@@ -100,7 +104,7 @@ class JobExecution
     /**
      * @var array
      *
-     * @ORM\Column(name="failure_exceptions", type="text", nullable=true)
+     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions;
 
@@ -111,7 +115,7 @@ class JobExecution
     {
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
-        $this->stepExecutions = array();
+        $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = array();
     }
