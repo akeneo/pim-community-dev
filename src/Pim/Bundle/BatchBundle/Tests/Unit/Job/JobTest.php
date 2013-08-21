@@ -26,9 +26,9 @@ class JobTest extends \PHPUnit_Framework_TestCase
 {
     const JOB_TEST_NAME = 'job_test';
 
-    protected $job           = null;
-    protected $logger        = null;
-    protected $jobRepository = null;
+    protected $job            = null;
+    protected $jobRepository  = null;
+    protected $eventDispatcher = null;
 
     protected function setUp()
     {
@@ -37,8 +37,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $this->jobRepository = new MockJobRepository();
 
+        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+
         $this->job = new Job(self::JOB_TEST_NAME);
-        $this->job->setLogger($this->logger);
+        $this->job->setEventDispatcher($this->eventDispatcher);
     }
 
     public function testGetName()

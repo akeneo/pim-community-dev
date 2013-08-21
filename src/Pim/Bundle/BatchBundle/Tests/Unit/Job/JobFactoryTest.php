@@ -22,8 +22,9 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $logger->pushHandler(new TestHandler());
 
         $jobRepository = new MockJobRepository();
+        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
-        $jobFactory = new JobFactory($logger, $jobRepository);
+        $jobFactory = new JobFactory($eventDispatcher, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(

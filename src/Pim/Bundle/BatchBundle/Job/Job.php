@@ -10,7 +10,6 @@ use Pim\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\BatchBundle\Event\StepEvent;
 use Symfony\Component\EventDispatcher\Event;
-use Pim\Bundle\BatchBundle\Step\AbstractStep;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -26,6 +25,7 @@ class Job implements JobInterface
 {
     protected $name;
 
+    /* @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /* @var JobRepositoryInterface */
@@ -195,7 +195,7 @@ class Job implements JobInterface
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(
-                new BatchStatusi(
+                new BatchStatus(
                     BatchStatus::max(BatchStatus::STOPPED, $e->getStatus()->getValue())
                 )
             );
@@ -373,18 +373,36 @@ class Job implements JobInterface
         return $stepExecution;
     }
 
+    /**
+     * Trigger event linked to JobExecution
+     *
+     * @param string       $eventName    Name of the event
+     * @param JobExecution $jobExecution Object to store job execution
+     */
     private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
     {
         $event = new JobExecutionEvent($jobExecution);
         $this->dispatch($eventName, $event);
     }
 
-    private function dispatchStepEvent($eventName, AbstractStep $step)
+    /**
+     * Trigger event linked to Step
+     *
+     * @param string        $eventName Name of the event
+     * @param StepInterface $step      Step object
+     */
+    private function dispatchStepEvent($eventName, StepInterface $step)
     {
         $event = new StepEvent($step);
         $this->dispatch($eventName, $event);
     }
 
+    /**
+     * Generic batch event dispatcher
+     *
+     * @param string $eventName Name of the event
+     * @param Event  $event     Event object
+     */
     private function dispatch($eventName, Event $event)
     {
         $this->eventDispatcher->dispatch($eventName, $event);
