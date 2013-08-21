@@ -142,7 +142,7 @@ class Edit extends Form
     {
         $controlGroupNode = $this->findField($field)->getParent()->getParent()->getParent()->getParent()->getParent();
 
-        return $controlGroupNode->find('css', 'a.remove-attribute');
+        return $controlGroupNode->find('css', '.remove-attribute');
     }
 
     /**
@@ -177,6 +177,9 @@ class Edit extends Form
         return count($this->getElement('Updates grid')->findAll('css', 'tbody tr'));
     }
 
+    /**
+     * @return NodeElement|void
+     */
     public function getImagePreview()
     {
         $preview = $this->getElement('Image preview');
