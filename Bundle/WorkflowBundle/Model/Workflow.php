@@ -11,7 +11,6 @@ use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
-use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
 
 class Workflow
 {
@@ -57,18 +56,8 @@ class Workflow
      */
     protected $label;
 
-    /**
-     * @var EntityBinder
-     */
-    protected $entityBinder;
-
-    /**
-     * @param EntityBinder $entityBinder
-     */
-    public function __construct(EntityBinder $entityBinder)
+    public function __construct()
     {
-        $this->entityBinder = $entityBinder;
-
         $this->transitions = new ArrayCollection();
         $this->steps = new ArrayCollection();
         $this->attributes = new ArrayCollection();
@@ -372,27 +361,16 @@ class Workflow
     /**
      * Create workflow item.
      *
-     * @param object|null $entity
+     * @param array $data
      * @return WorkflowItem
      * @throws \LogicException
      */
-    public function createWorkflowItem($entity = null)
+    public function createWorkflowItem(array $data = array())
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());
         $workflowItem->setCurrentStepName($this->getStartStepName());
-
-        // set managed entity
-        if ($this->managedEntityClass) {
-            if (!$entity) {
-                throw new \LogicException('Managed entity must exist');
-            } elseif (!($entity instanceof $this->managedEntityClass)) {
-                throw new \LogicException(sprintf('Managed entity must be instance of %s', $this->managedEntityClass));
-            }
-
-            $workflowItem->getData()->set($this->getManagedEntityAttribute()->getName(), $entity);
-            $this->entityBinder->bind($workflowItem, $entity);
-        }
+        $workflowItem->getData()->add($data);
 
         return $workflowItem;
     }

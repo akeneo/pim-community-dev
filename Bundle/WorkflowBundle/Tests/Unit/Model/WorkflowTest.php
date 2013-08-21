@@ -12,25 +12,6 @@ use Oro\Bundle\WorkflowBundle\Model\Workflow;
 class WorkflowTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param array $parameters
-     * @return Workflow
-     */
-    protected function createWorkflow(array $parameters = array())
-    {
-        $entityBinder = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $defaultParameters = array(
-            'entityBinder' => $entityBinder
-        );
-
-        $parameters = array_merge($defaultParameters, $parameters);
-
-        return new Workflow($parameters['entityBinder']);
-    }
-
-    /**
      * @dataProvider propertiesDataProvider
      * @param string $property
      * @param mixed $value
@@ -39,12 +20,12 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         $getter = 'get' . ucfirst($property);
         $setter = 'set' . ucfirst($property);
-        $obj = $this->createWorkflow();
+        $workflow = $this->createWorkflow();
         $this->assertInstanceOf(
             'Oro\Bundle\WorkflowBundle\Model\Workflow',
-            call_user_func_array(array($obj, $setter), array($value))
+            call_user_func_array(array($workflow, $setter), array($value))
         );
-        $this->assertEquals($value, call_user_func_array(array($obj, $getter), array()));
+        $this->assertEquals($value, call_user_func_array(array($workflow, $getter), array()));
     }
 
     public function propertiesDataProvider()
@@ -58,20 +39,20 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
     public function testEnabled()
     {
-        $obj = $this->createWorkflow();
-        $this->assertTrue($obj->isEnabled());
+        $workflow = $this->createWorkflow();
+        $this->assertTrue($workflow->isEnabled());
 
-        $obj->setEnabled(false);
-        $this->assertFalse($obj->isEnabled());
+        $workflow->setEnabled(false);
+        $this->assertFalse($workflow->isEnabled());
 
-        $obj->setEnabled(true);
-        $this->assertTrue($obj->isEnabled());
+        $workflow->setEnabled(true);
+        $this->assertTrue($workflow->isEnabled());
     }
 
     public function testGetStepsEmpty()
     {
-        $obj = $this->createWorkflow();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $obj->getSteps());
+        $workflow = $this->createWorkflow();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getSteps());
     }
 
     public function testSetSteps()
@@ -88,17 +69,17 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('step2'));
 
-        $obj = $this->createWorkflow();
+        $workflow = $this->createWorkflow();
 
-        $obj->setSteps(array($stepOne, $stepTwo));
-        $steps = $obj->getSteps();
+        $workflow->setSteps(array($stepOne, $stepTwo));
+        $steps = $workflow->getSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
         $this->assertEquals($expected, $steps->toArray());
 
         $stepsCollection = new ArrayCollection(array('step1' => $stepOne, 'step2' => $stepTwo));
-        $obj->setSteps($stepsCollection);
-        $steps = $obj->getSteps();
+        $workflow->setSteps($stepsCollection);
+        $steps = $workflow->getSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
         $this->assertEquals($expected, $steps->toArray());
@@ -106,8 +87,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTransitionsEmpty()
     {
-        $obj = $this->createWorkflow();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $obj->getTransitions());
+        $workflow = $this->createWorkflow();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getTransitions());
     }
 
     public function testSetTransitions()
@@ -124,10 +105,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('transition2'));
 
-        $obj = $this->createWorkflow();
+        $workflow = $this->createWorkflow();
 
-        $obj->setTransitions(array($transitionOne, $transitionTwo));
-        $transitions = $obj->getTransitions();
+        $workflow->setTransitions(array($transitionOne, $transitionTwo));
+        $transitions = $workflow->getTransitions();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
@@ -135,84 +116,25 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transitionsCollection = new ArrayCollection(
             array('transition1' => $transitionOne, 'transition2' => $transitionTwo)
         );
-        $obj->setTransitions($transitionsCollection);
-        $transitions = $obj->getTransitions();
+        $workflow->setTransitions($transitionsCollection);
+        $transitions = $workflow->getTransitions();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
     }
 
-    /**
-     * @param object|null $entity
-     * @dataProvider createWorkflowDataProvider
-     */
-    public function testCreateWorkflow($entity)
+    public function testCreateWorkflow()
     {
-        $this->markTestSkipped('Refactor this test after binder logic will be moved to doctrine listener');
-        $entityBinder = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
-            ->disableOriginalConstructor()
-            ->setMethods(array('bind'))
-            ->getMock();
-        if ($entity) {
-            $entityBinder->expects($this->once())
-                ->method('bind')
-                ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'), $entity);
-        } else {
-            $entityBinder->expects($this->never())
-                ->method('bind');
-        }
+        $data = array('name' => 'value');
+        $workflow = $this->createWorkflow();
+        $workflow->setStartStepName('startStep');
+        $workflow->setName('testWorkflow');
 
-        $obj = $this->createWorkflow(array('entityBinder' => $entityBinder));
-        $obj->setStartStepName('startStep');
-        $obj->setName('testWorkflow');
-        if ($entity) {
-            $obj->setManagedEntityClass(get_class($entity));
-        }
-
-        $workflowItem = $obj->createWorkflowItem($entity);
+        $workflowItem = $workflow->createWorkflowItem($data);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);
         $this->assertEquals('startStep', $workflowItem->getCurrentStepName());
         $this->assertEquals('testWorkflow', $workflowItem->getWorkflowName());
-        if ($entity) {
-            $this->assertEquals($entity, $workflowItem->getData()->get(Workflow::MANAGED_ENTITY_KEY));
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function createWorkflowDataProvider()
-    {
-        return array(
-            'without entity' => array(
-                'entity' => null,
-            ),
-            'with entity' => array(
-                'entity' => new \DateTime('now'),
-            )
-        );
-    }
-
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Managed entity must exist
-     */
-    public function testCreateWorkflowNoEntityException()
-    {
-        $obj = $this->createWorkflow();
-        $obj->setManagedEntityClass('\DateTime');
-        $obj->createWorkflowItem();
-    }
-
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Managed entity must be instance of \DateTime
-     */
-    public function testCreateWorkflowIncorrectEntityException()
-    {
-        $obj = $this->createWorkflow();
-        $obj->setManagedEntityClass('\DateTime');
-        $obj->createWorkflowItem(new \DateTimeZone('UTC'));
+        $this->assertEquals($data['name'], $workflowItem->getData()->get('name'));
     }
 
     /**
@@ -225,8 +147,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $obj = $this->createWorkflow();
-        $obj->isTransitionAllowed($workflowItem, 1);
+        $workflow = $this->createWorkflow();
+        $workflow->isTransitionAllowed($workflowItem, 1);
     }
 
     /**
@@ -239,8 +161,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $obj = $this->createWorkflow();
-        $obj->transit($workflowItem, 1);
+        $workflow = $this->createWorkflow();
+        $workflow->transit($workflowItem, 1);
     }
 
     public function testIsTransitionAllowedUnknownTransition()
@@ -249,8 +171,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $obj = $this->createWorkflow();
-        $this->assertFalse($obj->isTransitionAllowed($workflowItem, 'test'));
+        $workflow = $this->createWorkflow();
+        $this->assertFalse($workflow->isTransitionAllowed($workflowItem, 'test'));
     }
 
     /**
@@ -268,11 +190,11 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('isAllowed')
             ->will($this->returnValue($isAllowed));
 
-        $obj = $this->createWorkflow();
-        $obj->setTransitions(array($transition));
+        $workflow = $this->createWorkflow();
+        $workflow->setTransitions(array($transition));
 
-        $this->assertEquals($isAllowed, $obj->isTransitionAllowed($workflowItem, 'transition'));
-        $this->assertEquals($isAllowed, $obj->isTransitionAllowed($workflowItem, $transition));
+        $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, 'transition'));
+        $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, $transition));
     }
 
     /**
@@ -296,8 +218,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $obj = $this->createWorkflow();
-        $obj->transit($workflowItem, 'unknown');
+        $workflow = $this->createWorkflow();
+        $workflow->transit($workflowItem, 'unknown');
     }
 
     /**
@@ -314,10 +236,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('unknownStep'));
         $transition = $this->getTransitionMock('transition');
 
-        $obj = $this->createWorkflow();
-        $obj->setName('workflowName');
-        $obj->setTransitions(array($transition));
-        $obj->transit($workflowItem, $transition);
+        $workflow = $this->createWorkflow();
+        $workflow->setName('workflowName');
+        $workflow->setTransitions(array($transition));
+        $workflow->transit($workflowItem, $transition);
     }
 
     /**
@@ -340,10 +262,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->with('transition')
             ->will($this->returnValue(false));
 
-        $obj = $this->createWorkflow();
-        $obj->setTransitions(array($transition));
-        $obj->setSteps(array($step));
-        $obj->transit($workflowItem, 'transition');
+        $workflow = $this->createWorkflow();
+        $workflow->setTransitions(array($transition));
+        $workflow->setSteps(array($step));
+        $workflow->transit($workflowItem, 'transition');
     }
 
     public function testTransit()
@@ -366,10 +288,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->with('transition')
             ->will($this->returnValue(true));
 
-        $obj = $this->createWorkflow();
-        $obj->setTransitions(array($transition));
-        $obj->setSteps(array($step));
-        $obj->transit($workflowItem, 'transition');
+        $workflow = $this->createWorkflow();
+        $workflow->setTransitions(array($transition));
+        $workflow->setSteps(array($step));
+        $workflow->transit($workflowItem, 'transition');
     }
 
     public function testSetAttributes()
@@ -386,17 +308,17 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('attr2'));
 
-        $obj = $this->createWorkflow();
+        $workflow = $this->createWorkflow();
 
-        $obj->setAttributes(array($attributeOne, $attributeTwo));
-        $attributes = $obj->getAttributes();
+        $workflow->setAttributes(array($attributeOne, $attributeTwo));
+        $attributes = $workflow->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
         $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
         $this->assertEquals($expected, $attributes->toArray());
 
         $attributeCollection = new ArrayCollection(array('attr1' => $attributeOne, 'attr2' => $attributeTwo));
-        $obj->setAttributes($attributeCollection);
-        $attributes = $obj->getAttributes();
+        $workflow->setAttributes($attributeCollection);
+        $attributes = $workflow->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
         $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
         $this->assertEquals($expected, $attributes->toArray());
@@ -405,9 +327,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function testGetStepAttributes()
     {
         $attributes = new ArrayCollection();
-        $obj = $this->createWorkflow();
-        $obj->setAttributes($attributes);
-        $this->assertEquals($attributes, $obj->getAttributes());
+        $workflow = $this->createWorkflow();
+        $workflow->setAttributes($attributes);
+        $this->assertEquals($attributes, $workflow->getAttributes());
     }
 
     public function testGetStep()
@@ -415,11 +337,11 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $step1 = $this->getStepMock('step1');
         $step2 = $this->getStepMock('step2');
 
-        $obj = $this->createWorkflow();
-        $obj->setSteps(array($step1, $step2));
+        $workflow = $this->createWorkflow();
+        $workflow->setSteps(array($step1, $step2));
 
-        $this->assertEquals($step1, $obj->getStep('step1'));
-        $this->assertEquals($step2, $obj->getStep('step2'));
+        $this->assertEquals($step1, $workflow->getStep('step1'));
+        $this->assertEquals($step2, $workflow->getStep('step2'));
     }
 
     /**
@@ -428,9 +350,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStepUnknownStep()
     {
-        $obj = $this->createWorkflow();
-        $obj->setSteps(array());
-        $obj->getStep('unknown_step');
+        $workflow = $this->createWorkflow();
+        $workflow->setSteps(array());
+        $workflow->getStep('unknown_step');
     }
 
     public function testGetStartStep()
@@ -438,11 +360,11 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $startStepName = 'start_step';
         $startStep = $this->getStepMock($startStepName);
 
-        $obj = $this->createWorkflow();
-        $obj->setStartStepName($startStepName);
-        $obj->setSteps(array($startStep));
+        $workflow = $this->createWorkflow();
+        $workflow->setStartStepName($startStepName);
+        $workflow->setSteps(array($startStep));
 
-        $this->assertEquals($startStep, $obj->getStartStep());
+        $this->assertEquals($startStep, $workflow->getStartStep());
     }
 
     protected function getStepMock($name)
@@ -465,5 +387,14 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue($name));
         return $transition;
+    }
+
+    /**
+     * @param array $data
+     * @return Workflow
+     */
+    protected function createWorkflow(array $data = array())
+    {
+        return new Workflow($data);
     }
 }

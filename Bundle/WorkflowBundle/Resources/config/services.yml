@@ -41,11 +41,10 @@ services:
     oro_workflow.workflow_prototype:
         class: %oro_workflow.workflow_prototype.class%
         scope: prototype
-        arguments:
-            - @oro_workflow.entity_binder
 
     oro_workflow.manager:
         class: %oro_workflow.manager.class%
         arguments:
             - @doctrine
             - @oro_workflow.registry
+            - @oro_workflow.entity_binder

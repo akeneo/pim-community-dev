@@ -24,13 +24,20 @@ class WorkflowManager
     protected $workflowRegistry;
 
     /**
+     * @var EntityBinder
+     */
+    protected $entityBinder;
+
+    /**
      * @param Registry $doctrine
      * @param WorkflowRegistry $workflowRegistry
+     * @param EntityBinder $entityBinder
      */
-    public function __construct(Registry $doctrine, WorkflowRegistry $workflowRegistry)
+    public function __construct(Registry $doctrine, WorkflowRegistry $workflowRegistry, EntityBinder $entityBinder)
     {
         $this->doctrine = $doctrine;
         $this->workflowRegistry = $workflowRegistry;
+        $this->entityBinder = $entityBinder;
     }
 
     /**
@@ -48,7 +55,16 @@ class WorkflowManager
             $entity = $this->getWorkflowEntity($workflow, $entityId);
         }
 
-        $workflowItem = $workflow->createWorkflowItem($entity);
+        $managedEntityAttribute = $workflow->getManagedEntityAttribute();
+
+        $workflowItem = $workflow->createWorkflowItem(
+            array(
+                $managedEntityAttribute->getName() => $entity
+            )
+        );
+
+        // TODO Move binder logic to listener
+        $this->entityBinder->bind($workflowItem, $entity);
 
         $this->doctrine->getManager()->persist($workflowItem);
         $this->doctrine->getManager()->flush();

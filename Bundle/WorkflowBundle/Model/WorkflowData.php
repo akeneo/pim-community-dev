@@ -48,6 +48,20 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
+     * Add values
+     *
+     * @param array $data
+     * @return WorkflowData
+     */
+    public function add(array $data)
+    {
+        foreach ($data as $name => $value) {
+            $this->set($name, $value);
+        }
+        return $this;
+    }
+
+    /**
      * Get value
      *
      * @param string $name
