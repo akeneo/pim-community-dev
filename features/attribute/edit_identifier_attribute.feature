@@ -14,7 +14,7 @@ Feature: Edit an identifier attribute
     Given I am logged in as "admin"
     When I am on the attribute creation page
     And I select the attribute type "Identifier"
-    Then I should see "An identifier attribute already exists"
+    Then I should see validation error "An identifier attribute already exists."
 
   @javascript
   Scenario: Fail to create a second identifier
@@ -33,4 +33,4 @@ Feature: Edit an identifier attribute
       | Description | My 2nd identifier |
     And I press the "Save" button
     And I visit the "Parameters" tab
-    Then I should see "An identifier attribute already exists"
+    Then I should see validation error "An identifier attribute already exists."
