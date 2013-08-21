@@ -44,7 +44,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[email]'] = 'test@test.com';
         //$form['oro_user_user_form[tags][owner]'] = 'tags1';
         //$form['oro_user_user_form[tags][all]'] = null;
-        $form['oro_user_user_form[groups][1]'] = 3;
+        $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
         $form['oro_user_user_form[values][company][varchar]'] = 'company';
         //$form['oro_user_user_form[values][gender][option]'] = 6;
@@ -89,7 +89,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[lastName]'] = 'Last Name';
         $form['oro_user_user_form[birthday]'] = '1/1/13';
         $form['oro_user_user_form[email]'] = 'test@test.com';
-        $form['oro_user_user_form[groups][1]'] = 3;
+        $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
         $form['oro_user_user_form[values][company][varchar]'] = 'company_update';
         //$form['oro_user_user_form[values][gender][option]'] = 6;
