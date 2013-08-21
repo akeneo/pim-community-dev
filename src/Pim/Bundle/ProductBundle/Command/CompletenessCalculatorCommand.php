@@ -91,7 +91,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
 
         // Call calculator and persists entities
         $completenesses = $this->calculator->calculate($products);
-        foreach ($completenesses as $productCompleteness) {
+        foreach ($completenesses as $sku => $productCompleteness) {
             foreach ($productCompleteness as $completeness) {
                 $this->getEntityManager()->persist($completeness);
             }

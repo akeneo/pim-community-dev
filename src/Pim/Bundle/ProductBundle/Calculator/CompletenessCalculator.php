@@ -243,8 +243,6 @@ class CompletenessCalculator
             $completenesses[] = $completeness;
         }
 
-        var_dump("COUNT ---> ". count($completenesses));
-
         return $completenesses;
     }
 
