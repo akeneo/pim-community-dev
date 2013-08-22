@@ -1,62 +1,157 @@
 <?php
 
-namespace Oro\Bundle\CronBundle\Entity;
+namespace Oro\Bundle\CronBundle\Job;
 
-class ScheduleTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Process\Process;
+
+class DaemonTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CronSchedule
+     * @var Daemon
      */
     protected $object;
 
+    /**
+     * @var Process
+     */
+    protected $process;
+
     protected function setUp()
     {
-        $this->object = new Schedule;
+        $this->object = $this->getMockBuilder('Oro\Bundle\CronBundle\Job\Daemon')
+            ->setConstructorArgs(array('app', 10))
+            ->setMethods(array('getPidProcess', 'getQueueRunProcess', 'getQueueStopProcess'))
+            ->getMock();
+
+        $this->process = $this->getMockBuilder('Symfony\Component\Process\Process')
+            ->setConstructorArgs(array('echo 1'))
+            ->getMock();
+
+        $this->process
+            ->expects($this->any())
+            ->method('run')
+            ->will($this->returnValue(true));
+
+        $this->process
+            ->expects($this->any())
+            ->method('start')
+            ->will($this->returnValue(true));
+
+        $this->object
+            ->expects($this->any())
+            ->method('getPidProcess')
+            ->will($this->returnValue($this->process));
+
+        $this->object
+            ->expects($this->any())
+            ->method('getQueueRunProcess')
+            ->will($this->returnValue($this->process));
+
+        $this->object
+            ->expects($this->any())
+            ->method('getQueueStopProcess')
+            ->with($this->anything())
+            ->will($this->returnValue($this->process));
     }
 
-    public function testGetId()
+    public function testGetPid()
     {
-        $this->assertNull($this->object->getId());
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue($this->getPsOutput()));
+
+        $this->assertEquals(111, $this->object->getPid());
     }
 
-    public function testEntity()
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testAlreadyRun()
     {
-        $object = $this->object;
-        $entity = 'Oro\Entity';
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue($this->getPsOutput()));
 
-        $this->assertEmpty($object->getEntity());
-
-        $object->setEntity($entity);
-
-        $this->assertEquals($entity, $object->getEntity());
+        $this->object->run();
     }
 
-    public function testRecordId()
+    public function testFailedRun()
     {
-        $object = $this->object;
-        $id     = 5;
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue(''));
 
-        $this->assertEmpty($object->getRecordId());
+        $this->process
+            ->expects($this->once())
+            ->method('getPid')
+            ->will($this->returnValue(null));
 
-        $object->setRecordId($id);
-
-        $this->assertEquals($id, $object->getRecordId());
+        $this->assertNull($this->object->run());
     }
 
-    public function testSettings()
+    public function testRun()
     {
-        $object   = $this->object;
-        $settings = array(
-            'oro_user' => array(
-                'greeting' => true,
-                'level'    => 10,
-            )
-        );
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue(''));
 
-        $this->assertEmpty($object->getSettings());
+        $this->process
+            ->expects($this->once())
+            ->method('getPid')
+            ->will($this->returnValue(111));
 
-        $object->setSettings($settings);
+        $this->assertNotEmpty($this->object->run());
+    }
 
-        $this->assertEquals($settings, $object->getSettings());
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testAlreadyStop()
+    {
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue(''));
+
+        $this->object->stop();
+    }
+
+    public function testFailedStop()
+    {
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue($this->getPsOutput()));
+
+        $this->process
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->will($this->returnValue(false));
+
+        $this->assertFalse($this->object->stop());
+    }
+
+    public function testStop()
+    {
+        $this->process
+            ->expects($this->once())
+            ->method('getOutput')
+            ->will($this->returnValue($this->getPsOutput()));
+
+        $this->process
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->will($this->returnValue(true));
+
+        $this->assertTrue($this->object->stop());
+    }
+
+    protected function getPsOutput()
+    {
+        return '111 ? S 0:01 php app/console jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=5';
     }
 }

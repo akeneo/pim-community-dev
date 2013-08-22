@@ -1,13 +1,11 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Tests\DependencyInjection;
+namespace Oro\Bundle\CronBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
 
-use Oro\Bundle\UserBundle\DependencyInjection\OroUserExtension;
-
-class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
+class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ContainerBuilder
@@ -18,23 +16,21 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->createEmptyConfiguration();
 
-        $this->assertParameter(array('no-reply@example.com' => 'Oro Admin'), 'oro_user.email');
-        $this->assertParameter(86400, 'oro_user.reset.ttl');
+        $this->assertParameter(5, 'oro_cron.max_jobs');
     }
 
     public function testLoad()
     {
         $this->createFullConfiguration();
 
-        $this->assertParameter(array('admin@acme.org' => 'Acme Corp'), 'oro_user.email');
-        $this->assertParameter(1800, 'oro_user.reset.ttl');
+        $this->assertParameter(10, 'oro_cron.max_jobs');
     }
 
     protected function createEmptyConfiguration()
     {
         $this->configuration = new ContainerBuilder();
 
-        $loader = new OroUserExtension();
+        $loader = new OroCronExtension();
         $config = $this->getEmptyConfig();
 
         $loader->load(array($config), $this->configuration);
@@ -46,7 +42,7 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->configuration = new ContainerBuilder();
 
-        $loader = new OroUserExtension();
+        $loader = new OroCronExtension();
         $config = $this->getFullConfig();
 
         $loader->load(array($config), $this->configuration);
@@ -68,11 +64,7 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getFullConfig()
     {
         $yaml = <<<EOF
-email:
-    address: admin@acme.org
-    name: Acme Corp
-reset:
-    ttl: 1800
+max_concurrent_jobs: 10
 EOF;
         $parser = new Parser();
 

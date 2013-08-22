@@ -25,6 +25,6 @@ class OroCronExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('oro_cron.max_jobs', (int) $config['max-concurrent-jobs']);
+        $container->setParameter('oro_cron.max_jobs', (int) $config['max_concurrent_jobs']);
     }
 }

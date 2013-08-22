@@ -39,3 +39,12 @@ public function registerBundles()
 ``` bash
 $ phpunit --coverage-html=cov/
 ```
+
+## Usage ##
+All you need is to add `oro:cron` command to a system cron (on *nix systems), for example:
+
+``` bash
+*/1 * * * * /usr/local/bin/php /path/to/app/console --env=prod oro:cron >> /dev/null
+```
+
+On Windows you can use Task Scheduler from Control Panel.

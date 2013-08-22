@@ -2,61 +2,97 @@
 
 namespace Oro\Bundle\CronBundle\Entity;
 
-class ScheduleTest extends \PHPUnit_Framework_TestCase
+use JMS\JobQueueBundle\Entity\Job;
+
+class JobManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CronSchedule
+     * @var JobManager
      */
     protected $object;
 
+    /**
+     * @var Job
+     */
+    protected $job;
+
     protected function setUp()
     {
-        $this->object = new Schedule;
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $conn = $this->getMockBuilder('Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->setConstructorArgs(array($em))
+            ->enableArgumentCloning()
+            ->getMock();
+
+        $expr  = $this->getMock('Doctrine\ORM\Query\Expr');
+        $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+
+        $qb->expects($this->any())->method('select')->will($this->returnValue($qb));
+        $qb->expects($this->any())->method('from')->will($this->returnValue($qb));
+        $qb->expects($this->any())->method('where')->will($this->returnValue($qb));
+        $qb->expects($this->any())->method('orderBy')->will($this->returnValue($qb));
+        $qb->expects($this->any())->method('expr')->will($this->returnValue($expr));
+
+        $em->expects($this->any())
+            ->method('createQueryBuilder')
+            ->will($this->returnValue($qb));
+
+        $em->expects($this->any())
+            ->method('getConnection')
+            ->will($this->returnValue($conn));
+
+        $em->expects($this->any())
+            ->method('getClassMetadata')
+            ->with($this->equalTo('Oro\Bundle\CronBundle\Entity\Schedule'))
+            ->will($this->returnValue($class));
+
+        $conn->expects($this->any())
+            ->method('query')
+            ->will($this->returnValue(array(
+                array(
+                    'characteristic' => 'memory',
+                    'createdAt'      => '2013-08-16 14:51:08',
+                    'charValue'      => '818759584'
+                )
+            )));
+
+        $this->object = new Manager\JobManager($em);
+        $this->job    = new Job('oro:test');
     }
 
-    public function testGetId()
+    public function testGetListQuery()
     {
-        $this->assertNull($this->object->getId());
+        $this->assertInstanceOf('Doctrine\ORM\QueryBuilder', $this->object->getListQuery());
     }
 
-    public function testEntity()
+    public function testGetRelatedEntities()
     {
-        $object = $this->object;
-        $entity = 'Oro\Entity';
+        $relEntity = new Schedule();
 
-        $this->assertEmpty($object->getEntity());
+        $this->assertInternalType('array', $this->object->getRelatedEntities($this->job));
+        $this->assertEmpty($this->object->getRelatedEntities($this->job));
 
-        $object->setEntity($entity);
+        $this->job->addRelatedEntity($relEntity);
 
-        $this->assertEquals($entity, $object->getEntity());
+        $this->assertNotEmpty($this->object->getRelatedEntities($this->job));
     }
 
-    public function testRecordId()
+    public function testGetJobStatistics()
     {
-        $object = $this->object;
-        $id     = 5;
+        $stat = $this->object->getJobStatistics($this->job);
 
-        $this->assertEmpty($object->getRecordId());
-
-        $object->setRecordId($id);
-
-        $this->assertEquals($id, $object->getRecordId());
-    }
-
-    public function testSettings()
-    {
-        $object   = $this->object;
-        $settings = array(
-            'oro_user' => array(
-                'greeting' => true,
-                'level'    => 10,
-            )
-        );
-
-        $this->assertEmpty($object->getSettings());
-
-        $object->setSettings($settings);
-
-        $this->assertEquals($settings, $object->getSettings());
+        $this->assertInternalType('array', $stat);
+        $this->assertNotEmpty($stat);
+        $this->assertEquals('Time', $stat[0][0]);
+        $this->assertEquals('memory', $stat[0][1]);
+        $this->assertInternalType('float', $stat[1][1]);
+        $this->assertEquals(780, (int) $stat[1][1]);
     }
 }

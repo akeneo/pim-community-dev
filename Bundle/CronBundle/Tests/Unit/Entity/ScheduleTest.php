@@ -5,13 +5,13 @@ namespace Oro\Bundle\CronBundle\Entity;
 class ScheduleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CronSchedule
+     * @var Schedule
      */
     protected $object;
 
     protected function setUp()
     {
-        $this->object = new Schedule;
+        $this->object = new Schedule();
     }
 
     public function testGetId()
@@ -19,44 +19,27 @@ class ScheduleTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->object->getId());
     }
 
-    public function testEntity()
+    public function testCommand()
     {
-        $object = $this->object;
-        $entity = 'Oro\Entity';
+        $object  = $this->object;
+        $command = 'oro:test';
 
-        $this->assertEmpty($object->getEntity());
+        $this->assertEmpty($object->getCommand());
 
-        $object->setEntity($entity);
+        $object->setCommand($command);
 
-        $this->assertEquals($entity, $object->getEntity());
+        $this->assertEquals($command, $object->getCommand());
     }
 
-    public function testRecordId()
+    public function testDefinition()
     {
         $object = $this->object;
-        $id     = 5;
+        $def    = '*/5 * * * *';
 
-        $this->assertEmpty($object->getRecordId());
+        $this->assertEmpty($object->getDefinition());
 
-        $object->setRecordId($id);
+        $object->setDefinition($def);
 
-        $this->assertEquals($id, $object->getRecordId());
-    }
-
-    public function testSettings()
-    {
-        $object   = $this->object;
-        $settings = array(
-            'oro_user' => array(
-                'greeting' => true,
-                'level'    => 10,
-            )
-        );
-
-        $this->assertEmpty($object->getSettings());
-
-        $object->setSettings($settings);
-
-        $this->assertEquals($settings, $object->getSettings());
+        $this->assertEquals($def, $object->getDefinition());
     }
 }

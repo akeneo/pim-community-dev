@@ -35,7 +35,7 @@ class Daemon
      * Run daemon in background
      *
      * @throws \RuntimeException
-     * @return bool|int Process id if started successfully, false otherwise
+     * @return int|null The process id if running successfully, null otherwise
      */
     public function run()
     {
@@ -43,28 +43,18 @@ class Daemon
             throw new \RuntimeException('Daemon process already started');
         }
 
-        $cmd = sprintf(
-            'php %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u',
-            $this->rootDir . DIRECTORY_SEPARATOR,
-            max($this->maxJobs, 1)
-        );
-
         // workaround for Windows
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $wsh = new \COM('WScript.shell');
 
-            $wsh->Run($cmd, 0, false);
+            $wsh->Run($this->getQueueRunCmd(), 0, false);
 
             return $this->getPid();
         }
 
-        $process = new Process($cmd);
+        $process = $this->getQueueRunProcess();
 
         $process->start();
-
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
 
         return $process->getPid();
     }
@@ -83,9 +73,7 @@ class Daemon
             throw new \RuntimeException('Daemon process not found');
         }
 
-        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /PID %u' : 'kill -9 %u';
-
-        $process = new Process(sprintf($cmd, $pid));
+        $process = $this->getQueueStopProcess($pid);
 
         $process->run();
 
@@ -108,12 +96,59 @@ class Daemon
                 : null;
         }
 
-        $process = new Process('ps ax | grep "[j]ms-job-queue:run"');
+        $process = $this->getPidProcess();
 
         $process->run();
 
         return preg_match('#^.+console jms-job-queue:run#Usm', $process->getOutput(), $matches)
             ? (int) $matches[0]
             : null;
+    }
+
+    /**
+     * Instantiate "ps" *nix command to catch running job queue
+     *
+     * @return Process
+     */
+    protected function getPidProcess()
+    {
+        return new Process('ps ax | grep "[j]ms-job-queue:run"');
+    }
+
+    /**
+     * Instantiate "ps" *nix command to catch running job queue
+     *
+     * @return Process
+     */
+    protected function getQueueRunProcess()
+    {
+        return new Process($this->getQueueRunCmd());
+    }
+
+    /**
+     * Instantiate "kill" (*nix) / "taskkill" (Windows) command to terminate job queue
+     *
+     * @param  int     $pid Process id to kill
+     * @return Process
+     */
+    protected function getQueueStopProcess($pid)
+    {
+        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /PID %u' : 'kill -9 %u';
+
+        return new Process(sprintf($cmd, $pid));
+    }
+
+    /**
+     * Get command line to run job queue
+     *
+     * @return string
+     */
+    protected function getQueueRunCmd()
+    {
+        return sprintf(
+            'php %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u',
+            $this->rootDir . DIRECTORY_SEPARATOR,
+            max($this->maxJobs, 1)
+        );
     }
 }

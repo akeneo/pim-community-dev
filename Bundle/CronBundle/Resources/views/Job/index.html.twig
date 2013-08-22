@@ -38,7 +38,7 @@
             <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ macros.command(job) }}</a></td>
             <td>{{ macros.state(job) }}</td>
             <td>{{ macros.ago(job.createdAt) }}</td>
-            <td>{{ job.runtime }}</td>
+            <td>{{ job.runtime|default('oro.cron.na'|trans) }}</td>
             <td>{{ (job.memoryUsageReal / 1048576)|number_format(2) }}</td>
         </tr>
         {% else %}

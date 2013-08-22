@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
         $builder
             ->root('oro_cron')
             ->children()
-                ->scalarNode('max-concurrent-jobs')
+                ->scalarNode('max_concurrent_jobs')
                     ->defaultValue(5)
                 ->end()
             ->end();
