@@ -6,6 +6,7 @@ parameters:
     pim_batch.logger_subscriber.class:  Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
     pim_batch.connectors_config:        ~
     pim_batch.jobs_config:              ~
+    pim_batch.logger.batch_log_handler.class:  Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
 
 services:
     # connectors registry
@@ -32,9 +33,16 @@ services:
             - @logger
         tags:
             - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: batch }
 
     pim_batch.step_factory:
         class: %pim_batch.step_factory.class%
         arguments:
             - @logger
             - @pim_batch.job_repository
+
+    pim_batch.logger.batch_log_handler:
+        class: %pim_batch.logger.batch_log_handler.class%
+        arguments:
+            - %kernel.root_dir%
+            - %pim_batch.log_dir%

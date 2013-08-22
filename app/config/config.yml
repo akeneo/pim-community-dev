@@ -23,6 +23,13 @@ framework:
         enabled: true
         path: /_fragment # used for controller action in template
 
+monolog:
+    handlers:
+        batch:
+            type: service
+            id: pim_batch.separate_file_handler
+            channels: [batch]
+
 # Twig Configuration
 twig:
     debug:                    "%kernel.debug%"
@@ -222,6 +229,7 @@ knp_gaufrette:
             alias:   pim_filesystem
 
 pim_batch:
+    log_dir: %batch_log_dir%
     jobs:
         product_export:
             title:      pim_import_export.jobs.product_export.title
