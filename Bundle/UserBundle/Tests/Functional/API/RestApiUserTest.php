@@ -68,7 +68,8 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "role" => array (
                 "role" => "~",
-                "label" => "new_label_update"
+                "label" => "new_label_update",
+                "owner" => "1"
             )
         );
         $this->client->request(
