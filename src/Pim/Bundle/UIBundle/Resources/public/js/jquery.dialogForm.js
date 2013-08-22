@@ -72,7 +72,8 @@
             if (isJSON(data)) {
                 data = $.parseJSON(data);
                 if (data.status == 1) {
-                    window.location = data.url;
+                    destroyDialog();
+                    Pim.navigate(data.url);
                 }
             } else if ($(data).prop('tagName').toLowerCase() == 'form') {
                 createDialog(data);

@@ -9,12 +9,6 @@ Feature: Edit a family
       | smartphone |
       | bags       |
       | jewels     |
-    And the following family translations:
-      | family     | language | label      |
-      | jewels     | english  | Jewels     |
-      | jewels     | french   | Bijoux     |
-      | smartphone | english  | Smartphone |
-      | bags       | english  | Bags       |
     And I am logged in as "admin"
     When I am on the families page
 
@@ -38,6 +32,6 @@ Feature: Edit a family
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Jewels" family page
-    And I change the english Label to "Jewelery"
+    And I change the english Label to "NewJewelery"
     And I save the family
-    Then I should see the families Bags, Jewelery and Smartphone
+    Then I should see the families bags, NewJewelery and smartphone
