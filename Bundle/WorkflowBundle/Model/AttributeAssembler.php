@@ -17,17 +17,9 @@ class AttributeAssembler extends AbstractAssembler
     public function assemble(array $configuration)
     {
         $attributes = new ArrayCollection();
-        $managedEntityAttributes = 0;
         foreach ($configuration as $name => $options) {
             $attribute = $this->assembleAttribute($name, $options);
-            if ($attribute->getOption('managed_entity')) {
-                $managedEntityAttributes++;
-            }
             $attributes->set($name, $attribute);
-        }
-
-        if ($managedEntityAttributes > 1) {
-            throw new AssemblerException('More than one attribute with "managed_entity" option is not allowed');
         }
 
         return $attributes;
@@ -40,12 +32,15 @@ class AttributeAssembler extends AbstractAssembler
      */
     protected function assembleAttribute($name, array $options)
     {
+        $options = $this->addDefaultOptions($options);
+
         $this->assertOptions($options, array('label', 'type'));
 
         $attribute = new Attribute();
         $attribute->setName($name);
         $attribute->setLabel($options['label']);
         $attribute->setType($options['type']);
+
         $attribute->setOptions($this->getOption($options, 'options', array()));
 
         $this->validateAttribute($attribute);
@@ -53,11 +48,55 @@ class AttributeAssembler extends AbstractAssembler
         return $attribute;
     }
 
+    protected function addDefaultOptions(array $options)
+    {
+        if (isset($options['type']) && $options['type'] == 'entity') {
+            $options['options'] = isset($options['options']) && is_array($options['options']) ?
+                $options['options'] : array();
+
+            $options['options'] = array_merge(
+                array('multiple' => false, 'bind' => true),
+                $options['options']
+            );
+        }
+        return $options;
+    }
+
     /**
      * @param Attribute $attribute
      * @throws AssemblerException If attribute is invalid
      */
     protected function validateAttribute(Attribute $attribute)
+    {
+        $this->assertAttributeHasValidType($attribute);
+
+        if ($attribute->getType() == 'object' || $attribute->getType() == 'entity') {
+            $this->assertAttributeHasClassOption($attribute);
+        } else {
+            $this->assertAttributeHasNoOptions($attribute, 'class');
+        }
+
+        if ($attribute->getType() == 'entity') {
+            $multiple = $attribute->getOption('multiple');
+            $bind = $attribute->getOption('bind');
+            if (!$multiple && !$bind) {
+                throw new AssemblerException(
+                    sprintf(
+                        'Options "multiple" and "bind" in attribute "%s" cannot be false simultaneously',
+                        $attribute->getName()
+                    )
+                );
+            }
+        } else {
+            $this->assertAttributeHasNoOptions($attribute, array('managed_entity', 'bind', 'multiple'));
+        }
+    }
+
+    /**
+     * @param Attribute $attribute
+     * @throws AssemblerException If attribute is invalid
+     */
+    protected function assertAttributeHasValidType(Attribute $attribute)
     {
         $attributeType = $attribute->getType();
         $allowedTypes = array('bool', 'boolean', 'int', 'integer', 'float', 'string', 'array', 'object', 'entity');
@@ -71,27 +110,58 @@ class AttributeAssembler extends AbstractAssembler
                 )
             );
         }
+    }
 
-        $classRequired = ($attributeType == 'object' || $attributeType == 'entity');
-        if ($classRequired && !$attribute->hasOption('class')) {
-            throw new AssemblerException(
-                sprintf('Option "class" is required for attribute with type "%s"', $attributeType)
-            );
-        } elseif (!$classRequired && $attribute->hasOption('class')) {
-            throw new AssemblerException(
-                sprintf('Option "class" cannot be used in attribute with type "%s"', $attributeType)
-            );
+    /**
+     * @param Attribute $attribute
+     * @param string|array $optionNames
+     * @throws AssemblerException If attribute is invalid
+     */
+    protected function assertAttributeHasOptions(Attribute $attribute, $optionNames)
+    {
+        $optionNames = (array)$optionNames;
+
+        foreach ($optionNames as $optionName) {
+            if (!$attribute->hasOption($optionName)) {
+                throw new AssemblerException(
+                    sprintf('Option "%s" is required in attribute "%s"', $optionName, $attribute->getName())
+                );
+            }
         }
+    }
 
-        if ($attribute->hasOption('class') && !class_exists($attribute->getOption('class'))) {
-            throw new AssemblerException(
-                sprintf('Class "%s" referenced by "class" option not found', $attribute->getOption('class'))
-            );
+    /**
+     * @param Attribute $attribute
+     * @param string|array $optionNames
+     * @throws AssemblerException If attribute is invalid
+     */
+    protected function assertAttributeHasNoOptions(Attribute $attribute, $optionNames)
+    {
+        $optionNames = (array)$optionNames;
+
+        foreach ($optionNames as $optionName) {
+            if ($attribute->hasOption($optionName)) {
+                throw new AssemblerException(
+                    sprintf('Option "%s" cannot be used in attribute "%s"', $optionName, $attribute->getName())
+                );
+            }
         }
+    }
 
-        if ($attribute->hasOption('managed_entity') && $attribute->getType() !== 'entity') {
+    /**
+     * @param Attribute $attribute
+     * @throws AssemblerException If attribute is invalid
+     */
+    protected function assertAttributeHasClassOption(Attribute $attribute)
+    {
+        $this->assertAttributeHasOptions($attribute, 'class');
+        if (!class_exists($attribute->getOption('class'))) {
             throw new AssemblerException(
-                sprintf('Option "managed_entity" cannot be used with attribute type "%s"', $attributeType)
+                sprintf(
+                    'Class "%s" referenced by "class" option in attribute "%s" not found',
+                    $attribute->getOption('class'),
+                    $attribute->getName()
+                )
             );
         }
     }
