@@ -47,7 +47,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
         $form['oro_user_user_form[values][company][varchar]'] = 'company';
-        $form['oro_user_user_form[owner]'] = '1';
+        $form['oro_user_user_form[owner]'] = 1;
         //$form['oro_user_user_form[values][gender][option]'] = 6;
 
         $this->client->followRedirects(true);

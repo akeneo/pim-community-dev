@@ -45,7 +45,7 @@ class ControllersTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->client->generate('oro_tag_create'));
         $form = $crawler->selectButton('Save')->form();
         $form['oro_tag_tag_form[name]'] = 'tag758';
-        $form['oro_tag_tag_form[owner]'] = '1';
+        $form['oro_tag_tag_form[owner]'] = 1;
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
         $result = $this->client->getResponse();

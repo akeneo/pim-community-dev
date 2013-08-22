@@ -18,6 +18,7 @@ class Tag extends AbstractEntity implements Entity
     {
         if ($new) {
             $this->tagname = $this->byId('oro_tag_tag_form_name');
+            $this->owner = $this->byXpath("//div[@id='s2id_oro_tag_tag_form_owner']/a");
         }
         return $this;
     }
@@ -32,6 +33,27 @@ class Tag extends AbstractEntity implements Entity
     public function getTagname()
     {
         return $this->tagname->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$owner}')]",
+            "Owner autocoplete doesn't return search value"
+        );
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$owner}')]")->click();
+
+        return $this;
+
+    }
+
+    public function getOwner()
+    {
+        return;
     }
 
     public function save()
