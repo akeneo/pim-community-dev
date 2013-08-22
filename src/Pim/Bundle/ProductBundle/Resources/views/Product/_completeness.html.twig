@@ -1,6 +1,6 @@
 <div class="tab-content">
     {% set columnWidth = 90/(channels|length) %}
-    <table class="table groups">
+    <table id="progress-table" class="table groups">
         <thead>
             <th width="10%">{{ 'Locales'|upper }}</th>
             {% for channel in channels %}
