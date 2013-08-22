@@ -100,7 +100,7 @@ class JobExecution
     /**
      * @var array
      *
-     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
+     * ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions;
 
