@@ -6,10 +6,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Family entity
@@ -21,9 +22,8 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
- * @Oro\Loggable
  */
-class Family implements TranslatableInterface
+class Family implements TranslatableInterface, VersionableInterface
 {
     /**
      * @var integer $id
@@ -35,11 +35,34 @@ class Family implements TranslatableInterface
     protected $id;
 
     /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
+    /**
      * @var string $code
      *
      * @ORM\Column(unique=true)
      * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
-     * @Oro\Versioned
      */
     protected $code;
 
@@ -52,7 +75,6 @@ class Family implements TranslatableInterface
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @Oro\Versioned("getCode")
      */
     protected $attributes;
 
@@ -79,7 +101,6 @@ class Family implements TranslatableInterface
     /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @ORM\JoinColumn(name="label_attribute_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned("getCode")
      */
     protected $attributeAsLabel;
 
@@ -122,6 +143,64 @@ class Family implements TranslatableInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set created datetime
+     *
+     * @param datetime $created
+     *
+     * @return TimestampableInterface
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set updated datetime
+     *
+     * @param datetime $updated
+     *
+     * @return TimestampableInterface
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 
     /**
@@ -379,5 +458,28 @@ class Family implements TranslatableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
+    }
+
+    /**
+     * TODO : will be replace by the use of normalizer
+     * @return array
+     */
+    public function getVersionedData()
+    {
+        $attributes = array();
+        foreach ($this->getAttributes() as $attribute) {
+            $attributes[]= $attribute->getCode();
+        }
+
+        $data = array(
+            'code'       => $this->getCode(),
+            'attributes' => implode(',', $attributes),
+        );
+
+        foreach ($this->getTranslations() as $translation) {
+            $data['label_'.$translation->getLocale()]= $translation->getLabel();
+        }
+
+        return $data;
     }
 }
