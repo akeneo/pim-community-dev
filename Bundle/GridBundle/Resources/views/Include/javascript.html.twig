@@ -58,6 +58,8 @@
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: Oro.Datagrid.Cell.NumberCell
+                        {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_PERCENT') %}
+                            cell: Oro.Datagrid.Cell.PercentCell
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_INTEGER') %}
                             cell: Oro.Datagrid.Cell.IntegerCell.extend({ orderSeparator: '' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_BOOLEAN') %}
