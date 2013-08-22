@@ -351,7 +351,7 @@ class Completeness
      */
     public function removeMissingAttribute(ProductAttribute $attribute)
     {
-        $this->missingAttributes->remove($attribute);
+        $this->missingAttributes->removeElement($attribute);
 
         return $this;
     }

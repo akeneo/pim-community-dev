@@ -226,7 +226,7 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
     /**
      * Test add/remove methods for missing attributes
      */
-    public function addRemoveMissingAttributes()
+    public function testAddRemoveMissingAttributes()
     {
         // assert adding an attribute
         $expectedAttribute = $this->createAttribute('test');
@@ -246,14 +246,14 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->completeness->getMissingAttributes());
 
         // assert removing the first attribute
-        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute1));
+        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute));
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
         $this->assertCount(1, $this->completeness->getMissingAttributes());
         $remainingAttribute = $this->completeness->getMissingAttributes()->first();
         $this->assertEquals($expectedAttribute2, $remainingAttribute);
 
         // assert removing the same attribute
-        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute1));
+        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute));
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
         $this->assertCount(1, $this->completeness->getMissingAttributes());
     }
