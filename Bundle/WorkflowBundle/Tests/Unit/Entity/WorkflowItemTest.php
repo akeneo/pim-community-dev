@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 
 class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 {
@@ -131,82 +131,68 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->workflowItem->isClosed());
     }
 
-    public function testSetEntitiesArray()
+    public function testAddBindEntity()
     {
-        $this->assertTrue($this->workflowItem->getEntities()->isEmpty());
+        $entityFoo = new WorkflowBindEntity();
+        $entityBar = new WorkflowBindEntity();
+        $this->workflowItem->addBindEntity($entityFoo);
+        $this->workflowItem->addBindEntity($entityBar);
 
-        $entity = new WorkflowItemEntity();
-        $entities = array($entity);
-        $this->workflowItem->setEntities($entities);
-
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->workflowItem->getEntities());
-        $this->assertEquals(1, $this->workflowItem->getEntities()->count());
-        $this->assertEquals($entities, $this->workflowItem->getEntities()->toArray());
-        $this->assertEquals($this->workflowItem, $entity->getWorkflowItem());
-    }
-
-    public function testSetEntitiesCollection()
-    {
-        $this->assertTrue($this->workflowItem->getEntities()->isEmpty());
-
-        $entity = new WorkflowItemEntity();
-        $entities = new ArrayCollection(array($entity));
-        $this->workflowItem->setEntities($entities);
-
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->workflowItem->getEntities());
-        $this->assertEquals(1, $this->workflowItem->getEntities()->count());
-        $this->assertEquals($entities->toArray(), $this->workflowItem->getEntities()->toArray());
-        $this->assertEquals($this->workflowItem, $entity->getWorkflowItem());
-    }
-
-    public function testAddEntity()
-    {
-        $entityFoo = new WorkflowItemEntity();
-        $entityBar = new WorkflowItemEntity();
-        $this->workflowItem->addEntity($entityFoo);
-        $this->workflowItem->addEntity($entityBar);
-
-        $this->assertEquals(2, $this->workflowItem->getEntities()->count());
-        $this->assertEquals($entityFoo, $this->workflowItem->getEntities()->get(0));
-        $this->assertEquals($entityBar, $this->workflowItem->getEntities()->get(1));
+        $this->assertEquals(2, $this->workflowItem->getBindEntities()->count());
+        $this->assertEquals($entityFoo, $this->workflowItem->getBindEntities()->get(0));
+        $this->assertEquals($entityBar, $this->workflowItem->getBindEntities()->get(1));
         $this->assertEquals($this->workflowItem, $entityFoo->getWorkflowItem());
         $this->assertEquals($this->workflowItem, $entityBar->getWorkflowItem());
     }
 
     public function testRemoveEntity()
     {
-        $entityFoo = new WorkflowItemEntity();
+        $entityFoo = new WorkflowBindEntity();
         $entityFoo->setEntityClass('Foo');
-        $entityBar = new WorkflowItemEntity();
+        $entityBar = new WorkflowBindEntity();
         $entityBar->setEntityClass('Bar');
-        $entityBaz = new WorkflowItemEntity();
+        $entityBaz = new WorkflowBindEntity();
         $entityBaz->setEntityClass('Baz');
-        $this->workflowItem->addEntity($entityFoo);
-        $this->workflowItem->addEntity($entityBar);
-        $this->workflowItem->addEntity($entityBaz);
+        $this->workflowItem->addBindEntity($entityFoo);
+        $this->workflowItem->addBindEntity($entityBar);
+        $this->workflowItem->addBindEntity($entityBaz);
 
-        $this->workflowItem->removeEntity($entityBar);
+        $this->workflowItem->removeBindEntity($entityBar);
 
-        $this->assertEquals(2, $this->workflowItem->getEntities()->count());
-        $this->assertEquals($entityFoo, $this->workflowItem->getEntities()->get(0));
-        $this->assertEquals($entityBaz, $this->workflowItem->getEntities()->get(2));
+        $this->assertEquals(2, $this->workflowItem->getBindEntities()->count());
+        $this->assertEquals($entityFoo, $this->workflowItem->getBindEntities()->get(0));
+        $this->assertEquals($entityBaz, $this->workflowItem->getBindEntities()->get(2));
 
-        $this->workflowItem->removeEntity($entityFoo);
+        $this->workflowItem->removeBindEntity($entityFoo);
 
-        $this->assertEquals(1, $this->workflowItem->getEntities()->count());
-        $this->assertEquals($entityBaz, $this->workflowItem->getEntities()->get(2));
+        $this->assertEquals(1, $this->workflowItem->getBindEntities()->count());
+        $this->assertEquals($entityBaz, $this->workflowItem->getBindEntities()->get(2));
 
-        $this->workflowItem->removeEntity($entityBaz);
-        $this->assertTrue($this->workflowItem->getEntities()->isEmpty());
+        $this->workflowItem->removeBindEntity($entityBaz);
+        $this->assertTrue($this->workflowItem->getBindEntities()->isEmpty());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $entities must be an instance of Doctrine\Common\Collections\Collection or an array
-     */
-    public function testSetEntitiesFails()
+    public function testHasBindEntity()
     {
-        $this->workflowItem->setEntities('roles');
+        $entityFoo = new WorkflowBindEntity();
+        $entityFoo->setId(1);
+        $entityBar = new WorkflowBindEntity();
+        $entityBar->setId(2);
+
+        $entityBaz = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity', array('hasSameEntity'));
+        $this->assertFalse($this->workflowItem->hasBindEntity($entityBaz));
+
+        $this->workflowItem->addBindEntity($entityFoo);
+        $this->workflowItem->addBindEntity($entityBar);
+
+        $entityBaz->expects($this->at(0))->method('hasSameEntity')->with($entityFoo)->will($this->returnValue(false));
+        $entityBaz->expects($this->at(1))->method('hasSameEntity')->with($entityBar)->will($this->returnValue(false));
+
+        $this->assertFalse($this->workflowItem->hasBindEntity($entityBaz));
+
+        $entityBaz->expects($this->at(0))->method('hasSameEntity')->with($entityFoo)->will($this->returnValue(true));
+
+        $this->assertTrue($this->workflowItem->hasBindEntity($entityBaz));
     }
 
     public function testCreatedAtAndPrePersist()

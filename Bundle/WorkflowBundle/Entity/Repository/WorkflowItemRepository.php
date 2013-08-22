@@ -24,7 +24,7 @@ class WorkflowItemRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('wi')
-            ->from('OroWorkflowBundle:WorkflowItemEntity', 'we')
+            ->from('OroWorkflowBundle:WorkflowBindEntity', 'we')
             ->innerJoin('OroWorkflowBundle:WorkflowItem', 'wi', 'WITH', 'wi = we.workflowItem')
             ->where('we.entityClass = :entityClass')
             ->andWhere('we.entityId = :entityId')

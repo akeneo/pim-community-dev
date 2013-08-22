@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Workflow item relation with custom entity
  *
- * @ORM\Table(name="oro_workflow_item_entity")
+ * @ORM\Table(name="oro_workflow_bind_entity")
  * @ORM\Entity
  */
-class WorkflowItemEntity
+class WorkflowBindEntity
 {
     /**
      * @var integer
@@ -27,15 +27,6 @@ class WorkflowItemEntity
      * @ORM\ManyToOne(targetEntity="WorkflowItem", inversedBy="entities")
      */
     protected $workflowItem;
-
-    /**
-     * Step name
-     *
-     * @var string
-     *
-     * @ORM\Column(name="step", type="string", length=255)
-     */
-    protected $stepName;
 
     /**
      * Full class name of related entity
@@ -69,7 +60,7 @@ class WorkflowItemEntity
      * Set id
      *
      * @param integer $id
-     * @return WorkflowItemEntity
+     * @return WorkflowBindEntity
      */
     public function setId($id)
     {
@@ -79,33 +70,10 @@ class WorkflowItemEntity
     }
 
     /**
-     * Set step name
-     *
-     * @param string $step
-     * @return WorkflowItemEntity
-     */
-    public function setStepName($step)
-    {
-        $this->stepName = $step;
-
-        return $this;
-    }
-
-    /**
-     * Get step name
-     *
-     * @return string
-     */
-    public function getStepName()
-    {
-        return $this->stepName;
-    }
-
-    /**
      * Set entity class
      *
      * @param string $entityClass
-     * @return WorkflowItemEntity
+     * @return WorkflowBindEntity
      */
     public function setEntityClass($entityClass)
     {
@@ -128,7 +96,7 @@ class WorkflowItemEntity
      * Set entity id
      *
      * @param string $entityId
-     * @return WorkflowItemEntity
+     * @return WorkflowBindEntity
      */
     public function setEntityId($entityId)
     {
@@ -151,7 +119,7 @@ class WorkflowItemEntity
      * Set WorkflowItem
      *
      * @param WorkflowItem $workflowItem
-     * @return WorkflowItemEntity
+     * @return WorkflowBindEntity
      */
     public function setWorkflowItem(WorkflowItem $workflowItem)
     {
@@ -168,5 +136,18 @@ class WorkflowItemEntity
     public function getWorkflowItem()
     {
         return $this->workflowItem;
+    }
+
+    /**
+     * Is current object is bind to same entity as other object
+     *
+     * @param WorkflowBindEntity $other
+     * @return bool
+     */
+    public function hasSameEntity(WorkflowBindEntity $other)
+    {
+        return
+            $this->entityId && $this->entityClass &&
+            $this->entityClass  == $other->entityClass && $this->entityId == $other->entityId;
     }
 }

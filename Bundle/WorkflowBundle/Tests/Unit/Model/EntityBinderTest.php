@@ -2,160 +2,174 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
-use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\BoundEntity;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
 class EntityBinderTest extends \PHPUnit_Framework_TestCase
 {
-    const DEFAULT_STEP = 'default_step';
-    const CUSTOM_STEP = 'custom_step';
-    const ENTITY_ID = 42;
-    const ENTITY_CLASS = 'Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\BoundEntity';
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $workflowRegistry;
 
     /**
-     * @param object $entity
-     * @param string|null $step
-     *
-     * @dataProvider bindDataProvider
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    public function testBind($entity, $step = null)
+    protected $doctrineRegistry;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $entityManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $classMetadata;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $workflowItem;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $workflowData;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $workflow;
+
+    /**
+     * @var EntityBinder
+     */
+    protected $binder;
+
+    protected function setUp()
     {
-        $entityManager = $this->getEntityManager($entity);
-        $managerRegistry = $this->getManagerRegistry($entity, $entityManager);
-
-        $workflowItem = new WorkflowItem();
-        $workflowItem->setCurrentStepName(self::DEFAULT_STEP);
-
-        $entityBinder = new EntityBinder($managerRegistry);
-        $workflowItemEntity = $entityBinder->bind($workflowItem, $entity, $step);
-
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity', $workflowItemEntity);
-        $this->assertEquals(self::ENTITY_CLASS, $workflowItemEntity->getEntityClass());
-        $this->assertEquals(self::ENTITY_ID, $workflowItemEntity->getEntityId());
-        $this->assertEquals($step ?: self::DEFAULT_STEP, $workflowItemEntity->getStepName());
-        $this->assertEquals($workflowItem, $workflowItemEntity->getWorkflowItem());
-        $this->assertEquals(array($workflowItemEntity), $workflowItem->getEntities()->toArray());
+        $this->workflowRegistry = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry')
+            ->setMethods(array('getWorkflow'))
+            ->disableOriginalConstructor()->getMock();
+        $this->doctrineRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()->getMock();
+        $this->classMetadata = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $this->workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
+        $this->workflowData = $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData');
+        $this->workflow = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Workflow');
+        $this->binder = new EntityBinder($this->workflowRegistry, $this->doctrineRegistry);
     }
 
-    /**
-     * @return array
-     */
-    public function bindDataProvider()
+    public function testBindEntitiesNotModified()
     {
-        return array(
-            'default step' => array(
-                'entity' => new BoundEntity(self::ENTITY_ID),
-            ),
-            'custom step' => array(
-                'entity' => new BoundEntity(self::ENTITY_ID),
-                'step'   => self::CUSTOM_STEP,
-            ),
-        );
+        $this->workflowItem->expects($this->once())->method('getData')->will($this->returnValue($this->workflowData));
+        $this->workflowData->expects($this->once())->method('isModified')->will($this->returnValue(false));
+        $this->workflowRegistry->expects($this->never())->method($this->anything());
+        $this->doctrineRegistry->expects($this->never())->method($this->anything());
+
+        $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
 
-    /**
-     * @param mixed $entity
-     * @param \PHPUnit_Framework_MockObject_MockObject $entityManager
-     * @return ManagerRegistry
-     */
-    protected function getManagerRegistry($entity, $entityManager)
+    public function testBindEntitiesNoBindAttributes()
     {
-        $managerRegistry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getManagerForClass'))
-            ->getMockForAbstractClass();
-        if (is_object($entity) && $entity instanceof BoundEntity) {
-            $managerRegistry->expects($this->once())
-                ->method('getManagerForClass')
-                ->with(get_class($entity))
-                ->will($this->returnValue($entityManager));
-        }
+        $workflowName = 'test_workflow';
+        $bindAttributeNames = array();
 
-        return $managerRegistry;
+        $this->workflowItem->expects($this->once())->method('getData')
+            ->will($this->returnValue($this->workflowData));
+        $this->workflowData->expects($this->once())->method('isModified')->will($this->returnValue(true));
+        $this->workflowItem->expects($this->once())->method('getWorkflowName')
+            ->will($this->returnValue($workflowName));
+
+        $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
+            ->will($this->returnValue($this->workflow));
+
+        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+            ->will($this->returnValue($bindAttributeNames));
+
+        $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
+            ->will($this->returnValue(array()));
+
+        $this->doctrineRegistry->expects($this->never())->method($this->anything());
+
+        $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
 
-    /**
-     * @param mixed $entity
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function getEntityManager($entity)
+    public function testBindEntities()
     {
-        $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getIdentifierValues'))
-            ->getMock();
-        $classMetadata->expects($this->any())
-            ->method('getIdentifierValues')
-            ->with($this->isInstanceOf(self::ENTITY_CLASS))
-            ->will(
-                $this->returnCallback(
-                    function (BoundEntity $entity) {
-                        return array('id' => $entity->id);
+        $workflowName = 'test_workflow';
+        $bindAttributeNames = array('foo', 'bar');
+        $fooEntity = $this->getMock('FooEntity');
+        $fooIds = array('id' => 1);
+        $barEntity = $this->getMock('BarEntity');
+        $barIds = array('id' => 2);
+
+        $this->workflowItem->expects($this->at(0))->method('getData')
+            ->will($this->returnValue($this->workflowData));
+        $this->workflowData->expects($this->once())->method('isModified')->will($this->returnValue(true));
+        $this->workflowItem->expects($this->at(1))->method('getWorkflowName')
+            ->will($this->returnValue($workflowName));
+
+        $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
+            ->will($this->returnValue($this->workflow));
+
+        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+            ->will($this->returnValue($bindAttributeNames));
+
+        $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
+            ->will($this->returnValue(array('foo' => $fooEntity, 'bar' => $barEntity)));
+
+        $this->doctrineRegistry->expects($this->at(0))->method('getManagerForClass')
+            ->with(get_class($fooEntity))
+            ->will($this->returnValue($this->entityManager));
+        $this->doctrineRegistry->expects($this->at(1))->method('getManagerForClass')
+            ->with(get_class($barEntity))
+            ->will($this->returnValue($this->entityManager));
+
+        $this->entityManager->expects($this->at(0))->method('getClassMetadata')
+            ->with(get_class($fooEntity))
+            ->will($this->returnValue($this->classMetadata));
+        $this->entityManager->expects($this->at(1))->method('getClassMetadata')
+            ->with(get_class($barEntity))
+            ->will($this->returnValue($this->classMetadata));
+
+        $this->classMetadata->expects($this->at(0))->method('getIdentifierValues')->with($fooEntity)
+            ->will($this->returnValue($fooIds));
+        $this->classMetadata->expects($this->at(1))->method('getIdentifierValues')->with($barEntity)
+            ->will($this->returnValue($barIds));
+
+        $this->workflowItem->expects($this->at(2))->method('hasBindEntity')
+            ->with(
+                $this->callback(
+                    function (WorkflowBindEntity $bindEntity) use ($fooEntity, $fooIds) {
+                        return $bindEntity->getEntityId() == $fooIds
+                            && $bindEntity->getEntityClass() == get_class($fooEntity);
                     }
                 )
-            );
-        /** @var ClassMetadata $classMetadata */
-        $classMetadata->setIdentifier(array('id'));
+            )
+            ->will($this->returnValue(true));
+        $this->workflowItem->expects($this->at(3))->method('hasBindEntity')
+            ->with(
+                $this->callback(
+                    function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
+                        return $bindEntity->getEntityId() == $barIds
+                            && $bindEntity->getEntityClass() == get_class($barEntity);
+                    }
+                )
+            )
+            ->will($this->returnValue(false));
 
-        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getClassMetadata'))
-            ->getMock();
-        if (is_object($entity) && $entity instanceof BoundEntity) {
-            $entityManager->expects($this->any())
-                ->method('getClassMetadata')
-                ->with(self::ENTITY_CLASS)
-                ->will($this->returnValue($classMetadata));
-        }
+        $this->workflowItem->expects($this->at(4))->method('addBindEntity')->with(
+            $this->callback(
+                function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
+                    return $bindEntity->getEntityId() == $barIds
+                        && $bindEntity->getEntityClass() == get_class($barEntity);
+                }
+            )
+        );
 
-        return $entityManager;
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    protected function executeBind($entity)
-    {
-        $entityManager = $this->getEntityManager($entity);
-        $managerRegistry = $this->getManagerRegistry($entity, $entityManager);
-
-        $workflowItem = new WorkflowItem();
-
-        $entityBinder = new EntityBinder($managerRegistry);
-        $entityBinder->bind($workflowItem, $entity);
-    }
-
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Bind operation requires object entity
-     */
-    public function testBindNotAnObjectException()
-    {
-        $entity = array(1, 2, 3);
-        $this->executeBind($entity);
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
-     * @expectedExceptionMessage Entity class "DateTime" is not manageable.
-     */
-    public function testBindNotManageableEntityException()
-    {
-        $entity = new \DateTime('now');
-        $this->executeBind($entity);
-    }
-
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Bound object must have ID value.
-     */
-    public function testBindEmptyEntityIdException()
-    {
-        $entity = new BoundEntity();
-        $this->executeBind($entity);
+        $this->assertTrue($this->binder->bindEntities($this->workflowItem));
     }
 }

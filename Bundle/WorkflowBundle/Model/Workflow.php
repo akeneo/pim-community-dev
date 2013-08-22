@@ -254,19 +254,48 @@ class Workflow
     }
 
     /**
-     * Get step attributes.
+     * Get attributes with option "managed_entity"
      *
-     * @return Attribute|null
+     * @return Collection
      */
-    public function getManagedEntityAttribute()
+    public function getManagedEntityAttributes()
     {
-        /** @var Attribute $attribute */
-        foreach ($this->getAttributes() as $attribute) {
-            if ($attribute->getOption('managed_entity')) {
-                return $attribute;
+        return $this->getAttributes()->filter(
+            function (Attribute $attribute) {
+                return $attribute->getType() == 'entity' && $attribute->getOption('managed_entity');
             }
+        );
+    }
+
+    /**
+     * Get list of attributes that require binding
+     *
+     * @return Collection
+     */
+    public function getBindEntityAttributes()
+    {
+        return $this->getAttributes()->filter(
+            function (Attribute $attribute) {
+                return $attribute->getType('entity') && $attribute->getOption('bind');
+            }
+        );
+    }
+
+    /**
+     * Get list of attributes names that require binding
+     *
+     * @return array
+     */
+    public function getBindEntityAttributeNames()
+    {
+        $result = array();
+
+        /** @var Attribute $attribute  */
+        foreach ($this->getBindEntityAttributes() as $attribute) {
+            $result[] = $attribute->getName();
         }
-        return null;
+
+        return $result;
     }
 
     /**

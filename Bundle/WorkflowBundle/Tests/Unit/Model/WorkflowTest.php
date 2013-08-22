@@ -324,6 +324,87 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $attributes->toArray());
     }
 
+    public function testGetManagedEntityAttributes()
+    {
+        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeOne->expects($this->once())->method('getName')->will($this->returnValue('attribute_one'));
+        $attributeOne->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeOne->expects($this->once())->method('getOption')->with('managed_entity')
+            ->will($this->returnValue(true));
+
+        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeTwo->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeTwo->expects($this->once())->method('getOption')->with('managed_entity')
+            ->will($this->returnValue(false));
+
+        $attributeThree = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeThree->expects($this->once())->method('getName')->will($this->returnValue('attribute_three'));
+        $attributeThree->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeThree->expects($this->once())->method('getOption')->with('managed_entity')
+            ->will($this->returnValue(true));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+
+        $managedEntitiesAttributes = $workflow->getManagedEntityAttributes();
+        $this->assertEquals(2, $managedEntitiesAttributes->count());
+        $this->assertEquals($attributeOne, $managedEntitiesAttributes->get('attribute_one'));
+        $this->assertEquals($attributeThree, $managedEntitiesAttributes->get('attribute_three'));
+    }
+
+    public function testGetBindEntityAttributes()
+    {
+        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeOne->expects($this->once())->method('getName')->will($this->returnValue('attribute_one'));
+        $attributeOne->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeOne->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(true));
+
+        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeTwo->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeTwo->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(false));
+
+        $attributeThree = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeThree->expects($this->once())->method('getName')->will($this->returnValue('attribute_three'));
+        $attributeThree->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeThree->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(true));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+
+        $bindEntitiesAttributes = $workflow->getBindEntityAttributes();
+        $this->assertEquals(2, $bindEntitiesAttributes->count());
+        $this->assertEquals($attributeOne, $bindEntitiesAttributes->get('attribute_one'));
+        $this->assertEquals($attributeThree, $bindEntitiesAttributes->get('attribute_three'));
+    }
+
+    public function testGetBindEntityAttributeNames()
+    {
+        $attributeOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeOne->expects($this->exactly(2))->method('getName')->will($this->returnValue('attribute_one'));
+        $attributeOne->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeOne->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(true));
+
+        $attributeTwo = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeTwo->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeTwo->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(false));
+
+        $attributeThree = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')->getMock();
+        $attributeThree->expects($this->exactly(2))->method('getName')->will($this->returnValue('attribute_three'));
+        $attributeThree->expects($this->once())->method('getType')->will($this->returnValue('entity'));
+        $attributeThree->expects($this->once())->method('getOption')->with('bind')
+            ->will($this->returnValue(true));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+
+        $this->assertEquals(array('attribute_one', 'attribute_three'), $workflow->getBindEntityAttributeNames());
+    }
+
     public function testGetStepAttributes()
     {
         $attributes = new ArrayCollection();

@@ -237,11 +237,11 @@ Workflow Item
 Oro\Bundle\WorkflowBundle\Entity\WorkflowItem
 
 **Description:**
-Specific instance of Worklflow, contains state of workflow - data as instance of WorkflowData, current step name and list of related entities as list of WorkflowItemEntity entities.
+Specific instance of Worklflow, contains state of workflow - data as instance of WorkflowData, current step name and list of related entities as list of WorkflowBindEntity entities.
 
 **Methods:**
-* **addEntity(WorkflowItemEntity)** - add new instance of related entity;
-* **removeEntity(WorkflowItemEntity)** - remove existing related entity.
+* **addBindEntity(WorkflowBindEntity)** - add new instance of related entity;
+* **removeBindEntity(WorkflowBindEntity)** - remove existing related entity.
 
 Workflow Item Repository
 ------------------------
@@ -254,7 +254,7 @@ Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository
 Workflow Item Entity
 --------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity
+Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity
 
 **Description:**
 Encapsulates relation of Workflow Item with specific entity, contains entity ID, entity class name and step name of Workflow.

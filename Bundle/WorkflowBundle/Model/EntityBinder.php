@@ -4,81 +4,95 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItemEntity;
-use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 
 class EntityBinder
 {
     /**
+     * @var WorkflowRegistry
+     */
+    protected $workflowRegistry;
+
+    /**
      * @var ManagerRegistry
      */
-    protected $registry;
+    protected $doctrineRegistry;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param WorkflowRegistry $workflowRegistry
+     * @param ManagerRegistry $doctrineRegistry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(WorkflowRegistry $workflowRegistry, ManagerRegistry $doctrineRegistry)
     {
-        $this->registry = $registry;
+        $this->workflowRegistry = $workflowRegistry;
+        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     /**
-     * @param WorkflowItem $item
-     * @param object $entity
-     * @param string $assignedStep
-     * @return WorkflowItemEntity
-     * @throws \LogicException
-     * @throws NotManageableEntityException
+     * Bind entities to workflow item
+     *
+     * @param WorkflowItem $workflowItem
+     * @return bool Returns true if new entities were binded
      */
-    public function bind(WorkflowItem $item, $entity, $assignedStep = null)
+    public function bindEntities(WorkflowItem $workflowItem)
     {
-        if (!is_object($entity)) {
-            throw new \LogicException('Bind operation requires object entity.');
+        $workflowData = $workflowItem->getData();
+        if (!$workflowData->isModified()) {
+            return false;
         }
 
-        $entityClass = $this->getEntityClass($entity);
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->registry->getManagerForClass($entityClass);
-        if (!$entityManager) {
-            throw new NotManageableEntityException($entityClass);
+        $workflow = $this->workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
+        $bindAttributeNames = $workflow->getBindEntityAttributeNames();
+        $entitiesToBind = $workflowData->getValues($bindAttributeNames);
+
+        $counter = 0;
+
+        foreach ($entitiesToBind as $entity) {
+            if ($this->bindEntity($workflowItem, $entity)) {
+                $counter++;
+            }
         }
 
-        $entityId = $this->getEntityId($entityManager, $entityClass, $entity);
-        $itemEntityStep = $assignedStep ?: $item->getCurrentStepName();
-
-        $itemEntity = new WorkflowItemEntity();
-        $itemEntity->setEntityClass($entityClass)
-            ->setEntityId($entityId)
-            ->setWorkflowItem($item)
-            ->setStepName($itemEntityStep);
-
-        $item->addEntity($itemEntity);
-
-        return $itemEntity;
+        return $counter > 0;
     }
 
     /**
-     * @param EntityManager $entityManager
-     * @param $entityClass
+     * Binds entity to WorkflowItem
+     *
+     * @param WorkflowItem $workflowItem
+     * @param mixed $entity
+     * @return bool Returns true if at least one entity was bound
+     */
+    protected function bindEntity(WorkflowItem $workflowItem, $entity)
+    {
+        $bindEntity = new WorkflowBindEntity();
+        $bindEntity->setEntityClass($this->getEntityClass($entity));
+        $bindEntity->setEntityId($this->getEntityId($entity));
+
+        if (!$workflowItem->hasBindEntity($bindEntity)) {
+            $workflowItem->addBindEntity($bindEntity);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get values of entity identifiers
+     *
      * @param $entity
-     * @return int|null
-     * @throws \LogicException
+     * @return array
      */
-    protected function getEntityId(EntityManager $entityManager, $entityClass, $entity)
+    protected function getEntityId($entity)
     {
+        $entityClass = get_class($entity);
+        $entityManager = $this->doctrineRegistry->getManagerForClass($entityClass);
         $classMetadata = $entityManager->getClassMetadata($entityClass);
-        $idField = $classMetadata->getSingleIdentifierFieldName();
-        $entityIdValues = $classMetadata->getIdentifierValues($entity);
-        $entityId = $entityIdValues[$idField];
+        $identifiers = $classMetadata->getIdentifierValues($entity);
 
-        if (!$entityId) {
-            throw new \LogicException('Bound object must have ID value.');
-        }
-
-        return $entityId;
+        return $identifiers;
     }
 
     /**

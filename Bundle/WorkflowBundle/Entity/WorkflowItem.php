@@ -7,10 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
-
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Workflow item
@@ -62,7 +62,7 @@ class WorkflowItem
      * @var Collection
      *
      * @ORM\OneToMany(
-     *  targetEntity="WorkflowItemEntity",
+     *  targetEntity="WorkflowBindEntity",
      *  mappedBy="workflowItem",
      *  cascade={"persist", "remove"},
      *  orphanRemoval=true
@@ -211,48 +211,25 @@ class WorkflowItem
     }
 
     /**
-     * Set entities
-     *
-     * @param \Traversable|array $entities
-     * @return WorkflowItem
-     * @throws \InvalidArgumentException If $entities is not an array or Collection
-     */
-    public function setEntities($entities)
-    {
-        if (!$entities instanceof Collection && !is_array($entities)) {
-            throw new \InvalidArgumentException(
-                '$entities must be an instance of Doctrine\Common\Collections\Collection or an array'
-            );
-        }
-
-        $this->entities->clear();
-        foreach ($entities as $entity) {
-            $this->addEntity($entity);
-        }
-
-        return $this;
-    }
-
-    /**
      * Get entities
      *
-     * @return Collection|WorkflowItemEntity[]
+     * @return Collection
      */
-    public function getEntities()
+    public function getBindEntities()
     {
         return $this->entities;
     }
 
     /**
-     * Add WorkflowItemEntity
+     * Add WorkflowBindEntity
      *
-     * @param WorkflowItemEntity $entity
+     * @param WorkflowBindEntity $entity
      * @return WorkflowItem
      */
-    public function addEntity(WorkflowItemEntity $entity)
+    public function addBindEntity(WorkflowBindEntity $entity)
     {
-        if (!$this->getEntities()->contains($entity)) {
-            $this->getEntities()->add($entity);
+        if (!$this->hasBindEntity($entity)) {
+            $this->getBindEntities()->add($entity);
             $entity->setWorkflowItem($this);
         }
 
@@ -260,15 +237,32 @@ class WorkflowItem
     }
 
     /**
-     * Remove WorkflowItemEntity
+     * Is entity already bind to WorkflowItem
      *
-     * @param WorkflowItemEntity $entity
+     * @param WorkflowBindEntity $originalEntity
+     * @return bool
+     */
+    public function hasBindEntity(WorkflowBindEntity $originalEntity)
+    {
+        $bindEntities = $this->getBindEntities()->filter(
+            function (WorkflowBindEntity $existedEntity) use ($originalEntity) {
+                return $originalEntity->hasSameEntity($existedEntity);
+            }
+        );
+
+        return $bindEntities->count() > 0;
+    }
+
+    /**
+     * Remove WorkflowBindEntity
+     *
+     * @param WorkflowBindEntity $entity
      * @return WorkflowItem
      */
-    public function removeEntity(WorkflowItemEntity $entity)
+    public function removeBindEntity(WorkflowBindEntity $entity)
     {
-        if ($this->getEntities()->contains($entity)) {
-            $this->getEntities()->removeElement($entity);
+        if ($this->getBindEntities()->contains($entity)) {
+            $this->getBindEntities()->removeElement($entity);
         }
 
         return $this;

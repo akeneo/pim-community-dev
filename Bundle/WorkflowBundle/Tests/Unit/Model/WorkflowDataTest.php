@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
 class WorkflowDataTest extends \PHPUnit_Framework_TestCase
@@ -42,6 +44,13 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
         $this->data->remove('foo');
         $this->assertFalse($this->data->has('foo'));
         $this->assertNull($this->data->get('foo'));
+    }
+
+    protected function createAttribute($name)
+    {
+        $attribute = new Attribute();
+        $attribute->setName($name);
+        return $attribute;
     }
 
     public function testIssetGetSetUnset()
@@ -110,5 +119,41 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(array('foo' => 'bar', 'baz' => 'qux'), $data);
+    }
+
+    public function testGetValuesAll()
+    {
+        $this->data->set('foo', 'foo_value');
+        $this->data->set('bar', 'bar_value');
+        $this->data->set('baz', null);
+        $this->data->set('quux', 'quux_value');
+
+        $this->assertEquals(
+            array(
+                'foo' => 'foo_value',
+                'bar' => 'bar_value',
+                'baz' => null,
+                'quux' => 'quux_value',
+            ),
+            $this->data->getValues()
+        );
+    }
+
+    public function testGetValuesWithNames()
+    {
+        $this->data->set('foo', 'foo_value');
+        $this->data->set('bar', 'bar_value');
+        $this->data->set('baz', null);
+        $this->data->set('quux', 'quux_value');
+
+        $this->assertEquals(
+            array(
+                'foo' => 'foo_value',
+                'baz' => null,
+                'qux' => null,
+                'quux' => 'quux_value',
+            ),
+            $this->data->getValues(array('foo', 'baz', 'qux', 'quux'))
+        );
     }
 }

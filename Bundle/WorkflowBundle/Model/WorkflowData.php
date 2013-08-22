@@ -77,6 +77,28 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
+     * Get data values
+     *
+     * @param array $names Optional list of names of values that should be filtered
+     * @return array
+     */
+    public function getValues(array $names = array())
+    {
+        if (!$names) {
+            return $this->data;
+        }
+
+        $result = array();
+
+        /** @var Attribute $attribute */
+        foreach ($names as $name) {
+            $result[$name] = $this->get($name);
+        }
+
+        return $result;
+    }
+
+    /**
      * Has value
      *
      * @param string $name
