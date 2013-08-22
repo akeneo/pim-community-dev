@@ -30,32 +30,32 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert validation with null
      */
-//     public function testNullValue()
-//     {
-//         $context = $this->getExecutionContext();
-//         $context
-//             ->expects($this->once())
-//             ->method('addViolation')
-//             ->with($this->constraint->messageNotNull);
+    public function testNullValue()
+    {
+        $context = $this->getExecutionContext();
+        $context
+            ->expects($this->once())
+            ->method('addViolation')
+            ->with($this->constraint->messageNotNull);
 
-//         $this->validator->initialize($context);
-//         $this->validator->validate(null, $this->constraint);
-//     }
+        $this->validator->initialize($context);
+        $this->validator->validate(null, $this->constraint);
+    }
 
-//     /**
-//      * Assert validation with wrong entity
-//      */
-//     public function testWithWrongEntity()
-//     {
-//         $context = $this->getExecutionContext();
-//         $context
-//             ->expects($this->never())
-//             ->method('addViolation');
+    /**
+     * Assert validation with wrong entity
+     */
+    public function testWithWrongEntity()
+    {
+        $context = $this->getExecutionContext();
+        $context
+            ->expects($this->never())
+            ->method('addViolation');
 
-//         $this->validator->initialize($context);
+        $this->validator->initialize($context);
 
-//         $this->validator->validate(new \stdClass(), $this->constraint);
-//     }
+        $this->validator->validate(new \stdClass(), $this->constraint);
+    }
 
 
     /**
