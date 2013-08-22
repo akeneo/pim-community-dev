@@ -70,7 +70,7 @@ class AttributeNormalizer implements NormalizerInterface
             'metric_family'           => (string) $attribute->getMetricFamily(),
             'default_metric_unit'     => (string) $attribute->getDefaultMetricUnit(),
             'allowed_file_sources'    => (string) $attribute->getAllowedFileSources(),
-            'allowed_extensions' => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
+            'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
             'max_file_size'           => (string) $attribute->getMaxFileSize(),
         );
 
