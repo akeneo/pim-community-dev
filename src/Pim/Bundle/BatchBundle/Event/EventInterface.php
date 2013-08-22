@@ -11,11 +11,15 @@ namespace Pim\Bundle\BatchBundle\Event;
  */
 interface EventInterface
 {
+    /** Job execution events */
     const BEFORE_JOB_EXECUTION      = 'pim_batch.before_job_execution';
     const JOB_EXECUTION_STOPPED     = 'pim_batch.job_execution_stopped';
     const JOB_EXECUTION_INTERRUPTED = 'pim_batch.job_execution_interrupted';
     const JOB_EXECUTION_FATAL_ERROR = 'pim_batch.job_execution_fatal_error';
     const BEFORE_JOB_STATUS_UPGRADE = 'pim_batch.before_job_status_upgrade';
+    const AFTER_JOB_EXECUTION       = 'pim_batch.after_job_execution';
 
-    const BEFORE_STEP_EXECUTION     = 'pim_batch.before_step_execution';
+    /** Step execution events */
+    const BEFORE_STEP_EXECUTION  = 'pim_batch.before_step_execution';
+    const STEP_EXECUTION_SUCCEED = 'pim_batch.step_execution_succeed';
 }

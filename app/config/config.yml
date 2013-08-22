@@ -222,6 +222,7 @@ knp_gaufrette:
             alias:   pim_filesystem
 
 pim_batch:
+    log_dir: %batch_log_dir%
     jobs:
         product_export:
             title:      pim_import_export.jobs.product_export.title

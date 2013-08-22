@@ -3,13 +3,13 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\BatchBundle\Event\StepEvent;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -335,6 +335,8 @@ class Job implements JobInterface
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
         }
+
+        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
 
     /**
@@ -356,7 +358,6 @@ class Job implements JobInterface
 
         $stepExecution = $jobExecution->createStepExecution($step->getName());
 
-        $this->dispatchStepEvent(EventInterface::BEFORE_STEP_EXECUTION, $step);
         try {
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
@@ -382,18 +383,6 @@ class Job implements JobInterface
     private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
     {
         $event = new JobExecutionEvent($jobExecution);
-        $this->dispatch($eventName, $event);
-    }
-
-    /**
-     * Trigger event linked to Step
-     *
-     * @param string        $eventName Name of the event
-     * @param StepInterface $step      Step object
-     */
-    private function dispatchStepEvent($eventName, StepInterface $step)
-    {
-        $event = new StepEvent($step);
         $this->dispatch($eventName, $event);
     }
 
