@@ -92,7 +92,7 @@ class AddVersionListener implements EventSubscriber
             $em   = $args->getEntityManager();
             $user = $this->getUser($em);
             if ($user) {
-                foreach ($this->pendingEntities as $oid => $versionable) {
+                foreach ($this->pendingEntities as $versionable) {
                     $this->writeSnapshot($em, $versionable, $user);
                 }
                 $this->pendingEntities = array();
@@ -108,29 +108,28 @@ class AddVersionListener implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            $this->checkScheduledUpdate($em, $entity);
+            $this->checkScheduledUpdate($entity);
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            $this->checkScheduledUpdate($em, $entity);
+            $this->checkScheduledUpdate($entity);
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
-            $this->checkScheduledCollection($em, $entity);
+            $this->checkScheduledCollection($entity);
         }
 
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->checkScheduledCollection($em, $entity);
+            $this->checkScheduledCollection($entity);
         }
     }
 
     /**
      * Check if an entity must be versioned due to entity changes
      *
-     * @param EntityManager $em
-     * @param object        $entity
+     * @param object $entity
      */
-    public function checkScheduledUpdate(EntityManager $em, $entity)
+    public function checkScheduledUpdate($entity)
     {
         if ($entity instanceof VersionableInterface) {
             $this->addPendingVersioning($entity);
@@ -164,10 +163,9 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if an entity must be versioned due to collection changes
      *
-     * @param EntityManager $em
-     * @param object        $entity
+     * @param object $entity
      */
-    public function checkScheduledCollection(EntityManager $em, $entity)
+    public function checkScheduledCollection($entity)
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
             // TODO : special case, when the product collection of a category is updated, we update each product
