@@ -111,7 +111,8 @@ class RestApiUserTest extends WebTestCase
         $requestGroup = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(2)
+                "roles" => array(2),
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_group'), $requestGroup);
