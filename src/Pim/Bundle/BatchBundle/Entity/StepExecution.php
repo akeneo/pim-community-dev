@@ -73,23 +73,9 @@ class StepExecution
     /**
      * @var integer
      *
-     * @orm\column(name="read_skip_count", type="integer")
+     * @ORM\Column(name="filter_count", type="integer")
      */
-    private $readSkipCount = 0;
-
-    /**
-     * @var integer
-     *
-     * @orm\column(name="process_skip_count", type="integer")
-     */
-    private $processSkipCount = 0;
-
-    /**
-     * @var integer
-     *
-     * @orm\column(name="write_skip_count", type="integer")
-     */
-    private $writeSkipCount = 0;
+    private $filterCount = 0;
 
     /**
      * @var DateTime
@@ -132,12 +118,6 @@ class StepExecution
      */
     private $terminateOnly = false;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="filter_count", type="integer")
-     */
-    private $filterCount = 0;
 
     /**
      * @var array
@@ -451,9 +431,8 @@ class StepExecution
      */
     public function __toString()
     {
-        $summary = "id=%d, name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
-            . ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"
-            . ", processSkipCount=%d";
+        $summary = 'id=%d, name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s], '.
+            'readCount=%d, writeCount=%d, filterCount=%d';
 
         return sprintf(
             $summary,
@@ -461,12 +440,10 @@ class StepExecution
             $this->stepName,
             $this->status,
             $this->exitCode,
+            $this->exitDescription,
             $this->readCount,
-            $this->filterCount,
             $this->writeCount,
-            $this->readSkipCount,
-            $this->writeSkipCount,
-            $this->processSkipCount
+            $this->filterCount
         );
     }
 }
