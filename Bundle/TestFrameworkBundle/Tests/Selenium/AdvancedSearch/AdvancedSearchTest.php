@@ -40,9 +40,10 @@ class AdvancedSearchTest extends \PHPUnit_Extensions_Selenium2TestCase
         //Fill advanced search input field
         $login->byId('query')->value($query . $userData[$userField]);
         $login->byId('sendButton')->click();
+        $login->waitPageToLoad();
         $login->waitForAjax();
         //Check that result is not null
-        $result = strtolower($userData[$userField]);
+        $result = strtolower($userData['USERNAME']);
         $login->assertElementPresent(
             "//div[@class='container-fluid']//div[@class='search_stats alert alert-info']//h3[contains(., '{$result}')]",
             'Search results does not found'
