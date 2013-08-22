@@ -125,10 +125,9 @@ class ItemStep extends AbstractStep
             $this->writer->write($itemsToWrite);
         }
 
-       $stepExecution->setReadCount($readCount);
-       $stepExecution->setWriteCount($writeCount);
-       $stepExecution->setFilterCount($readCount - $writeCount);
-
+        $stepExecution->setReadCount($readCount);
+        $stepExecution->setWriteCount($writeCount);
+        $stepExecution->setFilterCount($readCount - $writeCount);
 
     }
 }
