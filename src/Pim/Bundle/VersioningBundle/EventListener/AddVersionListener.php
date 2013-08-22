@@ -107,19 +107,19 @@ class AddVersionListener implements EventSubscriber
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
 
-        foreach ($uow->getScheduledEntityInsertions() AS $entity) {
+        foreach ($uow->getScheduledEntityInsertions() as $entity) {
             $this->checkScheduledUpdate($em, $entity);
         }
 
-        foreach ($uow->getScheduledEntityUpdates() AS $entity) {
+        foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $this->checkScheduledUpdate($em, $entity);
         }
 
-        foreach ($uow->getScheduledCollectionDeletions() AS $entity) {
+        foreach ($uow->getScheduledCollectionDeletions() as $entity) {
             $this->checkScheduledCollection($em, $entity);
         }
 
-        foreach ($uow->getScheduledCollectionUpdates() AS $entity) {
+        foreach ($uow->getScheduledCollectionUpdates() as $entity) {
             $this->checkScheduledCollection($em, $entity);
         }
     }
@@ -135,27 +135,27 @@ class AddVersionListener implements EventSubscriber
         if ($entity instanceof VersionableInterface) {
             $this->addPendingVersioning($entity);
 
-        } else if($entity instanceof ProductValueInterface) {
+        } elseif ($entity instanceof ProductValueInterface) {
             $product = $entity->getEntity();
             if ($product) {
                 $this->addPendingVersioning($product);
             }
 
-        } else if ($entity instanceof ProductPrice) {
+        } elseif ($entity instanceof ProductPrice) {
             $product = $entity->getValue()->getEntity();
             $this->addPendingVersioning($product);
 
-        } else if ($entity instanceof AbstractTranslation) {
+        } elseif ($entity instanceof AbstractTranslation) {
             $translatedEntity = $entity->getForeignKey();
             if ($translatedEntity instanceof VersionableInterface) {
                 $this->addPendingVersioning($translatedEntity);
             }
 
-        } else if ($entity instanceof AttributeOption) {
+        } elseif ($entity instanceof AttributeOption) {
             $attribute = $entity->getAttribute();
             $this->addPendingVersioning($attribute);
 
-        } else if ($entity instanceof AttributeOptionValue) {
+        } elseif ($entity instanceof AttributeOptionValue) {
             $attribute = $entity->getOption()->getAttribute();
             $this->addPendingVersioning($attribute);
         }
