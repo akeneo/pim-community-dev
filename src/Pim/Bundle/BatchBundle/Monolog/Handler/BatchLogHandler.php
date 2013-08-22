@@ -18,7 +18,12 @@ class BatchLogHandler extends StreamHandler
     {
         $this->filename = $this->generateLogFilename($logDir);
 
-        parent::__construct(sprintf('%s/../web/%s', $rootDir, $this->filename));
+        $logFile = sprintf('%s/../web/%s', $rootDir, $this->filename);
+        if (!is_dir(dirname($logFile))) {
+            mkdir(dirname($logFile), 0755, true);
+        }
+
+        parent::__construct($logFile);
     }
 
     public function getFilename()

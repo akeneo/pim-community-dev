@@ -23,13 +23,6 @@ framework:
         enabled: true
         path: /_fragment # used for controller action in template
 
-monolog:
-    handlers:
-        batch:
-            type: service
-            id: pim_batch.separate_file_handler
-            channels: [batch]
-
 # Twig Configuration
 twig:
     debug:                    "%kernel.debug%"
