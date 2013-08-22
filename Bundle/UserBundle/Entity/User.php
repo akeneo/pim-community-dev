@@ -220,8 +220,7 @@ class User extends AbstractEntityFlexible implements
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Soap\ComplexType("int", nillable=true)
-     * @Exclude
+     * @Soap\ComplexType("string", nillable=true)
      */
     protected $owner;
 
