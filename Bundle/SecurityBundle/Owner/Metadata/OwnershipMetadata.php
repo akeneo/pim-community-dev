@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Acl\Metadata;
+namespace Oro\Bundle\SecurityBundle\Owner\Metadata;
 
 /**
  * This class represents the entity ownership metadata
@@ -20,25 +20,31 @@ class OwnershipMetadata implements \Serializable
     /**
      * @var string
      */
+    protected $ownerFieldName;
+
+    /**
+     * @var string
+     */
     protected $ownerColumnName;
 
     /**
      * Constructor
      *
      * @param string $ownershipType Can be one of ORGANIZATION, BUSINESS_UNIT or USER
+     * @param string $ownerFieldName
      * @param string $ownerColumnName
      * @throws \InvalidArgumentException
      */
-    public function __construct($ownershipType = '', $ownerColumnName = '')
+    public function __construct($ownershipType = '', $ownerFieldName = '', $ownerColumnName = '')
     {
-        switch (strtolower($ownershipType)) {
-            case 'organization':
+        switch ($ownershipType) {
+            case 'ORGANIZATION':
                 $this->ownershipType = self::OWNERSHIP_TYPE_ORGANIZATION;
                 break;
-            case 'business_unit':
+            case 'BUSINESS_UNIT':
                 $this->ownershipType = self::OWNERSHIP_TYPE_BUSINESS_UNIT;
                 break;
-            case 'user':
+            case 'USER':
                 $this->ownershipType = self::OWNERSHIP_TYPE_USER;
                 break;
             default:
@@ -48,6 +54,10 @@ class OwnershipMetadata implements \Serializable
                 $this->ownershipType = self::OWNERSHIP_TYPE_NONE;
                 break;
         }
+        if ($this->ownershipType !== self::OWNERSHIP_TYPE_NONE && empty($ownerFieldName)) {
+            throw new \InvalidArgumentException('The owner field name must not be empty.');
+        }
+        $this->ownerFieldName = $ownerFieldName;
         if ($this->ownershipType !== self::OWNERSHIP_TYPE_NONE && empty($ownerColumnName)) {
             throw new \InvalidArgumentException('The owner column name must not be empty.');
         }
@@ -95,11 +105,21 @@ class OwnershipMetadata implements \Serializable
     }
 
     /**
-     * Returns the name of the database column is used to store the entity owner
+     * Gets the name of the field is used to store the entity owner
      *
      * @return string
      */
-    public function getOwnerIdColumnName()
+    public function getOwnerFieldName()
+    {
+        return $this->ownerFieldName;
+    }
+
+    /**
+     * Gets the name of the database column is used to store the entity owner
+     *
+     * @return string
+     */
+    public function getOwnerColumnName()
     {
         return $this->ownerColumnName;
     }
@@ -112,6 +132,7 @@ class OwnershipMetadata implements \Serializable
         return serialize(
             array(
                 $this->ownershipType,
+                $this->ownerFieldName,
                 $this->ownerColumnName,
             )
         );
@@ -124,6 +145,7 @@ class OwnershipMetadata implements \Serializable
     {
         list(
             $this->ownershipType,
+            $this->ownerFieldName,
             $this->ownerColumnName,
             ) = unserialize($serialized);
     }

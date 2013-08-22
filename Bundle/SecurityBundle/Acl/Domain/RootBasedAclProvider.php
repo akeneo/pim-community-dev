@@ -5,8 +5,11 @@ namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
-use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 
+/**
+ * Extends the default Symfony ACL provider with support of a root ACL.
+ * It means that the special ACL named "root" will be used in case when more sufficient ACL was not found.
+ */
 class RootBasedAclProvider implements AclProviderInterface
 {
     /**
@@ -61,7 +64,7 @@ class RootBasedAclProvider implements AclProviderInterface
                 return $this->baseAclProvider->findAcl($rootOid, $sids);
             } catch (AclNotFoundException $noRootAcl) {
                 throw new AclNotFoundException(
-                    sprintf('There is no ACL for %s. ACL for %s does not found as well.', $oid, $rootOid),
+                    sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),
                     0,
                     $noAcl
                 );

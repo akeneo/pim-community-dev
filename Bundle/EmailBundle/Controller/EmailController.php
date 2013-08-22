@@ -29,19 +29,6 @@ use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 class EmailController extends Controller
 {
     /**
-     * @Route("/test", name="oro_email_test")
-     */
-    public function testAction()
-    {
-        /** @var \Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory $oid */
-        $oid = $this->get('oro_security.factory.object_identity');
-        /** @var \Symfony\Component\Security\Core\SecurityContext $sc */
-        $sc = $this->get('security.context');
-        $b = $sc->isGranted('VIEW', $oid->forClass('Test'));
-        var_dump($b);
-    }
-
-    /**
      * @Route("/view/{id}", name="oro_email_view", requirements={"id"="\d+"})
      * @Acl(
      *      id="oro_email_view",

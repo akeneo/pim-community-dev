@@ -23,6 +23,7 @@ namespace Oro\Bundle\SecurityBundle\Acl\Permission;
  */
 class MaskBuilder
 {
+    // These access levels give a user access to own records and objects that are shared with the user.
     const MASK_VIEW_BASIC         = 1;         // 1 << 0
     const MASK_CREATE_BASIC       = 2;         // 1 << 1
     const MASK_EDIT_BASIC         = 4;         // 1 << 2
@@ -30,6 +31,7 @@ class MaskBuilder
     const MASK_ASSIGN_BASIC       = 16;        // 1 << 4
     const MASK_SHARE_BASIC        = 32;        // 1 << 5
 
+    // These access levels give a user access to records in the user's business unit.
     const MASK_VIEW_LOCAL         = 64;        // 1 << 6
     const MASK_CREATE_LOCAL       = 128;       // 1 << 7
     const MASK_EDIT_LOCAL         = 256;       // 1 << 8
@@ -37,6 +39,8 @@ class MaskBuilder
     const MASK_ASSIGN_LOCAL       = 1024;      // 1 << 10
     const MASK_SHARE_LOCAL        = 2048;      // 1 << 11
 
+    // These access levels give a user access to records in the user's business unit
+    // and all business units subordinate to the user's business unit.
     const MASK_VIEW_DEEP          = 4096;      // 1 << 12
     const MASK_CREATE_DEEP        = 8192;      // 1 << 13
     const MASK_EDIT_DEEP          = 16384;     // 1 << 14
@@ -44,6 +48,8 @@ class MaskBuilder
     const MASK_ASSIGN_DEEP        = 65536;     // 1 << 16
     const MASK_SHARE_DEEP         = 131072;    // 1 << 17
 
+    // These access levels give a user access to all records within the organization,
+    // regardless of the business unit hierarchical level to which the instance or the user belongs.
     const MASK_VIEW_GLOBAL        = 262144;    // 1 << 18
     const MASK_CREATE_GLOBAL      = 524288;    // 1 << 19
     const MASK_EDIT_GLOBAL        = 1048576;   // 1 << 20
@@ -81,7 +87,7 @@ class MaskBuilder
     }
 
     /**
-     * Returns the mask of this permission
+     * Gets the mask of this permission
      *
      * @return integer
      */
@@ -143,7 +149,7 @@ class MaskBuilder
     }
 
     /**
-     * Returns a human-readable representation of this mask
+     * Gets a human-readable representation of this mask
      *
      * @param bool $brief optional; defaults to false
      *                    Determine whether the representation should be in brief of full format
@@ -169,7 +175,7 @@ class MaskBuilder
     }
 
     /**
-     * Returns the code for the passed mask
+     * Gets the code for the passed mask
      *
      * @param integer $mask
      * @return string

@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Permission;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
 
-use Oro\Bundle\SecurityBundle\Acl\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 
 class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +13,8 @@ class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($metadata->isOrganizationOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
         $this->assertFalse($metadata->isUserOwned());
-        $this->assertEquals('', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('', $metadata->getOwnerFieldName());
+        $this->assertEquals('', $metadata->getOwnerColumnName());
     }
 
     /**
@@ -27,50 +28,63 @@ class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
+    public function testConstructorWithoutOwnerFieldName()
+    {
+        new OwnershipMetadata('ORGANIZATION');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testConstructorWithoutOwnerIdColumnName()
     {
-        new OwnershipMetadata('organization');
+        new OwnershipMetadata('ORGANIZATION', 'org');
     }
 
     public function testOrganizationOwnership()
     {
-        $metadata = new OwnershipMetadata('organization', 'org_id');
+        $metadata = new OwnershipMetadata('ORGANIZATION', 'org', 'org_id');
         $this->assertTrue($metadata->hasOwner());
         $this->assertTrue($metadata->isOrganizationOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
         $this->assertFalse($metadata->isUserOwned());
-        $this->assertEquals('org_id', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('org', $metadata->getOwnerFieldName());
+        $this->assertEquals('org_id', $metadata->getOwnerColumnName());
     }
 
     public function testBusinessUnitOwnership()
     {
-        $metadata = new OwnershipMetadata('business_unit', 'bu_id');
+        $metadata = new OwnershipMetadata('BUSINESS_UNIT', 'bu', 'bu_id');
         $this->assertTrue($metadata->hasOwner());
         $this->assertFalse($metadata->isOrganizationOwned());
         $this->assertTrue($metadata->isBusinessUnitOwned());
         $this->assertFalse($metadata->isUserOwned());
-        $this->assertEquals('bu_id', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('bu', $metadata->getOwnerFieldName());
+        $this->assertEquals('bu_id', $metadata->getOwnerColumnName());
     }
 
     public function testUserOwnership()
     {
-        $metadata = new OwnershipMetadata('user', 'user_id');
+        $metadata = new OwnershipMetadata('USER', 'usr', 'user_id');
         $this->assertTrue($metadata->hasOwner());
         $this->assertFalse($metadata->isOrganizationOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
         $this->assertTrue($metadata->isUserOwned());
-        $this->assertEquals('user_id', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('usr', $metadata->getOwnerFieldName());
+        $this->assertEquals('user_id', $metadata->getOwnerColumnName());
     }
 
     public function testSerialization()
     {
-        $metadata = new OwnershipMetadata('organization', 'org_id');
+        $metadata = new OwnershipMetadata('ORGANIZATION', 'org', 'org_id');
         $data = $metadata->serialize();
         $metadata = new OwnershipMetadata();
         $this->assertFalse($metadata->isOrganizationOwned());
-        $this->assertEquals('', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('', $metadata->getOwnerFieldName());
+        $this->assertEquals('', $metadata->getOwnerColumnName());
         $metadata->unserialize($data);
         $this->assertTrue($metadata->isOrganizationOwned());
-        $this->assertEquals('org_id', $metadata->getOwnerIdColumnName());
+        $this->assertEquals('org', $metadata->getOwnerFieldName());
+        $this->assertEquals('org_id', $metadata->getOwnerColumnName());
     }
 }

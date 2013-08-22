@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 
 /**
  * A factory class to create ACL ObjectIdentity objects
@@ -22,6 +23,16 @@ class ObjectIdentityFactory
         'entity' => 'forEntityClass',
         'action' => 'forAction',
     );
+
+    /**
+     * @var ObjectClassAccessor
+     */
+    protected $objectClassAccessor;
+
+    /**
+     * @var ObjectIdAccessor
+     */
+    protected $objectIdAccessor;
 
     /**
      * @var EntityManager
@@ -45,10 +56,17 @@ class ObjectIdentityFactory
     /**
      * Constructor
      *
+     * @param ObjectClassAccessor $objectClassAccessor
+     * @param ObjectIdAccessor $objectIdAccessor
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
-    {
+    public function __construct(
+        ObjectClassAccessor $objectClassAccessor,
+        ObjectIdAccessor $objectIdAccessor,
+        EntityManager $em
+    ) {
+        $this->objectClassAccessor = $objectClassAccessor;
+        $this->objectIdAccessor = $objectIdAccessor;
         $this->em = $em;
         $this->root = new ObjectIdentity('root', 'Root');
     }
@@ -67,23 +85,24 @@ class ObjectIdentityFactory
     /**
      * Constructs an ObjectIdentity for the given domain object
      *
-     * @param object $obj
+     * @param object $domainObject
      * @return ObjectIdentity
+     * @throws InvalidDomainObjectException
      */
-    public function fromDomainObject($obj)
+    public function fromDomainObject($domainObject)
     {
-        return ObjectIdentity::fromDomainObject($obj);
-    }
+        if (!is_object($domainObject)) {
+            throw new InvalidDomainObjectException('$domainObject must be an object.');
+        }
 
-    /**
-     * Constructs an ObjectIdentity for the given domain object
-     *
-     * @param object $obj
-     * @return ObjectIdentity
-     */
-    public function fromEntityObject($obj)
-    {
-        return $this->fromDomainObject($obj);
+        try {
+            return new ObjectIdentity(
+                $this->objectIdAccessor->getId($domainObject),
+                $this->objectClassAccessor->getClass($domainObject)
+            );
+        } catch (\InvalidArgumentException $invalid) {
+            throw new InvalidDomainObjectException($invalid->getMessage(), 0, $invalid);
+        }
     }
 
     /**
@@ -133,7 +152,7 @@ class ObjectIdentityFactory
      */
     public function forClass($className)
     {
-        return new ObjectIdentity('class', $className);
+        return new ObjectIdentity('class', $this->objectClassAccessor->getClass($className));
     }
 
     /**

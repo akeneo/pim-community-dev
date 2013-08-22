@@ -1,34 +1,97 @@
 parameters:
-    oro_security.factory.object_identity.class:                Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+    oro_security.entity.organization.class:                    Oro\Bundle\OrganizationBundle\Entity\Organization
+    oro_security.entity.business_unit.class:                   Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+    oro_security.entity.user.class:                            Oro\Bundle\UserBundle\Entity\User
+    oro_security.entity.owners:
+        organization: %oro_security.entity.organization.class%
+        business_unit: %oro_security.entity.business_unit.class%
+        user: %oro_security.entity.user.class%
+
+    oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
     oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
-    oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
     oro_security.acl.permission_granting_strategy.class:       Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy
-    oro_security.acl.permission.map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
+    oro_security.acl.permission_map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
+    oro_security.acl.object_identity_factory.class:            Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+    oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
+    oro_security.acl.object_class_accessor.class:              Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor
+    oro_security.acl.object_id_accessor.class:                 Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor
+
+    oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
+    oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\TreeBasedOwnershipDecisionMaker
+    oro_security.owner.ownership_metadata_provider.class:      Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider
+    oro_security.owner.ownership_metadata_provider.cache_impl.class: Doctrine\Common\Cache\FilesystemCache
+    oro_security.owner.object_owner_accessor.class:            Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor
 
 services:
-    oro_security.factory.object_identity:
-        class: %oro_security.factory.object_identity.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-
     oro_security.acl.provider:
         public: false
         class: %oro_security.acl.provider.class%
         arguments:
-            - @oro_security.factory.object_identity
+            - @oro_security.acl.object_identity_factory
 
     oro_security.acl.permission_granting_strategy:
         public: false
         class: %oro_security.acl.permission_granting_strategy.class%
+        arguments:
+            - @oro_security.owner.decision_maker
+            - @oro_security.owner.ownership_metadata_provider
         calls:
              - [setAuditLogger, ["@?security.acl.audit_logger"]]
+
+    oro_security.acl.permission_map:
+        public: false
+        class: %oro_security.acl.permission_map.class%
+
+    oro_security.acl.object_identity_factory:
+        class: %oro_security.acl.object_identity_factory.class%
+        arguments:
+            - @oro_security.acl.object_class_accessor
+            - @oro_security.acl.object_id_accessor
+            - @doctrine.orm.entity_manager
 
     oro_security.acl.object_identity_retrieval_strategy:
         public: false
         class: %oro_security.acl.object_identity_retrieval_strategy.class%
         arguments:
-            - @oro_security.factory.object_identity
+            - @oro_security.acl.object_identity_factory
 
-    oro_security.acl.permission.map:
+    oro_security.acl.object_class_accessor:
         public: false
-        class: %oro_security.acl.permission.map.class%
+        class: %oro_security.acl.object_class_accessor.class%
+
+    oro_security.acl.object_id_accessor:
+        public: false
+        class: %oro_security.acl.object_id_accessor.class%
+
+    oro_security.owner.tree:
+        public: false
+        class: %oro_security.owner.tree.class%
+
+    oro_security.owner.decision_maker:
+        public: false
+        class: %oro_security.owner.decision_maker.class%
+        arguments:
+            - @oro_security.owner.tree
+            - @oro_security.acl.object_class_accessor
+            - @oro_security.acl.object_id_accessor
+            - @oro_security.owner.object_owner_accessor
+            - @oro_security.owner.ownership_metadata_provider
+
+    oro_security.owner.ownership_metadata_provider:
+        class: %oro_security.owner.ownership_metadata_provider.class%
+        arguments:
+            - %oro_security.entity.owners%
+            - @oro_security.owner.ownership_metadata_provider.cache_impl
+
+    oro_security.owner.ownership_metadata_provider.cache_impl:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache_impl.class%
+        arguments:
+            - %kernel.cache_dir%/oro_ownership_metadata
+
+    oro_security.owner.object_owner_accessor:
+        class: %oro_security.owner.object_owner_accessor.class%
+        arguments:
+            - @oro_security.acl.object_class_accessor
+            - @oro_security.owner.ownership_metadata_provider
+

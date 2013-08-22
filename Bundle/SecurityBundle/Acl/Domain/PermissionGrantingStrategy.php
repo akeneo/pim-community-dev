@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
@@ -15,10 +18,9 @@ use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
  */
 class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
 {
-    const OWNER = 'owner';
-    const EQUAL = 'equal';
     const ALL = 'all';
     const ANY = 'any';
+    const EQUAL = 'equal';
 
     /**
      * @var AuditLoggerInterface
@@ -26,15 +28,29 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     protected $auditLogger;
 
     /**
-     * @var OwnerProviderInterface
+     * @var PermissionGrantingStrategyContext
      */
-    protected $ownerProvider;
+    protected $context;
+
+    /**
+     * @var OwnershipDecisionMaker
+     */
+    protected $decisionMaker;
+
+    /**
+     * @var OwnershipMetadataProvider
+     */
+    protected $metadataProvider;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct(
+        OwnershipDecisionMaker $decisionMaker,
+        OwnershipMetadataProvider $metadataProvider
+    ) {
+        $this->decisionMaker = $decisionMaker;
+        $this->metadataProvider = $metadataProvider;
     }
 
     /**
@@ -48,13 +64,13 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     }
 
     /**
-     * Sets a provider to get owners
+     * Sets the accessor to the context data of this strategy
      *
-     * @param OwnerProviderInterface $provider
+     * @param PermissionGrantingStrategyContext $context
      */
-    public function setOwnerProvider(OwnerProviderInterface $provider)
+    public function setContext(PermissionGrantingStrategyContext $context)
     {
-        $this->ownerProvider = $provider;
+        $this->context = $context;
     }
 
     /**
@@ -62,22 +78,33 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      */
     public function isGranted(AclInterface $acl, array $masks, array $sids, $administrativeMode = false)
     {
+        $result = null;
+
+        // check object ACEs
         $aces = $acl->getObjectAces();
-        if ($aces) {
-            return $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
+        if (!empty($aces)) {
+            $result = $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
         }
-        $aces = $acl->getClassAces();
-        if (!$aces) {
-            return $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
-        }
-        if ($acl->isEntriesInheriting()) {
-            $parentAcl = $acl->getParentAcl();
-            if (null !== $parentAcl) {
-                return $parentAcl->isGranted($masks, $sids, $administrativeMode);
+        // check class ACEs if object ACEs were not found
+        if ($result === null) {
+            $aces = $acl->getClassAces();
+            if (!empty($aces)) {
+                $result = $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
             }
         }
+        // check parent ACEs if object and class ACEs were not found
+        if ($result === null && $acl->isEntriesInheriting()) {
+            $parentAcl = $acl->getParentAcl();
+            if ($parentAcl !== null) {
+                $result = $parentAcl->isGranted($masks, $sids, $administrativeMode);
+            }
+        }
+        // throw NoAceFoundException if no any ACEs were found
+        if ($result === null) {
+            throw new NoAceFoundException();
+        }
 
-        throw new NoAceFoundException();
+        return $result;
     }
 
     /**
@@ -85,22 +112,33 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      */
     public function isFieldGranted(AclInterface $acl, $field, array $masks, array $sids, $administrativeMode = false)
     {
+        $result = null;
+
+        // check object ACEs
         $aces = $acl->getObjectFieldAces($field);
-        if (!$aces) {
-            return $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
+        if (!empty($aces)) {
+            $result = $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
         }
-        $aces = $acl->getClassFieldAces($field);
-        if (!$aces) {
-            return $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
-        }
-        if ($acl->isEntriesInheriting()) {
-            $parentAcl = $acl->getParentAcl();
-            if (null !== $parentAcl) {
-                return $parentAcl->isFieldGranted($field, $masks, $sids, $administrativeMode);
+        // check class ACEs if object ACEs were not found
+        if ($result === null) {
+            $aces = $acl->getClassFieldAces($field);
+            if (!empty($aces)) {
+                $result = $this->hasSufficientPermissions($acl, $aces, $masks, $sids, $administrativeMode);
             }
         }
+        // check parent ACEs if object and class ACEs were not found
+        if ($result === null && $acl->isEntriesInheriting()) {
+            $parentAcl = $acl->getParentAcl();
+            if ($parentAcl !== null) {
+                $result = $parentAcl->isFieldGranted($field, $masks, $sids, $administrativeMode);
+            }
+        }
+        // throw NoAceFoundException if no any ACEs were found
+        if ($result === null) {
+            throw new NoAceFoundException();
+        }
 
-        throw new NoAceFoundException();
+        return $result;
     }
 
     /**
@@ -121,8 +159,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * permission/identity combination.
      *
      * This process is repeated until either a granting ACE is found, or no
-     * permission/identity combinations are left. Finally, we will either throw
-     * an NoAceFoundException, or deny access.
+     * permission/identity combinations are left.
      *
      * @param AclInterface $acl
      * @param EntryInterface[] $aces An array of ACE to check against
@@ -130,7 +167,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * @param SecurityIdentityInterface[] $sids An array of SecurityIdentityInterface implementations
      * @param boolean $administrativeMode True turns off audit logging
      *
-     * @return boolean true, or false; either granting, or denying access respectively.
+     * @return boolean|null true if granting access; false if denying access; null if ACE was not found.
      * @throws NoAceFoundException
      */
     protected function hasSufficientPermissions(
@@ -140,46 +177,67 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         array $sids,
         $administrativeMode
     ) {
-        $firstRejectedAce = null;
+        $triggeredAce = null;
+        $isGrantingAce = false;
 
         foreach ($masks as $requiredMask) {
             foreach ($sids as $sid) {
                 foreach ($aces as $ace) {
-                    if ($sid->equals($ace->getSecurityIdentity()) && $this->isAceApplicable($requiredMask, $ace)) {
-                        if ($ace->isGranting()) {
-                            if (!$administrativeMode && null !== $this->auditLogger) {
-                                $this->auditLogger->logIfNeeded(true, $ace);
+                    if ($sid->equals($ace->getSecurityIdentity())
+                        && $this->isAceApplicable($requiredMask, $ace, $acl)
+                    ) {
+                        $isGranting = $ace->isGranting();
+                        // check whether it is a domain object
+                        $object = $this->context->getObject();
+                        if ($object !== null && is_object($object) && !($object instanceof ObjectIdentityInterface)) {
+                            $oid = $acl->getObjectIdentity();
+                            $metadata = $this->metadataProvider->getMetadata($oid->getType());
+                            if ($metadata->hasOwner()) {
+                                $isApplicableByOwner = $this->isApplicableByOwner(
+                                    $requiredMask,
+                                    $ace,
+                                    $acl,
+                                    $object,
+                                    $metadata
+                                );
+                                if (!$isApplicableByOwner) {
+                                    $isGranting = !$isGranting;
+                                }
                             }
-
-                            return true;
                         }
-
-                        if (null === $firstRejectedAce) {
-                            $firstRejectedAce = $ace;
+                        if ($isGranting) {
+                            // the access is granted if there is at least one granting ACE
+                            $triggeredAce = $ace;
+                            $isGrantingAce = true;
+                            // break all loops when granting ACE was found
+                            break 3;
+                        } else {
+                            // remember the first denying ACE
+                            if (null === $triggeredAce) {
+                                $triggeredAce = $ace;
+                            }
+                            // go to the next mask
+                            break 2;
                         }
-
-                        break 2;
                     }
                 }
             }
         }
 
-        if (null !== $firstRejectedAce) {
-            if (!$administrativeMode && null !== $this->auditLogger) {
-                $this->auditLogger->logIfNeeded(false, $firstRejectedAce);
-            }
-
-            return false;
+        if ($triggeredAce === null) {
+            // ACE was not found
+            return null;
         }
 
-        throw new NoAceFoundException();
+        if (!$administrativeMode && null !== $this->auditLogger) {
+            $this->auditLogger->logIfNeeded($isGrantingAce, $triggeredAce);
+        }
+
+        return $isGrantingAce;
     }
 
     /**
      * Determines whether the ACE is applicable to the given permission/security identity combination.
-     *
-     * Strategy OWNER:
-     *     The ACE will be considered applicable when
      *
      * Strategy ALL:
      *     The ACE will be considered applicable when all the turned-on bits in the
@@ -194,15 +252,13 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      *
      * @param integer $requiredMask
      * @param EntryInterface $ace
-     * @return boolean
+     * @return bool
      * @throws \RuntimeException if the ACE strategy is not supported
      */
     protected function isAceApplicable($requiredMask, EntryInterface $ace)
     {
         $strategy = $ace->getStrategy();
         switch ($strategy) {
-            case self::OWNER:
-                return $this->isOwnerAceApplicable($requiredMask, $ace);
             case self::ALL:
                 return $requiredMask === ($ace->getMask() & $requiredMask);
             case self::ANY:
@@ -214,13 +270,22 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         }
     }
 
-    /**
-     * @param integer $requiredMask
-     * @param EntryInterface $ace
-     * @return boolean
-     */
-    protected function isOwnerAceApplicable($requiredMask, EntryInterface $ace)
-    {
-        return false;
+    protected function isApplicableByOwner(
+        $requiredMask,
+        EntryInterface $ace,
+        AclInterface $acl,
+        $object,
+        OwnershipMetadata $metadata
+    ) {
+        $user = $this->context->getSecurityToken()->getUser();
+        if ($metadata->isOrganizationOwned()) {
+            return $this->decisionMaker->isBelongToOrganization($user, $object);
+        } elseif ($metadata->isBusinessUnitOwned()) {
+            return $this->decisionMaker->isBelongToBusinessUnit($user, $object);
+        } elseif ($metadata->isUserOwned()) {
+            return $this->decisionMaker->isBelongToUser($user, $object);
+        }
+
+        throw new \RuntimeException(sprintf('Unhandled ownership for %s.', get_class($object)));
     }
 }

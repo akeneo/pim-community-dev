@@ -3,6 +3,8 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -21,7 +23,11 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->factory = new ObjectIdentityFactory($this->em);
+        $this->factory = new ObjectIdentityFactory(
+            new ObjectClassAccessor(),
+            new ObjectIdAccessor(),
+            $this->em
+        );
     }
 
     public function testRoot()
@@ -31,10 +37,7 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Root', $id->getType());
     }
 
-    /**
-     * @dataProvider fromObjectProvider
-     */
-    public function testFromObjectPrefersInterfaceOverGetId($methodName)
+    public function testFromDomainObjectPrefersInterfaceOverGetId()
     {
         $obj = $this->getMock('Symfony\Component\Security\Acl\Model\DomainObjectInterface');
         $obj
@@ -46,16 +49,13 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue('getId()'));
 
-        $id = $this->factory->{$methodName}($obj);
+        $id = $this->factory->fromDomainObject($obj);
         $this->assertEquals('getObjectIdentifier()', $id->getIdentifier());
     }
 
-    /**
-     * @dataProvider fromObjectProvider
-     */
-    public function testFromObjectWithoutInterface($methodName)
+    public function testFromDomainObjectWithoutInterface()
     {
-        $id = $this->factory->{$methodName}(new TestDomainObject());
+        $id = $this->factory->fromDomainObject(new TestDomainObject());
         $this->assertEquals('getId()', $id->getIdentifier());
         $this->assertEquals(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject',
@@ -156,14 +156,6 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
         $id = $this->factory->forAction('Some Action');
         $this->assertEquals('action', $id->getIdentifier());
         $this->assertEquals('Some Action', $id->getType());
-    }
-
-    public static function fromObjectProvider()
-    {
-        return array(
-            'fromDomainObject' => array('fromDomainObject'),
-            'fromEntityObject' => array('fromEntityObject'),
-        );
     }
 
     public static function getProvider()
