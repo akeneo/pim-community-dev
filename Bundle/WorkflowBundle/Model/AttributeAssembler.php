@@ -69,7 +69,7 @@ class AttributeAssembler extends AbstractAssembler
     protected function validateAttribute(Attribute $attribute)
     {
         $this->assertAttributeHasValidType($attribute);
-
+        
         if ($attribute->getType() == 'object' || $attribute->getType() == 'entity') {
             $this->assertAttributeHasClassOption($attribute);
         } else {
