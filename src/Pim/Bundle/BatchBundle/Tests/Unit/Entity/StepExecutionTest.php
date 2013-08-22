@@ -105,14 +105,24 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->stepExecution->getFailureExceptions());
 
-        $exception1 = new \Exception('My exception 1');
-        $exception2 = new \Exception('My exception 2');
-        $stepException = new \Exception('My step exception 1');
+        $exception1 = new \Exception('My exception 1', 1);
+        $exception2 = new \Exception('My exception 2', 2);
 
         $this->assertEntity($this->stepExecution->addFailureException($exception1));
         $this->assertEntity($this->stepExecution->addFailureException($exception2));
 
-        $this->assertEquals(array($exception1, $exception2), $this->stepExecution->getFailureExceptions());
+        $failureExceptions = $this->stepExecution->getFailureExceptions();
+
+        $this->assertEquals('Exception',      $failureExceptions[0]['class']);
+        $this->assertEquals('My exception 1', $failureExceptions[0]['message']);
+        $this->assertEquals('1',              $failureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__,   $failureExceptions[0]['trace']);
+
+        $this->assertEquals('Exception',      $failureExceptions[1]['class']);
+        $this->assertEquals('My exception 2', $failureExceptions[1]['message']);
+        $this->assertEquals('2',              $failureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__,   $failureExceptions[1]['trace']);
+
     }
 
     public function testGetSetReadCount()
@@ -155,8 +165,8 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $expectedString = "id=0, name=my_step_execution, status=2, exitStatus=EXECUTING, ".
-            "readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0";
+        $expectedString = "id=0, name=[my_step_execution], status=[2], exitCode=[EXECUTING], exitDescription=[], "
+            ."readCount=0, writeCount=0, filterCount=0";
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
 

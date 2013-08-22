@@ -404,7 +404,12 @@ class JobExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = $e;
+        $this->failureExceptions[] = array(
+            'class'   => get_class($e),
+            'message' => $e->getMessage(),
+            'code'    => $e->getCode(),
+            'trace'   => $e->getTraceAsString()
+        );
 
         return $this;
     }
@@ -458,13 +463,12 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        $startTime       = $this->startTime       != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
-        $endTime         = $this->endTime         != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
-        $updatedTime     = $this->updatedTime     != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
+        $startTime       = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
+        $endTime         = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
+        $updatedTime     = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode()                : '';
 
-        $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s, "
-            . "exitStatus=%s, job=%s";
+        $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
         $string = sprintf(
             $message,
             $startTime,
@@ -472,6 +476,7 @@ class JobExecution
             $updatedTime,
             $this->status,
             $this->exitStatus,
+            $this->exitDescription,
             $jobInstanceCode
         );
 

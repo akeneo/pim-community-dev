@@ -420,8 +420,13 @@ class StepExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = $e;
-
+        $this->failureExceptions[] = array(
+            'class'   => get_class($e),
+            'message' => $e->getMessage(),
+            'code'    => $e->getCode(),
+            'trace'   => $e->getTraceAsString()
+        );
+                                                            
         return $this;
     }
 
