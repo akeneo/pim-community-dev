@@ -25,11 +25,6 @@ services:
             - [ addAttributeType, ['pim_product_date'] ]
             - [ addAttributeType, ['pim_product_metric'] ]
 
-    pim_product.manager.audit:
-        class: %pim_product.manager.audit.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-
     pim_product.manager.category:
         class:     %pim_product.manager.category.class%
         arguments: [@doctrine.orm.entity_manager, %pim_product.entity.category.class%]

@@ -1,0 +1,5 @@
+parameters:
+    pim_versioning.manager.audit.class:             Pim\Bundle\VersioningBundle\Manager\AuditManager
+    pim_versioning.manager.version_builder.class:   Pim\Bundle\VersioningBundle\Manager\VersionBuilder
+    pim_versioning.event_listener.addversion.class: Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
+    pim_versioning.event_listener.adduser.class:     Pim\Bundle\VersioningBundle\EventListener\AddUserListener
