@@ -21,18 +21,22 @@ class ProductValueNotBlankValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if ($value === null) {
+            $this->context->addViolation($constraint->messageNotNull);
+        }
+
         if (!$value instanceof ProductValueInterface) {
             return;
         }
 
-        if ($value === null || $value->getData() === null) {
+        $data = $value->getData();
+        if ($data === null) {
             $this->context->addViolation($constraint->messageNotNull);
 
             return;
         }
-
-        $data = $value->getData();
-        if ($data === '' || empty($data)) {
+        if ($data === ''
+            || (is_array($data) && count($data) === 0)) {
             $this->context->addViolation($constraint->messageNotBlank);
         }
     }
