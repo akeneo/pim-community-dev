@@ -1036,7 +1036,8 @@ div#legend {
   margin-left: 15%;
   margin-top: 15px;
   .progress {
-    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 15px;
     background-color: none;
     background-image: none;
     height: 10px;
@@ -1071,4 +1072,16 @@ table#progress-table {
       color: #5e8dcb;
     }
   }
+}
+
+.progress-disabled .bar,
+.progress .bar-disabled {
+  background-color: #cccccc;
+  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
+  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
 }

@@ -5,7 +5,7 @@
     {% set titleProgressBar = completeness.ratio|number_format(2) ~'% completed ('~ completeness.requiredCount ~' required values)' %}
     <div class="progress" title="{{ titleProgressBar }}">
         {% if channel.hasLocale(locale) == false %}
-            {% set progressClass = 'bar-info' %}
+            {% set progressClass = 'bar-disabled' %}
         {% elseif completeness.ratio == 100 %}
             {% set progressClass = 'bar-success' %}
         {% elseif completeness.ratio >= 50 %}
