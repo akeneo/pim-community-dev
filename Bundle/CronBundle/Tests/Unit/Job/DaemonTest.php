@@ -18,6 +18,10 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $this->markTestSkipped('Unable to run on Windows');
+        }
+
         $this->object = $this->getMockBuilder('Oro\Bundle\CronBundle\Job\Daemon')
             ->setConstructorArgs(array('app', 10))
             ->setMethods(array('getPidProcess', 'getQueueRunProcess', 'getQueueStopProcess'))
@@ -56,6 +60,10 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPid()
     {
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $this->markTestSkipped('Unable to run on Windows');
+        }
+
         $this->process
             ->expects($this->once())
             ->method('getOutput')
