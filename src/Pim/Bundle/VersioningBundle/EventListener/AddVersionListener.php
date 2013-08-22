@@ -171,6 +171,7 @@ class AddVersionListener implements EventSubscriber
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
             // TODO : special case, when the product collection of a category is updated, we update each product
+            // TODO : bug when assign product to categories ?
             /*
             if ($entity->getOwner() instanceof CategoryInterface) {
                 $mapping = $entity->getMapping();
