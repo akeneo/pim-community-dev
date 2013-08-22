@@ -105,17 +105,17 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $readCounter = 0;
-        $writeCounter = 0;
+        $readCount = 0;
+        $writeCount = 0;
         $itemsToWrite = array();
 
         while (($item = $this->reader->read()) !== null) {
-            $readCounter ++;
+            $readCount ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {
                 $itemsToWrite[] = $processedItem;
-                $writeCounter ++;
-                if (($writeCounter % self::BATCH_SIZE) == 0) {
+                $writeCount ++;
+                if (($writeCount % self::BATCH_SIZE) == 0) {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 }
@@ -125,9 +125,9 @@ class ItemStep extends AbstractStep
             $this->writer->write($itemsToWrite);
         }
 
-       $stepExecution->setReadCount($readCounter);
-       $stepExecution->setWriteCount($writeCounter);
-       $stepExecution->setFilterCount($readCounter - $writerCounter);
+       $stepExecution->setReadCount($readCount);
+       $stepExecution->setWriteCount($writeCount);
+       $stepExecution->setFilterCount($readCount - $writeCount);
 
 
     }
