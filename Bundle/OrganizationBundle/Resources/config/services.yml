@@ -77,7 +77,12 @@ services:
 
     oro_organization.form.type.form_type:
         class:                        %oro_organization.type.form_type.class%
-        arguments: [@security.context, "@oro_entity.config.acl_config_provider", "@oro_organization.business_unit_manager", "@oro_user.acl_manager"]
+        arguments:
+            - @security.context
+            - @oro_entity.config.acl_config_provider
+            - @oro_organization.business_unit_manager
+            - @oro_user.acl_manager
+            - @translator
         tags:
             - { name: form.type_extension, alias: form }
 

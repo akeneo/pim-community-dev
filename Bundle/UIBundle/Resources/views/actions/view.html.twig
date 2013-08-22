@@ -19,7 +19,7 @@
                                     {{ 'Owner'|trans }}:
                                     {% if (ownerType == 'USER') %}
                                         {% if resource_granted('oro_user_user_view') %}
-                                            {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
+                                            {% set ownerPath = path('oro_user_view', {'id': entity.owner.id}) %}
                                         {% endif %}
                                     {% elseif (ownerType == 'BUSINESS_UNIT') %}
                                         {% if resource_granted('oro_business_unit_view') %}

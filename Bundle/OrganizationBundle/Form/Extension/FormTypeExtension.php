@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -17,7 +19,6 @@ use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FormTypeExtension extends AbstractTypeExtension
 {
@@ -41,6 +42,11 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected $aclManager;
 
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
     protected $fieldName;
 
     protected $changeOwnerGranted;
@@ -49,12 +55,14 @@ class FormTypeExtension extends AbstractTypeExtension
         SecurityContextInterface $securityContext,
         ConfigProvider $configProvider,
         BusinessUnitManager $manager,
-        AclManager $aclManager
+        AclManager $aclManager,
+        TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
         $this->configProvider = $configProvider;
         $this->manager = $manager;
         $this->aclManager = $aclManager;
+        $this->translator = $translator;
         $this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
@@ -173,7 +181,7 @@ class FormTypeExtension extends AbstractTypeExtension
                 $this->fieldName,
                 'oro_business_unit_tree_select',
                 array(
-                    'empty_value' => 'Please select',
+                    'empty_value' => $this->translator->trans('oro.business_unit.form.choose_business_user'),
                     'choices' => $businessUnits,
                     'mapped' => true,
                     'required' => true,

@@ -15,6 +15,11 @@ class OwnershipType extends AbstractType
     const OWNERSHIP_TYPE_ORGANIZATION = 'ORGANIZATION';
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)

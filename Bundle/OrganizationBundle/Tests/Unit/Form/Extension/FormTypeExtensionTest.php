@@ -3,6 +3,8 @@
 namespace Oro\Bundle\OrganizationBundle\Tests\Form\Extension;
 
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
@@ -44,6 +46,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $user;
 
+    private $tranlsator;
+
     private $organizations;
 
     private $businessUnits;
@@ -58,15 +62,12 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-
         $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->manager = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager')
             ->disableOriginalConstructor()
             ->getMock();
-
         $businessUnitsTree = array(
             array(
                 'id' => 1,
@@ -92,65 +93,57 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $businessUnit->expects($this->any())->method('getOrganization')->will($this->returnValue($organization));
         $this->businessUnits = array($businessUnit);
         $entityClassName = get_class($businessUnit);
-
         $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
             ->disableOriginalConstructor()
             ->getMock();
-
         $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->configProvider->expects($this->any())
             ->method('getConfig')
             ->with($entityClassName)
             ->will($this->returnValue($this->config));
-
         $this->configProvider->expects($this->any())
             ->method('hasConfig')
             ->with($entityClassName)
             ->will($this->returnValue(true));
-
         $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();
         $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
-
         $token->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue($this->user));
-
         $this->securityContext->expects($this->any())
             ->method('getToken')
             ->will($this->returnValue($token));
-
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $config->expects($this->any())->method('getDataClass')->will($this->returnValue($entityClassName));
-
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
         $form->expects($this->any())->method('getConfig')->will($this->returnValue($config));
-
         $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->builder->expects($this->any())->method('getForm')->will($this->returnValue($form));
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
+        $this->tranlsator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->extension = new FormTypeExtension(
             $this->securityContext,
             $this->configProvider,
             $this->manager,
-            $this->aclManager
+            $this->aclManager,
+            $this->tranlsator
         );
     }
 
@@ -168,7 +161,10 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->builder->expects($this->once())->method('add')->with(
             $this->fieldName,
             'oro_user_select',
-            array('required' => false)
+            array(
+                'required' => true,
+                'constraints' => array(new NotBlank())
+            )
         );
         $this->extension->buildForm($this->builder, array());
 
@@ -198,10 +194,12 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             $this->fieldName,
             'oro_business_unit_tree_select',
             array(
+                'empty_value' => '',
                 'choices' => $businessUnits,
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
                 'attr' => array('is_safe' => true),
+                'constraints' => array(new NotBlank()),
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -221,7 +219,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'property' => 'name',
                 'choices' => $this->businessUnits,
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
+                'constraints' => array(new NotBlank())
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -240,7 +239,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'class' => 'OroOrganizationBundle:Organization',
                 'property' => 'name',
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
+                'constraints' => array(new NotBlank())
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -260,7 +260,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'property' => 'name',
                 'choices' => $this->organizations,
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
+                'constraints' => array(new NotBlank())
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -315,7 +316,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             $this->securityContext,
             $this->configProvider,
             $this->manager,
-            $this->aclManager
+            $this->aclManager,
+            $this->tranlsator
         );
     }
 }
