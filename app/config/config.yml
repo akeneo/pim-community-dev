@@ -270,7 +270,7 @@ pim_batch:
             steps:
                 import:
                     title:      pim_import_export.jobs.category_import.import.title
-                    reader:     pim_import_export.reader.csv
+                    reader:     pim_import_export.reader.csv_file
                     processor:  pim_import_export.processor.valid_category_creation
                     writer:     pim_import_export.writer.orm_category
         attribute_import:

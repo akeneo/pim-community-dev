@@ -41,12 +41,15 @@ class OrmCategoryWriter extends AbstractConfigurableStepElement implements ItemW
      */
     public function write(array $items)
     {
+        if (is_array(reset($items))) {
+            $items = call_user_func_array('array_merge', $items);
+        }
+
         foreach ($items as $category) {
             $this->entityManager->persist($category);
         }
         $this->entityManager->flush();
 
-        $this->entityManager->clear('Pim\\Bundle\\ProductBundle\\Entity\\Category');
         $this->entityManager->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
         $this->entityManager->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
     }

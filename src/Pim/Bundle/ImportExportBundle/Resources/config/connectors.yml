@@ -3,6 +3,7 @@ parameters:
     pim_import_export.reader.category.class:                        Pim\Bundle\ImportExportBundle\Reader\CategoryReader
     pim_import_export.reader.attribute.class:                       Pim\Bundle\ImportExportBundle\Reader\AttributeReader
     pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
+    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\CsvFileReader
 
     pim_import_export.processor.homogeneous_csv_serializer.class:   Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
@@ -40,6 +41,9 @@ services:
 
     pim_import_export.reader.csv:
         class: %pim_import_export.reader.csv.class%
+
+    pim_import_export.reader.csv_file:
+        class: %pim_import_export.reader.csv_file.class%
 
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
