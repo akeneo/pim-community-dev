@@ -32,7 +32,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->target = new NotDecimalValidator;
+        $this->target = new NotDecimalValidator();
     }
 
     public function testInstanceOfConstraintValidator()
