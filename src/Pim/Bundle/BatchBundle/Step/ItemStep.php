@@ -103,7 +103,7 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $execution)
+    public function doExecute(StepExecution $stepExecution)
     {
         $readCounter = 0;
         $writeCounter = 0;
@@ -124,6 +124,11 @@ class ItemStep extends AbstractStep
         if (count($itemsToWrite) > 0) {
             $this->writer->write($itemsToWrite);
         }
+
+       $stepExecution->setReadCount($readCounter);
+       $stepExecution->setWriteCount($writeCounter);
+       $stepExecution->setFilterCount($readCounter - $writerCounter);
+
 
     }
 }
