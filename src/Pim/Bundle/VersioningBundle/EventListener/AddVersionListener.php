@@ -32,6 +32,13 @@ use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 class AddVersionListener implements EventSubscriber
 {
     /**
+     * Default system user, used for batches
+     *
+     * @var string
+     */
+    const DEFAULT_SYSTEM_USER = 'admin';
+
+    /**
      * Entities to version
      *
      * @var array
@@ -47,7 +54,7 @@ class AddVersionListener implements EventSubscriber
     /**
      * @var string
      */
-    protected $username;
+    protected $username = self::DEFAULT_SYSTEM_USER;
 
     /**
      * @param VersionBuilder $builder
@@ -208,6 +215,11 @@ class AddVersionListener implements EventSubscriber
      */
     public function writeSnapshot(EntityManager $em, VersionableInterface $versionable, User $user)
     {
+        // retrieve the whole data set
+        if ($versionable instanceof ProductInterface) {
+            $em->refresh($versionable);
+        }
+
         $version  = $this->buildVersion($versionable, $user);
         $previous = $this->getPreviousVersion($em, $version);
         $audit    = $this->buildAudit($version, $previous);
