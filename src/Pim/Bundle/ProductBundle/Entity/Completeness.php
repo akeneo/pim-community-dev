@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -56,6 +58,13 @@ class Completeness
     protected $missingCount;
 
     /**
+     * @var integer $requiredCount
+     *
+     * @ORM\Column(name="required_count", type="integer")
+     */
+    protected $requiredCount;
+
+    /**
      * @var boolean $toReindex
      *
      * @ORM\Column(name="to_reindex", type="boolean")
@@ -80,6 +89,26 @@ class Completeness
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected $product;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
+     * @ORM\JoinTable(
+     *     name="pim_product_completenesses_attributes",
+     *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
+     * )
+     */
+    protected $missingAttributes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->missingAttributes = new ArrayCollection();
+    }
 
     /**
      * Getter locale
@@ -178,6 +207,30 @@ class Completeness
     }
 
     /**
+     * Getter required count
+     *
+     * @return integer
+     */
+    public function getRequiredCount()
+    {
+        return $this->requiredCount;
+    }
+
+    /**
+     * Setter required count
+     *
+     * @param integer $requiredCount
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
+     */
+    public function setRequiredCount($requiredCount)
+    {
+        $this->requiredCount = $requiredCount;
+
+        return $this;
+    }
+
+    /**
      * Getter to reindex
      *
      * @return boolean
@@ -245,6 +298,60 @@ class Completeness
     public function setProduct(Product $product)
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Getter for the missing attributes
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getMissingAttributes()
+    {
+        return $this->missingAttributes;
+    }
+
+    /**
+     * Setter for the missing attributes
+     *
+     * @param array $missingAttributes
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
+     */
+    public function setMissingAttributes(array $missingAttributes = array())
+    {
+        $this->missingAttributes = new ArrayCollection($missingAttributes);
+
+        return $this;
+    }
+
+    /**
+     * Add attribute to the missing attributes collection
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
+     */
+    public function addMissingAttribute(ProductAttribute $attribute)
+    {
+        if (!$this->missingAttributes->contains($attribute)) {
+            $this->missingAttributes->add($attribute);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove attribute from the missing attributes collection
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
+     */
+    public function removeMissingAttribute(ProductAttribute $attribute)
+    {
+        $this->missingAttributes->remove($attribute);
 
         return $this;
     }

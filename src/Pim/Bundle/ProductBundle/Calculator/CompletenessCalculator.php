@@ -211,32 +211,34 @@ class CompletenessCalculator
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
         $requiredAttributes = $this->getRequiredAttributes($channel);
-        $countRequiredAttributes = count($requiredAttributes);
+        $requiredCount = count($requiredAttributes);
 
         foreach ($this->getLocales() as $locale) {
             $completeness = $product->getCompleteness($locale->getCode(), $channel->getCode());
             if (!$completeness) {
                 $completeness = $this->createCompleteness($product, $channel, $locale);
             }
+            $completeness->setMissingAttributes(array());
 
-            // initialize counting
             $missingCount = 0;
             $wellCount    = 0;
 
             foreach ($requiredAttributes as $requiredAttribute) {
-                $attribute     = $requiredAttribute->getAttribute();
-                $value = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
+                $attribute = $requiredAttribute->getAttribute();
+                $value     = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
 
                 $errorList = $this->validator->validateValue($value, $this->notBlankConstraint);
                 if (count($errorList) === 0) {
                     $wellCount++;
                 } else {
                     $missingCount++;
+                    $completeness->addMissingAttribute($requiredAttribute->getAttribute());
                 }
             }
 
-            $ratio = ($countRequiredAttributes === 0) ? 100 : $wellCount / $countRequiredAttributes * 100;
+            $ratio = ($requiredCount === 0) ? 100 : $wellCount / $requiredCount * 100;
 
+            $completeness->setRequiredCount($requiredCount);
             $completeness->setMissingCount($missingCount);
             $completeness->setRatio($ratio);
 
