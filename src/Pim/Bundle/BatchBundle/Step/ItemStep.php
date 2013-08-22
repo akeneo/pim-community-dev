@@ -19,8 +19,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ItemStep extends AbstractStep
 {
+    /**
+     * @var int
+     */
+    private $batchSize = 100;
 
-    const BATCH_SIZE=100;
     /**
      * @Assert\Valid
      */
@@ -37,7 +40,22 @@ class ItemStep extends AbstractStep
     private $processor = null;
 
     /**
+     * Set the batch size
+     *
+     * @param int $batchSize
+     *
+     * @return $this
+     */
+    public function setBatchSize($batchSize)
+    {
+        $this->batchSize = $batchSize;
+
+        return $this;
+    }
+
+    /**
      * Set reader
+     *
      * @param ItemReaderInterface $reader
      */
     public function setReader(ItemReaderInterface $reader)
@@ -115,7 +133,7 @@ class ItemStep extends AbstractStep
             if ($processedItem != null) {
                 $itemsToWrite[] = $processedItem;
                 $writeCount ++;
-                if (($writeCount % self::BATCH_SIZE) == 0) {
+                if (($writeCount % $this->batchSize) == 0) {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 }
