@@ -1,8 +1,7 @@
 <div class="tab-content">
-    {% set columnWidth = 90/(channels|length) %}
     <table id="progress-table" class="table groups">
         <thead>
-            <th width="10%">{{ 'Locales'|upper }}</th>
+            <th width="8%">{{ 'Locales'|upper }}</th>
             {% for channel in channels %}
                 <th class="channel" width="200">{{ channel.name|upper }}</th>
             {% endfor %}
@@ -12,7 +11,7 @@
         <tbody>
             {% for locale in locales %}
             <tr>
-                <td>{{ locale.code }}</td>
+                <td>{{ locale.code|flag }}</td>
                 {% for channel in channels %}
                 <td>
                     {% include 'PimProductBundle:Product:_healthbar.html.twig'
