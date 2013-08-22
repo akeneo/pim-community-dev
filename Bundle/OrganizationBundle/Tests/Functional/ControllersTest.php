@@ -84,10 +84,10 @@ class ControllersTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json')),
+            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
+            . '?business_units[_filter][name][value]=testBU',
             array(
                 'business_units[_filter][name][type]' => null,
-                'business_units[_filter][name][value]' => 'testBU',
                 'business_units[_pager][_page]' => 1,
                 'business_units[_pager][_per_page]' => 10,
                 'business_units[_sort_by][name]' => 'ASC'
@@ -119,10 +119,10 @@ class ControllersTest extends WebTestCase
         //get id
         $this->client->request(
             'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json')),
+            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
+            . '?business_units[_filter][name][value]=testBU_Updated',
             array(
                 'business_units[_filter][name][type]' => null,
-                'business_units[_filter][name][value]' => 'testBU_Updated',
                 'business_units[_pager][_page]' => 1,
                 'business_units[_pager][_per_page]' => 10,
                 'business_units[_sort_by][name]' => 'ASC'
@@ -143,6 +143,7 @@ class ControllersTest extends WebTestCase
      */
     public function testView($id)
     {
+
         $crawler = $this->client->request(
             'GET',
             $this->client->generate('oro_business_unit_view', array('id' => $id))
