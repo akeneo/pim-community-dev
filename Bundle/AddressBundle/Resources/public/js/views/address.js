@@ -12,7 +12,7 @@ var OroAddressView = Backbone.View.extend({
     },
 
     initialize: function() {
-        this.template = _.template($("#template-contact-address").html());
+        this.template = _.template($("#template-addressbook-item").html());
         this.listenTo(this.model, 'destroy', this.remove)
         this.listenTo(this.model, 'change:active', this.toggleActive)
     },

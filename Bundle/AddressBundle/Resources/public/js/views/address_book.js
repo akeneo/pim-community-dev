@@ -48,9 +48,13 @@ var OroAddressBook = Backbone.View.extend({
             if (primaryAddress.length) {
                 primaryAddress[0].set('active', true);
             } else if (this.getCollection().length) {
-                this.getCollection().at(0).set('active', true);
+                this._activateFirstAddress();
             }
         }
+    },
+
+    _activateFirstAddress: function() {
+        this.getCollection().at(0).set('active', true);
     },
 
     addAll: function(items) {
@@ -58,7 +62,11 @@ var OroAddressBook = Backbone.View.extend({
         items.each(function(item) {
             this.addAddress(item);
         }, this);
-        this._activatePreviousAddress();
+        if (items.length == 1) {
+            this._activateFirstAddress();
+        } else {
+            this._activatePreviousAddress();
+        }
     },
 
     _activatePreviousAddress: function() {

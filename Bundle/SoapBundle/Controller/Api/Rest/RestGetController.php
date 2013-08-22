@@ -63,6 +63,9 @@ abstract class RestGetController extends FOSRestController implements EntityMana
      */
     protected function getPreparedItem($entity)
     {
+        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
+            $entity->__load();
+        }
         $result = array();
         /** @var UnitOfWork $uow */
         $uow = $this->getDoctrine()->getManager()->getUnitOfWork();
