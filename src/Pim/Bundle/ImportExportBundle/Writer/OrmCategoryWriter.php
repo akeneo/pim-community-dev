@@ -48,6 +48,7 @@ class OrmCategoryWriter extends AbstractConfigurableStepElement implements ItemW
         foreach ($items as $category) {
             $this->entityManager->persist($category);
         }
+
         $this->entityManager->flush();
 
         $this->entityManager->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');

@@ -12,11 +12,19 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
  */
 class CsvFileReader extends CsvReader
 {
+    private $executed = false;
+
     /**
      * {@inheritDoc}
      */
     public function read()
     {
+        if ($this->executed) {
+            return null;
+        }
+
+        $this->executed = true;
+
         $data = array();
 
         while ($row = parent::read()) {
