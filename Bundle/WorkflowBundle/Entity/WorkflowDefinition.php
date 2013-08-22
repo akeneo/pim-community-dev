@@ -3,6 +3,8 @@
 namespace Oro\Bundle\WorkflowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
@@ -12,7 +14,6 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @ORM\Table(name="oro_workflow_definition")
  * @ORM\Entity(repositoryClass="Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Loggable
  */
 class WorkflowDefinition
 {
@@ -60,12 +61,20 @@ class WorkflowDefinition
     protected $configuration;
 
     /**
+     * @var WorkflowDefinitionEntity[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="WorkflowDefinitionEntity", mappedBy="definition", cascade={"persist", "remove"})
+     */
+    protected $definitionEntities;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->enabled = false;
         $this->configuration = array();
+        $this->definitionEntities = new ArrayCollection();
     }
 
     /**
@@ -200,6 +209,32 @@ class WorkflowDefinition
     public function getStartStep()
     {
         return $this->startStep;
+    }
+
+    /**
+     * @param ArrayCollection|WorkflowDefinitionEntity[] $definitionEntities
+     * @return WorkflowDefinition
+     */
+    public function setDefinitionEntities($definitionEntities)
+    {
+        if ($definitionEntities instanceof Collection) {
+            $this->definitionEntities = $definitionEntities;
+        } else {
+            $this->definitionEntities = new ArrayCollection();
+            foreach ($definitionEntities as $entity) {
+                $this->definitionEntities->add($entity);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity[]
+     */
+    public function getDefinitionEntities()
+    {
+        return $this->definitionEntities;
     }
 
     /**
