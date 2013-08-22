@@ -201,7 +201,7 @@ oro_assetic:
 
 jms_di_extra:
     doctrine_integration: false
-    
+
 oro_entity_extend:
     backend:        Dynamic
     backup:         "%kernel.root_dir%/entities/Backup/"
@@ -268,11 +268,11 @@ pim_batch:
             connector: "Akeneo"
             type:      "import"
             steps:
-                export:
+                import:
                     title:      pim_import_export.jobs.category_import.import.title
-                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
-                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
-                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+                    reader:     pim_import_export.reader.csv
+                    processor:  pim_import_export.processor.valid_category_creation
+                    writer:     pim_import_export.writer.orm_category
         attribute_import:
             title:     pim_import_export.jobs.attribute_import.title
             connector: "Akeneo"
