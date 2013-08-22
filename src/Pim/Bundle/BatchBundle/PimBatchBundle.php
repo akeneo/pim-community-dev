@@ -18,6 +18,7 @@ class PimBatchBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new Compiler\RegisterNotifiersPass());
         $container->addCompilerPass(new Compiler\PushBatchLogHandlerPass());
     }
 }

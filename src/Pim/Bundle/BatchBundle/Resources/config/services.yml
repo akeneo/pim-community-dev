@@ -6,6 +6,7 @@ parameters:
     pim_batch.logger_subscriber.class:         Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
     pim_batch.notification_subscriber.class:   Pim\Bundle\BatchBundle\EventListener\NotificationSubscriber
     pim_batch.logger.batch_log_handler.class:  Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    pim_batch.mail_notifier.class:             Pim\Bundle\BatchBundle\Notification\MailNotifier
     pim_batch.connectors_config:               ~
     pim_batch.jobs_config:                     ~
 
@@ -40,6 +41,16 @@ services:
         class: %pim_batch.notification_subscriber.class%
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_batch.mail_notifier:
+        class: %pim_batch.mail_notifier.class%
+        arguments:
+            - @pim_batch.logger.batch_log_handler
+            - @security.context
+            - @twig
+            - @mailer
+        tags:
+            - { name: pim_batch.notifier }
 
     pim_batch.step_factory:
         class: %pim_batch.step_factory.class%
