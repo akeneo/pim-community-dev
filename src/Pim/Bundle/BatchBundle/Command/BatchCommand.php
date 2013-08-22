@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\BatchBundle\Command;
 
+use Monolog\Handler\StreamHandler;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Validator\Validator;
 use Doctrine\ORM\EntityManager;
@@ -29,7 +31,13 @@ class BatchCommand extends ContainerAwareCommand
         $this
             ->setName('pim:batch:job')
             ->setDescription('Launch a registered job instance')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code');
+            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
+            ->addOption(
+                'show-log',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'display the log on the output'
+            );
     }
 
     /**
@@ -37,6 +45,14 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $noDebug = $input->getOption('no-debug');
+
+        if (!$noDebug) {
+            $logger = $this->getContainer()->get('logger');
+            // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
+            $logger->pushHandler(new StreamHandler('php://stdout'));
+        }
+
         $code = $input->getArgument('code');
         $jobInstance = $this->getEntityManager()->getRepository('PimBatchBundle:JobInstance')->findOneByCode($code);
         if (!$jobInstance) {
