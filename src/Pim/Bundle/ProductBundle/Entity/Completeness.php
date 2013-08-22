@@ -48,21 +48,21 @@ class Completeness
      *
      * @ORM\Column(type="decimal", scale=2)
      */
-    protected $ratio;
+    protected $ratio = 100;
 
     /**
      * @var integer $missingCount
      *
      * @ORM\Column(name="missing_count", type="integer")
      */
-    protected $missingCount;
+    protected $missingCount = 0;
 
     /**
      * @var integer $requiredCount
      *
      * @ORM\Column(name="required_count", type="integer")
      */
-    protected $requiredCount;
+    protected $requiredCount = 0;
 
     /**
      * @var boolean $toReindex
