@@ -19,6 +19,7 @@ interface EventInterface
     const BEFORE_JOB_STATUS_UPGRADE = 'pim_batch.before_job_status_upgrade';
     const AFTER_JOB_EXECUTION       = 'pim_batch.after_job_execution';
 
-    /** Step events */
-    const BEFORE_STEP_EXECUTION     = 'pim_batch.before_step_execution';
+    /** Step execution events */
+    const BEFORE_STEP_EXECUTION  = 'pim_batch.before_step_execution';
+    const STEP_EXECUTION_SUCCEED = 'pim_batch.step_execution_succeed';
 }

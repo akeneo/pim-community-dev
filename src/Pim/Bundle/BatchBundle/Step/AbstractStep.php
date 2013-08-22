@@ -2,11 +2,15 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -135,7 +139,7 @@ abstract class AbstractStep implements StepInterface
      */
     final public function execute(StepExecution $stepExecution)
     {
-        $this->getLogger()->debug("Executing: id=" . $stepExecution->getId());
+        $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
 
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
@@ -157,7 +161,7 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
+            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEED, $stepExecution);
         } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
@@ -226,5 +230,27 @@ abstract class AbstractStep implements StepInterface
         }
 
         return $exitStatus;
+    }
+
+    /**
+     * Trigger event linked to Step
+     *
+     * @param string        $eventName Name of the event
+     * @param StepInterface $step      Step object
+     */
+    private function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    {
+        $event = new StepExecutionEvent($stepExecution);
+        $this->dispatch($eventName, $event);
+    }
+
+    /**
+     * Generic batch event dispatcher
+     *
+     * @param string $eventName Name of the event
+     * @param Event  $event     Event object
+     */
+    private function dispatch($eventName, Event $event)
+    {
     }
 }

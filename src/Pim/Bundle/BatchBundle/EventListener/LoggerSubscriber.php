@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BatchBundle\Event\StepEvent;
+use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
 
 /**
  * Subscriber to log job execution result
@@ -33,6 +34,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
             EventInterface::BEFORE_STEP_EXECUTION     => 'beforeStepExecution',
+            EventInterface::STEP_EXECUTION_SUCCEED    => 'stepExecutionSucceed',
         );
     }
 
@@ -75,10 +77,17 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug(sprintf('Upgrading JobExecution status: %s', $jobExecution));
     }
 
-    public function beforeStepExecution(StepEvent $event)
+    public function beforeStepExecution(StepExecutionEvent $event)
     {
-        $step = $event->getStep();
+        $stepExecution = $event->getStepExecution();
 
-        $this->logger->info(sprintf('Executing step: [%s]', $step->getName()));
+        $this->logger->info(sprintf('Step execution starting: %s', $stepExecution));
+    }
+
+    public function stepExecutionSucceed(StepExecutionEvent $event)
+    {
+        $stepExecution = $event->getStepExecution();
+
+        $this->logger->debug(sprintf('Step execution success: id= %d', $stepExecution->getId()));
     }
 }

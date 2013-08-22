@@ -34,6 +34,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
                 EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
                 EventInterface::BEFORE_STEP_EXECUTION     => 'beforeStepExecution',
+                EventInterface::STEP_EXECUTION_SUCCEED    => 'stepExecutionSucceed',
             ),
             LoggerSubscriber::getSubscribedEvents()
         );
@@ -106,10 +107,9 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->logger
             ->expects($this->once())
             ->method('info')
-            ->with('Executing step: [foo]');
+            ->with($this->stringStartsWith('Step execution starting'));
 
-        $step = $this->getStepMock('foo');
-        $event = $this->getStepEventMock($step);
+        $event = $this->getStepExecutionEventMock();
         $this->subscriber->beforeStepExecution($event);
     }
 
@@ -140,10 +140,10 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    private function getStepEventMock($step = null)
+    private function getStepExecutionEventMock($step = null)
     {
         $event = $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Event\StepEvent')
+            ->getMockBuilder('Pim\Bundle\BatchBundle\Event\StepExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -152,19 +152,5 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($step));
 
         return $event;
-    }
-
-    private function getStepMock($name)
-    {
-        $step = $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Step\ItemStep')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $step->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
-
-        return $step;
     }
 }
