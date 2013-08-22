@@ -2,7 +2,7 @@
 {% if completeness is null %}
     {{ 'Impossible to calculate' | trans }}
 {% else %}
-    {% set titleProgressBar = completeness.ratio ~'% completed ( required values)' %}
+    {% set titleProgressBar = completeness.ratio|number_format(2) ~'% completed ('~ completeness.requiredCount ~' required values)' %}
     <div class="progress progress-striped" title="{{ titleProgressBar }}">
     {% if channel.hasLocale(locale) == false %}
         {% set progressClass = 'bar-info' %}
@@ -13,8 +13,14 @@
     {% else %}
         {% set progressClass = 'bar-danger' %}
     {% endif %}
-        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%"></div>
+        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%;"></div>
     </div>
 
-    {{ completeness.missingCount }} missing values
+    {% set titleMissing = "Missing attributes :"|trans %}
+    {% for attribute in completeness.missingAttributes %}
+        {% set titleMissing = titleMissing ~'&#013; - '~ attribute.label  %}
+    {% endfor %}
+    <div{% if completeness.missingCount > 0 %} title="{{ titleMissing|raw }}"{% endif %}>
+        <b>{{ completeness.missingCount }}</b> missing values
+    </div>
 {% endif %}
