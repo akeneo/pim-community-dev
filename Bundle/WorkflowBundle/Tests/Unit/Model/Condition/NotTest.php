@@ -27,7 +27,7 @@ class NotTest extends \PHPUnit_Framework_TestCase
 
     // @codingStandardsIgnoreStart
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Options must contain an instance of Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface
      */
     // @codingStandardsIgnoreEnd
@@ -37,7 +37,7 @@ class NotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Options must have 1 element, but 0 given
      */
     public function testInitializeFailsWhenOptionNotOneElement()

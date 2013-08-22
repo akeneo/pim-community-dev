@@ -64,7 +64,7 @@ class BlankTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Options must have 1 element, but 0 given
      */
     public function testInitializeFailsWhenOptionNotOneElement()

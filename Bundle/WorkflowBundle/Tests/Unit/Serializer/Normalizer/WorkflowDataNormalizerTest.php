@@ -55,7 +55,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
     // @codingStandardsIgnoreStart
     /**
      * @dataProvider normalizeDirectionDataProvider
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializerException
      * @expectedExceptionMessage Cannot get Workflow. Serializer must implement Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer
      */
     // @codingStandardsIgnoreEnd
@@ -71,7 +71,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider normalizeDirectionDataProvider
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializerException
      * @expectedExceptionMessage Workflow "test_workflow" has no attribute "foo"
      */
     public function testNormalizeExceptionNoAttribute($direction)
@@ -118,7 +118,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->attribute->expects($this->once())->method('getName')->will($this->returnValue($attributeName));
 
         $this->setExpectedException(
-            'Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException',
+            'Oro\Bundle\WorkflowBundle\Exception\SerializerException',
             sprintf('Cannot handle "%s" of attribute "test_attribute" of workflow "test_workflow"', $direction)
         );
 

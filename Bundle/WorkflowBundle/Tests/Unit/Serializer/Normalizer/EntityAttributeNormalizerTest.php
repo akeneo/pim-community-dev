@@ -64,7 +64,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializerException
      * @expectedExceptionMessage Attribute "test_attribute" of workflow "test_workflow" must exist
      */
     public function testNormalizeExceptionNotInstanceofAttributeClassOption()
@@ -86,7 +86,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($attributeName));
 
         $this->setExpectedException(
-            'Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException',
+            'Oro\Bundle\WorkflowBundle\Exception\SerializerException',
             sprintf(
                 'Attribute "test_attribute" of workflow "test_workflow" must be an instance of "%s", but "%s" given',
                 $fooClass,
@@ -97,7 +97,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializerException
      * @expectedExceptionMessage Attribute "test_attribute" of workflow "test_workflow" must exist
      */
     public function testNormalizeExceptionNoEntityManager()
@@ -119,7 +119,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->registry->expects($this->once())->method('getManagerForClass')->with(get_class($attributeValue));
 
         $this->setExpectedException(
-            'Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException',
+            'Oro\Bundle\WorkflowBundle\Exception\SerializerException',
             sprintf(
                 'Attribute "%s" of workflow "%s" contains object of "%s", but it\'s not managed entity class',
                 $attributeName,

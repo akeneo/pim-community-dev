@@ -95,7 +95,7 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionOptionRequiredException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Option "right" is required.
      */
     public function testInitializeFailsWithEmptyRightOption()
@@ -109,7 +109,7 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionOptionRequiredException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Option "left" is required.
      */
     public function testInitializeFailsWithEmptyLeftOption()
@@ -123,7 +123,7 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Options must have 2 elements, but 0 given
      */
     public function testInitializeFailsWithInvalidOptionsCount()

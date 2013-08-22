@@ -27,7 +27,7 @@ class TrueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ConditionException
      * @expectedExceptionMessage Options are prohibited
      */
     public function testInitializeFails()

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
 class Not implements ConditionInterface
 {
@@ -27,7 +27,7 @@ class Not implements ConditionInterface
      *
      * @param array $options
      * @return Not
-     * @throws ConditionInitializationException
+     * @throws ConditionException
      */
     public function initialize(array $options)
     {
@@ -36,7 +36,7 @@ class Not implements ConditionInterface
             if ($condition instanceof ConditionInterface) {
                 $this->condition = $condition;
             } else {
-                throw new ConditionInitializationException(
+                throw new ConditionException(
                     sprintf(
                         'Options must contain an instance of %s',
                         'Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface'
@@ -44,7 +44,7 @@ class Not implements ConditionInterface
                 );
             }
         } else {
-            throw new ConditionInitializationException(
+            throw new ConditionException(
                 sprintf(
                     'Options must have 1 element, but %d given',
                     count($options)

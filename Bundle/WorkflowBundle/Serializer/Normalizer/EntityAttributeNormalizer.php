@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException;
+use Oro\Bundle\WorkflowBundle\Exception\SerializerException;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
@@ -52,13 +52,13 @@ class EntityAttributeNormalizer implements AttributeNormalizer
      * @param Workflow $workflow
      * @param Attribute $attribute
      * @param mixed $attributeValue
-     * @throws SerializeWorkflowDataException
+     * @throws SerializerException
      */
     protected function validateAttributeValue(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
         $expectedType = $attribute->getOption('class');
         if (!$attributeValue instanceof $expectedType) {
-            throw new SerializeWorkflowDataException(
+            throw new SerializerException(
                 sprintf(
                     'Attribute "%s" of workflow "%s" must be an instance of "%s", but "%s" given',
                     $attribute->getName(),
@@ -76,14 +76,14 @@ class EntityAttributeNormalizer implements AttributeNormalizer
      * @param Workflow $workflow
      * @param Attribute $attribute
      * @return EntityManager
-     * @throws SerializeWorkflowDataException
+     * @throws SerializerException
      */
     protected function getEntityManager(Workflow $workflow, Attribute $attribute)
     {
         $entityClass = $attribute->getOption('class');
         $result = $this->registry->getManagerForClass($entityClass);
         if (!$result) {
-            throw new SerializeWorkflowDataException(
+            throw new SerializerException(
                 sprintf(
                     'Attribute "%s" of workflow "%s" contains object of "%s", but it\'s not managed entity class',
                     $attribute->getName(),

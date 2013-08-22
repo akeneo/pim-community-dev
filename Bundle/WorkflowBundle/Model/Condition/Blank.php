@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
 class Blank implements ConditionInterface
@@ -44,14 +44,14 @@ class Blank implements ConditionInterface
      *
      * @param array $options
      * @return Blank
-     * @throws ConditionInitializationException
+     * @throws ConditionException
      */
     public function initialize(array $options)
     {
         if (1 == count($options)) {
             $this->target = reset($options);
         } else {
-            throw new ConditionInitializationException(
+            throw new ConditionException(
                 sprintf(
                     'Options must have 1 element, but %d given',
                     count($options)

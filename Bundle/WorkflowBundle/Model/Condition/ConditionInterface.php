@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
 interface ConditionInterface
 {
@@ -19,7 +19,7 @@ interface ConditionInterface
      *
      * @param array $options
      * @return ConditionInterface
-     * @throws ConditionInitializationException
+     * @throws ConditionException
      */
     public function initialize(array $options);
 }

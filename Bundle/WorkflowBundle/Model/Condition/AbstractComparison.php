@@ -2,8 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Exception\ConditionOptionRequiredException;
-use Oro\Bundle\WorkflowBundle\Exception\ConditionInitializationException;
+use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
 abstract class AbstractComparison implements ConditionInterface
@@ -63,13 +62,13 @@ abstract class AbstractComparison implements ConditionInterface
      *
      * @param array $options
      * @return AbstractComparison
-     * @throws ConditionInitializationException If options contains not two values
-     * @throws ConditionOptionRequiredException If "left" or "right" option is empty
+     * @throws ConditionException If options contains not two values
+     * @throws ConditionException If "left" or "right" option is empty
      */
     public function initialize(array $options)
     {
         if (2 !== count($options)) {
-            throw new ConditionInitializationException(
+            throw new ConditionException(
                 sprintf(
                     'Options must have 2 elements, but %d given',
                     count($options)
@@ -82,7 +81,7 @@ abstract class AbstractComparison implements ConditionInterface
         } elseif (isset($options[0])) {
             $this->left = $options[0];
         } else {
-            throw new ConditionOptionRequiredException('left');
+            throw new ConditionException('Option "left" is required.');
         }
 
         if (isset($options['right'])) {
@@ -90,7 +89,7 @@ abstract class AbstractComparison implements ConditionInterface
         } elseif (isset($options[1])) {
             $this->right = $options[1];
         } else {
-            throw new ConditionOptionRequiredException('right');
+            throw new ConditionException('Option "right" is required.');
         }
 
         return $this;

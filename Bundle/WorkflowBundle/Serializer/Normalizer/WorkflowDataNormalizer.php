@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-use Oro\Bundle\WorkflowBundle\Exception\SerializeWorkflowDataException;
+use Oro\Bundle\WorkflowBundle\Exception\SerializerException;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -70,13 +70,13 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      * @param Workflow $workflow
      * @param string $attributeName
      * @return \Oro\Bundle\WorkflowBundle\Model\Attribute
-     * @throws SerializeWorkflowDataException If attribute not found
+     * @throws SerializerException If attribute not found
      */
     protected function getAttribute(Workflow $workflow, $attributeName)
     {
         $attribute = $workflow->getAttribute($attributeName);
         if (!$attribute) {
-            throw new SerializeWorkflowDataException(
+            throw new SerializerException(
                 sprintf(
                     'Workflow "%s" has no attribute "%s"',
                     $workflow->getName(),
@@ -104,7 +104,7 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      * @param Attribute $attribute
      * @param mixed $attributeValue
      * @return AttributeNormalizer
-     * @throws SerializeWorkflowDataException
+     * @throws SerializerException
      */
     protected function denormalizeAttribute(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
@@ -118,7 +118,7 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      * @param Attribute $attribute
      * @param mixed $attributeValue
      * @return AttributeNormalizer
-     * @throws SerializeWorkflowDataException
+     * @throws SerializerException
      */
     protected function findAttributeNormalizer($direction, Workflow $workflow, Attribute $attribute, $attributeValue)
     {
@@ -128,7 +128,7 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
                 return $normalizer;
             }
         }
-        throw new SerializeWorkflowDataException(
+        throw new SerializerException(
             sprintf(
                 'Cannot handle "%s" of attribute "%s" of workflow "%s"',
                 $direction,
@@ -171,12 +171,12 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      * Get Workflow
      *
      * @return Workflow
-     * @throws SerializeWorkflowDataException
+     * @throws SerializerException
      */
     protected function getWorkflow()
     {
         if (!$this->serializer instanceof WorkflowAwareSerializer) {
-            throw new SerializeWorkflowDataException(
+            throw new SerializerException(
                 sprintf(
                     'Cannot get Workflow. Serializer must implement %s',
                     'Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer'
