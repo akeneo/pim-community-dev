@@ -48,7 +48,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
-            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+        //    throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
         $jobExecution = new JobExecution;
         $jobExecution->setJobInstance($jobInstance);
@@ -62,7 +62,7 @@ class BatchCommand extends ContainerAwareCommand
                 )
             );
         } else {
-            $output->writeln(sprintf('<error>An error occured during the %s execution.</error>', $job->getType()));
+            $output->writeln(sprintf('<error>An error occured during the %s execution.</error>', $jobInstance->getType()));
         }
     }
 
@@ -92,6 +92,12 @@ class BatchCommand extends ContainerAwareCommand
 
     private function getErrorMessages(ConstraintViolationList $errors)
     {
-        return implode("\n - ", $errors);
+        $errorsStr = '';
+
+        foreach ($errors as $error) {
+            $errorsStr .= sprintf("\n  - %s", $error);
+        }
+
+        return $errorsStr;
     }
 }
