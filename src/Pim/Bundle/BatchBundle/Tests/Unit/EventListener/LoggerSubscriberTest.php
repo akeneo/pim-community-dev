@@ -19,6 +19,11 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber = new LoggerSubscriber($this->logger);
     }
 
+    public function testIsAnEventSubscriber()
+    {
+        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->subscriber);
+    }
+
     public function testSubscribedEvents()
     {
         $this->assertEquals(
