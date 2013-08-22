@@ -207,7 +207,7 @@ class Role implements RoleInterface
      * @param BusinessUnit $owningBusinessUnit
      * @return Role
      */
-    public function setOwner(BusinessUnit $owningBusinessUnit)
+    public function setOwner($owningBusinessUnit)
     {
         $this->owner = $owningBusinessUnit;
 

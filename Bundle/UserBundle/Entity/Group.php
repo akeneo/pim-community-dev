@@ -238,7 +238,7 @@ class Group
      * @param BusinessUnit $owningBusinessUnit
      * @return Group
      */
-    public function setOwner(BusinessUnit $owningBusinessUnit)
+    public function setOwner($owningBusinessUnit)
     {
         $this->owner = $owningBusinessUnit;
 

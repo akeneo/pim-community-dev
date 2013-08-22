@@ -221,6 +221,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      * @Soap\ComplexType("int", nillable=true)
+     * @Exclude
      */
     protected $owner;
 
@@ -1271,7 +1272,7 @@ class User extends AbstractEntityFlexible implements
      * @param BusinessUnit $owningBusinessUnit
      * @return User
      */
-    public function setOwner(BusinessUnit $owningBusinessUnit)
+    public function setOwner($owningBusinessUnit)
     {
         $this->owner = $owningBusinessUnit;
 

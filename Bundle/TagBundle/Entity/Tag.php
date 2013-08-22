@@ -249,7 +249,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @param User $owningUser
      * @return Tag
      */
-    public function setOwner(User $owningUser)
+    public function setOwner($owningUser)
     {
         $this->owner = $owningUser;
 
