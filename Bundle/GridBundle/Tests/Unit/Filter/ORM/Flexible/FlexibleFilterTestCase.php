@@ -217,7 +217,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     protected function getTranslatorMock()
     {
         $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
-        $translator->expects($this->any())->method('trans')->will($this->returnArgument(0));
+        $translator->expects($this->any())->method('trans')
+            ->will($this->returnArgument(0));
         return $translator;
     }
 }

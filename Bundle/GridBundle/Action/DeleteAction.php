@@ -15,16 +15,14 @@ class DeleteAction extends AbstractAction
     protected $requiredOptions = array('link');
 
     /**
-     * @return array
+     * @param array $options
      */
-    public function getOptions()
+    public function setOptions(array $options)
     {
-        $options = parent::getOptions();
-
         if (!isset($options['confirmation'])) {
             $options['confirmation'] = true;
         }
 
-        return $options;
+        parent::setOptions($options);
     }
 }
