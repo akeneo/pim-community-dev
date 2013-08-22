@@ -48,7 +48,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
-        //    throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
         $jobExecution = new JobExecution;
         $jobExecution->setJobInstance($jobInstance);
