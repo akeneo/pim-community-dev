@@ -179,15 +179,15 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
         $failureExceptions = $this->jobExecution->getFailureExceptions();
 
-        $this->assertEquals('Exception',      $failureExceptions[0]['class']);
+        $this->assertEquals('Exception', $failureExceptions[0]['class']);
         $this->assertEquals('My exception 1', $failureExceptions[0]['message']);
-        $this->assertEquals('1',              $failureExceptions[0]['code']);
-        $this->assertContains(__FUNCTION__,   $failureExceptions[0]['trace']);
+        $this->assertEquals('1', $failureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[0]['trace']);
 
-        $this->assertEquals('Exception',      $failureExceptions[1]['class']);
+        $this->assertEquals('Exception', $failureExceptions[1]['class']);
         $this->assertEquals('My exception 2', $failureExceptions[1]['message']);
-        $this->assertEquals('2',              $failureExceptions[1]['code']);
-        $this->assertContains(__FUNCTION__,   $failureExceptions[1]['trace']);
+        $this->assertEquals('2', $failureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[1]['trace']);
     }
 
     public function testGetAllFailureExceptions()
@@ -205,20 +205,20 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
         $allFailureExceptions = $this->jobExecution->getAllFailureExceptions();
 
-        $this->assertEquals('Exception',      $allFailureExceptions[0]['class']);
+        $this->assertEquals('Exception', $allFailureExceptions[0]['class']);
         $this->assertEquals('My exception 1', $allFailureExceptions[0]['message']);
-        $this->assertEquals('1',              $allFailureExceptions[0]['code']);
-        $this->assertContains(__FUNCTION__,   $allFailureExceptions[0]['trace']);
+        $this->assertEquals('1', $allFailureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[0]['trace']);
 
-        $this->assertEquals('Exception',      $allFailureExceptions[1]['class']);
+        $this->assertEquals('Exception', $allFailureExceptions[1]['class']);
         $this->assertEquals('My exception 2', $allFailureExceptions[1]['message']);
-        $this->assertEquals('2',              $allFailureExceptions[1]['code']);
-        $this->assertContains(__FUNCTION__,   $allFailureExceptions[1]['trace']);
+        $this->assertEquals('2', $allFailureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[1]['trace']);
 
-        $this->assertEquals('Exception',           $allFailureExceptions[2]['class']);
+        $this->assertEquals('Exception', $allFailureExceptions[2]['class']);
         $this->assertEquals('My step exception 1', $allFailureExceptions[2]['message']);
-        $this->assertEquals('100',                 $allFailureExceptions[2]['code']);
-        $this->assertContains(__FUNCTION__,        $allFailureExceptions[2]['trace']);
+        $this->assertEquals('100', $allFailureExceptions[2]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[2]['trace']);
 
     }
 

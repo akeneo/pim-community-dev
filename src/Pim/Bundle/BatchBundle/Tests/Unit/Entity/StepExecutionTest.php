@@ -113,15 +113,15 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
         $failureExceptions = $this->stepExecution->getFailureExceptions();
 
-        $this->assertEquals('Exception',      $failureExceptions[0]['class']);
+        $this->assertEquals('Exception', $failureExceptions[0]['class']);
         $this->assertEquals('My exception 1', $failureExceptions[0]['message']);
-        $this->assertEquals('1',              $failureExceptions[0]['code']);
-        $this->assertContains(__FUNCTION__,   $failureExceptions[0]['trace']);
+        $this->assertEquals('1', $failureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[0]['trace']);
 
-        $this->assertEquals('Exception',      $failureExceptions[1]['class']);
+        $this->assertEquals('Exception', $failureExceptions[1]['class']);
         $this->assertEquals('My exception 2', $failureExceptions[1]['message']);
-        $this->assertEquals('2',              $failureExceptions[1]['code']);
-        $this->assertContains(__FUNCTION__,   $failureExceptions[1]['trace']);
+        $this->assertEquals('2', $failureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[1]['trace']);
 
     }
 

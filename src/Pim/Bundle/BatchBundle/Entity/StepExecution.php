@@ -118,7 +118,6 @@ class StepExecution
      */
     private $terminateOnly = false;
 
-
     /**
      * @var array
      *
@@ -426,7 +425,7 @@ class StepExecution
             'code'    => $e->getCode(),
             'trace'   => $e->getTraceAsString()
         );
-                                                            
+
         return $this;
     }
 
