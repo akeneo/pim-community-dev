@@ -176,16 +176,7 @@ abstract class AbstractStep implements StepInterface
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
-        try {
-            $this->getJobRepository()->updateStepExecution($stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
-            $stepExecution->addFailureException($e);
-            $errorMsg = "Encountered an error saving batch meta data. "
-                . "This job is now in an unknown state.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
-        }
+        $this->getJobRepository()->updateStepExecution($stepExecution);
 
         $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
     }
