@@ -369,7 +369,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     public function removeCompleteness(Completeness $completeness)
     {
-        $this->completenesses->remove($completeness);
+        $this->completenesses->removeElement($completeness);
 
         return $this;
     }
@@ -406,7 +406,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function setCompletenesses($completenesses)
+    public function setCompletenesses(array $completenesses = array())
     {
         $this->completenesses = new ArrayCollection($completenesses);
 
