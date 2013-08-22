@@ -15,6 +15,7 @@ use Oro\Bundle\WorkflowBundle\Model\Transition;
 class Workflow
 {
     const MANAGED_ENTITY_KEY = 'managed_entity';
+    const DEFAULT_START_TRANSITION_NAME = '__start__';
 
     /**
      * @var string
@@ -40,11 +41,6 @@ class Workflow
      * @var Collection
      */
     protected $transitions;
-
-    /**
-     * @var string
-     */
-    protected $startStepName;
 
     /**
      * @var string
@@ -131,16 +127,6 @@ class Workflow
     }
 
     /**
-     * Get start step
-     *
-     * @return Step
-     */
-    public function getStartStep()
-    {
-        return $this->getStep($this->getStartStepName());
-    }
-
-    /**
      * Get step by name
      *
      * @param string $stepName
@@ -154,28 +140,6 @@ class Workflow
             throw new UnknownStepException($stepName);
         }
         return $result;
-    }
-
-    /**
-     * Set start step.
-     *
-     * @param string $startStep
-     * @return Workflow
-     */
-    public function setStartStepName($startStep)
-    {
-        $this->startStepName = $startStep;
-        return $this;
-    }
-
-    /**
-     * Get start step name
-     *
-     * @return string
-     */
-    public function getStartStepName()
-    {
-        return $this->startStepName;
     }
 
     /**
@@ -351,6 +315,20 @@ class Workflow
     }
 
     /**
+     * Start workflow.
+     *
+     * @param array $data
+     * @param string $startTransitionName
+     * @return WorkflowItem
+     */
+    public function start(array $data = array(), $startTransitionName = self::DEFAULT_START_TRANSITION_NAME)
+    {
+        $workflowItem = $this->createWorkflowItem($data);
+        $this->transit($workflowItem, $startTransitionName);
+        return $workflowItem;
+    }
+
+    /**
      * Transit workflow item.
      *
      * @param WorkflowItem $workflowItem
@@ -398,7 +376,6 @@ class Workflow
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());
-        $workflowItem->setCurrentStepName($this->getStartStepName());
         $workflowItem->getData()->add($data);
 
         return $workflowItem;
@@ -437,5 +414,20 @@ class Workflow
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Get allowed start transitions.
+     *
+     * @param WorkflowItem $workflowItem
+     * @return Collection
+     */
+    public function getAllowedStartTransitions(WorkflowItem $workflowItem)
+    {
+        return $this->getTransitions()->filter(
+            function (Transition $transition) use ($workflowItem) {
+                return $transition->isStart() && $transition->isAllowed($workflowItem);
+            }
+        );
     }
 }

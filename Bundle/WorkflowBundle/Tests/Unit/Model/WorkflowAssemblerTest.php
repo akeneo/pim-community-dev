@@ -205,7 +205,6 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($workflowDefinition->getName(), $actualWorkflow->getName());
         $this->assertEquals($workflowDefinition->getLabel(), $actualWorkflow->getLabel());
         $this->assertEquals($workflowDefinition->isEnabled(), $actualWorkflow->isEnabled());
-        $this->assertEquals($workflowDefinition->getStartStep(), $actualWorkflow->getStartStepName());
         $this->assertEquals($workflowDefinition->getManagedEntityClass(), $actualWorkflow->getManagedEntityClass());
         $this->assertEquals($attributes, $actualWorkflow->getAttributes());
         $this->assertEquals($steps, $actualWorkflow->getSteps());

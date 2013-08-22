@@ -32,7 +32,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'name' => array('name', 'test'),
-            'startStepName' => array('startStepName', 'current_step'),
             'managedEntityClass' => array('managedEntityClass', 'Test\Bundle\FooBundle\Entity\Bar')
         );
     }
@@ -127,12 +126,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('name' => 'value');
         $workflow = $this->createWorkflow();
-        $workflow->setStartStepName('startStep');
         $workflow->setName('testWorkflow');
 
         $workflowItem = $workflow->createWorkflowItem($data);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);
-        $this->assertEquals('startStep', $workflowItem->getCurrentStepName());
         $this->assertEquals('testWorkflow', $workflowItem->getWorkflowName());
         $this->assertEquals($data['name'], $workflowItem->getData()->get('name'));
     }
@@ -434,18 +431,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflow = $this->createWorkflow();
         $workflow->setSteps(array());
         $workflow->getStep('unknown_step');
-    }
-
-    public function testGetStartStep()
-    {
-        $startStepName = 'start_step';
-        $startStep = $this->getStepMock($startStepName);
-
-        $workflow = $this->createWorkflow();
-        $workflow->setStartStepName($startStepName);
-        $workflow->setSteps(array($startStep));
-
-        $this->assertEquals($startStep, $workflow->getStartStep());
     }
 
     protected function getStepMock($name)

@@ -3,6 +3,8 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
@@ -59,11 +61,13 @@ class WorkflowAssembler extends AbstractAssembler
 
     /**
      * @param WorkflowDefinition $workflowDefinition
+     * @throws UnknownStepException
+     * @throws WorkflowException
      * @return Workflow
      */
     public function assemble(WorkflowDefinition $workflowDefinition)
     {
-        $configuration = $this->configurationTree->parseConfiguration($workflowDefinition->getConfiguration());
+        $configuration = $this->parseConfiguration($workflowDefinition);
         $this->assertOptions(
             $configuration,
             array(
@@ -77,18 +81,55 @@ class WorkflowAssembler extends AbstractAssembler
         $steps = $this->assembleSteps($configuration, $attributes);
         $transitions = $this->assembleTransitions($configuration, $steps);
 
+        $startStepName = $workflowDefinition->getStartStep();
+        if ($startStepName && !$steps->containsKey($startStepName)) {
+            throw new UnknownStepException($startStepName);
+        }
+
+        $startTransitions = $transitions->filter(
+            function (Transition $transition) {
+                return $transition->isStart();
+            }
+        );
+        if (!$startTransitions->count()) {
+            throw new WorkflowException(
+                sprintf(
+                    'Workflow "%s" does not contains neither start step no start transitions',
+                    $workflowDefinition->getName()
+                )
+            );
+        }
+
         $workflow = $this->createWorkflow();
         $workflow
             ->setName($workflowDefinition->getName())
             ->setLabel($workflowDefinition->getLabel())
             ->setEnabled($workflowDefinition->isEnabled())
-            ->setStartStepName($workflowDefinition->getStartStep())
             ->setManagedEntityClass($workflowDefinition->getManagedEntityClass())
             ->setAttributes($attributes)
             ->setSteps($steps)
             ->setTransitions($transitions);
 
         return $workflow;
+    }
+
+    protected function parseConfiguration(WorkflowDefinition $workflowDefinition)
+    {
+        $configuration = $this->configurationTree->parseConfiguration($workflowDefinition->getConfiguration());
+        $configuration = $this->prepareDefaultStartTransition($workflowDefinition, $configuration);
+        return $configuration;
+    }
+
+    protected function prepareDefaultStartTransition(WorkflowDefinition $workflowDefinition, $configuration)
+    {
+        if ($workflowDefinition->getStartStep()) {
+            $configuration[ConfigurationTree::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] = array(
+                'label' => $workflowDefinition->getLabel(),
+                'step_to' => $workflowDefinition->getStartStep(),
+                'is_start' => true
+            );
+        }
+        return $configuration;
     }
 
     /**

@@ -35,6 +35,11 @@ class Transition
     protected $postAction;
 
     /**
+     * @var bool
+     */
+    protected $start = false;
+
+    /**
      * Set label.
      *
      * @param string $label
@@ -177,5 +182,24 @@ class Transition
                 $this->postAction->execute($workflowItem);
             }
         }
+    }
+
+    /**
+     * Mark transition as start transition
+     *
+     * @return Transition
+     */
+    public function setStart()
+    {
+        $this->start = true;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStart()
+    {
+        return $this->start;
     }
 }

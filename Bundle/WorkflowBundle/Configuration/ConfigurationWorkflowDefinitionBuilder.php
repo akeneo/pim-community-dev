@@ -20,12 +20,13 @@ class ConfigurationWorkflowDefinitionBuilder
 
             $enabled = $this->getConfigurationOption($workflowConfiguration, 'enabled', true);
             $managedEntityClass = $this->getConfigurationOption($workflowConfiguration, 'managed_entity_class', null);
+            $startStep = $this->getConfigurationOption($workflowConfiguration, 'start_step', null);
 
             $workflowDefinition = new WorkflowDefinition();
             $workflowDefinition
                 ->setName($workflowName)
                 ->setLabel($workflowConfiguration['label'])
-                ->setStartStep($workflowConfiguration['start_step'])
+                ->setStartStep($startStep)
                 ->setEnabled($enabled)
                 ->setManagedEntityClass($managedEntityClass)
                 ->setConfiguration($workflowConfiguration);
