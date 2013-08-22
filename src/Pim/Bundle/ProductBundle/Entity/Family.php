@@ -466,6 +466,7 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function getVersionedData()
     {
+        /*
         $attributes = array();
         foreach ($this->getAttributes() as $attribute) {
             $attributes[]= $attribute->getCode();
@@ -479,6 +480,10 @@ class Family implements TranslatableInterface, VersionableInterface
         foreach ($this->getTranslations() as $translation) {
             $data['label_'.$translation->getLocale()]= $translation->getLabel();
         }
+        */
+
+        $norm = new \Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer();
+        $data = $norm->normalize($this);
 
         return $data;
     }

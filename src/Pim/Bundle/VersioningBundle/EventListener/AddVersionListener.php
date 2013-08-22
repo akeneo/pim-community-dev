@@ -175,20 +175,6 @@ class AddVersionListener implements EventSubscriber
     public function checkScheduledCollection($entity)
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
-            // TODO : special case, when the product collection of a category is updated, we update each product
-            // TODO : bug when assign product to categories ?
-            /*
-            if ($entity->getOwner() instanceof CategoryInterface) {
-                $mapping = $entity->getMapping();
-                if (isset($mapping['fieldName']) and $mapping['fieldName'] == 'products') {
-                    foreach ($entity->getInsertDiff() as $product) {
-                        $this->addPendingVersioning($product);
-                    }
-                    foreach ($entity->getDeleteDiff() as $product) {
-                        $this->addPendingVersioning($product);
-                    }
-                }
-            }*/
             $this->addPendingVersioning($entity->getOwner());
         }
     }
