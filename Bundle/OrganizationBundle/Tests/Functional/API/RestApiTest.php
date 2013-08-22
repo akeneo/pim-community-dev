@@ -65,40 +65,6 @@ class RestApiTest extends WebTestCase
      *
      * @depends testCreate
      * @param string $id
-     *
-     * @return string
-     */
-//    public function testCreateParent($id)
-//    {
-//        $requestData = $this->fixtureData;
-//        $requestData['business_unit']['name'] = 'Child';
-//        $requestData['business_unit']['parent'] = $id;
-//
-//        $this->client->request(
-//            'POST',
-//            $this->client->generate('oro_api_post_businessunit'),
-//            $requestData
-//        );
-//
-//        /** @var $result Response */
-//        $result = $this->client->getResponse();
-//
-//        ToolsAPI::assertJsonResponse($result, 201);
-//
-//        $responseData = $result->getContent();
-//        $this->assertNotEmpty($responseData);
-//        $responseData = ToolsAPI::jsonToArray($responseData);
-//        $this->assertInternalType('array', $responseData);
-//        $this->assertArrayHasKey('id', $responseData);
-//
-//        return $responseData['id'];
-//    }
-
-    /**
-     * Test GET
-     *
-     * @depends testCreate
-     * @param string $id
      */
     public function testGets($id)
     {
