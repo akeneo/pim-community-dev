@@ -335,6 +335,8 @@ class Job implements JobInterface
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
         }
+
+        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
 
     /**
