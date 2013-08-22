@@ -29,7 +29,8 @@ class RestApiUserTest extends WebTestCase
         $request = array(
             "role" => array (
                 "role" => "new_role_" . mt_rand(),
-                "label" => "new_label_" . mt_rand()
+                "label" => "new_label_" . mt_rand(),
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
