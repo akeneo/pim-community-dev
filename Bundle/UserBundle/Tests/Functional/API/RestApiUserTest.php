@@ -148,7 +148,8 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(3)
+                "roles" => array(3),
+                "owner" => "1"
             )
         );
         $this->client->request(
