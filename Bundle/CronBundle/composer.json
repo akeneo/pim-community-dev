@@ -12,6 +12,7 @@
         "knplabs/knp-paginator-bundle": "dev-master",
         "mtdowling/cron-expression": "1.0.*",
         "oro/ui-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",
         "oro/translation-bundle": "dev-master"
     },
