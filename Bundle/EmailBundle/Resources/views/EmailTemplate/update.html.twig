@@ -5,7 +5,7 @@
 {% import 'OroEmailBundle::macros.html.twig' as _emailMacros %}
 {% set title = form.vars.value.id
     ? 'Edit email template "%name%"'|trans({'%name%': form.vars.value.name})
-    : isClone ? 'Clone Email Template'|trans : 'Add Email Template'|trans
+    : isClone ? 'Clone Email Template'|trans : 'New Email Template'|trans
 %}
 {% if form.vars.value.id %}
     {% oro_title_set({params : {"%name%": form.vars.value.name} }) %}

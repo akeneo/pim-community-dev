@@ -173,12 +173,13 @@
             }, datagridOptions.grid);
             var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);
             {% if (datagrid.pager.nbResults > 0) %}
-            $(datagridFiltersSelector).html(filtersList.render().$el);
+                $(datagridFiltersSelector).html(filtersList.render().$el);
+
+                /**
+                 * @event datagrid_filters:initialized
+                 */
+                Oro.Events.trigger("datagrid_filters:rendered", datagridCollection.collection);
             {% endif %}
-            /**
-             * @event datagrid_filters:initialized
-             */
-            Oro.Events.trigger("datagrid_filters:rendered", datagridCollection.collection);
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
