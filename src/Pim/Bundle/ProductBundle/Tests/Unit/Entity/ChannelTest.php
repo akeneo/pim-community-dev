@@ -147,9 +147,9 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/add/remove for locale property
+     * Test getter/add/remove/has for locale property
      */
-    public function testGetAddRemoveLocale()
+    public function testGetAddRemoveHasLocale()
     {
         $this->assertCount(0, $this->channel->getLocales());
 
@@ -170,6 +170,14 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->channel->getLocales());
         $locale = $this->channel->getLocales()->first();
         $this->assertEquals($expectedLocaleEN, $locale);
+
+        // assert add an already defined locale
+        $this->channel->addLocale($expectedLocaleEN);
+        $this->assertCount(1, $this->channel->getLocales());
+
+        // assert if a channel has a locale
+        $this->assertTrue($this->channel->hasLocale($expectedLocaleEN));
+        $this->assertFalse($this->channel->hasLocale($expectedLocaleFR));
     }
 
     /**
