@@ -14,7 +14,6 @@
             <tr>
                 <td>{{ locale.code }}</td>
                 {% for channel in channels %}
-
                 <td>
                     {% include 'PimProductBundle:Product:_healthbar.html.twig'
                         with {'channel': channel, 'completeness': product.completeness(locale.code, channel.code)} %}
@@ -46,7 +45,7 @@
                 <span>100% {{ 'completeness' | trans }}</span>
                 <span>Between 50% and 90% {{ 'completeness' | trans }}</span>
                 <span>< 50% {{ 'completeness' | trans }}</span>
-                <span>Channels without the locale</span>
+                <span>{{ 'Non activated locale on this channel' | trans }}</span>
             </div>
         </div>
     </div>
