@@ -50,54 +50,70 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
             'invalid_type_class' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label', 'type'    => 'string', 'options' => array('class' => 'stdClass')
+                        'label' => 'Label', 'type' => 'string', 'options' => array('class' => 'stdClass')
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Option "class" cannot be used in attribute with type "string"'
+                'Option "class" cannot be used in attribute "name"'
             ),
             'missing_object_class' => array(
-                array('name' => array('label'   => 'Label', 'type'    => 'object')),
+                array('name' => array('label' => 'Label', 'type' => 'object')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Option "class" is required for attribute with type "object"'
+                'Option "class" is required in attribute "name"'
             ),
             'missing_entity_class' => array(
-                array('name' => array('label'   => 'Label', 'type'    => 'entity')),
+                array('name' => array('label' => 'Label', 'type' => 'entity')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Option "class" is required for attribute with type "entity"'
+                'Option "class" is required in attribute "name"'
             ),
             'invalid_class' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label', 'type'    => 'object', 'options' => array('class' => 'InvalidClass')
+                        'label' => 'Label', 'type' => 'object', 'options' => array('class' => 'InvalidClass')
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Class "InvalidClass" referenced by "class" option not found'
+                'Class "InvalidClass" referenced by "class" option in attribute "name" not found'
             ),
-            'invalid_type_with_managed_entity_option' => array(
+            'object_managed_entity' => array(
                 array(
                     'name' => array(
-                        'label'   => 'Label', 'type'    => 'object',
+                        'label' => 'Label', 'type' => 'object',
                         'options' => array('class' => 'DateTime', 'managed_entity' => true)
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Option "managed_entity" cannot be used with attribute type "object"'
+                'Option "managed_entity" cannot be used in attribute "name"'
             ),
-            'more_than_one_managed_entity_attributes' => array(
+            'object_multiple' => array(
                 array(
-                    'first_attribute' => array(
-                        'label'   => 'First', 'type'    => 'entity',
-                        'options' => array('class' => 'stdClass', 'managed_entity' => true)
-                    ),
-                    'second_attribute' => array(
-                        'label'   => 'Second', 'type'    => 'entity',
-                        'options' => array('class' => 'stdClass', 'managed_entity' => true)
+                    'name' => array(
+                        'label' => 'Label', 'type' => 'object',
+                        'options' => array('class' => 'DateTime', 'multiple' => true)
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'More than one attribute with "managed_entity" option is not allowed'
+                'Option "multiple" cannot be used in attribute "name"'
+            ),
+            'object_bind' => array(
+                array(
+                    'name' => array(
+                        'label' => 'Label', 'type' => 'object',
+                        'options' => array('class' => 'DateTime', 'bind' => true)
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
+                'Option "bind" cannot be used in attribute "name"'
+            ),
+            'entity_bind_and_multiple_false' => array(
+                array(
+                    'name' => array(
+                        'label' => 'Label', 'type' => 'entity',
+                        'options' => array('class' => 'DateTime', 'bind' => false, 'multiple' => false)
+                    )
+                ),
+                'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
+                'Options "multiple" and "bind" in attribute "name" cannot be false simultaneously'
             ),
         );
     }
@@ -118,22 +134,89 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedAttribute, $attributes->get($expectedAttribute->getName()));
     }
 
+    /**
+     * @return array
+     */
     public function configurationDataProvider()
     {
         return array(
-            'minimal' => array(
-                array(
-                    'attribute_one' => array('label' => 'label', 'type' => 'string')
-                ),
-                $this->getAttribute('attribute_one', 'label', 'string', array())
+            'string' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'string')),
+                $this->getAttribute('attribute_one', 'label', 'string')
             ),
-            'full' => array(
+            'bool' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'bool')),
+                $this->getAttribute('attribute_one', 'label', 'bool')
+            ),
+            'boolean' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'boolean')),
+                $this->getAttribute('attribute_one', 'label', 'boolean')
+            ),
+            'int' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'int')),
+                $this->getAttribute('attribute_one', 'label', 'int')
+            ),
+            'integer' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'integer')),
+                $this->getAttribute('attribute_one', 'label', 'integer')
+            ),
+            'float' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'float')),
+                $this->getAttribute('attribute_one', 'label', 'float')
+            ),
+            'array' => array(
+                array('attribute_one' => array('label' => 'label', 'type' => 'array')
+                ),
+                $this->getAttribute('attribute_one', 'label', 'array')
+            ),
+            'object' => array(
                 array(
-                    'attribute_two' => array(
-                        'label' => 'label', 'type' => 'string', 'options' => array('key' => 'value')
+                    'attribute_one' => array(
+                        'label' => 'label', 'type' => 'object', 'options' => array('class' => 'stdClass')
                     )
                 ),
-                $this->getAttribute('attribute_two', 'label', 'string', array('key' => 'value'))
+                $this->getAttribute('attribute_one', 'label', 'object', array('class' => 'stdClass'))
+            ),
+            'entity_minimal' => array(
+                array(
+                    'attribute_one' => array(
+                        'label' => 'label', 'type' => 'entity', 'options' => array('class' => 'stdClass')
+                    )
+                ),
+                $this->getAttribute(
+                    'attribute_one',
+                    'label',
+                    'entity',
+                    array('class' => 'stdClass', 'multiple' => false, 'bind' => true)
+                )
+            ),
+            'entity_full' => array(
+                array(
+                    'attribute_one' => array(
+                        'label' => 'label', 'type' => 'entity',
+                        'options' => array('class' => 'stdClass', 'multiple' => true, 'bind' => false)
+                    )
+                ),
+                $this->getAttribute(
+                    'attribute_one',
+                    'label',
+                    'entity',
+                    array('class' => 'stdClass', 'multiple' => true, 'bind' => false)
+                )
+            ),
+            'entity_multiple_and_bind' => array(
+                array(
+                    'attribute_one' => array(
+                        'label' => 'label', 'type' => 'entity',
+                        'options' => array('class' => 'stdClass', 'multiple' => true, 'bind' => true)
+                    )
+                ),
+                $this->getAttribute(
+                    'attribute_one',
+                    'label',
+                    'entity',
+                    array('class' => 'stdClass', 'multiple' => true, 'bind' => true)
+                )
             )
         );
     }
