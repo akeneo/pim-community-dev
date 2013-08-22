@@ -2,16 +2,16 @@
 {% if completeness is null %}
     {{ 'Impossible to calculate' | trans }}
 {% else %}
-    {% set titleProgressBar = completeness.ratio ~'% completed ('~ completeness.requiredCount ~' required values)' %}
+    {% set titleProgressBar = completeness.ratio|number_format(0) ~'% completed ('~ completeness.requiredCount ~' required values)' %}
     <div class="progress" title="{{ titleProgressBar }}">
         {% if channel.hasLocale(locale) == false %}
             {% set progressClass = 'bar-disabled' %}
         {% elseif completeness.ratio == 100 %}
             {% set progressClass = 'bar-success' %}
-        {% elseif completeness.ratio >= 50 %}
-            {% set progressClass = 'bar-warning' %}
-        {% else %}
+        {% elseif completeness.ratio == 0 %}
             {% set progressClass = 'bar-danger' %}
+        {% else %}
+            {% set progressClass = 'bar-warning' %}
         {% endif %}
         <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%;"></div>
     </div>

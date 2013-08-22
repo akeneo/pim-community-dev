@@ -88,7 +88,6 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
         // depending of the forced option
         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
 
-
         // Call calculator and persists entities
         $completenesses = $this->calculator->calculate($products);
         foreach ($completenesses as $sku => $productCompleteness) {

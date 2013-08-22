@@ -30,6 +30,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
         }
 
         $data = $value->getData();
+
         if ($data === null) {
             $this->context->addViolation($constraint->messageNotNull);
 
@@ -38,6 +39,8 @@ class ProductValueNotBlankValidator extends ConstraintValidator
         if ($data === ''
             || (is_array($data) && count($data) === 0)) {
             $this->context->addViolation($constraint->messageNotBlank);
+
+            return;
         }
     }
 }
