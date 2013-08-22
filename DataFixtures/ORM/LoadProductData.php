@@ -182,23 +182,6 @@ class LoadProductData extends AbstractDemoFixture
         }
 
         $this->getProductManager()->getStorageManager()->flush();
-
-        // prepare user and data audit as user is not logged in
-        $user = $this->getAdminUser();
-        $products = $this->getProductManager()->getFlexibleRepository()->findAll();
-        foreach ($products as $product) {
-            $logEntry = new Audit();
-            $logEntry->setAction('create');
-            $logEntry->setObjectClass(get_class($product));
-            $logEntry->setLoggedAt();
-            $logEntry->setUser($user);
-            $logEntry->setVersion(1);
-            $logEntry->setObjectName(get_class($product));
-            $logEntry->setObjectId($product->getId());
-            $this->getProductManager()->getStorageManager()->persist($logEntry);
-        }
-
-        $this->getProductManager()->getStorageManager()->flush();
     }
 
     /**
