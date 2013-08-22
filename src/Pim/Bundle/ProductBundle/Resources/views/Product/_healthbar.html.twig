@@ -2,7 +2,7 @@
 {% if completeness is null %}
     {{ 'Impossible to calculate' | trans }}
 {% else %}
-    {% set titleProgressBar = completeness.ratio|number_format(2) ~'% completed ('~ completeness.requiredCount ~' required values)' %}
+    {% set titleProgressBar = completeness.ratio ~'% completed ('~ completeness.requiredCount ~' required values)' %}
     <div class="progress" title="{{ titleProgressBar }}">
         {% if channel.hasLocale(locale) == false %}
             {% set progressClass = 'bar-disabled' %}

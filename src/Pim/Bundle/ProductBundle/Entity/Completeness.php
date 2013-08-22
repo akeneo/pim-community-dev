@@ -44,9 +44,9 @@ class Completeness
     protected $channel;
 
     /**
-     * @var float $ratio
+     * @var integer $ratio
      *
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="integer")
      */
     protected $ratio = 100;
 
@@ -161,7 +161,7 @@ class Completeness
     /**
      * Getter ratio
      *
-     * @return float
+     * @return integer
      */
     public function getRatio()
     {
@@ -171,7 +171,7 @@ class Completeness
     /**
      * Setter ratio
      *
-     * @param float $ratio
+     * @param integer $ratio
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
