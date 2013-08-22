@@ -30,7 +30,7 @@ class RestApiRolesTest extends WebTestCase
             "role" => array(
                 "role" => $roleName,
                 "label" => $roleName,
-                "owner" => 1
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
