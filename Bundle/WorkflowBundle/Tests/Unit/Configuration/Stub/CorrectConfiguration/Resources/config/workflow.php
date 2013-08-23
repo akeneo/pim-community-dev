@@ -69,6 +69,7 @@ return array(
                 'is_final' => false,
                 'form_type' => 'custom_workflow_step',
                 'allowed_transitions' => array(),
+                'form_options' => array(),
             )
         ),
         'attributes' => array(),

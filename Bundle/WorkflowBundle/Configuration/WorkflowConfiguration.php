@@ -26,7 +26,7 @@ class WorkflowConfiguration implements ConfigurationInterface
     public function processConfiguration(array $configs)
     {
         $processor = new Processor();
-        return $processor->processConfiguration($this, $configs);
+        return $processor->processConfiguration($this, array($configs));
     }
 
     /**
@@ -102,8 +102,12 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->defaultValue(OroWorkflowStep::NAME)
                     ->end()
                     ->arrayNode('form_options')
-                        ->children()
+                        ->prototype('variable')
+                        ->end()
+                        /** Cannot add specific nodes in form_options, because it can contain any value*/
+                        /*->children()
                             ->arrayNode('attribute_fields')
+                                ->prototype('variable')
                                 ->prototype('array')
                                     ->children()
                                         ->scalarNode('label')
@@ -120,7 +124,7 @@ class WorkflowConfiguration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                        ->end()
+                        ->end()*/
                     ->end()
                     ->arrayNode('allowed_transitions')
                         ->prototype('scalar')
