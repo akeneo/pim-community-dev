@@ -168,7 +168,7 @@ class LoadCategoryData extends AbstractDemoFixture
     protected function createCategory($code, $parent = null, $products = array())
     {
         $category = new Category();
-        $category->setCode($code);
+        $category->setCode($this->prepareCode($code));
         $category->setParent($parent);
 
         foreach ($products as $product) {
@@ -178,6 +178,18 @@ class LoadCategoryData extends AbstractDemoFixture
         $this->manager->persist($category);
 
         return $category;
+    }
+
+    /**
+     * Convert human readable name into a valid entity code
+     * @param string $code
+     *
+     * @return string
+     */
+    protected function prepareCode($code)
+    {
+        $code = str_replace(' ', '_', strtolower($code));
+        return preg_replace('/__+/', '_', preg_replace('/[^a-zA-Z0-9_]/', '', $code));
     }
 
     /**
