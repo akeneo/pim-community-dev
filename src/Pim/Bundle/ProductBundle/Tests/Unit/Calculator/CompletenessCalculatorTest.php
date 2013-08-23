@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
+use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
@@ -36,6 +38,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
 
     protected $repository;
 
+    protected $validator;
+
     const CHANNEL_1 = 'channel1';
     const CHANNEL_2 = 'channel2';
 
@@ -54,14 +58,20 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->initializeChannels();
         $this->initializeLocales();
 
+        // initialize mocks
         $this->initializeRepository();
+        $this->initializeValidator();
 
         $channelManager = $this->createChannelManager();
         $localeManager  = $this->createLocaleManager();
         $entityManager  = $this->createEntityManager();
-        $validator      = $this->createValidator();
 
-        $this->calculator = new CompletenessCalculator($channelManager, $localeManager, $entityManager, $validator);
+        $this->calculator = new CompletenessCalculator(
+            $channelManager,
+            $localeManager,
+            $entityManager,
+            $this->validator
+        );
     }
 
     /**
@@ -74,13 +84,16 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for calculator
+     * Data provider for calculator for the method calculateForAProductByChannel
      * @return array
      */
-    public function dataProviderCalculator()
+    public function dataProviderCalculatorForAProductByChannel()
     {
         return array(
-            'first test' => array(
+            'all data set' => array(
+                // working channel
+                self::CHANNEL_1,
+                // product values
                 array(
                     array(
                         'attribute' => self::ATTR_1,
@@ -94,12 +107,73 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
                         'channel' => self::CHANNEL_1,
                         'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
                     ),
+                    array(
+                        'attribute' => self::ATTR_2,
+                        'locale' => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
+                    ),
+                    array(
+                        'attribute' => self::ATTR_2,
+                        'locale' => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
+                    ),
                 ),
+                // validator errors
+                array(array(), array(), array(), array()),
+                // results expected
                 array(
                     array(
                         'locale'  => self::LOCALE_1,
                         'channel' => self::CHANNEL_1,
                         'results' => array('ratio' => 100, 'missing_count' => 0, 'required_count' => 2)
+                    ),
+                    array(
+                        'locale'  => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'results' => array('ratio' => 100, 'missing_count' => 0, 'required_count' => 2)
+                    )
+                )
+            ),
+            'incorrect values' => array(
+                // working channel
+                self::CHANNEL_1,
+                // product values
+                array(
+                    array(
+                        'attribute' => self::ATTR_1,
+                        'locale' => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'return' => null
+                    ),
+                    array(
+                        'attribute' => self::ATTR_1,
+                        'locale' => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
+                    ),
+                    array(
+                        'attribute' => self::ATTR_2,
+                        'locale' => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
+                    ),
+                    array(
+                        'attribute' => self::ATTR_2,
+                        'locale' => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
+                    ),
+                ),
+                // validator errors
+                array(array('error'), array(), array(), array()),
+                // results expected
+                array(
+                    array(
+                        'locale'  => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'results' => array('ratio' => 50, 'missing_count' => 1, 'required_count' => 2)
                     ),
                     array(
                         'locale'  => self::LOCALE_2,
@@ -114,27 +188,36 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      *
+     * @param string $channelCode
      * @param array $values  Array of product values
      * array(
      *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
      *     ...
      * )
-     *
+     * @param array $errors  Array of the errors returned by the validator
      * @param array $results Array of expected completeness results
      * array(
      *     array('locale' => locale1, 'channel' => channel1, result => array(ratio, missing_count, required_attr)
      * )
      *
-     * @dataProvider dataProviderCalculator
+     * @dataProvider dataProviderCalculatorForAProductByChannel
      */
-    public function testCalculatorForAProductByChannel(array $values, array $results)
+    public function testCalculatorForAProductByChannel($channelCode, array $values, array $errors, array $results)
     {
         $product = $this->createProductMock($values);
 
-        $this->mockRepository($this->channel1);
+        // update repository mock
+        $channelUsed = $this->getChannel($channelCode);
+        $this->mockRepository($channelUsed);
 
-        // TODO : don't use this->channel1 but get it from code with method
-        $completenesses = $this->calculator->calculateForAProductByChannel($product, $this->channel1);
+        // update validator mock
+        $this->validator
+            ->expects($this->any())
+            ->method('validateValue')
+            ->will($this->onConsecutiveCalls($errors[0], $errors[1], $errors[2], $errors[3]));
+
+        // call the calculator
+        $completenesses = $this->calculator->calculateForAProductByChannel($product, $channelUsed);
         $this->assertCount(count($results), $completenesses);
         $product->setCompletenesses($completenesses);
 
@@ -145,6 +228,26 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($result['results']['ratio'], $completeness->getRatio());
             $this->assertEquals($result['results']['missing_count'], $completeness->getMissingCount());
             $this->assertEquals($result['results']['required_count'], $completeness->getRequiredCount());
+        }
+    }
+
+    /**
+     * Method to get channel entity from a code
+     *
+     * @param string $channelCode
+     *
+     * @return Channel
+     *
+     * @throws \Exception
+     */
+    private function getChannel($channelCode)
+    {
+        if ($channelCode === self::CHANNEL_1) {
+            return $this->channel1;
+        } elseif ($channelCode === self::CHANNEL_2) {
+            return $this->channel2;
+        } else {
+            throw new \Exception(sprintf('Unknown channel code in %s', get_class($this)));
         }
     }
 
@@ -162,7 +265,7 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->repository
             ->expects($this->any())
             ->method('findBy')
-            ->with(array('channel' => $this->channel1, 'required' => true))
+            ->with(array('channel' => $channel, 'required' => true))
             ->will($this->returnValue($requirementsList));
     }
 
@@ -364,15 +467,13 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create validator mock
+     * Initialize validator mock
      */
-    protected function createValidator()
+    protected function initializeValidator()
     {
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\Validator')
+        $this->validator = $this->getMockBuilder('Symfony\Component\Validator\Validator')
                           ->disableOriginalConstructor()
                           ->getMock();
-
-        return $validator;
     }
 
     /**
