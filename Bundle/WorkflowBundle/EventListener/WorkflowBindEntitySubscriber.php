@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -30,57 +30,34 @@ class WorkflowBindEntitySubscriber implements EventSubscriber
         $this->binder = $binder;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush');
+        return array('preFlush');
     }
 
     /**
      * Before ensure that all entities are binded to WorkflowItem
      *
-     * @param OnFlushEventArgs $args
+     * @param PreFlushEventArgs $args
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function preFlush(PreFlushEventArgs $args)
     {
         /** @var EntityManager $em */
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            if ($this->isSupported($entity)) {
-                $this->bindEntities($entity, $uow);
+            if ($entity instanceof WorkflowItem) {
+                $this->binder->bindEntities($entity);
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if ($this->isSupported($entity)) {
-                $this->bindEntities($entity, $uow);
+            if ($entity instanceof WorkflowItem) {
+                $this->binder->bindEntities($entity);
             }
         }
-    }
-
-    /**
-     * Bind entities of WorkflowItem and triggers uow
-     *
-     * @param WorkflowItem $workflowItem
-     * @param UnitOfWork $uow
-     */
-    protected function bindEntities(WorkflowItem $workflowItem, UnitOfWork $uow)
-    {
-        if ($this->binder->bindEntities($workflowItem)) {
-            $uow->propertyChanged($workflowItem, 'bindEntities', null, $workflowItem->getBindEntities());
-        }
-    }
-
-    /**
-     * @param $entity
-     * @return bool
-     */
-    protected function isSupported($entity)
-    {
-        return $entity instanceof WorkflowItem;
     }
 }

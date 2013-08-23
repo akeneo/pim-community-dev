@@ -8,6 +8,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 
+/**
+ * Runs binding of workflow items with entities
+ */
 class EntityBinder
 {
     /**
@@ -50,7 +53,7 @@ class EntityBinder
         $counter = 0;
 
         foreach ($entitiesToBind as $entity) {
-            if ($this->bindEntity($workflowItem, $entity)) {
+            if ($entity && $this->bindEntity($workflowItem, $entity)) {
                 $counter++;
             }
         }
@@ -90,9 +93,7 @@ class EntityBinder
         $entityClass = get_class($entity);
         $entityManager = $this->doctrineRegistry->getManagerForClass($entityClass);
         $classMetadata = $entityManager->getClassMetadata($entityClass);
-        $identifiers = $classMetadata->getIdentifierValues($entity);
-
-        return $identifiers;
+        return $classMetadata->getIdentifierValues($entity);
     }
 
     /**

@@ -144,7 +144,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->callback(
                     function (WorkflowBindEntity $bindEntity) use ($fooEntity, $fooIds) {
-                        return $bindEntity->getEntityId() == $fooIds
+                        return $bindEntity->getEntityId() == $fooIds['id']
                             && $bindEntity->getEntityClass() == get_class($fooEntity);
                     }
                 )
@@ -154,7 +154,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->callback(
                     function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
-                        return $bindEntity->getEntityId() == $barIds
+                        return $bindEntity->getEntityId() == $barIds['id']
                             && $bindEntity->getEntityClass() == get_class($barEntity);
                     }
                 )
@@ -164,7 +164,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowItem->expects($this->at(4))->method('addBindEntity')->with(
             $this->callback(
                 function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
-                    return $bindEntity->getEntityId() == $barIds
+                    return $bindEntity->getEntityId() == $barIds['id']
                         && $bindEntity->getEntityClass() == get_class($barEntity);
                 }
             )

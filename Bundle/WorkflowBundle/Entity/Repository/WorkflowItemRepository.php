@@ -5,6 +5,8 @@ namespace Oro\Bundle\WorkflowBundle\Entity\Repository;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
+
 class WorkflowItemRepository extends EntityRepository
 {
     /**
@@ -17,9 +19,7 @@ class WorkflowItemRepository extends EntityRepository
     {
         $entityClass = ClassUtils::getRealClass(get_class($entity));
         $metadata = $this->getEntityManager()->getClassMetadata($entityClass);
-        $idField = $metadata->getSingleIdentifierFieldName();
-        $entityIdValues = $metadata->getIdentifierValues($entity);
-        $entityId = $entityIdValues[$idField];
+        $entityId = WorkflowBindEntity::convertIdentifiersToString($metadata->getIdentifierValues($entity));
 
         $qb = $this->getEntityManager()
             ->createQueryBuilder()

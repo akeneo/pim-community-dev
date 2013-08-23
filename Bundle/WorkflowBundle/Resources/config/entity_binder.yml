@@ -9,7 +9,7 @@ services:
             - @oro_workflow.registry
             - @doctrine
 
-    oro_workflow.data_serialize.doctrine_subscriber:
+    oro_workflow.entity_binder.doctrine_subscriber:
         class: %oro_workflow.entity_binder.doctrine_subscriber.class%
         arguments:
             - @oro_workflow.entity_binder

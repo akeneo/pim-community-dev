@@ -36,9 +36,15 @@ class WorkflowBindEntityTest extends \PHPUnit_Framework_TestCase
     public function testEntityId()
     {
         $this->assertNull($this->workflowBindEntity->getEntityId());
-        $value = 1;
-        $this->workflowBindEntity->setEntityId($value);
-        $this->assertEquals($value, $this->workflowBindEntity->getEntityId());
+
+        $this->workflowBindEntity->setEntityId(1);
+        $this->assertEquals(1, $this->workflowBindEntity->getEntityId());
+
+        $this->workflowBindEntity->setEntityId(array('id' => 2));
+        $this->assertEquals(2, $this->workflowBindEntity->getEntityId());
+
+        $this->workflowBindEntity->setEntityId(array('id_one' => 2, 'id_two' => 3));
+        $this->assertEquals('2,3', $this->workflowBindEntity->getEntityId());
     }
 
     public function testWorkflowItem()

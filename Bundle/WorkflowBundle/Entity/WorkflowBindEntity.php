@@ -100,7 +100,7 @@ class WorkflowBindEntity
      */
     public function setEntityId($entityId)
     {
-        $this->entityId = $entityId;
+        $this->entityId = self::convertIdentifiersToString($entityId);
 
         return $this;
     }
@@ -149,5 +149,16 @@ class WorkflowBindEntity
         return
             $this->entityId && $this->entityClass &&
             $this->entityClass  == $other->entityClass && $this->entityId == $other->entityId;
+    }
+
+    /**
+     * Converts array of identifiers that was get from metadata to single string
+     *
+     * @param array|string $identifiers
+     * @return string
+     */
+    public static function convertIdentifiersToString($identifiers)
+    {
+        return is_array($identifiers) ? implode(',', $identifiers) : (string)$identifiers;
     }
 }

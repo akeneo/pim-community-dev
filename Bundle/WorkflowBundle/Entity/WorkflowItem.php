@@ -68,7 +68,7 @@ class WorkflowItem
      *  orphanRemoval=true
      * )
      */
-    protected $entities;
+    protected $bindEntities;
 
     /**
      * @var \Datetime $created
@@ -113,7 +113,7 @@ class WorkflowItem
      */
     public function __construct()
     {
-        $this->entities = new ArrayCollection();
+        $this->bindEntities = new ArrayCollection();
         $this->closed = false;
         $this->data = new WorkflowData();
     }
@@ -217,7 +217,7 @@ class WorkflowItem
      */
     public function getBindEntities()
     {
-        return $this->entities;
+        return $this->bindEntities;
     }
 
     /**
