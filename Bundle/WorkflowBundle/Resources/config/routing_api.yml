@@ -1,0 +1,4 @@
+oro_workflow_api:
+    resource: "@OroWorkflowBundle/Controller/Api/Rest/WorkflowController.php"
+    type:     rest
+    prefix:   /workflow
