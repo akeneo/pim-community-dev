@@ -34,7 +34,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
             EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
             EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
-            EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
+            EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
             EventInterface::STEP_EXECUTION_ERROR       => 'stepExecutionError',
         );
@@ -86,7 +86,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->info(sprintf('Step execution starting: %s', $stepExecution));
     }
 
-    public function stepExecutionSucceed(StepExecutionEvent $event)
+    public function stepExecutionSucceeded(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
 

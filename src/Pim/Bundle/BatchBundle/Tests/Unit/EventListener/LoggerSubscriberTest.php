@@ -34,7 +34,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
                 EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
                 EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
-                EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
+                EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
                 EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
                 EventInterface::STEP_EXECUTION_ERROR       => 'stepExecutionError',
             ),
@@ -113,6 +113,23 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $event = $this->getStepExecutionEventMock();
         $this->subscriber->beforeStepExecution($event);
+    }
+
+    public function testStepExecutionSucceeded()
+    {
+        $this->logger
+            ->expects($this->once())
+            ->method('debug')
+            ->with('Step execution success: id= 1');
+
+        $stepExecution = $this->getStepExecutionMock();
+        $stepExecution->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(1));
+
+        $event = $this->getStepExecutionEventMock($stepExecution);
+
+        $this->subscriber->stepExecutionSucceeded($event);
     }
 
     public function testStepExecutionInterrupted()

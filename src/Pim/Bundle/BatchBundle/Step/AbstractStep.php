@@ -153,7 +153,7 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEED, $stepExecution);
+            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
         } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
