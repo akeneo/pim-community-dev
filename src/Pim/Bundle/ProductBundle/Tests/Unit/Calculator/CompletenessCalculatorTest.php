@@ -71,24 +71,28 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for calculator for the method calculateForAProductByChannel
+     *
+     * array(
+     *     channel,
+     *     product values -> array(),
+     *     validator errors -> array(),
+     *     results expected -> array()
+     * )
+     *
      * @return array
      */
     public function dataProviderCalculatorForAProductByChannel()
     {
         return array(
             'all data set' => array(
-                // working channel
                 self::CHANNEL_1,
-                // product values
                 array(
                     array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
                 ),
-                // validator errors
                 array(array(), array(), array(), array()),
-                // results expected
                 array(
                     array(
                         'locale'  => self::LOCALE_1,
@@ -103,18 +107,14 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             'incorrect values' => array(
-                // working channel
                 self::CHANNEL_1,
-                // product values
                 array(
                     array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
                     array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1)
                 ),
-                // validator errors
                 array(array('error'), array(), array(), array()),
-                // results expected
                 array(
                     array(
                         'locale'  => self::LOCALE_1,
@@ -157,7 +157,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->mockRepository($channelUsed);
 
         // update validator mock
-        $this->validator
+        $this
+            ->validator
             ->expects($this->any())
             ->method('validateValue')
             ->will($this->onConsecutiveCalls($errors[0], $errors[1], $errors[2], $errors[3]));
@@ -208,7 +209,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             $this->createAttributeRequirement($this->attribute2, $channel)
         );
 
-        $this->repository
+        $this
+            ->repository
             ->expects($this->any())
             ->method('findBy')
             ->with(array('channel' => $channel, 'required' => true))
