@@ -347,22 +347,34 @@ class Workflow
             $transition = $this->getTransitions()->get($transition);
         }
 
-        /** @var Step $currentStep */
-        $currentStep = $this->getSteps()->get($workflowItem->getCurrentStepName());
-        if (!$currentStep) {
-            throw new UnknownStepException($workflowItem->getCurrentStepName());
-        }
-        if ($currentStep->isAllowedTransition($transition->getName())) {
+        if ($this->isAllowedTransition($transition, $workflowItem)) {
             $transition->transit($workflowItem);
         } else {
             throw new ForbiddenTransitionException(
                 sprintf(
-                    'Transition "%s" is not allowed for step "%s".',
-                    $transition->getName(),
-                    $currentStep->getName()
+                    'Transition "%s" is not allowed.',
+                    $transition->getName()
                 )
             );
         }
+    }
+
+    /**
+     * Check that transition is allowed to perform for given workflow item.
+     *
+     * @param Transition $transition
+     * @param WorkflowItem $workflowItem
+     * @return bool
+     * @throws UnknownStepException
+     */
+    protected function isAllowedTransition(Transition $transition, WorkflowItem $workflowItem)
+    {
+        /** @var Step $currentStep */
+        $currentStep = $this->getSteps()->get($workflowItem->getCurrentStepName());
+        if (!$currentStep && !$transition->isStart()) {
+            throw new UnknownStepException($workflowItem->getCurrentStepName());
+        }
+        return (!$currentStep && $transition->isStart()) || $currentStep->isAllowedTransition($transition->getName());
     }
 
     /**
@@ -419,11 +431,12 @@ class Workflow
     /**
      * Get allowed start transitions.
      *
-     * @param WorkflowItem $workflowItem
+     * @param array $data
      * @return Collection
      */
-    public function getAllowedStartTransitions(WorkflowItem $workflowItem)
+    public function getAllowedStartTransitions(array $data = array())
     {
+        $workflowItem = $this->createWorkflowItem($data);
         return $this->getTransitions()->filter(
             function (Transition $transition) use ($workflowItem) {
                 return $transition->isStart() && $transition->isAllowed($workflowItem);

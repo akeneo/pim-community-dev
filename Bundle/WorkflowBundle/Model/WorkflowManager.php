@@ -34,13 +34,14 @@ class WorkflowManager
     }
 
     /**
-     * Get workflow item for given entity by name.
+     * Start workflow for given entity by name.
      *
      * @param string $workflowName
      * @param int $entityId
+     * @param string|Transition $transition
      * @return WorkflowItem
      */
-    public function getWorkflowItem($workflowName, $entityId)
+    public function startWorkflow($workflowName, $entityId, $transition = Workflow::DEFAULT_START_TRANSITION_NAME)
     {
         $workflow = $this->workflowRegistry->getWorkflow($workflowName);
         $entity = null;
@@ -51,10 +52,11 @@ class WorkflowManager
         // TODO Find entity attribute name
         $managedEntityAttributes = $workflow->getManagedEntityAttributes();
 
-        $workflowItem = $workflow->createWorkflowItem(
+        $workflowItem = $workflow->start(
             array(
                 $managedEntityAttributes->first()->getName() => $entity
-            )
+            ),
+            $transition
         );
 
         $this->doctrine->getManager()->persist($workflowItem);
