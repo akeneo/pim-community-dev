@@ -172,11 +172,7 @@ abstract class AbstractStep implements StepInterface
         $stepExecution->setExitStatus($exitStatus);
 
         $this->getJobRepository()->updateStepExecution($stepExecution);
-
-        /**
-         * TODO Replace by event triggering
-         * $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
-         */
+        $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 
     /**
