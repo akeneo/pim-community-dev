@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
 use Doctrine\ORM\EntityManager;
 
-class WebTestCase extends BaseWebTestCase
+abstract class WebTestCase extends BaseWebTestCase
 {
     const DB_ISOLATION = '/@db_isolation(.*)(\r|\n)/U';
     const DB_REINDEX = '/@db_reindex(.*)(\r|\n)/U';
@@ -113,5 +113,10 @@ class WebTestCase extends BaseWebTestCase
     public function setIsolation($dbIsolation = false)
     {
         self::$db_isolation = $dbIsolation;
+    }
+
+    public static function getInstance()
+    {
+        return self::$internalClient;
     }
 }
