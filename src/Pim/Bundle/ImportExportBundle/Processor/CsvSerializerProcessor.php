@@ -113,7 +113,6 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
             'withHeader' => array(
                 'type' => 'checkbox',
             ),
-
         );
     }
 }

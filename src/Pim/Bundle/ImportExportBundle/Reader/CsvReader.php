@@ -88,14 +88,20 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     {
         if (null === $this->csv) {
             $this->csv = new \SplFileObject($this->filePath);
-            $this->csv->setFlags(\SplFileObject::READ_CSV);
+            $this->csv->setFlags(
+                \SplFileObject::READ_CSV   |
+                \SplFileObject::READ_AHEAD |
+                \SplFileObject::SKIP_EMPTY |
+                \SplFileObject::DROP_NEW_LINE
+            );
             $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
             $this->fieldNames = $this->csv->fgetcsv();
         }
 
-        if ($data = $this->csv->fgetcsv()) {
-            if (array(null) === $data) {
-                return;
+        $data = $this->csv->fgetcsv();
+        if (false !== $data) {
+            if ($data === array(null) || $data === null) {
+                return null;
             }
 
             if (count($this->fieldNames) !== count($data)) {

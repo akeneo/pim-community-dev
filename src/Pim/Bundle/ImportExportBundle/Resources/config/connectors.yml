@@ -3,12 +3,15 @@ parameters:
     pim_import_export.reader.category.class:                        Pim\Bundle\ImportExportBundle\Reader\CategoryReader
     pim_import_export.reader.attribute.class:                       Pim\Bundle\ImportExportBundle\Reader\AttributeReader
     pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
+    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\CsvFileReader
 
     pim_import_export.processor.homogeneous_csv_serializer.class:   Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
     pim_import_export.processor.valid_product_creation.class:       Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor
+    pim_import_export.processor.valid_category_creation.class:      Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor
 
     pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
+    pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\OrmCategoryWriter
 
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
 
@@ -39,6 +42,9 @@ services:
     pim_import_export.reader.csv:
         class: %pim_import_export.reader.csv.class%
 
+    pim_import_export.reader.csv_file:
+        class: %pim_import_export.reader.csv_file.class%
+
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
 
@@ -64,6 +70,12 @@ services:
             - @pim_product.manager.product
             - @pim_product.manager.channel
 
+    pim_import_export.processor.valid_category_creation:
+        class: %pim_import_export.processor.valid_category_creation.class%
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @form.factory
+
     # writers
     pim_import_export.writer.file:
         class: %pim_import_export.writer.file.class%
@@ -75,4 +87,9 @@ services:
         class: %pim_import_export.writer.orm_product.class%
         arguments:
             - @pim_product.manager.product
+            - @doctrine.orm.default_entity_manager
+
+    pim_import_export.writer.orm_category:
+        class: %pim_import_export.writer.orm_category.class%
+        arguments:
             - @doctrine.orm.default_entity_manager
