@@ -81,11 +81,6 @@ class WorkflowAssembler extends AbstractAssembler
         $steps = $this->assembleSteps($configuration, $attributes);
         $transitions = $this->assembleTransitions($configuration, $steps);
 
-        $startStepName = $workflowDefinition->getStartStep();
-        if ($startStepName && !$steps->containsKey($startStepName)) {
-            throw new UnknownStepException($startStepName);
-        }
-
         $startTransitions = $transitions->filter(
             function (Transition $transition) {
                 return $transition->isStart();
@@ -94,7 +89,7 @@ class WorkflowAssembler extends AbstractAssembler
         if (!$startTransitions->count()) {
             throw new WorkflowException(
                 sprintf(
-                    'Workflow "%s" does not contains neither start step no start transitions',
+                    'Workflow "%s" does not contains neither start step nor start transitions',
                     $workflowDefinition->getName()
                 )
             );
@@ -123,10 +118,13 @@ class WorkflowAssembler extends AbstractAssembler
     protected function prepareDefaultStartTransition(WorkflowDefinition $workflowDefinition, $configuration)
     {
         if ($workflowDefinition->getStartStep()) {
+            $startTransitionDefinitionName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
+            $configuration[ConfigurationTree::NODE_TRANSITION_DEFINITIONS][$startTransitionDefinitionName] = array();
             $configuration[ConfigurationTree::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] = array(
                 'label' => $workflowDefinition->getLabel(),
                 'step_to' => $workflowDefinition->getStartStep(),
-                'is_start' => true
+                'is_start' => true,
+                'transition_definition' => $startTransitionDefinitionName
             );
         }
         return $configuration;
