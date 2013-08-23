@@ -314,11 +314,12 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             $titles = explode($this->titleDelimiter, $item['title']);
 
             foreach ($titles as $titleItem) {
-                $title = explode($this->localeDelimiter, $titleItem);
-                if (count($title) === 2) {
+                $titleItem = explode($this->localeDelimiter, $titleItem);
+                if (count($titleItem) === 2) {
+                    list($locale, $title) = $titleItem;
                     $translation = new CategoryTranslation;
-                    $translation->setLocale(reset($title));
-                    $translation->setTitle(end($title));
+                    $translation->setLocale($locale);
+                    $translation->setTitle($title);
                     $category->addTranslation($translation);
                 } else {
                     // TODO: Log an error = translation for this category will not be imported
