@@ -3,13 +3,13 @@ parameters:
     pim_serializer.encoder.xml.class:                Symfony\Component\Serializer\Encoder\XmlEncoder
     pim_serializer.encoder.json.class:               Symfony\Component\Serializer\Encoder\JsonEncoder
     pim_serializer.normalizer.product.class:         Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer
+    pim_serializer.normalizer.flat_product.class:    Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
     pim_serializer.normalizer.category.class:        Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer
     pim_serializer.normalizer.attribute.class:       Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer
     pim_serializer.normalizer.flat_attribute.class:  Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer
     pim_serializer.normalizer.family.class:          Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer
     pim_serializer.normalizer.flat_family.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer
     pim_serializer.normalizer.get_set_method.class:  Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-    pim_serializer.normalizer.flat_product.class:    Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
     pim_serializer.encoder.csv.class:                Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
 
 services:
