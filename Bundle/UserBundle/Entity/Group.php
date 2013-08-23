@@ -23,7 +23,7 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
  *  routeName="oro_user_group_index",
  *  defaultValues={
  *      "entity"={"icon"="group","label"="Group","owner_type"="BUSINESS_UNIT","plural_label"="Groups"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
  * @Extend

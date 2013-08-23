@@ -173,7 +173,7 @@ class ConfigController extends Controller
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
         /** @var ConfigProvider $aclConfigProvider */
-        $aclConfigProvider = $this->get('oro_entity.config.acl_config_provider');
+        $aclConfigProvider = $this->get('oro_entity.config.ownership_config_provider');
         $aclConfig = $aclConfigProvider->getConfig($entity->getClassName());
 
         /*

@@ -21,7 +21,7 @@ Ownership type is stored in entity config and can be defined through entity clas
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="User", "plural_label"="Users"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
     ...

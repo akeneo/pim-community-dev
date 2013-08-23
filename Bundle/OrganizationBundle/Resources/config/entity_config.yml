@@ -1,5 +1,5 @@
 oro_entity_config:
-    acl:
+    ownership:
         entity:
             items:
                 owner_type:
