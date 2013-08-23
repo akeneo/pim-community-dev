@@ -466,27 +466,4 @@ class Family implements TranslatableInterface, VersionableInterface
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
     }
-
-    /**
-     * TODO : will be replace by the use of normalizer
-     * @return array
-     */
-    public function getVersionedData()
-    {
-        $attributes = array();
-        foreach ($this->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
-        }
-
-        $data = array(
-            'code'       => $this->getCode(),
-            'attributes' => implode(',', $attributes),
-        );
-
-        foreach ($this->getTranslations() as $translation) {
-            $data['label_'.$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return $data;
-    }
 }

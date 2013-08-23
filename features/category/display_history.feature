@@ -17,4 +17,4 @@ Feature: Display the category history
     And I change the Code to "eBook"
     And I save the category
     When I visit the "History" tab
-    Then there should be 1 update
+    Then there should be 2 updates

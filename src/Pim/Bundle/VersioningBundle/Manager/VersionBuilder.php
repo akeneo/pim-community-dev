@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
+use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -17,6 +18,19 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class VersionBuilder
 {
     /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    /**
      * Build a version from a versionable entity
      *
      * @param VersionableInterface $versionable
@@ -28,8 +42,8 @@ class VersionBuilder
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
         $numVersion   = $versionable->getVersion();
-        // TODO : will be replaced soon by structural normalizer (which could be used for xml, json formats)
-        $data         = $versionable->getVersionedData();
+        // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
+        $data         = $this->serializer->normalize($versionable, 'csv');
 
         return new Version($resourceName, $resourceId, $numVersion, $data, $user);
     }
@@ -44,9 +58,9 @@ class VersionBuilder
      */
     public function buildAudit(Version $current, Version $previous = null)
     {
-        $newData = $current->getVersionedData();
+        $newData = $current->getData();
         if ($previous) {
-            $oldData = $previous->getVersionedData();
+            $oldData = $previous->getData();
         } else {
             $oldData = array();
         }
