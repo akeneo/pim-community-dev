@@ -54,12 +54,12 @@ class RegisterJobsPass implements CompilerPassInterface
             )
         );
 
-        foreach ($config as $alias => $job) {
+        foreach ($config['jobs'] as $alias => $job) {
             foreach ($job['steps'] as $step) {
                 $definition->addMethodCall(
                     'addStepToJob',
                     array(
-                        $job['connector'],
+                        $config['name'],
                         $job['type'],
                         $alias,
                         $job['title'],
@@ -86,21 +86,25 @@ class RegisterJobsPass implements CompilerPassInterface
     private function getJobsConfigTree()
     {
         $treeBuilder = new TreeBuilder();
-        $root = $treeBuilder->root('jobs');
+        $root = $treeBuilder->root('connector');
         $root
-            ->useAttributeAsKey('name')
-            ->prototype('array')
-                ->children()
-                    ->scalarNode('title')->end()
-                    ->scalarNode('connector')->end()
-                    ->scalarNode('type')->end()
-                    ->arrayNode('steps')
-                        ->prototype('array')
-                            ->children()
-                                ->scalarNode('title')->end()
-                                ->scalarNode('reader')->end()
-                                ->scalarNode('processor')->end()
-                                ->scalarNode('writer')->end()
+            ->children()
+                ->scalarNode('name')->end()
+                ->arrayNode('jobs')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('title')->end()
+                            ->scalarNode('type')->end()
+                            ->arrayNode('steps')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('title')->end()
+                                        ->scalarNode('reader')->end()
+                                        ->scalarNode('processor')->end()
+                                        ->scalarNode('writer')->end()
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()
