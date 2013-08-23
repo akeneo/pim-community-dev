@@ -1055,3 +1055,60 @@ ul.medias label.remove-media {
   .border-radius(5px);
   .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
 }
+
+/** Product completeness *******************************************************************************/
+div#legend {
+  margin-left: 15%;
+  margin-top: 15px;
+  .progress {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: none;
+    background-image: none;
+    height: 10px;
+  }
+  .bar {
+    margin-right: 10px;
+  }
+  .progress-bars {
+    width: 100px;
+  }
+  .progress-legend {
+    margin-left: 10px;
+    span {
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+table#progress-table {
+  .progress {
+    margin-bottom: 5px;
+    background-image: linear-gradient(to bottom,#e4e4e4,#eee);
+    border-radius: 6px;
+    height: 10px;
+  }
+  .progress-cell {
+    margin-left: 15px;
+    margin-right: 15px;
+    div.center {
+      text-align: center;
+    }
+    span.progress-info {
+      color: #5e8dcb;
+    }
+  }
+}
+
+.progress-disabled .bar,
+.progress .bar-disabled {
+  background-color: #cccccc;
+  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
+  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
+}
