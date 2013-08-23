@@ -4,9 +4,12 @@ namespace Pim\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\Config\Definition\Builder\reeBuilder;
+use Symfony\Component\Yaml\Parser as YamlParser;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
  * Read the jobs.yml file of the connectors to register the jobs
@@ -18,6 +21,8 @@ use Symfony\Component\DependencyInjection\Definition;
 class RegisterJobsPass implements CompilerPassInterface
 {
     protected $yamlParser;
+
+    protected $jobsConfig;
 
     public function __construct($yamlParser = null)
     {
@@ -43,10 +48,13 @@ class RegisterJobsPass implements CompilerPassInterface
 
     private function registerJobs(Definition $definition, $configFile)
     {
-        $config = $this->yamlParser->parse(file_get_contents($configFile));
+        $config = $this->processConfig(
+            $this->yamlParser->parse(
+                file_get_contents($configFile)
+            )
+        );
 
-        //TODO Validate jobs.yml structure
-        foreach ($config['jobs'] as $alias => $job) {
+        foreach ($config as $alias => $job) {
             foreach ($job['steps'] as $step) {
                 $definition->addMethodCall(
                     'addStepToJob',
@@ -63,5 +71,43 @@ class RegisterJobsPass implements CompilerPassInterface
                 );
             }
         }
+    }
+
+    private function processConfig(array $config)
+    {
+        $processor = new Processor();
+        if (!$this->jobsConfig) {
+            $this->jobsConfig = $this->getJobsConfigTree();
+        }
+
+        return $processor->process($this->jobsConfig, $config);
+    }
+
+    private function getJobsConfigTree()
+    {
+        $treeBuilder = new TreeBuilder();
+        $root = $treeBuilder->root('jobs');
+        $root
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('title')->end()
+                    ->scalarNode('connector')->end()
+                    ->scalarNode('type')->end()
+                    ->arrayNode('steps')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('title')->end()
+                                ->scalarNode('reader')->end()
+                                ->scalarNode('processor')->end()
+                                ->scalarNode('writer')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
+
+        return $treeBuilder->buildTree();
     }
 }
