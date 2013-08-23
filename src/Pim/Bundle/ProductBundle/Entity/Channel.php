@@ -242,8 +242,10 @@ class Channel
      */
     public function addLocale(Locale $locale)
     {
-        $this->locales[] = $locale;
-        $locale->activate();
+        if (!$this->hasLocale($locale)) {
+            $this->locales[] = $locale;
+            $locale->activate();
+        }
 
         return $this;
     }
@@ -273,5 +275,17 @@ class Channel
         foreach ($this->locales as $locale) {
             $locale->deactivate();
         }
+    }
+
+    /**
+     * Predicate to know if a channel has a locale
+     *
+     * @param Locale $locale
+     *
+     * @return boolean
+     */
+    public function hasLocale(Locale $locale)
+    {
+        return $this->locales->contains($locale);
     }
 }

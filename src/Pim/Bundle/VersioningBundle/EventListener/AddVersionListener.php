@@ -100,7 +100,9 @@ class AddVersionListener implements EventSubscriber
             $user = $this->getUser($em);
             if ($user) {
                 foreach ($this->pendingEntities as $versionable) {
-                    $this->writeSnapshot($em, $versionable, $user);
+                    if ($versionable->getId()) {
+                        $this->writeSnapshot($em, $versionable, $user);
+                    }
                 }
                 $this->pendingEntities = array();
             }

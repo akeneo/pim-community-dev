@@ -433,6 +433,13 @@ class Family implements TranslatableInterface, VersionableInterface
         return $this;
     }
 
+    /**
+     * Setter attribute requirements
+     *
+     * @param array $attributeRequirements
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     */
     public function setAttributeRequirements($attributeRequirements)
     {
         $this->attributeRequirements = $attributeRequirements;

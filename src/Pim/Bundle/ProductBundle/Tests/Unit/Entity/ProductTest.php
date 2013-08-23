@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ProductBundle\Entity\Channel;
+
+use Pim\Bundle\ProductBundle\Entity\Locale;
+
+use Pim\Bundle\ProductBundle\Entity\Completeness;
+
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\Family;
 
@@ -16,11 +22,32 @@ use Pim\Bundle\ProductBundle\Entity\Family;
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var Product
+     */
+    protected $product;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->product = new Product();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', new Product());
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', $this->product);
+
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCategories());
+        $this->assertCount(0, $this->product->getCategories());
+
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCompletenesses());
+        $this->assertCount(0, $this->product->getCompletenesses());
     }
 
     /**
@@ -28,21 +55,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetFamily()
     {
-        $product = new Product();
-        $this->assertEmpty($product->getFamily());
+        $this->assertEmpty($this->product->getFamily());
 
         // Change value and assert new
         $newFamily = new Family();
-        $product->setFamily($newFamily);
-        $this->assertEquals($newFamily, $product->getFamily());
+        $this->product->setFamily($newFamily);
+        $this->assertEquals($newFamily, $this->product->getFamily());
 
-        $product->setFamily(null);
-        $this->assertNull($product->getFamily());
+        $this->product->setFamily(null);
+        $this->assertNull($this->product->getFamily());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributes()
     {
-        $product    = new Product();
         $attributes = array(
             $this->getAttributeMock(),
             $this->getAttributeMock(),
@@ -50,15 +78,17 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($attributes as $attribute) {
-            $product->addValue($this->getValueMock($attribute));
+            $this->product->addValue($this->getValueMock($attribute));
         }
 
-        $this->assertEquals($attributes, $product->getAttributes());
+        $this->assertEquals($attributes, $this->product->getAttributes());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetGroups()
     {
-        $product = new Product();
         $groups  = array(
             $otherGroup   = $this->getGroupMock('Other', -1),
             $generalGroup = $this->getGroupMock('General', 0),
@@ -67,12 +97,12 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($groups as $group) {
-            $product->addValue($this->getValueMock($this->getAttributeMock($group)));
+            $this->product->addValue($this->getValueMock($this->getAttributeMock($group)));
         }
 
         $this->markTestIncomplete('usort(): Array was modified by user comparison function is a false positive');
 
-        $groups = $product->getOrderedGroups();
+        $groups = $this->product->getOrderedGroups();
         $this->assertSame(4, count($groups));
         $this->assertSame($generalGroup, current($groups));
         $this->assertSame($betaGroup, next($groups));
@@ -82,9 +112,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     public function testSkuLabel()
     {
-        $product = new Product();
-        $product->setId(5);
-        $this->assertEquals(5, $product->getLabel());
+        $this->product->setId(5);
+        $this->assertEquals(5, $this->product->getLabel());
     }
 
     public function testAttributeLabel()
@@ -94,12 +123,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, 'bar');
 
-        $product = new Product();
-        $product->setId(10);
-        $product->setFamily($family);
-        $product->addValue($value);
+        $this->product->setId(10);
+        $this->product->setFamily($family);
+        $this->product->addValue($value);
 
-        $this->assertEquals('bar', $product->getLabel());
+        $this->assertEquals('bar', $this->product->getLabel());
     }
 
     public function testNullValuedAttributeLabel()
@@ -108,12 +136,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, null);
 
-        $product = new Product();
-        $product->setId(25);
-        $product->setFamily($family);
-        $product->addValue($value);
+        $this->product->setId(25);
+        $this->product->setFamily($family);
+        $this->product->addValue($value);
 
-        $this->assertEquals(25, $product->getLabel());
+        $this->assertEquals(25, $this->product->getLabel());
     }
 
     public function testEmptyStringValuedAttributeLabel()
@@ -122,12 +149,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, '');
 
-        $product = new Product();
-        $product->setId(38);
-        $product->setFamily($family);
-        $product->addValue($value);
+        $this->product->setId(38);
+        $this->product->setFamily($family);
+        $this->product->addValue($value);
 
-        $this->assertEquals(38, $product->getLabel());
+        $this->assertEquals(38, $this->product->getLabel());
     }
 
     public function testNullAttributeLabel()
@@ -136,33 +162,33 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family    = $this->getFamilyMock(null);
         $value     = $this->getValueMock($attribute, 'bar');
 
-        $product = new Product();
-        $product->setId(53);
-        $product->setFamily($family);
-        $product->addValue($value);
+        $this->product->setId(53);
+        $this->product->setFamily($family);
+        $this->product->addValue($value);
 
-        $this->assertEquals(53, $product->getLabel());
+        $this->assertEquals(53, $this->product->getLabel());
     }
 
     public function testIsSetEnabled()
     {
-        $product = new Product();
-        $this->assertTrue($product->isEnabled());
+        $this->assertTrue($this->product->isEnabled());
 
-        $product->setEnabled(false);
-        $this->assertFalse($product->isEnabled());
+        $this->product->setEnabled(false);
+        $this->assertFalse($this->product->isEnabled());
+
+        $this->product->setEnabled(true);
+        $this->assertTrue($this->product->isEnabled());
     }
 
     public function testGetIdentifier()
     {
-        $product    = new Product;
         $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_product_identifier'));
         $name       = $this->getValueMock($this->getAttributeMock());
 
-        $product->addValue($identifier);
-        $product->addValue($name);
+        $this->product->addValue($identifier);
+        $this->product->addValue($name);
 
-        $this->assertSame($identifier, $product->getIdentifier());
+        $this->assertSame($identifier, $this->product->getIdentifier());
     }
 
     /**
@@ -170,12 +196,103 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionIfNoIdentifier()
     {
-        $product = new Product;
         $name    = $this->getValueMock($this->getAttributeMock());
 
-        $product->addValue($name);
+        $this->product->addValue($name);
 
-        $product->getIdentifier();
+        $this->product->getIdentifier();
+    }
+
+    /**
+     * Test completenesses property and method linked
+     */
+    public function testCompletenesses()
+    {
+        // create 2 completeness entities
+        $completeness = $this->createCompleteness('channel1', 'en_US');
+        $localeUS = $completeness->getLocale();
+        $channel1 = $completeness->getChannel();
+
+        $completeness2 = $this->createCompleteness('channel2', 'fr_FR');
+        $localeFR = $completeness2->getLocale();
+        $channel2 = $completeness2->getChannel();
+
+        // assert no return if nothing found
+        $this->assertNull($this->product->getCompleteness($localeUS, $channel1));
+
+        // assert add new completeness
+        $this->assertEntity($this->product->addCompleteness($completeness));
+        $this->assertCount(1, $this->product->getCompletenesses());
+        $this->assertEquals($completeness, $this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
+
+        // assert no duplicate adding
+        $this->assertEntity($this->product->addCompleteness($completeness));
+        $this->assertCount(1, $this->product->getCompletenesses());
+
+        // assert remove adding a second completeness
+        $this->product->addCompleteness($completeness2);
+        $this->assertCount(2, $this->product->getCompletenesses());
+        $this->assertEntity($this->product->removeCompleteness($completeness));
+        $this->assertCount(1, $this->product->getCompletenesses());
+        $this->assertNull($this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
+
+        // assert remove an already remove completeness
+        $this->assertEntity($this->product->removeCompleteness($completeness));
+        $this->assertCount(1, $this->product->getCompletenesses());
+
+        // assert setter completenesses
+        $this->assertEntity($this->product->setCompletenesses());
+        $this->assertCount(0, $this->product->getCompletenesses());
+
+        $this->product->setCompletenesses(array($completeness, $completeness2));
+        $this->assertCount(2, $this->product->getCompletenesses());
+    }
+
+    /**
+     * Create completeness entity
+     *
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
+     */
+    protected function createCompleteness($channelCode, $localeCode)
+    {
+        $completeness = new Completeness();
+        $completeness->setChannel($this->createChannel($channelCode));
+        $completeness->setLocale($this->createLocale($localeCode));
+
+        return $completeness;
+    }
+
+    /**
+     * Create channel entity
+     *
+     * @param string $channelCode
+     *
+     * @return \Pim\Bundle\ProductBundle\Tests\Unit\Entity\Channel
+     */
+    protected function createChannel($channelCode)
+    {
+        $channel = new Channel();
+        $channel->setCode($channelCode);
+
+        return $channel;
+    }
+
+    /**
+     * Create locale entity
+     *
+     * @param string $localeCode
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Locale
+     */
+    protected function createLocale($localeCode)
+    {
+        $locale = new Locale();
+        $locale->setCode($localeCode);
+
+        return $locale;
     }
 
     private function getAttributeMock($group = null, $type = 'pim_product_text')
@@ -236,5 +353,15 @@ class ProductTest extends \PHPUnit_Framework_TestCase
                   ->will($this->returnValue($attributeAsLabel));
 
         return $attribute;
+    }
+
+    /**
+     * Assert tested entity
+     *
+     * @param Product $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', $entity);
     }
 }
