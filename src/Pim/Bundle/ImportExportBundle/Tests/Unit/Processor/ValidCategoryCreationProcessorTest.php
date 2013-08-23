@@ -184,7 +184,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getFormMock()));
 
         $data = $this->getCategoryDataWithCircularRefs();
-        $this->assertEquals($data['result'], $this->processor->process($data['csv']));
+        $this->assertCount($data['result'], $this->processor->process($data['csv']));
     }
 
     /**
@@ -192,10 +192,6 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getCategoryDataWithCircularRefs()
     {
-        $root   = $this->getCategory('root');
-        $child1 = $this->getCategory('child1')->setParent($root);
-        $child2 = $this->getCategory('child2')->setParent($child1);
-
         return array(
             'csv' => array(
                 $this->getRow('root'),
@@ -210,11 +206,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
                 $this->getRow('child9', 'child9'),
                 $this->getRow('child10', 'child11'),
             ),
-            'result' => array(
-                $root,
-                $child1,
-                $child2
-            )
+            'result' => 3
         );
     }
 

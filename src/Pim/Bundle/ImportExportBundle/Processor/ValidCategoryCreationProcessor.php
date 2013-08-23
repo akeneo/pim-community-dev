@@ -9,7 +9,6 @@ use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Category form processor
@@ -306,28 +305,10 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     private function getCategory(array $item)
     {
         $category = $this->findCategory($item['code']);
-
         if (!$category) {
             $category = new Category;
             $category->setCode($item['code']);
-
-            $titles = explode($this->titleDelimiter, $item['title']);
-
-            foreach ($titles as $titleItem) {
-                $titleItem = explode($this->localeDelimiter, $titleItem);
-                if (count($titleItem) === 2) {
-                    list($locale, $title) = $titleItem;
-                    $translation = new CategoryTranslation;
-                    $translation->setLocale($locale);
-                    $translation->setTitle($title);
-                    $category->addTranslation($translation);
-                } else {
-                    // TODO: Log an error = translation for this category will not be imported
-                }
-            }
         }
-
-        $category->setDynamic((bool) $item['dynamic']);
 
         return $category;
     }
@@ -346,7 +327,8 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             'pim_category',
             $category,
             array(
-                'csrf_protection' => false
+                'csrf_protection' => false,
+                'import_mode'     => true,
             )
         );
 
@@ -354,13 +336,19 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
 
         $titles = explode($this->titleDelimiter, $item['title']);
         foreach ($titles as $titleItem) {
-            $title = explode($this->localeDelimiter, $titleItem);
-            $titleData[reset($title)] = end($title);
+            $titleItem = explode($this->localeDelimiter, $titleItem);
+            if (count($titleItem) === 2) {
+                list($locale, $title) = $titleItem;
+                $titleData[$locale] = $title;
+            } else {
+                // TODO: Log an error = translation for this category will not be imported
+            }
         }
 
         $data = array(
             'code' => $item['code'],
-            'title' => $titleData
+            'title' => $titleData,
+            'dynamic' => (bool) $item['dynamic'],
         );
 
         $form->submit($data);
