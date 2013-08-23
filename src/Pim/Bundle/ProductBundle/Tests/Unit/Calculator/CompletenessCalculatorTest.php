@@ -34,23 +34,28 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     protected $attribute1;
     protected $attribute2;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
+    protected $repository;
 
-        $this->initializeAttributes();
-        $this->initializeChannels();
-        $this->initializeLocales();
-    }
+    const CHANNEL_1 = 'channel1';
+    const CHANNEL_2 = 'channel2';
+
+    const LOCALE_1  = 'en_US';
+    const LOCALE_2  = 'fr_FR';
+
+    const ATTR_1    = 'attr_1';
+    const ATTR_2    = 'attr_2';
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
+        $this->initializeAttributes();
+        $this->initializeChannels();
+        $this->initializeLocales();
+
+        $this->initializeRepository();
+
         $channelManager = $this->createChannelManager();
         $localeManager  = $this->createLocaleManager();
         $entityManager  = $this->createEntityManager();
@@ -60,62 +65,105 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Concat values
+     * @return string
+     */
+    private function concatValues($attributeCode, $localeCode, $channelCode)
+    {
+        return $attributeCode .'_'. $localeCode .'_'. $channelCode;
+    }
+
+    /**
      * Data provider for calculator
      * @return array
      */
     public function dataProviderCalculator()
     {
         return array(
-            array(
-                'first test' => array(
+            'first test' => array(
+                array(
                     array(
-                        'attribute' => $this->attribute1->getCode(),
-                        'locale' => $this->locale1->getCode(),
-                        'channel' => $this->channel1->getCode(),
-                        'return' => $this->concatValues($this->attribute1, $this->locale1, $this->channel1)
+                        'attribute' => self::ATTR_1,
+                        'locale' => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_1, self::CHANNEL_1)
                     ),
                     array(
-                        'attribute' => $this->attribute1->getCode(),
-                        'locale' => $this->locale2->getCode(),
-                        'channel' => $this->channel1->getCode(),
-                        'return' => $this->concatValues($this->attribute1, $this->locale2, $this->channel1)
+                        'attribute' => self::ATTR_1,
+                        'locale' => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
                     ),
+                ),
+                array(
+                    array(
+                        'locale'  => self::LOCALE_1,
+                        'channel' => self::CHANNEL_1,
+                        'results' => array('ratio' => 100, 'missing_count' => 0, 'required_count' => 2)
+                    ),
+                    array(
+                        'locale'  => self::LOCALE_2,
+                        'channel' => self::CHANNEL_1,
+                        'results' => array('ratio' => 100, 'missing_count' => 0, 'required_count' => 2)
+                    )
                 )
             )
         );
     }
 
     /**
-     * Concat values
-     * @return string
-     */
-    private function concatValues($attribute, $locale, $channel)
-    {
-        return $attribute->getCode() .'_'. $locale->getCode() .'_'. $channel->getCode();
-    }
-
-    /**
      * Test related method
      *
-     * @param array $values Array of product values
+     * @param array $values  Array of product values
      * array(
      *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
      *     ...
      * )
      *
+     * @param array $results Array of expected completeness results
+     * array(
+     *     array('locale' => locale1, 'channel' => channel1, result => array(ratio, missing_count, required_attr)
+     * )
+     *
      * @dataProvider dataProviderCalculator
      */
-    public function testCalculatorForAProductByChannel($values = array())
+    public function testCalculatorForAProductByChannel(array $values, array $results)
     {
         $product = $this->createProductMock($values);
 
-        $completenesses = $this->calculator->calculateForAProductByChannel($product, $this->channel1);
-        $this->assertCount(2, $completenesses);
+        $this->mockRepository($this->channel1);
 
+        // TODO : don't use this->channel1 but get it from code with method
+        $completenesses = $this->calculator->calculateForAProductByChannel($product, $this->channel1);
+        $this->assertCount(count($results), $completenesses);
         $product->setCompletenesses($completenesses);
 
-        $completeness = $product->getCompleteness($this->locale1->getCode(), $this->channel1->getCode());
-        $this->assertEquals(100, $completeness->getRatio());
+        foreach ($results as $result) {
+            $completeness = $product->getCompleteness($result['locale'], $result['channel']);
+            $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Completeness', $completeness);
+
+            $this->assertEquals($result['results']['ratio'], $completeness->getRatio());
+            $this->assertEquals($result['results']['missing_count'], $completeness->getMissingCount());
+            $this->assertEquals($result['results']['required_count'], $completeness->getRequiredCount());
+        }
+    }
+
+    /**
+     * Dynamically mock attribute requirements repository
+     * @param Channel $channel
+     */
+    protected function mockRepository(Channel $channel)
+    {
+        $requirementsList = array(
+            $this->createAttributeRequirement($this->attribute1, $channel),
+            $this->createAttributeRequirement($this->attribute2, $channel)
+        );
+
+        $this->repository
+            ->expects($this->any())
+            ->method('findBy')
+            ->with(array('channel' => $this->channel1, 'required' => true))
+            ->will($this->returnValue($requirementsList));
     }
 
     /**
@@ -138,12 +186,24 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * initialize attribute requirements repository mock
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function initializeRepository()
+    {
+        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+                                 ->disableOriginalConstructor()
+                                 ->getMock();
+    }
+
+    /**
      * Initialize channels
      */
     protected function initializeChannels()
     {
-        $this->channel1 = $this->createChannel('ecommerce');
-        $this->channel2 = $this->createChannel('ipad');
+        $this->channel1 = $this->createChannel(self::CHANNEL_1);
+        $this->channel2 = $this->createChannel(self::CHANNEL_2);
     }
 
     /**
@@ -151,8 +211,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeLocales()
     {
-        $this->locale1 = $this->createLocale('en_US');
-        $this->locale2 = $this->createLocale('fr_FR');
+        $this->locale1 = $this->createLocale(self::LOCALE_1);
+        $this->locale2 = $this->createLocale(self::LOCALE_2);
     }
 
     /**
@@ -160,8 +220,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeAttributes()
     {
-        $this->attribute1 = $this->createAttribute('attr_1');
-        $this->attribute2 = $this->createAttribute('attr_2');
+        $this->attribute1 = $this->createAttribute(self::ATTR_1);
+        $this->attribute2 = $this->createAttribute(self::ATTR_2);
     }
 
     /**
@@ -273,41 +333,13 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
                               ->disableOriginalConstructor()
                               ->getMock();
 
-        $repository = $this->getRepository();
-
         $entityManager
             ->expects($this->any())
             ->method('getRepository')
             ->with('PimProductBundle:AttributeRequirement')
-            ->will($this->returnValue($repository));
+            ->will($this->returnValue($this->repository));
 
         return $entityManager;
-    }
-
-    /**
-     * Get attribute requirements repository mock
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getRepository()
-    {
-        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-                     ->disableOriginalConstructor()
-                     ->getMock();
-
-        $attributeRequirementsList = array(
-            $this->createAttributeRequirement($this->attribute1, $this->channel1),
-            $this->createAttributeRequirement($this->attribute1, $this->channel1),
-            $this->createAttributeRequirement($this->attribute2, $this->channel2),
-            $this->createAttributeRequirement($this->attribute2, $this->channel2)
-        );
-
-        $repository
-            ->expects($this->any())
-            ->method('findBy')
-            ->will($this->returnValue($attributeRequirementsList));
-
-        return $repository;
     }
 
     /**
