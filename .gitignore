@@ -18,3 +18,4 @@ behat.yml
 app/phpunit.xml
 web/uploads/*
 web/uploads_test/*
+web/log

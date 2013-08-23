@@ -47,7 +47,7 @@ class Version
     /**
      * @ORM\Column(type="array")
      */
-    protected $versionedData;
+    protected $data;
 
     /**
      * @ORM\Column(type="integer") */
@@ -69,12 +69,12 @@ class Version
      */
     public function __construct($resourceName, $resourceId, $numVersion, $data, User $user)
     {
-        $this->resourceName  = $resourceName;
+        $this->resourceName = $resourceName;
         $this->resourceId    = $resourceId;
-        $this->versionedData = $data;
-        $this->version       = $numVersion;
-        $this->user          = $user;
-        $this->snapshotDate  = new \DateTime("now");
+        $this->data         = $data;
+        $this->version      = $numVersion;
+        $this->user         = $user;
+        $this->snapshotDate = new \DateTime("now");
     }
 
     /**
@@ -114,8 +114,8 @@ class Version
     /**
      * @return array
      */
-    public function getVersionedData()
+    public function getData()
     {
-        return $this->versionedData;
+        return $this->data;
     }
 }

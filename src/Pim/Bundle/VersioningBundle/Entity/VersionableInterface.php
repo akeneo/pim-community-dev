@@ -20,9 +20,4 @@ interface VersionableInterface
      * @return int
      */
     public function getVersion();
-
-    /**
-     * @return array
-     */
-    public function getVersionedData();
 }

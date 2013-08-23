@@ -29,8 +29,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $resourceName  = get_class($versionable);
         $resourceId    = $versionable->getId();
         $numVersion    = $versionable->getVersion();
-        $data          = $versionable->getVersionedData();
-        $this->version = new Version($resourceName, $resourceId, $numVersion, $data, $user);
+        $this->version = new Version($resourceName, $resourceId, $numVersion, '{"field":  "value"}', $user);
     }
 
     /**
@@ -40,7 +39,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->version->getResourceId(), 1);
         $this->assertEquals($this->version->getVersion(), 2);
-        $this->assertEquals($this->version->getVersionedData(), array('field' => 'value'));
+        $this->assertEquals($this->version->getData(), '{"field":  "value"}');
     }
 
     /**
@@ -57,10 +56,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $versionable->expects($this->any())
             ->method('getVersion')
             ->will($this->returnValue(2));
-
-        $versionable->expects($this->any())
-            ->method('getVersionedData')
-            ->will($this->returnValue(array('field' => 'value')));
 
         return $versionable;
     }
