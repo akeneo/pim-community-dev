@@ -4,7 +4,7 @@ namespace Oro\Bundle\UserBundle\Tests\Unit\EventListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
+use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 

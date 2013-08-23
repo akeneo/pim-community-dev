@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\EventListener;
+namespace Oro\Bundle\OrganizationBundle\Event;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 

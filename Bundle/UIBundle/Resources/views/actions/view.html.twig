@@ -13,7 +13,7 @@
                 <div class="pull-right user-info-state">
                     <ul class="inline-decorate">
                         {% block pageActions %}
-                            {% if entity.owner is defined %}
+                            {% if entity.owner is defined and entity.owner %}
                                 {% set ownerType = oro_get_owner_type(entity) %}
                                 <li>
                                     {{ 'Owner'|trans }}:

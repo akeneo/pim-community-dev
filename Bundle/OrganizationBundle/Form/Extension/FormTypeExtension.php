@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
+use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;

@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
-use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
+use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 
 class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 {
