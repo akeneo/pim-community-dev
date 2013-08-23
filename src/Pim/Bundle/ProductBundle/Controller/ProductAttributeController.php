@@ -92,12 +92,16 @@ class ProductAttributeController extends Controller
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
         }
 
+        $auditManager = $this->container->get('pim_versioning.manager.audit');
+
         return array(
             'form'            => $this->get('pim_product.form.attribute')->createView(),
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config'),
             'datagrid'        => $datagridView,
+            'created'         => $auditManager->getFirstLogEntry($attribute),
+            'updated'         => $auditManager->getLastLogEntry($attribute),
         );
     }
 

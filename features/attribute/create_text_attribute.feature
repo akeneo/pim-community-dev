@@ -38,3 +38,17 @@ Feature: Create an attribute
      | Validation regexp | this is not valid  |
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
+
+  @javascript @info Codes 'treeId', 'categoryId', 'scope', 'enabled' and 'family' can't be used because there are grid filters with these codes
+  Scenario Outline: Fail to create a text attribute with a code that is a reserved word
+    Given I change the Code to "<invalid code>"
+    And I save the attribute
+    Then I should see validation error "This code is not available."
+
+    Examples:
+      | invalid code |
+      | treeId       |
+      | categoryId   |
+      | scope        |
+      | enabled      |
+      | family       |

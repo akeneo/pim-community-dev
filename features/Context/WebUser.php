@@ -1072,6 +1072,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param integer $count
      *
      * @Then /^there should be (\d+) update$/
+     * @Then /^there should be (\d+) updates$/
      */
     public function thereShouldBeUpdate($count)
     {
@@ -1158,6 +1159,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             if (strpos($rowHtml, $cellData) === false) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see product data %s, not found', $cellData)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $data
+     *
+     * @Then /^I should see history:$/
+     */
+    public function iShouldSeeHistoryWithData(TableNode $table)
+    {
+        $expectedUpdates = $table->getHash();
+        $rows = $this->getCurrentPage()->getHistoryRows();
+        foreach ($expectedUpdates as $updateRow) {
+            $isPresent = false;
+            foreach ($rows as $row) {
+                $rowStr       = str_replace(array(' ', "\n"), '', strip_tags(nl2br($row->getHtml())));
+                $actionFound  = (strpos($rowStr, $updateRow['action']) !== false);
+                $versionFound = (strpos($rowStr, $updateRow['version']) !== false);
+                $dataFound    = (strpos($rowStr, $updateRow['data']) !== false);
+                if ($actionFound and $versionFound and $dataFound) {
+                    $isPresent = true;
+                    break;
+                }
+            }
+            if (!$isPresent) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see history data %s, not found', implode(', ', $updateRow))
                 );
             }
         }
