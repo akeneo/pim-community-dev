@@ -118,14 +118,27 @@ class WorkflowAssembler extends AbstractAssembler
     protected function prepareDefaultStartTransition(WorkflowDefinition $workflowDefinition, $configuration)
     {
         if ($workflowDefinition->getStartStep()) {
-            $startTransitionDefName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
-            $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS][$startTransitionDefName] = array();
-            $configuration[WorkflowConfiguration::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] = array(
-                'label' => $workflowDefinition->getLabel(),
-                'step_to' => $workflowDefinition->getStartStep(),
-                'is_start' => true,
-                'transition_definition' => $startTransitionDefName
-            );
+            $startTransitionDefinitionName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
+            if (!array_key_exists(
+                $startTransitionDefinitionName,
+                $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS]
+            )) {
+                $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS][$startTransitionDefinitionName] =
+                    array();
+            }
+
+            if (!array_key_exists(
+                Workflow::DEFAULT_START_TRANSITION_NAME,
+                $configuration[WorkflowConfiguration::NODE_TRANSITIONS]
+            )) {
+                $configuration[WorkflowConfiguration::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] =
+                    array(
+                        'label' => $workflowDefinition->getLabel(),
+                        'step_to' => $workflowDefinition->getStartStep(),
+                        'is_start' => true,
+                        'transition_definition' => $startTransitionDefinitionName
+                    );
+            }
         }
 
         return $configuration;
