@@ -21,7 +21,9 @@ class WorkflowBindEntitySubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->binder = $this->getMock('Oro\Bundle\WorkflowBundle\Model\EntityBinder');
+        $this->binder = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->subscriber = new WorkflowBindEntitySubscriber($this->binder);
     }
 
