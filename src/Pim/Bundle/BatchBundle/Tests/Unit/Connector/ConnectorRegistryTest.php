@@ -5,7 +5,7 @@ namespace Pim\Bundle\BatchBundle\Tests\Unit\Connector;
 use Monolog\Logger;
 use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->registry->addStepToJob(
             'Akeneo',
-            Job::TYPE_EXPORT,
+            JobInstance::TYPE_EXPORT,
             'export_stuff',
             'Export some stuff',
             'Export',
@@ -59,7 +59,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
                     'export_stuff' => $job
                 )
             ),
-            $this->registry->getJobs(Job::TYPE_EXPORT)
+            $this->registry->getJobs(JobInstance::TYPE_EXPORT)
         );
     }
 
@@ -95,7 +95,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->registry->addStepToJob(
             'Akeneo',
-            Job::TYPE_EXPORT,
+            JobInstance::TYPE_EXPORT,
             'export_stuff',
             'Export some stuff',
             'Export',
@@ -106,7 +106,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->registry->addStepToJob(
             'Akeneo',
-            Job::TYPE_EXPORT,
+            JobInstance::TYPE_EXPORT,
             'export_stuff',
             'Export some stuff',
             'Export2',
@@ -121,13 +121,13 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
                     'export_stuff' => $job
                 )
             ),
-            $this->registry->getJobs(Job::TYPE_EXPORT)
+            $this->registry->getJobs(JobInstance::TYPE_EXPORT)
         );
     }
 
     public function testGetUnknownJob()
     {
-        $this->assertNull($this->registry->getJob(new Job('Akeneo', Job::TYPE_EXPORT, 'export_stuff')));
+        $this->assertNull($this->registry->getJob(new JobInstance('Akeneo', JobInstance::TYPE_EXPORT, 'export_stuff')));
     }
 
     private function getJobMock()

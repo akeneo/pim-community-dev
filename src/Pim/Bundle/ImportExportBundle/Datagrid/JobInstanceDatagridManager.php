@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
 use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -18,7 +18,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 
 /**
- * Job datagrid manager
+ * JobInstance datagrid manager
  * A "job type" property is passed to the service to define if the grid must show import or export jobs
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -26,7 +26,7 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class JobDatagridManager extends DatagridManager
+class JobInstanceDatagridManager extends DatagridManager
 {
     /**
      * Define the job type
@@ -266,7 +266,7 @@ class JobDatagridManager extends DatagridManager
     {
         // create choices
         $choices = array(
-            Job::STATUS_READY => $this->translate('pim_import_export.status.'. Job::STATUS_READY)
+            JobInstance::STATUS_READY => $this->translate('pim_import_export.status.'. JobInstance::STATUS_READY)
         );
 
         // create field description
@@ -290,7 +290,10 @@ class JobDatagridManager extends DatagridManager
         );
 
         // add specific rendering
-        $templateProperty = new TwigTemplateProperty($field, 'PimImportExportBundle:Job:_field-status.html.twig');
+        $templateProperty = new TwigTemplateProperty(
+            $field,
+            'PimImportExportBundle:JobInstance:_field-status.html.twig'
+        );
         $field->setProperty($templateProperty);
 
         return $field;

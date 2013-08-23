@@ -21,13 +21,10 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        $jobRepository = new MockJobRepository();
+        $jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
-        $stepHandler = $this->getMock(
-            'Pim\\Bundle\\BatchBundle\\Job\\StepHandlerInterface'
-        );
-
-        $jobFactory = new JobFactory($logger, $jobRepository, $stepHandler);
+        $jobFactory = new JobFactory($eventDispatcher, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(
