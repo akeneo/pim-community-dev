@@ -2,15 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
-use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
-
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
-
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
-
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator;
 
 /**
@@ -72,15 +67,6 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             $entityManager,
             $this->validator
         );
-    }
-
-    /**
-     * Concat values
-     * @return string
-     */
-    private function concatValues($attributeCode, $localeCode, $channelCode)
-    {
-        return $attributeCode .'_'. $localeCode .'_'. $channelCode;
     }
 
     /**
