@@ -38,15 +38,15 @@
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
-                        <li class="{{ locale == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale}) }}" title="{{ localeLabel(locale) }}">
+                        <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
+                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
                                 {% if locale == dataLocale %}
                                     <span class="icon">
                                         <i class="icon-bullet"></i>
                                     </span>
                                 {% endif %}
-                                {{ locale|flag }}
-                                <span class="title">{{ product.label(locale) }}</span>
+                                {{ locale.code|flag }}
+                                <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
                     {% endfor %}
@@ -72,7 +72,7 @@
 
         <div class="layout-content">
 
-            {{ elements.form_navbar(['Attributes', 'Categories', 'History']) }}
+            {{ elements.form_navbar(['Attributes', 'Categories', 'Completeness', 'History']) }}
 
             <div class="row-fluid tab-content">
 
@@ -82,10 +82,12 @@
                     {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
                 </div>
 
-                <div class="tab-pane" id="associations"></div>
-
                 <div class="tab-pane" id="categories">
                    {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
+                </div>
+
+                <div class="tab-pane" id="completeness">
+                   {% include 'PimProductBundle:Product:_completeness.html.twig' %}
                 </div>
 
                 <div class="tab-pane" id="history">
