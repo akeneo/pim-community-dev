@@ -100,9 +100,8 @@ class FormTypeExtension extends AbstractTypeExtension
                 );
             }
             $config = $this->configProvider->getConfig($dataClassName);
-            $entityValues = $config->getValues();
-            if (isset($entityValues['owner_type'])) {
-                $ownerType = $entityValues['owner_type'];
+            if ($config->has('owner_type')) {
+                $ownerType = $config->get('owner_type');
                 /**
                  * Adding listener to hide owner field for update pages
                  * if change owner permission is not granted
@@ -125,7 +124,7 @@ class FormTypeExtension extends AbstractTypeExtension
                         )
                     );
                 } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $ownerType) {
-                    $this->addBusinessUnitOwnerField($builder, $user);
+                    $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
                 } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $ownerType) {
                     $this->addOrganizationOwnerField($builder, $user);
                 }
@@ -169,9 +168,23 @@ class FormTypeExtension extends AbstractTypeExtension
     /**
      * @param FormBuilderInterface $builder
      * @param User $user
+     * @param string $className
      */
-    protected function addBusinessUnitOwnerField(FormBuilderInterface $builder, User $user)
+    protected function addBusinessUnitOwnerField(FormBuilderInterface $builder, User $user, $className)
     {
+        /**
+         * Owner field is required for all entities except business unit
+         */
+        $validation = array('required' => false);
+        /**
+         * TODO: Replace this check with class names check without instances
+         */
+        if (!new $className instanceof BusinessUnit) {
+            $validation = array(
+                'constraints' => array(new NotBlank()),
+                'required' => true,
+            );
+        }
         if ($this->changeOwnerGranted) {
             /**
              * If change owner permission is granted, showing all available business units
@@ -180,13 +193,14 @@ class FormTypeExtension extends AbstractTypeExtension
             $builder->add(
                 $this->fieldName,
                 'oro_business_unit_tree_select',
-                array(
-                    'empty_value' => $this->translator->trans('oro.business_unit.form.choose_business_user'),
-                    'choices' => $businessUnits,
-                    'mapped' => true,
-                    'required' => true,
-                    'attr' => array('is_safe' => true),
-                    'constraints' => array(new NotBlank()),
+                array_merge(
+                    array(
+                        'empty_value' => $this->translator->trans('oro.business_unit.form.choose_business_user'),
+                        'choices' => $businessUnits,
+                        'mapped' => true,
+                        'attr' => array('is_safe' => true),
+                    ),
+                    $validation
                 )
             );
         } else {
@@ -195,13 +209,14 @@ class FormTypeExtension extends AbstractTypeExtension
                 $builder->add(
                     $this->fieldName,
                     'entity',
-                    array(
-                        'class' => 'OroOrganizationBundle:BusinessUnit',
-                        'property' => 'name',
-                        'choices' => $businessUnits,
-                        'mapped' => true,
-                        'required' => true,
-                        'constraints' => array(new NotBlank())
+                    array_merge(
+                        array(
+                            'class' => 'OroOrganizationBundle:BusinessUnit',
+                            'property' => 'name',
+                            'choices' => $businessUnits,
+                            'mapped' => true,
+                        ),
+                        $validation
                     )
                 );
             }

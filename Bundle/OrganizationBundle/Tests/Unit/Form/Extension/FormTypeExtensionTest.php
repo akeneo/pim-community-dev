@@ -92,7 +92,12 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $businessUnit->expects($this->any())->method('getOrganization')->will($this->returnValue($organization));
         $this->businessUnits = array($businessUnit);
-        $entityClassName = get_class($businessUnit);
+        $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
+        $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
+        $entityClassName = get_class($this->user);
         $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -110,11 +115,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('hasConfig')
             ->with($entityClassName)
             ->will($this->returnValue(true));
-        $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
-        $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
         $token->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue($this->user));
@@ -309,9 +309,14 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->aclManager->expects($this->any())->method('isResourceGranted')->with('oro_change_record_owner')
                 ->will($this->returnValue($values['is_granted']));
-
-        $configs = array('owner_type' => $values['owner_type']);
-        $this->config->expects($this->once())->method('getValues')->will($this->returnValue($configs));
+        $this->config->expects($this->once())
+            ->method('has')
+            ->with('owner_type')
+            ->will($this->returnValue(true));
+        $this->config->expects($this->once())
+            ->method('get')
+            ->with('owner_type')
+            ->will($this->returnValue($values['owner_type']));
         $this->extension = new FormTypeExtension(
             $this->securityContext,
             $this->configProvider,
