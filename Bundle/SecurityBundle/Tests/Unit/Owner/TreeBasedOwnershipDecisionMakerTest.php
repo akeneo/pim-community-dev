@@ -105,32 +105,104 @@ class TreeBasedOwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsBelongToOrganizationForOrganizationObject()
     {
-        $user1 = new User('user1');
-        $this->tree->addUser('user1', 'org1', null, null);
+        $this->tree->addUser('user1', null);
+        $this->tree->addUser('user2', 'bu');
+        $this->tree->addBusinessUnit('bu', 'org');
 
-        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user1, new Organization('org1')));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new Organization('org2')));
+        $user1 = new User('user1');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new Organization('org')));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new Organization('anotherOrg')));
+
+        $user2 = new User('user2');
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new Organization('org')));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new Organization('anotherOrg')));
     }
 
     public function testIsBelongToOrganizationForOrganizationOwnedObject()
     {
-        $user1 = new User('user1');
-        $user2 = new User('user2');
-        $bu = new BusinessUnit('bu');
-
-        $this->tree->addUser('user1', 'org1', null, null);
-        $this->tree->addUser('user2', 'org2', 'bu', null);
-        $this->tree->addBusinessUnit('bu', 'org2');
+        $this->tree->addUser('user1', null);
+        $this->tree->addUser('user2', 'bu');
+        $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
 
-        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user1, new Organization('org1')));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new Organization('org2')));
+        $org = new Organization('org');
+        $anotherOrg = new Organization('anotherOrg');
+
+        $user1 = new User('user1');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherOrg)));
+
+        $user2 = new User('user2');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherOrg)));
+    }
+
+    public function testIsBelongToOrganizationForBusinessUnitOwnedObject()
+    {
+        $this->tree->addUser('user1', null);
+        $this->tree->addUser('user2', 'bu');
+        $this->tree->addBusinessUnit('bu', 'org');
+
+        $this->metadataProvider->setMetadata(
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
+        );
+
+
+        $bu = new BusinessUnit('bu', new Organization('org'));
+        $user = new User('user', $bu);
+        $anotherBu = new BusinessUnit('anotherBu');
+
+        $user1 = new User('user1');
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $bu)));
-        //$this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $bu));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $user));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $anotherBu));
+
+        $user2 = new User('user2');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherBu)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $bu));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $user));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, $anotherBu));
+    }
+
+    public function testIsBelongToOrganizationForUserOwnedObject()
+    {
+        $this->tree->addUser('user1', null);
+        $this->tree->addUser('user2', 'bu');
+        $this->tree->addBusinessUnit('bu', 'org');
+
+        $this->metadataProvider->setMetadata(
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            new OwnershipMetadata('USER', 'owner', 'owner_id')
+        );
+
+        $bu = new BusinessUnit('bu', new Organization('org'));
+        $user = new User('user', $bu);
+        $anotherUser = new User('anotherUser');
+
+        $user1 = new User('user1');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $user));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $anotherUser));
+
+        $user2 = new User('user2');
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherUser)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $user));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, $anotherUser));
     }
 }
