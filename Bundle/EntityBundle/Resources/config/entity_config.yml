@@ -14,11 +14,11 @@ oro_entity_config:
                     constraints:
                         - NotBlank:         ~
                     form:
-                        type:               text
+                        type:               oro_icon_select
+                        required:           true
                         options:
                             block:          entity
                             required:       true
-
                 label:
                     options:
                         priority:           20
@@ -28,13 +28,14 @@ oro_entity_config:
                             min:            2
                             max:            50
                     grid:
-                        type:               string
+                        type:               html
                         label:              'Label'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
                         filterable:         true
                         show_filter:        true
+                        template:           OroEntityConfigBundle:Config:propertyLabel.html.twig
                     form:
                         type:               text
                         options:
@@ -53,7 +54,6 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
-
 
                 description:
                     options:

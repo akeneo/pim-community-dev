@@ -19,6 +19,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 
@@ -193,6 +194,17 @@ class ConfigDatagridManager extends DatagridManager
                             )
                         )
                     );
+
+                    if (isset($item['grid']['type'])
+                        && $item['grid']['type'] == FieldDescriptionInterface::TYPE_HTML
+                        && isset($item['grid']['template'])
+                    ) {
+                        $templateDataProperty = new TwigTemplateProperty(
+                            $fieldObjectProvider,
+                            $item['grid']['template']
+                        );
+                        $fieldObjectProvider->setProperty($templateDataProperty);
+                    }
 
                     if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
                         $fields[$item['options']['priority']] = $fieldObjectProvider;
