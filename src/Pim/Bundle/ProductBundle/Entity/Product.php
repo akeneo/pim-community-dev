@@ -25,9 +25,6 @@ use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
 {
     /**
-<<<<<<< HEAD
-     * @var ArrayCollection $values
-=======
      * @var integer $version
      *
      * @ORM\Column(name="version", type="integer")
@@ -36,8 +33,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $version;
 
     /**
-     * @var Value
->>>>>>> master
+     * @var ArrayCollection $values
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface",
@@ -355,7 +351,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
-<<<<<<< HEAD
      * Getter for product completenesses
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
