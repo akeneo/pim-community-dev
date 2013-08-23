@@ -201,7 +201,7 @@ oro_assetic:
 
 jms_di_extra:
     doctrine_integration: false
-    
+
 oro_entity_extend:
     backend:        Dynamic
     backup:         "%kernel.root_dir%/entities/Backup/"
