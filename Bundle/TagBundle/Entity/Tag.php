@@ -18,7 +18,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="Tag", "plural_label"="Tags"},
- *      "acl"={"owner_type"="USER"}
+ *      "ownership"={"owner_type"="USER"}
  *  }
  * )
  */
