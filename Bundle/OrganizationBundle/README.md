@@ -11,7 +11,7 @@ Each User can be assigned to multiple business units. A business units tree on u
 
 ### Entity Ownerships
 
-Each entity can have one of 4 ownership types defined: User, Business Unit or Organization.
+Each entity can have one of 3 ownership types defined: User, Business Unit or Organization.
 
 Ownership type is stored in entity config and can be defined through entity class annotation
 
@@ -50,5 +50,7 @@ Available Ownership Types
 </tr>
 </table>
 
-Based on entity ownership type, entity record owner is automatically saved using current user data.
 Users with "Change record owner"(oro_change_record_owner) permission can change owners of any record they have access to.
+If change owner permission is not granted, 2 cases are possible when entity is created:
+    - If ownership type is USER, owner is automatically set to current user
+    - If ownership type is BUSINESS_UNIT or ORGANIZATION, user has to choose owner from the list of business units or organizations he is assigned to
