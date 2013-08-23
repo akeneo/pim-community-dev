@@ -75,22 +75,10 @@ class WorkflowManager
     public function transit(WorkflowItem $workflowItem, $transitionName)
     {
         $workflow = $this->workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
-
-        /** @var Transition $transition */
-        $transition = $workflow->getTransitions()->get($transitionName);
-        if (!$transition) {
-            throw new UnknownTransitionException(sprintf('Transition "%s" not found', $transitionName));
-        }
-        if (!$workflow->isTransitionAllowed($workflowItem, $transition)) {
-            throw new ForbiddenTransitionException(
-                sprintf('Transition "%s" is not allowed', $transition->getLabel())
-            );
-        }
-
         $em = $this->doctrine->getManager();
         $em->beginTransaction();
         try {
-            $workflow->transit($workflowItem, $transition);
+            $workflow->transit($workflowItem, $transitionName);
             $workflowItem->setUpdated();
             $em->flush();
             $em->commit();
