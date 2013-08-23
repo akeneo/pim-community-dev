@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\Job;
@@ -25,17 +23,13 @@ class JobTest extends \PHPUnit_Framework_TestCase
 {
     const JOB_TEST_NAME = 'job_test';
 
-    protected $job            = null;
-    protected $jobRepository  = null;
+    protected $job             = null;
+    protected $jobRepository   = null;
     protected $eventDispatcher = null;
 
     protected function setUp()
     {
-        $this->logger = new Logger('JobLogger');
-        $this->logger->pushHandler(new TestHandler());
-
-        $this->jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
-
+        $this->jobRepository   = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $this->job = new Job(self::JOB_TEST_NAME);
@@ -103,7 +97,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
             array('my_mock_step')
         );
 
-        $mockStep->setLogger($this->logger);
+        $mockStep->setEventDispatcher($this->eventDispatcher);
         $mockStep->setJobRepository($this->jobRepository);
         $mockStep->expects($this->any())
             ->method('doExecute')
@@ -148,7 +142,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $jobExecution = new JobExecution();
 
         $step = new InterruptedStep('my_interrupted_step');
-        $step->setLogger($this->logger);
+        $step->setEventDispatcher($this->eventDispatcher);
         $step->setJobRepository($this->jobRepository);
 
         $this->job->setJobRepository($this->jobRepository);
@@ -175,7 +169,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $jobExecution = new JobExecution();
 
         $step = new IncompleteStep('my_incomplete_step');
-        $step->setLogger($this->logger);
+        $step->setEventDispatcher($this->eventDispatcher);
         $step->setJobRepository($this->jobRepository);
 
         $this->job->setJobRepository($this->jobRepository);

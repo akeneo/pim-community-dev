@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -17,22 +15,20 @@ use Pim\Bundle\BatchBundle\Job\BatchStatus;
  */
 class ItemStepTest extends \PHPUnit_Framework_TestCase
 {
-    protected $itemStep      = null;
-    protected $logger        = null;
-    protected $jobRepository = null;
+    protected $itemStep        = null;
+    protected $eventDispatcher = null;
+    protected $jobRepository   = null;
 
     const STEP_NAME = 'test_step_name';
 
     protected function setUp()
     {
-        $this->logger = new Logger('JobLogger');
-        $this->logger->pushHandler(new TestHandler());
+        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->jobRepository   = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
-        $this->jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->itemStep = new ItemStep(self::STEP_NAME);
 
-        $this->itemStep = new ItemStep(self::STEP_NAME); 
-
-        $this->itemStep->setLogger($this->logger);
+        $this->itemStep->setEventDispatcher($this->eventDispatcher);
         $this->itemStep->setJobRepository($this->jobRepository);
     }
 

@@ -55,7 +55,7 @@ services:
     pim_batch.step_factory:
         class: %pim_batch.step_factory.class%
         arguments:
-            - @logger
+            - @event_dispatcher
             - @pim_batch.job_repository
 
     pim_batch.logger.batch_log_handler:

@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Job\Job;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
@@ -19,25 +17,23 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  */
 class AbstractStepTest extends \PHPUnit_Framework_TestCase
 {
-    protected $step          = null;
-    protected $logger        = null;
-    protected $jobRepository = null;
+    protected $step            = null;
+    protected $eventDispatcher = null;
+    protected $jobRepository   = null;
 
     const STEP_NAME = 'test_step_name';
 
     protected function setUp()
     {
-        $this->logger = new Logger('JobLogger');
-        $this->logger->pushHandler(new TestHandler());
-
-        $this->jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->jobRepository   = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->step = $this->getMockForAbstractClass(
             'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array(self::STEP_NAME)
         );
 
-        $this->step->setLogger($this->logger);
+        $this->step->setEventDispatcher($this->eventDispatcher);
         $this->step->setJobRepository($this->jobRepository);
     }
 

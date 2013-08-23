@@ -27,7 +27,7 @@ abstract class AbstractStep implements StepInterface
 {
     private $name;
 
-    private $logger;
+    private $eventDispatcher;
 
     /* @var JobRepositoryInterace */
     private $jobRepository;
@@ -42,23 +42,15 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * Set the logger
+     * Set the event dispatcher
      *
-     * @param object $logger The logger
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setLogger($logger)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger = $logger;
-    }
+        $this->eventDispatcher = $eventDispatcher;
 
-    /**
-     * Get the logger for internal use
-     *
-     * @return object
-     */
-    protected function getLogger()
-    {
-        return $this->logger;
+        return $this;
     }
 
     /**
@@ -170,10 +162,16 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
-                $this->getLogger()->debug("Full exception", array('exception', $e));
+                /**
+                 * TODO Replace by event triggering
+                 * $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
+                 * $this->getLogger()->debug("Full exception", array('exception', $e));
+                 */
             } else {
-                $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
+                /**
+                 * TODO Replace by event triggering
+                 * $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
+                 */
             }
         }
 
@@ -182,7 +180,10 @@ abstract class AbstractStep implements StepInterface
 
         $this->getJobRepository()->updateStepExecution($stepExecution);
 
-        $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
+        /**
+         * TODO Replace by event triggering
+         * $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
+         */
     }
 
     /**
@@ -243,5 +244,6 @@ abstract class AbstractStep implements StepInterface
      */
     private function dispatch($eventName, Event $event)
     {
+        $this->eventDispatcher->dispatch($eventName, $event);
     }
 }

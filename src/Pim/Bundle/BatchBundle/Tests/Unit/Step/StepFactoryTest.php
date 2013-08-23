@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\StepFactory;
 
 /**
@@ -18,12 +16,10 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateStep()
     {
-        $logger = new Logger('StepLogger');
-        $logger->pushHandler(new TestHandler());
+        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $jobRepository   = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
-        $jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
-
-        $jobFactory = new StepFactory($logger, $jobRepository);
+        $jobFactory = new StepFactory($eventDispatcher, $jobRepository);
 
         $reader = $this
             ->getMockBuilder('Pim\\Bundle\\BatchBundle\\Item\\ItemReaderInterface')
