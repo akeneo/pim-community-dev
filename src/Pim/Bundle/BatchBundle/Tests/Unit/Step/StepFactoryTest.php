@@ -38,9 +38,11 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
 
         $step = $jobFactory->createStep('my_test_job', $reader, $processor, $writer);
 
-        $this->assertInstanceOf(
-            'Pim\\Bundle\\BatchBundle\\Step\\StepInterface',
-            $step
-        );
+        $this->assertInstanceOf('Pim\\Bundle\\BatchBundle\\Step\\StepInterface', $step);
+        $this->assertAttributeEquals($reader, 'reader', $step);
+        $this->assertAttributeEquals($processor, 'processor', $step);
+        $this->assertAttributeEquals($writer, 'writer', $step);
+        $this->assertAttributeEquals($eventDispatcher, 'eventDispatcher', $step);
+        $this->assertAttributeEquals($jobRepository, 'jobRepository', $step);
     }
 }
