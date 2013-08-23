@@ -3,6 +3,8 @@
 namespace Pim\Bundle\BatchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 /**
  * Batch Bundle
@@ -14,4 +16,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimBatchBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new Compiler\RegisterNotifiersPass())
+            ->addCompilerPass(new Compiler\PushBatchLogHandlerPass())
+            ->addCompilerPass(new Compiler\RegisterJobsPass());
+    }
 }

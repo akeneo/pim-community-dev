@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\BatchBundle\Job;
 
-use Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A job instance factory
@@ -12,30 +12,17 @@ use Monolog\Logger;
  */
 class JobFactory
 {
-    /* @var Logger */
-    protected $logger;
-
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /* @var StepHandlerInterface */
-    protected $stepHandler;
-
     /**
-     * @param Logger                 $logger        Logger where to log output of the job
      * @param JobRepositoryInterface $jobRepository Object responsible
      *     for persisting jobExecution and stepExection states
-     * @param StepHandlerInterface $stepHandler Object to which
-     *     the step management is delegated
      */
-    public function __construct(
-        Logger $logger,
-        JobRepositoryInterface $jobRepository,
-        StepHandlerInterface $stepHandler
-    ) {
-        $this->logger        = $logger;
-        $this->jobRepository = $jobRepository;
-        $this->stepHandler   = $stepHandler;
+    public function __construct(EventDispatcherInterface $eventDispatcher, JobRepositoryInterface $jobRepository)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository   = $jobRepository;
     }
 
     /**
@@ -48,9 +35,8 @@ class JobFactory
     public function createJob($title)
     {
         $job = new Job($title);
-        $job->setLogger($this->logger);
         $job->setJobRepository($this->jobRepository);
-        $job->setStepHandler($this->stepHandler);
+        $job->setEventDispatcher($this->eventDispatcher);
 
         return $job;
     }

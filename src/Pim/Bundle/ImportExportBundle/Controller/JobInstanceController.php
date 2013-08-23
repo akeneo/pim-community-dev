@@ -6,22 +6,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Pim\Bundle\ProductBundle\Controller\Controller;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobType;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
- * Job controller
+ * Job Instance controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobController extends Controller
+class JobInstanceController extends Controller
 {
     /**
-     * List the jobs
+     * List the jobs instances
      *
      * @param Request $request
      *
@@ -48,7 +48,7 @@ class JobController extends Controller
     }
 
     /**
-     * Create a job
+     * Create a job instance
      *
      * @param Request $request
      *
@@ -60,8 +60,8 @@ class JobController extends Controller
         $alias     = $request->query->get('alias');
         $registry  = $this->getConnectorRegistry();
 
-        $job = new Job($connector, $this->getJobType(), $alias);
-        if (!$jobDefinition = $registry->getJob($job)) {
+        $jobInstance = new JobInstance($connector, $this->getJobType(), $alias);
+        if (!$job = $registry->getJob($jobInstance)) {
             $this->addFlash(
                 'error',
                 sprintf('Failed to create an %s with an unknown job definition.', $this->getJobType())
@@ -69,21 +69,21 @@ class JobController extends Controller
 
             return $this->redirectToIndexView();
         }
-        $job->setJobDefinition($jobDefinition);
+        $jobInstance->setJob($job);
 
-        $form = $this->createForm(new JobType(), $job);
+        $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($job);
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
                     sprintf('The %s has been successfully created.', $this->getJobType())
                 );
 
-                return $this->redirectToShowView($job->getId());
+                return $this->redirectToShowView($jobInstance->getId());
             }
         }
 
@@ -98,7 +98,7 @@ class JobController extends Controller
     }
 
     /**
-     * Show a job
+     * Show a job instance
      *
      * @param integer $id
      *
@@ -107,7 +107,7 @@ class JobController extends Controller
     public function showAction($id)
     {
         try {
-            $job = $this->getJob($id);
+            $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
@@ -117,14 +117,14 @@ class JobController extends Controller
         return $this->render(
             sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
             array(
-                'job'        => $job,
-                'violations' => $this->getValidator()->validate($job, array('Default', 'Execution')),
+                'jobInstance' => $jobInstance,
+                'violations'  => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
             )
         );
     }
 
     /**
-     * Edit a job
+     * Edit a job instance
      *
      * @param integer $id
      *
@@ -133,26 +133,26 @@ class JobController extends Controller
     public function editAction($id)
     {
         try {
-            $job = $this->getJob($id);
+            $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
         }
-        $form = $this->createForm(new JobType(), $job);
+        $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
         $request = $this->getRequest();
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($job);
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
                     sprintf('The %s has been successfully updated.', $this->getJobType())
                 );
 
-                return $this->redirectToShowView($job->getId());
+                return $this->redirectToShowView($jobInstance->getId());
             }
         }
 
@@ -174,14 +174,14 @@ class JobController extends Controller
     public function removeAction($id)
     {
         try {
-            $job = $this->getJob($id);
+            $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
         }
 
-        $this->remove($job);
+        $this->remove($jobInstance);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -211,18 +211,18 @@ class JobController extends Controller
     public function launchAction($id)
     {
         try {
-            $job = $this->getJob($id);
+            $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToIndexView();
         }
 
-        if (count($this->getValidator()->validate($job, array('Default', 'Execution'))) === 0) {
+        if (count($this->getValidator()->validate($jobInstance, array('Default', 'Execution'))) === 0) {
             $jobExecution = new JobExecution;
-            $jobExecution->setJob($job);
-            $definition = $job->getJobDefinition();
-            $definition->execute($jobExecution);
+            $jobExecution->setJobInstance($jobInstance);
+            $job = $jobInstance->getJob();
+            $job->execute($jobExecution);
 
             if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
                 $this->addFlash('success', sprintf('The %s has been successfully executed.', $this->getJobType()));
@@ -231,11 +231,11 @@ class JobController extends Controller
             }
         }
 
-        return $this->redirectToShowView($job->getId());
+        return $this->redirectToShowView($jobInstance->getId());
     }
 
     /**
-     * Get a job
+     * Get a job instance
      *
      * @param integer $id
      * @param boolean $checkStatus
@@ -244,19 +244,20 @@ class JobController extends Controller
      *
      * @throw NotFoundHttpException
      */
-    protected function getJob($id, $checkStatus = true)
+    protected function getJobInstance($id, $checkStatus = true)
     {
-        $job = $this->findOr404('PimBatchBundle:Job', $id);
+        $jobInstance = $this->findOr404('PimBatchBundle:JobInstance', $id);
 
-        if ($checkStatus && $job->getStatus() === Job::STATUS_IN_PROGRESS) {
+        // Fixme: should look at the job execution to see the status of a job instance execution
+        if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
             throw $this->createNotFoundException(
-                sprintf('The %s "%s" is currently in progress', $job->getJobType(), $job->getLabel())
+                sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
             );
         }
 
-        $jobDefinition = $this->getConnectorRegistry()->getJob($job);
+        $job = $this->getConnectorRegistry()->getJob($jobInstance);
 
-        if (!$jobDefinition) {
+        if (!$job) {
             throw $this->createNotFoundException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
@@ -264,15 +265,15 @@ class JobController extends Controller
                     'Type: %s<br />' .
                     'Alias: %s',
                     $this->getJobType(),
-                    $job->getConnector(),
-                    $job->getType(),
-                    $job->getAlias()
+                    $jobInstance->getConnector(),
+                    $jobInstance->getType(),
+                    $jobInstance->getAlias()
                 )
             );
         }
-        $job->setJobDefinition($jobDefinition);
+        $jobInstance->setJob($job);
 
-        return $job;
+        return $jobInstance;
     }
 
     /**

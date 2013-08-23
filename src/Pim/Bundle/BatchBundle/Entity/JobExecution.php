@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -16,7 +17,7 @@ use Pim\Bundle\BatchBundle\Item\ExecutionContext;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_job_execution")
+ * @ORM\Table(name="pim_batch_job_execution")
  * @ORM\Entity()
  */
 class JobExecution
@@ -31,16 +32,19 @@ class JobExecution
     private $id;
 
     /**
-     *  @var array
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution")
      */
     private $stepExecutions;
 
     /**
-     * @var Job
-     * @ORM\ManyToOne(targetEntity="Job", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     * @var JobInstance
+     *
+     * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
+     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
      */
-    private $job;
+    private $jobInstance;
 
     /**
      * @var integer
@@ -100,7 +104,7 @@ class JobExecution
     /**
      * @var array
      *
-     * ORM\Column(name="failure_exceptions", type="array", nullable=true)
+     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions;
 
@@ -111,7 +115,7 @@ class JobExecution
     {
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
-        $this->stepExecutions = array();
+        $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = array();
     }
@@ -400,7 +404,12 @@ class JobExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = $e;
+        $this->failureExceptions[] = array(
+            'class'   => get_class($e),
+            'message' => $e->getMessage(),
+            'code'    => $e->getCode(),
+            'trace'   => $e->getTraceAsString()
+        );
 
         return $this;
     }
@@ -426,25 +435,25 @@ class JobExecution
     /**
      * Set the associated job
      *
-     * @param Job $job The job to associate the JobExecution to
+     * @param Job $job The job instance to associate the JobExecution to
      *
      * @return JobExecution
      */
-    public function setJob(Job $job)
+    public function setJobInstance(JobInstance $jobInstance)
     {
-        $this->job = $job;
+        $this->jobInstance = $jobInstance;
 
         return $this;
     }
 
     /**
-     * Get the associated job
+     * Get the associated jobInstance
      *
      * @return $job The job to which the JobExecution is associated
      */
-    public function getJob()
+    public function getJobInstance()
     {
-        return $this->job;
+        return $this->jobInstance;
     }
 
     /**
@@ -454,13 +463,12 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        $startTime   = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
-        $endTime     = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
-        $updatedTime = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
-        $jobCode     = $this->job         != null ? $this->job->getCode()                        : '';
+        $startTime       = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
+        $endTime         = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
+        $updatedTime     = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
+        $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode()                : '';
 
-        $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%s, "
-            . "exitStatus=%s, job=%s";
+        $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
         $string = sprintf(
             $message,
             $startTime,
@@ -468,7 +476,8 @@ class JobExecution
             $updatedTime,
             $this->status,
             $this->exitStatus,
-            $jobCode
+            $this->exitDescription,
+            $jobInstanceCode
         );
 
         return $string;

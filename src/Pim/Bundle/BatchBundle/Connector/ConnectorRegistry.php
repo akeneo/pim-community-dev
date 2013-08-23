@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Connector;
 
 use Pim\Bundle\BatchBundle\Job\JobInterface;
-use Pim\Bundle\BatchBundle\Entity\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Job\JobFactory;
 use Pim\Bundle\BatchBundle\Step\StepFactory;
 
@@ -32,22 +32,20 @@ class ConnectorRegistry
     }
 
     /**
-     * Get a registered job definition
+     * Get a registered job definition from a JobInstance
      *
-     * @param Pim\Bundle\BatchBundle\Entity\Job $job
+     * @param Pim\Bundle\BatchBundle\Entity\JobInstance $jobInstance
      *
      * @return Pim\Bundle\BatchBundle\Job\JobInterface
-     *
-     * TODO : Rename the method as getJobDefinition ?! Change PHPDoc !
      */
-    public function getJob(Job $job)
+    public function getJob(JobInstance $jobInstance)
     {
-        if ($connector = $this->getConnector($job->getConnector(), $job->getType())) {
-            if ($jobDefinition = $this->getConnectorJob($connector, $job->getAlias())) {
-                $jobDefinition->setConfiguration($job->getRawConfiguration());
-                $job->setJobDefinition($jobDefinition);
+        if ($connector = $this->getConnector($jobInstance->getConnector(), $jobInstance->getType())) {
+            if ($job = $this->getConnectorJob($connector, $jobInstance->getAlias())) {
+                $job->setConfiguration($jobInstance->getRawConfiguration());
+                $jobInstance->setJob($job);
 
-                return $jobDefinition;
+                return $job;
             }
         }
     }

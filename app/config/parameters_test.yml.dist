@@ -18,3 +18,5 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     upload_dir:        uploads_test/product
+
+    batch_log_dir:     log
