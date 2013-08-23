@@ -162,11 +162,7 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                /**
-                 * TODO Replace by event triggering
-                 * $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
-                 * $this->getLogger()->debug("Full exception", array('exception', $e));
-                 */
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
             } else {
                 /**
                  * TODO Replace by event triggering

@@ -28,13 +28,14 @@ class LoggerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EventInterface::BEFORE_JOB_EXECUTION      => 'beforeJobExecution',
-            EventInterface::JOB_EXECUTION_STOPPED     => 'jobExecutionStopped',
-            EventInterface::JOB_EXECUTION_INTERRUPTED => 'jobExecutionInterrupted',
-            EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
-            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
-            EventInterface::BEFORE_STEP_EXECUTION     => 'beforeStepExecution',
-            EventInterface::STEP_EXECUTION_SUCCEED    => 'stepExecutionSucceed',
+            EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
+            EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
+            EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
+            EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
+            EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
+            EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
+            EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
+            EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
         );
     }
 
@@ -89,5 +90,15 @@ class LoggerSubscriber implements EventSubscriberInterface
         $stepExecution = $event->getStepExecution();
 
         $this->logger->debug(sprintf('Step execution success: id= %d', $stepExecution->getId()));
+    }
+
+    public function stepExecutionInterrupted(StepExecutionEvent $event)
+    {
+        $stepExecution = $event->getStepExecution();
+
+        $this->logger->info(
+            sprintf('Encountered interruption executing step: %s', $stepExecution->getFailureExceptionMessages())
+        );
+        $this->logger->debug('Full exception', array('exception', $stepExecution->getFailureExceptions()));
     }
 }

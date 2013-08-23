@@ -28,13 +28,14 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(
-                EventInterface::BEFORE_JOB_EXECUTION      => 'beforeJobExecution',
-                EventInterface::JOB_EXECUTION_STOPPED     => 'jobExecutionStopped',
-                EventInterface::JOB_EXECUTION_INTERRUPTED => 'jobExecutionInterrupted',
-                EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
-                EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
-                EventInterface::BEFORE_STEP_EXECUTION     => 'beforeStepExecution',
-                EventInterface::STEP_EXECUTION_SUCCEED    => 'stepExecutionSucceed',
+                EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
+                EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
+                EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
+                EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
+                EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
+                EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
+                EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
+                EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
             ),
             LoggerSubscriber::getSubscribedEvents()
         );
@@ -113,6 +114,23 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber->beforeStepExecution($event);
     }
 
+    public function testStepExecutionInterrupted()
+    {
+        $this->logger
+            ->expects($this->once())
+            ->method('info')
+            ->with($this->stringStartsWith('Encountered interruption executing step'));
+
+        $this->logger
+            ->expects($this->once())
+            ->method('debug')
+            ->with($this->stringStartsWith('Full exception'));
+
+        $stepExecution = $this->getStepExecutionMock();
+        $event = $this->getStepExecutionEventMock($stepExecution);
+        $this->subscriber->stepExecutionInterrupted($event);
+    }
+
     private function getLoggerMock()
     {
         return $this->getMock('Psr\Log\LoggerInterface');
@@ -132,6 +150,20 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
+    private function getStepExecutionEventMock($stepExecution = null)
+    {
+        $event = $this
+            ->getMockBuilder('Pim\Bundle\BatchBundle\Event\StepExecutionEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event->expects($this->any())
+            ->method('getStepExecution')
+            ->will($this->returnValue($stepExecution));
+
+        return $event;
+    }
+
     private function getJobExecutionMock()
     {
         return $this
@@ -140,17 +172,11 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    private function getStepExecutionEventMock($step = null)
+    private function getStepExecutionMock()
     {
-        $event = $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Event\StepExecutionEvent')
+        return $this
+            ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $event->expects($this->any())
-            ->method('getStep')
-            ->will($this->returnValue($step));
-
-        return $event;
     }
 }

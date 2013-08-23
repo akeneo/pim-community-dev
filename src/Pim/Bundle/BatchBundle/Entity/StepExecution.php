@@ -429,6 +429,19 @@ class StepExecution
         return $this;
     }
 
+    public function getFailureExceptionMessages()
+    {
+        return implode(
+            ' ',
+            array_map(
+                function ($e) {
+                    return $e['message'];
+                },
+                $this->failureExceptions
+            )
+        );
+    }
+
     /**
      * To string
      * @return string
