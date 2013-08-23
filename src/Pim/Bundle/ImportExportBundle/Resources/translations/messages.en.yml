@@ -48,9 +48,21 @@ pim_batch.csv_reader:
     filePath:
         label: 'File'
         help: 'The csv file to import'
-    lineLength:
-        label: 'Line length'
-        help: 'It must be greater than the longest line (in characters) to be found in the CSV file. By setting it to 0, the maximum line length is not limited, which is slightly slower'
+    delimiter:
+        label: 'Delimiter'
+        help: 'One character used to set the field delimiter'
+    enclosure:
+        label: 'Enclosure'
+        help: 'One character used to set the field enclosure'
+    escape:
+        label: 'Escape'
+        help: 'One character used to set the field escape'
+
+pim_batch.csv_file_reader:
+    title: 'CSV File Reader'
+    filePath:
+        label: 'File'
+        help: 'The csv file to import'
     delimiter:
         label: 'Delimiter'
         help: 'One character used to set the field delimiter'
@@ -78,6 +90,18 @@ pim_batch.valid_product_creation_processor:
     channel:
         label: 'Channel'
         help: 'The channel in which create the imported value'
+
+pim_batch.valid_category_creation_processor:
+    title: Category creation
+    titleDelimiter:
+        label: Title delimiter
+        help: One character separating the titles in each locale
+    localeDelimiter:
+        label: Locale delimiter
+        help: One character separating the title from the locale
+    checkCircularRefs:
+        label: Check circular references
+        help: If yes, data will be processed to make sure that there are no circular references between the categories
 
 pim_batch.heterogeneous_csv_serializer_processor:
     title: 'CSV configuration'
@@ -108,3 +132,6 @@ pim_batch.file_writer:
     path:
         label: 'Path'
         help: 'Where to write the generated file on the file system'
+
+pim_batch.orm_category_writer:
+    title: Category storage
