@@ -20,7 +20,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('pim_batch');
+
+        $root = $treeBuilder->root('pim_batch');
+        $root
+            ->children()
+                ->scalarNode('log_dir')->defaultValue('log')->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
