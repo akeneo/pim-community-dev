@@ -51,7 +51,7 @@ class EmailTemplate extends AbstractEntity implements Entity
 
     public function getName()
     {
-        return $this->name->value();
+        return $this->name->attribute('value');
     }
 
     /**
@@ -82,7 +82,7 @@ class EmailTemplate extends AbstractEntity implements Entity
 
     public function getSubject()
     {
-        return $this->subject->value();
+        return $this->subject->attribute('value');
     }
 
     /**
@@ -98,7 +98,7 @@ class EmailTemplate extends AbstractEntity implements Entity
 
     public function getContent()
     {
-        return $this->content->value();
+        return $this->content->attribute('value');
     }
 
     public function getFields(&$values)
