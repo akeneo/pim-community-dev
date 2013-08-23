@@ -36,6 +36,15 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testType()
+    {
+        $workflow = $this->createWorkflow();
+        $this->assertNull($workflow->getType());
+        $value = Workflow::TYPE_ENTITY;
+        $workflow->setType($value);
+        $this->assertEquals($value, $workflow->getType());
+    }
+
     public function testEnabled()
     {
         $workflow = $this->createWorkflow();

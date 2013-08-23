@@ -20,7 +20,7 @@ class ConfigurationWorkflowDefinitionBuilder
         foreach ($configurationData as $workflowName => $workflowConfiguration) {
             $this->assertConfigurationOptions($workflowConfiguration, array('label', 'type'));
 
-            $type = $this->getConfigurationOption($workflowConfiguration, 'type', 'entity');
+            $type = $this->getConfigurationOption($workflowConfiguration, 'type', Workflow::TYPE_ENTITY);
             $enabled = $this->getConfigurationOption($workflowConfiguration, 'enabled', true);
             $startStep = $this->getConfigurationOption($workflowConfiguration, 'start_step', null);
 

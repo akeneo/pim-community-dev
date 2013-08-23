@@ -3,13 +3,14 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
-use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
+use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\Step;
 
 class WorkflowAssembler extends AbstractAssembler
 {
@@ -62,7 +63,7 @@ class WorkflowAssembler extends AbstractAssembler
     /**
      * @param WorkflowDefinition $workflowDefinition
      * @throws UnknownStepException
-     * @throws WorkflowException
+     * @throws AssemblerException
      * @return Workflow
      */
     public function assemble(WorkflowDefinition $workflowDefinition)
@@ -81,30 +82,55 @@ class WorkflowAssembler extends AbstractAssembler
         $steps = $this->assembleSteps($configuration, $attributes);
         $transitions = $this->assembleTransitions($configuration, $steps);
 
-        $startTransitions = $transitions->filter(
-            function (Transition $transition) {
-                return $transition->isStart();
-            }
-        );
-        if (!$startTransitions->count()) {
-            throw new WorkflowException(
-                sprintf(
-                    'Workflow "%s" does not contains neither start step nor start transitions',
-                    $workflowDefinition->getName()
-                )
-            );
-        }
-
         $workflow = $this->createWorkflow();
         $workflow
             ->setName($workflowDefinition->getName())
             ->setLabel($workflowDefinition->getLabel())
+            ->setType($workflowDefinition->getType())
             ->setEnabled($workflowDefinition->isEnabled())
             ->setAttributes($attributes)
             ->setSteps($steps)
             ->setTransitions($transitions);
 
+        $this->validateWorkflow($workflow);
+
         return $workflow;
+    }
+
+    /**
+     * @param Workflow $workflow
+     * @throws AssemblerException
+     */
+    protected function validateWorkflow(Workflow $workflow)
+    {
+        $startTransitions = $workflow->getTransitions()->filter(
+            function (Transition $transition) {
+                return $transition->isStart();
+            }
+        );
+        if (!$startTransitions->count()) {
+            throw new AssemblerException(
+                sprintf(
+                    'Workflow "%s" does not contains neither start step nor start transitions',
+                    $workflow->getName()
+                )
+            );
+        }
+
+        if ($workflow->getType() == Workflow::TYPE_ENTITY) {
+            /** @var Step $step */
+            foreach ($workflow->getSteps() as $step) {
+                if ($step->getFormOptions()) {
+                    throw new AssemblerException(
+                        sprintf(
+                            'Workflow "%s" has type "entity" and cannot support form options in step "%s"',
+                            $workflow->getName(),
+                            $step->getName()
+                        )
+                    );
+                }
+            }
+        }
     }
 
     protected function parseConfiguration(WorkflowDefinition $workflowDefinition)

@@ -16,11 +16,18 @@ class Workflow
 {
     const MANAGED_ENTITY_KEY = 'managed_entity';
     const DEFAULT_START_TRANSITION_NAME = '__start__';
+    const TYPE_ENTITY = 'entity';
+    const TYPE_WIZARD = 'wizard';
 
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $type;
 
     /**
      * @var boolean
@@ -97,6 +104,28 @@ class Workflow
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set type.
+     *
+     * @param string $type
+     * @return Workflow
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

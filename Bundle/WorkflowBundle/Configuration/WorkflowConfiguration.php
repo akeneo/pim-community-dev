@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowConfiguration implements ConfigurationInterface
 {
@@ -57,7 +58,7 @@ class WorkflowConfiguration implements ConfigurationInterface
             ->enumNode('type')
                 ->cannotBeEmpty()
                 ->defaultValue('entity')
-                ->values(array('entity', 'wizard'))
+                ->values(array(Workflow::TYPE_ENTITY, Workflow::TYPE_WIZARD))
             ->end()
             ->booleanNode('enabled')
                 ->defaultTrue()

@@ -271,41 +271,6 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $configuration
-     * @dataProvider assembleDataProvider
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
-     * @expectedExceptionMessage Workflow "test_name" does not contains neither start step nor start transitions
-     */
-    public function testAssembleStartTransitionException(array $configuration)
-    {
-        // source data
-        $workflowDefinition = $this->createWorkflowDefinition($configuration);
-        $attributes = new ArrayCollection(array('test' => $this->getAttributeMock()));
-        $steps = new ArrayCollection(array('test_start_step' => $this->getStepMock()));
-        $transitions = new ArrayCollection(array('test_transition' => $this->getTransitionMock(false)));
-
-        // mocks
-        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
-            ->disableOriginalConstructor()
-            ->setMethods(array('get'))
-            ->getMockForAbstractClass();
-        $configurationTree = $this->createConfigurationTreeMock($workflowDefinition);
-        $attributeAssembler = $this->createAttributeAssemblerMock($configuration, $attributes);
-        $stepAssembler = $this->createStepAssemblerMock($configuration, $attributes, $steps);
-        $transitionAssembler = $this->createTransitionAssemblerMock($configuration, $steps, $transitions);
-
-        // test
-        $workflowAssembler = new WorkflowAssembler(
-            $container,
-            $configurationTree,
-            $attributeAssembler,
-            $stepAssembler,
-            $transitionAssembler
-        );
-        $workflowAssembler->assemble($workflowDefinition);
-    }
-
-    /**
      * @return array
      */
     public function assembleDataProvider()
@@ -377,6 +342,92 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
                 $this->transitionDefinition + $customStartDefinition
             ),
         );
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
+     * @expectedExceptionMessage Workflow "test_name" does not contains neither start step nor start transitions
+     */
+    public function testAssembleStartTransitionException()
+    {
+        $configuration = array(
+            WorkflowConfiguration::NODE_ATTRIBUTES => array('attributes_configuration'),
+            WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => $this->transitionConfiguration,
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => $this->transitionDefinition
+        );
+
+        // source data
+        $workflow = $this->createWorkflow();
+        $workflowDefinition = $this->createWorkflowDefinition($configuration);
+        $attributes = new ArrayCollection(array('test' => $this->getAttributeMock()));
+        $steps = new ArrayCollection(array('test_start_step' => $this->getStepMock()));
+
+        $transitions = array('test_transition' => $this->getTransitionMock(false));
+
+        // mocks
+        $container = $this->createContainerMock($workflow);
+        $configurationTree = $this->createConfigurationTreeMock($workflowDefinition);
+        $attributeAssembler = $this->createAttributeAssemblerMock($configuration, $attributes);
+        $stepAssembler = $this->createStepAssemblerMock($configuration, $attributes, $steps);
+        $transitionAssembler = $this->createTransitionAssemblerMock($configuration, $steps, $transitions);
+
+        // test
+        $workflowAssembler = new WorkflowAssembler(
+            $container,
+            $configurationTree,
+            $attributeAssembler,
+            $stepAssembler,
+            $transitionAssembler
+        );
+        $workflowAssembler->assemble($workflowDefinition);
+    }
+
+    // @codingStandardsIgnoreStart
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
+     * @expectedExceptionMessage Workflow "test_name" has type "entity" and cannot support form options in step "test_step"
+     */
+    // @codingStandardsIgnoreEnd
+    public function testAssembleEntityWorkflowStepFormOptionsException()
+    {
+        $configuration = array(
+            'type' => 'entity',
+            WorkflowConfiguration::NODE_ATTRIBUTES => array('attributes_configuration'),
+            WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => $this->transitionConfiguration,
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => $this->transitionDefinition
+        );
+
+        $stepMock = $this->getStepMock();
+        $stepMock->expects($this->once())->method('getName')->will($this->returnValue('test_step'));
+        $stepMock->expects($this->once())->method('getFormOptions')->will($this->returnValue(array('foo' => 'bar')));
+
+        // source data
+        $workflow = $this->createWorkflow();
+        $workflowDefinition = $this->createWorkflowDefinition($configuration);
+        $workflowDefinition->setType(Workflow::TYPE_ENTITY);
+        $attributes = new ArrayCollection(array('test' => $this->getAttributeMock()));
+        $steps = new ArrayCollection(array('test_start_step' => $stepMock));
+
+        $transitions = array('test_transition' => $this->getTransitionMock(true));
+
+        // mocks
+        $container = $this->createContainerMock($workflow);
+        $configurationTree = $this->createConfigurationTreeMock($workflowDefinition);
+        $attributeAssembler = $this->createAttributeAssemblerMock($configuration, $attributes);
+        $stepAssembler = $this->createStepAssemblerMock($configuration, $attributes, $steps);
+        $transitionAssembler = $this->createTransitionAssemblerMock($configuration, $steps, $transitions);
+
+        // test
+        $workflowAssembler = new WorkflowAssembler(
+            $container,
+            $configurationTree,
+            $attributeAssembler,
+            $stepAssembler,
+            $transitionAssembler
+        );
+        $workflowAssembler->assemble($workflowDefinition);
     }
 
     /**

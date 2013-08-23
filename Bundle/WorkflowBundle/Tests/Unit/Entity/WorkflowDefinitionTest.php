@@ -4,6 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,6 +37,14 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
         $value = 'Example Workflow';
         $this->workflowDefinition->setLabel($value);
         $this->assertEquals($value, $this->workflowDefinition->getLabel());
+    }
+
+    public function testType()
+    {
+        $this->assertNull($this->workflowDefinition->getType());
+        $value = Workflow::TYPE_ENTITY;
+        $this->workflowDefinition->setType($value);
+        $this->assertEquals($value, $this->workflowDefinition->getType());
     }
 
     public function testEnabled()
