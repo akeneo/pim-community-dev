@@ -104,7 +104,8 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo(
                     new ExitStatus(
-                        ExitStatus::STOPPED, 'Pim\\Bundle\\BatchBundle\\Job\\JobInterruptedException'
+                        ExitStatus::STOPPED,
+                        'Pim\\Bundle\\BatchBundle\\Job\\JobInterruptedException'
                     )
                 )
             );
