@@ -23,4 +23,5 @@ interface EventInterface
     const BEFORE_STEP_EXECUTION      = 'pim_batch.before_step_execution';
     const STEP_EXECUTION_SUCCEED     = 'pim_batch.step_execution_succeed';
     const STEP_EXECUTION_INTERRUPTED = 'pim_batch.step_execution_succeed';
+    const STEP_EXECUTION_ERROR       = 'pim_batch.step_execution_error';
 }

@@ -36,6 +36,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
                 EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
                 EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
+                EventInterface::STEP_EXECUTION_ERROR       => 'stepExecutionError',
             ),
             LoggerSubscriber::getSubscribedEvents()
         );
@@ -129,6 +130,18 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $stepExecution = $this->getStepExecutionMock();
         $event = $this->getStepExecutionEventMock($stepExecution);
         $this->subscriber->stepExecutionInterrupted($event);
+    }
+
+    public function testStepExecutionError()
+    {
+        $this->logger
+            ->expects($this->once())
+            ->method('error')
+            ->with($this->stringStartsWith('Encountered an error executing the step'));
+
+        $stepExecution = $this->getStepExecutionMock();
+        $event = $this->getStepExecutionEventMock($stepExecution);
+        $this->subscriber->stepExecutionError($event);
     }
 
     private function getLoggerMock()

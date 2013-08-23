@@ -36,6 +36,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
             EventInterface::STEP_EXECUTION_SUCCEED     => 'stepExecutionSucceed',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
+            EventInterface::STEP_EXECUTION_ERROR       => 'stepExecutionError',
         );
     }
 
@@ -100,5 +101,14 @@ class LoggerSubscriber implements EventSubscriberInterface
             sprintf('Encountered interruption executing step: %s', $stepExecution->getFailureExceptionMessages())
         );
         $this->logger->debug('Full exception', array('exception', $stepExecution->getFailureExceptions()));
+    }
+
+    public function stepExecutionError(StepExecutionEvent $event)
+    {
+        $stepExecution = $event->getStepExecution();
+
+        $this->logger->error(
+            sprintf('Encountered an error executing the step: %s', $stepExecution->getFailureExceptionMessages())
+        );
     }
 }
