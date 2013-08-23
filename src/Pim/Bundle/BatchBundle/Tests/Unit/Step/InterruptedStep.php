@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Step;
 
 use Pim\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\BatchBundle\Step\StepExecution;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Step used for test and always declared a stopped execution
@@ -33,7 +33,7 @@ class InterruptedStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $execution)
+    protected function doExecute(StepExecution $execution)
     {
         $execution->setTerminateOnly();
     }

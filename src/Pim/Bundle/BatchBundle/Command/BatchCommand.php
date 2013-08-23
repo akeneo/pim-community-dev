@@ -87,11 +87,6 @@ class BatchCommand extends ContainerAwareCommand
 
     private function getErrorMessages(ConstraintViolationList $errors)
     {
-        $str = '';
-        foreach ($errors as $error) {
-            $str .= sprintf("\n  - %s", $error);
-        }
-
-        return $str;
+        return implode("\n - ", $errors);
     }
 }

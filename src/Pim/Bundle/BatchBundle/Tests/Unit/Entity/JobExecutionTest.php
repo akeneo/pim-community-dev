@@ -3,6 +3,8 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
+use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
@@ -109,6 +111,115 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $expectedExecutionContext = new ExecutionContext();
         $this->assertEntity($this->jobExecution->setExecutionContext($expectedExecutionContext));
         $this->assertEquals($expectedExecutionContext, $this->jobExecution->getExecutionContext());
+    }
+
+    public function testStepExecutions()
+    {
+        $this->assertEmpty($this->jobExecution->getStepExecutions());
+
+        $jobExecution = new JobExecution();
+
+        $stepExecution1 = new StepExecution('my_step_name_1', $jobExecution);
+        $this->jobExecution->addStepExecution($stepExecution1);
+
+        $this->assertEquals(array($stepExecution1), $this->jobExecution->getStepExecutions());
+
+        $stepExecution2 = $this->jobExecution->createStepExecution('my_step_name_2');
+
+        $this->assertEquals(array($stepExecution1, $stepExecution2), $this->jobExecution->getStepExecutions());
+    }
+
+    public function testIsRunning()
+    {
+        $this->assertFalse($this->jobExecution->isRunning());
+        $this->jobExecution->setStartTime(new \DateTime());
+        $this->assertTrue($this->jobExecution->isRunning());
+        $this->jobExecution->setEndTime(new \DateTime());
+        $this->assertFalse($this->jobExecution->isRunning());
+    }
+
+    public function testIsStopping()
+    {
+        $this->assertFalse($this->jobExecution->isStopping());
+        $this->jobExecution->upgradeStatus(BatchStatus::STOPPING);
+        $this->assertTrue($this->jobExecution->isStopping());
+    }
+
+    public function testStop()
+    {
+        $this->assertFalse($this->jobExecution->isStopping());
+        $this->jobExecution->stop();
+        $this->assertTrue($this->jobExecution->isStopping());
+    }
+
+    public function testStopWithStepExecutions()
+    {
+        $this->assertFalse($this->jobExecution->isStopping());
+        $this->jobExecution->createStepExecution('my_step_name_2');
+        $this->assertEntity($this->jobExecution->stop());
+        $this->assertTrue($this->jobExecution->isStopping());
+    }
+
+    public function testGetAddFailureExceptions()
+    {
+        $this->assertEmpty($this->jobExecution->getFailureExceptions());
+        $this->assertEmpty($this->jobExecution->getAllFailureExceptions());
+        $stepExecution = $this->jobExecution->createStepExecution('my_step_name_2');
+        $this->assertEmpty($this->jobExecution->getAllFailureExceptions());
+
+        $exception1 = new \Exception('My exception 1');
+        $exception2 = new \Exception('My exception 2');
+        $stepException = new \Exception('My step exception 1');
+
+        $this->assertEntity($this->jobExecution->addFailureException($exception1));
+
+        $this->assertEquals(array($exception1), $this->jobExecution->getFailureExceptions());
+        $this->assertEquals(array($exception1), $this->jobExecution->getAllFailureExceptions());
+
+        $this->assertEntity($this->jobExecution->addFailureException($exception2));
+
+        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getFailureExceptions());
+        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getAllFailureExceptions());
+
+        $stepExecution->addFailureException($stepException);
+
+        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getFailureExceptions());
+        $this->assertEquals(
+            array($exception1, $exception2, $stepException),
+            $this->jobExecution->getAllFailureExceptions()
+        );
+    }
+
+    public function testSetGetJob()
+    {
+        $this->assertNull($this->jobExecution->getJob());
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $this->assertEntity($this->jobExecution->setJob($jobInstance));
+        $this->assertEquals($jobInstance, $this->jobExecution->getJob());
+    }
+
+    public function testToString()
+    {
+        $startTime = new \DateTime('2013-02-01 12:34:56');
+        $updatedTime = new \DateTime('2013-02-03 23:45:01');
+        $status = BatchStatus::STOPPED;
+        $exitStatus = ExitStatus::FAILED;
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobInstance->setCode('job instance code');
+        $endTime = new \DateTime('2013-03-04 21:43:05');
+
+        $this->jobExecution->setStartTime($startTime);
+        $this->jobExecution->setUpdatedTime($updatedTime);
+        $this->jobExecution->setStatus(new BatchStatus($status));
+        $this->jobExecution->setExitStatus(new ExitStatus($exitStatus, 'Test description'));
+        $this->jobExecution->setJob($jobInstance);
+        $this->jobExecution->setEndTime($endTime);
+
+        $expectedOutput = 'startTime=2013-02-01T12:34:56+01:00, endTime=2013-03-04T21:43:05+01:00, '.
+            'updatedTime=2013-02-03T23:45:01+01:00, status=5, exitStatus=[FAILED] Test description, '
+            .'job=job instance code';
+
+        $this->assertEquals($expectedOutput, (string) $this->jobExecution);
     }
 
     /**

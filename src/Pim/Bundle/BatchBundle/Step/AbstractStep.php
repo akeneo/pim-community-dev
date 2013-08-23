@@ -26,9 +26,7 @@ abstract class AbstractStep implements StepInterface
 
     private $logger;
 
-    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-
-    /* @var JobRepositoryInterace $jobRepository */
+    /* @var JobRepositoryInterace */
     private $jobRepository;
 
     /**
@@ -64,16 +62,20 @@ abstract class AbstractStep implements StepInterface
      * Public setter for {@link JobRepositoryInterface}.
      *
      * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
+     *
+     * @return $this
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
+
+        return $this;
     }
 
     /**
      * @return JobRepositoryInterface
      */
-    protected function getJobRepository()
+    public function getJobRepository()
     {
         return $this->jobRepository;
     }
@@ -88,11 +90,16 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * Set the name property
+     *
      * @param string $name
+     *
+     * @return this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -104,18 +111,6 @@ abstract class AbstractStep implements StepInterface
      * @throws Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
-
-    /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the beginning of a step, to open or
-     * acquire resources. Does nothing by default.
-     *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function open(ExecutionContext $ctx)
-    {
-    }
 
     /**
      * Provide the configuration of the step
@@ -132,21 +127,7 @@ abstract class AbstractStep implements StepInterface
     abstract public function setConfiguration(array $config);
 
     /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
-     * of the finally block), to close or release resources. Does nothing by default.
-     *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function close(ExecutionContext $ctx)
-    {
-    }
-
-    /**
-     * Template method for step execution logic - calls abstract methods for resource initialization (
-     * {@link #open(ExecutionContext)}), execution logic ({@link #doExecute(StepExecution)}) and resource closing (
-     * {@link #close(ExecutionContext)}).
+     * Template method for step execution logic
      *
      * @param StepExecution $stepExecution
      *
@@ -165,12 +146,7 @@ abstract class AbstractStep implements StepInterface
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
-        //StepSynchronizationManager.register(stepExecution);
-
         try {
-            //getCompositeListener().beforeStep(stepExecution);
-            //$this->open($stepExecution->getExecutionContext());
-
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
@@ -203,46 +179,26 @@ abstract class AbstractStep implements StepInterface
             // listeners can act on it
             $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
             $stepExecution->setExitStatus($exitStatus);
-            //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
+
         } catch (\Exception $e) {
             $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
-        }
-
-        try {
-            //getJobRepository().updateExecutionContext(stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
-            $stepExecution->addFailureException($e);
-            $errorMsg =  "Encountered an error saving batch meta data."
-                ."This job is now in an unknown state and should not be restarted.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
         try {
-            //getJobRepository().update(stepExecution);
+            $this->getJobRepository()->updateStepExecution($stepExecution);
         } catch (\Exception $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
             $stepExecution->addFailureException($e);
             $errorMsg = "Encountered an error saving batch meta data. "
-                . "This job is now in an unknown state and should not be restarted.";
+                . "This job is now in an unknown state.";
             $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
-        try {
-            $this->close($stepExecution->getExecutionContext());
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
-            $stepExecution->addFailureException($e);
-        }
-
-        //StepSynchronizationManager.release();
-
-        $this->getLogger()->debug("Step execution complete: " . $stepExecution->getSummary());
+        $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
     }
 
     /**
@@ -275,8 +231,6 @@ abstract class AbstractStep implements StepInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-            /*} elseif (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
-                exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());*/
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);

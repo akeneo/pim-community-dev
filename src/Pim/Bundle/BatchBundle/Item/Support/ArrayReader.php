@@ -19,10 +19,14 @@ class ArrayReader implements ItemReaderInterface
 
     /**
      * @param array $items
+     *
+     * @return $this
      */
     public function setItems(array $items)
     {
         $this->items = $items;
+
+        return $this;
     }
 
     /**

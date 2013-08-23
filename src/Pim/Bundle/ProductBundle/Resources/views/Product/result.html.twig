@@ -1,7 +1,8 @@
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
 
-{% set showImage = false %}
+{% set showImage = true %}
+{% set imagePath = asset('/bundles/pimui/images/akeneo_qr.png') %}
 
 {% if entity %}
     {% set recordUrl = indexer_item.recordUrl %}

@@ -60,6 +60,15 @@ function init() {
     // Disable the oro scrollable container
     $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
+    // Move scope filter to the proper location and remove it from the 'Manage filters' selector
+    Oro.Events.once('datagrid_filters:rendered', function() {
+        $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
+        $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
+
+        $('#add-filter-select').find('option[value="scope"]').remove();
+        $('#add-filter-select').multiselect('refresh');
+    });
+
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 
@@ -89,8 +98,10 @@ function init() {
     });
 
     $('.remove-attribute').each(function() {
-        var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
-        $(this).insertAfter(target).css('margin-left', 20).attr('tabIndex', -1);
+        var target = $(this).parent().find('.icons-container').first();
+        if (target.length) {
+            $(this).appendTo(target).attr('tabIndex', -1);
+        }
     });
 
     $('form div.scopable').scopableField();
@@ -145,7 +156,7 @@ function init() {
     $('body>.ui-multiselect-menu').appendTo($('#container'));
 
     // DELETE request for delete buttons
-    $('a[data-dialog]').on('click', function() {
+    $('[data-dialog]').on('click', function() {
         var $el = $(this);
         var message = $el.data('message');
         var title = $el.data('title');
@@ -209,6 +220,19 @@ function init() {
             return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
         });
     }
+
+    var $localizableIcon = $('<i>', {
+        'class': 'fa-icon-globe',
+        'attr': {
+            'data-original-title': _.__('Localized value'),
+            'rel': 'tooltip'
+        }
+    });
+    $('.attribute-field.translatable').each(function() {
+        $(this).find('div.controls .icons-container').append($localizableIcon.clone());
+    });
+
+    $('[rel="tooltip"]').tooltip();
 }
 
 $(function() {

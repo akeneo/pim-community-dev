@@ -30,7 +30,6 @@ parameters:
 
     pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
-    pim_product.manager.audit.class:                   Pim\Bundle\ProductBundle\Manager\AuditManager
     pim_product.manager.attribute_type.class:          Pim\Bundle\ProductBundle\Manager\AttributeTypeManager
     pim_product.manager.media.class:                   Pim\Bundle\ProductBundle\Manager\MediaManager
 

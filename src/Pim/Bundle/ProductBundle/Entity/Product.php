@@ -5,11 +5,12 @@ namespace Pim\Bundle\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 
 /**
  * Flexible product
@@ -20,19 +21,29 @@ use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @Oro\Loggable
  */
-class Product extends AbstractEntityFlexible implements ProductInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
 {
     /**
+<<<<<<< HEAD
      * @var ArrayCollection $values
+=======
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
+    /**
+     * @var Value
+>>>>>>> master
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface",
      *     mappedBy="entity",
      *     cascade={"persist", "remove"}
      * )
-     * @Oro\Versioned
      */
     protected $values;
 
@@ -41,7 +52,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned("getCode")
      */
     protected $family;
 
@@ -56,7 +66,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @var boolean $enabled
      *
      * @ORM\Column(name="is_enabled", type="boolean")
-     * @Oro\Versioned
      */
     protected $enabled = true;
 
@@ -80,6 +89,17 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->categories     = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
     }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
     /**
      * Get family
      *
@@ -335,6 +355,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
+<<<<<<< HEAD
      * Getter for product completenesses
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -411,5 +432,34 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->completenesses = new ArrayCollection($completenesses);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVersionedData()
+    {
+        $data = array();
+
+        if ($this->getFamily()) {
+            $data['family'] = $this->getFamily()->getCode();
+        }
+
+        $data['enabled'] = $this->isEnabled();
+
+        $categories = array();
+        foreach ($this->getCategories() as $category) {
+            $categories[]= $category->getCode();
+        }
+        $data['categories']= implode(', ', $categories);
+
+        foreach ($this->getValues() as $value) {
+            $key = $value->getAttribute()->getCode();
+            $key .= ($value->getLocale()) ? '_'.$value->getLocale() : '';
+            $key .= ($value->getScope()) ? '_'.$value->getScope() : '';
+            $data[$key]= (string) $value;
+        }
+
+        return $data;
     }
 }

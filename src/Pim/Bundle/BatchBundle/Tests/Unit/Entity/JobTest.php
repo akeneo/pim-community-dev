@@ -113,6 +113,41 @@ class JobTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter/setter rawConfiguration
+     */
+    public function testGetSetRawConfiguration()
+    {
+        $this->assertEmpty($this->job->getRawConfiguration());
+
+        $expectedConfiguration = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+
+        $this->assertEntity($this->job->setRawConfiguration($expectedConfiguration));
+        $this->assertEquals($expectedConfiguration, $this->job->getRawConfiguration());
+    }
+
+    /**
+     * Test getter/setter jobDefinition
+     */
+    public function testGetSetJobDefinition()
+    {
+        $this->assertEmpty($this->job->getJobDefinition());
+
+        $expectedConfiguration = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+
+        $mockBatchJob = $mock = $this->getMockBuilder('Pim\\Bundle\\BatchBundle\\Job\\Job')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockBatchJob->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($expectedConfiguration));
+
+        $this->assertEntity($this->job->setJobDefinition($mockBatchJob));
+        $this->assertEquals($expectedConfiguration, $this->job->getRawConfiguration());
+        $this->assertEquals($mockBatchJob, $this->job->getJobDefinition());
+    }
+
+    /**
      * Assert the entity tested
      *
      * @param object $entity

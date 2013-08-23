@@ -145,7 +145,7 @@ class ProductController extends Controller
             }
         }
 
-        $auditManager = $this->container->get('pim_product.manager.audit');
+        $auditManager = $this->container->get('pim_versioning.manager.audit');
 
         // Always calculate the completeness on edit view after saving
         // completeness is set to the product to allow calls of getCompleteness method

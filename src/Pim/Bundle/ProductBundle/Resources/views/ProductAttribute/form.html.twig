@@ -20,10 +20,10 @@
 
         {% set left %}
             {% if form.vars.value.id %}
-                <ul class="inline">
-                   <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
-                   <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
-               </ul>
+            <ul class="inline">
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+            </ul>
             {% endif %}
         {% endset %}
 

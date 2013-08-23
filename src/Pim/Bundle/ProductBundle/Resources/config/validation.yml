@@ -19,23 +19,20 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
                 - pim_product_number
                 - pim_product_price_collection
                 - pim_product_metric
+        - Pim\Bundle\ProductBundle\Validator\Constraints\ValidDefaultValue:
+            groups:
+                - pim_product_text
+                - pim_product_textarea
+                - pim_product_price_collection
+                - pim_product_number
+                - pim_product_date
+                - pim_product_metric
         - Callback:
             methods:
                 - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, areOptionsValid]
             groups:
                 - pim_product_multiselect
                 - pim_product_simpleselect
-        - Callback:
-            methods:
-                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isDefaultValueValid]
-            groups:
-                - pim_product_text
-                - pim_product_textarea
-                - pim_product_price_collection
-                - pim_product_number
-                - pim_product_boolean
-                - pim_product_date
-                - pim_product_metric
     properties:
         attributeType:
             - Choice:
@@ -59,6 +56,9 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
                 message: "Attribute code may contain only letters, numbers and underscores"
             - Length:
                 max: 255
+            - Regex:
+                pattern: "/^(?!(treeId|categoryId|scope|enabled|family)$)/"
+                message: This code is not available.
         description:
             - Length:
                 max: 255
@@ -84,6 +84,12 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Type: int
             - GreaterThanOrEqual:
                 value: 0
+            - Range:
+                max: 255
+                groups: [pim_product_text, pim_product_identifier]
+            - Range:
+                max: 65535
+                groups: [pim_product_textarea]
         sortOrder:
             - Type: int
             - GreaterThanOrEqual:
@@ -124,6 +130,19 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - Blank:
                 message: No default value may be specified for this attribute type
                 groups: [pim_product_file, pim_product_image, pim_product_identifier]
+            - Length:
+                max: 65535
+            - Length:
+                max: 255
+                groups: [pim_product_text]
+            - Choice:
+                choices: [0, 1]
+                message: This value should be Yes or No
+                groups: [pim_product_boolean]
+            - Email:
+                groups: [email]
+            - Url:
+                groups: [url]
         dateMin:
             - DateTime:
                 groups: [pim_product_date]
@@ -154,6 +173,8 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
         allowedExtensions:
             - NotNull:
                 groups: [pim_product_file, pim_product_image]
+                message: This value should not be blank
+
 Pim\Bundle\ProductBundle\Entity\AttributeOption:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code

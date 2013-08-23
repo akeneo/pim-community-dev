@@ -184,6 +184,20 @@ form.form-signin {
 
 /* Basic Form *******************************************************************************************************/
 
+.icons-container {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 17px;
+  margin-left: 5px;
+  color: @textColor + #333;
+  i {
+    outline: none;
+    &[data-dialog] {
+      cursor: pointer;
+    }
+  }
+}
+
 a.select2-choice {
   outline: none;
 }
@@ -560,7 +574,7 @@ table.ui-sortable, tbody.ui-sortable {
     float: left;
     font: bold 17px/18px 'HelveticaNeue bold',Arial,Helvetica,sans-serif;
   }
-  .locale-switcher, .scope-switcher {
+  .locale-switcher {
     height: 30px;
   }
 }
@@ -1010,6 +1024,17 @@ ul.medias label.remove-media {
     padding: 7px;
     color: #b9b9b9;
   }
+}
+
+.btn.scope-filter {
+  height: 28px;
+  min-width: 130px;
+  padding-right: 0px;
+  padding-left: 5px;
+}
+
+.ui-multiselect-menu.scope-filter-select {
+  min-width: 150px!important; // Added !important otherwise position is incorrect on first display
 }
 
 /** Dashboard ********************************************************************************************************/
