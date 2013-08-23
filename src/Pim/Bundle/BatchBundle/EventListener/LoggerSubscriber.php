@@ -36,7 +36,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
             EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
-            EventInterface::STEP_EXECUTION_ERROR       => 'stepExecutionError',
+            EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
             EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
         );
     }
@@ -104,7 +104,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug('Full exception', array('exception', $stepExecution->getFailureExceptions()));
     }
 
-    public function stepExecutionError(StepExecutionEvent $event)
+    public function stepExecutionErrored(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
 

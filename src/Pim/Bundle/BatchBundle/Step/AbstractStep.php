@@ -164,7 +164,7 @@ abstract class AbstractStep implements StepInterface
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
                 $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
             } else {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERROR, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
             }
         }
 
