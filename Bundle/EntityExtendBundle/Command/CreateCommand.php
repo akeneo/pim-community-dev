@@ -66,9 +66,16 @@ class CreateCommand extends ContainerAwareCommand
 
                 //fix state "Update" for existing class.
                 foreach ($config as $entityName => $entityOptions) {
-                    $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
+                    $entityConfigProvider = $this->extendManager->getConfigProvider();
+                    $entityConfig = $entityConfigProvider->getConfig($entityName);
                     $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
+
                     $this->configManager->persist($entityConfig);
+
+                    foreach ($entityConfigProvider->getConfigs($entityName) as $fieldConfig) {
+                        $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
+                        $this->configManager->persist($fieldConfig);
+                    }
                 }
                 $this->configManager->flush();
 
@@ -76,19 +83,26 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
-        $this->getApplication()->find('cache:clear')->run($input, $output);
         $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
 
-        $arguments = array_merge(
+        $argumentsCache = array_merge(
+            $input->getArguments(),
+            array(
+//                '--no-warmup' => true,
+            )
+        );
+        $arrayInputCache = new ArrayInput($argumentsCache);
+        $this->getApplication()->find('cache:clear')->run($arrayInputCache, $output);
+
+        $argumentsDoctrine = array_merge(
             $input->getArguments(),
             array(
                 '--force' => true,
             )
         );
+        $arrayInputDoctrine = new ArrayInput($argumentsDoctrine);
+        $this->getApplication()->find('doctrine:schema:update')->run($arrayInputDoctrine, $output);
 
-        $arrayInput = new ArrayInput($arguments);
-
-        $this->getApplication()->find('doctrine:schema:update')->run($arrayInput, $output);
         $this->getApplication()->find('oro:search:create-index')->run($input, $output);
         $this->getApplication()->find('cache:clear')->run($input, $output);
     }
@@ -104,17 +118,11 @@ class CreateCommand extends ContainerAwareCommand
             $this->createEntityModel($entityName, $entityOptions);
             $this->setDefaultConfig($entityOptions, $entityName);
 
+            $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
             if (!class_exists($entityName)) {
-                $config = array(
-                    'type' => 'integer',
-                );
-
-                $this->extendManager->getExtendFactory()->createField($entityName, 'id', $config);
-
-                $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
                 $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
-                $entityConfig->set('is_extend', true);
             }
+            $entityConfig->set('is_extend', true);
         }
 
         foreach ($entityOptions['fields'] as $fieldName => $fieldConfig) {

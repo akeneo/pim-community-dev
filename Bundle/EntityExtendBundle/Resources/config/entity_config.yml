@@ -11,10 +11,10 @@ oro_entity_config:
                     filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active']}
                     args:                   ['id']
                 -
-                    name:                   'UnRemove'
+                    name:                   'Restore'
                     route:                  'oro_entityextend_entity_unremove'
                     type:                   'ajax'
-                    icon:                   'trash'
+                    icon:                   'backward'
                     acl_resource:           'root'
                     filter:                 { owner: 'Custom', state: ['Deleted']}
                     args:                   ['id']
@@ -67,6 +67,7 @@ oro_entity_config:
                 is_deleted:
                     options:
                         default_value:      false
+                        internal:           true
                     grid:
                         show_column:        false
                         query:
@@ -97,10 +98,10 @@ oro_entity_config:
                     filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active'] }
                     args:                   ['id']
                 -
-                    name:                   'UnRemove'
+                    name:                   'Resore'
                     route:                  'oro_entityextend_field_unremove'
                     type:                   'ajax'
-                    icon:                   'trash'
+                    icon:                   'backward'
                     acl_resource:           'root'
                     filter:                 { owner: 'Custom', state: ['Deleted'] }
                     args:                   ['id']
@@ -228,6 +229,7 @@ oro_entity_config:
                 is_deleted:
                     options:
                         default_value:      false
+                        internal:           true
                     grid:
                         show_column:        false
                         query:

@@ -157,7 +157,25 @@ class ApplyController extends Controller
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
         $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
+        $entityState          = $extendConfig->get('state');
 
+        foreach ($extendFieldConfigs as $fieldConfig) {
+            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
+                && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+            ) {
+                $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
+            }
+
+            if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
+                $fieldConfig->set('is_deleted', true);
+            }
+
+            $extendConfigProvider->persist($fieldConfig);
+        }
+
+        $extendConfigProvider->flush();
+
+        $extendConfig->set('state', $entityState);
         if ($extendConfig->get('state') == ExtendManager::STATE_DELETED) {
             $extendConfig->set('is_deleted', true);
         } else {
@@ -165,22 +183,6 @@ class ApplyController extends Controller
         }
 
         $extendConfigProvider->persist($extendConfig);
-
-        foreach ($extendFieldConfigs as $fieldConfig) {
-            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
-                && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
-            ) {
-                $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
-
-            }
-
-            if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
-                $extendConfig->set('is_deleted', true);
-            }
-
-            $extendConfigProvider->persist($fieldConfig);
-        }
-
         $extendConfigProvider->flush();
 
         return $this->redirect($this->generateUrl('oro_entityconfig_index'));

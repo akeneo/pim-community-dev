@@ -385,7 +385,6 @@ class ConfigManager
         $this->getEntityManager()->flush();
 
         $this->persistConfigs   = new \SplObjectStorage();
-        $this->originalConfigs  = new ArrayCollection;
         $this->configChangeSets = new ArrayCollection;
     }
 

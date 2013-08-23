@@ -178,24 +178,13 @@ class ConfigEntityGridController extends Controller
             $form->submit($request);
 
             if ($form->isValid()) {
-                $newEntityModel    = $configManager->createConfigFieldModel($className, 'id', 'integer');
-                $extendFieldConfig = $configManager->getProvider('extend')->getConfig($className, 'id');
-                $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
-                $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
-                $extendFieldConfig->set('is_extend', true);
-
-                $entityFieldConfig = $configManager->getProvider('entity')->getConfig($className, 'id');
-                $entityFieldConfig->set('label', 'Id');
-
-                $configManager->flush();
-
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
                         'route'      => 'oro_entityconfig_update',
-                        'parameters' => array('id' => $newEntityModel->getId()),
+                        'parameters' => array('id' => $entityModel->getId()),
                     ),
                     array(
                         'route' => 'oro_entityconfig_index'
@@ -245,7 +234,7 @@ class ConfigEntityGridController extends Controller
         $configManager->persist($entityConfig);
         $configManager->flush();
 
-        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+        return new JsonResponse(array('message' => 'Item was removed', 'successful' => true), Codes::HTTP_OK);
     }
 
     /**
@@ -284,6 +273,6 @@ class ConfigEntityGridController extends Controller
         $configManager->persist($entityConfig);
         $configManager->flush();
 
-        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+        return new JsonResponse(array('message' => 'Item was restored', 'successful' => true), Codes::HTTP_OK);
     }
 }

@@ -164,10 +164,11 @@ class ConfigFieldGridController extends Controller
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
                 $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
-                $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
-
-                $configManager->persist($extendEntityConfig);
-                $configManager->flush();
+                if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {
+                    $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
+                    $configManager->persist($extendEntityConfig);
+                    $configManager->flush();
+                }
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -283,6 +284,6 @@ class ConfigFieldGridController extends Controller
         $configManager->persist($fieldConfig);
         $configManager->flush();
 
-        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+        return new JsonResponse(array('message' => 'Item was restored', 'successful' => true), Codes::HTTP_OK);
     }
 }

@@ -2,16 +2,14 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Metadata\MetadataFactory;
-
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
-use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -72,14 +70,18 @@ class ConfigSubscriber implements EventSubscriberInterface
         $className = $event->getConfig()->getId()->getClassName();
 
         if ($scope == 'extend'
+            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
             && $event->getConfig()->is('is_extend')
-            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
+            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
         ) {
             $entityConfig = $event->getConfigManager()
                 ->getProvider($scope)
                 ->getConfig($className);
 
-            if ($event->getConfig()->get('state') != ExtendManager::STATE_NEW) {
+            if ($event->getConfig()->get('state') != ExtendManager::STATE_NEW
+                && $event->getConfig()->get('state') != ExtendManager::STATE_DELETED
+                && !isset($change['state'])
+            ) {
                 $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
 
                 $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
