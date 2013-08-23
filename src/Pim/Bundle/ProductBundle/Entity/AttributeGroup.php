@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
@@ -51,6 +52,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * @var datetime $created
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     protected $created;
@@ -58,6 +60,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * @var datetime $updated
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     protected $updated;

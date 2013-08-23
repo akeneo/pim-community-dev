@@ -33,7 +33,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $version;
 
     /**
-     * @var Value
+     * @var ArrayCollection $values
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface",
@@ -44,7 +44,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $values;
 
     /**
-     * @var family
+     * @var Pim\Bundle\ProductBundle\Entity\Family $family
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
@@ -59,9 +59,21 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $categories;
 
     /**
+     * @var boolean $enabled
+     *
      * @ORM\Column(name="is_enabled", type="boolean")
      */
     protected $enabled = true;
+
+    /**
+     * @var ArrayCollection $completenesses
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\Completeness",
+     *     mappedBy="product"
+     * )
+     */
+    protected $completenesses;
 
     /**
      * {@inheritdoc}
@@ -70,7 +82,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     {
         parent::__construct();
 
-        $this->categories = new ArrayCollection;
+        $this->categories     = new ArrayCollection();
+        $this->completenesses = new ArrayCollection();
     }
 
     /**
@@ -335,6 +348,85 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function __toString()
     {
         return (string) $this->getLabel();
+    }
+
+    /**
+     * Getter for product completenesses
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getCompletenesses()
+    {
+        return $this->completenesses;
+    }
+
+    /**
+     * Add product completeness
+     *
+     * @param Completeness $completeness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function addCompleteness(Completeness $completeness)
+    {
+        if (!$this->completenesses->contains($completeness)) {
+            $this->completenesses->add($completeness);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove product completeness
+     *
+     * @param Completeness $completeness
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function removeCompleteness(Completeness $completeness)
+    {
+        $this->completenesses->removeElement($completeness);
+
+        return $this;
+    }
+
+    /**
+     * Get the product completeness from a locale and a scope
+     *
+     * @param string $locale
+     * @param string $channel
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Completeness|null
+     */
+    public function getCompleteness($locale, $channel)
+    {
+        $completeness = array_filter(
+            $this->completenesses->toArray(),
+            function ($completeness) use ($locale, $channel) {
+                return $completeness->getLocale()->getCode() === $locale
+                    && $completeness->getChannel()->getCode() === $channel;
+            }
+        );
+
+        if (count($completeness) === 0) {
+            return null;
+        } else {
+            return array_shift($completeness);
+        }
+    }
+
+    /**
+     * Set product completenesses
+     *
+     * @param array $completenesses
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function setCompletenesses(array $completenesses = array())
+    {
+        $this->completenesses = new ArrayCollection($completenesses);
+
+        return $this;
     }
 
     /**
