@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 

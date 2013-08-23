@@ -104,12 +104,12 @@ class ReportDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Code'),
                 'field_name'      => 'jobCode',
-                'expression'      => 'job.id',
+                'expression'      => 'jobInstance.id',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
+                'class'           => 'PimBatchBundle:JobInstance',
                 'property'        => 'code',
                 'query_builder'   => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
@@ -136,12 +136,12 @@ class ReportDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Job'),
                 'field_name'      => 'jobAlias',
-                'expression'      => 'job.id',
+                'expression'      => 'jobInstance.id',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
+                'class'           => 'PimBatchBundle:JobInstance',
                 'property'        => 'alias',
                 'query_builder'   => function (EntityRepository $repository) use ($jobType) {
                     $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
@@ -164,14 +164,14 @@ class ReportDatagridManager extends DatagridManager
      */
     public function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.job', 'job');
-        $proxyQuery->addSelect('job.code as jobCode');
-        $proxyQuery->addSelect('job.label as jobLabel');
-        $proxyQuery->addSelect('job.alias as jobAlias');
+        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.jobInstance', 'jobInstance');
+        $proxyQuery->addSelect('jobInstance.code as jobCode');
+        $proxyQuery->addSelect('jobInstance.label as jobLabel');
+        $proxyQuery->addSelect('jobInstance.alias as jobAlias');
         $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
 
         if ($this->jobType !== null) {
-            $proxyQuery->andWhere('job.type = :job_type');
+            $proxyQuery->andWhere('jobInstance.type = :job_type');
             $proxyQuery->setParameter('job_type', $this->jobType);
         }
     }

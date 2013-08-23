@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -18,6 +19,11 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
  */
 class ItemStep extends AbstractStep
 {
+    /**
+     * @var int
+     */
+    private $batchSize = 100;
+
     /**
      * @Assert\Valid
      */
@@ -34,7 +40,22 @@ class ItemStep extends AbstractStep
     private $processor = null;
 
     /**
+     * Set the batch size
+     *
+     * @param int $batchSize
+     *
+     * @return $this
+     */
+    public function setBatchSize($batchSize)
+    {
+        $this->batchSize = $batchSize;
+
+        return $this;
+    }
+
+    /**
      * Set reader
+     *
      * @param ItemReaderInterface $reader
      */
     public function setReader(ItemReaderInterface $reader)
@@ -100,18 +121,31 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $execution)
+    public function doExecute(StepExecution $stepExecution)
     {
-        $readCounter = 0;
-        $writeCounter = 0;
+        $readCount = 0;
+        $writeCount = 0;
+        $itemsToWrite = array();
 
         while (($item = $this->reader->read()) !== null) {
-            $readCounter ++;
+            $readCount ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {
-                $writeCounter ++;
-                $this->writer->write(array($processedItem));
+                $itemsToWrite[] = $processedItem;
+                $writeCount ++;
+                if (($writeCount % $this->batchSize) == 0) {
+                    $this->writer->write($itemsToWrite);
+                    $itemsToWrite = array();
+                }
             }
         }
+        if (count($itemsToWrite) > 0) {
+            $this->writer->write($itemsToWrite);
+        }
+
+        $stepExecution->setReadCount($readCount);
+        $stepExecution->setWriteCount($writeCount);
+        $stepExecution->setFilterCount($readCount - $writeCount);
+
     }
 }

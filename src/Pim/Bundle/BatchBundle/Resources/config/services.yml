@@ -1,11 +1,14 @@
 parameters:
-    pim_batch.connectors.class:     Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.job_repository.class: Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
-    pim_batch.step_handler.class:   Pim\Bundle\BatchBundle\Job\SimpleStepHandler
-    pim_batch.job_factory.class:    Pim\Bundle\BatchBundle\Job\JobFactory
-    pim_batch.step_factory.class:   Pim\Bundle\BatchBundle\Step\StepFactory
-    pim_batch.connectors_config:    ~
-    pim_batch.jobs_config:          ~
+    pim_batch.connectors.class:                Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+    pim_batch.job_repository.class:            Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
+    pim_batch.job_factory.class:               Pim\Bundle\BatchBundle\Job\JobFactory
+    pim_batch.step_factory.class:              Pim\Bundle\BatchBundle\Step\StepFactory
+    pim_batch.logger_subscriber.class:         Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    pim_batch.notification_subscriber.class:   Pim\Bundle\BatchBundle\EventListener\NotificationSubscriber
+    pim_batch.logger.batch_log_handler.class:  Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    pim_batch.mail_notifier.class:             Pim\Bundle\BatchBundle\Notification\MailNotifier
+    pim_batch.connectors_config:               ~
+    pim_batch.jobs_config:                     ~
 
 services:
     # connectors registry
@@ -20,21 +23,43 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
 
-    pim_batch.step_handler:
-        class: %pim_batch.step_handler.class%
-        arguments:
-            - @logger
-            - @pim_batch.job_repository
-
     pim_batch.job_factory:
         class: %pim_batch.job_factory.class%
         arguments:
-            - @logger
+            - @event_dispatcher
             - @pim_batch.job_repository
-            - @pim_batch.step_handler
+
+    pim_batch.logger_subscriber:
+        class: %pim_batch.logger_subscriber.class%
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: batch }
+
+    pim_batch.notification_subscriber:
+        class: %pim_batch.notification_subscriber.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_batch.mail_notifier:
+        class: %pim_batch.mail_notifier.class%
+        arguments:
+            - @pim_batch.logger.batch_log_handler
+            - @security.context
+            - @twig
+            - @mailer
+        tags:
+            - { name: pim_batch.notifier }
 
     pim_batch.step_factory:
         class: %pim_batch.step_factory.class%
         arguments:
-            - @logger
+            - @event_dispatcher
             - @pim_batch.job_repository
+
+    pim_batch.logger.batch_log_handler:
+        class: %pim_batch.logger.batch_log_handler.class%
+        arguments:
+            - %kernel.root_dir%
+            - %pim_batch.log_dir%
