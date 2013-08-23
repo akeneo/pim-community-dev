@@ -24,8 +24,9 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     protected $entityManager;
     protected $formFactory;
 
-    protected $titleDelimiter  = ',';
-    protected $localeDelimiter = ':';
+    protected $titleDelimiter    = ',';
+    protected $localeDelimiter   = ':';
+    protected $checkCircularRefs = true;
 
     protected $data;
     protected $categories;
@@ -83,13 +84,36 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     }
 
     /**
+     * Set checkCircularRefs
+     *
+     * @param boolean $checkCircularRefs
+     */
+    public function setCheckCircularRefs($checkCircularRefs)
+    {
+        $this->checkCircularRefs = $checkCircularRefs;
+    }
+
+    /**
+     * Get checkCircularRefs
+     *
+     * @return boolean
+     */
+    public function getCheckCircularRefs()
+    {
+        return $this->checkCircularRefs;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getConfigurationFields()
     {
         return array(
             'titleDelimiter' => array(),
-            'localeDelimiter' => array()
+            'localeDelimiter' => array(),
+            'checkCircularRefs' => array(
+                'type' => 'checkbox',
+            ),
         );
     }
 
@@ -102,7 +126,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      */
     public function process($data)
     {
-        $this->data = $data;
+        $this->data = new ArrayCollection($data);
         $this->categories = new ArrayCollection;
 
         foreach ($this->data as $item) {
@@ -110,16 +134,21 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
         }
 
         foreach ($this->categories as $category) {
-            $parent = array_filter(
-                $this->data,
+            $parent = $this->data->filter(
                 function ($item) use ($category) {
                     return $item['code'] === $category->getCode();
                 }
-            );
-            $parentCode = $parent ? reset($parent)['parent'] : null;
+            )->first();
+            $parentCode = $parent['parent'];
             if ($parentCode) {
                 $this->addParent($category, $parentCode);
+            } else {
+                $category->setParent(null);
             }
+        }
+
+        if ($this->checkCircularRefs === true) {
+            $this->checkCircularReferences();
         }
 
         return $this->categories->toArray();
@@ -155,6 +184,12 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      */
     private function addParent(Category $category, $parentCode)
     {
+        if ($category->getCode() === $parentCode) {
+            $this->processInvalidParent($parentCode);
+
+            return;
+        }
+
         $parent = $this->findCategory($parentCode);
 
         if ($parent) {
@@ -183,27 +218,33 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      */
     private function processInvalidParent($parentCode)
     {
-        $invalidItems = array_filter(
-            $this->data,
+        $invalidItems = $this->data->filter(
             function ($item) use ($parentCode) {
                 return $item['parent'] === $parentCode;
             }
         );
 
-        $invalidCodes = array_map(
-            function ($category) {
-                return $category['code'];
-            },
-            $invalidItems
+        foreach ($invalidItems as $invalidItem) {
+            $this->data->removeElement($invalidItem);
+        }
+
+        $invalidCodes = $invalidItems->map(
+            function ($item) {
+                return $item['code'];
+            }
         );
 
         foreach ($invalidCodes as $code) {
             $this->categories = $this->categories->filter(
                 function ($category) use ($code) {
                     if ($category->getCode() === $code) {
+                        $this->entityManager->detach($category);
+                        foreach ($category->getTranslations() as $translation) {
+                            $this->entityManager->detach($translation);
+                        }
+
                         // TODO: Log an error = this category can't be imported because it has an invalid parent
                         // somewhere in the category tree
-
                         return false;
                     }
 
@@ -212,6 +253,46 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             );
 
             $this->processInvalidParent($code);
+        }
+    }
+
+    /**
+     * Checks for circular references in the category tree
+     *
+     * @return void
+     */
+    private function checkCircularReferences()
+    {
+        $categories = $this->categories->filter(
+            function ($category) {
+                return $category->getParent() !== null;
+            }
+        );
+
+        foreach ($categories as $category) {
+            $this->checkParent($category, array());
+        }
+    }
+
+    /**
+     * Recursively finds the root parent of the category, removes the category if a circular reference is encountered
+     *
+     * @param Category|null $category
+     * @param array         $visited
+     *
+     * @return void
+     */
+    private function checkParent($category, array $visited)
+    {
+        if ($category === null) {
+            return;
+        }
+
+        if (isset($visited[$category->getCode()])) {
+            $this->processInvalidParent($category->getCode());
+        } else {
+            $visited[$category->getCode()] = true;
+            $this->checkParent($category->getParent(), $visited);
         }
     }
 
