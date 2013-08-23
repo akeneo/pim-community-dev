@@ -9,7 +9,6 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Pim\Bundle\BatchBundle\Event\StepEvent;
 
 /**
  * Implementation of the {@link Job} interface.

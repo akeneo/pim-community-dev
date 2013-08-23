@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Psr\Log\LoggerInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\BatchBundle\Event\EventInterface;
-use Pim\Bundle\BatchBundle\Event\StepEvent;
 use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
 
 /**

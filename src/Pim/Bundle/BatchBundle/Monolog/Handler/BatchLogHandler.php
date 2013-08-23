@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BatchBundle\Monolog\Handler;
 
-use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 /**
