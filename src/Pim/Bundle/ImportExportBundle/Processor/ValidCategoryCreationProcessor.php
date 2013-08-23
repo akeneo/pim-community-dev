@@ -233,13 +233,14 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             }
         );
 
+        $em = $this->entityManager;
         foreach ($invalidCodes as $code) {
             $this->categories = $this->categories->filter(
-                function ($category) use ($code) {
+                function ($category) use ($code, $em) {
                     if ($category->getCode() === $code) {
-                        $this->entityManager->detach($category);
+                        $em->detach($category);
                         foreach ($category->getTranslations() as $translation) {
-                            $this->entityManager->detach($translation);
+                            $em->detach($translation);
                         }
 
                         // TODO: Log an error = this category can't be imported because it has an invalid parent

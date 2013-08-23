@@ -157,7 +157,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
         $processor->expects($this->exactly(7))
             ->method('process')
-            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7,  null));
+            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
 
         $writer = $this ->getMock('Pim\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
 
