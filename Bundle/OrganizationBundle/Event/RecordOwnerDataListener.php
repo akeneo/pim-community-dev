@@ -87,17 +87,12 @@ class RecordOwnerDataListener
                 /** @var $config EntityConfig */
                 $config = $this->configProvider->getConfig(get_class($entity));
                 $entityValues = $config->getValues();
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
-                    $owner = $user;
-                } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
-                    $businessUnits = $user->getBusinessUnits();
-                    $owner = $businessUnits->first();
-                } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
-                    $businessUnits = $user->getBusinessUnits();
-                    $owner = $businessUnits->first()->getOrganization();
-                }
-                if ($owner && method_exists($entity, 'setOwner')) {
-                    $entity->setOwner($owner);
+                /**
+                 * Automatically set current user as record owner
+                 */
+                if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']
+                    && method_exists($entity, 'setOwner')) {
+                        $entity->setOwner($user);
                 }
             }
         }

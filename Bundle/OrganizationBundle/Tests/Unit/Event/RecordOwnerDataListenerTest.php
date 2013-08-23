@@ -31,8 +31,6 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
     private $config;
 
     private $user;
-    private $businessUnit;
-    private $organization;
 
     private $listenerArguments;
 
@@ -54,12 +52,6 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->user = new User();
-        $this->businessUnit = new BusinessUnit();
-        $this->organization = new Organization();
-        $businessUnits = new ArrayCollection(array($this->businessUnit));
-
-        $this->businessUnit->setOrganization($this->organization);
-        $this->user->setBusinessUnits($businessUnits);
 
         $this->entity = new Entity();
 
@@ -91,7 +83,6 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-
         $this->listener = new RecordOwnerDataListener($this->container, $this->configProvider);
     }
 
@@ -103,25 +94,5 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->prePersist($this->listenerArguments);
         $this->assertEquals($this->user, $this->entity->getOwner());
-    }
-
-    public function testPrePersistBusinessUnit()
-    {
-        $this->config->expects($this->once())
-            ->method('getValues')
-            ->will($this->returnValue(array('owner_type' => OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT)));
-
-        $this->listener->prePersist($this->listenerArguments);
-        $this->assertEquals($this->businessUnit, $this->entity->getOwner());
-    }
-
-    public function testPrePersistOrganization()
-    {
-        $this->config->expects($this->once())
-            ->method('getValues')
-            ->will($this->returnValue(array('owner_type' => OwnershipType::OWNERSHIP_TYPE_ORGANIZATION)));
-
-        $this->listener->prePersist($this->listenerArguments);
-        $this->assertEquals($this->organization, $this->entity->getOwner());
     }
 }
