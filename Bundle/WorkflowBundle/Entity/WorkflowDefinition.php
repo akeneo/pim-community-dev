@@ -6,8 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-
 /**
  * Definition of Workflow
  *
@@ -42,14 +40,7 @@ class WorkflowDefinition
     /**
      * @var string
      *
-     * @ORM\Column(name="managed_entity_class", type="string", length=255)
-     */
-    protected $managedEntityClass;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="start_step", type="string", length=255)
+     * @ORM\Column(name="start_step", type="string", length=255, nullable=true)
      */
     protected $startStep;
 
@@ -61,11 +52,16 @@ class WorkflowDefinition
     protected $configuration;
 
     /**
-     * @var WorkflowDefinitionEntity[]|Collection
+     * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="WorkflowDefinitionEntity", mappedBy="definition", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *      targetEntity="WorkflowDefinitionEntity",
+     *      mappedBy="workflowDefinition",
+     *      orphanRemoval=true,
+     *      cascade={"all"}
+     * )
      */
-    protected $definitionEntities;
+    protected $workflowDefinitionEntities;
 
     /**
      * Constructor
@@ -74,7 +70,7 @@ class WorkflowDefinition
     {
         $this->enabled = false;
         $this->configuration = array();
-        $this->definitionEntities = new ArrayCollection();
+        $this->workflowDefinitionEntities = new ArrayCollection();
     }
 
     /**
@@ -147,29 +143,6 @@ class WorkflowDefinition
     }
 
     /**
-     * Set managedEntityClass
-     *
-     * @param string $managedEntityClass
-     * @return WorkflowDefinition
-     */
-    public function setManagedEntityClass($managedEntityClass)
-    {
-        $this->managedEntityClass = $managedEntityClass;
-
-        return $this;
-    }
-
-    /**
-     * Get managedEntityClass
-     *
-     * @return string
-     */
-    public function getManagedEntityClass()
-    {
-        return $this->managedEntityClass;
-    }
-
-    /**
      * Set configuration
      *
      * @param array $configuration
@@ -212,29 +185,39 @@ class WorkflowDefinition
     }
 
     /**
-     * @param ArrayCollection|WorkflowDefinitionEntity[] $definitionEntities
+     * @param Collection|WorkflowDefinitionEntity[] $definitionEntities
      * @return WorkflowDefinition
      */
-    public function setDefinitionEntities($definitionEntities)
+    public function setWorkflowDefinitionEntities($definitionEntities)
     {
-        if ($definitionEntities instanceof Collection) {
-            $this->definitionEntities = $definitionEntities;
-        } else {
-            $this->definitionEntities = new ArrayCollection();
-            foreach ($definitionEntities as $entity) {
-                $this->definitionEntities->add($entity);
+        /** @var WorkflowDefinitionEntity $entity */
+        $newEntities = array();
+        foreach ($definitionEntities as $entity) {
+            $newEntities[$entity->getClassName()] = $entity;
+        }
+
+        foreach ($this->workflowDefinitionEntities as $entity) {
+            if (array_key_exists($entity->getClassName(), $newEntities)) {
+                unset($newEntities[$entity->getClassName()]);
+            } else {
+                $this->workflowDefinitionEntities->removeElement($entity);
             }
+        }
+
+        foreach ($newEntities as $entity) {
+            $entity->setWorkflowDefinition($this);
+            $this->workflowDefinitionEntities->add($entity);
         }
 
         return $this;
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity[]
+     * @return Collection
      */
-    public function getDefinitionEntities()
+    public function getWorkflowDefinitionEntities()
     {
-        return $this->definitionEntities;
+        return $this->workflowDefinitionEntities;
     }
 
     /**
@@ -246,9 +229,9 @@ class WorkflowDefinition
         $this->setName($definition->getName())
             ->setLabel($definition->getLabel())
             ->setEnabled($definition->isEnabled())
-            ->setManagedEntityClass($definition->getManagedEntityClass())
             ->setConfiguration($definition->getConfiguration())
-            ->setStartStep($definition->getStartStep());
+            ->setStartStep($definition->getStartStep())
+            ->setWorkflowDefinitionEntities($definition->getWorkflowDefinitionEntities());
 
         return $this;
     }

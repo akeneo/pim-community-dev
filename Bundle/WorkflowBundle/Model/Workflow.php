@@ -45,11 +45,6 @@ class Workflow
     /**
      * @var string
      */
-    protected $managedEntityClass;
-
-    /**
-     * @var string
-     */
     protected $label;
 
     public function __construct()
@@ -80,28 +75,6 @@ class Workflow
     public function isEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Set managed entity type.
-     *
-     * @param string $managedEntityType
-     * @return Workflow
-     */
-    public function setManagedEntityClass($managedEntityType)
-    {
-        $this->managedEntityClass = $managedEntityType;
-        return $this;
-    }
-
-    /**
-     * Get managed entity type.
-     *
-     * @return string
-     */
-    public function getManagedEntityClass()
-    {
-        return $this->managedEntityClass;
     }
 
     /**
@@ -321,10 +294,15 @@ class Workflow
      * @param string $startTransitionName
      * @return WorkflowItem
      */
-    public function start(array $data = array(), $startTransitionName = self::DEFAULT_START_TRANSITION_NAME)
+    public function start(array $data = array(), $startTransitionName = null)
     {
+        if (null === $startTransitionName) {
+            $startTransitionName = self::DEFAULT_START_TRANSITION_NAME;
+        }
+
         $workflowItem = $this->createWorkflowItem($data);
         $this->transit($workflowItem, $startTransitionName);
+
         return $workflowItem;
     }
 
@@ -333,9 +311,9 @@ class Workflow
      *
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException
+     * @throws ForbiddenTransitionException
+     * @throws UnknownStepException
+     * @throws UnknownTransitionException
      */
     public function transit(WorkflowItem $workflowItem, $transition)
     {
@@ -384,7 +362,7 @@ class Workflow
      * @return WorkflowItem
      * @throws \LogicException
      */
-    public function createWorkflowItem(array $data = array())
+    protected function createWorkflowItem(array $data = array())
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());

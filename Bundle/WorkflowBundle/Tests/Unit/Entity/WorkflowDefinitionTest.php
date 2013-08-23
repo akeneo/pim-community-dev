@@ -39,14 +39,6 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->workflowDefinition->isEnabled());
     }
 
-    public function testManagedEntityClass()
-    {
-        $this->assertNull($this->workflowDefinition->getManagedEntityClass());
-        $value = 'stdClass';
-        $this->workflowDefinition->setManagedEntityClass($value);
-        $this->assertEquals($value, $this->workflowDefinition->getManagedEntityClass());
-    }
-
     public function testStartStep()
     {
         $this->assertNull($this->workflowDefinition->getStartStep());
@@ -69,7 +61,6 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
             'name' => 'test_name',
             'label' => 'test_label',
             'enabled' => false,
-            'managed_entity_class' => 'TestClass',
             'start_step' => 'test_step',
             'configuration' => array('test', 'configuration')
         );
@@ -80,7 +71,6 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
         $newDefinition->setName($expectedData['name'])
             ->setLabel($expectedData['label'])
             ->setEnabled($expectedData['enabled'])
-            ->setManagedEntityClass($expectedData['managed_entity_class'])
             ->setStartStep($expectedData['start_step'])
             ->setConfiguration($expectedData['configuration']);
 
@@ -98,7 +88,6 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
             'name' => $definition->getName(),
             'label' => $definition->getLabel(),
             'enabled' => $definition->isEnabled(),
-            'managed_entity_class' => $definition->getManagedEntityClass(),
             'start_step' => $definition->getStartStep(),
             'configuration' => $definition->getConfiguration()
         );

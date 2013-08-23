@@ -29,19 +29,12 @@ class WorkflowDefinitionEntity
     protected $className;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="multiple", type="boolean")
-     */
-    protected $multiple;
-
-    /**
      * @var WorkflowDefinition
      *
-     * @ORM\ManyToOne(targetEntity="WorkflowDefinition", inversedBy="definitionEntities")
-     * @ORM\JoinColumn(name="definition_name", referencedColumnName="name", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="WorkflowDefinition", inversedBy="workflowDefinitionEntities")
+     * @ORM\JoinColumn(name="workflow_definition_name", referencedColumnName="name", onDelete="CASCADE")
      */
-    protected $definition;
+    protected $workflowDefinition;
 
     /**
      * Get id
@@ -77,37 +70,14 @@ class WorkflowDefinitionEntity
     }
 
     /**
-     * Set multiple
-     *
-     * @param boolean $multiple
-     * @return WorkflowDefinitionEntity
-     */
-    public function setMultiple($multiple)
-    {
-        $this->multiple = $multiple;
-    
-        return $this;
-    }
-
-    /**
-     * Get multiple
-     *
-     * @return boolean 
-     */
-    public function getMultiple()
-    {
-        return $this->multiple;
-    }
-
-    /**
      * Set workflow definition
      *
      * @param WorkflowDefinition $definition
      * @return WorkflowDefinitionEntity
      */
-    public function setDefinition($definition)
+    public function setWorkflowDefinition($definition)
     {
-        $this->definition = $definition;
+        $this->workflowDefinition = $definition;
     
         return $this;
     }
@@ -117,8 +87,8 @@ class WorkflowDefinitionEntity
      *
      * @return WorkflowDefinition
      */
-    public function getDefinition()
+    public function getWorkflowDefinition()
     {
-        return $this->definition;
+        return $this->workflowDefinition;
     }
 }

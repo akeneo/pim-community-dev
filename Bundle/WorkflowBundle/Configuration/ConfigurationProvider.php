@@ -132,9 +132,6 @@ class ConfigurationProvider
                     ->end()
                     ->scalarNode('start_step')
                         ->defaultNull()
-                    ->end()
-                    ->scalarNode('managed_entity_class')
-                        ->defaultNull()
                     ->end();
 
         foreach ($this->configurationTree->getNodeDefinitions() as $nodeDefinition) {

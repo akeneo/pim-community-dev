@@ -17,7 +17,6 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
             'name' => $definition->getName(),
             'label' => $definition->getLabel(),
             'enabled' => $definition->isEnabled(),
-            'managed_entity_class' => $definition->getManagedEntityClass(),
             'start_step' => $definition->getStartStep(),
             'configuration' => $definition->getConfiguration()
         );
@@ -51,7 +50,6 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
         $maximumConfiguration = array(
             'label' => 'Test Workflow',
             'enabled' => false,
-            'managed_entity_class' => 'TestClass',
             'start_step' => 'test_step',
         );
 
@@ -61,7 +59,6 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                     'name'  => 'test_workflow',
                     'label' => 'Test Workflow',
                     'enabled' => true,
-                    'managed_entity_class' => null,
                     'start_step' => 'test_step',
                     'configuration' => $minimumConfiguration,
                 ),
@@ -74,7 +71,6 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                     'name'  => 'test_workflow',
                     'label' => 'Test Workflow',
                     'enabled' => false,
-                    'managed_entity_class' => 'TestClass',
                     'start_step' => 'test_step',
                     'configuration' => $maximumConfiguration,
                 ),
@@ -116,15 +112,6 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                 'expectedMessage' => 'Configuration option "label" is required',
                 'inputData' => array(
                     'test_workflow' => array(),
-                ),
-            ),
-            'no start step' => array(
-                'expectedException' => '\Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException',
-                'expectedMessage' => 'Configuration option "start_step" is required',
-                'inputData' => array(
-                    'test_workflow' => array(
-                        'label' => 'Test Workflow'
-                    ),
                 ),
             ),
         );

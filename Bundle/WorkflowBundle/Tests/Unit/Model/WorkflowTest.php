@@ -32,7 +32,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'name' => array('name', 'test'),
-            'managedEntityClass' => array('managedEntityClass', 'Test\Bundle\FooBundle\Entity\Bar')
         );
     }
 
@@ -120,18 +119,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
-    }
-
-    public function testCreateWorkflow()
-    {
-        $data = array('name' => 'value');
-        $workflow = $this->createWorkflow();
-        $workflow->setName('testWorkflow');
-
-        $workflowItem = $workflow->createWorkflowItem($data);
-        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $workflowItem);
-        $this->assertEquals('testWorkflow', $workflowItem->getWorkflowName());
-        $this->assertEquals($data['name'], $workflowItem->getData()->get('name'));
     }
 
     /**

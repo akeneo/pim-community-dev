@@ -3,8 +3,10 @@
 namespace Oro\Bundle\WorkflowBundle\Configuration;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
 use Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class ConfigurationWorkflowDefinitionBuilder
 {
@@ -16,25 +18,75 @@ class ConfigurationWorkflowDefinitionBuilder
     {
         $workflowDefinitions = array();
         foreach ($configurationData as $workflowName => $workflowConfiguration) {
-            $this->assertConfigurationOptions($workflowConfiguration, array('label', 'start_step'));
+            $this->assertConfigurationOptions($workflowConfiguration, array('label'));
 
             $enabled = $this->getConfigurationOption($workflowConfiguration, 'enabled', true);
-            $managedEntityClass = $this->getConfigurationOption($workflowConfiguration, 'managed_entity_class', null);
             $startStep = $this->getConfigurationOption($workflowConfiguration, 'start_step', null);
+
+            $managedEntityClasses = $this->getManagedEntityClasses($workflowConfiguration);
+            $definitionEntities = $this->buildDefinitionEntities($managedEntityClasses);
 
             $workflowDefinition = new WorkflowDefinition();
             $workflowDefinition
                 ->setName($workflowName)
                 ->setLabel($workflowConfiguration['label'])
-                ->setStartStep($startStep)
                 ->setEnabled($enabled)
-                ->setManagedEntityClass($managedEntityClass)
-                ->setConfiguration($workflowConfiguration);
+                ->setStartStep($startStep)
+                ->setConfiguration($workflowConfiguration)
+                ->setWorkflowDefinitionEntities($definitionEntities);
 
             $workflowDefinitions[] = $workflowDefinition;
         }
 
         return $workflowDefinitions;
+    }
+
+    /**
+     * @param array $managedEntityClasses
+     * @return WorkflowDefinitionEntity[]
+     */
+    protected function buildDefinitionEntities(array $managedEntityClasses)
+    {
+        $definitionEntities = array();
+
+        foreach ($managedEntityClasses as $entityClass) {
+            $definitionEntity = new WorkflowDefinitionEntity();
+            $definitionEntity->setClassName($entityClass);
+
+            $definitionEntities[] = $definitionEntity;
+        }
+
+        return $definitionEntities;
+    }
+
+    /**
+     * @param array $workflowConfiguration
+     * @return array
+     */
+    protected function getManagedEntityClasses(array $workflowConfiguration)
+    {
+        $managedEntityClasses = array();
+
+        $attributesData = $this->getConfigurationOption(
+            $workflowConfiguration,
+            ConfigurationTree::NODE_ATTRIBUTES,
+            array()
+        );
+
+        foreach ($attributesData as $attributeData) {
+            $type = $this->getConfigurationOption($attributeData, 'type', null);
+
+            if ($type == 'entity') {
+                $options = $this->getConfigurationOption($attributeData, 'options', array());
+                $this->assertConfigurationOptions($options, array('class'));
+
+                if (!empty($options[Workflow::MANAGED_ENTITY_KEY])) {
+                    $managedEntityClasses[] = $this->getConfigurationOption($options, 'class', null);
+                }
+            }
+        }
+
+        return $managedEntityClasses;
     }
 
     /**
