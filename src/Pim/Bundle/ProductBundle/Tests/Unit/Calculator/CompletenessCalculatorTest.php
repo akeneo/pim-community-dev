@@ -95,30 +95,10 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
                 self::CHANNEL_1,
                 // product values
                 array(
-                    array(
-                        'attribute' => self::ATTR_1,
-                        'locale' => self::LOCALE_1,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_1, self::CHANNEL_1)
-                    ),
-                    array(
-                        'attribute' => self::ATTR_1,
-                        'locale' => self::LOCALE_2,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
-                    array(
-                        'attribute' => self::ATTR_2,
-                        'locale' => self::LOCALE_1,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
-                    array(
-                        'attribute' => self::ATTR_2,
-                        'locale' => self::LOCALE_2,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
                 ),
                 // validator errors
                 array(array(), array(), array(), array()),
@@ -141,30 +121,10 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
                 self::CHANNEL_1,
                 // product values
                 array(
-                    array(
-                        'attribute' => self::ATTR_1,
-                        'locale' => self::LOCALE_1,
-                        'channel' => self::CHANNEL_1,
-                        'return' => null
-                    ),
-                    array(
-                        'attribute' => self::ATTR_1,
-                        'locale' => self::LOCALE_2,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
-                    array(
-                        'attribute' => self::ATTR_2,
-                        'locale' => self::LOCALE_1,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
-                    array(
-                        'attribute' => self::ATTR_2,
-                        'locale' => self::LOCALE_2,
-                        'channel' => self::CHANNEL_1,
-                        'return' => $this->concatValues(self::ATTR_1, self::LOCALE_2, self::CHANNEL_1)
-                    ),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1)
                 ),
                 // validator errors
                 array(array('error'), array(), array(), array()),
