@@ -103,6 +103,7 @@ class ProductController extends Controller
     public function editAction(Request $request, $id)
     {
         $product  = $this->findProductOr404($id);
+
         $datagrid = $this->getDataAuditDatagrid(
             $product,
             'pim_product_product_edit',
@@ -146,6 +147,12 @@ class ProductController extends Controller
 
         $auditManager = $this->container->get('pim_versioning.manager.audit');
 
+        // Always calculate the completeness on edit view after saving
+        // completeness is set to the product to allow calls of getCompleteness method
+        $calculator = $this->container->get('pim_product.calculator.completeness');
+        $completenesses = $calculator->calculateForAProduct($product);
+        $product->setCompletenesses($completenesses);
+
         return array(
             'form'           => $form->createView(),
             'dataLocale'     => $this->getDataLocale(),
@@ -156,7 +163,7 @@ class ProductController extends Controller
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
             'datagrid'       => $datagrid->createView(),
-            'locales'        => $this->getLocaleManager()->getActiveCodes()
+            'locales'        => $this->getLocaleManager()->getActiveLocales()
         );
     }
 

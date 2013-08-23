@@ -32,7 +32,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->target = new NotDecimalValidator;
+        $this->target = new NotDecimalValidator();
     }
 
     public function testInstanceOfConstraintValidator()
@@ -45,7 +45,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidValue($value)
     {
-        $constraint = new NotDecimal;
+        $constraint = new NotDecimal();
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
@@ -64,7 +64,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidValue($value)
     {
-        $constraint = new NotDecimal;
+        $constraint = new NotDecimal();
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
@@ -86,7 +86,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue(100));
 
-        $constraint = new NotDecimal;
+        $constraint = new NotDecimal();
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
@@ -107,7 +107,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue(100.5));
 
-        $constraint = new NotDecimal;
+        $constraint = new NotDecimal();
 
         $context = $this
             ->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
