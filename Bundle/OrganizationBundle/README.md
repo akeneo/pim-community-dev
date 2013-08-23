@@ -11,7 +11,7 @@ Each User can be assigned to multiple business units. A business units tree on u
 
 ### Entity Ownerships
 
-Each entity can have one of 4 ownership types defined: User, Business Unit or Organization.
+Each entity can have one of 3 ownership types defined: User, Business Unit or Organization.
 
 Ownership type is stored in entity config and can be defined through entity class annotation
 
