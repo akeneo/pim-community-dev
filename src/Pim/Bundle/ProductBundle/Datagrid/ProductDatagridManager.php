@@ -181,6 +181,36 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($field);
+
+        $fieldCreated = new FieldDescription();
+        $fieldCreated->setName('created');
+        $fieldCreated->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => $this->translate('Created At'),
+                'field_name'  => 'created',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldCreated);
+
+        $fieldUpdated = new FieldDescription();
+        $fieldUpdated->setName('updated');
+        $fieldUpdated->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => $this->translate('Updated At'),
+                'field_name'  => 'updated',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldUpdated);
     }
 
     /**

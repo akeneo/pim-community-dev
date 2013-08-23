@@ -14,11 +14,14 @@ use Pim\Bundle\ProductBundle\Model\CategoryInterface;
  */
 class CategoryNormalizer implements NormalizerInterface
 {
-    const LOCALIZABLE_PATTERN = '{locale}:{value}';
-    const ITEM_SEPARATOR      = ',';
+    /**
+     * @var array()
+     */
+    protected $supportedFormats = array('json', 'xml');
 
-    protected $supportedFormats = array('csv');
-
+    /**
+     * @var array()
+     */
     private $results;
 
     /**
@@ -39,9 +42,8 @@ class CategoryNormalizer implements NormalizerInterface
             'left'    => (string) $object->getLeft(),
             'level'   => (string) $object->getLevel(),
             'right'   => (string) $object->getRight(),
+            'title'   => $this->normalizeTitle($object)
         );
-
-        $this->normalizeTitle($object);
 
         return $this->results;
     }
@@ -62,22 +64,17 @@ class CategoryNormalizer implements NormalizerInterface
     /**
      * Normalize the title
      *
-     * @param object $object
+     * @param CategoryInterface $category
      *
      * @return void
      */
-    protected function normalizeTitle($object)
+    protected function normalizeTitle(CategoryInterface $category)
     {
-        $pattern = self::LOCALIZABLE_PATTERN;
-        $titles = $object->getTranslations()->map(
-            function ($translation) use ($pattern) {
-                $title = str_replace('{locale}', $translation->getLocale(), $pattern);
-                $title = str_replace('{value}', $translation->getTitle(), $title);
+        $titles = array();
+        foreach ($category->getTranslations() as $translation) {
+            $titles[$translation->getLocale()]= $translation->getTitle();
+        }
 
-                return $title;
-            }
-        )->toArray();
-
-        $this->results['title'] = implode(self::ITEM_SEPARATOR, $titles);
+        return $titles;
     }
 }
