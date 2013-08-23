@@ -3,7 +3,9 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationWorkflowDefinitionBuilder;
+use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
 
 class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,12 +15,18 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
      */
     protected function getDataAsArray(WorkflowDefinition $definition)
     {
+        $entitiesData = array();
+        foreach ($definition->getWorkflowDefinitionEntities() as $entity) {
+            $entitiesData[] = array('class' => $entity->getClassName());
+        }
+
         return array(
             'name' => $definition->getName(),
             'label' => $definition->getLabel(),
             'enabled' => $definition->isEnabled(),
             'start_step' => $definition->getStartStep(),
-            'configuration' => $definition->getConfiguration()
+            'configuration' => $definition->getConfiguration(),
+            'entities' => $entitiesData,
         );
     }
 
@@ -51,6 +59,27 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
             'label' => 'Test Workflow',
             'enabled' => false,
             'start_step' => 'test_step',
+            ConfigurationTree::NODE_ATTRIBUTES => array(
+                array(
+                    'name' => 'string_attribute',
+                    'type' => 'string',
+                ),
+                array(
+                    'name' => 'entity_attribute',
+                    'type' => 'entity',
+                    'options' => array(
+                        'class' => 'TestClass',
+                    ),
+                ),
+                array(
+                    'name' => 'managed_entity_attribute',
+                    'type' => 'entity',
+                    'options' => array(
+                        'class' => 'TestManagedClass',
+                        Workflow::MANAGED_ENTITY_KEY => true,
+                    ),
+                ),
+            )
         );
 
         return array(
@@ -61,6 +90,8 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                     'enabled' => true,
                     'start_step' => 'test_step',
                     'configuration' => $minimumConfiguration,
+                    'entities' => array(),
+
                 ),
                 'inputData' => array(
                     'test_workflow' => $minimumConfiguration,
@@ -73,6 +104,9 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                     'enabled' => false,
                     'start_step' => 'test_step',
                     'configuration' => $maximumConfiguration,
+                    'entities' => array(
+                        array('class' => 'TestManagedClass')
+                    )
                 ),
                 'inputData' => array(
                     'test_workflow' => $maximumConfiguration,

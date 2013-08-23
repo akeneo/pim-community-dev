@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity;
 
 class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,6 +15,11 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->workflowDefinition = new WorkflowDefinition();
+    }
+
+    protected function tearDown()
+    {
+        unset($this->workflowDefinition);
     }
 
     public function testName()
@@ -62,34 +68,78 @@ class WorkflowDefinitionTest extends \PHPUnit_Framework_TestCase
             'label' => 'test_label',
             'enabled' => false,
             'start_step' => 'test_step',
-            'configuration' => array('test', 'configuration')
+            'configuration' => array('test', 'configuration'),
+            'entities' => array(
+                array('class' => 'TestClass')
+            )
         );
 
-        $this->assertNotEquals($expectedData, $this->getDataAsArray($this->workflowDefinition));
+        $this->assertNotEquals($expectedData, $this->getDefinitionAsArray($this->workflowDefinition));
+
+        $definitionEntity = new WorkflowDefinitionEntity();
+        $definitionEntity->setClassName($expectedData['entities'][0]['class']);
 
         $newDefinition = new WorkflowDefinition();
         $newDefinition->setName($expectedData['name'])
             ->setLabel($expectedData['label'])
             ->setEnabled($expectedData['enabled'])
             ->setStartStep($expectedData['start_step'])
-            ->setConfiguration($expectedData['configuration']);
+            ->setConfiguration($expectedData['configuration'])
+            ->setWorkflowDefinitionEntities(array($definitionEntity));
 
         $this->workflowDefinition->import($newDefinition);
-        $this->assertEquals($expectedData, $this->getDataAsArray($this->workflowDefinition));
+        $this->assertEquals($expectedData, $this->getDefinitionAsArray($this->workflowDefinition));
     }
 
     /**
      * @param WorkflowDefinition $definition
      * @return array
      */
-    protected function getDataAsArray(WorkflowDefinition $definition)
+    protected function getDefinitionAsArray(WorkflowDefinition $definition)
     {
+        $entitiesData = array();
+        /** @var WorkflowDefinitionEntity $entity */
+        foreach ($definition->getWorkflowDefinitionEntities() as $entity) {
+            $entitiesData[] = array('class' => $entity->getClassName());
+        }
+
         return array(
             'name' => $definition->getName(),
             'label' => $definition->getLabel(),
             'enabled' => $definition->isEnabled(),
             'start_step' => $definition->getStartStep(),
-            'configuration' => $definition->getConfiguration()
+            'configuration' => $definition->getConfiguration(),
+            'entities' => $entitiesData,
+        );
+    }
+
+    public function testSetWorkflowDefinitionEntities()
+    {
+        $firstEntity = new WorkflowDefinitionEntity();
+        $firstEntity->setClassName('FirstClass');
+
+        $secondEntity = new WorkflowDefinitionEntity();
+        $secondEntity->setClassName('SecondClass');
+
+        $secondEntitySameClass = new WorkflowDefinitionEntity();
+        $secondEntitySameClass->setClassName('SecondClass');
+
+        $thirdEntity = new WorkflowDefinitionEntity();
+        $thirdEntity->setClassName('ThirdClass');
+
+        $newDefinition = new WorkflowDefinition();
+        $newDefinition->setWorkflowDefinitionEntities(array($firstEntity, $secondEntity));
+
+        $this->assertEquals(
+            array($firstEntity, $secondEntity),
+            array_values($newDefinition->getWorkflowDefinitionEntities()->toArray())
+        );
+
+        $newDefinition->setWorkflowDefinitionEntities(array($secondEntitySameClass, $thirdEntity));
+
+        $this->assertEquals(
+            array($secondEntity, $thirdEntity),
+            array_values($newDefinition->getWorkflowDefinitionEntities()->toArray())
         );
     }
 }

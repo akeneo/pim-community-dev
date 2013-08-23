@@ -156,4 +156,32 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
             $this->data->getValues(array('foo', 'baz', 'qux', 'quux'))
         );
     }
+
+    public function testAdd()
+    {
+        $this->data->set('foo', 'foo_value');
+        $this->data->set('bar', 'bar_value');
+        $this->assertEquals(
+            array(
+                'foo' => 'foo_value',
+                'bar' => 'bar_value'
+            ),
+            $this->data->getValues()
+        );
+
+        $this->data->add(
+            array(
+                'bar' => 'new_bar_value',
+                'baz' => 'baz_value',
+            )
+        );
+        $this->assertEquals(
+            array(
+                'foo' => 'foo_value',
+                'bar' => 'new_bar_value',
+                'baz' => 'baz_value',
+            ),
+            $this->data->getValues()
+        );
+    }
 }

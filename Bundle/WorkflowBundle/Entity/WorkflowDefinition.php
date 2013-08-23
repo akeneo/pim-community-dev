@@ -213,7 +213,7 @@ class WorkflowDefinition
     }
 
     /**
-     * @return Collection
+     * @return Collection|WorkflowDefinitionEntity[]
      */
     public function getWorkflowDefinitionEntities()
     {

@@ -111,6 +111,7 @@ class WorkflowAssembler extends AbstractAssembler
     {
         $configuration = $this->configurationTree->parseConfiguration($workflowDefinition->getConfiguration());
         $configuration = $this->prepareDefaultStartTransition($workflowDefinition, $configuration);
+
         return $configuration;
     }
 
@@ -126,6 +127,7 @@ class WorkflowAssembler extends AbstractAssembler
                 'transition_definition' => $startTransitionDefinitionName
             );
         }
+
         return $configuration;
     }
 

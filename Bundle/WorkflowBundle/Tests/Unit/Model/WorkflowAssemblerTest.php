@@ -23,7 +23,6 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         'name' => 'test_name',
         'label' => 'Test Label',
         'enabled' => true,
-        'start_step_name' => 'test_start_step',
     );
 
     protected $stepConfiguration = array(
@@ -45,13 +44,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        $this->markTestIncomplete('Should be fixed in scope of CRM-315');
-
-        $entityBinder = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return new Workflow($entityBinder);
+        return new Workflow();
     }
 
     /**
@@ -65,7 +58,6 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             ->setName($this->workflowParameters['name'])
             ->setLabel($this->workflowParameters['label'])
             ->setEnabled($this->workflowParameters['enabled'])
-            ->setStartStep($this->workflowParameters['start_step_name'])
             ->setConfiguration($configuration);
 
         return $workflowDefinition;
@@ -287,14 +279,13 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testAssembleStartTransitionException(array $configuration)
     {
         // source data
-        $workflow = $this->createWorkflow();
         $workflowDefinition = $this->createWorkflowDefinition($configuration);
         $attributes = new ArrayCollection(array('test' => $this->getAttributeMock()));
         $steps = new ArrayCollection(array('test_start_step' => $this->getStepMock()));
         $transitions = new ArrayCollection(array('test_transition' => $this->getTransitionMock(false)));
 
         // mocks
-        $container = $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
             ->disableOriginalConstructor()
             ->setMethods(array('get'))
             ->getMockForAbstractClass();
@@ -330,22 +321,23 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             ConfigurationTree::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
             ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
         );
+
         return array(
             'full configuration with start' => array(
                 'configuration' => $fullConfig,
-                'test_start_step'
+                'startStepName' => 'test_start_step'
             ),
             'minimal configuration with start' => array(
                 'configuration' => $minimalConfig,
-                'test_start_step'
+                'startStepName' => 'test_start_step'
             ),
             'full configuration without start' => array(
                 'configuration' => $fullConfig,
-                null
+                'startStepName' => null
             ),
             'minimal configuration without start' => array(
                 'configuration' => $minimalConfig,
-                null
+                'startStepName' => null
             ),
         );
     }

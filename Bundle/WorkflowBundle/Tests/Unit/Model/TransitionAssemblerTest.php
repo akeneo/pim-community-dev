@@ -24,6 +24,23 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected $assembler;
 
+    /**
+     * @var array
+     */
+    protected $transitionDefinitions = array(
+        'empty_definition' => array(),
+        'with_condition' => array(
+            'conditions' => array('@true' => null)
+        ),
+        'with_post_actions' => array(
+            'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
+        ),
+        'full_definition' => array(
+            'conditions' => array('@true' => null),
+            'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
+        )
+    );
+
     protected function setUp()
     {
         $this->conditionFactory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory')
@@ -123,51 +140,42 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider configurationDataProvider
      * @param array $configuration
+     * @param array $transitionDefinition
      */
-    public function testAssemble($configuration)
+    public function testAssemble(array $configuration, array $transitionDefinition)
     {
-        $definitions = array(
-            'empty_definition' => array(),
-            'with_condition' => array(
-                'conditions' => array('@true' => null)
-            ),
-            'with_post_actions' => array(
-                'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
-            ),
-            'full_definition' => array(
-                'conditions' => array('@true' => null),
-                'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
-            )
-        );
-
         $steps = array(
             'step' => $this->getStep()
         );
 
         $expectedCondition = null;
         $expectedPostAction = null;
-        if (array_key_exists('conditions', $definitions[$configuration['transition_definition']])) {
+        if (array_key_exists('conditions', $transitionDefinition)) {
             $expectedCondition = $this->getCondition();
             $this->conditionFactory->expects($this->once())
                 ->method('create')
                 ->with(
                     ConfigurableCondition::ALIAS,
-                    $definitions[$configuration['transition_definition']]['conditions']
+                    $transitionDefinition['conditions']
                 )
                 ->will($this->returnValue($expectedCondition));
         }
-        if (array_key_exists('post_actions', $definitions[$configuration['transition_definition']])) {
+        if (array_key_exists('post_actions', $transitionDefinition)) {
             $expectedPostAction = $this->getPostAction();
             $this->postActionFactory->expects($this->once())
                 ->method('create')
                 ->with(
                     ConfigurablePostAction::ALIAS,
-                    $definitions[$configuration['transition_definition']]['post_actions']
+                    $transitionDefinition['post_actions']
                 )
                 ->will($this->returnValue($this->getPostAction()));
         }
 
-        $transitions = $this->assembler->assemble(array('test' => $configuration), $definitions, $steps);
+        $transitions = $this->assembler->assemble(
+            array('test' => $configuration),
+            $this->transitionDefinitions,
+            $steps
+        );
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $this->assertCount(1, $transitions);
         $this->assertTrue($transitions->containsKey('test'));
@@ -177,6 +185,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test', $actualTransition->getName());
         $this->assertEquals($steps['step'], $actualTransition->getStepTo());
         $this->assertEquals($configuration['label'], $actualTransition->getLabel());
+        $this->assertEquals($configuration['is_start'], $actualTransition->isStart());
         $this->assertEquals($expectedCondition, $actualTransition->getCondition());
         $this->assertEquals($expectedPostAction, $actualTransition->getPostAction());
     }
@@ -184,33 +193,50 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     public function configurationDataProvider()
     {
         return array(
-            array(
-                array(
+            'empty_definition' => array(
+                'configuration' => array(
                     'transition_definition' => 'empty_definition',
                     'label' => 'label',
-                    'step_to' => 'step'
-                )
+                    'step_to' => 'step',
+                    'is_start' => false,
+                ),
+                'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
             ),
-            array(
-                array(
+            'with_condition' => array(
+                'configuration' => array(
                     'transition_definition' => 'with_condition',
                     'label' => 'label',
-                    'step_to' => 'step'
-                )
+                    'step_to' => 'step',
+                    'is_start' => false,
+                ),
+                'transitionDefinition' => $this->transitionDefinitions['with_condition'],
             ),
-            array(
-                array(
+            'with_post_actions' => array(
+                'configuration' => array(
                     'transition_definition' => 'with_post_actions',
                     'label' => 'label',
-                    'step_to' => 'step'
-                )
+                    'step_to' => 'step',
+                    'is_start'=> false,
+                ),
+                'transitionDefinition' => $this->transitionDefinitions['with_post_actions'],
             ),
-            array(
-                array(
+            'full_definition' => array(
+                'configuration' => array(
                     'transition_definition' => 'full_definition',
                     'label' => 'label',
-                    'step_to' => 'step'
-                )
+                    'step_to' => 'step',
+                    'is_start' => false,
+                ),
+                'transitionDefinition' => $this->transitionDefinitions['full_definition'],
+            ),
+            'start_transition' => array(
+                'configuration' => array(
+                    'transition_definition' => 'empty_definition',
+                    'label' => 'label',
+                    'step_to' => 'step',
+                    'is_start' => true,
+                ),
+                'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
             ),
         );
     }

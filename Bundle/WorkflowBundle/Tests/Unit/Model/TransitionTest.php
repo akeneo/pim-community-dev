@@ -177,4 +177,12 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($hasAllowedTransitions));
         return $step;
     }
+
+    public function testStart()
+    {
+        $obj = new Transition();
+        $this->assertFalse($obj->isStart());
+        $obj->setStart(true);
+        $this->assertTrue($obj->isStart());
+    }
 }
