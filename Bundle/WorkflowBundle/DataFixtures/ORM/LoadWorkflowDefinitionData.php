@@ -25,9 +25,9 @@ class LoadWorkflowDefinitionData extends AbstractFixture implements ContainerAwa
     public function load(ObjectManager $manager)
     {
         /** @var ConfigurationProvider $configurationProvider */
-        $configurationProvider = $this->container->get('oro_workflow.configuration_provider');
+        $configurationProvider = $this->container->get('oro_workflow.configuration.config_provider');
         /** @var ConfigurationWorkflowDefinitionBuilder $configurationBuilder */
-        $configurationBuilder = $this->container->get('oro_workflow.configuration_workflow_definition_builder');
+        $configurationBuilder = $this->container->get('oro_workflow.configuration.builder.workflow_definition');
 
         $workflowConfiguration = $configurationProvider->getWorkflowDefinitionConfiguration();
         $workflowDefinitions = $configurationBuilder->buildFromConfiguration($workflowConfiguration);

@@ -1,8 +1,4 @@
 parameters:
-    oro_workflow.configuration_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
-    oro_workflow.configuration_tree.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree
-    oro_workflow.configuration_workflow_definition_builder.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationWorkflowDefinitionBuilder
-
     oro_workflow.registry.class: Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
 
     oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
@@ -11,18 +7,6 @@ parameters:
     oro_workflow.manager.class: Oro\Bundle\WorkflowBundle\Model\WorkflowManager
 
 services:
-    oro_workflow.configuration_tree:
-        class: %oro_workflow.configuration_tree.class%
-
-    oro_workflow.configuration_provider:
-        class: %oro_workflow.configuration_provider.class%
-        arguments:
-            - %kernel.bundles%
-            - @oro_workflow.configuration_tree
-
-    oro_workflow.configuration_workflow_definition_builder:
-        class: %oro_workflow.configuration_workflow_definition_builder.class%
-
     oro_workflow.context_accessor:
         class: %oro_workflow.context_accessor.class%
 

@@ -8,7 +8,7 @@ use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowAssembler extends AbstractAssembler
@@ -19,7 +19,7 @@ class WorkflowAssembler extends AbstractAssembler
     protected $container;
 
     /**
-     * @var ConfigurationTree
+     * @var WorkflowConfiguration
      */
     protected $configurationTree;
 
@@ -40,20 +40,20 @@ class WorkflowAssembler extends AbstractAssembler
 
     /**
      * @param ContainerInterface $container
-     * @param ConfigurationTree $configurationTree
+     * @param WorkflowConfiguration $workflowConfiguration
      * @param AttributeAssembler $attributeAssembler
      * @param StepAssembler $stepAssembler
      * @param TransitionAssembler $transitionAssembler
      */
     public function __construct(
         ContainerInterface $container,
-        ConfigurationTree $configurationTree,
+        WorkflowConfiguration $workflowConfiguration,
         AttributeAssembler $attributeAssembler,
         StepAssembler $stepAssembler,
         TransitionAssembler $transitionAssembler
     ) {
         $this->container = $container;
-        $this->configurationTree = $configurationTree;
+        $this->workflowConfiguration = $workflowConfiguration;
         $this->attributeAssembler = $attributeAssembler;
         $this->stepAssembler = $stepAssembler;
         $this->transitionAssembler = $transitionAssembler;
@@ -71,9 +71,9 @@ class WorkflowAssembler extends AbstractAssembler
         $this->assertOptions(
             $configuration,
             array(
-                ConfigurationTree::NODE_STEPS,
-                ConfigurationTree::NODE_TRANSITIONS,
-                ConfigurationTree::NODE_TRANSITION_DEFINITIONS
+                WorkflowConfiguration::NODE_STEPS,
+                WorkflowConfiguration::NODE_TRANSITIONS,
+                WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS
             )
         );
 
@@ -109,22 +109,22 @@ class WorkflowAssembler extends AbstractAssembler
 
     protected function parseConfiguration(WorkflowDefinition $workflowDefinition)
     {
-        $configuration = $this->configurationTree->parseConfiguration($workflowDefinition->getConfiguration());
-        $configuration = $this->prepareDefaultStartTransition($workflowDefinition, $configuration);
-
-        return $configuration;
+        return $this->prepareDefaultStartTransition(
+            $workflowDefinition,
+            $this->workflowConfiguration->processConfiguration($workflowDefinition->getConfiguration())
+        );
     }
 
     protected function prepareDefaultStartTransition(WorkflowDefinition $workflowDefinition, $configuration)
     {
         if ($workflowDefinition->getStartStep()) {
-            $startTransitionDefinitionName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
-            $configuration[ConfigurationTree::NODE_TRANSITION_DEFINITIONS][$startTransitionDefinitionName] = array();
-            $configuration[ConfigurationTree::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] = array(
+            $startTransitionDefName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
+            $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS][$startTransitionDefName] = array();
+            $configuration[WorkflowConfiguration::NODE_TRANSITIONS][Workflow::DEFAULT_START_TRANSITION_NAME] = array(
                 'label' => $workflowDefinition->getLabel(),
                 'step_to' => $workflowDefinition->getStartStep(),
                 'is_start' => true,
-                'transition_definition' => $startTransitionDefinitionName
+                'transition_definition' => $startTransitionDefName
             );
         }
 
@@ -137,7 +137,7 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleAttributes(array $configuration)
     {
-        $attributesConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_ATTRIBUTES, array());
+        $attributesConfiguration = $this->getOption($configuration, WorkflowConfiguration::NODE_ATTRIBUTES, array());
 
         return $this->attributeAssembler->assemble($attributesConfiguration);
     }
@@ -149,7 +149,7 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleSteps(array $configuration, Collection $attributes)
     {
-        $stepsConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_STEPS, array());
+        $stepsConfiguration = $this->getOption($configuration, WorkflowConfiguration::NODE_STEPS, array());
 
         return $this->stepAssembler->assemble($stepsConfiguration, $attributes);
     }
@@ -161,10 +161,10 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function assembleTransitions(array $configuration, Collection $steps)
     {
-        $transitionsConfiguration = $this->getOption($configuration, ConfigurationTree::NODE_TRANSITIONS, array());
+        $transitionsConfiguration = $this->getOption($configuration, WorkflowConfiguration::NODE_TRANSITIONS, array());
         $transitionDefinitionsConfiguration = $this->getOption(
             $configuration,
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS,
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS,
             array()
         );
 

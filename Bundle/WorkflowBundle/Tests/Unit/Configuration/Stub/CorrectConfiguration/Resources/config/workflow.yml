@@ -3,7 +3,6 @@ workflows:
         label: 'First Workflow'
         enabled: true
         start_step: first_step
-        managed_entity_class: Oro\Bundle\FooBundle\Entity\BarEntity
         steps:
             first_step:
                 label: 'First Step'
@@ -41,7 +40,7 @@ workflows:
         label: 'Second Workflow'
         enabled: false
         start_step: second_step
-        managed_entity_class: Oro\Bundle\FooBundle\Entity\BazEntity
+        type: wizard
         steps:
             second_step:
                 label: 'Second Step'
@@ -52,9 +51,9 @@ workflows:
                 allowed_transitions: []
         attributes: []
         transitions:
-            first_transition:
+            second_transition:
                 label: 'Second Transition'
-                step_to: first_step
+                step_to: second_step
                 transition_definition: second_transition_definition
         transition_definitions:
             second_transition_definition: []

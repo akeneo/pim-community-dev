@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration;
 
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
 
-class ConfigurationTreeTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTreeTest// extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array

@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationWorkflowDefinitionBuilder;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 
 class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,13 +53,15 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
         $minimumConfiguration = array(
             'label'      => 'Test Workflow',
             'start_step' => 'test_step',
+            'type'       => 'entity'
         );
 
         $maximumConfiguration = array(
             'label' => 'Test Workflow',
             'enabled' => false,
             'start_step' => 'test_step',
-            ConfigurationTree::NODE_ATTRIBUTES => array(
+            'type' => 'entity',
+            WorkflowConfiguration::NODE_ATTRIBUTES => array(
                 array(
                     'name' => 'string_attribute',
                     'type' => 'string',

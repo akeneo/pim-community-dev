@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Configuration;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinitionEntity;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Exception\MissedRequiredOptionException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
@@ -18,8 +18,9 @@ class ConfigurationWorkflowDefinitionBuilder
     {
         $workflowDefinitions = array();
         foreach ($configurationData as $workflowName => $workflowConfiguration) {
-            $this->assertConfigurationOptions($workflowConfiguration, array('label'));
+            $this->assertConfigurationOptions($workflowConfiguration, array('label', 'type'));
 
+            $type = $this->getConfigurationOption($workflowConfiguration, 'type', 'entity');
             $enabled = $this->getConfigurationOption($workflowConfiguration, 'enabled', true);
             $startStep = $this->getConfigurationOption($workflowConfiguration, 'start_step', null);
 
@@ -30,6 +31,7 @@ class ConfigurationWorkflowDefinitionBuilder
             $workflowDefinition
                 ->setName($workflowName)
                 ->setLabel($workflowConfiguration['label'])
+                ->setType($type)
                 ->setEnabled($enabled)
                 ->setStartStep($startStep)
                 ->setConfiguration($workflowConfiguration)
@@ -69,7 +71,7 @@ class ConfigurationWorkflowDefinitionBuilder
 
         $attributesData = $this->getConfigurationOption(
             $workflowConfiguration,
-            ConfigurationTree::NODE_ATTRIBUTES,
+            WorkflowConfiguration::NODE_ATTRIBUTES,
             array()
         );
 

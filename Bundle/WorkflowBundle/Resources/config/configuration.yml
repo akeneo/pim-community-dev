@@ -1,0 +1,21 @@
+parameters:
+    oro_workflow.configuration.config_provider.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
+    oro_workflow.configuration.config.workflow_sole.class: Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration
+    oro_workflow.configuration.config.workflow_list.class: Oro\Bundle\WorkflowBundle\Configuration\WorkflowListConfiguration
+    oro_workflow.configuration.builder.workflow_definition.class: Oro\Bundle\WorkflowBundle\Configuration\ConfigurationWorkflowDefinitionBuilder
+
+services:
+    oro_workflow.configuration.config.workflow_sole:
+        class: %oro_workflow.configuration.config.workflow_sole.class%
+
+    oro_workflow.configuration.config.workflow_list:
+        class: %oro_workflow.configuration.config.workflow_list.class%
+
+    oro_workflow.configuration.config_provider:
+        class: %oro_workflow.configuration.config_provider.class%
+        arguments:
+            - %kernel.bundles%
+            - @oro_workflow.configuration.config.workflow_list
+
+    oro_workflow.configuration.builder.workflow_definition:
+        class: %oro_workflow.configuration.builder.workflow_definition.class%

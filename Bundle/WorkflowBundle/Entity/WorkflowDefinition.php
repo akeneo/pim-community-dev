@@ -31,6 +31,13 @@ class WorkflowDefinition
     protected $label;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $type;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(type="boolean")
@@ -117,6 +124,29 @@ class WorkflowDefinition
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return WorkflowDefinition
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     /**

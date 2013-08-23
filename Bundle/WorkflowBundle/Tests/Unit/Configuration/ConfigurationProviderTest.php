@@ -9,7 +9,7 @@ use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\CorrectConfiguration
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\EmptyConfiguration\EmptyConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\IncorrectConfiguration\IncorrectConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\DuplicateConfiguration\DuplicateConfigurationBundle;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowListConfiguration;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsIncorrectConfiguration()
     {
         $bundles = array(new IncorrectConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
+        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
         $configurationProvider->getWorkflowDefinitionConfiguration();
     }
 
@@ -29,26 +29,19 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsDuplicateConfiguration()
     {
         $bundles = array(new CorrectConfigurationBundle(), new DuplicateConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
+        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
         $configurationProvider->getWorkflowDefinitionConfiguration();
     }
 
     public function testGetWorkflowDefinitions()
     {
-        $expectedWorkflowConfiguration = $this->getExpectedWokflowConfiguration('CorrectConfiguration');
-
         $bundles = array(new CorrectConfigurationBundle(), new EmptyConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new ConfigurationTree());
-        $actualWorkflowDefinitions = $configurationProvider->getWorkflowDefinitionConfiguration();
+        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
 
-        $this->assertSameSize($expectedWorkflowConfiguration, $actualWorkflowDefinitions);
-
-        foreach ($expectedWorkflowConfiguration as $workflowName => $workflowConfiguration) {
-            $this->assertArrayHasKey($workflowName, $actualWorkflowDefinitions);
-            $actualWorkflowDefinition = $actualWorkflowDefinitions[$workflowName];
-
-            $this->assertEquals($workflowConfiguration, $actualWorkflowDefinition);
-        }
+        $this->assertEquals(
+            $this->getExpectedWokflowConfiguration('CorrectConfiguration'),
+            $configurationProvider->getWorkflowDefinitionConfiguration()
+        );
     }
 
     /**
@@ -57,10 +50,8 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getExpectedWokflowConfiguration($bundleName)
     {
-        $fileName = realpath(__DIR__ . '/Stub/' . $bundleName . '/Resources/config/workflow.yml');
-        $data = Yaml::parse(file_get_contents($fileName));
-        $this->assertArrayHasKey(ConfigurationProvider::NODE_WORKFLOWS, $data, 'Invalid stub data');
-
-        return $data[ConfigurationProvider::NODE_WORKFLOWS];
+        $fileName = __DIR__ . '/Stub/' . $bundleName . '/Resources/config/workflow.php';
+        $this->assertFileExists($fileName);
+        return include $fileName;
     }
 }

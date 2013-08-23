@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowAssembler;
-use Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Model\AttributeAssembler;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
@@ -86,16 +86,16 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param WorkflowDefinition $workflowDefinition
-     * @return ConfigurationTree
+     * @return WorkflowConfiguration
      */
     protected function createConfigurationTreeMock(WorkflowDefinition $workflowDefinition)
     {
-        $configurationTree = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree')
+        $configurationTree = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration')
             ->disableOriginalConstructor()
-            ->setMethods(array('parseConfiguration'))
+            ->setMethods(array('processConfiguration'))
             ->getMock();
         $configurationTree->expects($this->once())
-            ->method('parseConfiguration')
+            ->method('processConfiguration')
             ->with($workflowDefinition->getConfiguration())
             ->will($this->returnValue($workflowDefinition->getConfiguration()));
 
@@ -115,8 +115,8 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('assemble'))
             ->getMock();
         if ($expectations) {
-            $expectedAttributeConfiguration = !empty($configuration[ConfigurationTree::NODE_ATTRIBUTES])
-                ? $configuration[ConfigurationTree::NODE_ATTRIBUTES]
+            $expectedAttributeConfiguration = !empty($configuration[WorkflowConfiguration::NODE_ATTRIBUTES])
+                ? $configuration[WorkflowConfiguration::NODE_ATTRIBUTES]
                 : array();
             $attributeAssembler->expects($this->once())
                 ->method('assemble')
@@ -143,7 +143,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         if ($expectations) {
             $stepAssembler->expects($this->once())
                 ->method('assemble')
-                ->with($configuration[ConfigurationTree::NODE_STEPS], $attributes)
+                ->with($configuration[WorkflowConfiguration::NODE_STEPS], $attributes)
                 ->will($this->returnValue($steps));
         }
 
@@ -195,8 +195,8 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('assemble'))
             ->getMock();
         if ($expectations) {
-            $expectedTransitions = $configuration[ConfigurationTree::NODE_TRANSITIONS];
-            $expectedDefinitions = $configuration[ConfigurationTree::NODE_TRANSITION_DEFINITIONS];
+            $expectedTransitions = $configuration[WorkflowConfiguration::NODE_TRANSITIONS];
+            $expectedDefinitions = $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS];
             if ($startStepName) {
                 $definitionName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
                 $expectedTransitions[Workflow::DEFAULT_START_TRANSITION_NAME] = array(
@@ -311,15 +311,15 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     public function assembleDataProvider()
     {
         $fullConfig = array(
-            ConfigurationTree::NODE_ATTRIBUTES => array('attributes_configuration'),
-            ConfigurationTree::NODE_STEPS => array('test_step' => $this->stepConfiguration),
-            ConfigurationTree::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_ATTRIBUTES => array('attributes_configuration'),
+            WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
         );
         $minimalConfig = array(
-            ConfigurationTree::NODE_STEPS => array('test_step' => $this->stepConfiguration),
-            ConfigurationTree::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
         );
 
         return array(
@@ -376,9 +376,9 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testAssembleNoStepsConfigurationException()
     {
         $configuration = array(
-            ConfigurationTree::NODE_STEPS => array(),
-            ConfigurationTree::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_STEPS => array(),
+            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
         );
         $this->assembleWorkflow($configuration);
     }
@@ -390,9 +390,9 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testAssembleNoTransitionsConfigurationException()
     {
         $configuration = array(
-            ConfigurationTree::NODE_STEPS => array('step_one' => $this->stepConfiguration),
-            ConfigurationTree::NODE_TRANSITIONS => array(),
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_STEPS => array('step_one' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => array(),
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
         );
         $this->assembleWorkflow($configuration);
     }
@@ -404,9 +404,9 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testAssembleNoTransitionDefinitionsConfigurationException()
     {
         $configuration = array(
-            ConfigurationTree::NODE_STEPS => array('test_step' => $this->stepConfiguration),
-            ConfigurationTree::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            ConfigurationTree::NODE_TRANSITION_DEFINITIONS => array()
+            WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
+            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array()
         );
         $this->assembleWorkflow($configuration);
     }

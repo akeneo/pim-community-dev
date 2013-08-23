@@ -2,12 +2,15 @@
 
 namespace Oro\Bundle\WorkflowBundle\Configuration;
 
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
 
-class ConfigurationTree
+class WorkflowConfiguration implements ConfigurationInterface
 {
     const NODE_STEPS = 'steps';
     const NODE_ATTRIBUTES = 'attributes';
@@ -15,43 +18,59 @@ class ConfigurationTree
     const NODE_TRANSITION_DEFINITIONS = 'transition_definitions';
 
     /**
-     * @var NodeDefinition[]
-     */
-    protected $nodeDefinitions;
-
-    /**
-     * @param array $configuration
+     * Processes and validates configuration
+     *
+     * @param array $configs
      * @return array
      */
-    public function parseConfiguration(array $configuration)
+    public function processConfiguration(array $configs)
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('configuration');
-        $nodeBuilder = $rootNode->children();
-        foreach ($this->getNodeDefinitions() as $nodeDefinition) {
-            $nodeBuilder->append($nodeDefinition);
-        }
-
-        $rootTree = $treeBuilder->buildTree();
-
-        return $rootTree->finalize($configuration);
+        $processor = new Processor();
+        return $processor->processConfiguration($this, $configs);
     }
 
     /**
-     * @return NodeDefinition[]
+     * {@inheritdoc}
      */
-    public function getNodeDefinitions()
+    public function getConfigTreeBuilder()
     {
-        if (null === $this->nodeDefinitions) {
-            $this->nodeDefinitions = array(
-                self::NODE_STEPS                  => $this->getStepsNode(),
-                self::NODE_ATTRIBUTES             => $this->getAttributesNode(),
-                self::NODE_TRANSITIONS            => $this->getTransitionsNode(),
-                self::NODE_TRANSITION_DEFINITIONS => $this->getTransitionDefinitionsNode()
-            );
-        }
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('configuration');
+        $this->addWorkflowNodes($rootNode->children());
 
-        return $this->nodeDefinitions;
+        return $treeBuilder;
+    }
+
+    /**
+     * @return NodeBuilder
+     */
+    public function addWorkflowNodes(NodeBuilder $nodeBuilder)
+    {
+        $nodeBuilder
+            ->scalarNode('name')
+                ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('label')
+                ->isRequired()
+                ->cannotBeEmpty()
+            ->end()
+            ->enumNode('type')
+                ->cannotBeEmpty()
+                ->defaultValue('entity')
+                ->values(array('entity', 'wizard'))
+            ->end()
+            ->booleanNode('enabled')
+                ->defaultTrue()
+            ->end()
+            ->scalarNode('start_step')
+                ->defaultNull()
+            ->end()
+            ->append($this->getStepsNode())
+            ->append($this->getAttributesNode())
+            ->append($this->getTransitionsNode())
+            ->append($this->getTransitionDefinitionsNode());
+
+        return $nodeBuilder;
     }
 
     /**
@@ -95,6 +114,8 @@ class ConfigurationTree
                                             ->cannotBeEmpty()
                                         ->end()
                                         ->arrayNode('options')
+                                            ->prototype('variable')
+                                            ->end()
                                         ->end()
                                     ->end()
                                 ->end()
@@ -130,6 +151,8 @@ class ConfigurationTree
                         ->cannotBeEmpty()
                     ->end()
                     ->arrayNode('options')
+                        ->prototype('variable')
+                        ->end()
                     ->end()
                 ->end()
             ->end();
@@ -180,8 +203,12 @@ class ConfigurationTree
             ->prototype('array')
                 ->children()
                     ->arrayNode('conditions')
+                        ->prototype('variable')
+                        ->end()
                     ->end()
                     ->arrayNode('post_actions')
+                        ->prototype('variable')
+                        ->end()
                     ->end()
                 ->end()
             ->end();
