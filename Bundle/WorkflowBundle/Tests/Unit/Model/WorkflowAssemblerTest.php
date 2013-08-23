@@ -180,7 +180,9 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
      * @param Collection $steps
      * @param Collection $transitions
      * @param boolean $expectations
-     * @param null|string $startStepName
+     * @param null|array $expectedTransitions
+     * @param null|array $expectedDefinitions
+     * @internal param null|string $startStepName
      * @return TransitionAssembler
      */
     protected function createTransitionAssemblerMock(
@@ -188,25 +190,20 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         $steps,
         $transitions,
         $expectations = true,
-        $startStepName = null
+        $expectedTransitions = null,
+        $expectedDefinitions = null
     ) {
         $transitionAssembler = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\TransitionAssembler')
             ->disableOriginalConstructor()
             ->setMethods(array('assemble'))
             ->getMock();
         if ($expectations) {
-            $expectedTransitions = $configuration[WorkflowConfiguration::NODE_TRANSITIONS];
-            $expectedDefinitions = $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS];
-            if ($startStepName) {
-                $definitionName = Workflow::DEFAULT_START_TRANSITION_NAME . '_definition';
-                $expectedTransitions[Workflow::DEFAULT_START_TRANSITION_NAME] = array(
-                    'label' => $this->workflowParameters['label'],
-                    'step_to' => $startStepName,
-                    'is_start' => true,
-                    'transition_definition' => $definitionName
-                );
-                $expectedDefinitions[$definitionName] = array();
-            }
+            $expectedTransitions = $expectedTransitions ?
+                $expectedTransitions :
+                $configuration[WorkflowConfiguration::NODE_TRANSITIONS];
+            $expectedDefinitions = $expectedDefinitions ?
+                $expectedDefinitions :
+                $configuration[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS];
             $transitionAssembler->expects($this->once())
                 ->method('assemble')
                 ->with($expectedTransitions, $expectedDefinitions, $steps)
@@ -219,9 +216,11 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $configuration
      * @param string $startStepName
+     * @param array $expectedTransitions
+     * @param array $expectedDefinitions
      * @dataProvider assembleDataProvider
      */
-    public function testAssemble(array $configuration, $startStepName)
+    public function testAssemble(array $configuration, $startStepName, $expectedTransitions, $expectedDefinitions)
     {
         // source data
         $workflow = $this->createWorkflow();
@@ -248,7 +247,8 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             $steps,
             $transitions,
             true,
-            $startStepName
+            $expectedTransitions,
+            $expectedDefinitions
         );
 
         // test
@@ -310,34 +310,71 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function assembleDataProvider()
     {
+        $transitions = array('test_transition' => $this->transitionConfiguration);
         $fullConfig = array(
             WorkflowConfiguration::NODE_ATTRIBUTES => array('attributes_configuration'),
             WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
-            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_TRANSITIONS => $transitions,
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => $this->transitionDefinition
         );
         $minimalConfig = array(
             WorkflowConfiguration::NODE_STEPS => array('test_step' => $this->stepConfiguration),
-            WorkflowConfiguration::NODE_TRANSITIONS => array('test_transition' => $this->transitionConfiguration),
-            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => array($this->transitionDefinition)
+            WorkflowConfiguration::NODE_TRANSITIONS => $transitions,
+            WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS => $this->transitionDefinition
         );
+        $customStartTransition = array(
+            Workflow::DEFAULT_START_TRANSITION_NAME => array(
+                'label' => 'My Label',
+                'step_to' => 'custom_step',
+                'is_start' => true,
+                'transition_definition' => '__start___definition'
+            )
+        );
+        $customStartDefinition = array('__start___definition' => array('conditions' => array()));
+        $fullConfigWithCustomStart = $minimalConfig;
+        $fullConfigWithCustomStart[WorkflowConfiguration::NODE_TRANSITIONS] += $customStartTransition;
+        $fullConfigWithCustomStart[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS] += $customStartDefinition;
+        $getDefaultTransition = function ($stepName) {
+            return array(
+                Workflow::DEFAULT_START_TRANSITION_NAME => array(
+                    'label' => $this->workflowParameters['label'],
+                    'step_to' => $stepName,
+                    'is_start' => true,
+                    'transition_definition' => '__start___definition'
+                )
+            );
+        };
 
         return array(
             'full configuration with start' => array(
                 'configuration' => $fullConfig,
-                'startStepName' => 'test_start_step'
+                'startStepName' => 'test_start_step',
+                $transitions + $getDefaultTransition('test_start_step'),
+                $this->transitionDefinition + array('__start___definition' => array())
             ),
             'minimal configuration with start' => array(
                 'configuration' => $minimalConfig,
-                'startStepName' => 'test_start_step'
+                'startStepName' => 'test_start_step',
+                $transitions + $getDefaultTransition('test_start_step'),
+                $this->transitionDefinition + array('__start___definition' => array())
             ),
             'full configuration without start' => array(
                 'configuration' => $fullConfig,
-                'startStepName' => null
+                'startStepName' => null,
+                $transitions,
+                array()
             ),
             'minimal configuration without start' => array(
                 'configuration' => $minimalConfig,
-                'startStepName' => null
+                'startStepName' => null,
+                $transitions,
+                array()
+            ),
+            'full configuration with start custom config' => array(
+                'configuration' => $fullConfigWithCustomStart,
+                'startStepName' => 'test_start_step',
+                $transitions + $customStartTransition,
+                $this->transitionDefinition + $customStartDefinition
             ),
         );
     }
