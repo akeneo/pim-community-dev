@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
+use Pim\Bundle\BatchBundle\Job\Job;
 
 /**
  * Entity job
@@ -15,11 +15,11 @@ use Pim\Bundle\BatchBundle\Job\Job as BatchJob;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_job")
+ * @ORM\Table(name="pim_batch_job_instance")
  * @ORM\Entity()
  * @UniqueEntity(fields="code", message="This code is already taken")
  */
-class Job
+class JobInstance
 {
     const STATUS_READY       = 0;
     const STATUS_DRAFT       = 1;
@@ -79,7 +79,7 @@ class Job
     protected $connector;
 
     /**
-     * Job type export or import
+     * JobInstance type export or import
      *
      * @var string
      *
@@ -95,13 +95,13 @@ class Job
     protected $rawConfiguration = array();
 
     /**
-     * @var BatchJob
+     * @var Job
      * @Assert\Valid
      */
-    protected $jobDefinition;
+    protected $job;
 
     /**
-     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="job")
+     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="jobInstance")
      */
     protected $jobExecutions;
 
@@ -135,7 +135,7 @@ class Job
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setCode($code)
     {
@@ -159,7 +159,7 @@ class Job
      *
      * @param string $label
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setLabel($label)
     {
@@ -213,7 +213,7 @@ class Job
      *
      * @param integer $status
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setStatus($status)
     {
@@ -227,7 +227,7 @@ class Job
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setType($type)
     {
@@ -251,7 +251,7 @@ class Job
      *
      * @param array $configuration
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setRawConfiguration($configuration)
     {
@@ -271,30 +271,30 @@ class Job
     }
 
     /**
-     * Set job definition
+     * Set job
      *
-     * @param string $jobDefinition
+     * @param Job $job
      *
-     * @return \Pim\Bundle\BatchBundle\Entity\Job
+     * @return \Pim\Bundle\BatchBundle\Entity\JobInstance
      */
-    public function setJobDefinition($jobDefinition)
+    public function setJob($job)
     {
-        $this->jobDefinition = $jobDefinition;
+        $this->job = $job;
 
-        if ($jobDefinition) {
-            $this->setRawConfiguration($jobDefinition->getConfiguration());
+        if ($job) {
+            $this->setRawConfiguration($job->getConfiguration());
         }
 
         return $this;
     }
 
     /**
-     * Get job definition
+     * Get job
      *
-     * @return string
+     * @return Job
      */
-    public function getJobDefinition()
+    public function getJob()
     {
-        return $this->jobDefinition;
+        return $this->job;
     }
 }

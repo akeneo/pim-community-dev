@@ -18,18 +18,18 @@
 
 {% block content %}
 
-    {% set subtitle = job.label  %}
+    {% set subtitle = jobInstance.label  %}
 
     {% set left %}
         <ul class="inline">
-           <li>{{ 'Code'|trans }}: {{ job.code|upper }}</li>
-           <li>{{ 'Connector'|trans }}: {{ job.jobDefinition.name|trans }}</li>
+           <li>{{ 'Code'|trans }}: {{ jobInstance.code|upper }}</li>
+           <li>{{ 'Connector'|trans }}: {{ jobInstance.job.name|trans }}</li>
        </ul>
     {% endset %}
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {% if job.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\Job::STATUS_IN_PROGRESS') %}
+        {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if violations|length == 0 %}
@@ -40,13 +40,13 @@
     {{ elements.page_header(title, buttons, subtitle, left) }}
 
     {% set accordionContent = {} %}
-    {% for stepTitle, stepConfig in job.jobDefinition.configuration %}
+    {% for stepTitle, stepConfig in jobInstance.job.configuration %}
 
         {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
 
         {% set content %}
             <ul>
-                {% set step = job.jobDefinition.step(stepTitle) %}
+                {% set step = jobInstance.job.step(stepTitle) %}
                 {% set stepIndex = loop.index - 1 %}
                 {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
                 {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}

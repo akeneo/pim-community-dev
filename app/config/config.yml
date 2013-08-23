@@ -222,67 +222,7 @@ knp_gaufrette:
             alias:   pim_filesystem
 
 pim_batch:
-    jobs:
-        product_export:
-            title:      pim_import_export.jobs.product_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.product_export.export.title
-                    reader:     pim_import_export.reader.product
-                    processor:  pim_import_export.processor.heterogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        category_export:
-            title:     pim_import_export.jobs.category_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.category_export.export.title
-                    reader:     pim_import_export.reader.category
-                    processor:  pim_import_export.processor.homogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        attribute_export:
-            title:     pim_import_export.jobs.attribute_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.attribute_export.export.title
-                    reader:     pim_import_export.reader.attribute
-                    processor:  pim_import_export.processor.homogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        product_import:
-            title:     pim_import_export.jobs.product_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.product_import.import.title
-                    reader:     pim_import_export.reader.csv
-                    processor:  pim_import_export.processor.valid_product_creation
-                    writer:     pim_import_export.writer.orm_product    #TODO : to replace by concret implementation
-        category_import:
-            title:     pim_import_export.jobs.category_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                import:
-                    title:      pim_import_export.jobs.category_import.import.title
-                    reader:     pim_import_export.reader.csv_file
-                    processor:  pim_import_export.processor.valid_category_creation
-                    writer:     pim_import_export.writer.orm_category
-        attribute_import:
-            title:     pim_import_export.jobs.attribute_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.attribute_import.import.title
-                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
-                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
-                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
+    log_dir: %batch_log_dir%
 
 pim_demo:
     load_data: true

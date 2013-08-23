@@ -19,7 +19,7 @@
 
         {% set navbarTabs = ['General properties'] %}
 
-        {% for step in form.jobDefinition.steps %}
+        {% for step in form.job.steps %}
             {% set navbarTabs = navbarTabs|merge([step.vars.value.name]) %}
         {% endfor %}
 
@@ -32,7 +32,7 @@
             </div>
 
             {% set accordionCount = 0 %}
-            {% for step in form.jobDefinition.steps %}
+            {% for step in form.job.steps %}
                 <div class="tab-pane" id="{{ step.vars.value.name|replace({' ': '-', '.': '-'}) }}">
                     {% for child in step.children %}
                         {% set accordionCount = accordionCount + 1 %}
