@@ -75,7 +75,7 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
-     * @param $username
+     * @param mixed $username
      *
      * @throws \InvalidArgumentException
      */
@@ -198,7 +198,7 @@ class AddVersionListener implements EventSubscriber
      * Write snapshot
      *
      * @param EntityManager        $em
-     * @param VersionableInterface $entity
+     * @param VersionableInterface $versionable
      * @param User                 $user
      */
     public function writeSnapshot(EntityManager $em, VersionableInterface $versionable, User $user)
@@ -257,6 +257,7 @@ class AddVersionListener implements EventSubscriber
 
     /**
      * @param EntityManager $em
+     * @param Version       $version
      *
      * @return Version
      */

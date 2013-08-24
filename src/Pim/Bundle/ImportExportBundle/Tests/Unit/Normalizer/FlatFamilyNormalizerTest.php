@@ -4,10 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer;
 use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
-use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Family normalizer test
