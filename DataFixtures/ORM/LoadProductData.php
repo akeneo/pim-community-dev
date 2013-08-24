@@ -62,10 +62,11 @@ class LoadProductData extends AbstractDemoFixture
             return;
         }
 
-        $nbProducts = 50;
-        $batchSize = 500;
+        $nbProducts = 100;
+        $batchSize = 200;
 
         $generator = \Faker\Factory::create();
+        $pm = $this->getProductManager();
 
         // get locales, scopes, currencies
         $locales = array();
@@ -82,7 +83,7 @@ class LoadProductData extends AbstractDemoFixture
 
         // get attribute color options
         $attColor  = $this->getReference('product-attribute.color');
-        $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+        $optColors = $pm->getAttributeOptionRepository()->findBy(
             array('attribute' => $attColor)
         );
         $colors = array();
@@ -92,7 +93,7 @@ class LoadProductData extends AbstractDemoFixture
 
         // get attribute size options
         $attSize  = $this->getReference('product-attribute.size');
-        $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+        $optSizes = $pm->getAttributeOptionRepository()->findBy(
             array('attribute' => $attSize)
         );
         $sizes = array();
@@ -102,7 +103,7 @@ class LoadProductData extends AbstractDemoFixture
 
         // get attribute manufacturer options
         $attManufact = $this->getReference('product-attribute.manufacturer');
-        $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+        $optManufact = $pm->getAttributeOptionRepository()->findBy(
             array('attribute' => $attManufact)
         );
         $manufacturers = array();
@@ -113,7 +114,7 @@ class LoadProductData extends AbstractDemoFixture
         $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
-            $product = $this->getProductManager()->createFlexible();
+            $product = $pm->createFlexible();
 
             // sku
             $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
@@ -177,11 +178,17 @@ class LoadProductData extends AbstractDemoFixture
             }
 
             if (($ind % $batchSize) == 0) {
-                $this->getProductManager()->getStorageManager()->flush();
+                echo memory_get_peak_usage().' flush '.$batchSize.' products'.PHP_EOL;
+                $pm->getStorageManager()->flush();
+                $pm->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\Product');
+                $pm->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductValue');
+                $pm->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductPrice');
+                $pm->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
+                $pm->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
             }
         }
 
-        $this->getProductManager()->getStorageManager()->flush();
+        $pm->getStorageManager()->flush();
     }
 
     /**
