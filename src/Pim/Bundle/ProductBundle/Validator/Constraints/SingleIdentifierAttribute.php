@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class SingleIdentifierAttribute extends Constraint
 {
-    /*
+    /**
      * Violation message for already existing identifier attribute
      *
      * @var string

@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
-use Pim\Bundle\BatchBundle\Entity\JobInstance;
-
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
@@ -16,6 +12,8 @@ use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * JobInstance datagrid manager
@@ -24,7 +22,6 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class JobInstanceDatagridManager extends DatagridManager
 {

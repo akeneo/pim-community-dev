@@ -35,10 +35,8 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
      * @param ProductManager $productManager Product manager
      * @param EntityManager  $entityManager  Doctrine's entity manager
      */
-    public function __construct(
-        ProductManager $productManager,
-        EntityManager $entityManager
-    ) {
+    public function __construct(ProductManager $productManager, EntityManager $entityManager)
+    {
         $this->productManager = $productManager;
         $this->entityManager  = $entityManager;
     }
@@ -50,7 +48,6 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
     {
         return array();
     }
-
 
     /**
      * {@inheritdoc}

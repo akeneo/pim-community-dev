@@ -13,7 +13,6 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class AbstractStepTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,6 +22,9 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
 
     const STEP_NAME = 'test_step_name';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');

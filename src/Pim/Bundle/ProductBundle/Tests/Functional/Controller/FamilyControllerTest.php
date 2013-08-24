@@ -8,7 +8,6 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class FamilyControllerTest extends ControllerTest
 {
@@ -42,6 +41,9 @@ class FamilyControllerTest extends ControllerTest
      */
     const FAMILY_REMOVED_MSG ='Family successfully removed';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setup()
     {
         $this->markTestSkipped('Due to locale refactoring PIM-861, to replace by behat scenario');

@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\NumberFilterTypeTest;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
 
 /**
  * Test related class
@@ -13,7 +13,6 @@ use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\NumberFilterTypeTest;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class CurrencyFilterTypeTest extends NumberFilterTypeTest
 {
