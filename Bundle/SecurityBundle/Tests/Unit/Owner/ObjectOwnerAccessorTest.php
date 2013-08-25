@@ -34,4 +34,27 @@ class ObjectOwnerAccessorTest extends \PHPUnit_Framework_TestCase
         $obj->setOwner('testOwner');
         $this->assertNull($accessor->getOwner($obj));
     }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     */
+    public function testGetOwnerNull()
+    {
+        $accessor = new ObjectOwnerAccessor(new ObjectClassAccessor(), new OwnershipMetadataProvider());
+        $accessor->getOwner(null);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     */
+    public function testGetOwnerNoGetOwnerAndNoOwnerField()
+    {
+        $metadataProvider = new OwnershipMetadataProvider();
+        $accessor = new ObjectOwnerAccessor(new ObjectClassAccessor(), $metadataProvider);
+
+        $obj = new \stdClass();
+        $metadataProvider->setMetadata(get_class($obj), new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id'));
+
+        $accessor->getOwner($obj);
+    }
 }

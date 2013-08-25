@@ -1,6 +1,12 @@
 parameters:
+    oro_entity.orm.entity_class_resolver.class:              Oro\Bundle\EntityBundle\ORM\EntityClassResolver
 
 services:
+    oro_entity.orm.entity_class_resolver:
+        class: %oro_entity.orm.entity_class_resolver.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
     oro_entity.config.entity_config_provider:
         tags:
             - { name: oro_entity_config.provider, scope: entity }

@@ -2,14 +2,25 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategyContext as ContextInterface;
+use Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategyContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 
-class PermissionGrantingStrategyContext implements ContextInterface
+class PermissionGrantingStrategyContext implements PermissionGrantingStrategyContextInterface
 {
+    /**
+     * @var AclExtensionSelector
+     */
+    protected $extensionSelector;
+
     private $object = null;
 
     private $token = null;
+
+    public function __construct(AclExtensionSelector $selector)
+    {
+        $this->extensionSelector = $selector;
+    }
 
     public function getObject()
     {
@@ -29,5 +40,10 @@ class PermissionGrantingStrategyContext implements ContextInterface
     public function setSecurityToken(TokenInterface $token)
     {
         $this->token = $token;
+    }
+
+    public function getAclExtension()
+    {
+        return $this->extensionSelector->select($this->object);
     }
 }

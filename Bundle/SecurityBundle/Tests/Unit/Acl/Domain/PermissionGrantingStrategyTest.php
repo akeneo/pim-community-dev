@@ -16,18 +16,29 @@ use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataPr
 use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\SecurityBundle\Owner\TreeBasedOwnershipDecisionMaker;
+use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
 class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var PermissionMap
+     */
+    private $map;
+
+    /**
+     * @var AclExtensionSelector
+     */
+    private $selector;
+
+    /**
      * @var PermissionGrantingStrategy
      */
     private $strategy;
-
     /**
      * @var UserSecurityIdentity
      */
@@ -53,10 +64,11 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         $this->ownerTree = new OwnerTree();
         $this->metadataProvider = new OwnershipMetadataProvider();
         $objectClassAccessor = new ObjectClassAccessor();
-        $decisionMaker = new TreeBasedOwnershipDecisionMaker(
+        $objectIdAccessor = new ObjectIdAccessor();
+        $decisionMaker = new OwnershipDecisionMaker(
             $this->ownerTree,
             $objectClassAccessor,
-            new ObjectIdAccessor(),
+            $objectIdAccessor,
             new ObjectOwnerAccessor($objectClassAccessor, $this->metadataProvider),
             $this->metadataProvider
         );
@@ -64,7 +76,11 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
             $decisionMaker,
             $this->metadataProvider
         );
-        $this->context = new PermissionGrantingStrategyContext();
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->selector = TestHelper::createAclExtensionSelector($em, $this->metadataProvider);
+        $this->context = new PermissionGrantingStrategyContext($this->selector);
         $this->strategy->setContext($this->context);
 
         $user = new User(1);
@@ -76,6 +92,8 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($user));
         $this->context->setSecurityToken($token);
         $this->context->setObject('test');
+
+        $this->map = new PermissionMap($this->selector);
     }
 
     /**
@@ -108,7 +126,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         $this->context->setObject($obj);
         $masks = $this->getMasks('VIEW', $obj);
 
-        $aceMask = $this->getMaskBuilder()
+        $aceMask = $this->getMaskBuilder($obj)
             ->add('VIEW_GLOBAL')
             ->get();
 
@@ -284,15 +302,15 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
      */
     private function getMasks($permission, $object)
     {
-        $map = new PermissionMap();
-        return $map->getMasks($permission, $object);
+        return $this->map->getMasks($permission, $object);
     }
 
     /**
+     * @param mixed $object
      * @return MaskBuilder
      */
-    private function getMaskBuilder()
+    private function getMaskBuilder($object)
     {
-        return new MaskBuilder();
+        return $this->selector->select($object)->createMaskBuilder();
     }
 }

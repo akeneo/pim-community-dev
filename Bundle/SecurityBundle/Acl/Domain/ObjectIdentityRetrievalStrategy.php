@@ -31,9 +31,7 @@ class ObjectIdentityRetrievalStrategy implements ObjectIdentityRetrievalStrategy
     public function getObjectIdentity($domainObject)
     {
         try {
-            return is_string($domainObject)
-                ? $this->objectIdentityFactory->get($domainObject)
-                : $this->objectIdentityFactory->fromDomainObject($domainObject);
+            return $this->objectIdentityFactory->get($domainObject);
         } catch (InvalidDomainObjectException $failed) {
             return null;
         }

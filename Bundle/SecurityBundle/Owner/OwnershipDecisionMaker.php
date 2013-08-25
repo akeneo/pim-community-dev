@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Owner;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\OwnershipDecisionMaker;
+use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
@@ -10,10 +10,10 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 
 /**
- * This class implements OwnershipDecisionMaker interface and allows to make ownership related
+ * This class implements OwnershipDecisionMakerInterface interface and allows to make ownership related
  * decisions using the tree of owners.
  */
-class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
+class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
 {
     /**
      * @var OwnerTree
@@ -96,7 +96,22 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
         $this->validateObject($domainObject);
 
         if ($this->isOrganization($domainObject)) {
-            return $this->getObjectId($domainObject) === $this->tree->getUserOrganizationId($this->getObjectId($user));
+            $userOrganizationId = $this->tree->getUserOrganizationId($this->getObjectId($user));
+            if ($userOrganizationId === null) {
+                return false;
+            }
+
+            return $this->getObjectId($domainObject) === $userOrganizationId;
+        }
+
+        if ($this->isBusinessUnit($domainObject)) {
+            $userOrganizationId = $this->tree->getUserOrganizationId($this->getObjectId($user));
+            if ($userOrganizationId === null) {
+                return false;
+            }
+            $organizationId = $this->tree->getBusinessUnitOrganizationId($this->getObjectId($domainObject));
+
+            return $organizationId === $userOrganizationId;
         }
 
         $metadata = $this->getObjectMetadata($domainObject);
@@ -109,10 +124,7 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
             return false;
         }
 
-        $owner = $this->getOwner($domainObject);
-        $ownerId = $owner !== null
-            ? $this->getObjectId($owner)
-            : null;
+        $ownerId = $this->getObjectIdIgnoreNull($this->getOwner($domainObject));
         if ($metadata->isOrganizationOwned()) {
             return $userOrganizationId === $ownerId;
         } elseif ($metadata->isBusinessUnitOwned()) {
@@ -141,16 +153,9 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
             return false;
         }
 
-        $owner = $this->getOwner($domainObject);
-        $ownerId = $owner !== null
-            ? $this->getObjectId($owner)
-            : null;
+        $ownerId = $this->getObjectIdIgnoreNull($this->getOwner($domainObject));
         if ($metadata->isBusinessUnitOwned()) {
-            return $this->isUserBusinessUnit(
-                $this->getObjectId($user),
-                $ownerId,
-                $deep
-            );
+            return $this->isUserBusinessUnit($this->getObjectId($user), $ownerId, $deep);
         } elseif ($metadata->isUserOwned()) {
             $businessUnitId = $this->tree->getUserBusinessUnitId($ownerId);
             if ($businessUnitId === null) {
@@ -181,10 +186,7 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
 
         $metadata = $this->getObjectMetadata($domainObject);
         if ($metadata->isUserOwned()) {
-            $owner = $this->getOwner($domainObject);
-            $ownerId = $owner !== null
-                ? $this->getObjectId($owner)
-                : null;
+            $ownerId = $this->getObjectIdIgnoreNull($this->getOwner($domainObject));
 
             return $this->getObjectId($user) === $ownerId;
         }
@@ -196,31 +198,57 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
      * Determines whether the given user has a relation to the given business unit
      *
      * @param int|string $userId
-     * @param int|string $businessUnitId
+     * @param int|string|null $businessUnitId
      * @param bool $deep Specify whether subordinate business units should be checked. Defaults to false.
      * @return bool
      */
     protected function isUserBusinessUnit($userId, $businessUnitId, $deep = false)
     {
-        $result = $businessUnitId === $this->tree->getUserBusinessUnitId($userId);
-        if (!$result) {
-            foreach ($this->tree->getUserBusinessUnitIds($userId) as $buId) {
-                $result = $businessUnitId === $buId;
-                if ($result) {
-                    break;
+        if ($businessUnitId === null) {
+            return false;
+        }
+
+        $userOwningBusinessUnitId = $this->tree->getUserBusinessUnitId($userId);
+        if ($userOwningBusinessUnitId !== null) {
+            if ($businessUnitId === $userOwningBusinessUnitId) {
+                return true;
+            }
+            if ($deep && $this->isSubordinateBusinessUnit($businessUnitId, $userOwningBusinessUnitId)) {
+                return true;
+            }
+        }
+
+        foreach ($this->tree->getUserBusinessUnitIds($userId) as $buId) {
+            $alreadyTested = $userOwningBusinessUnitId !== null && $buId === $userOwningBusinessUnitId;
+            if (!$alreadyTested) {
+                if ($businessUnitId === $buId) {
+                    return true;
                 }
-                if ($deep) {
-                    foreach ($this->tree->getSubordinateBusinessUnitIds($buId) as $sBuId) {
-                        $result = $businessUnitId === $sBuId;
-                        if ($result) {
-                            break 2;
-                        }
-                    }
+                if ($deep && $this->isSubordinateBusinessUnit($businessUnitId, $buId)) {
+                    return true;
                 }
             }
         }
 
-        return $result;
+        return false;
+    }
+
+    /**
+     * Determines whether the given business unit is subordinate one for the given parent business unit
+     *
+     * @param int|string $businessUnitIdToTest A business unit id to be tested if it is subordinate business unit
+     * @param int|string $parentBusinessUnitId The parent business unit id
+     * @return bool
+     */
+    protected function isSubordinateBusinessUnit($businessUnitIdToTest, $parentBusinessUnitId)
+    {
+        foreach ($this->tree->getSubordinateBusinessUnitIds($parentBusinessUnitId) as $buId) {
+            if ($businessUnitIdToTest === $buId) {
+                return true;
+            };
+        }
+
+        return false;
     }
 
     /**
@@ -263,6 +291,23 @@ class TreeBasedOwnershipDecisionMaker implements OwnershipDecisionMaker
      */
     protected function getObjectId($domainObject)
     {
+        return $this->objectIdAccessor->getId($domainObject);
+    }
+
+    /**
+     * Gets id for the given domain object.
+     * Returns null when the given domain object is null
+     *
+     * @param object|null $domainObject
+     * @return int|string|null
+     * @throws InvalidDomainObjectException
+     */
+    protected function getObjectIdIgnoreNull($domainObject)
+    {
+        if ($domainObject === null) {
+            return null;
+        }
+
         return $this->objectIdAccessor->getId($domainObject);
     }
 

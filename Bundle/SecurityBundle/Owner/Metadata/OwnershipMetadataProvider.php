@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Owner\Metadata;
 
 use Doctrine\Common\Cache\CacheProvider;
+use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 /**
  * This class provides access to the ownership metadata of a domain object
@@ -37,14 +38,24 @@ class OwnershipMetadataProvider
     /**
      * Constructor
      *
-     * @param array $owningEntityClasses
+     * @param array $owningEntityNames
+     * @param EntityClassResolver $entityClassResolver
      * @param CacheProvider|null $cache
      */
-    public function __construct(array $owningEntityClasses, CacheProvider $cache = null)
-    {
-        $this->organizationClass = $owningEntityClasses['organization'];
-        $this->businessUnitClass = $owningEntityClasses['business_unit'];
-        $this->userClass = $owningEntityClasses['user'];
+    public function __construct(
+        array $owningEntityNames,
+        EntityClassResolver $entityClassResolver = null,
+        CacheProvider $cache = null
+    ) {
+        $this->organizationClass = $entityClassResolver === null
+            ? $owningEntityNames['organization']
+            : $entityClassResolver->getEntityClass($owningEntityNames['organization']);
+        $this->businessUnitClass = $entityClassResolver === null
+            ? $owningEntityNames['business_unit']
+            : $entityClassResolver->getEntityClass($owningEntityNames['business_unit']);
+        $this->userClass = $entityClassResolver === null
+            ? $owningEntityNames['user']
+            : $entityClassResolver->getEntityClass($owningEntityNames['user']);
 
         $this->cache = $cache;
 

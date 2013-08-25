@@ -3,10 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
 class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,9 +23,7 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->factory = new ObjectIdentityFactory(
-            new ObjectClassAccessor(),
-            new ObjectIdAccessor(),
-            $this->em
+            TestHelper::createAclExtensionSelector($this->em)
         );
     }
 
@@ -40,27 +37,46 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     public function testFromDomainObjectPrefersInterfaceOverGetId()
     {
         $obj = $this->getMock('Symfony\Component\Security\Acl\Model\DomainObjectInterface');
-        $obj
-            ->expects($this->once())
+        $obj->expects($this->once())
             ->method('getObjectIdentifier')
             ->will($this->returnValue('getObjectIdentifier()'));
-        $obj
-            ->expects($this->never())
+        $obj->expects($this->never())
             ->method('getId')
             ->will($this->returnValue('getId()'));
 
-        $id = $this->factory->fromDomainObject($obj);
+        $id = $this->factory->get($obj);
         $this->assertEquals('getObjectIdentifier()', $id->getIdentifier());
     }
 
     public function testFromDomainObjectWithoutInterface()
     {
-        $id = $this->factory->fromDomainObject(new TestDomainObject());
+        $id = $this->factory->get(new TestDomainObject());
         $this->assertEquals('getId()', $id->getIdentifier());
         $this->assertEquals(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject',
             $id->getType()
         );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     */
+    public function testFromDomainObjectNull()
+    {
+        $this->factory->get(null);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     */
+    public function testGetShouldCatchInvalidArgumentException()
+    {
+        $obj = $this->getMock('Symfony\Component\Security\Acl\Model\DomainObjectInterface');
+        $obj->expects($this->once())
+            ->method('getObjectIdentifier')
+            ->will($this->throwException(new \InvalidArgumentException()));
+
+        $this->factory->get($obj);
     }
 
     /**
@@ -85,7 +101,7 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
      */
     public function testGetIncorrectClassDescriptor()
     {
@@ -93,7 +109,7 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
      */
     public function testGetIncorrectEntityDescriptor()
     {
@@ -101,14 +117,22 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     */
+    public function testGetWithInvalidEntityName()
+    {
+        $this->factory->get('entity:AcmeBundle:Entity:SomeEntity');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
      */
     public function testGetIncorrectActionDescriptor()
     {
         $this->factory->get('Some Action');
     }
 
-    public function testForEntityClass()
+    public function testGetShouldUseLocalCache()
     {
         $config = $this->getMockBuilder('\Doctrine\ORM\Configuration')
             ->disableOriginalConstructor()
@@ -121,57 +145,34 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('AcmeBundle'))
             ->will($this->returnValue('AcmeBundle\Entity'));
 
-        $id = $this->factory->forEntityClass('AcmeBundle:SomeEntity');
+        $id = $this->factory->get('entity:AcmeBundle:SomeEntity');
         $this->assertEquals('class', $id->getIdentifier());
         $this->assertEquals('AcmeBundle\Entity\SomeEntity', $id->getType());
 
         // Test that the factory use the local cache - no extra call of EntityManager must be performed
-        $this->factory->forEntityClass('AcmeBundle:SomeEntity');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testForEntityClassWithInvalidEntityName()
-    {
-        $this->factory->forEntityClass('AcmeBundle:Entity:SomeEntity');
-    }
-
-    public function testForEntityClassWithFullClassName()
-    {
-        $id = $this->factory->forEntityClass('AcmeBundle\Entity\SomeEntity');
-        $this->assertEquals('class', $id->getIdentifier());
-        $this->assertEquals('AcmeBundle\Entity\SomeEntity', $id->getType());
-    }
-
-    public function testForClass()
-    {
-        $id = $this->factory->forClass('AcmeBundle\SomeClass');
-        $this->assertEquals('class', $id->getIdentifier());
-        $this->assertEquals('AcmeBundle\SomeClass', $id->getType());
-    }
-
-    public function testForAction()
-    {
-        $id = $this->factory->forAction('Some Action');
-        $this->assertEquals('action', $id->getIdentifier());
-        $this->assertEquals('Some Action', $id->getType());
+        $this->factory->get('entity:AcmeBundle:SomeEntity');
     }
 
     public static function getProvider()
     {
         return array(
             'Class' => array('Class:AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
+            'Class (whitespace)' => array('Class: AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
             'CLASS' => array('CLASS:AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
             'Entity' => array('Entity:AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
+            'Entity (whitespace)' => array('Entity: AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
             'ENTITY' => array('ENTITY:AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
             'Entity (class name)' => array(
-                'Entity:AcmeBundle\Entity\SomeEntity',
+                'Entity: AcmeBundle\Entity\SomeEntity',
                 'class',
                 'AcmeBundle\Entity\SomeEntity'
             ),
             'Action' => array('Action:Some Action', 'action', 'Some Action'),
+            'Action (whitespace)' => array('Action: Some Action', 'action', 'Some Action'),
             'ACTION' => array('ACTION:Some Action', 'action', 'Some Action'),
+            'Aspect' => array('Aspect:Some Aspect', 'aspect', 'Some Aspect'),
+            'Aspect (whitespace)' => array('Aspect: Some Aspect', 'aspect', 'Some Aspect'),
+            'ASPECT' => array('ASPECT:Some Aspect', 'aspect', 'Some Aspect'),
         );
     }
 }

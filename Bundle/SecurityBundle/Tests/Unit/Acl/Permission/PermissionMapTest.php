@@ -3,23 +3,38 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Permission;
 
 use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap;
-use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipMaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder;
+use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
 class PermissionMapTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PermissionMap
+     */
+    private $map;
+
+    protected function setUp()
+    {
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->map = new PermissionMap(
+            TestHelper::createAclExtensionSelector($em)
+        );
+    }
+
     public function testGetMasksReturnsNullWhenNotSupportedMask()
     {
-        $map = new PermissionMap();
-        $this->assertNull($map->getMasks('IS_AUTHENTICATED_REMEMBERED', null));
+        $this->assertNull($this->map->getMasks('IS_AUTHENTICATED_REMEMBERED', null));
     }
 
     /**
      * @dataProvider getMasksProvider
      */
-    public function testGetMasks($name, $mask)
+    public function testGetMasks($object, $name, $mask)
     {
-        $map = new PermissionMap();
-        $this->assertEquals($mask, $map->getMasks($name, null));
+        $this->assertEquals($mask, $this->map->getMasks($name, $object));
     }
 
     /**
@@ -27,8 +42,7 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($name, $expectedResult)
     {
-        $map = new PermissionMap();
-        $this->assertEquals($expectedResult, $map->contains($name));
+        $this->assertEquals($expectedResult, $this->map->contains($name));
     }
 
     /**
@@ -37,110 +51,44 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
     public static function getMasksProvider()
     {
         return array(
-            array('VIEW', array(
-                MaskBuilder::MASK_VIEW_BASIC,
-                MaskBuilder::MASK_VIEW_LOCAL,
-                MaskBuilder::MASK_VIEW_DEEP,
-                MaskBuilder::MASK_VIEW_GLOBAL,
+            array(new \stdClass(), 'VIEW', array(
+                OwnershipMaskBuilder::MASK_VIEW_BASIC,
+                OwnershipMaskBuilder::MASK_VIEW_LOCAL,
+                OwnershipMaskBuilder::MASK_VIEW_DEEP,
+                OwnershipMaskBuilder::MASK_VIEW_GLOBAL,
             )),
-            array('CREATE', array(
-                MaskBuilder::MASK_CREATE_BASIC,
-                MaskBuilder::MASK_CREATE_LOCAL,
-                MaskBuilder::MASK_CREATE_DEEP,
-                MaskBuilder::MASK_CREATE_GLOBAL,
+            array(new \stdClass(), 'CREATE', array(
+                OwnershipMaskBuilder::MASK_CREATE_BASIC,
+                OwnershipMaskBuilder::MASK_CREATE_LOCAL,
+                OwnershipMaskBuilder::MASK_CREATE_DEEP,
+                OwnershipMaskBuilder::MASK_CREATE_GLOBAL,
             )),
-            array('EDIT', array(
-                MaskBuilder::MASK_EDIT_BASIC,
-                MaskBuilder::MASK_EDIT_LOCAL,
-                MaskBuilder::MASK_EDIT_DEEP,
-                MaskBuilder::MASK_EDIT_GLOBAL,
+            array(new \stdClass(), 'EDIT', array(
+                OwnershipMaskBuilder::MASK_EDIT_BASIC,
+                OwnershipMaskBuilder::MASK_EDIT_LOCAL,
+                OwnershipMaskBuilder::MASK_EDIT_DEEP,
+                OwnershipMaskBuilder::MASK_EDIT_GLOBAL,
             )),
-            array('DELETE', array(
-                MaskBuilder::MASK_DELETE_BASIC,
-                MaskBuilder::MASK_DELETE_LOCAL,
-                MaskBuilder::MASK_DELETE_DEEP,
-                MaskBuilder::MASK_DELETE_GLOBAL,
+            array(new \stdClass(), 'DELETE', array(
+                OwnershipMaskBuilder::MASK_DELETE_BASIC,
+                OwnershipMaskBuilder::MASK_DELETE_LOCAL,
+                OwnershipMaskBuilder::MASK_DELETE_DEEP,
+                OwnershipMaskBuilder::MASK_DELETE_GLOBAL,
             )),
-            array('ASSIGN', array(
-                MaskBuilder::MASK_ASSIGN_BASIC,
-                MaskBuilder::MASK_ASSIGN_LOCAL,
-                MaskBuilder::MASK_ASSIGN_DEEP,
-                MaskBuilder::MASK_ASSIGN_GLOBAL,
+            array(new \stdClass(), 'ASSIGN', array(
+                OwnershipMaskBuilder::MASK_ASSIGN_BASIC,
+                OwnershipMaskBuilder::MASK_ASSIGN_LOCAL,
+                OwnershipMaskBuilder::MASK_ASSIGN_DEEP,
+                OwnershipMaskBuilder::MASK_ASSIGN_GLOBAL,
             )),
-            array('SHARE', array(
-                MaskBuilder::MASK_SHARE_BASIC,
-                MaskBuilder::MASK_SHARE_LOCAL,
-                MaskBuilder::MASK_SHARE_DEEP,
-                MaskBuilder::MASK_SHARE_GLOBAL,
+            array(new \stdClass(), 'SHARE', array(
+                OwnershipMaskBuilder::MASK_SHARE_BASIC,
+                OwnershipMaskBuilder::MASK_SHARE_LOCAL,
+                OwnershipMaskBuilder::MASK_SHARE_DEEP,
+                OwnershipMaskBuilder::MASK_SHARE_GLOBAL,
             )),
-            array('OPERATOR', array(
-                MaskBuilder::MASK_VIEW_BASIC,
-                MaskBuilder::MASK_VIEW_LOCAL,
-                MaskBuilder::MASK_VIEW_DEEP,
-                MaskBuilder::MASK_VIEW_GLOBAL,
-                MaskBuilder::MASK_CREATE_BASIC,
-                MaskBuilder::MASK_CREATE_LOCAL,
-                MaskBuilder::MASK_CREATE_DEEP,
-                MaskBuilder::MASK_CREATE_GLOBAL,
-                MaskBuilder::MASK_EDIT_BASIC,
-                MaskBuilder::MASK_EDIT_LOCAL,
-                MaskBuilder::MASK_EDIT_DEEP,
-                MaskBuilder::MASK_EDIT_GLOBAL,
-                MaskBuilder::MASK_DELETE_BASIC,
-                MaskBuilder::MASK_DELETE_LOCAL,
-                MaskBuilder::MASK_DELETE_DEEP,
-                MaskBuilder::MASK_DELETE_GLOBAL,
-            )),
-            array('SHARE_OPERATOR', array(
-                MaskBuilder::MASK_VIEW_BASIC,
-                MaskBuilder::MASK_VIEW_LOCAL,
-                MaskBuilder::MASK_VIEW_DEEP,
-                MaskBuilder::MASK_VIEW_GLOBAL,
-                MaskBuilder::MASK_CREATE_BASIC,
-                MaskBuilder::MASK_CREATE_LOCAL,
-                MaskBuilder::MASK_CREATE_DEEP,
-                MaskBuilder::MASK_CREATE_GLOBAL,
-                MaskBuilder::MASK_EDIT_BASIC,
-                MaskBuilder::MASK_EDIT_LOCAL,
-                MaskBuilder::MASK_EDIT_DEEP,
-                MaskBuilder::MASK_EDIT_GLOBAL,
-                MaskBuilder::MASK_DELETE_BASIC,
-                MaskBuilder::MASK_DELETE_LOCAL,
-                MaskBuilder::MASK_DELETE_DEEP,
-                MaskBuilder::MASK_DELETE_GLOBAL,
-                MaskBuilder::MASK_SHARE_BASIC,
-                MaskBuilder::MASK_SHARE_LOCAL,
-                MaskBuilder::MASK_SHARE_DEEP,
-                MaskBuilder::MASK_SHARE_GLOBAL,
-            )),
-            array('MASTER', array(
-                MaskBuilder::MASK_VIEW_BASIC,
-                MaskBuilder::MASK_VIEW_LOCAL,
-                MaskBuilder::MASK_VIEW_DEEP,
-                MaskBuilder::MASK_VIEW_GLOBAL,
-                MaskBuilder::MASK_CREATE_BASIC,
-                MaskBuilder::MASK_CREATE_LOCAL,
-                MaskBuilder::MASK_CREATE_DEEP,
-                MaskBuilder::MASK_CREATE_GLOBAL,
-                MaskBuilder::MASK_EDIT_BASIC,
-                MaskBuilder::MASK_EDIT_LOCAL,
-                MaskBuilder::MASK_EDIT_DEEP,
-                MaskBuilder::MASK_EDIT_GLOBAL,
-                MaskBuilder::MASK_DELETE_BASIC,
-                MaskBuilder::MASK_DELETE_LOCAL,
-                MaskBuilder::MASK_DELETE_DEEP,
-                MaskBuilder::MASK_DELETE_GLOBAL,
-                MaskBuilder::MASK_SHARE_BASIC,
-                MaskBuilder::MASK_SHARE_LOCAL,
-                MaskBuilder::MASK_SHARE_DEEP,
-                MaskBuilder::MASK_SHARE_GLOBAL,
-                MaskBuilder::MASK_ASSIGN_BASIC,
-                MaskBuilder::MASK_ASSIGN_LOCAL,
-                MaskBuilder::MASK_ASSIGN_DEEP,
-                MaskBuilder::MASK_ASSIGN_GLOBAL,
-            )),
-            array('EXECUTE', array(
-                MaskBuilder::MASK_VIEW_BASIC,
+            array('action: test', 'EXECUTE', array(
+                ActionMaskBuilder::MASK_EXECUTE,
             )),
         );
     }
@@ -154,9 +102,6 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
             array('DELETE', true),
             array('ASSIGN', true),
             array('SHARE', true),
-            array('OPERATOR', true),
-            array('SHARE_OPERATOR', true),
-            array('MASTER', true),
             array('EXECUTE', true),
             array('OTHER', false),
         );

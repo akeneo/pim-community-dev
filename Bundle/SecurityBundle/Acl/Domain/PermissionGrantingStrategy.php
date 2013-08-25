@@ -3,11 +3,10 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
@@ -28,30 +27,9 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     protected $auditLogger;
 
     /**
-     * @var PermissionGrantingStrategyContext
+     * @var PermissionGrantingStrategyContextInterface
      */
     protected $context;
-
-    /**
-     * @var OwnershipDecisionMaker
-     */
-    protected $decisionMaker;
-
-    /**
-     * @var OwnershipMetadataProvider
-     */
-    protected $metadataProvider;
-
-    /**
-     * Constructor
-     */
-    public function __construct(
-        OwnershipDecisionMaker $decisionMaker,
-        OwnershipMetadataProvider $metadataProvider
-    ) {
-        $this->decisionMaker = $decisionMaker;
-        $this->metadataProvider = $metadataProvider;
-    }
 
     /**
      * Sets the audit logger
@@ -66,9 +44,9 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * Sets the accessor to the context data of this strategy
      *
-     * @param PermissionGrantingStrategyContext $context
+     * @param PermissionGrantingStrategyContextInterface $context
      */
-    public function setContext(PermissionGrantingStrategyContext $context)
+    public function setContext(PermissionGrantingStrategyContextInterface $context)
     {
         $this->context = $context;
     }
@@ -187,24 +165,18 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
                         && $this->isAceApplicable($requiredMask, $ace, $acl)
                     ) {
                         $isGranting = $ace->isGranting();
-                        // check whether it is a domain object
-                        $object = $this->context->getObject();
-                        if ($object !== null && is_object($object) && !($object instanceof ObjectIdentityInterface)) {
-                            $oid = $acl->getObjectIdentity();
-                            $metadata = $this->metadataProvider->getMetadata($oid->getType());
-                            if ($metadata->hasOwner()) {
-                                $isApplicableByOwner = $this->isApplicableByOwner(
-                                    $requiredMask,
-                                    $ace,
-                                    $acl,
-                                    $object,
-                                    $metadata
-                                );
-                                if (!$isApplicableByOwner) {
-                                    $isGranting = !$isGranting;
-                                }
-                            }
+
+                        // give an additional chance for the appropriate ACL extension to decide
+                        // whether an access to a domain object is granted or not
+                        $decisionResult = $this->context->getAclExtension()->decideIsGranting(
+                            $ace->getMask(),
+                            $this->context->getObject(),
+                            $this->context->getSecurityToken()
+                        );
+                        if (!$decisionResult) {
+                            $isGranting = !$isGranting;
                         }
+
                         if ($isGranting) {
                             // the access is granted if there is at least one granting ACE
                             $triggeredAce = $ace;
@@ -268,24 +240,5 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
             default:
                 throw new \RuntimeException(sprintf('The strategy "%s" is not supported.', $strategy));
         }
-    }
-
-    protected function isApplicableByOwner(
-        $requiredMask,
-        EntryInterface $ace,
-        AclInterface $acl,
-        $object,
-        OwnershipMetadata $metadata
-    ) {
-        $user = $this->context->getSecurityToken()->getUser();
-        if ($metadata->isOrganizationOwned()) {
-            return $this->decisionMaker->isBelongToOrganization($user, $object);
-        } elseif ($metadata->isBusinessUnitOwned()) {
-            return $this->decisionMaker->isBelongToBusinessUnit($user, $object);
-        } elseif ($metadata->isUserOwned()) {
-            return $this->decisionMaker->isBelongToUser($user, $object);
-        }
-
-        throw new \RuntimeException(sprintf('Unhandled ownership for %s.', get_class($object)));
     }
 }

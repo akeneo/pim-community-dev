@@ -274,21 +274,4 @@ class OwnerTree
         $this->userBusinessUnitIds = array();
         $this->businessUnitUserIds = array();
     }
-
-    /**
-     * Checks whether the tree is empty (contains no elements).
-     *
-     * @return boolean true if the tree is empty, false otherwise.
-     */
-    public function isEmpty()
-    {
-        return
-            empty($this->userOwningOrganizationId)
-            && empty($this->businessUnitOwningOrganizationId)
-            && empty($this->organizationBusinessUnitIds)
-            && empty($this->userOwningBusinessUnitId)
-            && empty($this->subordinateBusinessUnitIds)
-            && empty($this->userBusinessUnitIds)
-            && empty($this->businessUnitUserIds);
-    }
 }

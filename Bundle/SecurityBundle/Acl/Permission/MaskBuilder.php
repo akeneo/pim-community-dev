@@ -3,73 +3,61 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Permission;
 
 /**
- * This class allows you to build cumulative permissions easily, or convert
- * masks to a human-readable format.
+ * The base abstract class for different sort of permission mask builders which allows you
+ * to build cumulative permissions easily, or convert masks to a human-readable format.
  *
+ * Usually when you create own mask builder you just need define MASK_* and CODE_*
+ * constants in your class. Also you can redefine PATTERN_ALL_* constants if you want to
+ * change the human-readable format of a bitmask created by your mask builder.
+ *
+ * For example if a mask builder defines the following constants:
  * <code>
- *       $builder = new MaskBuilder();
+ *       const MASK_VIEW = 1;
+ *       const MASK_EDIT = 2;
+ *       const CODE_VIEW = 'V';
+ *       const CODE_EDIT = 'E';
+ *       const PATTERN_ALL_OFF = '............................ example:....';
+ * </code>
+ * it can be used in way like this:
+ * <code>
  *       $builder
- *           ->add('view_deep')
- *           ->add('create_basic')
- *           ->add('edit_local')
- *       ;
- *       // int(4354) = 4096 + 2 + 256
+ *           ->add('view');
+ *           ->add('edit');
+ *
+ *       // int(3)
  *       var_dump($builder->get());
- *       // string(72) "(SADECV) ........ global:...... deep:.....V local:...E.. basic:....C."
+ *       // string(41) "............................ example:..EV"
  *       var_dump($builder->getPattern());
- *       // string(32) "...................V...E......C."
+ *       // string(32) "..............................EV"
  *       var_dump($builder->getPattern(true));
  * </code>
  */
-class MaskBuilder
+abstract class MaskBuilder
 {
-    // These access levels give a user access to own records and objects that are shared with the user.
-    const MASK_VIEW_BASIC         = 1;         // 1 << 0
-    const MASK_CREATE_BASIC       = 2;         // 1 << 1
-    const MASK_EDIT_BASIC         = 4;         // 1 << 2
-    const MASK_DELETE_BASIC       = 8;         // 1 << 3
-    const MASK_ASSIGN_BASIC       = 16;        // 1 << 4
-    const MASK_SHARE_BASIC        = 32;        // 1 << 5
+    /**
+     * Defines a human-readable format of a bitmask
+     * All characters are allowed here, but only a character defined in self::OFF constant
+     * is interpreted as bit placeholder.
+     */
+    const PATTERN_ALL_OFF       = '................................';
 
-    // These access levels give a user access to records in the user's business unit.
-    const MASK_VIEW_LOCAL         = 64;        // 1 << 6
-    const MASK_CREATE_LOCAL       = 128;       // 1 << 7
-    const MASK_EDIT_LOCAL         = 256;       // 1 << 8
-    const MASK_DELETE_LOCAL       = 512;       // 1 << 9
-    const MASK_ASSIGN_LOCAL       = 1024;      // 1 << 10
-    const MASK_SHARE_LOCAL        = 2048;      // 1 << 11
+    /**
+     * Defines the brief form of a human-readable format of a bitmask
+     */
+    const PATTERN_ALL_OFF_BRIEF = '................................';
 
-    // These access levels give a user access to records in the user's business unit
-    // and all business units subordinate to the user's business unit.
-    const MASK_VIEW_DEEP          = 4096;      // 1 << 12
-    const MASK_CREATE_DEEP        = 8192;      // 1 << 13
-    const MASK_EDIT_DEEP          = 16384;     // 1 << 14
-    const MASK_DELETE_DEEP        = 32768;     // 1 << 15
-    const MASK_ASSIGN_DEEP        = 65536;     // 1 << 16
-    const MASK_SHARE_DEEP         = 131072;    // 1 << 17
+    /**
+     * A symbol is used in PATTERN_ALL_* constants as a placeholder of a bit
+     */
+    const OFF = '.';
 
-    // These access levels give a user access to all records within the organization,
-    // regardless of the business unit hierarchical level to which the instance or the user belongs.
-    const MASK_VIEW_GLOBAL        = 262144;    // 1 << 18
-    const MASK_CREATE_GLOBAL      = 524288;    // 1 << 19
-    const MASK_EDIT_GLOBAL        = 1048576;   // 1 << 20
-    const MASK_DELETE_GLOBAL      = 2097152;   // 1 << 21
-    const MASK_ASSIGN_GLOBAL      = 4194304;   // 1 << 22
-    const MASK_SHARE_GLOBAL       = 8388608;   // 1 << 23
+    /**
+     * The default character is used in a human-readable format to show that a bit in the bitmask is set
+     * If you want more readable character please define CODE_* constants in your mask builder class.
+     */
+    const ON = '*';
 
-    const CODE_VIEW         = 'V';
-    const CODE_CREATE       = 'C';
-    const CODE_EDIT         = 'E';
-    const CODE_DELETE       = 'D';
-    const CODE_ASSIGN       = 'A';
-    const CODE_SHARE        = 'S';
-
-    const ALL_OFF           = '(SADECV) ........ global:...... deep:...... local:...... basic:......';
-    const ALL_OFF_BRIEF     = '................................';
-    const OFF               = '.';
-    const ON                = '*';
-
-    private $mask;
+    protected $mask;
 
     /**
      * Constructor
@@ -99,16 +87,16 @@ class MaskBuilder
     /**
      * Adds a mask to the permission
      *
-     * @param mixed $mask
+     * @param int|string $mask
      * @return MaskBuilder
      * @throws \InvalidArgumentException
      */
     public function add($mask)
     {
-        if (is_string($mask) && defined($name = 'static::MASK_'.strtoupper($mask))) {
+        if (is_string($mask) && defined($name = 'static::MASK_' . strtoupper($mask))) {
             $mask = constant($name);
         } elseif (!is_int($mask)) {
-            throw new \InvalidArgumentException('$mask must be an integer.');
+            throw new \InvalidArgumentException('$mask must be a string or an integer.');
         }
 
         $this->mask |= $mask;
@@ -119,16 +107,16 @@ class MaskBuilder
     /**
      * Removes a mask from the permission
      *
-     * @param mixed $mask
+     * @param int|string $mask
      * @return MaskBuilder
      * @throws \InvalidArgumentException
      */
     public function remove($mask)
     {
-        if (is_string($mask) && defined($name = 'static::MASK_'.strtoupper($mask))) {
+        if (is_string($mask) && defined($name = 'static::MASK_' . strtoupper($mask))) {
             $mask = constant($name);
         } elseif (!is_int($mask)) {
-            throw new \InvalidArgumentException('$mask must be an integer.');
+            throw new \InvalidArgumentException('$mask must be a string or an integer.');
         }
 
         $this->mask &= ~$mask;
@@ -157,17 +145,35 @@ class MaskBuilder
      */
     public function getPattern($brief = false)
     {
-        $pattern = $brief ? self::ALL_OFF_BRIEF : self::ALL_OFF;
-        $length = strlen(self::ALL_OFF_BRIEF);
-        $bitmask = str_pad(decbin($this->mask), $length, '0', STR_PAD_LEFT);
+        return static::getPatternFor($this->mask, $brief);
+    }
+
+    /**
+     * Gets a human-readable representation of the given mask
+     *
+     * @param int $mask
+     * @param bool $brief optional; defaults to false
+     *                    Determine whether the representation should be in brief of full format
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function getPatternFor($mask, $brief = false)
+    {
+        if (!is_int($mask)) {
+            throw new \InvalidArgumentException('$mask must be an integer.');
+        }
+
+        $pattern = $brief ? static::PATTERN_ALL_OFF_BRIEF : static::PATTERN_ALL_OFF;
+        $length = strlen(static::PATTERN_ALL_OFF_BRIEF);
+        $bitmask = str_pad(decbin($mask), $length, '0', STR_PAD_LEFT);
 
         for ($i = $length - 1, $p = strlen($pattern) - 1; $i >= 0; $i--, $p--) {
             // skip non mask chars if any
-            while ($p >=0 && self::OFF !== $pattern[$p]) {
+            while ($p >= 0 && static::OFF !== $pattern[$p]) {
                 $p--;
             }
             if ('1' === $bitmask[$i]) {
-                $pattern[$p] = self::getCode(1 << ($length - $i - 1));
+                $pattern[$p] = static::getCode(1 << ($length - $i - 1));
             }
         }
 
@@ -193,8 +199,9 @@ class MaskBuilder
                 if (defined($cName)) {
                     return constant($cName);
                 }
-                if (strrpos($name, '_') > 5) {
-                    $cName = 'static::CODE_' . substr($name, 5, strrpos($name, '_') - 5);
+                $lastDelim = strrpos($name, '_');
+                if ($lastDelim > 5) {
+                    $cName = 'static::CODE_' . substr($name, 5, $lastDelim - 5);
                     if (defined($cName)) {
                         return constant($cName);
                     }
@@ -202,6 +209,6 @@ class MaskBuilder
             }
         }
 
-        return self::ON;
+        return static::ON;
     }
 }

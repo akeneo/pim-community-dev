@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Acl\Domain;
+namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 
@@ -8,7 +8,7 @@ use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
  * Provides an interface which should be implemented by a class
  * which makes decisions based on ownership of domain objects.
  */
-interface OwnershipDecisionMaker
+interface OwnershipDecisionMakerInterface
 {
     /**
      * Determines whether the given domain object is an organization

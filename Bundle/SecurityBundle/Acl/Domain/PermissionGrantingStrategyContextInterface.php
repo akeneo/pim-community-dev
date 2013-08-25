@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 
 /**
  * Provides an interface which can be implemented by AclVoter to allow
@@ -10,7 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  * an object which is the subject of the current voting operation
  * and the security token of the current voting operation.
  */
-interface PermissionGrantingStrategyContext
+interface PermissionGrantingStrategyContextInterface
 {
     /**
      * Gets the current object from a context
@@ -25,4 +26,11 @@ interface PermissionGrantingStrategyContext
      * @return TokenInterface
      */
     public function getSecurityToken();
+
+    /**
+     * Gets the ACL extension responsible to process the current object
+     *
+     * @return AclExtensionInterface
+     */
+    public function getAclExtension();
 }
