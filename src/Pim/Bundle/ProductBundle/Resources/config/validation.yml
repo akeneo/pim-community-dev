@@ -1,3 +1,91 @@
+Pim\Bundle\ProductBundle\Entity\AttributeGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Group code may contain only letters, numbers and underscores"
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation:
+    properties:
+        name:
+            - Length:
+                max: 100
+
+Pim\Bundle\ProductBundle\Entity\AttributeOption:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Option code may contain only letters, numbers and underscores"
+            - Length:
+                max: 255
+
+Pim\Bundle\ProductBundle\Entity\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Category code may contain only letters, numbers and underscores"
+            - Length:
+                max: 64
+        translations:
+            - Valid: ~
+
+Pim\Bundle\ProductBundle\Entity\CategoryTranslation:
+    properties:
+        title:
+            - Length:
+                max: 64
+
+Pim\Bundle\ProductBundle\Entity\Channel:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Channel code may contain only letters, numbers and underscores"
+            - Length:
+                max: 64
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 100
+
+Pim\Bundle\ProductBundle\Entity\Family:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Family code may contain only letters, numbers and underscores"
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Pim\Bundle\ProductBundle\Entity\FamilyTranslation:
+    properties:
+        label:
+            - Length:
+                max: 64
+
 Pim\Bundle\ProductBundle\Entity\ProductAttribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
@@ -174,27 +262,11 @@ Pim\Bundle\ProductBundle\Entity\ProductAttribute:
             - NotNull:
                 groups: [pim_product_file, pim_product_image]
                 message: This value should not be blank
+        translations:
+            - Valid: ~
 
-Pim\Bundle\ProductBundle\Entity\AttributeOption:
-    constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation:
     properties:
-        code:
-            - NotBlank: ~
-            - Regex:
-                pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Option code may contain only letters, numbers and underscores"
+        label:
             - Length:
-                max: 255
-
-Pim\Bundle\ProductBundle\Entity\Category:
-    constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-    properties:
-        code:
-            - NotBlank: ~
-            - Regex:
-                pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Category code may contain only letters, numbers and underscores"
-            - Length:
-                max: 100
+                max: 64
