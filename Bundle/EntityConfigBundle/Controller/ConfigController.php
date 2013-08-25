@@ -172,6 +172,10 @@ class ConfigController extends Controller
         $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
         $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
 
+        /** @var ConfigProvider $ownershipConfigProvider */
+        $ownershipConfigProvider = $this->get('oro_entity.config.ownership_config_provider');
+        $ownershipConfig = $ownershipConfigProvider->getConfig($entity->getClassName());
+
         /*
         var_dump($this->getRequest()->headers->get('referer'));
         if (strstr('oro_entityextend/update', $this->getRequest()->headers->get('referer'))) {
@@ -179,11 +183,12 @@ class ConfigController extends Controller
         }*/
 
         return array(
-            'entity'        => $entity,
-            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
-            'entity_extend' => $extendConfig,
-            'entity_count'  => count($this->getDoctrine()->getRepository($entity->getClassName())->findAll()),
-            'entity_fields' => $datagrid->createView(),
+            'entity'              => $entity,
+            'entity_config'       => $entityConfigProvider->getConfig($entity->getClassName()),
+            'entity_extend'       => $extendConfig,
+            'entity_ownership'    => $ownershipConfig,
+            'entity_count'        => count($this->getDoctrine()->getRepository($entity->getClassName())->findAll()),
+            'entity_fields'       => $datagrid->createView(),
 
             'unique_key'    => $extendConfig->get('unique_key'),
             'link'          => $link,

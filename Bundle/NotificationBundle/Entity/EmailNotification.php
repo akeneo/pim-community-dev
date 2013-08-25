@@ -3,7 +3,9 @@
 namespace Oro\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;

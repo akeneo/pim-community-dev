@@ -92,6 +92,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->setName($this->newRole['ROLE_NAME'] . $randomPrefix)
             ->setLabel($this->newRole['LABEL'])
+            ->setOwner('Default')
             ->save()
             ->assertMessage('Role successfully saved')
             ->close();
