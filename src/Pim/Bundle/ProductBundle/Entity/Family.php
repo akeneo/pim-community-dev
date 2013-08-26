@@ -229,8 +229,6 @@ class Family implements TranslatableInterface, VersionableInterface
      * @param ProductAttribute $attribute
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
-     *
-     * @throw InvalidArgumentException
      */
     public function addAttribute(ProductAttribute $attribute)
     {
@@ -244,7 +242,9 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
+     *
+     * @throws InvalidArgumentException
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
@@ -297,7 +297,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * @param ProductAttribute $attributeAsLabel
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeAsLabel($attributeAsLabel)
     {
@@ -435,7 +435,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param array $attributeRequirements
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeRequirements($attributeRequirements)
     {

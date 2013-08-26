@@ -423,7 +423,7 @@ class ProductController extends Controller
      *
      * @return Pim\Bundle\ProductBundle\Model\ProductInterface
      *
-     * @throw Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
