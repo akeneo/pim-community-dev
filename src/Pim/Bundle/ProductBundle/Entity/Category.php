@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -26,7 +25,6 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
- * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  */

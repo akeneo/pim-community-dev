@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,7 +19,6 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
- * @UniqueEntity(fields="code", message="This code is already taken.")
  */
 class Family implements TranslatableInterface, VersionableInterface
 {
@@ -61,8 +58,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * @var string $code
      *
-     * @ORM\Column(unique=true)
-     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
+     * @ORM\Column(name="code", type="string", length=100, unique=true)
      */
     protected $code;
 

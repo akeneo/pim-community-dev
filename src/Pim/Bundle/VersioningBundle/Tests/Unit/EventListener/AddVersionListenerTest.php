@@ -2,12 +2,17 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
-use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
-use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
+use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Test related class
@@ -23,8 +28,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
     }
 
@@ -33,8 +37,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsername()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername('admin');
         $user = new User();
         $listener->setUsername($user);
@@ -46,51 +49,44 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsernameException()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername(null);
     }
 
     /**
      * Test related method
      */
-    public function testcheckScheduledUpdate()
+    public function testCheckScheduledUpdate()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
 
         $emMock          = $this->getEntityManagerMock();
         $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
-
         $listener->checkScheduledUpdate($emMock, $versionableMock);
-    }
 
-    /**
-     * Test related method
-     */
-    public function testWriteSnapshot()
-    {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $value = new ProductValue();
+        $value->setEntity(new Product());
+        $listener->checkScheduledUpdate($emMock, $value);
 
-        $emMock          = $this->getEntityManagerMock();
-        $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
-        $userMock        = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $price = new ProductPrice();
+        $value->addPrice($price);
+        $listener->checkScheduledUpdate($emMock, $price);
 
-        $listener->writeSnapshot($emMock, $versionableMock, $userMock);
-    }
+        $attribute = new ProductAttribute();
+        $listener->checkScheduledUpdate($emMock, $attribute);
 
-    /**
-     * @return \Pim\Bundle\VersioningBundle\Manager\VersionBuilder
-     */
-    protected function getVersionBuilder()
-    {
-        $encoders = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-        $builder = new VersionBuilder($serializer);
+        $option = new AttributeOption();
+        $attribute->addOption($option);
+        $listener->checkScheduledUpdate($emMock, $option);
 
-        return $builder;
+        $optionValue = new AttributeOptionValue();
+        $option->addOptionValue($optionValue);
+        $listener->checkScheduledUpdate($emMock, $optionValue);
+
+        $family = new Family();
+        $translation = new FamilyTranslation();
+        $translation->setForeignKey($family);
+        $listener->checkScheduledUpdate($emMock, $translation);
     }
 
     /**
@@ -109,10 +105,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $versionable->expects($this->any())
             ->method('getVersion')
             ->will($this->returnValue(2));
-
-        $versionable->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue($data));
 
         return $versionable;
     }
@@ -188,5 +180,23 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         return $repo;
+    }
+
+    /**
+     * @return OnFlushEventArgs
+     */
+    protected function getOnFlushEventArgsMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\OnFlushEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock
+            ->expects($this->any())
+            ->method('getEntityManager')
+            ->will($this->returnValue($this->getEntityManagerMock()));
+
+        return $mock;
     }
 }
