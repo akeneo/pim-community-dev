@@ -1542,6 +1542,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see the completeness summary$/
+     */
+    public function iShouldSeeTheCompletenessSummary()
+    {
+        $this->getPage('Product edit')->findCompletenessContent();
+        $this->getPage('Product edit')->findCompletenessLegend();
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" completeness with "([^"]*)" message and (\d+)% of ratio for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeCompletenessWithMessageAndRatioForChannelAndLocale(
+        $state,
+        $message,
+        $ratio,
+        $channel,
+        $locale
+    ) {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompleteness($channelCode, $locale, $state, $message, $ratio);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+
+    /**
      * @param string $expected
      */
     private function assertAddress($expected)

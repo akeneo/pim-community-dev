@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+
 use Doctrine\Common\Util\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -638,6 +640,32 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attribute requirements:$/
+     */
+    public function theFollowingAttributeRequirements(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $requirement = new AttributeRequirement();
+
+            $attribute = $this->getAttribute($data['attribute']);
+            $channel   = $this->getChannel($data['scope']);
+            $family    = $this->getFamily($data['family']);
+
+            $requirement->setAttribute($attribute);
+            $requirement->setChannel($channel);
+            $requirement->setFamily($family);
+
+            $requirement->setRequired($data['required'] === 'yes');
+
+            $this->persist($requirement);
+        }
+
+        $this->flush();
+    }
+
+    /**
      * @Given /^there is no identifier attribute$/
      */
     public function thereIsNoIdentifierAttribute()
@@ -752,6 +780,16 @@ class FixturesContext extends RawMinkContext
     public function getFamily($code)
     {
         return $this->getEntityOrException('PimProductBundle:Family', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Channel
+     */
+    public function getChannel($code)
+    {
+        return $this->getEntityOrException('PimProductBundle:Channel', array('code' => $code));
     }
 
     /**
