@@ -1,0 +1,110 @@
+<?php
+
+namespace Pim\Bundle\VersioningBundle\Manager;
+
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\VersioningBundle\Entity\Pending;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+
+/**
+ * Pending manager
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class PendingManager
+{
+    /**
+     * @var ObjectManager
+     */
+    protected $em;
+
+    /**
+     * @var VersionManager
+     */
+    protected $versionManager;
+
+    /**
+     * @var AuditManager
+     */
+    protected $auditManager;
+
+    /**
+     * Constructor
+     *
+     * @param VersionManager $vm
+     * @param AuditManager   $am
+     * @param ObjectManager  $em
+     */
+    public function __construct(VersionManager $vm, AuditManager $am, ObjectManager $em)
+    {
+        $this->em = $em;
+        $this->versionManager = $vm;
+        $this->auditManager = $am;
+    }
+
+    /**
+     * Create Version and Audit from Pending
+     *
+     * @param Pending $pending
+     */
+    public function createVersionAndAudit(Pending $pending, $withFlush = true)
+    {
+        $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
+        $versionable = $this->getRelatedVersionable($pending);
+
+        $current = $this->versionManager->buildVersion($versionable, $user);
+        $this->em->persist($current);
+        $this->em->remove($pending);
+
+        $previous = $this->versionManager->getPreviousVersion($current);
+        $audit = $this->auditManager->buildAudit($current, $previous);
+        $diffData = $audit->getData();
+        if (!empty($diffData)) {
+            $this->em->persist($audit);
+        }
+
+        if ($withFlush) {
+            $this->em->flush();
+        }
+    }
+
+    /**
+     * Return the pending version for the versionable entity
+     *
+     * @return Pending | null
+     */
+    public function getPending(VersionableInterface $versionable)
+    {
+        return $this->em->getRepository('PimVersioningBundle:Pending')->getPending($versionable);;
+    }
+
+    /**
+     * Get pending versions
+     *
+     * @return array
+     */
+    public function getPendingVersions()
+    {
+        $versions = $this->em->getRepository('PimVersioningBundle:Pending')
+            ->findAll(array('status' => Pending::STATUS_PENDING));
+
+        return $versions;
+    }
+
+    /**
+     * Return versionable entity from pending
+     *
+     * @param Pending $pending
+     *
+     * @return VersionableInterface;
+     */
+    public function getRelatedVersionable(Pending $pending)
+    {
+        $repo = $this->em->getRepository($pending->getResourceName());
+        $versionable = $repo->find($pending->getResourceId());
+
+        return $versionable;
+    }
+}
