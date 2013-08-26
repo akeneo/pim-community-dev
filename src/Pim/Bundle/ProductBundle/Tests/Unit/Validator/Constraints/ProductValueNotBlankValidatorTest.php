@@ -57,7 +57,6 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate(new \stdClass(), $this->constraint);
     }
 
-
     /**
      * Data provider for right simple data
      *

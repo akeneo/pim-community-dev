@@ -434,7 +434,7 @@ class Family implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Setter attribute requirements
+     * Set attribute requirements
      *
      * @param array $attributeRequirements
      *
@@ -447,6 +447,11 @@ class Family implements TranslatableInterface, VersionableInterface
         return $this;
     }
 
+    /**
+     * Get attribute requirements
+     *
+     * @return array
+     */
     public function getAttributeRequirements()
     {
         $result = array();
@@ -462,6 +467,14 @@ class Family implements TranslatableInterface, VersionableInterface
         return $result;
     }
 
+    /**
+     * Get attribute requirement key
+     *
+     * @param string $attributeCode
+     * @param string $channelCode
+     *
+     * @return string
+     */
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);

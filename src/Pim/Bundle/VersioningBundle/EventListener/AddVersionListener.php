@@ -60,7 +60,7 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
-     * @param $username
+     * @param mixed $username
      *
      * @throws \InvalidArgumentException
      */

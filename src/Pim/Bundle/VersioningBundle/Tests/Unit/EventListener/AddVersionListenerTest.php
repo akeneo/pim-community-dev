@@ -156,7 +156,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         return $emMock;
     }
 
-
     /**
      * @return Doctrine\ORM\EntityRepository
      */

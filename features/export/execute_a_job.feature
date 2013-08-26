@@ -33,3 +33,4 @@ Feature: Execute a job
     When I launch the export job
     Then I should see "The export has been successfully executed."
     And file "/tmp/export.csv" should exist
+    And an email to "admin@example.com" should have been sent

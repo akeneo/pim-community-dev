@@ -3,14 +3,10 @@
 namespace Pim\Bundle\ProductBundle\Calculator;
 
 use Symfony\Component\Validator\Validator;
-
 use Doctrine\ORM\EntityManager;
-
 use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
-
 use Pim\Bundle\ProductBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
-
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Completeness;
 use Pim\Bundle\ProductBundle\Entity\Locale;
@@ -30,7 +26,6 @@ use Pim\Bundle\ProductBundle\Entity\Product;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class CompletenessCalculator
 {

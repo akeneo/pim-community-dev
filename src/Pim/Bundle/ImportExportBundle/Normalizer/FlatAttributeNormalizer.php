@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
@@ -93,6 +92,8 @@ class FlatAttributeNormalizer extends AttributeNormalizer
      * Normalize options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return string
      */
     protected function normalizeOptions($attribute)
     {
@@ -121,6 +122,8 @@ class FlatAttributeNormalizer extends AttributeNormalizer
      * Normalize default options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return string
      */
     protected function normalizeDefaultOptions($attribute)
     {

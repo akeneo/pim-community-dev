@@ -13,14 +13,14 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidMetric extends Constraint
 {
-    /*
+    /**
      * Violation message for invalid or missing metric type
      *
      * @var string
      */
     public $familyMessage = 'Please specify a valid metric family';
 
-    /*
+    /**
      * Violation message for invalid or missing default metric unit
      *
      * @var string

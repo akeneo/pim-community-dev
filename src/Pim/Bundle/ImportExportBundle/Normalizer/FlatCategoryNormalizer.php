@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 
 /**
