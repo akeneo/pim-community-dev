@@ -20,7 +20,7 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \Pim\Bundle\VersioningBundle\Manager\VersionManager
      */
-    protected $builder;
+    protected $manager;
 
     /**
      * {@inheritdoc}
@@ -30,7 +30,7 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $encoders = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
-        $this->builder = new VersionManager($serializer);
+        $this->manager = new VersionManager($this->getEntityManagerMock(), $serializer);
     }
 
     /**
@@ -39,8 +39,21 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
     public function testBuildVersion()
     {
         $data = array('field' => 'value');
-        $version = $this->builder->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
         $this->assertTrue($version instanceof Version);
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManagerMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $mock;
     }
 
     /**
@@ -52,12 +65,12 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
     {
         // update version
         $data = array('field1' => 'the-same', 'field2' => 'will-be-changed');
-        $previousVersion = $this->builder->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $previousVersion = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
 
         $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
-        $currentVersion = $this->builder->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $currentVersion = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
 
-        $audit = $this->builder->buildAudit($currentVersion, $previousVersion);
+        $audit = $this->manager->buildAudit($currentVersion, $previousVersion);
         $expected = array(
             'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),
             'field3' => array('old' => '', 'new' => 'new-data'),
@@ -65,7 +78,7 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $audit->getData());
 
         // new version
-        $audit = $this->builder->buildAudit($currentVersion);
+        $audit = $this->manager->buildAudit($currentVersion);
         $expected = array(
             'field1' => array('old' => '', 'new' => 'the-same'),
             'field2' => array('old' => '', 'new' => 'has-changed'),
@@ -90,10 +103,6 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $versionable->expects($this->any())
             ->method('getVersion')
             ->will($this->returnValue(2));
-
-        $versionable->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue($data));
 
         return $versionable;
     }

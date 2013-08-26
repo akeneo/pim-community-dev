@@ -91,7 +91,6 @@ class AddVersionListener implements EventSubscriber
                     }
                 }
                 $this->pendingEntities = array();
-
                 $em->flush();
             }
         }

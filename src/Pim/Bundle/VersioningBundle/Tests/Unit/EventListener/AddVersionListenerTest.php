@@ -2,12 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
-use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
-use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 
 /**
  * Test related class
@@ -23,8 +19,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
     }
 
@@ -33,8 +28,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsername()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername('admin');
         $user = new User();
         $listener->setUsername($user);
@@ -46,8 +40,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsernameException()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername(null);
     }
 
@@ -56,8 +49,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testcheckScheduledUpdate()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
 
         $emMock          = $this->getEntityManagerMock();
         $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
@@ -67,31 +59,17 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
-     */
+     *
     public function testWriteSnapshot()
     {
-        $builder  = $this->getVersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
 
         $emMock          = $this->getEntityManagerMock();
         $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
         $userMock        = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
 
         $listener->writeSnapshot($emMock, $versionableMock, $userMock);
-    }
-
-    /**
-     * @return \Pim\Bundle\VersioningBundle\Manager\VersionBuilder
-     */
-    protected function getVersionBuilder()
-    {
-        $encoders = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-        $builder = new VersionBuilder($serializer);
-
-        return $builder;
-    }
+    }*/
 
     /**
      * @param string $data
