@@ -15,7 +15,21 @@ use Symfony\Component\Form\FormEvent;
  */
 class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 {
-    protected $enabled;
+    protected $productEnabled;
+
+    /**
+     * Set wether or not the product should be enabled
+     *
+     * @param bool $productEnabled
+     *
+     * @return TransformImportedProductDataSubscriber
+     */
+    public function setProductEnabled($productEnabled)
+    {
+        $this->productEnabled = $productEnabled;
+
+        return $this;
+    }
 
     public static function getSubscribedEvents()
     {
@@ -26,15 +40,10 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 
     public function preSubmit(FormEvent $event)
     {
-        $form = $event->getForm();
-        if (!$form instanceof \Pim\Bundle\ProductBundle\Form\Type\ProductType) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The %s subscriber is only compatible with the Pim\Bundle\ProductBundle\Form\Type\ProductType form, %s given',
-                    get_class($this),
-                    get_class($form)
-                )
-            );
-        }
+        $event->setData(
+            array(
+                'enabled' => $this->productEnabled
+            )
+        );
     }
 }

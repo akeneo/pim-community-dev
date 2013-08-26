@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\ProductBundle\Form\Subscriber\TransformImportedProductDataSubscriber;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 /**
  * Test related class
@@ -17,6 +18,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
     protected function setUp()
     {
         $this->subscriber = new TransformImportedProductDataSubscriber();
+        $this->form = $this->getFormMock();
     }
 
     public function testSubscribedEvent()
@@ -27,33 +29,30 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testOnlySupportProductTypeForm()
+    public function testEnableImportedProduct()
     {
-        $form = $this->getFormMock();
-        $event = $this->getEventMock($form);
+        $event = new FormEvent($this->form, array());
+
+        $this->subscriber->setProductEnabled(true);
 
         $this->subscriber->preSubmit($event);
+
+        $data = $event->getData();
+        $this->assertArrayHasKey('enabled', $data);
+        $this->assertTrue($data['enabled']);
     }
 
-    private function getEventMock($form, $data = array())
+    public function testDisabledImportedProduct()
     {
-        $event = $this
-            ->getMockBuilder('Symfony\Component\Form\FormEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = new FormEvent($this->form, array());
 
-        $event->expects($this->any())
-            ->method('getForm')
-            ->will($this->returnValue($form));
+        $this->subscriber->setProductEnabled(false);
 
-        $event->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue($data));
+        $this->subscriber->preSubmit($event);
 
-        return $event;
+        $data = $event->getData();
+        $this->assertArrayHasKey('enabled', $data);
+        $this->assertFalse($data['enabled']);
     }
 
     private function getFormMock()
