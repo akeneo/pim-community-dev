@@ -11,6 +11,9 @@ namespace Pim\Bundle\ProductBundle\Mailer;
  */
 class MailRecorder implements \Swift_Events_SendListener
 {
+    /**
+     * @var string $filename The file in which will be stored the mails
+     */
     private $filename;
 
     /**
