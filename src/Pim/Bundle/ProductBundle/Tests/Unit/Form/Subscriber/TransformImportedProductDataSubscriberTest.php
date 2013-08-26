@@ -55,6 +55,16 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertFalse($data['enabled']);
     }
 
+    public function testIgnoreEnablingImportedProduct()
+    {
+        $event = new FormEvent($this->form, array());
+
+        $this->subscriber->preSubmit($event);
+
+        $data = $event->getData();
+        $this->assertArrayNotHasKey('enabled', $data);
+    }
+
     private function getFormMock()
     {
         return $this

@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormEvent;
  */
 class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var bool $productEnabled
+     */
     protected $productEnabled;
 
     /**
@@ -31,6 +34,10 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
         return $this;
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -38,12 +45,34 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Transform the imported product data to allow binding them to the form
+     *
+     * @param FormEvent $event
+     *
+     * @return null
+     */
     public function preSubmit(FormEvent $event)
     {
-        $event->setData(
-            array(
-                'enabled' => $this->productEnabled
-            )
-        );
+        $data = $event->getData();
+
+        $dataToSubmit = array();
+        $dataToSubmit = array_merge($this->getProductEnabledData(), $dataToSubmit);
+
+        $event->setData($dataToSubmit);
+    }
+
+    /**
+     * Return form data to set product enabling (empty array if we don't know)
+     *
+     * @return array
+     */
+    private function getProductEnabledData()
+    {
+        if (null !== $this->productEnabled) {
+            return array('enabled' => $this->productEnabled);
+        }
+
+        return array();
     }
 }
