@@ -36,6 +36,11 @@ class FamilyController extends Controller
                 $this->persist($family);
                 $this->addFlash('success', 'Family successfully created');
 
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPendingVersion($family)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
+
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
             }
         }
@@ -81,6 +86,11 @@ class FamilyController extends Controller
             if ($form->isValid()) {
                 $this->flush();
                 $this->addFlash('success', 'Family successfully updated.');
+
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPendingVersion($family)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
