@@ -106,10 +106,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getVersion')
             ->will($this->returnValue(2));
 
-        $versionable->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue($data));
-
         return $versionable;
     }
 
