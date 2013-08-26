@@ -54,6 +54,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function clearRecordedMails()
+    {
+        $this->getMailRecorder()->clear();
+    }
+
+    /**
      * @param PageFactory $pageFactory
      */
     public function setPageFactory(PageFactory $pageFactory)
