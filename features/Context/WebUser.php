@@ -1542,6 +1542,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^an email to "([^"]*)" should have been sent$/
+     */
+    public function anEmailToShouldHaveBeenSent($email)
+    {
+        $recorder = $this->getMailRecorder();
+        if (0 === $recorder->getMailsSentTo($email)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'No emails were sent to %s.',
+                    $email
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $expected
      */
     private function assertAddress($expected)
@@ -1738,5 +1754,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
+    }
+
+    /**
+     * Get the mail recorder
+     *
+     * @return MailRecorder
+     */
+    private function getMailRecorder()
+    {
+        return $this->getMainContext()->getMailRecorder();
     }
 }

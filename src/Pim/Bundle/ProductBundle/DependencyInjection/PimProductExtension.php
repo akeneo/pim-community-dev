@@ -22,12 +22,14 @@ class PimProductExtension extends Extension
     {
         // process configuration to validation and merge
         $currencyConfig = Yaml::parse(realpath(__DIR__ .'/../Resources/config/pim_currencies.yml'));
-        $config = $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
+        $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
         $container->setParameter('pim_product.currencies', $currencyConfig);
 
         $localeConfig = Yaml::parse(realpath(__DIR__.'/../Resources/config/pim_locales.yml'));
-        $config = $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
+        $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
         $container->setParameter('pim_product.locales', $localeConfig);
+
+        $config = $this->processConfiguration(new Configuration, $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
@@ -39,5 +41,9 @@ class PimProductExtension extends Extension
         $loader->load('datagrid.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
+
+        if ($config['record_mails']) {
+            $loader->load('mail_recorder.yml');
+        }
     }
 }
