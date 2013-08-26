@@ -187,17 +187,23 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testAddIdentifierAttribute()
+    public function testRemoveIdentifierAttribute()
     {
         $attribute = $this->getAttributeMock('pim_product_identifier');
-        $this->family->addAttribute($attribute);
+        $this->family->removeAttribute($attribute);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributeRequirementKeyFor()
     {
         $this->assertEquals('foo_bar', $this->family->getAttributeRequirementKeyFor('foo', 'bar'));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributeRequirements()
     {
         $mobileName           = $this->getAttributeRequirementMock('mobile', 'name');
