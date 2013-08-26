@@ -238,9 +238,6 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
-            throw new \InvalidArgumentException('Identifier cannot be part of a family.');
-        }
         $this->attributes[] = $attribute;
 
         return $this;
@@ -255,6 +252,10 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
+        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
+        }
+
         $this->attributes->removeElement($attribute);
 
         return $this;
