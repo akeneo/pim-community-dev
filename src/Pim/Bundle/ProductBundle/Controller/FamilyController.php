@@ -82,6 +82,11 @@ class FamilyController extends Controller
                 $this->flush();
                 $this->addFlash('success', 'Family successfully updated.');
 
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPending($family)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
+
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
         }

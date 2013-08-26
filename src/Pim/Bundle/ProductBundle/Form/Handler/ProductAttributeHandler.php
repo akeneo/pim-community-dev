@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 
 /**
  * Form handler for Product attribute
@@ -40,22 +41,30 @@ class ProductAttributeHandler
     protected $attTypeManager;
 
     /**
+     * @var PendingManager
+     */
+    protected $pendingManager;
+
+    /**
      * Constructor for handler
      * @param FormInterface        $form           Form called
      * @param Request              $request        Web request
      * @param ObjectManager        $manager        Storage manager
      * @param AttributeTypeManager $attTypeManager Attribute type manager
+     * @param PendingManager       $pm             The pending manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        AttributeTypeManager $attTypeManager
+        AttributeTypeManager $attTypeManager,
+        PendingManager $pm
     ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
         $this->attTypeManager = $attTypeManager;
+        $this->pendingManager = $pm;
     }
 
     /**
@@ -143,5 +152,9 @@ class ProductAttributeHandler
 
         $this->manager->persist($entity);
         $this->manager->flush();
+
+        if ($pending = $this->pendingManager->getPending($entity)) {
+            $this->pendingManager->createVersionAndAudit($pending);
+        }
     }
 }

@@ -1,19 +1,25 @@
 services:
 
+    pim_versioning.manager.version:
+        class: %pim_versioning.manager.version.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @pim_serializer
+
     pim_versioning.manager.audit:
         class: %pim_versioning.manager.audit.class%
         arguments:
             - @doctrine.orm.entity_manager
 
-    pim_versioning.manager.version_builder:
-        class: %pim_versioning.manager.version_builder.class%
+    pim_versioning.manager.pending:
+        class: %pim_versioning.manager.pending.class%
         arguments:
-            - @pim_serializer
+            - @pim_versioning.manager.version
+            - @pim_versioning.manager.audit
+            - @doctrine.orm.entity_manager
 
     pim_versioning.event_listener.addversion:
         class: %pim_versioning.event_listener.addversion.class%
-        arguments:
-            - @pim_versioning.manager.version_builder
         tags:
             - { name: doctrine.event_subscriber }
 

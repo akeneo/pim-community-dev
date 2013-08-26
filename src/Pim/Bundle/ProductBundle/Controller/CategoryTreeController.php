@@ -187,6 +187,11 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPending($category)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
+
                 return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
             }
         }
@@ -234,6 +239,11 @@ class CategoryTreeController extends Controller
                     'success',
                     sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
                 );
+
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPending($category)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
             }
         }
 

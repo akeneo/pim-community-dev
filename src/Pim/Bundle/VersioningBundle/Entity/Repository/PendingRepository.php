@@ -16,7 +16,7 @@ use Pim\Bundle\VersioningBundle\Entity\Pending;
 class PendingRepository extends EntityRepository
 {
     /**
-     * Return a query builder for activated currencies
+     * Return the pending version for the versionable entity
      *
      * @return Pending | null
      */

@@ -136,6 +136,11 @@ class ProductController extends Controller
 
                 $this->addFlash('success', 'Product successfully saved');
 
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPending($product)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
+
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
