@@ -56,7 +56,9 @@ class PendingManager
 
         $current = $this->versionManager->buildVersion($versionable, $user);
         $this->em->persist($current);
-        $this->em->remove($pending);
+        foreach ($this->getPendings($versionable) as $pending) {
+            $this->em->remove($pending);
+        }
 
         $previous = $this->versionManager->getPreviousVersion($current);
         $audit = $this->auditManager->buildAudit($current, $previous);
@@ -77,13 +79,23 @@ class PendingManager
      */
     public function getPending(VersionableInterface $versionable)
     {
-        return $this->em->getRepository('PimVersioningBundle:Pending')->getPending($versionable);;
+        return $this->em->getRepository('PimVersioningBundle:Pending')->getPending($versionable);
+    }
+
+    /**
+     * Return the pending versions for the versionable entity
+     *
+     * @return Pending[]
+     */
+    public function getPendings(VersionableInterface $versionable)
+    {
+        return $this->em->getRepository('PimVersioningBundle:Pending')->getPendings($versionable);
     }
 
     /**
      * Get pending versions
      *
-     * @return array
+     * @return Pending[]
      */
     public function getPendingVersions()
     {

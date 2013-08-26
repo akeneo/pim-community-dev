@@ -57,8 +57,6 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
         $currentVersion = $this->builder->buildVersion($this->getVersionableMock($data), $this->getUserMock());
 
-        var_dump($currentVersion->getData());
-
         $audit = $this->builder->buildAudit($currentVersion, $previousVersion);
         $expected = array(
             'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),

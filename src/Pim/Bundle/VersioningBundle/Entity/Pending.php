@@ -40,12 +40,12 @@ class Pending
     protected $username;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="resource_name", type="string")
      */
     protected $resourceName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="resource_id", type="integer")
      */
     protected $resourceId;
 
@@ -53,6 +53,11 @@ class Pending
      * @ORM\Column(type="integer")
      */
     protected $status = self::STATUS_PENDING;
+
+    /**
+     * @ORM\Column(name="logged_at", type="datetime")
+     */
+    protected $loggedAt;
 
     /**
      * Constructor
@@ -66,6 +71,7 @@ class Pending
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
         $this->username     = $username;
+        $this->loggedAt     = new \DateTime("now");
     }
 
     /**

@@ -40,7 +40,7 @@ class AddVersionListener implements EventSubscriber
     /**
      * Entities to version
      *
-     * @var array
+     * @var VersionableInterface[]
      */
     protected $pendingEntities;
 
@@ -52,7 +52,7 @@ class AddVersionListener implements EventSubscriber
     /**
      * Specifies the list of events to listen
      *
-     * @return array
+     * @return string[]
      */
     public function getSubscribedEvents()
     {
@@ -91,9 +91,12 @@ class AddVersionListener implements EventSubscriber
                     }
                 }
                 $this->pendingEntities = array();
+
+                $em->flush();
             }
         }
     }
+
     /**
      * @param OnFlushEventArgs $args
      */

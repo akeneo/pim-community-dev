@@ -14,6 +14,7 @@ if [ $env != "behat" ]; then
     php app/console doctrine:fixtures:load --no-interaction --env=$env --no-debug
     php app/console oro:acl:load --env=$env
     php app/console pim:search:reindex en_US --env=$env
+    php app/console pim:versioning:refresh
 else
     php app/console cache:clear --env=$env
 fi

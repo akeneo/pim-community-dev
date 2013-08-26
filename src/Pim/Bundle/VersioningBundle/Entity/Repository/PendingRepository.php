@@ -31,4 +31,20 @@ class PendingRepository extends EntityRepository
 
         return $pending;
     }
+
+    /**
+     * Return the pending versions
+     *
+     * @return array
+     */
+    public function getPendings(VersionableInterface $versionable)
+    {
+        $criteria = array(
+            'resourceName' => get_class($versionable),
+            'resourceId'   => $versionable->getId(),
+            'status'       => Pending::STATUS_PENDING
+        );
+
+        return $this->findBy($criteria);
+    }
 }

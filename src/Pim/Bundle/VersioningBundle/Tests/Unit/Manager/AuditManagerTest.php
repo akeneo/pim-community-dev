@@ -21,7 +21,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     protected $manager;
 
     /**
-     * @var array
+     * @var Audit[]
      */
     protected $entries = array();
 
