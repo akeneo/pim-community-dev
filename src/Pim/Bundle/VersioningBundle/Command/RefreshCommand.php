@@ -56,7 +56,7 @@ class RefreshCommand extends ContainerAwareCommand
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
-        $pendingVersions = $this->getPendingManager()->getPendingVersions();
+        $pendingVersions = $this->getPendingManager()->getAllPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
             $output->writeln(sprintf('<info>Versioning is already up to date.</info>'));

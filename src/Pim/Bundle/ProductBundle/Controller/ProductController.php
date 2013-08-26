@@ -137,7 +137,7 @@ class ProductController extends Controller
                 $this->addFlash('success', 'Product successfully saved');
 
                 $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPending($product)) {
+                if ($pending = $pendingManager->getPendingVersion($product)) {
                     $pendingManager->createVersionAndAudit($pending);
                 }
 

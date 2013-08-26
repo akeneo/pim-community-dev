@@ -188,7 +188,7 @@ class CategoryTreeController extends Controller
                 );
 
                 $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPending($category)) {
+                if ($pending = $pendingManager->getPendingVersion($category)) {
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
@@ -241,7 +241,7 @@ class CategoryTreeController extends Controller
                 );
 
                 $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPending($category)) {
+                if ($pending = $pendingManager->getPendingVersion($category)) {
                     $pendingManager->createVersionAndAudit($pending);
                 }
             }

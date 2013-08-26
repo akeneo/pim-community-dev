@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Doctrine\ORM\EntityRepository;
-
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -58,7 +57,7 @@ class PendingManager
 
         $current = $this->versionManager->buildVersion($versionable, $user);
         $this->em->persist($current);
-        foreach ($this->getPendings($versionable) as $pending) {
+        foreach ($this->getPendingVersions($versionable) as $pending) {
             $this->em->remove($pending);
         }
 
@@ -79,7 +78,7 @@ class PendingManager
      *
      * @return Pending | null
      */
-    public function getPending(VersionableInterface $versionable)
+    public function getPendingVersion(VersionableInterface $versionable)
     {
         $criteria = array(
             'resourceName' => get_class($versionable),
@@ -95,7 +94,7 @@ class PendingManager
      *
      * @return Pending[]
      */
-    public function getPendings(VersionableInterface $versionable)
+    public function getPendingVersions(VersionableInterface $versionable)
     {
         $criteria = array(
             'resourceName' => get_class($versionable),
@@ -111,7 +110,7 @@ class PendingManager
      *
      * @return Pending[]
      */
-    public function getPendingVersions()
+    public function getAllPendingVersions()
     {
         $versions = $this->getRepository()->findAll();
 

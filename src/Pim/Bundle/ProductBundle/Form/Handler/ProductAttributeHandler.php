@@ -152,7 +152,7 @@ class ProductAttributeHandler
         $this->manager->persist($entity);
         $this->manager->flush();
 
-        if ($pending = $this->pendingManager->getPending($entity)) {
+        if ($pending = $this->pendingManager->getPendingVersion($entity)) {
             $this->pendingManager->createVersionAndAudit($pending);
         }
     }

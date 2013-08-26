@@ -37,7 +37,7 @@ class FamilyController extends Controller
                 $this->addFlash('success', 'Family successfully created');
 
                 $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPending($family)) {
+                if ($pending = $pendingManager->getPendingVersion($family)) {
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
@@ -88,7 +88,7 @@ class FamilyController extends Controller
                 $this->addFlash('success', 'Family successfully updated.');
 
                 $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPending($family)) {
+                if ($pending = $pendingManager->getPendingVersion($family)) {
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
