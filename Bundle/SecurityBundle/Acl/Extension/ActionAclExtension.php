@@ -21,26 +21,24 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function supportsObject($object)
+    public function supports($type, $id)
     {
-        if ($object instanceof ObjectIdentity) {
-            return $object->getType() === 'action';
-        }
-        if (is_string($object)) {
-            return $this->getSortOfDescriptor($object) === 'action';
-        }
-
-        return false;
+        return $type === 'action';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValidMask($mask, $object)
+    public function validateMask($mask, $object)
     {
-        return
-            $mask === 0
-            || $mask === ActionMaskBuilder::MASK_EXECUTE;
+        if ($mask === 0) {
+            return;
+        }
+        if ($mask === ActionMaskBuilder::MASK_EXECUTE) {
+            return;
+        }
+
+        throw $this->createInvalidAclMaskException($mask, $object);
     }
 
     /**
@@ -48,10 +46,10 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function createObjectIdentity($object)
     {
-        $sortOfDescriptor = $value = null;
-        $this->parseDescriptor($object, $sortOfDescriptor, $value);
+        $type = $id = null;
+        $this->parseDescriptor($object, $type, $id);
 
-        return new ObjectIdentity('action', $value);
+        return new ObjectIdentity($id, $type);
     }
 
     /**

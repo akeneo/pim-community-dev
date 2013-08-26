@@ -211,4 +211,15 @@ abstract class MaskBuilder
 
         return static::ON;
     }
+
+    /**
+     * Gets constant value by its name
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public static function getConst($name)
+    {
+        return constant('static::' . $name);
+    }
 }

@@ -3,28 +3,31 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
 interface AclExtensionInterface
 {
     /**
      * Checks if the ACL extension supports the given object.
      *
-     * @param mixed $object An object to test
-     *
+     * @param string $type A type of an object to test
+     * @param mixed $id An id of an object to test
      * @return bool true if this ACL extension can process the object
      */
-    public function supportsObject($object);
+    public function supports($type, $id);
 
     /**
      * Checks if the given bitmask is valid for the given object.
      *
+     * This method throws InvalidAclMaskException if the mask is invalid.
+     *
      * @param int $mask The bitmask
      * @param mixed $object An object to test
-     * @return bool true if the bitmask can be used for the object
+     * @throws InvalidAclMaskException
      */
-    public function isValidMask($mask, $object);
+    public function validateMask($mask, $object);
 
     /**
      * Constructs an ObjectIdentity for the given object

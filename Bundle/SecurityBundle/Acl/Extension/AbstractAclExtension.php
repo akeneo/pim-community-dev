@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
 abstract class AbstractAclExtension implements AclExtensionInterface
 {
@@ -35,28 +37,14 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     }
 
     /**
-     * Gets the sort og the given object identity descriptor
-     *
-     * @param string $descriptor
-     * @return string|null
-     */
-    protected function getSortOfDescriptor($descriptor)
-    {
-        $delim = strpos($descriptor, ':');
-        return $delim
-            ? strtolower(substr($descriptor, 0, $delim))
-            : null;
-    }
-
-    /**
      * Split the given object identity descriptor
      *
      * @param string $descriptor
-     * @param string $sortOfDescriptor [output]
-     * @param string $value [output]
+     * @param string $type [output]
+     * @param string $id [output]
      * @throws \InvalidArgumentException
      */
-    protected function parseDescriptor($descriptor, &$sortOfDescriptor, &$value)
+    protected function parseDescriptor($descriptor, &$type, &$id)
     {
         $delim = strpos($descriptor, ':');
         if (!$delim) {
@@ -68,7 +56,32 @@ abstract class AbstractAclExtension implements AclExtensionInterface
             );
         }
 
-        $sortOfDescriptor = strtolower(substr($descriptor, 0, $delim));
-        $value = trim(substr($descriptor, $delim + 1));
+        $type = strtolower(substr($descriptor, 0, $delim));
+        $id = trim(substr($descriptor, $delim + 1));
+    }
+
+    /**
+     * Builds InvalidAclMaskException object
+     *
+     * @param int $mask
+     * @param mixed $object
+     * @param string|null $errorDescription
+     * @return InvalidAclMaskException
+     */
+    protected function createInvalidAclMaskException($mask, $object, $errorDescription = null)
+    {
+        $objectDescription = is_object($object) && !($object instanceof ObjectIdentityInterface)
+            ? get_class($object)
+            : (string)$object;
+        $msg = sprintf(
+            'Invalid ACL mask "%s" for %s.',
+            $this->createMaskBuilder()->getPatternFor($mask),
+            $objectDescription
+        );
+        if (!empty($errorDescription)) {
+            $msg = sprintf('%s %s', $errorDescription, $msg);
+        }
+
+        return new InvalidAclMaskException($msg);
     }
 }

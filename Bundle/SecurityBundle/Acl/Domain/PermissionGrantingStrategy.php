@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;

@@ -10,8 +10,8 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\PermissionGrantingStrategyContext;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\User;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
@@ -76,10 +76,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
             $decisionMaker,
             $this->metadataProvider
         );
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->selector = TestHelper::createAclExtensionSelector($em, $this->metadataProvider);
+        $this->selector = TestHelper::get($this)->createAclExtensionSelector($this->metadataProvider);
         $this->context = new PermissionGrantingStrategyContext($this->selector);
         $this->strategy->setContext($this->context);
 
@@ -91,7 +88,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue($user));
         $this->context->setSecurityToken($token);
-        $this->context->setObject('test');
+        $this->context->setObject(new TestEntity('testId'));
 
         $this->map = new PermissionMap($this->selector);
     }
@@ -122,7 +119,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testObjIsGrantedUsesClassAcesIfNoApplicableObjectAceWasFound()
     {
-        $obj = new TestObject(1);
+        $obj = new TestEntity(1);
         $this->context->setObject($obj);
         $masks = $this->getMasks('VIEW', $obj);
 
@@ -266,9 +263,13 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
     {
         static $id = 1;
 
+        if ($oid === null) {
+            $oid = new ObjectIdentity($this->context->getObject()->getId(), get_class($this->context->getObject()));
+        }
+
         return new Acl(
             $id++,
-            $oid !== null ? $oid : new ObjectIdentity(1, 'Foo'),
+            $oid,
             $this->strategy,
             array(),
             $entriesInheriting

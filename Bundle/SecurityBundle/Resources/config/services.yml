@@ -7,7 +7,6 @@ parameters:
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.ownership.class:                Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
-    oro_security.acl.extension.aspect.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\AspectAclExtension
     oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
     oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
     oro_security.acl.permission_granting_strategy.class:       Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy
@@ -27,6 +26,9 @@ services:
     oro_security.acl.extension_selector:
         public: false
         class: %oro_security.acl.extension_selector.class%
+        arguments:
+            - @oro_security.acl.object_class_accessor
+            - @oro_security.acl.object_id_accessor
 
     oro_security.acl.extension.ownership:
         public: false
@@ -38,19 +40,13 @@ services:
             - @oro_security.owner.ownership_metadata_provider
             - @oro_security.owner.decision_maker
         tags:
-            - { name: oro_security.acl.extension, priority: 10 }
+            - { name: oro_security.acl.extension, priority: 20 }
 
     oro_security.acl.extension.action:
         public: false
         class: %oro_security.acl.extension.action.class%
         tags:
-            - { name: oro_security.acl.extension, priority: 20 }
-
-    oro_security.acl.extension.aspect:
-        public: false
-        class: %oro_security.acl.extension.aspect.class%
-        tags:
-            - { name: oro_security.acl.extension, priority: 20 }
+            - { name: oro_security.acl.extension, priority: 10 }
 
     oro_security.acl.provider:
         public: false

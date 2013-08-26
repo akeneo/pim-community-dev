@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
 /**
  * This class implements "Null object" design pattern for AclExtensionInterface
@@ -12,17 +14,17 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsObject($object)
+    public function supports($type, $id)
     {
-        return true;
+        throw new \LogicException('Not supported by NullAclExtension.');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValidMask($mask, $object)
+    public function validateMask($mask, $object)
     {
-        return false;
+        throw new InvalidAclMaskException('Not supported by NullAclExtension.');
     }
 
     /**
@@ -30,7 +32,7 @@ final class NullAclExtension implements AclExtensionInterface
      */
     public function createObjectIdentity($object)
     {
-        return null;
+        throw new InvalidDomainObjectException('Not supported by NullAclExtension.');
     }
 
     /**
@@ -38,7 +40,7 @@ final class NullAclExtension implements AclExtensionInterface
      */
     public function createMaskBuilder()
     {
-        return null;
+        throw new \LogicException('Not supported by NullAclExtension.');
     }
 
     /**

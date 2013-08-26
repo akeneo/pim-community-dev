@@ -3,7 +3,8 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntityImplementsDomainObjectInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
@@ -14,16 +15,10 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $em;
-
     protected function setUp()
     {
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->factory = new ObjectIdentityFactory(
-            TestHelper::createAclExtensionSelector($this->em)
+            TestHelper::get($this)->createAclExtensionSelector()
         );
     }
 
@@ -36,26 +31,18 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testFromDomainObjectPrefersInterfaceOverGetId()
     {
-        $obj = $this->getMock('Symfony\Component\Security\Acl\Model\DomainObjectInterface');
-        $obj->expects($this->once())
-            ->method('getObjectIdentifier')
-            ->will($this->returnValue('getObjectIdentifier()'));
-        $obj->expects($this->never())
-            ->method('getId')
-            ->will($this->returnValue('getId()'));
-
+        $obj = new TestEntityImplementsDomainObjectInterface('getObjectIdentifier()');
         $id = $this->factory->get($obj);
         $this->assertEquals('getObjectIdentifier()', $id->getIdentifier());
+        $this->assertEquals(get_class($obj), $id->getType());
     }
 
-    public function testFromDomainObjectWithoutInterface()
+    public function testFromDomainObjectWithoutDomainObjectInterface()
     {
-        $id = $this->factory->get(new TestDomainObject());
+        $obj = new TestEntity('getId()');
+        $id = $this->factory->get($obj);
         $this->assertEquals('getId()', $id->getIdentifier());
-        $this->assertEquals(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject',
-            $id->getType()
-        );
+        $this->assertEquals(get_class($obj), $id->getType());
     }
 
     /**
@@ -71,33 +58,17 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetShouldCatchInvalidArgumentException()
     {
-        $obj = $this->getMock('Symfony\Component\Security\Acl\Model\DomainObjectInterface');
-        $obj->expects($this->once())
-            ->method('getObjectIdentifier')
-            ->will($this->throwException(new \InvalidArgumentException()));
-
-        $this->factory->get($obj);
+        $this->factory->get(new TestEntityImplementsDomainObjectInterface());
     }
 
     /**
      * @dataProvider getProvider
      */
-    public function testGet($desctiptor, $expectedId, $expectedType)
+    public function testGet($descriptor, $expectedType, $expectedId)
     {
-        $config = $this->getMockBuilder('\Doctrine\ORM\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->em->expects($this->any())
-            ->method('getConfiguration')
-            ->will($this->returnValue($config));
-        $config->expects($this->any())
-            ->method('getEntityNamespace')
-            ->with($this->equalTo('AcmeBundle'))
-            ->will($this->returnValue('AcmeBundle\Entity'));
-
-        $id = $this->factory->get($desctiptor);
-        $this->assertEquals($expectedId, $id->getIdentifier());
+        $id = $this->factory->get($descriptor);
         $this->assertEquals($expectedType, $id->getType());
+        $this->assertEquals($expectedId, $id->getIdentifier());
     }
 
     /**
@@ -132,47 +103,47 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory->get('Some Action');
     }
 
-    public function testGetShouldUseLocalCache()
-    {
-        $config = $this->getMockBuilder('\Doctrine\ORM\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->em->expects($this->once())
-            ->method('getConfiguration')
-            ->will($this->returnValue($config));
-        $config->expects($this->once())
-            ->method('getEntityNamespace')
-            ->with($this->equalTo('AcmeBundle'))
-            ->will($this->returnValue('AcmeBundle\Entity'));
-
-        $id = $this->factory->get('entity:AcmeBundle:SomeEntity');
-        $this->assertEquals('class', $id->getIdentifier());
-        $this->assertEquals('AcmeBundle\Entity\SomeEntity', $id->getType());
-
-        // Test that the factory use the local cache - no extra call of EntityManager must be performed
-        $this->factory->get('entity:AcmeBundle:SomeEntity');
-    }
-
     public static function getProvider()
     {
         return array(
-            'Class' => array('Class:AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
-            'Class (whitespace)' => array('Class: AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
-            'CLASS' => array('CLASS:AcmeBundle\SomeClass', 'class', 'AcmeBundle\SomeClass'),
-            'Entity' => array('Entity:AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
-            'Entity (whitespace)' => array('Entity: AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
-            'ENTITY' => array('ENTITY:AcmeBundle:SomeEntity', 'class', 'AcmeBundle\Entity\SomeEntity'),
-            'Entity (class name)' => array(
-                'Entity: AcmeBundle\Entity\SomeEntity',
+            'Class' => array(
+                'Class:Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
                 'class',
-                'AcmeBundle\Entity\SomeEntity'
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'Class (whitespace)' => array(
+                'Class: Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'CLASS' => array(
+                'CLASS:Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'Entity' => array(
+                'Entity:Test:TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'Entity (whitespace)' => array(
+                'Entity: Test:TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'ENTITY' => array(
+                'ENTITY:Test:TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
+            ),
+            'Entity (class name)' => array(
+                'Entity: Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
+                'class',
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
             ),
             'Action' => array('Action:Some Action', 'action', 'Some Action'),
             'Action (whitespace)' => array('Action: Some Action', 'action', 'Some Action'),
             'ACTION' => array('ACTION:Some Action', 'action', 'Some Action'),
-            'Aspect' => array('Aspect:Some Aspect', 'aspect', 'Some Aspect'),
-            'Aspect (whitespace)' => array('Aspect: Some Aspect', 'aspect', 'Some Aspect'),
-            'ASPECT' => array('ASPECT:Some Aspect', 'aspect', 'Some Aspect'),
         );
     }
 }

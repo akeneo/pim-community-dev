@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle;
 
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\AclConfigurationPass;

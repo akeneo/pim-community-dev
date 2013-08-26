@@ -51,14 +51,20 @@ class OwnershipMaskBuilder extends MaskBuilder
     const MASK_ASSIGN_SYSTEM      = 268435456;  // 1 << 28
     const MASK_SHARE_SYSTEM       = 536870912;  // 1 << 29
 
-    // Some useful groups of masks
-    const GROUP_BASIC             = 47;         // 0x2F
-    const GROUP_LOCAL             = 2256;       // 0x8D0
-    const GROUP_DEEP              = 194304;     // 0x2F700
-    const GROUP_GLOBAL            = 9240576;    // 0x8D0000
+    // Some useful groups of bitmasks
+    const GROUP_BASIC             = 63;         // 0x3F
+    const GROUP_LOCAL             = 4032;       // 0xFC0
+    const GROUP_DEEP              = 258048;     // 0x3F000
+    const GROUP_GLOBAL            = 16515072;   // 0xFC0000
     const GROUP_SYSTEM            = 1056964608; // 0x3F000000
     const GROUP_CRUD_GLOBAL       = 3932160;    // 0x3C0000
     const GROUP_CRUD_SYSTEM       = 251658240;  // 0xF000000
+    const GROUP_VIEW              = 17043521;   // 0x1041041
+    const GROUP_CREATE            = 34087042;   // 0x2082082
+    const GROUP_EDIT              = 68174084;   // 0x4104104
+    const GROUP_DELETE            = 136348168;  // 0x8208208
+    const GROUP_ASSIGN            = 272696336;  // 0x10410410
+    const GROUP_SHARE             = 545392672;  // 0x20820820
     const GROUP_ALL               = 1073741823; // 0x3FFFFFFF
 
     const CODE_VIEW         = 'V';

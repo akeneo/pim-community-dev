@@ -9,10 +9,10 @@ use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Organization;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\BusinessUnit;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\User;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
 class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
 {
@@ -66,7 +66,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->decisionMaker->isOrganization(new Organization('')));
         $this->assertTrue(
             $this->decisionMaker->isOrganization(
-                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Organization')
+                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization')
                     ->disableOriginalConstructor()
                     ->getMock()
             )
@@ -81,7 +81,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->decisionMaker->isBusinessUnit(new BusinessUnit('')));
         $this->assertTrue(
             $this->decisionMaker->isBusinessUnit(
-                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\BusinessUnit')
+                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit')
                     ->disableOriginalConstructor()
                     ->getMock()
             )
@@ -96,7 +96,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->decisionMaker->isUser(new User('')));
         $this->assertTrue(
             $this->decisionMaker->isUser(
-                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\User')
+                $this->getMockBuilder('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User')
                     ->disableOriginalConstructor()
                     ->getMock()
             )
@@ -196,20 +196,20 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
 
         $org = new Organization('org');
         $anotherOrg = new Organization('anotherOrg');
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $org)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherOrg)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $anotherOrg)));
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
-        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $org)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherOrg)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $anotherOrg)));
     }
 
     public function testIsBelongToOrganizationForBusinessUnitOwnedObject()
@@ -221,7 +221,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
@@ -232,16 +232,16 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $anotherBu = new BusinessUnit('anotherBu');
         $this->tree->addBusinessUnit($anotherBu->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $anotherBu)));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $bu));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $user));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $anotherBu));
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
-        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $anotherBu)));
         $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $bu));
         $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $user));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, $anotherBu));
@@ -256,7 +256,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('USER', 'owner', 'owner_id')
         );
 
@@ -266,15 +266,15 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $anotherUser = new User('anotherUser');
         $this->tree->addUser($anotherUser->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $user)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, new TestEntity(1, $anotherUser)));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $user));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user1, $anotherUser));
 
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1)));
-        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $user)));
-        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, new TestEntity(1, $anotherUser)));
         $this->assertTrue($this->decisionMaker->isBelongToOrganization($user2, $user));
         $this->assertFalse($this->decisionMaker->isBelongToOrganization($user2, $anotherUser));
     }
@@ -302,14 +302,14 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addUser('user2', 'bu');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
 
         $org = new Organization('org');
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $org)));
     }
 
     public function testIsBelongToBusinessUnitForBusinessUnitOwnedObject()
@@ -321,7 +321,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
@@ -332,16 +332,16 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $anotherBu = new BusinessUnit('anotherBu');
         $this->tree->addBusinessUnit($anotherBu->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $anotherBu)));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, $bu));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, $user));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, $anotherBu));
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $anotherBu)));
         $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, $bu));
         $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, $user));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, $anotherBu));
@@ -355,7 +355,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addUser('user2', 'bu');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('USER', 'owner', 'owner_id')
         );
 
@@ -365,15 +365,15 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $anotherUser = new User('anotherUser');
         $this->tree->addUser($anotherUser->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $user)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $anotherUser)));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, $user));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, $anotherUser));
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $user)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $user)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $anotherUser)));
         $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, $user));
         $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, $anotherUser));
     }
@@ -397,36 +397,36 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnitRelation('bu3', 'bu2');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1), true));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu1)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu1), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu2)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu2), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu3)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu3), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1), true));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu1)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu1), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu2)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu2), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu3)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu3), true));
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu1), true));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu2)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu2), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu3)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestObject(1, $bu3), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu1), true));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu2)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu2), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu3)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user2, new TestEntity(1, $bu3), true));
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu1), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu2)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu2), true));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu3)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user3, new TestObject(1, $bu3), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu1), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu2)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu2), true));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu3)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user3, new TestEntity(1, $bu3), true));
     }
 
     public function testIsBelongToBusinessUnitAssigningDeep()
@@ -445,18 +445,18 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnitRelation('bu3', 'bu2');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu1)));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu1), true));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu2)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu2), true));
-        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu3)));
-        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestObject(1, $bu3), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu1)));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu1), true));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu2)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu2), true));
+        $this->assertFalse($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu3)));
+        $this->assertTrue($this->decisionMaker->isBelongToBusinessUnit($user1, new TestEntity(1, $bu3), true));
     }
 
     public function testIsBelongToUserForUserObject()
@@ -483,14 +483,14 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
 
         $org = new Organization('org');
 
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestObject(1, $org)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestEntity(1, $org)));
     }
 
     public function testIsBelongToUserForBusinessUnitOwnedObject()
@@ -502,7 +502,7 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnit('bu', 'org');
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
@@ -513,16 +513,16 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $anotherBu = new BusinessUnit('anotherBu');
         $this->tree->addBusinessUnit($anotherBu->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1, $anotherBu)));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user1, $bu));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user1, $user));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user1, $anotherBu));
 
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestObject(1, $bu)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestObject(1, $anotherBu)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestEntity(1, $bu)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user2, new TestEntity(1, $anotherBu)));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user2, $bu));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user2, $user));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user2, $anotherBu));
@@ -534,16 +534,16 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
         $this->tree->addUser('user1', null);
 
         $this->metadataProvider->setMetadata(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestObject',
+            'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('USER', 'owner', 'owner_id')
         );
 
         $anotherUser = new User('anotherUser');
         $this->tree->addUser($anotherUser->getId(), null);
 
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1)));
-        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestObject(1, $anotherUser)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1)));
+        $this->assertFalse($this->decisionMaker->isBelongToUser($user1, new TestEntity(1, $anotherUser)));
         $this->assertFalse($this->decisionMaker->isBelongToUser($user1, $anotherUser));
-        $this->assertTrue($this->decisionMaker->isBelongToUser($user1, new TestObject(1, $user1)));
+        $this->assertTrue($this->decisionMaker->isBelongToUser($user1, new TestEntity(1, $user1)));
     }
 }

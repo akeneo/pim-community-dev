@@ -126,6 +126,18 @@ class OwnershipMaskBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $builder->get());
     }
 
+    /**
+     * @dataProvider groupProvider
+     */
+    public function testGroup($groupMask, $expectedMask)
+    {
+        $this->assertEquals(
+            $expectedMask,
+            $groupMask,
+            'Actual: ' . OwnershipMaskBuilder::getPatternFor($groupMask)
+        );
+    }
+
     public static function constructorWithNonIntegerProvider()
     {
         return array(
@@ -231,6 +243,7 @@ class OwnershipMaskBuilderTest extends \PHPUnit_Framework_TestCase
             array(OwnershipMaskBuilder::MASK_SHARE_SYSTEM, OwnershipMaskBuilder::MASK_SHARE_SYSTEM),
         );
     }
+
     public static function maskConstantProvider()
     {
         return array(
@@ -264,6 +277,127 @@ class OwnershipMaskBuilderTest extends \PHPUnit_Framework_TestCase
             array(OwnershipMaskBuilder::MASK_DELETE_SYSTEM),
             array(OwnershipMaskBuilder::MASK_ASSIGN_SYSTEM),
             array(OwnershipMaskBuilder::MASK_SHARE_SYSTEM),
+        );
+    }
+
+    public static function groupProvider()
+    {
+        return array(
+            'GROUP_BASIC' => array(
+                OwnershipMaskBuilder::GROUP_BASIC,
+                OwnershipMaskBuilder::MASK_VIEW_BASIC
+                | OwnershipMaskBuilder::MASK_CREATE_BASIC
+                | OwnershipMaskBuilder::MASK_EDIT_BASIC
+                | OwnershipMaskBuilder::MASK_DELETE_BASIC
+                | OwnershipMaskBuilder::MASK_ASSIGN_BASIC
+                | OwnershipMaskBuilder::MASK_SHARE_BASIC
+            ),
+            'GROUP_LOCAL' => array(
+                OwnershipMaskBuilder::GROUP_LOCAL,
+                OwnershipMaskBuilder::MASK_VIEW_LOCAL
+                | OwnershipMaskBuilder::MASK_CREATE_LOCAL
+                | OwnershipMaskBuilder::MASK_EDIT_LOCAL
+                | OwnershipMaskBuilder::MASK_DELETE_LOCAL
+                | OwnershipMaskBuilder::MASK_ASSIGN_LOCAL
+                | OwnershipMaskBuilder::MASK_SHARE_LOCAL
+            ),
+            'GROUP_DEEP' => array(
+                OwnershipMaskBuilder::GROUP_DEEP,
+                OwnershipMaskBuilder::MASK_VIEW_DEEP
+                | OwnershipMaskBuilder::MASK_CREATE_DEEP
+                | OwnershipMaskBuilder::MASK_EDIT_DEEP
+                | OwnershipMaskBuilder::MASK_DELETE_DEEP
+                | OwnershipMaskBuilder::MASK_ASSIGN_DEEP
+                | OwnershipMaskBuilder::MASK_SHARE_DEEP
+            ),
+            'GROUP_GLOBAL' => array(
+                OwnershipMaskBuilder::GROUP_GLOBAL,
+                OwnershipMaskBuilder::MASK_VIEW_GLOBAL
+                | OwnershipMaskBuilder::MASK_CREATE_GLOBAL
+                | OwnershipMaskBuilder::MASK_EDIT_GLOBAL
+                | OwnershipMaskBuilder::MASK_DELETE_GLOBAL
+                | OwnershipMaskBuilder::MASK_ASSIGN_GLOBAL
+                | OwnershipMaskBuilder::MASK_SHARE_GLOBAL
+            ),
+            'GROUP_SYSTEM' => array(
+                OwnershipMaskBuilder::GROUP_SYSTEM,
+                OwnershipMaskBuilder::MASK_VIEW_SYSTEM
+                | OwnershipMaskBuilder::MASK_CREATE_SYSTEM
+                | OwnershipMaskBuilder::MASK_EDIT_SYSTEM
+                | OwnershipMaskBuilder::MASK_DELETE_SYSTEM
+                | OwnershipMaskBuilder::MASK_ASSIGN_SYSTEM
+                | OwnershipMaskBuilder::MASK_SHARE_SYSTEM
+            ),
+            'GROUP_CRUD_GLOBAL' => array(
+                OwnershipMaskBuilder::GROUP_CRUD_GLOBAL,
+                OwnershipMaskBuilder::MASK_VIEW_GLOBAL
+                | OwnershipMaskBuilder::MASK_CREATE_GLOBAL
+                | OwnershipMaskBuilder::MASK_EDIT_GLOBAL
+                | OwnershipMaskBuilder::MASK_DELETE_GLOBAL
+            ),
+            'GROUP_CRUD_SYSTEM' => array(
+                OwnershipMaskBuilder::GROUP_CRUD_SYSTEM,
+                OwnershipMaskBuilder::MASK_VIEW_SYSTEM
+                | OwnershipMaskBuilder::MASK_CREATE_SYSTEM
+                | OwnershipMaskBuilder::MASK_EDIT_SYSTEM
+                | OwnershipMaskBuilder::MASK_DELETE_SYSTEM
+            ),
+            'GROUP_VIEW' => array(
+                OwnershipMaskBuilder::GROUP_VIEW,
+                OwnershipMaskBuilder::MASK_VIEW_BASIC
+                | OwnershipMaskBuilder::MASK_VIEW_LOCAL
+                | OwnershipMaskBuilder::MASK_VIEW_DEEP
+                | OwnershipMaskBuilder::MASK_VIEW_GLOBAL
+                | OwnershipMaskBuilder::MASK_VIEW_SYSTEM
+            ),
+            'GROUP_EDIT' => array(
+                OwnershipMaskBuilder::GROUP_EDIT,
+                OwnershipMaskBuilder::MASK_EDIT_BASIC
+                | OwnershipMaskBuilder::MASK_EDIT_LOCAL
+                | OwnershipMaskBuilder::MASK_EDIT_DEEP
+                | OwnershipMaskBuilder::MASK_EDIT_GLOBAL
+                | OwnershipMaskBuilder::MASK_EDIT_SYSTEM
+            ),
+            'GROUP_CREATE' => array(
+                OwnershipMaskBuilder::GROUP_CREATE,
+                OwnershipMaskBuilder::MASK_CREATE_BASIC
+                | OwnershipMaskBuilder::MASK_CREATE_LOCAL
+                | OwnershipMaskBuilder::MASK_CREATE_DEEP
+                | OwnershipMaskBuilder::MASK_CREATE_GLOBAL
+                | OwnershipMaskBuilder::MASK_CREATE_SYSTEM
+            ),
+            'GROUP_DELETE' => array(
+                OwnershipMaskBuilder::GROUP_DELETE,
+                OwnershipMaskBuilder::MASK_DELETE_BASIC
+                | OwnershipMaskBuilder::MASK_DELETE_LOCAL
+                | OwnershipMaskBuilder::MASK_DELETE_DEEP
+                | OwnershipMaskBuilder::MASK_DELETE_GLOBAL
+                | OwnershipMaskBuilder::MASK_DELETE_SYSTEM
+            ),
+            'GROUP_ASSIGN' => array(
+                OwnershipMaskBuilder::GROUP_ASSIGN,
+                OwnershipMaskBuilder::MASK_ASSIGN_BASIC
+                | OwnershipMaskBuilder::MASK_ASSIGN_LOCAL
+                | OwnershipMaskBuilder::MASK_ASSIGN_DEEP
+                | OwnershipMaskBuilder::MASK_ASSIGN_GLOBAL
+                | OwnershipMaskBuilder::MASK_ASSIGN_SYSTEM
+            ),
+            'GROUP_SHARE' => array(
+                OwnershipMaskBuilder::GROUP_SHARE,
+                OwnershipMaskBuilder::MASK_SHARE_BASIC
+                | OwnershipMaskBuilder::MASK_SHARE_LOCAL
+                | OwnershipMaskBuilder::MASK_SHARE_DEEP
+                | OwnershipMaskBuilder::MASK_SHARE_GLOBAL
+                | OwnershipMaskBuilder::MASK_SHARE_SYSTEM
+            ),
+            'GROUP_ALL' => array(
+                OwnershipMaskBuilder::GROUP_ALL,
+                OwnershipMaskBuilder::GROUP_BASIC
+                | OwnershipMaskBuilder::GROUP_LOCAL
+                | OwnershipMaskBuilder::GROUP_DEEP
+                | OwnershipMaskBuilder::GROUP_GLOBAL
+                | OwnershipMaskBuilder::GROUP_SYSTEM
+            ),
         );
     }
 }

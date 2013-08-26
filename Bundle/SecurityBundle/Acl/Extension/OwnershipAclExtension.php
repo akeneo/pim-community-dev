@@ -4,14 +4,15 @@ namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
 class OwnershipAclExtension extends AbstractAclExtension
 {
@@ -105,18 +106,19 @@ class OwnershipAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function supportsObject($object)
+    public function supports($type, $id)
     {
-        if ($object instanceof ObjectIdentity) {
-            return strpos($object->getType(), '\\');
+        if ($type === 'entity') {
+            $type = $this->entityClassResolver->getEntityClass($id);
+            $id = null;
+        } elseif ($type === 'class') {
+            $type = $id;
+            $id = null;
         }
-        if (is_object($object)) {
-            return true;
-        }
-        if (is_string($object)) {
-            $sortOfDescriptor = $this->getSortOfDescriptor($object);
 
-            return $sortOfDescriptor === 'class' || $sortOfDescriptor === 'entity';
+        $delim = strrpos($type, '\\');
+        if ($delim && $this->entityClassResolver->isKnownEntityClassNamespace(substr($type, 0, $delim))) {
+            return true;
         }
 
         return false;
@@ -125,13 +127,25 @@ class OwnershipAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function isValidMask($mask, $object)
+    public function validateMask($mask, $object)
     {
-        $validMasks = $this->getValidMasks($object);
+        if ($mask === 0) {
+            return;
+        }
 
-        return
-            $mask === 0
-            || ($mask | $validMasks) === $validMasks;
+        $validMasks = $this->getValidMasks($object);
+        if (($mask | $validMasks) === $validMasks) {
+            $this->validateMaskScope($mask, $object, 'VIEW');
+            $this->validateMaskScope($mask, $object, 'CREATE');
+            $this->validateMaskScope($mask, $object, 'EDIT');
+            $this->validateMaskScope($mask, $object, 'DELETE');
+            $this->validateMaskScope($mask, $object, 'ASSIGN');
+            $this->validateMaskScope($mask, $object, 'SHARE');
+
+            return;
+        }
+
+        throw $this->createInvalidAclMaskException($mask, $object);
     }
 
     /**
@@ -166,7 +180,7 @@ class OwnershipAclExtension extends AbstractAclExtension
             return true;
         }
 
-        $metadata = $this->getObjectMetadata($object);
+        $metadata = $this->getMetadata($object);
         if (!$metadata->hasOwner()) {
             return true;
         }
@@ -199,14 +213,14 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     protected function fromDescriptor($descriptor)
     {
-        $sortOfDescriptor = $value = null;
-        $this->parseDescriptor($descriptor, $sortOfDescriptor, $value);
+        $type = $id = null;
+        $this->parseDescriptor($descriptor, $type, $id);
 
-        switch ($sortOfDescriptor) {
+        switch ($type) {
             case 'class':
-                return $this->forClass($value);
+                return new ObjectIdentity($this->objectClassAccessor->getClass($id), 'class');
             case 'entity':
-                return $this->forEntityClass($value);
+                return new ObjectIdentity($this->entityClassResolver->getEntityClass($id), 'class');
         }
 
         throw new \InvalidArgumentException(
@@ -238,35 +252,31 @@ class OwnershipAclExtension extends AbstractAclExtension
     }
 
     /**
-     * Constructs an ObjectIdentity for the given class
+     * Checks that the given mask represents only one scope
      *
-     * @param string $className
-     * @return ObjectIdentity
+     * @param int $mask
+     * @param mixed $object
+     * @param $subMaskName
+     * @throws InvalidAclMaskException
      */
-    protected function forClass($className)
+    protected function validateMaskScope($mask, $object, $subMaskName)
     {
-        return new ObjectIdentity('class', $this->objectClassAccessor->getClass($className));
-    }
-
-    /**
-     * Constructs an ObjectIdentity for the given entity type
-     *
-     * @param string $entityName The name of the entity. Can be bundle:entity or full class name
-     * @return ObjectIdentity
-     */
-    protected function forEntityClass($entityName)
-    {
-        if (!isset($this->localCacheOfEntityClassNames)) {
-            $this->localCacheOfEntityClassNames = array();
+        if (0 !== ($mask & OwnershipMaskBuilder::getConst('GROUP_' . $subMaskName))) {
+            $maskScopes = array();
+            foreach (array('SYSTEM', 'GLOBAL', 'DEEP', 'LOCAL', 'BASIC') as $scope) {
+                if (0 !== ($mask & OwnershipMaskBuilder::getConst('MASK_' . $subMaskName . '_' . $scope))) {
+                    $maskScopes[] = $scope;
+                }
+            }
+            if (count($maskScopes) > 1) {
+                $msg = sprintf(
+                    'The %s mask must be in one scope only, but it is in %s scopes.',
+                    $subMaskName,
+                    implode(', ', $maskScopes)
+                );
+                throw $this->createInvalidAclMaskException($mask, $object, $msg);
+            }
         }
-        if (isset($this->localCacheOfEntityClassNames[$entityName])) {
-            $entityClass = $this->localCacheOfEntityClassNames[$entityName];
-        } else {
-            $entityClass = $this->entityClassResolver->getEntityClass($entityName);
-            $this->localCacheOfEntityClassNames[$entityName] = $entityClass;
-        }
-
-        return $this->forClass($entityClass);
     }
 
     /**
@@ -277,20 +287,10 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     protected function getValidMasks($object)
     {
-        if ($object instanceof ObjectIdentity) {
-            $className = $object->getType();
-        } elseif (is_string($object)) {
-            $sortOfDescriptor = $className = null;
-            $this->parseDescriptor($object, $sortOfDescriptor, $className);
-        } else {
-            $className = $this->objectClassAccessor->getClass($object);
-        }
-
-        $metadata = $this->metadataProvider->getMetadata($className);
+        $metadata = $this->getMetadata($object);
         if (!$metadata->hasOwner()) {
             return
-                OwnershipMaskBuilder::GROUP_CRUD_SYSTEM
-                | OwnershipMaskBuilder::GROUP_CRUD_GLOBAL;
+                OwnershipMaskBuilder::GROUP_CRUD_SYSTEM;
         } elseif ($metadata->isOrganizationOwned()) {
             return
                 OwnershipMaskBuilder::GROUP_SYSTEM
@@ -298,9 +298,9 @@ class OwnershipAclExtension extends AbstractAclExtension
         } elseif ($metadata->isBusinessUnitOwned()) {
             return
                 OwnershipMaskBuilder::GROUP_SYSTEM
+                | OwnershipMaskBuilder::GROUP_GLOBAL
                 | OwnershipMaskBuilder::GROUP_DEEP
-                | OwnershipMaskBuilder::GROUP_LOCAL
-                | OwnershipMaskBuilder::GROUP_BASIC;
+                | OwnershipMaskBuilder::GROUP_LOCAL;
         } elseif ($metadata->isUserOwned()) {
             return
                 OwnershipMaskBuilder::GROUP_SYSTEM
@@ -314,24 +314,22 @@ class OwnershipAclExtension extends AbstractAclExtension
     }
 
     /**
-     * Gets the real class name for the given domain object or the given class name that could be a proxy
+     * Gets metadata for the given object
      *
-     * @param object|string $domainObjectOrClassName
-     * @return string
-     */
-    protected function getObjectClass($domainObjectOrClassName)
-    {
-        return $this->objectClassAccessor->getClass($domainObjectOrClassName);
-    }
-
-    /**
-     * Gets metadata for the given domain object
-     *
-     * @param object $domainObject
+     * @param mixed $object
      * @return OwnershipMetadata
      */
-    protected function getObjectMetadata($domainObject)
+    protected function getMetadata($object)
     {
-        return $this->metadataProvider->getMetadata($this->getObjectClass($domainObject));
+        if ($object instanceof ObjectIdentity) {
+            $className = $object->getType();
+        } elseif (is_string($object)) {
+            $sortOfDescriptor = $className = null;
+            $this->parseDescriptor($object, $sortOfDescriptor, $className);
+        } else {
+            $className = $this->objectClassAccessor->getClass($object);
+        }
+
+        return $this->metadataProvider->getMetadata($className);
     }
 }

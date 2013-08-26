@@ -22,15 +22,6 @@ class ObjectIdentityFactory
     protected $root;
 
     /**
-     * An associative array of entity class names
-     * The key of this array if an entity name, for example: AcmeBundle:SomeEntity
-     * The value is the full class name, for example: AcmeBundle\Entity\SomeEntity
-     *
-     * @var array
-     */
-    protected $localCacheOfEntityClassNames;
-
-    /**
      * Constructor
      *
      * @param AclExtensionSelector $extensionSelector

@@ -26,7 +26,7 @@ class ObjectIdAccessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('getObjectIdentifier()', $id);
     }
 
-    public function testGetIdWithoutInterface()
+    public function testGetIdWithoutDomainObjectInterface()
     {
         $accessor = new ObjectIdAccessor();
 
