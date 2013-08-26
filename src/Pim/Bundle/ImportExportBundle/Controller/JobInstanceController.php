@@ -242,7 +242,7 @@ class JobInstanceController extends Controller
      *
      * @return Job|RedirectResponse
      *
-     * @throw NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     protected function getJobInstance($id, $checkStatus = true)
     {

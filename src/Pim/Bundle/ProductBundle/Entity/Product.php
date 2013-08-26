@@ -125,7 +125,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @return ProductValue the identifier of the product
      *
-     * @throw MissingIdentifierException if no identifier could be found
+     * @throws MissingIdentifierException if no identifier could be found
      */
     public function getIdentifier()
     {

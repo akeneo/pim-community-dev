@@ -229,14 +229,9 @@ class Family implements TranslatableInterface, VersionableInterface
      * @param ProductAttribute $attribute
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
-     *
-     * @throw InvalidArgumentException
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
-            throw new \InvalidArgumentException('Identifier cannot be part of a family.');
-        }
         $this->attributes[] = $attribute;
 
         return $this;
@@ -247,10 +242,16 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
+     *
+     * @throws InvalidArgumentException
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
+        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
+        }
+
         $this->attributes->removeElement($attribute);
 
         return $this;
@@ -296,7 +297,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * @param ProductAttribute $attributeAsLabel
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeAsLabel($attributeAsLabel)
     {
@@ -434,7 +435,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param array $attributeRequirements
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeRequirements($attributeRequirements)
     {
