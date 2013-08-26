@@ -17,7 +17,21 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
 {
     protected function setUp()
     {
-        $this->subscriber = new TransformImportedProductDataSubscriber();
+        $this->familyRepository = $this->getRepositoryMock();
+
+        $em = $this->getEntityManagerMock();
+        $em
+            ->expects($this->any())
+            ->method('getRepository')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('PimProductBundle:Family', $this->familyRepository),
+                    )
+                )
+            );
+
+        $this->subscriber = new TransformImportedProductDataSubscriber($em);
         $this->form = $this->getFormMock();
     }
 
@@ -65,11 +79,57 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertArrayNotHasKey('enabled', $data);
     }
 
+    public function testSetImportedProductFamily()
+    {
+        $event = new FormEvent($this->form, array('family' => 'furniture'));
+
+        $this->subscriber->setFamilyKey('family');
+
+        $this->familyRepository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(array('code' => 'furniture'))
+            ->will($this->returnValue($this->getFamilyMock(1987)));
+
+        $this->subscriber->preSubmit($event);
+
+        $data = $event->getData();
+        $this->assertArrayHasKey('family', $data);
+        $this->assertEquals(1987, $data['family']);
+    }
+
     private function getFormMock()
     {
         return $this
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getEntityManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getRepositoryMock()
+    {
+        return $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getFamilyMock($id)
+    {
+        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+
+        $family->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id));
+
+        return $family;
     }
 }
