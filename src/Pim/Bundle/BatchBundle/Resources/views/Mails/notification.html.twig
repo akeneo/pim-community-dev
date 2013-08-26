@@ -1,9 +1,29 @@
 <p>{{ user.firstName }} {{ user.lastName }},</p>
 
 <p>
-The job {{ jobExecution }} has been executed.<br />
-You can find the execution log here {{ app.request.schemeAndHttpHost ~ '/' ~ log }}.
+    Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.<br />
+    <br />
+    Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s")  }}.<br />
+    Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s")  }}.<br />
 </p>
 
---
-Akeneo - PIM
+<p>
+    Results:<br />
+    <ul>
+        {% for stepExecution in jobExecution.stepExecutions %}
+        <li>{{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
+            <ul>
+                <li>{{ stepExecution.readCount }} item(s) read</li>
+                <li>{{ stepExecution.writeCount }} item(s) written</li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</p>
+
+<p>Please find the execution log here: {{ app.request.schemeAndHttpHost ~ '/' ~ log }}.</p>
+
+<p>
+    --<br />
+    Akeneo - PIM<br />
+</p>

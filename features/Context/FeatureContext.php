@@ -114,4 +114,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->getSession()->wait($time, $condition);
     }
+
+    /**
+     * Get the mail recorder
+     *
+     * @return MailRecorder
+     */
+    public function getMailRecorder()
+    {
+        return $this->getContainer()->get('pim_product.mailer.mail_recorder');
+    }
 }

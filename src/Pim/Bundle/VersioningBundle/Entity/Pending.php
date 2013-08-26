@@ -3,21 +3,19 @@
 namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
- * Resource version entity
+ * Pending entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity
- * @ORM\Table(name="pim_versioning_version")
+ * @ORM\Table(name="pim_versioning_pending")
  */
-class Version
+class Pending
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -27,12 +25,9 @@ class Version
     protected $id;
 
     /**
-     * @var User $user
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\Column(type="string")
      */
-    protected $user;
+    protected $username;
 
     /**
      * @ORM\Column(name="resource_name", type="string")
@@ -45,15 +40,6 @@ class Version
     protected $resourceId;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $data;
-
-    /**
-     * @ORM\Column(type="integer") */
-    protected $version;
-
-    /**
      * @ORM\Column(name="logged_at", type="datetime")
      */
     protected $loggedAt;
@@ -63,17 +49,13 @@ class Version
      *
      * @param string  $resourceName
      * @param string  $resourceId
-     * @param integer $numVersion
-     * @param array   $data
-     * @param User    $user
+     * @param string  $username
      */
-    public function __construct($resourceName, $resourceId, $numVersion, $data, User $user)
+    public function __construct($resourceName, $resourceId, $username)
     {
         $this->resourceName = $resourceName;
-        $this->resourceId    = $resourceId;
-        $this->data         = $data;
-        $this->version      = $numVersion;
-        $this->user         = $user;
+        $this->resourceId   = $resourceId;
+        $this->username     = $username;
         $this->loggedAt     = new \DateTime("now");
     }
 
@@ -82,9 +64,9 @@ class Version
      *
      * @return User
      */
-    public function getUser()
+    public function getUsername()
     {
-        return $this->user;
+        return $this->username;
     }
 
     /**
@@ -101,21 +83,5 @@ class Version
     public function getResourceName()
     {
         return $this->resourceName;
-    }
-
-    /**
-     * @return array
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 }
