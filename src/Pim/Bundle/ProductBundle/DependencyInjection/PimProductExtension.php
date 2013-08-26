@@ -7,6 +7,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Finder\Finder;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -39,5 +40,14 @@ class PimProductExtension extends Extension
         $loader->load('datagrid.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
+
+        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
+
+        $finder = new Finder();
+        foreach ($finder->files()->in(__DIR__ . '/../Resources/config/validation') as $file) {
+            $yamlMappingFiles[] = $file->getRealPath();
+        }
+
+        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
     }
 }
