@@ -14,7 +14,7 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
-class OwnershipAclExtension extends AbstractAclExtension
+class EntityAclExtension extends AbstractAclExtension
 {
     /**
      * @var ObjectClassAccessor
@@ -65,40 +65,40 @@ class OwnershipAclExtension extends AbstractAclExtension
 
         $this->map = array(
             'VIEW' => array(
-                OwnershipMaskBuilder::MASK_VIEW_BASIC,
-                OwnershipMaskBuilder::MASK_VIEW_LOCAL,
-                OwnershipMaskBuilder::MASK_VIEW_DEEP,
-                OwnershipMaskBuilder::MASK_VIEW_GLOBAL,
+                EntityMaskBuilder::MASK_VIEW_BASIC,
+                EntityMaskBuilder::MASK_VIEW_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_DEEP,
+                EntityMaskBuilder::MASK_VIEW_GLOBAL,
             ),
             'CREATE' => array(
-                OwnershipMaskBuilder::MASK_CREATE_BASIC,
-                OwnershipMaskBuilder::MASK_CREATE_LOCAL,
-                OwnershipMaskBuilder::MASK_CREATE_DEEP,
-                OwnershipMaskBuilder::MASK_CREATE_GLOBAL,
+                EntityMaskBuilder::MASK_CREATE_BASIC,
+                EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_CREATE_DEEP,
+                EntityMaskBuilder::MASK_CREATE_GLOBAL,
             ),
             'EDIT' => array(
-                OwnershipMaskBuilder::MASK_EDIT_BASIC,
-                OwnershipMaskBuilder::MASK_EDIT_LOCAL,
-                OwnershipMaskBuilder::MASK_EDIT_DEEP,
-                OwnershipMaskBuilder::MASK_EDIT_GLOBAL,
+                EntityMaskBuilder::MASK_EDIT_BASIC,
+                EntityMaskBuilder::MASK_EDIT_LOCAL,
+                EntityMaskBuilder::MASK_EDIT_DEEP,
+                EntityMaskBuilder::MASK_EDIT_GLOBAL,
             ),
             'DELETE' => array(
-                OwnershipMaskBuilder::MASK_DELETE_BASIC,
-                OwnershipMaskBuilder::MASK_DELETE_LOCAL,
-                OwnershipMaskBuilder::MASK_DELETE_DEEP,
-                OwnershipMaskBuilder::MASK_DELETE_GLOBAL,
+                EntityMaskBuilder::MASK_DELETE_BASIC,
+                EntityMaskBuilder::MASK_DELETE_LOCAL,
+                EntityMaskBuilder::MASK_DELETE_DEEP,
+                EntityMaskBuilder::MASK_DELETE_GLOBAL,
             ),
             'ASSIGN' => array(
-                OwnershipMaskBuilder::MASK_ASSIGN_BASIC,
-                OwnershipMaskBuilder::MASK_ASSIGN_LOCAL,
-                OwnershipMaskBuilder::MASK_ASSIGN_DEEP,
-                OwnershipMaskBuilder::MASK_ASSIGN_GLOBAL,
+                EntityMaskBuilder::MASK_ASSIGN_BASIC,
+                EntityMaskBuilder::MASK_ASSIGN_LOCAL,
+                EntityMaskBuilder::MASK_ASSIGN_DEEP,
+                EntityMaskBuilder::MASK_ASSIGN_GLOBAL,
             ),
             'SHARE' => array(
-                OwnershipMaskBuilder::MASK_SHARE_BASIC,
-                OwnershipMaskBuilder::MASK_SHARE_LOCAL,
-                OwnershipMaskBuilder::MASK_SHARE_DEEP,
-                OwnershipMaskBuilder::MASK_SHARE_GLOBAL,
+                EntityMaskBuilder::MASK_SHARE_BASIC,
+                EntityMaskBuilder::MASK_SHARE_LOCAL,
+                EntityMaskBuilder::MASK_SHARE_DEEP,
+                EntityMaskBuilder::MASK_SHARE_GLOBAL,
             ),
         );
     }
@@ -108,11 +108,8 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        if ($type === 'entity') {
+        if ($type === $this->getRootType()) {
             $type = $this->entityClassResolver->getEntityClass($id);
-            $id = null;
-        } elseif ($type === 'class') {
-            $type = $id;
             $id = null;
         }
 
@@ -122,6 +119,14 @@ class OwnershipAclExtension extends AbstractAclExtension
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootType()
+    {
+        return 'entity';
     }
 
     /**
@@ -163,7 +168,7 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     public function createMaskBuilder()
     {
-        return new OwnershipMaskBuilder();
+        return new EntityMaskBuilder();
     }
 
     /**
@@ -171,7 +176,7 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     public function decideIsGranting($aceMask, $object, TokenInterface $securityToken)
     {
-        if (0 !== ($aceMask & OwnershipMaskBuilder::GROUP_SYSTEM)) {
+        if (0 !== ($aceMask & EntityMaskBuilder::GROUP_SYSTEM)) {
             return true;
         }
 
@@ -185,20 +190,20 @@ class OwnershipAclExtension extends AbstractAclExtension
             return true;
         }
 
-        if (0 !== ($aceMask & OwnershipMaskBuilder::GROUP_GLOBAL)) {
+        if (0 !== ($aceMask & EntityMaskBuilder::GROUP_GLOBAL)) {
             return $this->decisionMaker->isBelongToOrganization($securityToken->getUser(), $object);
-        } elseif (0 !== ($aceMask & OwnershipMaskBuilder::GROUP_DEEP)) {
+        } elseif (0 !== ($aceMask & EntityMaskBuilder::GROUP_DEEP)) {
             return $this->decisionMaker->isBelongToBusinessUnit($securityToken->getUser(), $object, true);
-        } elseif (0 !== ($aceMask & OwnershipMaskBuilder::GROUP_LOCAL)) {
+        } elseif (0 !== ($aceMask & EntityMaskBuilder::GROUP_LOCAL)) {
             return $this->decisionMaker->isBelongToBusinessUnit($securityToken->getUser(), $object);
-        } elseif (0 !== ($aceMask & OwnershipMaskBuilder::GROUP_BASIC)) {
+        } elseif (0 !== ($aceMask & EntityMaskBuilder::GROUP_BASIC)) {
             return $this->decisionMaker->isBelongToUser($securityToken->getUser(), $object);
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unexpected ACE mask "%s" for %s.',
-                OwnershipMaskBuilder::getPatternFor($aceMask),
+                EntityMaskBuilder::getPatternFor($aceMask),
                 get_class($object)
             )
         );
@@ -216,11 +221,11 @@ class OwnershipAclExtension extends AbstractAclExtension
         $type = $id = null;
         $this->parseDescriptor($descriptor, $type, $id);
 
-        switch ($type) {
-            case 'class':
-                return new ObjectIdentity($this->objectClassAccessor->getClass($id), 'class');
-            case 'entity':
-                return new ObjectIdentity($this->entityClassResolver->getEntityClass($id), 'class');
+        if ($type === $this->getRootType()) {
+            return new ObjectIdentity(
+                $this->entityClassResolver->getEntityClass($this->objectClassAccessor->getClass($id)),
+                $this->getRootType()
+            );
         }
 
         throw new \InvalidArgumentException(
@@ -261,10 +266,10 @@ class OwnershipAclExtension extends AbstractAclExtension
      */
     protected function validateMaskScope($mask, $object, $subMaskName)
     {
-        if (0 !== ($mask & OwnershipMaskBuilder::getConst('GROUP_' . $subMaskName))) {
+        if (0 !== ($mask & EntityMaskBuilder::getConst('GROUP_' . $subMaskName))) {
             $maskScopes = array();
             foreach (array('SYSTEM', 'GLOBAL', 'DEEP', 'LOCAL', 'BASIC') as $scope) {
-                if (0 !== ($mask & OwnershipMaskBuilder::getConst('MASK_' . $subMaskName . '_' . $scope))) {
+                if (0 !== ($mask & EntityMaskBuilder::getConst('MASK_' . $subMaskName . '_' . $scope))) {
                     $maskScopes[] = $scope;
                 }
             }
@@ -290,24 +295,24 @@ class OwnershipAclExtension extends AbstractAclExtension
         $metadata = $this->getMetadata($object);
         if (!$metadata->hasOwner()) {
             return
-                OwnershipMaskBuilder::GROUP_CRUD_SYSTEM;
+                EntityMaskBuilder::GROUP_CRUD_SYSTEM;
         } elseif ($metadata->isOrganizationOwned()) {
             return
-                OwnershipMaskBuilder::GROUP_SYSTEM
-                | OwnershipMaskBuilder::GROUP_GLOBAL;
+                EntityMaskBuilder::GROUP_SYSTEM
+                | EntityMaskBuilder::GROUP_GLOBAL;
         } elseif ($metadata->isBusinessUnitOwned()) {
             return
-                OwnershipMaskBuilder::GROUP_SYSTEM
-                | OwnershipMaskBuilder::GROUP_GLOBAL
-                | OwnershipMaskBuilder::GROUP_DEEP
-                | OwnershipMaskBuilder::GROUP_LOCAL;
+                EntityMaskBuilder::GROUP_SYSTEM
+                | EntityMaskBuilder::GROUP_GLOBAL
+                | EntityMaskBuilder::GROUP_DEEP
+                | EntityMaskBuilder::GROUP_LOCAL;
         } elseif ($metadata->isUserOwned()) {
             return
-                OwnershipMaskBuilder::GROUP_SYSTEM
-                | OwnershipMaskBuilder::GROUP_GLOBAL
-                | OwnershipMaskBuilder::GROUP_DEEP
-                | OwnershipMaskBuilder::GROUP_LOCAL
-                | OwnershipMaskBuilder::GROUP_BASIC;
+                EntityMaskBuilder::GROUP_SYSTEM
+                | EntityMaskBuilder::GROUP_GLOBAL
+                | EntityMaskBuilder::GROUP_DEEP
+                | EntityMaskBuilder::GROUP_LOCAL
+                | EntityMaskBuilder::GROUP_BASIC;
         }
 
         return 0;

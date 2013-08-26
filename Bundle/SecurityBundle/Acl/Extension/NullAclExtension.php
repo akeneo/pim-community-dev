@@ -22,6 +22,14 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function getRootType()
+    {
+        throw new \LogicException('Not supported by NullAclExtension.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function validateMask($mask, $object)
     {
         throw new InvalidAclMaskException('Not supported by NullAclExtension.');

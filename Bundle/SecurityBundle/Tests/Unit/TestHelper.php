@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
-use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipAclExtension;
+use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
 use Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
@@ -46,7 +46,7 @@ class TestHelper
             new ActionAclExtension()
         );
         $selector->addAclExtension(
-            $this->createOwnershipAclExtension($metadataProvider, $ownerTree, $classAccessor, $idAccessor)
+            $this->createEntityAclExtension($metadataProvider, $ownerTree, $classAccessor, $idAccessor)
         );
 
         return $selector;
@@ -57,9 +57,9 @@ class TestHelper
      * @param OwnerTree $ownerTree
      * @param ObjectClassAccessor $classAccessor
      * @param ObjectIdAccessor $idAccessor
-     * @return OwnershipAclExtension
+     * @return EntityAclExtension
      */
-    public function createOwnershipAclExtension(
+    public function createEntityAclExtension(
         OwnershipMetadataProvider $metadataProvider = null,
         OwnerTree $ownerTree = null,
         ObjectClassAccessor $classAccessor = null,
@@ -126,7 +126,7 @@ class TestHelper
                 )
             );
 
-        return new OwnershipAclExtension(
+        return new EntityAclExtension(
             $classAccessor,
             $idAccessor,
             new EntityClassResolver($doctrine),

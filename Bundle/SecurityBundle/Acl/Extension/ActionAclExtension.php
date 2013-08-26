@@ -23,7 +23,15 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        return $type === 'action';
+        return $type === $this->getRootType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootType()
+    {
+        return 'action';
     }
 
     /**

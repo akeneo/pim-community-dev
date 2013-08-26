@@ -3,7 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Permission;
 
 use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap;
-use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipMaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
@@ -50,40 +50,40 @@ class PermissionMapTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(new TestEntity(), 'VIEW', array(
-                OwnershipMaskBuilder::MASK_VIEW_BASIC,
-                OwnershipMaskBuilder::MASK_VIEW_LOCAL,
-                OwnershipMaskBuilder::MASK_VIEW_DEEP,
-                OwnershipMaskBuilder::MASK_VIEW_GLOBAL,
+                EntityMaskBuilder::MASK_VIEW_BASIC,
+                EntityMaskBuilder::MASK_VIEW_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_DEEP,
+                EntityMaskBuilder::MASK_VIEW_GLOBAL,
             )),
             array(new TestEntity(), 'CREATE', array(
-                OwnershipMaskBuilder::MASK_CREATE_BASIC,
-                OwnershipMaskBuilder::MASK_CREATE_LOCAL,
-                OwnershipMaskBuilder::MASK_CREATE_DEEP,
-                OwnershipMaskBuilder::MASK_CREATE_GLOBAL,
+                EntityMaskBuilder::MASK_CREATE_BASIC,
+                EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_CREATE_DEEP,
+                EntityMaskBuilder::MASK_CREATE_GLOBAL,
             )),
             array(new TestEntity(), 'EDIT', array(
-                OwnershipMaskBuilder::MASK_EDIT_BASIC,
-                OwnershipMaskBuilder::MASK_EDIT_LOCAL,
-                OwnershipMaskBuilder::MASK_EDIT_DEEP,
-                OwnershipMaskBuilder::MASK_EDIT_GLOBAL,
+                EntityMaskBuilder::MASK_EDIT_BASIC,
+                EntityMaskBuilder::MASK_EDIT_LOCAL,
+                EntityMaskBuilder::MASK_EDIT_DEEP,
+                EntityMaskBuilder::MASK_EDIT_GLOBAL,
             )),
             array(new TestEntity(), 'DELETE', array(
-                OwnershipMaskBuilder::MASK_DELETE_BASIC,
-                OwnershipMaskBuilder::MASK_DELETE_LOCAL,
-                OwnershipMaskBuilder::MASK_DELETE_DEEP,
-                OwnershipMaskBuilder::MASK_DELETE_GLOBAL,
+                EntityMaskBuilder::MASK_DELETE_BASIC,
+                EntityMaskBuilder::MASK_DELETE_LOCAL,
+                EntityMaskBuilder::MASK_DELETE_DEEP,
+                EntityMaskBuilder::MASK_DELETE_GLOBAL,
             )),
             array(new TestEntity(), 'ASSIGN', array(
-                OwnershipMaskBuilder::MASK_ASSIGN_BASIC,
-                OwnershipMaskBuilder::MASK_ASSIGN_LOCAL,
-                OwnershipMaskBuilder::MASK_ASSIGN_DEEP,
-                OwnershipMaskBuilder::MASK_ASSIGN_GLOBAL,
+                EntityMaskBuilder::MASK_ASSIGN_BASIC,
+                EntityMaskBuilder::MASK_ASSIGN_LOCAL,
+                EntityMaskBuilder::MASK_ASSIGN_DEEP,
+                EntityMaskBuilder::MASK_ASSIGN_GLOBAL,
             )),
             array(new TestEntity(), 'SHARE', array(
-                OwnershipMaskBuilder::MASK_SHARE_BASIC,
-                OwnershipMaskBuilder::MASK_SHARE_LOCAL,
-                OwnershipMaskBuilder::MASK_SHARE_DEEP,
-                OwnershipMaskBuilder::MASK_SHARE_GLOBAL,
+                EntityMaskBuilder::MASK_SHARE_BASIC,
+                EntityMaskBuilder::MASK_SHARE_LOCAL,
+                EntityMaskBuilder::MASK_SHARE_DEEP,
+                EntityMaskBuilder::MASK_SHARE_GLOBAL,
             )),
             array('action: test', 'EXECUTE', array(
                 ActionMaskBuilder::MASK_EXECUTE,

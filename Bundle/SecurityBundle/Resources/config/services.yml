@@ -5,7 +5,7 @@ parameters:
         user: "OroUserBundle:User"
 
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
-    oro_security.acl.extension.ownership.class:                Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipAclExtension
+    oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
     oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
     oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
@@ -30,9 +30,9 @@ services:
             - @oro_security.acl.object_class_accessor
             - @oro_security.acl.object_id_accessor
 
-    oro_security.acl.extension.ownership:
+    oro_security.acl.extension.entity:
         public: false
-        class: %oro_security.acl.extension.ownership.class%
+        class: %oro_security.acl.extension.entity.class%
         arguments:
             - @oro_security.acl.object_class_accessor
             - @oro_security.acl.object_id_accessor

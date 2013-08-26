@@ -19,6 +19,13 @@ interface AclExtensionInterface
     public function supports($type, $id);
 
     /**
+     * Gets root ACL type
+     *
+     * @return string
+     */
+    public function getRootType();
+
+    /**
      * Checks if the given bitmask is valid for the given object.
      *
      * This method throws InvalidAclMaskException if the mask is invalid.

@@ -5,9 +5,9 @@ namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 
 /**
- * The permission mask builder for 'Ownership' ACL extension
+ * The permission mask builder for 'Entity' ACL extension
  */
-class OwnershipMaskBuilder extends MaskBuilder
+class EntityMaskBuilder extends MaskBuilder
 {
     // These access levels give a user access to own records and objects that are shared with the user.
     const MASK_VIEW_BASIC         = 1;          // 1 << 0

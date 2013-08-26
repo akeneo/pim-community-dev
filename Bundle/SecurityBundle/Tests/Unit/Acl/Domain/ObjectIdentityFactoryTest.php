@@ -106,39 +106,24 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     public static function getProvider()
     {
         return array(
-            'Class' => array(
-                'Class:Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
-                'class',
-                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
-            ),
-            'Class (whitespace)' => array(
-                'Class: Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
-                'class',
-                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
-            ),
-            'CLASS' => array(
-                'CLASS:Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
-                'class',
-                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
-            ),
             'Entity' => array(
                 'Entity:Test:TestEntity',
-                'class',
+                'entity',
                 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
             ),
             'Entity (whitespace)' => array(
                 'Entity: Test:TestEntity',
-                'class',
+                'entity',
                 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
             ),
             'ENTITY' => array(
                 'ENTITY:Test:TestEntity',
-                'class',
+                'entity',
                 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
             ),
             'Entity (class name)' => array(
                 'Entity: Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
-                'class',
+                'entity',
                 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity'
             ),
             'Action' => array('Action:Some Action', 'action', 'Some Action'),
