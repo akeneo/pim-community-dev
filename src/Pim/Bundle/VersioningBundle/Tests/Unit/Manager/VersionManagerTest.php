@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Manager;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Serializer\Serializer;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -44,6 +46,16 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testGetPreviousVersion()
+    {
+        $version = $this->manager->buildVersion($this->getVersionableMock(array()), $this->getUserMock());
+        $previous = $this->manager->getPreviousVersion($version);
+        $this->assertTrue($previous instanceof Version);
+    }
+
+    /**
      * @return EntityManager
      */
     protected function getEntityManagerMock()
@@ -53,39 +65,30 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $mock
+            ->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($this->getRepositoryMock()));
+
         return $mock;
     }
 
     /**
-     * Test related method
-     *
-     * TODO: we now use serializer
-     *
-    public function testBuildAudit()
+     * @return EntityRepository
+     */
+    protected function getRepositoryMock()
     {
-        // update version
-        $data = array('field1' => 'the-same', 'field2' => 'will-be-changed');
-        $previousVersion = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $repo = $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
-        $currentVersion = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $repo->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValue(new Version('a', 1, 1, array(), $this->getUserMock())));
 
-        $audit = $this->manager->buildAudit($currentVersion, $previousVersion);
-        $expected = array(
-            'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),
-            'field3' => array('old' => '', 'new' => 'new-data'),
-        );
-        $this->assertEquals($expected, $audit->getData());
-
-        // new version
-        $audit = $this->manager->buildAudit($currentVersion);
-        $expected = array(
-            'field1' => array('old' => '', 'new' => 'the-same'),
-            'field2' => array('old' => '', 'new' => 'has-changed'),
-            'field3' => array('old' => '', 'new' => 'new-data'),
-        );
-        $this->assertEquals($audit->getData(), $expected);
-    }*/
+        return $repo;
+    }
 
     /**
      * @param array $data

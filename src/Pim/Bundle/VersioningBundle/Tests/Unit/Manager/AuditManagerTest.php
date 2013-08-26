@@ -111,7 +111,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AuditRepository
+     * @return EntityRepository
      */
     protected function getAuditRepositoryMock()
     {

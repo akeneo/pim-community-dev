@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
+use Doctrine\ORM\EntityRepository;
+
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -79,7 +81,13 @@ class PendingManager
      */
     public function getPending(VersionableInterface $versionable)
     {
-        return $this->em->getRepository('PimVersioningBundle:Pending')->getPending($versionable);
+        $criteria = array(
+            'resourceName' => get_class($versionable),
+            'resourceId'   => $versionable->getId()
+        );
+        $pending = $this->getRepository()->findOneBy($criteria);
+
+        return $pending;
     }
 
     /**
@@ -89,7 +97,13 @@ class PendingManager
      */
     public function getPendings(VersionableInterface $versionable)
     {
-        return $this->em->getRepository('PimVersioningBundle:Pending')->getPendings($versionable);
+        $criteria = array(
+            'resourceName' => get_class($versionable),
+            'resourceId'   => $versionable->getId()
+        );
+        $pendings = $this->getRepository()->findBy($criteria);
+
+        return $pendings;
     }
 
     /**
@@ -99,8 +113,7 @@ class PendingManager
      */
     public function getPendingVersions()
     {
-        $versions = $this->em->getRepository('PimVersioningBundle:Pending')
-            ->findAll(array('status' => Pending::STATUS_PENDING));
+        $versions = $this->getRepository()->findAll();
 
         return $versions;
     }
@@ -118,5 +131,13 @@ class PendingManager
         $versionable = $repo->find($pending->getResourceId());
 
         return $versionable;
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getRepository()
+    {
+        return $this->em->getRepository('PimVersioningBundle:Pending');
     }
 }

@@ -12,21 +12,11 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\VersioningBundle\Entity\Repository\PendingRepository")
+ * @ORM\Entity
  * @ORM\Table(name="pim_versioning_pending")
  */
 class Pending
 {
-    /**
-     * @var integer
-     */
-    const STATUS_PENDING = 1;
-
-    /**
-     * @var integer
-     */
-    const STATUS_IN_PROGRESS = 1;
-
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -48,11 +38,6 @@ class Pending
      * @ORM\Column(name="resource_id", type="integer")
      */
     protected $resourceId;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $status = self::STATUS_PENDING;
 
     /**
      * @ORM\Column(name="logged_at", type="datetime")
@@ -98,25 +83,5 @@ class Pending
     public function getResourceName()
     {
         return $this->resourceName;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param integer
-     *
-     * @return Pending
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
     }
 }
