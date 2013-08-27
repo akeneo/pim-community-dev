@@ -302,7 +302,7 @@ class Edit extends Form
         }
 
         // check message displayed bottom to the progress bar
-        if ($barType === 'disabled') {
+        if ($barType === 'disabled' || $info === 'Completed') {
             $infoPassed = $completenessCell->getText() === $info;
         } else {
             $infoPassed = $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
@@ -312,7 +312,6 @@ class Edit extends Form
                 sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
             );
         }
-
 
         // check progress bar width
         $title = $completenessCell

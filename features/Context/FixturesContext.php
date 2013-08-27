@@ -197,7 +197,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $family = new Family;
+            $family = new Family();
             $family->setCode($data['code']);
             $this->persist($family);
 
