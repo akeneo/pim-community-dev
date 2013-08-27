@@ -2,7 +2,6 @@
 
 namespace Context;
 
-
 use Doctrine\Common\Util\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
