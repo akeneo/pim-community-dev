@@ -5,6 +5,7 @@ parameters:
     oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable
     oro_workflow.post_action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\AssignValue
     oro_workflow.post_action.create_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\CreateEntity
+    oro_workflow.post_action.request_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\RequestEntity
 
 services:
     oro_workflow.post_action_factory:
@@ -41,3 +42,11 @@ services:
             - @doctrine
         tags:
             - { name: oro_workflow.post_action, alias: create_entity }
+
+    oro_workflow.post_action.request_entity:
+        class: %oro_workflow.post_action.request_entity.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+        tags:
+            - { name: oro_workflow.post_action, alias: request_entity }

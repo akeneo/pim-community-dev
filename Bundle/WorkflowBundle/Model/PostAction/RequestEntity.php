@@ -11,7 +11,7 @@ use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 use Oro\Bundle\WorkflowBundle\Exception\PostActionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-class CreateEntity extends AbstractPostAction
+class RequestEntity extends AbstractPostAction
 {
     /**
      * @var array
@@ -39,7 +39,7 @@ class CreateEntity extends AbstractPostAction
      */
     public function execute($context)
     {
-        $entity = $this->createEntity($context);
+        $entity = $this->requestEntityProxy();
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
@@ -52,15 +52,12 @@ class CreateEntity extends AbstractPostAction
             throw new InvalidParameterException('Class name parameter is required');
         }
 
-        if (empty($options['attribute'])) {
-            throw new InvalidParameterException('Attribute name parameter is required');
-        }
-        if (!$options['attribute'] instanceof PropertyPath) {
-            throw new InvalidParameterException('Attribute must be valid property definition.');
+        if (empty($options['identifier'])) {
+            throw new InvalidParameterException('Identifier parameter is required');
         }
 
-        if (!empty($options['data']) && !is_array($options['data'])) {
-            throw new InvalidParameterException('Entity data must be an array.');
+        if (empty($options['attribute'])) {
+            throw new InvalidParameterException('Attribute name parameter is required');
         }
 
         $this->options = $options;
@@ -69,15 +66,15 @@ class CreateEntity extends AbstractPostAction
     }
 
     /**
-     * @param mixed $context
-     * @return mixed
-     * @throws NotManageableEntityException
-     * @throws PostActionException
+     * Returns entity proxy for specified entity with specified ID
+     *
+     * @return object
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
      */
-    protected function createEntity($context)
+    public function requestEntityProxy()
     {
         $entityClassName = $this->getEntityClassName();
-        $entityData = $this->getEntityData();
+        $entityIdentifier = $this->getEntityIdentifier();
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->registry->getManagerForClass($entityClassName);
@@ -85,32 +82,7 @@ class CreateEntity extends AbstractPostAction
             throw new NotManageableEntityException($entityClassName);
         }
 
-        $entity = new $entityClassName();
-        $this->assignEntityData($context, $entity, $entityData);
-
-        try {
-            $entityManager->persist($entity);
-            $entityManager->flush($entity);
-        } catch (\Exception $e) {
-            throw new PostActionException(
-                sprintf('Can\'t create entity %s. %s', $entityClassName, $e->getMessage())
-            );
-        }
-
-        return $entity;
-    }
-
-    /**
-     * @param mixed $context
-     * @param object $entity
-     * @param array $parameters
-     */
-    protected function assignEntityData($context, $entity, array $parameters)
-    {
-        foreach ($parameters as $parameterName => $valuePath) {
-            $parameterValue = $this->contextAccessor->getValue($context, $valuePath);
-            $this->contextAccessor->setValue($entity, $parameterName, $parameterValue);
-        }
+        return $entityManager->getReference($entityClassName, $entityIdentifier);
     }
 
     /**
@@ -122,10 +94,10 @@ class CreateEntity extends AbstractPostAction
     }
 
     /**
-     * @return array
+     * @return string
      */
-    protected function getEntityData()
+    protected function getEntityIdentifier()
     {
-        return !empty($this->options['data']) ? $this->options['data'] : array();
+        return $this->options['identifier'];
     }
 }
