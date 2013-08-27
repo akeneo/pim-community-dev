@@ -40,6 +40,11 @@ class Transition
     protected $start = false;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
      * Set label.
      *
      * @param string $label
@@ -201,5 +206,62 @@ class Transition
     public function isStart()
     {
         return $this->start;
+    }
+
+    /**
+     * Set options.
+     *
+     * @param array $options
+     * @return Attribute
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Get options.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set option by key.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return Attribute
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Get option by key.
+     *
+     * @param string $key
+     * @return null|mixed
+     */
+    public function getOption($key)
+    {
+        return $this->hasOption($key) ? $this->options[$key] : null;
+    }
+
+    /**
+     * Check for option availability by key.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasOption($key)
+    {
+        return isset($this->options[$key]);
     }
 }

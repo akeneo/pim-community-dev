@@ -97,11 +97,13 @@ class TransitionAssembler extends AbstractAssembler
             throw new AssemblerException(sprintf('Step "%s" not found', $stepToName));
         }
         $stepTo = $steps[$stepToName];
+        $transitionOptions = $this->getOption($options, 'options', array());
 
         $transition = new Transition();
-        $transition->setName($name);
-        $transition->setStepTo($stepTo);
-        $transition->setLabel($options['label']);
+        $transition->setName($name)
+            ->setLabel($options['label'])
+            ->setStepTo($stepTo)
+            ->setOptions($transitionOptions);
 
         if (!empty($options['is_start'])) {
             $transition->setStart();
