@@ -71,9 +71,9 @@ $(function() {
             }
         });
 
-        $('#'+formName+'_metricFamily').select2({ data: OroApp.measures.getMetricTypes() }).change(function() {
+        $('#'+formName+'_metricFamily').select2({ data: Pim.measures.getMetricTypes() }).change(function() {
             $('#'+formName+'_defaultMetricUnit').select2({
-                data: OroApp.measures.getMetricUnits($(this).select2('val'))
+                data: Pim.measures.getMetricUnits($(this).select2('val'))
             });
         }).trigger('change');
 
