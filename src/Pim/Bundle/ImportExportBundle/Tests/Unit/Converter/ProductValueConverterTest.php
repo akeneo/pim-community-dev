@@ -98,7 +98,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('values' => array('description_ecommerce' => array('varchar' => 'an awesome vehicle'))),
-            $this->converter->convert(array('description' => 'an awesome vehicle'), array('scope' => 'ecommerce'))
+            $this->converter->convert(array('description' => 'an awesome vehicle', '[scope]' => 'ecommerce'))
         );
     }
 
