@@ -88,7 +88,7 @@ class CreateCommand extends ContainerAwareCommand
         $argumentsCache = array_merge(
             $input->getArguments(),
             array(
-//                '--no-warmup' => true,
+                //'--no-warmup' => true,
             )
         );
         $arrayInputCache = new ArrayInput($argumentsCache);

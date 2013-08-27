@@ -16,9 +16,6 @@ class OroIconTypeTest extends FormIntegrationTestCase
 
     protected function setUp()
     {
-//        $this->type = $this->getMockBuilder('Oro\Bundle\FormBundle\Form\Type\OroIconType')
-//            ->getMock();
-
         $this->type = new OroIconType();
     }
 
@@ -30,13 +27,8 @@ class OroIconTypeTest extends FormIntegrationTestCase
         return $this->type;
     }
 
-    public function testParent()
+    public function testParameters()
     {
-        //print_r(get_class_methods($this->type));
-
-        var_dump($this->type->getParent());
-        var_dump($this->type->getName());
-
         $this->assertEquals('genemu_jqueryselect2_hidden', $this->type->getParent());
         $this->assertEquals('oro_icon_select', $this->type->getName());
     }
