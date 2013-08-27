@@ -1,4 +1,6 @@
 parameters:
+    doctrine.orm.entity_manager.class:            Oro\Bundle\EntityBundle\ORM\OroEntityManager
+
     oro_entity.entity.owners:
         organization: "OroOrganizationBundle:Organization"
         business_unit: "OroOrganizationBundle:BusinessUnit"

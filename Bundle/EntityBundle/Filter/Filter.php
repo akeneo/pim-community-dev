@@ -8,7 +8,7 @@ class Filter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        var_dump($targetEntity->reflClass);
+        //var_dump($targetEntity->reflClass);
         if (!$targetEntity->reflClass->implementsInterface('Symfony\\Component\\Security\\Core\\User\\AdvancedUserInterface')) {
             return "";
         }
