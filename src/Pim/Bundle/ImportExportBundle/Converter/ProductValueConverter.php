@@ -47,9 +47,38 @@ class ProductValueConverter
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
             if ($attribute) {
+                switch ($attribute->getBackendType()) {
+                    case 'prices':
+                        $value = $this->convertPricesValue($value);
+                        break;
+
+                    default:
+                        $value = array($attribute->getBackendType() => $value);
+                }
                 $key = $this->getProductValueKey($attribute, $key, $context);
-                $result[$key][$attribute->getBackendType()] = $value;
+                $result[$key] = $value;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Convert prices values
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    private function convertPricesValue($value)
+    {
+        $result = array();
+        foreach (explode(',', $value) as $price) {
+            list($data, $currency) = explode(' ', $price);
+            $result['prices'][] = array(
+                'data'     => $data,
+                'currency' => $currency,
+            );
         }
 
         return $result;

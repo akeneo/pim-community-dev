@@ -95,6 +95,33 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertPricesValue()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'public_prices'))
+            ->will($this->returnValue($this->getAttributeMock('prices')));
+
+        $this->assertEquals(
+            array(
+                'public_prices' => array(
+                    'prices' => array(
+                        array(
+                            'data'     => '99.90',
+                            'currency' => 'EUR',
+                        ),
+                        array(
+                            'data'     => '59.90',
+                            'currency' => 'USD',
+                        )
+                    ),
+                )
+            ),
+            $this->converter->convert(array('public_prices' => '99.90 EUR,59.90 USD'))
+        );
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
