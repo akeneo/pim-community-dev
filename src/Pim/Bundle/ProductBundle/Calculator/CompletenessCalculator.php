@@ -2,19 +2,14 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
-use Pim\Bundle\ProductBundle\Entity\Family;
-
 use Symfony\Component\Validator\Validator;
-
 use Doctrine\ORM\EntityManager;
-
 use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
-
 use Pim\Bundle\ProductBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
-
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Completeness;
+use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\Product;
 
@@ -32,7 +27,6 @@ use Pim\Bundle\ProductBundle\Entity\Product;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class CompletenessCalculator
 {
@@ -57,12 +51,12 @@ class CompletenessCalculator
     protected $validator;
 
     /**
-     * @var array $channels
+     * @var Channel[]
      */
     protected $channels;
 
     /**
-     * @var array $locales
+     * @var Locale[]
      */
     protected $locales;
 
@@ -96,7 +90,7 @@ class CompletenessCalculator
     /**
      * Set the channels for which the products must be calculated
      *
-     * @param array $channels
+     * @param Channel[] $channels
      *
      * @return \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
      */
@@ -110,7 +104,7 @@ class CompletenessCalculator
     /**
      * Set the locales for which the products must be calculated
      *
-     * @param array $locales
+     * @param Locale[] $locales
      *
      * @return \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
      */
@@ -125,7 +119,7 @@ class CompletenessCalculator
      * Get the channels for which the products must be calculated
      * If no locale, all of them are recovered from database
      *
-     * @return array
+     * @return Channel[]
      */
     protected function getChannels()
     {
@@ -140,7 +134,7 @@ class CompletenessCalculator
      * Get the locales for which the products must be calculated
      * If no locale, all of them are recovered from database
      *
-     * @return array
+     * @return Locale[]
      */
     protected function getLocales()
     {
@@ -165,9 +159,9 @@ class CompletenessCalculator
      *     )
      * )
      *
-     * @param array $products
+     * @param Product[] $products
      *
-     * @return array $completenesses
+     * @return Completeness[] $completenesses
      */
     public function calculate(array $products = array())
     {
@@ -186,7 +180,7 @@ class CompletenessCalculator
      *
      * @param Product $product
      *
-     * @return $completenesses List of completeness entities for the product
+     * @return Completeness[] $completenesses List of completeness entities for the product
      */
     public function calculateForAProduct(Product $product)
     {
@@ -204,11 +198,11 @@ class CompletenessCalculator
     /**
      * Calculate the completeness of a product for a specific channel
      *
-     * @param Product $product
-     * @param Channel $channel
-     * @param array   $completenesses
+     * @param Product        $product
+     * @param Channel        $channel
+     * @param Completeness[] $completenesses
      *
-     * @return array $completenesses List of completeness entities
+     * @return Completeness[] $completenesses List of completeness entities
      */
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
@@ -274,8 +268,9 @@ class CompletenessCalculator
      * Get the required attributes for a specific channel
      *
      * @param Channel $channel
+     * @param Family  $family
      *
-     * @return array
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement[]
      */
     protected function getRequiredAttributes(Channel $channel, Family $family)
     {

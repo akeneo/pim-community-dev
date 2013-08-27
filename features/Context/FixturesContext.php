@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 
 use Doctrine\Common\Util\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +13,7 @@ use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
