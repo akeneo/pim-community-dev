@@ -34,7 +34,7 @@ class WorkflowController extends FOSRestController
     public function startAction($workflowName, $entityClass, $entityId, $transitionName)
     {
         return $this->handleView(
-            $this->view(array('id' => 1), Codes::HTTP_OK)
+            $this->view(array('workflowItemId' => 1), Codes::HTTP_OK)
         );
 
         /** @var WorkflowManager $workflowManager */
