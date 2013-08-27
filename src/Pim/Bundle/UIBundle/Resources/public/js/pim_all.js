@@ -234,6 +234,18 @@ function init() {
     });
 
     $('[rel="tooltip"]').tooltip();
+
+    $('input[type="file"]').on('change', function() {
+        var filename = $(this).val().split('\\').pop();
+        var $info = $(this).siblings('.upload-info');
+        var message = filename ? filename : $info.attr('data-empty-title');
+        $info.html(message);
+    });
+
+    $('.remove-upload').on('click', function() {
+        $input = $(this).parent().siblings('input[type="file"]').first();
+        $input.replaceWith($input.clone()).trigger('change');
+    });
 }
 
 $(function() {

@@ -84,17 +84,26 @@
 {% block pim_image_row %}
     {% spaceless %}
 
-    {{ form_errors(form) }}
-    {{ form_row(form.file, {'label': form.vars.label}) }}
-
-    {% if form.vars.value and form.vars.value.filePath %}
-        <ul class="unstyled controls medias">
-            <li>
-                <a class="no-hash" href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
-            </li>
-        </ul>
-    {% endif %}
+    <div class="control-group">
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label'} }) }}
+        <div class="controls">
+            <label class="upload-zone">
+                <span class="upload-info" data-empty-title="{{ 'Drop a file or click here'|trans }}">
+                    {% if form.vars.value and form.vars.value.filePath %}
+                        {{ form_widget(form.removed) }}
+                        <a class="no-hash" href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                        <a class="remove-upload" title="{{ 'Remove'|trans }}">{{ 'Remove'|trans }}</a>
+                    {% else %}
+                        {{ 'Drop a file or click here'|trans }}
+                    {% endif %}
+                </span>
+                <input type="file" {{ block('widget_attributes') }}>
+            </label>
+            <div class="icons-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
 
     {% endspaceless %}
 {% endblock %}

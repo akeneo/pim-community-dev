@@ -1003,6 +1003,40 @@ code.flag-language {
   padding: 4px;
 }
 
+.upload-zone {
+  width: 300px;
+  height: 100px;
+  border: 2px dashed rgba(0,0,0,.3);
+  border-radius: 10px;
+  color: rgba(0,0,0,.3);
+  cursor: pointer;
+  &:hover {
+    border: 2px dashed rgba(0,0,0,.5);
+    color: rgba(0,0,0,.5);
+  }
+  span.upload-info {
+    position: absolute;
+    width: 260px;
+    height: 60px;
+    margin: 20px;
+    z-index: 0;
+    font-size: 24px;
+    line-height: 60px;
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+input[type="file"] {
+  z-index: 99;
+  position: relative;
+  width: 100%!important;
+  height: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
 ul.medias label.remove-media {
   float: none;
   display: inline;
