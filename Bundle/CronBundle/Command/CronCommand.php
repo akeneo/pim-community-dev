@@ -82,6 +82,9 @@ class CronCommand extends ContainerAwareCommand
 
             $cron = \Cron\CronExpression::factory($dbCommand->getDefinition());
 
+            /**
+             * @todo Add "Oro timezone" setting as parameter to isDue method
+             */
             if ($cron->isDue()) {
                 $job = new Job($name);
 

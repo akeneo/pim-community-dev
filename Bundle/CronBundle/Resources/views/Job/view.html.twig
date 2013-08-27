@@ -108,32 +108,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        {% endif %}
-
-        {% if job.stackTrace is not empty %}
-        <h3>{{ 'oro.cron.header.trace'|trans }}</h3>
-            {% for position, ex in job.stackTrace.toarray %}
-            <div class="block">
-                <h4>
-                    {{ ex.class|abbr_class }}: <small>{{ ex.message|nl2br|format_file_from_text }}</small>&nbsp;
-                    {% spaceless %}
-                    <a href="javascript: void(0);" onclick="toggle('traces_{{ position }}', 'traces'); switchIcons('icon_traces_{{ position }}_open', 'icon_traces_{{ position }}_close'); return false;">
-                        <img class="toggle" id="icon_traces_{{ position }}_close" alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}" style="visibility: hidden;" />
-                        <img class="toggle" id="icon_traces_{{ position }}_open" alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}" style="visibility: display; margin-left: -18px" />
-                    </a>
-                    {% endspaceless %}
-                </h4>
-                <a id="traces_link_{{ position }}"></a>
-                <ol class="traces list_ex" id="traces_{{ position }}" style="display: none;">
-                    {% for i, trace in ex.trace %}
-                    <li>
-                        {% include 'TwigBundle:Exception:trace.html.twig' with { 'prefix': position, 'i': i, 'trace': trace } only %}
-                    </li>
-                    {% endfor %}
-                </ol>
-            </div>
-            {% endfor %}
         {% endif %}
 
         {% if job.output is not empty %}
@@ -146,6 +120,48 @@
         <pre style="max-height:300px; overflow:auto;">{{ job.errorOutput }}</pre>
         {% endif %}
 
+        {% if job.stackTrace is not empty %}
+        <h3>{{ 'oro.cron.header.trace'|trans }}</h3>
+            {% for position, ex in job.stackTrace.toarray %}
+            <div class="stack-trace">
+                <h4>
+                    {{ ex.class|abbr_class }}: <small>{{ ex.message|nl2br|format_file_from_text }}</small>&nbsp;
+                    {% spaceless %}
+                    <a href="javascript: void(0);">
+                        <img alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}" />
+                        <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}" class="hide" />
+                    </a>
+                    {% endspaceless %}
+                </h4>
+                <ol class="traces" class="hide">
+                    {%- for i, trace in ex.trace %}
+                    <li>
+                        {% if trace.function %}
+                        <strong>
+                            <abbr title="{{ trace.class }}">{{ trace.short_class }}</abbr>
+                            {{ trace.type ~ trace.function }}
+                        </strong>
+                        ({{ trace.args|format_args }})
+                        {% endif %}
+
+                        {% if trace.file is defined and trace.file and trace.line is defined and trace.line %}
+                            {{ trace.function ? '<br />' : '' }}
+                            {{ trace.file|format_file(trace.line) }}&nbsp;
+                            <a href="javascript: void(0);">
+                                <img alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}"{% if 0 != i %} class="hide"{% endif %} />
+                                <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}"{% if 0 == i %} class="hide"{% endif %} />
+                            </a>
+                            <div class="trace{% if 0 != i %} hide{% endif %}">
+                                {{ trace.file|file_excerpt(trace.line) }}
+                            </div>
+                        {% endif %}
+                    </li>
+                    {% endfor -%}
+                </ol>
+            </div>
+            {% endfor %}
+        {% endif %}
+
         {% if statistics is not empty %}
         <h3>{{ 'oro.cron.header.statistics'|trans }}</h3>
         <div id="statistics" style="width:900px; height:300px;"></div>
@@ -154,43 +170,6 @@
             Oro.Job.statistics = {{ statistics|json_encode|raw }};
         </script>
         {% endif %}
-
-        {% endblock %}
-
-        {% block head_script %}
-            {{ parent() }}
-
-            <script type="text/javascript">
-                function toggle(id, clazz) {
-                    var el = document.getElementById(id),
-                        current = el.style.display,
-                        i;
-
-                    if (clazz) {
-                        var tags = document.getElementsByTagName('*');
-                        for (i = tags.length - 1; i >= 0 ; i--) {
-                            if (tags[i].className === clazz) {
-                                tags[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    el.style.display = current === 'none' ? 'block' : 'none';
-                }
-
-                function switchIcons(id1, id2) {
-                    var icon1, icon2, visibility1, visibility2;
-
-                    icon1 = document.getElementById(id1);
-                    icon2 = document.getElementById(id2);
-
-                    visibility1 = icon1.style.visibility;
-                    visibility2 = icon2.style.visibility;
-
-                    icon1.style.visibility = visibility2;
-                    icon2.style.visibility = visibility1;
-                }
-            </script>
         </div>
     </div>
 </div>

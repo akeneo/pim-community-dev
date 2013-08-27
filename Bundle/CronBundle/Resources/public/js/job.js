@@ -2,7 +2,7 @@ $(function() {
     var statusDaemon = $('#status-daemon'),
         img = statusDaemon.closest('div').find('img');
 
-    $('#run-daemon, #stop-daemon').click(function (e) {
+    $(document).on('click', '#run-daemon, #stop-daemon', function (e) {
         var el = $(this);
 
         img.show();
@@ -20,6 +20,23 @@ $(function() {
 
             img.hide();
         });
+
+        return false;
+    });
+
+    $(document).on('click', '.stack-trace a', function (e) {
+        var el = $(this),
+            traceCon = el.closest('.stack-trace').find('.traces'),
+            traceConVis = traceCon.is(':visible');
+
+        if (el.next('.trace').length) {
+            el.next('.trace').toggle();
+        } else {
+            $('.traces').hide();
+            traceCon.toggle(!traceConVis);
+        }
+
+        el.find('img').toggleClass('hide');
 
         return false;
     });
