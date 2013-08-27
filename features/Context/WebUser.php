@@ -2,17 +2,15 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ExpectationException;
-
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -1547,6 +1545,34 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
         $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+    }
+
+    /**
+     * @Then /^I should see the completeness summary$/
+     */
+    public function iShouldSeeTheCompletenessSummary()
+    {
+        $this->getPage('Product edit')->findCompletenessContent();
+        $this->getPage('Product edit')->findCompletenessLegend();
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" completeness with "([^"]*)" message and (\d+)% of ratio for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeCompletenessWithMessageAndRatioForChannelAndLocale(
+        $state,
+        $message,
+        $ratio,
+        $channel,
+        $locale
+    ) {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompleteness($channelCode, $locale, $state, $message, $ratio);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
     }
 
     /**
