@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Metadata;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
-use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
+use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity;
 
 class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,8 +15,8 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->classMetadata = new EntityMetadata(ConfigManagerTest::DEMO_ENTITY);
-        $this->classMetadata->mode = 'hidden';
+        $this->classMetadata       = new EntityMetadata(DemoEntity::ENTITY_NAME);
+        $this->classMetadata->mode = ConfigModelManager::MODE_DEFAULT;
     }
 
     public function testSerialize()
@@ -25,10 +26,10 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function testMerge()
     {
-        $newMetadata = new EntityMetadata(ConfigManagerTest::DEMO_ENTITY);
-        $newMetadata->mode = 'readonly';
+        $newMetadata       = new EntityMetadata(DemoEntity::ENTITY_NAME);
+        $newMetadata->mode = ConfigModelManager::MODE_READONLY;
         $this->classMetadata->merge($newMetadata);
 
-        $this->assertEquals('readonly', $this->classMetadata->mode);
+        $this->assertEquals(ConfigModelManager::MODE_READONLY, $this->classMetadata->mode);
     }
 }

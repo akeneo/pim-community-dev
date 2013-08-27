@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigModelValue;
@@ -51,8 +52,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         /** test ConfigField */
         $this->assertEmpty($this->configField->getId());
 
-        $this->configField->setMode(FieldConfigModel::MODE_VIEW_READONLY);
-        $this->assertEquals(FieldConfigModel::MODE_VIEW_READONLY, $this->configField->getMode());
+        $this->configField->setMode(ConfigModelManager::MODE_READONLY);
+        $this->assertEquals(ConfigModelManager::MODE_READONLY, $this->configField->getMode());
 
         /** test ConfigValue */
         $this->assertEmpty($this->configValue->getId());
@@ -148,7 +149,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ->setScope('datagrid')
             ->setValue('a:2:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";}');
 
-        $values = array(
+        $values       = array(
             'is_searchable' => true,
             'is_sortable'   => false,
             'doctrine'      => $this->configValue

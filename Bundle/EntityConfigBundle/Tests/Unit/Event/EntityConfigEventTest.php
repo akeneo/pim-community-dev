@@ -20,10 +20,6 @@ class EntityConfigEventTest extends \PHPUnit_Framework_TestCase
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->configManager->expects($this->any())->method('isConfigurable')->will($this->returnValue(true));
-        $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
-
     }
 
     public function testEvent()

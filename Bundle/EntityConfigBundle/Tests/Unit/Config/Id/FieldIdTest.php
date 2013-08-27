@@ -22,9 +22,7 @@ class FieldIdTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('testScope', $this->fieldId->getScope());
         $this->assertEquals('testField', $this->fieldId->getFieldName());
         $this->assertEquals('string', $this->fieldId->getFieldType());
-        $this->assertEquals('field_testScope_Test-Class_testField', $this->fieldId->getId());
-        $this->assertEquals('ConfigEntity Field "testField" in Entity "Test\Class"', $this->fieldId->getEntityId());
-        $this->assertEquals('Config for Entity "Test\Class" Field "testField" in scope "testScope"', $this->fieldId->__toString());
+        $this->assertEquals('field_testScope_Test-Class_testField', $this->fieldId->toString());
 
         $this->fieldId->setFieldType('integer');
         $this->assertEquals('integer', $this->fieldId->getFieldType());

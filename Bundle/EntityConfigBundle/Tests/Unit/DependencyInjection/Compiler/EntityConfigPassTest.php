@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Compiler\EntityConfigPass;
 
 class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
@@ -14,15 +15,17 @@ class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
     /** @var ContainerBuilder */
     protected $builder;
 
-    protected $config = array('oro_entity_config.provider' => array(
-        0 => array('scope' => 'datagrid')
-    ));
+    protected $config = array(
+        'oro_entity_config.provider' => array(
+            0 => array('scope' => 'datagrid')
+        )
+    );
 
     /** Setup */
     protected function setup()
     {
         $this->compiler = new EntityConfigPass();
-        $this->builder = new ContainerBuilder();
+        $this->builder  = new ContainerBuilder();
     }
 
     public function testProcess()
@@ -47,8 +50,7 @@ class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->will($this->returnValue($this->builder->getDefinition('oro_grid.config.datagrid_config_provider')));
 
-        $compilerPass = new EntityConfigPass();
-        $compilerPass->process($containerMock);
+        $this->compiler->process($containerMock);
     }
 
     public function testWarning()
@@ -64,8 +66,7 @@ class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('\Oro\Bundle\EntityConfigBundle\Exception\RuntimeException');
 
-        $compilerPass = new EntityConfigPass();
-        $compilerPass->process($containerMock);
+        $this->compiler->process($containerMock);
 
     }
 
@@ -90,9 +91,9 @@ class EntityConfigPassTest extends \PHPUnit_Framework_TestCase
     {
         $defRegistry_0 = new Definition('Oro\Bundle\EntityConfigBundle\Config\ConfigManager');
         $defRegistry_1 = new Definition('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider');
-        $definitions = array(
-            'oro_entity_config.config_manager'          => $defRegistry_0,
-            'oro_grid.config.datagrid_config_provider'  => $defRegistry_1
+        $definitions   = array(
+            'oro_entity_config.config_manager'         => $defRegistry_0,
+            'oro_grid.config.datagrid_config_provider' => $defRegistry_1
         );
 
         $this->builder->setDefinitions($definitions);

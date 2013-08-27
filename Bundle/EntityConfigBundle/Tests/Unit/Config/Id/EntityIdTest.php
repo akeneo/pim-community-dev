@@ -20,9 +20,7 @@ class EntityIdTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('Test\Class', $this->entityId->getClassName());
         $this->assertEquals('testScope', $this->entityId->getScope());
-        $this->assertEquals('entity_testScope_Test-Class', $this->entityId->getId());
-        $this->assertEquals('Config for Entity "Test\Class" in scope "testScope"', $this->entityId->__toString());
-        $this->assertEquals('ConfigEntity Entity "Test\Class"', $this->entityId->getEntityId());
+        $this->assertEquals('entity_testScope_Test-Class', $this->entityId->toString());
     }
 
     public function testSerialize()
