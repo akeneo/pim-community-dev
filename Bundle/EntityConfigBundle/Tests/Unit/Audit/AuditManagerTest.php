@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Audit;
 
-
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
@@ -10,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Audit\AuditManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Symfony\Component\DependencyInjection\Container;
 
 class AuditManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,7 +34,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $securityContext = $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
         $securityContext->expects($this->any())->method('getToken')->will($this->returnValue($token));
 
-        $securityProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy')
+        $securityProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
             ->disableOriginalConstructor()
             ->getMock();
         $securityProxy->expects($this->any())->method('getService')->will($this->returnValue($securityContext));
@@ -43,9 +43,9 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $provider = new ConfigProvider($configManager, new PropertyConfigContainer('testScope', array()));
+        $provider = new ConfigProvider($configManager, new Container(), 'testScope', array());
 
-        $configManager->expects($this->any())->method('em')->will($this->returnValue($em));
+        $configManager->expects($this->any())->method('getEntityManager')->will($this->returnValue($em));
 
         $configManager->expects($this->any())->method('getUpdateConfig')->will(
             $this->returnValue(
@@ -76,7 +76,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $securityContext = $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
         $securityContext->expects($this->any())->method('getToken');
 
-        $securityProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy')
+        $securityProxy = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
             ->disableOriginalConstructor()
             ->getMock();
         $securityProxy->expects($this->any())->method('getService')->will($this->returnValue($securityContext));

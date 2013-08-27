@@ -2,7 +2,7 @@
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = 'Update Entity' %}
-{% oro_title_set({params : {"%username%": 'User' }}) %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set entityClass = field.entity.className|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label') %}

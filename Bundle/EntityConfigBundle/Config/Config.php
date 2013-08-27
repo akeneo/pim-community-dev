@@ -49,7 +49,7 @@ class Config implements ConfigInterface
         }
 
         if ($strict) {
-            throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getId()));
+            throw new RuntimeException(sprintf('Value "%s" for %s', $code, $this->getId()->toString()));
         }
 
         return null;

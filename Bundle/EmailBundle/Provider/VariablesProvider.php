@@ -36,7 +36,8 @@ class VariablesProvider
             'user'   => array()
         );
 
-        foreach ($this->configProvider->getIds() as $entityConfigId) {
+        $ids = $this->configProvider->getIds();
+        foreach ($ids as $entityConfigId) {
             // export variables of asked entity and current user entity class
             $className = $entityConfigId->getClassName();
             if ($className == $entityName || $className == $userClassName) {

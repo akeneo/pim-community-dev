@@ -67,7 +67,7 @@ class EntityMetadata extends MergeableClassMetadata
             $this->configurable,
             $this->defaultValues,
             $this->routeName,
-            $this->viewMode,
+            $this->mode,
             $parentStr
             ) = unserialize($str);
 

@@ -9,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity;
+use Symfony\Component\DependencyInjection\Container;
 
 class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,8 +50,8 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
         $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
-        $this->configContainer = new PropertyConfigContainer('test', array());
-        $this->configProvider  = new ConfigProvider($this->configManager, $this->configContainer);
+        $this->configContainer = new Container();
+        $this->configProvider  = new ConfigProvider($this->configManager, $this->configContainer, 'test', array());
     }
 
     public function testConfig()
@@ -59,8 +60,6 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->entityConfig, $this->configProvider->getConfig(DemoEntity::ENTITY_NAME));
 
         $this->assertEquals('test', $this->configProvider->getScope());
-
-        $this->assertEquals($this->configContainer, $this->configProvider->getPropertyConfig());
     }
 
     public function testCreateConfig()

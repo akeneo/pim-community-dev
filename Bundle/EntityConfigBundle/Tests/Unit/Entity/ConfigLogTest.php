@@ -28,6 +28,8 @@ class ConfigLogTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigLog()
     {
+        $userMock = $this->getMockForAbstractClass('Symfony\Component\Security\Core\User\UserInterface');
+
         $this->assertEmpty($this->configLog->getId());
 
         $data = new \DateTime();
@@ -38,8 +40,8 @@ class ConfigLogTest extends \PHPUnit_Framework_TestCase
         $this->configLog->prePersist();
         $this->assertInstanceOf('\DateTime', $this->configLog->getLoggedAt());
 
-        $this->configLog->setUser('user');
-        $this->assertEquals('user', $this->configLog->getUser());
+        $this->configLog->setUser($userMock);
+        $this->assertEquals($userMock, $this->configLog->getUser());
 
         $this->configLog->addDiff($this->configLogDiff);
         $this->assertEquals($this->configLogDiff, $this->configLog->getDiffs()->first());
