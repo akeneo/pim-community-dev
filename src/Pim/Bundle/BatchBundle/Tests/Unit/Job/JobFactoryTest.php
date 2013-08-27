@@ -12,7 +12,6 @@ use Pim\Bundle\BatchBundle\Job\JobFactory;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class JobFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,13 +20,10 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        $jobRepository = new MockJobRepository();
+        $jobRepository = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
-        $stepHandler = $this->getMock(
-            'Pim\\Bundle\\BatchBundle\\Job\\StepHandlerInterface'
-        );
-
-        $jobFactory = new JobFactory($logger, $jobRepository, $stepHandler);
+        $jobFactory = new JobFactory($eventDispatcher, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(

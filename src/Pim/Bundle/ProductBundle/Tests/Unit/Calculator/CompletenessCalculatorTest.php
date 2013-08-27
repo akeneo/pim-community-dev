@@ -135,7 +135,7 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      * Test related method
      *
      * @param string $channelCode
-     * @param array $values  Array of product values
+     * @param array  $values      Array of product values
      * array(
      *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
      *     ...
@@ -397,9 +397,9 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      * Create attribute requirement entity
      *
      * @param ProductAttribute $attribute
-     * @param Channel $channel
-     * @param Locale $locale
-     * @param boolean $required
+     * @param Channel          $channel
+     * @param Locale           $locale
+     * @param boolean          $required
      *
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
      */

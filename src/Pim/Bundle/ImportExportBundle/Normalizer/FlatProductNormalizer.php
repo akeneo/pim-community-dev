@@ -15,10 +15,19 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
+    /**
+     * @var string
+     */
     const ITEM_SEPARATOR = ',';
 
+    /**
+     * @var array
+     */
     protected $supportedFormats = array('csv');
 
+    /**
+     * @var array
+     */
     private $results;
 
     /**

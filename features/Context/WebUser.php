@@ -2,17 +2,15 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ExpectationException;
-
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -51,6 +49,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearRecordedMails()
+    {
+        $this->getMailRecorder()->clear();
     }
 
     /**
@@ -1328,9 +1334,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I should be on the "([^"]*)" import job page$/
      */
-    public function iShouldBeOnTheImportJobPage($job)
+    public function iShouldBeOnTheImportJobPage($code)
     {
-        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJob($job)->getId()));
+        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -1339,9 +1345,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Given /^I am on the "([^"]*)" import job page$/
      */
-    public function iAmOnTheImportJobPage($job)
+    public function iAmOnTheImportJobPage($code)
     {
-        $this->openPage('Import show', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Import show', array('id' => $this->getJobInstance($code)->getId()));
         $this->wait();
     }
 
@@ -1350,9 +1356,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @When /^I launch the "([^"]*)" import job$/
      */
-    public function iLaunchTheImportJob($job)
+    public function iLaunchTheImportJob($code)
     {
-        $this->openPage('Import launch', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Import launch', array('id' => $this->getJobInstance($code)->getId()));
     }
 
     /**
@@ -1380,9 +1386,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I should be on the "([^"]*)" export job page$/
      */
-    public function iShouldBeOnTheExportJobPage($job)
+    public function iShouldBeOnTheExportJobPage($code)
     {
-        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJob($job)->getId()));
+        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -1391,9 +1397,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Given /^I am on the "([^"]*)" export job page$/
      */
-    public function iAmOnTheExportJobPage($job)
+    public function iAmOnTheExportJobPage($code)
     {
-        $this->openPage('Export show', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Export show', array('id' => $this->getJobInstance($code)->getId()));
         $this->wait();
     }
 
@@ -1450,9 +1456,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @When /^I launch the "([^"]*)" export job$/
      */
-    public function iLaunchTheExportJob($job)
+    public function iLaunchTheExportJob($code)
     {
-        $this->openPage('Export launch', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Export launch', array('id' => $this->getJobInstance($code)->getId()));
     }
 
     /**
@@ -1569,6 +1575,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Given /^an email to "([^"]*)" should have been sent$/
+     */
+    public function anEmailToShouldHaveBeenSent($email)
+    {
+        $recorder = $this->getMailRecorder();
+        if (0 === $recorder->getMailsSentTo($email)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'No emails were sent to %s.',
+                    $email
+                )
+            );
+        }
+    }
 
     /**
      * @param string $expected
@@ -1754,9 +1775,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return Job
      */
-    private function getJob($job)
+    private function getJobInstance($code)
     {
-        return $this->getFixturesContext()->getJob($job);
+        return $this->getFixturesContext()->getJobInstance($code);
     }
 
     /**
@@ -1767,5 +1788,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
+    }
+
+    /**
+     * Get the mail recorder
+     *
+     * @return MailRecorder
+     */
+    private function getMailRecorder()
+    {
+        return $this->getMainContext()->getMailRecorder();
     }
 }

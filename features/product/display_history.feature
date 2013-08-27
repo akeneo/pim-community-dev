@@ -20,4 +20,4 @@ Feature: Display the product history
     And I change the Brand to "Syno"
     And I save the product
     When I visit the "History" tab
-    Then there should be 1 update
+    Then there should be 2 updates

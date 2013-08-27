@@ -2,9 +2,17 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
-use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
+use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Test related class
@@ -20,8 +28,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $builder  = new VersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
     }
 
@@ -30,8 +37,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsername()
     {
-        $builder  = new VersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername('admin');
         $user = new User();
         $listener->setUsername($user);
@@ -43,46 +49,52 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsernameException()
     {
-        $builder  = new VersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
         $listener->setUsername(null);
     }
 
     /**
      * Test related method
      */
-    public function testcheckScheduledUpdate()
+    public function testCheckScheduledUpdate()
     {
-        $builder  = new VersionBuilder();
-        $listener = new AddVersionListener($builder);
+        $listener = new AddVersionListener();
 
         $emMock          = $this->getEntityManagerMock();
-        $versionableMock = $this->getVersionableMock(array('field1' => 'value1'));
-
+        $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
         $listener->checkScheduledUpdate($emMock, $versionableMock);
+
+        $value = new ProductValue();
+        $value->setEntity(new Product());
+        $listener->checkScheduledUpdate($emMock, $value);
+
+        $price = new ProductPrice();
+        $value->addPrice($price);
+        $listener->checkScheduledUpdate($emMock, $price);
+
+        $attribute = new ProductAttribute();
+        $listener->checkScheduledUpdate($emMock, $attribute);
+
+        $option = new AttributeOption();
+        $attribute->addOption($option);
+        $listener->checkScheduledUpdate($emMock, $option);
+
+        $optionValue = new AttributeOptionValue();
+        $option->addOptionValue($optionValue);
+        $listener->checkScheduledUpdate($emMock, $optionValue);
+
+        $family = new Family();
+        $translation = new FamilyTranslation();
+        $translation->setForeignKey($family);
+        $listener->checkScheduledUpdate($emMock, $translation);
     }
 
     /**
-     * Test related method
-     */
-    public function testWriteSnapshot()
-    {
-        $builder  = new VersionBuilder();
-        $listener = new AddVersionListener($builder);
-
-        $emMock          = $this->getEntityManagerMock();
-        $versionableMock = $this->getVersionableMock(array('field1' => 'value1'));
-        $userMock        = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-
-        $listener->writeSnapshot($emMock, $versionableMock, $userMock);
-    }
-
-    /**
-     * @param array $data
+     * @param string $data
      *
      * @return VersionableInterface
      */
-    protected function getVersionableMock(array $data)
+    protected function getVersionableMock($data)
     {
         $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
 
@@ -93,10 +105,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $versionable->expects($this->any())
             ->method('getVersion')
             ->will($this->returnValue(2));
-
-        $versionable->expects($this->any())
-            ->method('getVersionedData')
-            ->will($this->returnValue($data));
 
         return $versionable;
     }
@@ -140,7 +148,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         return $emMock;
     }
 
-
     /**
      * @return Doctrine\ORM\EntityRepository
      */
@@ -173,5 +180,23 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         return $repo;
+    }
+
+    /**
+     * @return OnFlushEventArgs
+     */
+    protected function getOnFlushEventArgsMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\OnFlushEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock
+            ->expects($this->any())
+            ->method('getEntityManager')
+            ->will($this->returnValue($this->getEntityManagerMock()));
+
+        return $mock;
     }
 }

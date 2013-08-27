@@ -17,6 +17,11 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
 class ProductNormalizer implements NormalizerInterface
 {
     /**
+     * @var array
+     */
+    protected $supportedFormats = array('json', 'xml');
+
+    /**
      * @var Router
      */
     protected $router;
@@ -32,6 +37,8 @@ class ProductNormalizer implements NormalizerInterface
     protected $locale;
 
     /**
+     * TODO : make that normalizer useable without channel and router (use context ?)
+     *
      * Constructor
      *
      * @param Router $router
@@ -193,16 +200,16 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Checks whether the given class is supported for normalization by this normalizer
+     * Indicates whether this normalizer can normalize the given data
      *
-     * @param mixed  $data   Data to normalize
-     * @param string $format Serialization format
+     * @param mixed  $data
+     * @param string $format
      *
      * @return boolean
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && in_array($format, array('json'));
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
 
     /**

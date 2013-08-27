@@ -22,7 +22,7 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var FamilyNormalizer
      */
-    private $normalizer;
+    protected $normalizer;
 
     /**
      * {@inheritdoc}
@@ -104,7 +104,7 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return attribute
      */
-    private function createFamily(array $data)
+    protected function createFamily(array $data)
     {
         $family = new Family();
         $family->setCode('mycode');

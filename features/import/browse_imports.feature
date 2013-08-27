@@ -1,6 +1,6 @@
 @javascript
 Feature: Browse imports
-  In order to view the list of import jobs that have been created
+  In order to view the list of import jobs instance that have been created
   As a user
   I need to be able to view a list of them
 

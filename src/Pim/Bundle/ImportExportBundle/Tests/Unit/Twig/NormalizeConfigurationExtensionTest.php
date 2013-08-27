@@ -52,9 +52,9 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetViolationsFunction()
     {
         $violations = array(
-            $this->getViolationMock('jobDefinition.steps[0].reader.foo', 'The reader foo of step 0 is somehow wrong.'),
-            $this->getViolationMock('jobDefinition.steps[1].writer.bar', 'The writer bar of step 1 is somehow wrong.'),
-            $this->getViolationMock('jobDefinition.steps[1].writer.bar', 'The writer bar of step 1 is elsehow wrong.'),
+            $this->getViolationMock('job.steps[0].reader.foo', 'The reader foo of step 0 is somehow wrong.'),
+            $this->getViolationMock('job.steps[1].writer.bar', 'The writer bar of step 1 is somehow wrong.'),
+            $this->getViolationMock('job.steps[1].writer.bar', 'The writer bar of step 1 is elsehow wrong.'),
         );
 
         $this->assertEquals(

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BatchBundle\Job;
 
-use Pim\Bundle\BatchBundle\Entity\Job as JobEntity;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
@@ -15,7 +15,6 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 interface JobRepositoryInterface
 {
@@ -26,7 +25,7 @@ interface JobRepositoryInterface
      *
      * @return JobExecution
      */
-    public function createJobExecution(JobEntity $job);
+    public function createJobExecution(JobInstance $job);
 
     /**
      * Update a JobExecution object

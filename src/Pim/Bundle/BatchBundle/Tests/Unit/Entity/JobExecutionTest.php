@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\BatchBundle\Entity\Job as JobInstance;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
@@ -15,7 +16,6 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class JobExecutionTest extends \PHPUnit_Framework_TestCase
 {
@@ -115,18 +115,24 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testStepExecutions()
     {
-        $this->assertEmpty($this->jobExecution->getStepExecutions());
+        $this->assertEquals(0, $this->jobExecution->getStepExecutions()->count());
 
         $jobExecution = new JobExecution();
 
         $stepExecution1 = new StepExecution('my_step_name_1', $jobExecution);
         $this->jobExecution->addStepExecution($stepExecution1);
 
-        $this->assertEquals(array($stepExecution1), $this->jobExecution->getStepExecutions());
+        $this->assertEquals(
+            new ArrayCollection(array($stepExecution1)),
+            $this->jobExecution->getStepExecutions()
+        );
 
         $stepExecution2 = $this->jobExecution->createStepExecution('my_step_name_2');
 
-        $this->assertEquals(array($stepExecution1, $stepExecution2), $this->jobExecution->getStepExecutions());
+        $this->assertEquals(
+            new ArrayCollection(array($stepExecution1, $stepExecution2)),
+            $this->jobExecution->getStepExecutions()
+        );
     }
 
     public function testIsRunning()
@@ -163,39 +169,64 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     public function testGetAddFailureExceptions()
     {
         $this->assertEmpty($this->jobExecution->getFailureExceptions());
-        $this->assertEmpty($this->jobExecution->getAllFailureExceptions());
-        $stepExecution = $this->jobExecution->createStepExecution('my_step_name_2');
-        $this->assertEmpty($this->jobExecution->getAllFailureExceptions());
 
-        $exception1 = new \Exception('My exception 1');
-        $exception2 = new \Exception('My exception 2');
-        $stepException = new \Exception('My step exception 1');
+        $exception1 = new \Exception('My exception 1', 1);
+        $exception2 = new \Exception('My exception 2', 2);
 
         $this->assertEntity($this->jobExecution->addFailureException($exception1));
-
-        $this->assertEquals(array($exception1), $this->jobExecution->getFailureExceptions());
-        $this->assertEquals(array($exception1), $this->jobExecution->getAllFailureExceptions());
-
         $this->assertEntity($this->jobExecution->addFailureException($exception2));
 
-        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getFailureExceptions());
-        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getAllFailureExceptions());
+        $failureExceptions = $this->jobExecution->getFailureExceptions();
 
-        $stepExecution->addFailureException($stepException);
+        $this->assertEquals('Exception', $failureExceptions[0]['class']);
+        $this->assertEquals('My exception 1', $failureExceptions[0]['message']);
+        $this->assertEquals('1', $failureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[0]['trace']);
 
-        $this->assertEquals(array($exception1, $exception2), $this->jobExecution->getFailureExceptions());
-        $this->assertEquals(
-            array($exception1, $exception2, $stepException),
-            $this->jobExecution->getAllFailureExceptions()
-        );
+        $this->assertEquals('Exception', $failureExceptions[1]['class']);
+        $this->assertEquals('My exception 2', $failureExceptions[1]['message']);
+        $this->assertEquals('2', $failureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__, $failureExceptions[1]['trace']);
     }
 
-    public function testSetGetJob()
+    public function testGetAllFailureExceptions()
     {
-        $this->assertNull($this->jobExecution->getJob());
+        $this->assertEmpty($this->jobExecution->getAllFailureExceptions());
+
+        $stepExecution = $this->jobExecution->createStepExecution('my_step_name_2');
+        $exception1 = new \Exception('My exception 1', 1);
+        $exception2 = new \Exception('My exception 2', 2);
+        $stepException = new \Exception('My step exception 1', 100);
+
+        $this->jobExecution->addFailureException($exception1);
+        $this->jobExecution->addFailureException($exception2);
+        $stepExecution->addFailureException($stepException);
+
+        $allFailureExceptions = $this->jobExecution->getAllFailureExceptions();
+
+        $this->assertEquals('Exception', $allFailureExceptions[0]['class']);
+        $this->assertEquals('My exception 1', $allFailureExceptions[0]['message']);
+        $this->assertEquals('1', $allFailureExceptions[0]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[0]['trace']);
+
+        $this->assertEquals('Exception', $allFailureExceptions[1]['class']);
+        $this->assertEquals('My exception 2', $allFailureExceptions[1]['message']);
+        $this->assertEquals('2', $allFailureExceptions[1]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[1]['trace']);
+
+        $this->assertEquals('Exception', $allFailureExceptions[2]['class']);
+        $this->assertEquals('My step exception 1', $allFailureExceptions[2]['message']);
+        $this->assertEquals('100', $allFailureExceptions[2]['code']);
+        $this->assertContains(__FUNCTION__, $allFailureExceptions[2]['trace']);
+
+    }
+
+    public function testSetGetJobInstance()
+    {
+        $this->assertNull($this->jobExecution->getJobInstance());
         $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
-        $this->assertEntity($this->jobExecution->setJob($jobInstance));
-        $this->assertEquals($jobInstance, $this->jobExecution->getJob());
+        $this->assertEntity($this->jobExecution->setJobInstance($jobInstance));
+        $this->assertSame($jobInstance, $this->jobExecution->getJobInstance());
     }
 
     public function testToString()
@@ -212,12 +243,12 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->jobExecution->setUpdatedTime($updatedTime);
         $this->jobExecution->setStatus(new BatchStatus($status));
         $this->jobExecution->setExitStatus(new ExitStatus($exitStatus, 'Test description'));
-        $this->jobExecution->setJob($jobInstance);
+        $this->jobExecution->setJobInstance($jobInstance);
         $this->jobExecution->setEndTime($endTime);
 
         $expectedOutput = 'startTime=2013-02-01T12:34:56+01:00, endTime=2013-03-04T21:43:05+01:00, '.
-            'updatedTime=2013-02-03T23:45:01+01:00, status=5, exitStatus=[FAILED] Test description, '
-            .'job=job instance code';
+            'updatedTime=2013-02-03T23:45:01+01:00, status=5, exitStatus=[FAILED] Test description, '.
+            'exitDescription=[Test description], job=[job instance code]';
 
         $this->assertEquals($expectedOutput, (string) $this->jobExecution);
     }

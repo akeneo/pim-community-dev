@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Manager;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-
+use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
@@ -21,7 +21,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     protected $manager;
 
     /**
-     * @var array
+     * @var Audit[]
      */
     protected $entries = array();
 
@@ -68,7 +68,50 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AuditRepository
+     * Test related method
+     */
+    public function testBuildAudit()
+    {
+        $resourceName = 'myfakeresourcename';
+        $resourceId = 1;
+        $user = $this->getUserMock();
+        $numVersion = 1;
+
+        // update version
+        $data = array('field1' => 'the-same', 'field2' => 'will-be-changed');
+        $previousVersion = new Version($resourceName, $resourceId, $numVersion, $data, $user);
+
+        $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
+        $currentVersion = new Version($resourceName, $resourceId, $numVersion, $data, $user);
+
+        $audit = $this->manager->buildAudit($currentVersion, $previousVersion);
+        $expected = array(
+            'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),
+            'field3' => array('old' => '', 'new' => 'new-data'),
+        );
+        $this->assertEquals($expected, $audit->getData());
+
+        // new version
+        $audit = $this->manager->buildAudit($currentVersion);
+        $expected = array(
+            'field1' => array('old' => '', 'new' => 'the-same'),
+            'field2' => array('old' => '', 'new' => 'has-changed'),
+            'field3' => array('old' => '', 'new' => 'new-data'),
+        );
+        $this->assertEquals($audit->getData(), $expected);
+
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUserMock()
+    {
+        return $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+    }
+
+    /**
+     * @return EntityRepository
      */
     protected function getAuditRepositoryMock()
     {

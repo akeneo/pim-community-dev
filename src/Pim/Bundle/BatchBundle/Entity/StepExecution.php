@@ -19,7 +19,7 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_step_execution")
+ * @ORM\Table(name="pim_batch_step_execution")
  * @ORM\Entity()
  */
 class StepExecution
@@ -33,8 +33,12 @@ class StepExecution
      */
     private $id;
 
-    /* @var JobExecution $jobExecution */
-    /* TODO: link with the jobExecution entity */
+    /**
+     * @var JobExecution
+     *
+     * @ORM\ManyToOne(targetEntity="JobExecution", inversedBy="stepExecutions")
+     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id")
+     */
     private $jobExecution = null;
 
     /**
@@ -69,23 +73,9 @@ class StepExecution
     /**
      * @var integer
      *
-     * @orm\column(name="read_skip_count", type="integer")
+     * @ORM\Column(name="filter_count", type="integer")
      */
-    private $readSkipCount = 0;
-
-    /**
-     * @var integer
-     *
-     * @orm\column(name="process_skip_count", type="integer")
-     */
-    private $processSkipCount = 0;
-
-    /**
-     * @var integer
-     *
-     * @orm\column(name="write_skip_count", type="integer")
-     */
-    private $writeSkipCount = 0;
+    private $filterCount = 0;
 
     /**
      * @var DateTime
@@ -129,16 +119,9 @@ class StepExecution
     private $terminateOnly = false;
 
     /**
-     * @var integer
-     *
-     * @orm\column(name="filter_count", type="integer")
-     */
-    private $filterCount = 0;
-
-    /**
      * @var array
      *
-     * ORM\Column(name="failure_exceptions", type="array", nullable=true)
+     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
      */
     private $failureExceptions = null;
 
@@ -436,9 +419,27 @@ class StepExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = $e;
+        $this->failureExceptions[] = array(
+            'class'   => get_class($e),
+            'message' => $e->getMessage(),
+            'code'    => $e->getCode(),
+            'trace'   => $e->getTraceAsString()
+        );
 
         return $this;
+    }
+
+    public function getFailureExceptionMessages()
+    {
+        return implode(
+            ' ',
+            array_map(
+                function ($e) {
+                    return $e['message'];
+                },
+                $this->failureExceptions
+            )
+        );
     }
 
     /**
@@ -447,9 +448,8 @@ class StepExecution
      */
     public function __toString()
     {
-        $summary = "id=%d, name=%s, status=%s, exitStatus=%s, readCount=%d, filterCount=%d"
-            . ", writeCount=%d readSkipCount=%d, writeSkipCount=%d"
-            . ", processSkipCount=%d";
+        $summary = 'id=%d, name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s], '.
+            'readCount=%d, writeCount=%d, filterCount=%d';
 
         return sprintf(
             $summary,
@@ -457,12 +457,10 @@ class StepExecution
             $this->stepName,
             $this->status,
             $this->exitCode,
+            $this->exitDescription,
             $this->readCount,
-            $this->filterCount,
             $this->writeCount,
-            $this->readSkipCount,
-            $this->writeSkipCount,
-            $this->processSkipCount
+            $this->filterCount
         );
     }
 }

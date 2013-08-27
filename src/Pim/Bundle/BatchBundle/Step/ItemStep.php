@@ -14,10 +14,14 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ItemStep extends AbstractStep
 {
+    /**
+     * @var int
+     */
+    private $batchSize = 100;
+
     /**
      * @Assert\Valid
      */
@@ -34,7 +38,22 @@ class ItemStep extends AbstractStep
     private $processor = null;
 
     /**
+     * Set the batch size
+     *
+     * @param int $batchSize
+     *
+     * @return $this
+     */
+    public function setBatchSize($batchSize)
+    {
+        $this->batchSize = $batchSize;
+
+        return $this;
+    }
+
+    /**
      * Set reader
+     *
      * @param ItemReaderInterface $reader
      */
     public function setReader(ItemReaderInterface $reader)
@@ -100,18 +119,31 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $execution)
+    public function doExecute(StepExecution $stepExecution)
     {
-        $readCounter = 0;
-        $writeCounter = 0;
+        $readCount = 0;
+        $writeCount = 0;
+        $itemsToWrite = array();
 
         while (($item = $this->reader->read()) !== null) {
-            $readCounter ++;
+            $readCount ++;
             $processedItem = $this->processor->process($item);
             if ($processedItem != null) {
-                $writeCounter ++;
-                $this->writer->write(array($processedItem));
+                $itemsToWrite[] = $processedItem;
+                $writeCount ++;
+                if (($writeCount % $this->batchSize) == 0) {
+                    $this->writer->write($itemsToWrite);
+                    $itemsToWrite = array();
+                }
             }
         }
+        if (count($itemsToWrite) > 0) {
+            $this->writer->write($itemsToWrite);
+        }
+
+        $stepExecution->setReadCount($readCount);
+        $stepExecution->setWriteCount($writeCount);
+        $stepExecution->setFilterCount($readCount - $writeCount);
+
     }
 }

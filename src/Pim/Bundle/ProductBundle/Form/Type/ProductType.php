@@ -36,6 +36,9 @@ class ProductType extends FlexibleType
         $this->productFormView = $productFormView;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
@@ -59,7 +62,6 @@ class ProductType extends FlexibleType
                     )
                 );
         }
-
     }
 
     /**

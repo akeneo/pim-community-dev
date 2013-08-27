@@ -11,7 +11,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
@@ -188,17 +187,23 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testAddIdentifierAttribute()
+    public function testRemoveIdentifierAttribute()
     {
         $attribute = $this->getAttributeMock('pim_product_identifier');
-        $this->family->addAttribute($attribute);
+        $this->family->removeAttribute($attribute);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributeRequirementKeyFor()
     {
         $this->assertEquals('foo_bar', $this->family->getAttributeRequirementKeyFor('foo', 'bar'));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributeRequirements()
     {
         $mobileName           = $this->getAttributeRequirementMock('mobile', 'name');

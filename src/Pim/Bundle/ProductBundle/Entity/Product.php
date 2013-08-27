@@ -125,7 +125,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @return ProductValue the identifier of the product
      *
-     * @throw MissingIdentifierException if no identifier could be found
+     * @throws MissingIdentifierException if no identifier could be found
      */
     public function getIdentifier()
     {
@@ -427,34 +427,5 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->completenesses = new ArrayCollection($completenesses);
 
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getVersionedData()
-    {
-        $data = array();
-
-        if ($this->getFamily()) {
-            $data['family'] = $this->getFamily()->getCode();
-        }
-
-        $data['enabled'] = $this->isEnabled();
-
-        $categories = array();
-        foreach ($this->getCategories() as $category) {
-            $categories[]= $category->getCode();
-        }
-        $data['categories']= implode(', ', $categories);
-
-        foreach ($this->getValues() as $value) {
-            $key = $value->getAttribute()->getCode();
-            $key .= ($value->getLocale()) ? '_'.$value->getLocale() : '';
-            $key .= ($value->getScope()) ? '_'.$value->getScope() : '';
-            $data[$key]= (string) $value;
-        }
-
-        return $data;
     }
 }

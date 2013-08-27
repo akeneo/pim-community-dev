@@ -2,12 +2,15 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
-use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -18,13 +21,12 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 abstract class AbstractStep implements StepInterface
 {
     private $name;
 
-    private $logger;
+    private $eventDispatcher;
 
     /* @var JobRepositoryInterace */
     private $jobRepository;
@@ -39,23 +41,15 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * Set the logger
+     * Set the event dispatcher
      *
-     * @param object $logger The logger
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setLogger($logger)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger = $logger;
-    }
+        $this->eventDispatcher = $eventDispatcher;
 
-    /**
-     * Get the logger for internal use
-     *
-     * @return object
-     */
-    protected function getLogger()
-    {
-        return $this->logger;
+        return $this;
     }
 
     /**
@@ -136,7 +130,7 @@ abstract class AbstractStep implements StepInterface
      */
     final public function execute(StepExecution $stepExecution)
     {
-        $this->getLogger()->debug("Executing: id=" . $stepExecution->getId());
+        $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
 
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
@@ -158,8 +152,8 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
-        } catch (Exception $e) {
+            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+        } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
@@ -167,38 +161,17 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
-                $this->getLogger()->debug("Full exception", array('exception', $e));
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
             } else {
-                $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
             }
-        }
-
-        try {
-            // Update the step execution to the latest known value so the
-            // listeners can act on it
-            $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
-            $stepExecution->setExitStatus($exitStatus);
-
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
         }
 
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
-        try {
-            $this->getJobRepository()->updateStepExecution($stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
-            $stepExecution->addFailureException($e);
-            $errorMsg = "Encountered an error saving batch meta data. "
-                . "This job is now in an unknown state.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
-        }
-
-        $this->getLogger()->debug("Step execution complete: " . $stepExecution->__toString());
+        $this->getJobRepository()->updateStepExecution($stepExecution);
+        $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 
     /**
@@ -237,5 +210,28 @@ abstract class AbstractStep implements StepInterface
         }
 
         return $exitStatus;
+    }
+
+    /**
+     * Trigger event linked to Step
+     *
+     * @param string        $eventName Name of the event
+     * @param StepInterface $step      Step object
+     */
+    private function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    {
+        $event = new StepExecutionEvent($stepExecution);
+        $this->dispatch($eventName, $event);
+    }
+
+    /**
+     * Generic batch event dispatcher
+     *
+     * @param string $eventName Name of the event
+     * @param Event  $event     Event object
+     */
+    private function dispatch($eventName, Event $event)
+    {
+        $this->eventDispatcher->dispatch($eventName, $event);
     }
 }

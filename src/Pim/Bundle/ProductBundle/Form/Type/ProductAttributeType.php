@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 
@@ -16,7 +15,6 @@ use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ProductAttributeType extends AttributeType
 {

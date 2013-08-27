@@ -35,13 +35,7 @@ class ProductAttributeRepository extends AttributeRepository
      */
     public function getFindAllExceptQB(array $attributes)
     {
-        $qb = $this->createQueryBuilder('a');
-
-        $qb
-            ->andWhere(
-                $qb->expr()->neq('a.attributeType', $qb->expr()->literal('pim_product_identifier'))
-            )
-            ->orderBy('a.group');
+        $qb = $this->createQueryBuilder('a')->orderBy('a.group');
 
         if (!empty($attributes)) {
             $ids = array_map(

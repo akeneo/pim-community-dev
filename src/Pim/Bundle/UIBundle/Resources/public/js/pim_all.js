@@ -61,6 +61,7 @@ function init() {
     $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
     // Move scope filter to the proper location and remove it from the 'Manage filters' selector
+    // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/app/filter/list.js and manage this there
     Oro.Events.once('datagrid_filters:rendered', function() {
         $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
         $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
 use Symfony\Component\HttpKernel\KernelEvents;
-use Pim\Bundle\VersioningBundle\Manager\VersionBuilder;
 use Pim\Bundle\VersioningBundle\EventListener\AddUserListener;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
@@ -26,8 +25,7 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $builder = new VersionBuilder();
-        $this->versionListener = new AddVersionListener($builder);
+        $this->versionListener = new AddVersionListener();
     }
 
     /**
