@@ -122,6 +122,25 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertDateValue()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'release_date'))
+            ->will($this->returnValue($this->getAttributeMock('date')));
+
+        $today = new \DateTime();
+        $this->assertEquals(
+            array(
+                'release_date' => array(
+                    'date' => $today->format('m/d/Y')
+                )
+            ),
+            $this->converter->convert(array('release_date' => $today->format('r')))
+        );
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');

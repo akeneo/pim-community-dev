@@ -52,8 +52,12 @@ class ProductValueConverter
                         $value = $this->convertPricesValue($value);
                         break;
 
+                    case 'date':
+                        $value = $this->convertDateValue($value);
+                        break;
+
                     default:
-                        $value = array($attribute->getBackendType() => $value);
+                        $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
                 $key = $this->getProductValueKey($attribute, $key, $context);
                 $result[$key] = $value;
@@ -75,13 +79,40 @@ class ProductValueConverter
         $result = array();
         foreach (explode(',', $value) as $price) {
             list($data, $currency) = explode(' ', $price);
-            $result['prices'][] = array(
+            $result[] = array(
                 'data'     => $data,
                 'currency' => $currency,
             );
         }
 
-        return $result;
+        return $this->convertValue('prices', $result);
+    }
+
+    /**
+     * Convert date value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    private function convertDateValue($value)
+    {
+        $date = new \DateTime($value);
+
+        return $this->convertValue('date', $date->format('m/d/Y'));
+    }
+
+
+    /**
+     * Convert value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    private function convertValue($type, $value)
+    {
+        return array($type => $value);
     }
 
     private function processContext(array $context)
