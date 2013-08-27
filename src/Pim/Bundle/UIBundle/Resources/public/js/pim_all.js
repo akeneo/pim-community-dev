@@ -237,14 +237,47 @@ function init() {
 
     $('input[type="file"]').on('change', function() {
         var filename = $(this).val().split('\\').pop();
-        var $info = $(this).siblings('.upload-info');
-        var message = filename ? filename : $info.attr('data-empty-title');
-        $info.html(message);
+        var $input = $(this);
+        var $info = $input.siblings('.upload-info').first();
+        var $zone = $info.parent();
+        var $filename = $zone.find('.upload-filename');
+        var $remove = $zone.find('.remove-upload');
+
+        var $preview = $zone.find('.upload-preview');
+        if ($preview.prop('tagName').toLowerCase() !== 'i') {
+            var iconClass = $zone.hasClass('image') ? 'fa-icon-camera-retro' : 'fa-icon-file';
+            $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
+            $preview = $zone.find('.upload-preview');
+        }
+
+        if (filename) {
+            $filename.html(filename);
+            $zone.removeClass('empty');
+            $preview.removeClass('empty');
+            $remove.removeClass('hide');
+            $input.attr('disabled', 'disabled').hide();
+        } else {
+            $filename.html($filename.attr('data-empty-title'));
+            $zone.addClass('empty');
+            $preview.addClass('empty');
+            $remove.addClass('hide');
+            $input.removeAttr('disabled').show();
+        }
     });
 
-    $('.remove-upload').on('click', function() {
-        $input = $(this).parent().siblings('input[type="file"]').first();
-        $input.replaceWith($input.clone()).trigger('change');
+    $('.remove-upload').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $input = $(this).siblings('input[type="checkbox"]').first();
+        $input.attr('checked', 'checked').val(1);
+        $(this).parent().siblings('input[type="file"]').removeAttr('disabled').show();
+
+        var $info = $(this).siblings('.upload-filename');
+        $info.html($info.attr('data-empty-title'));
+
+        $(this).siblings('.upload-preview').addClass('empty');
+        $(this).addClass('hide');
+        $(this).parent().parent().addClass('empty');
     });
 }
 

@@ -66,17 +66,28 @@
 {% block oro_media_row %}
     {% spaceless %}
 
-    {{ form_errors(form) }}
-    {{ form_row(form.file, {'label': form.vars.label}) }}
-
-    {% if form.vars.value and form.vars.value.filePath %}
-        <ul class="unstyled controls medias">
-            <li>
-                <a href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
-                <label for="{{ form.removed.vars.id }}" class="remove-media">{{ form_widget(form.removed) }} {{ form.removed.vars.label }}</label>
-            </li>
-        </ul>
-    {% endif %}
+    {% set empty = not form.vars.value or not form.vars.value.filePath %}
+    <div class="control-group">
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label'} }) }}
+        <div class="controls">
+            <label class="upload-zone file{% if not form.vars.value %} empty{% endif %}">
+                <div class="upload-info">
+                    {% if not empty %}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
+                    {% else %}
+                        <i class="fa-icon-file upload-preview empty"></i>
+                    {% endif %}
+                    <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    <i class="fa-icon-remove remove-upload{% if empty %} hide{% endif %}" rel="tooltip" data-original-title="{{ 'Remove this file'|trans }}"></i>
+                </div>
+                <input type="file"{% if not empty %} class="hide" disabled="disabled"{% endif %} {{ block('widget_attributes') }}>
+            </label>
+            <div class="icons-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
 
     {% endspaceless %}
 {% endblock %}
@@ -84,20 +95,24 @@
 {% block pim_image_row %}
     {% spaceless %}
 
+    {% set empty = not form.vars.value or not form.vars.value.filePath %}
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label'} }) }}
         <div class="controls">
-            <label class="upload-zone">
-                <span class="upload-info" data-empty-title="{{ 'Drop a file or click here'|trans }}">
-                    {% if form.vars.value and form.vars.value.filePath %}
-                        {{ form_widget(form.removed) }}
-                        <a class="no-hash" href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
-                        <a class="remove-upload" title="{{ 'Remove'|trans }}">{{ 'Remove'|trans }}</a>
+            <label class="upload-zone image{% if not form.vars.value %} empty{% endif %}">
+                <div class="upload-info">
+                    {% if not empty %}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">
+                            <img src="{{ asset(form.vars.value.filePath) }}">
+                        </a>
                     {% else %}
-                        {{ 'Drop a file or click here'|trans }}
+                        <i class="fa-icon-camera-retro upload-preview empty"></i>
                     {% endif %}
-                </span>
-                <input type="file" {{ block('widget_attributes') }}>
+                    <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    <i class="fa-icon-remove remove-upload{% if empty %} hide{% endif %}" rel="tooltip" data-original-title="{{ 'Remove this image'|trans }}"></i>
+                </div>
+                <input type="file"{% if not empty %} class="hide" disabled="disabled"{% endif %} {{ block('widget_attributes') }}>
             </label>
             <div class="icons-container">
                 {{ form_errors(form) }}
@@ -127,7 +142,7 @@
 
 {% block checkbox_widget %}
 {% spaceless %}
-    {% if attr.class is defined and attr.class == 'noswitch' %}
+    {% if attr.class is defined and 'noswitch' in attr.class %}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
     {% else %}
         <div class="switch {% if attr['size'] is defined %}{{ attr['size'] ? 'switch-' ~ attr['size'] : '' }}{% else %}switch-small{% endif %}" data-on-label="{% if attr['data-on-label'] is defined %}{{ attr['data-on-label']|trans }}{% else %}{{ 'Yes'|trans }}{% endif %}" data-off-label="{% if attr['data-off-label'] is defined %}{{ attr['data-off-label']|trans }}{% else %}{{ 'No'|trans }}{% endif %}">

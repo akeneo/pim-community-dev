@@ -1004,32 +1004,59 @@ code.flag-language {
 }
 
 .upload-zone {
-  width: 300px;
+  min-width: 300px;
   height: 100px;
-  border: 2px dashed rgba(0,0,0,.3);
+  border: 1px solid @textColor + #888;
   border-radius: 10px;
-  color: rgba(0,0,0,.3);
+  color: @textColor + #333;
   cursor: pointer;
-  &:hover {
-    border: 2px dashed rgba(0,0,0,.5);
-    color: rgba(0,0,0,.5);
+  &.empty {
+    border-style: dashed;
+    border-width: 2px;
+    &:hover {
+      border-color: @textColor + #555;
+    }
   }
-  span.upload-info {
-    position: absolute;
-    width: 260px;
-    height: 60px;
-    margin: 20px;
+  &:hover {
+    background-color: @color-purple_hover;
+  }
+  div.upload-info {
+    display: block;
+    min-width: 280px;
+    height: 80px;
+    margin: 10px;
     z-index: 0;
-    font-size: 24px;
-    line-height: 60px;
-    text-align: center;
-    vertical-align: middle;
+    font-size: 22px;
+    .upload-preview, img {
+      float: left;
+      display: inline-block;
+      min-width: 40px;
+      max-width: 120px;
+      max-height: 80px;
+      line-height: 80px;
+      font-size: 40px;
+      text-align: center;
+      &.empty {
+        opacity: 0;
+        min-width: 15px;
+        width: 15px;
+      }
+    }
+    span.upload-filename {
+      float: left;
+      margin: 30px 5px 0;
+    }
+    .remove-upload {
+      float: right;
+      margin-top: 30px;
+    }
   }
 }
 
 input[type="file"] {
   z-index: 99;
   position: relative;
+  top: -100px;
   width: 100%!important;
   height: 100%;
   border-radius: 20px;
