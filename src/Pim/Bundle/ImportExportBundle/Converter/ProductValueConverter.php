@@ -83,6 +83,10 @@ class ProductValueConverter
             $suffix = sprintf('_%s', $context['scope']);
         }
 
+        if ($this->isLocalized($key) && !$attribute->getTranslatable()) {
+            $key = substr($key, 0, strpos($key, '-'));
+        }
+
         return str_replace('-', '_', $key).$suffix;
     }
 

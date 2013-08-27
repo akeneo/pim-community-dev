@@ -67,6 +67,20 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertUnlocalizedValue()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'name'))
+            ->will($this->returnValue($this->getAttributeMock('varchar', false)));
+
+        $this->assertEquals(
+            array('name' => array('varchar' => 'car')),
+            $this->converter->convert(array('name-en_US' => 'car'))
+        );
+    }
+
     public function testConvertScopableValue()
     {
         $this->repository
