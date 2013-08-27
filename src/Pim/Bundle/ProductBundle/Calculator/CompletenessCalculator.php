@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
+use Pim\Bundle\ProductBundle\Entity\Family;
+
 use Symfony\Component\Validator\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -210,7 +212,7 @@ class CompletenessCalculator
      */
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
-        $requiredAttributes = $this->getRequiredAttributes($channel);
+        $requiredAttributes = $this->getRequiredAttributes($channel, $product->getFamily());
         $requiredCount = count($requiredAttributes);
 
         foreach ($this->getLocales() as $locale) {
@@ -275,10 +277,10 @@ class CompletenessCalculator
      *
      * @return array
      */
-    protected function getRequiredAttributes(Channel $channel)
+    protected function getRequiredAttributes(Channel $channel, Family $family)
     {
         $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
 
-        return $repo->findBy(array('channel' => $channel, 'required' => true));
+        return $repo->findBy(array('channel' => $channel, 'family' => $family, 'required' => true));
     }
 }
