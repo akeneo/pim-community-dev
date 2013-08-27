@@ -34,7 +34,17 @@
 
     {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
 
-    $(function() {
+    require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
+        'oro/datagrid/grid', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
+        'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/integer-cell',
+        'oro/datagrid/boolean-cell', 'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell',
+        'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action'],
+    function($, _, Backbone, mediator, registry, LoadingMask,
+        Grid, GridRouter, PageableCollection, FilterList,
+        MomentCell, NumberCell, IntegerCell,
+        BooleanCell, HtmlCell, SelectCell, StringCell,
+        DeleteAction, NavigateAction, MassAction
+    ) {
         var datagridOptions = {
             grid: {
                 name: '{{ datagrid.name }}',
@@ -47,30 +57,30 @@
                         sortable: {{ column.sortable|json_encode|raw }},
                         editable: {{ column.editable|json_encode|raw }},
                         {% if column.type == constant(columnTypePrefix ~ 'TYPE_DATE') %}
-                            cell: Oro.Datagrid.Cell.MomentCell.extend({
+                            cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD",
                                 displayFormat: "MM/DD/YYYY"
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
-                            cell: Oro.Datagrid.Cell.MomentCell.extend({
+                            cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
                                 displayFormat: "MM/DD/YYYY hh:mm a"
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
-                            cell: Oro.Datagrid.Cell.NumberCell
+                            cell: NumberCell
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_INTEGER') %}
-                            cell: Oro.Datagrid.Cell.IntegerCell.extend({ orderSeparator: '' })
+                            cell: IntegerCell.extend({ orderSeparator: '' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_BOOLEAN') %}
-                            cell: Oro.Datagrid.Cell.BooleanCell,
+                            cell: BooleanCell,
                             width: 10
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_HTML') %}
-                            cell: Oro.Datagrid.Cell.HtmlCell
+                            cell: HtmlCell
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_OPTIONS') and column.getOption('choices') %}
-                            cell: Oro.Datagrid.Cell.SelectCell.extend({
+                            cell: SelectCell.extend({
                                 choices: {{ column.getOption('choices')|json_encode|raw }}
                             })
                         {% else %}
-                            cell: Oro.Datagrid.Cell.StringCell
+                            cell: StringCell
                         {% endif %}
                     }{% if not loop.last %},{% endif %}
                     {% endfor %}
@@ -87,18 +97,18 @@
                         {% set currentOptions = action.options %}
                         {% if action.type == constant(actionTypePrefix ~ 'TYPE_DELETE') %}
                             {% set currentOptions = currentOptions|merge({'name': action.name}) %}
-                            Oro.Datagrid.Action.DeleteAction.extend({{ currentOptions|json_encode|raw }})
+                            DeleteAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
                             {# merge additional options to navigateAction to use execute method #}
                             {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
-                            Oro.Datagrid.Action.NavigateAction.extend({{ currentOptions|json_encode|raw }})
+                            NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
                 massActions: {
                     {% for action in datagrid.massActions %}
-                        {{ action.name|json_encode|raw }}: Oro.Datagrid.Action.MassAction.extend({{ action.options|json_encode|raw }})
+                        {{ action.name|json_encode|raw }}: MassAction.extend({{ action.options|json_encode|raw }})
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
@@ -135,11 +145,11 @@
         ) {
             var datagridCollection = {};
             // Initialize grid collection
-            datagridCollection.collection = new Oro.PageableCollection(
+            datagridCollection.collection = new PageableCollection(
                 datagridOptions.results,
                 _.extend({parse: true}, datagridOptions.collection)
             );
-            Oro.Events.trigger("datagrid_collection_set_after", datagridCollection);
+            midiator.trigger("datagrid_collection_set_after", datagridCollection);
             // Basic grid layout
             var template = _.template($(datagridTemplateSelector).html());
             $(containerSelector).append(template);
@@ -147,13 +157,13 @@
             // Grid
             var datagridParameters = _.extend({
                 collection: datagridCollection.collection,
-                loadingMask: Oro.LoadingMask.extend({
+                loadingMask: LoadingMask.extend({
                     loadingHint: {{ 'oro_grid.label_loading_mask'|trans|json_encode|raw }}
                 })
             }, datagridOptions.grid);
-            var datagrid = new Oro.Datagrid.Grid(datagridParameters);
+            var datagrid = new Grid(datagridParameters);
             $(datagridBodySelector).html(datagrid.render().$el);
-            Oro.Registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
+            registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
 
             {# @TODO Filter should not know anything about collection. #}
             {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}
@@ -171,20 +181,20 @@
                 addButtonHint: {{ 'oro_grid.label_add_filter'|trans|json_encode|raw }},
                 collection: datagridCollection.collection
             }, datagridOptions.grid);
-            var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);
+            var filtersList = new FilterList(filterListParameters);
             {% if (datagrid.pager.nbResults > 0) %}
                 $(datagridFiltersSelector).html(filtersList.render().$el);
 
                 /**
                  * @event datagrid_filters:initialized
                  */
-                Oro.Events.trigger("datagrid_filters:rendered", datagridCollection.collection);
+                mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
             {% endif %}
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
                 // Register router and start history
-                var router = new Oro.Datagrid.Router({
+                var router = new GridRouter({
                     collection: datagridCollection.collection
                 });
             {% endif %}

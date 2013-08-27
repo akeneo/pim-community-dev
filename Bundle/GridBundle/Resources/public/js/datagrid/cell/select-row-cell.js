@@ -1,24 +1,16 @@
-/* jshint browser:true */
-(function (factory) {
+/* global define */
+define(['jquery', 'backbone', 'backgrid'],
+function ($, Backbone, Backgrid) {
     "use strict";
-    /* global define, Oro, jQuery, _, Backbone, Backgrid */
-    if (typeof define === 'function' && define.amd) {
-        define(['Oro', 'jQuery', '_', 'Backbone', 'Backgrid'], factory);
-    } else {
-        factory(Oro, jQuery, _, Backbone, Backgrid);
-    }
-}(function (Oro, $, _, Backbone, Backgrid) {
-    "use strict";
-    Oro.Datagrid = Oro.Datagrid || {};
-    Oro.Datagrid.Cell = Oro.Datagrid.Cell || {};
 
     /**
      * Renders a checkbox for row selection.
      *
-     * @class Oro.Datagrid.Cell.SelectRowCell
+     * @export  oro/datagrid/select-row-сell
+     * @class   oro.datagrid.SelectRowCell
      * @extends Backbone.View
      */
-    Oro.Datagrid.Cell.SelectRowCell = Backbone.View.extend({
+    return Backbone.View.extend({
 
         /** @property */
         className: "select-row-cell",
@@ -95,6 +87,4 @@
             return this;
         }
     });
-
-    return Oro.Datagrid.Cell.SelectRowCell;
-}));
+});

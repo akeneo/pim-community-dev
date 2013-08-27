@@ -1,25 +1,30 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-Oro.Datagrid.Cell = Oro.Datagrid.Cell || {};
-Oro.Datagrid.Cell.Formatter = Oro.Datagrid.Cell.Formatter || {};
+/* global define */
+define(['underscore', 'backgrid'],
+function(_, Backgrid) {
+    'use strict';
 
-/**
- * Cell formatter with fixed fromRaw method
- *
- * @class   Oro.Datagrid.Cell.Formatter.CellFormatter
- * @extends Backgrid.CellFormatter
- */
-Oro.Datagrid.Cell.Formatter.CellFormatter = function () {};
-
-Oro.Datagrid.Cell.Formatter.CellFormatter.prototype = new Backgrid.CellFormatter;
-_.extend(Oro.Datagrid.Cell.Formatter.CellFormatter.prototype, {
     /**
-     * @inheritDoc
+     * Cell formatter with fixed fromRaw method
+     *
+     * @export  oro/datagrid/cell-formatter
+     * @class   oro.datagrid.CellFormatter
+     * @extends Backgrid.CellFormatter
      */
-    fromRaw: function (rawData) {
-        if (rawData == null) {
+    var CellFormatter = function () {};
+
+    CellFormatter.prototype = new Backgrid.CellFormatter();
+
+    _.extend(CellFormatter.prototype, {
+        /**
+         * @inheritDoc
+         */
+        fromRaw: function (rawData) {
+            if (rawData == null) {
             return '';
+            }
+            return Backgrid.CellFormatter.prototype.fromRaw.apply(this, arguments);
         }
-        return Backgrid.CellFormatter.prototype.fromRaw.apply(this, arguments);
-    }
+    });
+
+    return CellFormatter;
 });

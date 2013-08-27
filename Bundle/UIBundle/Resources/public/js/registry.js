@@ -1,17 +1,18 @@
-var Oro = Oro || {};
+/* global define */
+define(['underscore'],
+function(_) {
+    'use strict';
 
-/**
- * Global registry implementation
- *
- * @class Oro.Registry
- */
-Oro.Registry = (function() {
-    /** @property {Object} */
-    var storage = {};
+        /** @property {Object} */
+    var storage = {},
+        /** @property {boolean} */
+        frozen = false;
 
-    /** @property {Object} */
-    var frozen = false;
-
+    /**
+     * Global registry implementation
+     *
+     * @export oro/registry
+     */
     return {
         /**
          * Returns element stored under specified keys
@@ -83,4 +84,4 @@ Oro.Registry = (function() {
             frozen = true;
         }
     };
-})();
+});

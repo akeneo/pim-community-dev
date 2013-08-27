@@ -1,16 +1,17 @@
-var Oro = Oro || {};
+/* global define */
+define(['underscore', 'backbone/bootstrap-modal', 'oro/translator'],
+function(_, BootstrapModal, __) {
+    'use strict';
 
-/**
- * Oro extension of Bootstrap Modal wrapper for use with Backbone.
- */
-(function($, _, Backbone) {
     /**
      * Implementation of Bootstrap Modal
+     * Oro extension of Bootstrap Modal wrapper for use with Backbone.
      *
-     * @class   Oro.BootstrapModal
+     * @export  oro.bootstrap-modal
+     * @class   oro.BootstrapModal
      * @extends Backbone.BootstrapModal
      */
-    Oro.BootstrapModal = Backbone.BootstrapModal.extend({
+    return BootstrapModal.extend({
         /** @property {String} */
         className: 'modal oro-modal-danger',
 
@@ -41,7 +42,7 @@ var Oro = Oro || {};
          */
         initialize: function(options) {
             options = _.extend({
-                cancelText: _.__('Cancel')
+                cancelText: __('Cancel')
             }, options);
 
             if (!options.okButtonClass) {
@@ -52,15 +53,15 @@ var Oro = Oro || {};
                 className: this.className
             }, options);
 
-            Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
+            BootstrapModal.prototype.initialize.apply(this, arguments);
         },
 
         open: function() {
-            Backbone.BootstrapModal.prototype.open.apply(this, arguments);
+            BootstrapModal.prototype.open.apply(this, arguments);
 
             this.once('cancel', _.bind(function() {
                 this.$el.trigger('hidden');
             }, this));
         }
     });
-})(jQuery, _, Backbone);
+});

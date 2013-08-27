@@ -1,259 +1,260 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-Oro.Datagrid.Action = Oro.Datagrid.Action || {};
-
-/**
- * Abstract action class. Subclasses should override execute method which is invoked when action is running.
- *
- * Triggers events:
- *  - "preExecute" before action is executed
- *  - "postExecute" after action is executed
- *
- * @class   Oro.Datagrid.Action.AbstractAction
- * @extends Backbone.View
- */
-Oro.Datagrid.Action.AbstractAction = Backbone.View.extend({
-    /** @property {Function} */
-    launcherPrototype: Oro.Datagrid.Action.Launcher,
-
-    /** @property {Object} */
-    launcherOptions: undefined,
-
-    /** @property {String} */
-    name: null,
-
-    /** @property {Oro.Datagrid.Grid} */
-    datagrid: null,
-
-    /** @property {string} */
-    route: null,
-
-    /** @property {Object} */
-    route_parameters: null,
-
-    /** @property {Boolean} */
-    confirmation: false,
-
-    /** @property {String} */
-    frontend_type: null,
-
-    /** @property {Object} */
-    frontend_options: null,
-
-    /** @property {string} */
-    identifierFieldName: 'id',
-
-    messages: {},
-
-    dispatched: false,
-
-    /** @property {Object} */
-    defaultMessages: {
-        confirm_title: _.__('Execution Confirmation'),
-        confirm_content: _.__('Are you sure you want to do this?'),
-        confirm_ok: _.__('Yes, do it'),
-        success: _.__('Action was successfully performed.'),
-        error: _.__('Action was not performed.'),
-        empty_selection: _.__('Please, select item to perform action.')
-    },
+/* global define */
+define(['jquery', 'underscore', 'backbone', 'routing', 'oro/app', 'oro/translator', 'oro/mediator',
+    'oro/message', 'oro/error', 'oro/widget-manager', 'oro/bootstrap-modal', 'oro/datagrid/action-launcher'],
+function($, _, Backbone, routing, app, __, mediator, message, error, widgetManager, BootstrapModal, ActionLauncher) {
+    'use strict';
 
     /**
-     * Initialize view
+     * Abstract action class. Subclasses should override execute method which is invoked when action is running.
      *
-     * @param {Object} options
-     * @param {Object} [options.launcherOptions] Options for new instance of launcher object
-     */
-    initialize: function(options) {
-        options = options || {};
-
-        if (!options.datagrid) {
-            throw new TypeError("'datagrid' is required");
-        }
-        this.datagrid = options.datagrid;
-
-        _.defaults(this.messages, this.defaultMessages);
-
-        if (options.launcherOptions) {
-            this.launcherOptions = _.extend({}, this.launcherOptions, options.launcherOptions);
-        }
-
-        this.launcherOptions = _.extend({
-            action: this
-        }, this.launcherOptions);
-
-        Backbone.View.prototype.initialize.apply(this, arguments);
-    },
-
-    /**
-     * Creates launcher
+     * Triggers events:
+     *  - "preExecute" before action is executed
+     *  - "postExecute" after action is executed
      *
-     * @param {Object} options Launcher options
-     * @return {Oro.Datagrid.Action.Launcher}
+     * @export  oro/datagrid/abstract-action
+     * @class   oro.datagrid.AbstractAction
+     * @extends Backbone.View
      */
-    createLauncher: function(options) {
-        options = options || {};
-        if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
-            options.icon = this.icon;
-        }
-        _.defaults(options, this.launcherOptions);
-        return new (this.launcherPrototype)(options);
-    },
+    return Backbone.View.extend({
+        /** @property {Function} */
+        launcherPrototype: ActionLauncher,
 
-    /**
-     * Run action
-     */
-    run: function() {
-        var options = {
-            doExecute: true
-        };
-        this.trigger('preExecute', this, options);
-        if (options.doExecute) {
-            this.execute();
-            this.trigger('postExecute', this, options);
-        }
-    },
+        /** @property {Object} */
+        launcherOptions: undefined,
 
-    /**
-     * Execute action
-     */
-    execute: function() {
-        var eventName = this.getEventName();
-        Oro.Events.once(eventName, this.executeConfiguredAction, this);
-        this._confirmationExecutor(
-            _.bind(
-                function() {Oro.Events.trigger(eventName, this);},
-                this
-            )
-        );
-    },
+        /** @property {String} */
+        name: null,
 
-    getEventName: function() {
-        return 'grid_action_execute:' + this.datagrid.name + ':' + this.name;
-    },
+        /** @property {oro.datagrid.Grid} */
+        datagrid: null,
 
-    executeConfiguredAction: function(action) {
-        if (action.frontend_type == 'ajax') {
-            this._handleAjax(action);
-        } else if (action.frontend_type == 'redirect') {
-            this._handleRedirect(action);
-        } else if (Oro.widget.Manager.isSupportedType(action.frontend_type)) {
-            this._handleWidget(action);
-        }
-    },
+        /** @property {string} */
+        route: null,
 
-    _confirmationExecutor: function(callback) {
-        if (this.confirmation) {
-            this.getConfirmDialog(callback).open();
-        } else {
-            callback();
-        }
-    },
+        /** @property {Object} */
+        route_parameters: null,
 
-    _handleWidget: function(action) {
-        if (action.dispatched) {
-            return;
-        }
-        action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
-        action.frontend_options.title = action.frontend_options.title || this.label;
-        Oro.widget.Manager.createWidget(action.frontend_type, action.frontend_options).render();
-    },
+        /** @property {Boolean} */
+        confirmation: false,
 
-    _handleRedirect: function(action) {
-        if (action.dispatched) {
-            return;
-        }
-        var url = action.getLinkWithParameters();
-        if (Oro.hashNavigationEnabled()) {
-            Oro.hashNavigationInstance.processRedirect({
-                fullRedirect: false,
-                location: url
-            });
-        } else {
-            location.href = url;
-        }
-    },
+        /** @property {String} */
+        frontend_type: null,
 
-    _handleAjax: function(action) {
-        if (action.dispatched) {
-            return;
-        }
-        action.datagrid.showLoading();
-        $.ajax({
-            url: action.getLink(),
-            data: action.getActionParameters(),
-            context: action,
-            dataType: 'json',
-            error: action._onAjaxError,
-            success: action._onAjaxSuccess
-        });
-    },
+        /** @property {Object} */
+        frontend_options: null,
 
-    _onAjaxError: function(jqXHR, textStatus, errorThrown) {
-        Oro.BackboneError.Dispatch(null, jqXHR);
-        this.datagrid.hideLoading();
-    },
+        /** @property {string} */
+        identifierFieldName: 'id',
 
-    _onAjaxSuccess: function(data, textStatus, jqXHR) {
-        this.datagrid.hideLoading();
-        this.datagrid.collection.fetch();
+        messages: {},
 
-        var defaultMessage = data.successful ? this.messages.success : this.messages.error;
-        var message = data.message ? data.message : defaultMessage;
-        if (message) {
-            Oro.NotificationFlashMessage(
-                data.successful ? 'success' : 'error',
-                message
+        dispatched: false,
+
+        /** @property {Object} */
+        defaultMessages: {
+            confirm_title: __('Execution Confirmation'),
+            confirm_content: __('Are you sure you want to do this?'),
+            confirm_ok: __('Yes, do it'),
+            success: __('Action was successfully performed.'),
+            error: __('Action was not performed.'),
+            empty_selection: __('Please, select item to perform action.')
+        },
+
+        /**
+         * Initialize view
+         *
+         * @param {Object} options
+         * @param {Object} [options.launcherOptions] Options for new instance of launcher object
+         */
+        initialize: function(options) {
+            options = options || {};
+
+            if (!options.datagrid) {
+                throw new TypeError("'datagrid' is required");
+            }
+            this.datagrid = options.datagrid;
+
+            _.defaults(this.messages, this.defaultMessages);
+
+            if (options.launcherOptions) {
+                this.launcherOptions = _.extend({}, this.launcherOptions, options.launcherOptions);
+            }
+
+            this.launcherOptions = _.extend({
+                action: this
+            }, this.launcherOptions);
+
+            Backbone.View.prototype.initialize.apply(this, arguments);
+        },
+
+        /**
+         * Creates launcher
+         *
+         * @param {Object} options Launcher options
+         * @return {oro.datagrid.ActionLauncher}
+         */
+        createLauncher: function(options) {
+            options = options || {};
+            if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
+                options.icon = this.icon;
+            }
+            _.defaults(options, this.launcherOptions);
+            return new (this.launcherPrototype)(options);
+        },
+
+        /**
+         * Run action
+         */
+        run: function() {
+            var options = {
+                doExecute: true
+            };
+            this.trigger('preExecute', this, options);
+            if (options.doExecute) {
+                this.execute();
+                this.trigger('postExecute', this, options);
+            }
+        },
+
+        /**
+         * Execute action
+         */
+        execute: function() {
+            var eventName = this.getEventName();
+            mediator.once(eventName, this.executeConfiguredAction, this);
+            this._confirmationExecutor(
+                _.bind(
+                    function() {mediator.trigger(eventName, this);},
+                    this
+                )
             );
+        },
+
+        getEventName: function() {
+            return 'grid_action_execute:' + this.datagrid.name + ':' + this.name;
+        },
+
+        executeConfiguredAction: function(action) {
+            if (action.frontend_type == 'ajax') {
+                this._handleAjax(action);
+            } else if (action.frontend_type == 'redirect') {
+                this._handleRedirect(action);
+            } else if (widgetManager.isSupportedType(action.frontend_type)) {
+                this._handleWidget(action);
+            }
+        },
+
+        _confirmationExecutor: function(callback) {
+            if (this.confirmation) {
+                this.getConfirmDialog(callback).open();
+            } else {
+                callback();
+            }
+        },
+
+        _handleWidget: function(action) {
+            if (action.dispatched) {
+                return;
+            }
+            action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
+            action.frontend_options.title = action.frontend_options.title || this.label;
+            widgetManager.createWidget(action.frontend_type, action.frontend_options).render();
+        },
+
+        _handleRedirect: function(action) {
+            if (action.dispatched) {
+                return;
+            }
+            var url = action.getLinkWithParameters();
+            if (app.hashNavigationEnabled()) {
+                app.hashNavigationInstance.processRedirect({
+                    fullRedirect: false,
+                    location: url
+                });
+            } else {
+                location.href = url;
+            }
+        },
+
+        _handleAjax: function(action) {
+            if (action.dispatched) {
+                return;
+            }
+            action.datagrid.showLoading();
+            $.ajax({
+                url: action.getLink(),
+                data: action.getActionParameters(),
+                context: action,
+                dataType: 'json',
+                error: action._onAjaxError,
+                success: action._onAjaxSuccess
+            });
+        },
+
+        _onAjaxError: function(jqXHR, textStatus, errorThrown) {
+            error.dispatch(null, jqXHR);
+            this.datagrid.hideLoading();
+        },
+
+        _onAjaxSuccess: function(data, textStatus, jqXHR) {
+            this.datagrid.hideLoading();
+            this.datagrid.collection.fetch();
+
+            var defaultMessage = data.successful ? this.messages.success : this.messages.error,
+                msg = data.message || defaultMessage;
+            if (msg) {
+                message.notificationFlashMessage(data.successful ? 'success' : 'error', msg);
+            }
+        },
+
+        /**
+         * Get action url
+         *
+         * @return {String}
+         * @private
+         */
+        getLink: function(parameters) {
+            if (_.isUndefined(parameters)) {
+                parameters = {};
+            }
+            return routing.generate(
+                this.route,
+                _.extend(
+                    this.route_parameters,
+                    parameters
+                )
+            );
+        },
+
+        /**
+         * Get action url with parameters added.
+         *
+         * @returns {String}
+         */
+        getLinkWithParameters: function() {
+            return this.getLink(this.getActionParameters());
+        },
+
+        /**
+         * Get action parameters
+         *
+         * @returns {Object}
+         */
+        getActionParameters: function() {
+            return {};
+        },
+
+        /**
+         * Get view for confirm modal
+         *
+         * @return {BootstrapModal}
+         */
+        getConfirmDialog: function(callback) {
+            return new BootstrapModal({
+                title: this.messages.confirm_title,
+                content: this.messages.confirm_content,
+                okText: this.messages.confirm_ok
+            }).on('ok', callback);
         }
-    },
-
-    /**
-     * Get action url
-     *
-     * @return {String}
-     * @private
-     */
-    getLink: function(parameters) {
-        if (_.isUndefined(parameters)) {
-            parameters = {};
-        }
-        return Routing.generate(
-            this.route,
-            _.extend(
-                this.route_parameters,
-                parameters
-            )
-        );
-    },
-
-    /**
-     * Get action url with parameters added.
-     *
-     * @returns {String}
-     */
-    getLinkWithParameters: function() {
-        return this.getLink(this.getActionParameters());
-    },
-
-    /**
-     * Get action parameters
-     *
-     * @returns {Object}
-     */
-    getActionParameters: function() {
-        return {};
-    },
-
-    /**
-     * Get view for confirm modal
-     *
-     * @return {Oro.BootstrapModal}
-     */
-    getConfirmDialog: function(callback) {
-        return new Oro.BootstrapModal({
-            title: this.messages.confirm_title,
-            content: this.messages.confirm_content,
-            okText: this.messages.confirm_ok
-        }).on('ok', callback);
-    }
+    });
 });

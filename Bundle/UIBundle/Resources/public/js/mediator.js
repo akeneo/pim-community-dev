@@ -1,3 +1,10 @@
-// Oro Application events prototype
-Oro.Events =  {};
-_.extend(Oro.Events, Backbone.Events);
+/* global define */
+define(['underscore', 'backbone'],
+function(_, Backbone) {
+    'use strict';
+
+    /**
+     * @export oro/mediator
+     */
+    return _.extend({}, Backbone.Events);
+});

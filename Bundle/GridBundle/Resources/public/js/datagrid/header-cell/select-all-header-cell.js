@@ -1,16 +1,7 @@
-/* jshint browser:true */
-(function (factory) {
+/* global define */
+define(['jquery', '_', 'backgrid', 'oro/datagrid/select-row-сell'],
+function ($, _, Backgrid, SelectRowCell) {
     "use strict";
-    /* global define, Oro, jQuery, _, Backgrid */
-    if (typeof define === 'function' && define.amd) {
-        define(['Oro', 'jQuery', '_', 'Backgrid', 'OroDatagridCellSelectRowCell'], factory);
-    } else {
-        factory(Oro, jQuery, _, Backgrid, Oro.Datagrid.Cell.SelectRowCell);
-    }
-}(function (Oro, $, _, Backgrid, SelectRowCell) {
-    "use strict";
-    Oro.Datagrid = Oro.Datagrid || {};
-    Oro.Datagrid.Cell = Oro.Datagrid.Cell || {};
 
     /**
      * Contains mass-selection logic
@@ -20,10 +11,11 @@
      *      fills in 'obj' with proper data for
      *      `backgrid:isSelected` and `backgrid:getSelected`
      *
-     * @class Oro.Datagrid.Cell.SelectAllHeaderCell
-     * @extends Oro.Datagrid.Cell.SelectRowCell
+     * @export  oro/datagrid/select-all-header-cell
+     * @class   oro.datagrid.SelectAllHeaderCell
+     * @extends oro.datagrid.SelectRowCell
      */
-    Oro.Datagrid.Cell.SelectAllHeaderCell = SelectRowCell.extend({
+    return SelectRowCell.extend({
         /** @property */
         className: "select-all-header-cell",
 
@@ -90,7 +82,7 @@
             return {
                 selectedModels: this.selectedModels,
                 inset: this.inset
-            }
+            };
         },
 
         /**
@@ -189,7 +181,7 @@
         /**
          *
          *
-         * @returns {Oro.Datagrid.Cell.SelectAllHeaderCell}
+         * @returns {oro.datagrid.SelectAllHeaderCell}
          */
         render: function () {
             /*jshint multistr:true */
@@ -224,6 +216,4 @@
             return this;
         }
     });
-
-    return Oro.Datagrid.Cell.SelectAllHeaderCell;
-}));
+});

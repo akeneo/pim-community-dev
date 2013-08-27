@@ -1,27 +1,32 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-Oro.Datagrid.Cell = Oro.Datagrid.Cell || {};
-Oro.Datagrid.Cell.Formatter = Oro.Datagrid.Cell.Formatter || {};
+/* global define */
+define(['underscore', 'backgrid', 'backgrid/moment'],
+function(_, Backgrid) {
+    'use strict';
 
-/**
- * Formatter for date and time. Fixed formatting method.
- *
- * @class   Oro.Datagrid.Cell.Formatter.MomentFormatter
- * @extends Backgrid.Extension.MomentFormatter
- */
-Oro.Datagrid.Cell.Formatter.MomentFormatter = function (options) {
-    _.extend(this, this.defaults, options);
-};
-
-Oro.Datagrid.Cell.Formatter.MomentFormatter.prototype = new Backgrid.Extension.MomentFormatter;
-_.extend(Oro.Datagrid.Cell.Formatter.MomentFormatter.prototype, {
     /**
-     * @inheritDoc
+     * Formatter for date and time. Fixed formatting method.
+     *
+     * @export  oro/datagrid/moment-formatter
+     * @class   oro.datagrid.MomentFormatter
+     * @extends Backgrid.Extension.MomentFormatter
      */
-    fromRaw: function (rawData) {
-        if (!rawData) {
-            return '';
+    var MomentFormatter = function (options) {
+        _.extend(this, this.defaults, options);
+    };
+
+    MomentFormatter.prototype = new Backgrid.Extension.MomentFormatter();
+
+    _.extend(MomentFormatter.prototype, {
+        /**
+         * @inheritDoc
+         */
+        fromRaw: function (rawData) {
+            if (!rawData) {
+                return '';
+            }
+            return Backgrid.Extension.MomentFormatter.prototype.fromRaw.apply(this, arguments);
         }
-        return Backgrid.Extension.MomentFormatter.prototype.fromRaw.apply(this, arguments);
-    }
+    });
+
+    return MomentFormatter;
 });

@@ -1,134 +1,138 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-Oro.Datagrid.Filter = Oro.Datagrid.Filter || {};
-
-/**
- * View that represents all grid filters
- *
- * @class   Oro.Datagrid.Filter.List
- * @extends Oro.Filter.List
- */
-Oro.Datagrid.Filter.List = Oro.Filter.List.extend({
-    /**
-     * Initialize filter list options
-     *
-     * @param {Object} options
-     * @param {Oro.PageableCollection} [options.collection]
-     * @param {Object} [options.filters]
-     * @param {String} [options.addButtonHint]
-     */
-    initialize: function(options)
-    {
-        this.collection = options.collection;
-
-        this.collection.on('beforeFetch', this._beforeCollectionFetch, this);
-        this.collection.on('updateState', this._onUpdateCollectionState, this);
-
-        Oro.Filter.List.prototype.initialize.apply(this, arguments);
-    },
+/* global define */
+define(['underscore', 'oro/filter-list'],
+function(_, FilterList) {
+    'use strict';
 
     /**
-     * Triggers when filter is updated
+     * View that represents all grid filters
      *
-     * @param {Oro.Filter.AbstractFilter} filter
-     * @protected
+     * @export  oro/datagrid/filter-list
+     * @class   oro.datagrid.FilterList
+     * @extends oro.FilterList
      */
-    _onFilterUpdated: function(filter) {
-        if (this.ignoreFiltersUpdateEvents) {
-            return;
-        }
-        this.collection.state.currentPage = 1;
-        this.collection.fetch();
+    return FilterList.extend({
+        /**
+         * Initialize filter list options
+         *
+         * @param {Object} options
+         * @param {oro.PageableCollection} [options.collection]
+         * @param {Object} [options.filters]
+         * @param {String} [options.addButtonHint]
+         */
+        initialize: function(options)
+        {
+            this.collection = options.collection;
 
-        Oro.Filter.List.prototype._onFilterUpdated.apply(this, arguments);
-    },
+            this.collection.on('beforeFetch', this._beforeCollectionFetch, this);
+            this.collection.on('updateState', this._onUpdateCollectionState, this);
 
-    /**
-     * Triggers before collection fetch it's data
-     *
-     * @protected
-     */
-    _beforeCollectionFetch: function(collection) {
-        collection.state.filters = this._createState();
-    },
+            FilterList.prototype.initialize.apply(this, arguments);
+        },
 
-    /**
-     * Triggers when collection state is updated
-     *
-     * @param {Oro.PageableCollection} collection
-     */
-    _onUpdateCollectionState: function(collection) {
-        this.ignoreFiltersUpdateEvents = true;
-        this._applyState(collection.state.filters || {});
-        this.ignoreFiltersUpdateEvents = false;
-    },
-
-    /**
-     * Create state according to filters parameters
-     *
-     * @return {Object}
-     * @protected
-     */
-    _createState: function() {
-        var state = {};
-        _.each(this.filters, function(filter, name) {
-            var shortName = '__' + name;
-            if (filter.enabled) {
-                if (!filter.isEmpty()) {
-                    state[name] = filter.getValue();
-                } else if (!filter.defaultEnabled) {
-                    state[shortName] = 1;
-                }
-            } else if (filter.defaultEnabled) {
-                state[shortName] = 0;
+        /**
+         * Triggers when filter is updated
+         *
+         * @param {oro.filter.AbstractFilter} filter
+         * @protected
+         */
+        _onFilterUpdated: function(filter) {
+            if (this.ignoreFiltersUpdateEvents) {
+                return;
             }
-        }, this);
+            this.collection.state.currentPage = 1;
+            this.collection.fetch();
 
-        return state;
-    },
+            FilterList.prototype._onFilterUpdated.apply(this, arguments);
+        },
 
-    /**
-     * Apply filter values from state
-     *
-     * @param {Object} state
-     * @protected
-     * @return {*}
-     */
-    _applyState: function(state) {
-        var toEnable  = [];
-        var toDisable = [];
+        /**
+         * Triggers before collection fetch it's data
+         *
+         * @protected
+         */
+        _beforeCollectionFetch: function(collection) {
+            collection.state.filters = this._createState();
+        },
 
-        _.each(this.filters, function(filter, name) {
-            var shortName = '__' + name;
-            if (_.has(state, name)) {
-                var filterState = state[name];
-                if (!_.isObject(filterState)) {
-                    filterState = {
-                        value: filterState
+        /**
+         * Triggers when collection state is updated
+         *
+         * @param {oro.PageableCollection} collection
+         */
+        _onUpdateCollectionState: function(collection) {
+            this.ignoreFiltersUpdateEvents = true;
+            this._applyState(collection.state.filters || {});
+            this.ignoreFiltersUpdateEvents = false;
+        },
+
+        /**
+         * Create state according to filters parameters
+         *
+         * @return {Object}
+         * @protected
+         */
+        _createState: function() {
+            var state = {};
+            _.each(this.filters, function(filter, name) {
+                var shortName = '__' + name;
+                if (filter.enabled) {
+                    if (!filter.isEmpty()) {
+                        state[name] = filter.getValue();
+                    } else if (!filter.defaultEnabled) {
+                        state[shortName] = 1;
+                    }
+                } else if (filter.defaultEnabled) {
+                    state[shortName] = 0;
+                }
+            }, this);
+
+            return state;
+        },
+
+        /**
+         * Apply filter values from state
+         *
+         * @param {Object} state
+         * @protected
+         * @return {*}
+         */
+        _applyState: function(state) {
+            var toEnable  = [],
+                toDisable = [];
+
+            _.each(this.filters, function(filter, name) {
+                var shortName = '__' + name,
+                    filterState;
+                if (_.has(state, name)) {
+                    filterState = state[name];
+                    if (!_.isObject(filterState)) {
+                        filterState = {
+                            value: filterState
+                        };
+                    }
+                    filter.setValue(filterState);
+                    toEnable.push(filter);
+                } else if (_.has(state, shortName)) {
+                    filter.reset();
+                    if (Number(state[shortName])) {
+                        toEnable.push(filter);
+                    } else {
+                        toDisable.push(filter);
+                    }
+                } else {
+                    filter.reset();
+                    if (filter.defaultEnabled) {
+                        toEnable.push(filter);
+                    } else {
+                        toDisable.push(filter);
                     }
                 }
-                filter.setValue(filterState);
-                toEnable.push(filter);
-            } else if (_.has(state, shortName)) {
-                filter.reset();
-                if (Number(state[shortName])) {
-                    toEnable.push(filter);
-                } else {
-                    toDisable.push(filter);
-                }
-            } else {
-                filter.reset();
-                if (filter.defaultEnabled) {
-                    toEnable.push(filter);
-                } else {
-                    toDisable.push(filter);
-                }
-            }
-        }, this);
+            }, this);
 
-        this.enableFilters(toEnable);
-        this.disableFilters(toDisable);
+            this.enableFilters(toEnable);
+            this.disableFilters(toDisable);
 
-        return this;
-    }
+            return this;
+        }
+    });
 });

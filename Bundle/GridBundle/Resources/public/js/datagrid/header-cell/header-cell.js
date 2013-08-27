@@ -1,158 +1,162 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-
-/**
- * Datagrid header cell
- *
- * @class   Oro.Datagrid.HeaderCell
- * @extends Backgrid.HeaderCell
- */
-Oro.Datagrid.HeaderCell = Backgrid.HeaderCell.extend({
-
-    /** @property */
-    template:_.template(
-        '<% if (sortable) { %>' +
-            '<a href="#">' +
-                '<%= label %> ' +
-                '<span class="caret"></span>' +
-            '</a>' +
-        '<% } else { %>' +
-            '<span><%= label %></span>' + // wrap label into span otherwise underscore will not render it
-        '<% } %>'
-    ),
-
-    /** @property {Boolean} */
-    allowNoSorting: false,
+/* global define */
+define(['jquery', '_', 'backbone', 'backgrid'],
+function ($, _, Backbone, Backgrid) {
+    "use strict";
 
     /**
-     * Initialize.
+     * Datagrid header cell
      *
-     * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
+     * @export  oro/datagrid/header-cell
+     * @class   oro.datagrid.HeaderCell
+     * @extends Backgrid.HeaderCell
      */
-    initialize: function() {
-        Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
-        this._initCellDirection(this.collection);
-        this.collection.on('reset', this._initCellDirection, this);
-    },
+    return Backgrid.HeaderCell.extend({
 
-    /**
-     * Inits cell direction when collections loads first time.
-     *
-     * @param collection
-     * @private
-     */
-    _initCellDirection: function(collection) {
-        if (collection == this.collection) {
-            var state = collection.state;
-            var direction = null;
-            var columnName = this.column.get('name');
-            if (this.column.get('sortable') && _.has(state.sorters, columnName)) {
-                if (1 == state.sorters[columnName]) {
-                    direction = 'descending';
-                } else if (-1 == state.sorters[columnName]) {
-                    direction = 'ascending';
-                }
-            }
-            if (direction != this.direction()) {
-                this.direction(direction);
-            }
-        }
-    },
+        /** @property */
+        template:_.template(
+            '<% if (sortable) { %>' +
+                '<a href="#">' +
+                    '<%= label %> ' +
+                    '<span class="caret"></span>' +
+                '</a>' +
+            '<% } else { %>' +
+                '<span><%= label %></span>' + // wrap label into span otherwise underscore will not render it
+            '<% } %>'
+        ),
 
-    /**
-     * Renders a header cell with a sorter and a label.
-     *
-     * @return {*}
-     */
-    render: function () {
-        this.$el.empty();
-
-        this.$el.append($(this.template({
-            label: this.column.get("label"),
-            sortable: this.column.get("sortable")
-        })));
-
-        if (this.column.has('width')) {
-            this.$el.width(this.column.get('width'));
-        }
-
-        return this;
-    },
-
-    /**
-     * Click on column name to perform sorting
-     *
-     * @param {Event} e
-     */
-    onClick: function (e) {
-        e.preventDefault();
-
-        var columnName = this.column.get("name");
-
-        if (this.column.get("sortable")) {
-            if (this.direction() === "ascending") {
-                this.sort(columnName, "descending", function (left, right) {
-                    var leftVal = left.get(columnName);
-                    var rightVal = right.get(columnName);
-                    if (leftVal === rightVal) {
-                        return 0;
-                    }
-                    else if (leftVal > rightVal) { return -1; }
-                    return 1;
-                });
-            }
-            else if (this.allowNoSorting && this.direction() === "descending") {
-                this.sort(columnName, null);
-            }
-            else {
-                this.sort(columnName, "ascending", function (left, right) {
-                    var leftVal = left.get(columnName);
-                    var rightVal = right.get(columnName);
-                    if (leftVal === rightVal) {
-                        return 0;
-                    }
-                    else if (leftVal < rightVal) { return -1; }
-                    return 1;
-                });
-            }
-        }
-    },
-
-    /**
-     * @param {string} columnName
-     * @param {null|"ascending"|"descending"} direction
-     * @param {function(*, *): number} [comparator]
-     */
-    sort: function (columnName, direction, comparator) {
-
-        comparator = comparator || this._cidComparator;
-
-        var collection = this.collection;
-
-        if (Backbone.PageableCollection && collection instanceof Backbone.PageableCollection) {
-            var order;
-            if (direction === "ascending") order = -1;
-            else if (direction === "descending") order = 1;
-            else order = null;
-
-            collection.setSorting(columnName, order);
-
-            if (collection.mode == "client") {
-                if (!collection.fullCollection.comparator) {
-                    collection.fullCollection.comparator = comparator;
-                }
-                collection.fullCollection.sort();
-            }
-            else collection.fetch();
-        }
-        else {
-            collection.comparator = comparator;
-            collection.sort();
-        }
+        /** @property {Boolean} */
+        allowNoSorting: false,
 
         /**
-         * Global Backbone event. Fired when the sorter is clicked on a sortable column.
+         * Initialize.
+         *
+         * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
          */
-        Backbone.trigger("backgrid:sort", columnName, direction, comparator, this.collection);
-    }
+        initialize: function() {
+            Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
+            this._initCellDirection(this.collection);
+            this.collection.on('reset', this._initCellDirection, this);
+        },
+
+        /**
+         * Inits cell direction when collections loads first time.
+         *
+         * @param collection
+         * @private
+         */
+        _initCellDirection: function(collection) {
+            if (collection == this.collection) {
+                var state = collection.state;
+                var direction = null;
+                var columnName = this.column.get('name');
+                if (this.column.get('sortable') && _.has(state.sorters, columnName)) {
+                    if (1 == state.sorters[columnName]) {
+                        direction = 'descending';
+                    } else if (-1 == state.sorters[columnName]) {
+                        direction = 'ascending';
+                    }
+                }
+                if (direction != this.direction()) {
+                    this.direction(direction);
+                }
+            }
+        },
+
+        /**
+         * Renders a header cell with a sorter and a label.
+         *
+         * @return {*}
+         */
+        render: function () {
+            this.$el.empty();
+
+            this.$el.append($(this.template({
+                label: this.column.get("label"),
+                sortable: this.column.get("sortable")
+            })));
+
+            if (this.column.has('width')) {
+                this.$el.width(this.column.get('width'));
+            }
+
+            return this;
+        },
+
+        /**
+         * Click on column name to perform sorting
+         *
+         * @param {Event} e
+         */
+        onClick: function (e) {
+            e.preventDefault();
+
+            var columnName = this.column.get("name");
+
+            if (this.column.get("sortable")) {
+                if (this.direction() === "ascending") {
+                    this.sort(columnName, "descending", function (left, right) {
+                        var leftVal = left.get(columnName);
+                        var rightVal = right.get(columnName);
+                        if (leftVal === rightVal) {
+                            return 0;
+                        }
+                        else if (leftVal > rightVal) { return -1; }
+                        return 1;
+                    });
+                }
+                else if (this.allowNoSorting && this.direction() === "descending") {
+                    this.sort(columnName, null);
+                }
+                else {
+                    this.sort(columnName, "ascending", function (left, right) {
+                        var leftVal = left.get(columnName);
+                        var rightVal = right.get(columnName);
+                        if (leftVal === rightVal) {
+                            return 0;
+                        }
+                        else if (leftVal < rightVal) { return -1; }
+                        return 1;
+                    });
+                }
+            }
+        },
+
+        /**
+         * @param {string} columnName
+         * @param {null|"ascending"|"descending"} direction
+         * @param {function(*, *): number} [comparator]
+         */
+        sort: function (columnName, direction, comparator) {
+
+            comparator = comparator || this._cidComparator;
+
+            var collection = this.collection;
+
+            if (Backbone.PageableCollection && collection instanceof Backbone.PageableCollection) {
+                var order;
+                if (direction === "ascending") order = -1;
+                else if (direction === "descending") order = 1;
+                else order = null;
+
+                collection.setSorting(columnName, order);
+
+                if (collection.mode == "client") {
+                    if (!collection.fullCollection.comparator) {
+                        collection.fullCollection.comparator = comparator;
+                    }
+                    collection.fullCollection.sort();
+                }
+                else collection.fetch();
+            }
+            else {
+                collection.comparator = comparator;
+                collection.sort();
+            }
+
+            /**
+             * Global Backbone event. Fired when the sorter is clicked on a sortable column.
+             */
+            Backbone.trigger("backgrid:sort", columnName, direction, comparator, this.collection);
+        }
+    });
 });

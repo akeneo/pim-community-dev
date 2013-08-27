@@ -1,59 +1,62 @@
-var Oro = Oro || {};
-Oro.Datagrid = Oro.Datagrid || {};
-Oro.Datagrid.Action = Oro.Datagrid.Action || {};
-
-/**
- * Navigate action. Changes window location to url, from getLink method
- *
- * @class   Oro.Datagrid.Action.NavigateAction
- * @extends Oro.Datagrid.Action.ModelAction
- */
-Oro.Datagrid.Action.NavigateAction = Oro.Datagrid.Action.ModelAction.extend({
+/* global define */
+define(['underscore', 'oro/mediator', 'oro/datagrid/model-action'],
+function(_, mediator, ModelAction) {
+    'use strict';
 
     /**
-     * If `true` then created launcher will be complete clickable link,
-     * If `false` redirection will be delegated to execute method.
+     * Navigate action. Changes window location to url, from getLink method
      *
-     * @property {Boolean}
+     * @export  oro/datagrid/navigate-action
+     * @class   oro.datagrid.NavigateAction
+     * @extends oro.datagrid.ModelAction
      */
-    useDirectLauncherLink: true,
+    return ModelAction.extend({
 
-    /**
-     * Initialize launcher options with url
-     *
-     * @param {Object} options
-     * @param {Boolean} options.useDirectLauncherLink
-     */
-    initialize: function(options) {
-        Oro.Datagrid.Action.ModelAction.prototype.initialize.apply(this, arguments);
+        /**
+         * If `true` then created launcher will be complete clickable link,
+         * If `false` redirection will be delegated to execute method.
+         *
+         * @property {Boolean}
+         */
+        useDirectLauncherLink: true,
 
-        if (options.useDirectLauncherLink) {
-            this.useDirectLauncherLink = options.useDirectLauncherLink;
+        /**
+         * Initialize launcher options with url
+         *
+         * @param {Object} options
+         * @param {Boolean} options.useDirectLauncherLink
+         */
+        initialize: function(options) {
+            ModelAction.prototype.initialize.apply(this, arguments);
+
+            if (options.useDirectLauncherLink) {
+                this.useDirectLauncherLink = options.useDirectLauncherLink;
+            }
+
+            this.on('preExecute', _.bind(this._preExecuteSubscriber, this));
+
+            if (this.useDirectLauncherLink) {
+                this.launcherOptions = _.extend({
+                    link: this.getLink(),
+                    runAction: false
+                }, this.launcherOptions);
+            }
+        },
+
+        /**
+         * Execute redirect
+         */
+        execute: function() {
+            window.location.href = this.getLink();
+        },
+
+        /**
+         * Trigger global event
+         *
+         * @private
+         */
+        _preExecuteSubscriber: function(action, options) {
+            mediator.trigger('grid_action:navigateAction:preExecute', action, options);
         }
-
-        this.on('preExecute', _.bind(this._preExecuteSubscriber, this));
-
-        if (this.useDirectLauncherLink) {
-            this.launcherOptions = _.extend({
-                link: this.getLink(),
-                runAction: false
-            }, this.launcherOptions);
-        }
-    },
-
-    /**
-     * Execute redirect
-     */
-    execute: function() {
-        window.location.href = this.getLink();
-    },
-
-    /**
-     * Trigger global event
-     *
-     * @private
-     */
-    _preExecuteSubscriber: function(action, options) {
-        Oro.Events.trigger('grid_action:navigateAction:preExecute', action, options);
-    }
+    });
 });
