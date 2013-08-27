@@ -10,6 +10,8 @@ services:
 
     oro_workflow.configuration.config.workflow_list:
         class: %oro_workflow.configuration.config.workflow_list.class%
+        arguments:
+            - @oro_workflow.configuration.config.workflow_sole
 
     oro_workflow.configuration.config_provider:
         class: %oro_workflow.configuration.config_provider.class%

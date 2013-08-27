@@ -189,6 +189,10 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->isRequired()
                         ->cannotBeEmpty()
                     ->end()
+                    ->arrayNode('options')
+                        ->prototype('variable')
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
 

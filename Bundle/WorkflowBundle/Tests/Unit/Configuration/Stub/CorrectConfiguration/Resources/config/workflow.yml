@@ -30,6 +30,8 @@ workflows:
                 label: 'First Transition'
                 step_to: first_step
                 transition_definition: first_transition_definition
+                options:
+                    first_key: first_value
         transition_definitions:
             first_transition_definition:
                 conditions:
@@ -55,5 +57,7 @@ workflows:
                 label: 'Second Transition'
                 step_to: second_step
                 transition_definition: second_transition_definition
+                options:
+                    second_key: second_value
         transition_definitions:
             second_transition_definition: []

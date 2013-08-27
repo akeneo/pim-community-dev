@@ -10,6 +10,7 @@ use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\EmptyConfiguration\E
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\IncorrectConfiguration\IncorrectConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration\Stub\DuplicateConfiguration\DuplicateConfigurationBundle;
 use Oro\Bundle\WorkflowBundle\Configuration\WorkflowListConfiguration;
+use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +20,10 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsIncorrectConfiguration()
     {
         $bundles = array(new IncorrectConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
+        $configurationProvider = new ConfigurationProvider(
+            $bundles,
+            new WorkflowListConfiguration(new WorkflowConfiguration())
+        );
         $configurationProvider->getWorkflowDefinitionConfiguration();
     }
 
@@ -29,14 +33,20 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetWorkflowDefinitionsDuplicateConfiguration()
     {
         $bundles = array(new CorrectConfigurationBundle(), new DuplicateConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
+        $configurationProvider = new ConfigurationProvider(
+            $bundles,
+            new WorkflowListConfiguration(new WorkflowConfiguration())
+        );
         $configurationProvider->getWorkflowDefinitionConfiguration();
     }
 
     public function testGetWorkflowDefinitions()
     {
         $bundles = array(new CorrectConfigurationBundle(), new EmptyConfigurationBundle());
-        $configurationProvider = new ConfigurationProvider($bundles, new WorkflowListConfiguration());
+        $configurationProvider = new ConfigurationProvider(
+            $bundles,
+            new WorkflowListConfiguration(new WorkflowConfiguration())
+        );
 
         $this->assertEquals(
             $this->getExpectedWokflowConfiguration('CorrectConfiguration'),
