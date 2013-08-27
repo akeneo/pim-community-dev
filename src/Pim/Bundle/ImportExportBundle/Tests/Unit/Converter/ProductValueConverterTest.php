@@ -39,6 +39,20 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIgnoreUnknownAttribute()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'foo'))
+            ->will($this->returnValue(null));
+
+        $this->assertEquals(
+            array(),
+            $this->converter->convert(array('foo' => 'bar'))
+        );
+    }
+
     public function testConvertLocalisedValue()
     {
         $this->repository

@@ -43,8 +43,10 @@ class ProductValueConverter
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
-            $key = $this->getAttributeKey($key);
-            $result[$key][$attribute->getBackendType()] = $value;
+            if ($attribute) {
+                $key = $this->getAttributeKey($key);
+                $result[$key][$attribute->getBackendType()] = $value;
+            }
         }
 
         return $result;
@@ -52,7 +54,7 @@ class ProductValueConverter
 
     private function getAttribute($code)
     {
-        if ($this->isLocalised($code)) {
+        if ($this->isLocalized($code)) {
             $code = $this->getAttributeCode($code);
         }
 
@@ -73,7 +75,7 @@ class ProductValueConverter
      *
      * @return boolean
      */
-    private function isLocalised($code)
+    private function isLocalized($code)
     {
         return false !== strpos($code, '-');
     }
