@@ -32,7 +32,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

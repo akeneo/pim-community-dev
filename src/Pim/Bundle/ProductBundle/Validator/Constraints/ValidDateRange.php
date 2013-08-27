@@ -16,7 +16,7 @@ class ValidDateRange extends Constraint
     public $invalidDateMessage = 'This date is not valid';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

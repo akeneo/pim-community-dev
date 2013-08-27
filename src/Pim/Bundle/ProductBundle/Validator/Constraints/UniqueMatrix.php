@@ -17,7 +17,7 @@ class UniqueMatrix extends Constraint
     public $scopableMessage     = 'An unique attribute can not be sccopable.';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

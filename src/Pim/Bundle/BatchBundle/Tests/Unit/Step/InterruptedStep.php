@@ -15,7 +15,7 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
 class InterruptedStep extends AbstractStep
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -23,7 +23,7 @@ class InterruptedStep extends AbstractStep
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setConfiguration(array $config)
     {

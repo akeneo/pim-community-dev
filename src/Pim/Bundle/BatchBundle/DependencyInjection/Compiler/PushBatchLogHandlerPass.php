@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class PushBatchLogHandlerPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

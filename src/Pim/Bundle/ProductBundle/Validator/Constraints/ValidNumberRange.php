@@ -16,7 +16,7 @@ class ValidNumberRange extends Constraint
     public $invalidNumberMessage = 'This number is not valid';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

@@ -21,7 +21,7 @@ class SingleIdentifierAttribute extends Constraint
     public $message = 'An identifier attribute already exists.';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validatedBy()
     {
@@ -29,7 +29,7 @@ class SingleIdentifierAttribute extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

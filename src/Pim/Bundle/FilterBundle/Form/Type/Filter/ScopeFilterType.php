@@ -46,7 +46,7 @@ class ScopeFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -54,7 +54,7 @@ class ScopeFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
