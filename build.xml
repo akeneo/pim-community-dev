@@ -111,6 +111,12 @@
             <arg path="${basedir}/features" />
         </exec>
     </target>
+    
+    <target name="phpdoc" description="Check php documentation">
+        <exec executable="phpdoc">
+            <arg line="-d ${basedir}/src -t ${basedir}/build/api" />
+        </exec>
+    </target>
 
     <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
         <exec executable="phpcs" output="/dev/null">
@@ -251,22 +257,6 @@
         <exec executable="app/console">
           <arg value="oro:search:reindex" />
         </exec>
-    </target>
-    
-    <target name="phpdoc">
-        <phpdoc title="API Documentation"
-                destdir="${project.basedir}/build/api"
-                sourcecode="false"
-                output="HTML:Smarty:PHP">
-            <fileset dir="${project.basedir}/${source}/www">
-                <include name="**/*.php"/>
-            </fileset>
-            <projdocfileset dir=".">
-                <include name="README"/>
-                <include name="INSTALL"/>
-                <include name="CHANGELOG"/>
-            </projdocfileset>
-        </phpdoc>
     </target>
 
 </project>
