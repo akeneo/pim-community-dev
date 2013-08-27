@@ -69,7 +69,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertFalse($data['enabled']);
     }
 
-    public function testIgnoreEnablingImportedProduct()
+    public function testIgnoreUnsetProductProperties()
     {
         $event = new FormEvent($this->form, array());
 
@@ -77,6 +77,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
 
         $data = $event->getData();
         $this->assertArrayNotHasKey('enabled', $data);
+        $this->assertArrayNotHasKey('family', $data);
     }
 
     public function testSetImportedProductFamily()
@@ -96,6 +97,23 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $data = $event->getData();
         $this->assertArrayHasKey('family', $data);
         $this->assertEquals(1987, $data['family']);
+    }
+
+    public function testIgnoreUnknownImportedProductFamily()
+    {
+        $event = new FormEvent($this->form, array('family' => 'furniture'));
+
+        $this->subscriber->setFamilyKey('family');
+
+        $this->familyRepository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue(null));
+
+        $this->subscriber->preSubmit($event);
+
+        $data = $event->getData();
+        $this->assertArrayNotHasKey('family', $data);
     }
 
     private function getFormMock()
