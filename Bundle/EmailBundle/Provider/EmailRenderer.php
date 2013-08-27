@@ -3,10 +3,11 @@
 namespace Oro\Bundle\EmailBundle\Provider;
 
 use Doctrine\Common\Cache\Cache;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
