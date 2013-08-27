@@ -12,7 +12,7 @@ namespace Pim\Bundle\ImportExportBundle\Twig;
 class NormalizeConfigurationExtension extends \Twig_Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

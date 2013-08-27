@@ -28,7 +28,7 @@ class ValidMetric extends Constraint
     public $unitMessage = 'Please specify a valid metric unit';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validatedBy()
     {
@@ -36,7 +36,7 @@ class ValidMetric extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

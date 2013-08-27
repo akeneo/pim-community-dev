@@ -58,7 +58,7 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {

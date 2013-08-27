@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 class PimProductExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

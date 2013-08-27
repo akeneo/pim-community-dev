@@ -43,7 +43,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function write(array $data)
     {
@@ -67,7 +67,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {

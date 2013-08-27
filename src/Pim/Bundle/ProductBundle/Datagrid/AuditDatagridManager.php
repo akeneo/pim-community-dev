@@ -29,7 +29,7 @@ CONCAT(
 DQL;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)

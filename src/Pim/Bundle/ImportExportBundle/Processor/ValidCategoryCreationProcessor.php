@@ -103,7 +103,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {

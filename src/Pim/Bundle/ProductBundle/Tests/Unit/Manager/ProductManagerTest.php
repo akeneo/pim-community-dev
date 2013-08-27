@@ -15,7 +15,7 @@ use Pim\Bundle\ProductBundle\Manager\ProductManager;
 class ProductManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {

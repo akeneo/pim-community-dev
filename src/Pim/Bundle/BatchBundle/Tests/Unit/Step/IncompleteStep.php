@@ -16,7 +16,7 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
 class IncompleteStep extends AbstractStep
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -24,7 +24,7 @@ class IncompleteStep extends AbstractStep
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setConfiguration(array $config)
     {

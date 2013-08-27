@@ -15,7 +15,7 @@ class CsvFileReader extends CsvReader
     private $executed = false;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read()
     {

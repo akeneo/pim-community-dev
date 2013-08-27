@@ -204,7 +204,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {

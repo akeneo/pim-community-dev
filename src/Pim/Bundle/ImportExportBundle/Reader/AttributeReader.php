@@ -24,7 +24,7 @@ class AttributeReader extends ORMCursorReader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read()
     {

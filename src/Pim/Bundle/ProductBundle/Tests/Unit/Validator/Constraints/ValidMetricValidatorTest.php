@@ -45,7 +45,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     );
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -56,7 +56,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function tearDown()
     {

@@ -16,7 +16,7 @@ use Pim\Bundle\BatchBundle\Connector\Connector;
 class PimImportExportBundle extends Connector
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {

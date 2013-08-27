@@ -27,7 +27,7 @@ class ProductManager extends FlexibleManager
     protected $mediaManager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __construct(
         $flexibleName,

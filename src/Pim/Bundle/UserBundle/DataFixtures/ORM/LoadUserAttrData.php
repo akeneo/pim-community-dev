@@ -33,7 +33,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
     protected $userRepository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
