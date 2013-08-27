@@ -1,8 +1,9 @@
 oro_entity_config:
-    acl:
+    ownership:
         entity:
             items:
                 owner_type:
+                    #TODO: Refactor choiceOptionsProvider after changes in entity config bundle are implemented
                     grid:
                         type:               options
                         label:              'Ownership Type'

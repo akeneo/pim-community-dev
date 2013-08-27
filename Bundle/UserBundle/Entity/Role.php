@@ -25,7 +25,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="Role", "plural_label"="Roles"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
  */
@@ -64,8 +64,9 @@ class Role implements RoleInterface
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      */
-    protected $businessUnitOwner;
+    protected $owner;
 
     /**
      * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
@@ -199,16 +200,16 @@ class Role implements RoleInterface
      */
     public function getOwner()
     {
-        return $this->businessUnitOwner;
+        return $this->owner;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param BusinessUnit $owningBusinessUnit
      * @return Role
      */
-    public function setOwner(BusinessUnit $businessUnitOwner)
+    public function setOwner($owningBusinessUnit)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

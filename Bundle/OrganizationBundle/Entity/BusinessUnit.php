@@ -21,7 +21,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
  */
@@ -121,8 +121,9 @@ class BusinessUnit
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      */
-    protected $businessUnitOwner;
+    protected $owner;
 
     /**
      * Get id
@@ -396,16 +397,16 @@ class BusinessUnit
      */
     public function getOwner()
     {
-        return $this->businessUnitOwner;
+        return $this->owner;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param BusinessUnit $owningBusinessUnit
      * @return BusinessUnit
      */
-    public function setOwner(BusinessUnit $businessUnitOwner)
+    public function setOwner($owningBusinessUnit)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

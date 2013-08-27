@@ -20,9 +20,10 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
  * @Configurable(
+ *  routeName="oro_user_group_index",
  *  defaultValues={
- *      "entity"={"icon"="group","label"="Group","owner_type"="BUSINESS_UNIT","plural_label"="Groups"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "entity"={"icon"="group","label"="Group","plural_label"="Groups"},
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
  * @Extend
@@ -60,8 +61,9 @@ class Group
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      */
-    protected $businessUnitOwner;
+    protected $owner;
 
     /**
      * @param string $name [optional] Group name
@@ -229,16 +231,16 @@ class Group
      */
     public function getOwner()
     {
-        return $this->businessUnitOwner;
+        return $this->owner;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param BusinessUnit $owningBusinessUnit
      * @return Group
      */
-    public function setOwner(BusinessUnit $businessUnitOwner)
+    public function setOwner($owningBusinessUnit)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

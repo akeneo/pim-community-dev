@@ -18,7 +18,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="Tag", "plural_label"="Tags"},
- *      "acl"={"owner_type"="USER"}
+ *      "ownership"={"owner_type"="USER"}
  *  }
  * )
  */
@@ -77,7 +77,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $userOwner;
+    protected $owner;
 
     /**
      * Constructor
@@ -242,16 +242,16 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      */
     public function getOwner()
     {
-        return $this->userOwner;
+        return $this->owner;
     }
 
     /**
-     * @param User $userOwner
+     * @param User $owningUser
      * @return Tag
      */
-    public function setOwner(User $userOwner)
+    public function setOwner($owningUser)
     {
-        $this->userOwner = $userOwner;
+        $this->owner = $owningUser;
 
         return $this;
     }

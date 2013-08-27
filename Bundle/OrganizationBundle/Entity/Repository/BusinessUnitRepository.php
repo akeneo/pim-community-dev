@@ -22,7 +22,7 @@ class BusinessUnitRepository extends EntityRepository
                         array(
                             'businessUnit.id',
                             'businessUnit.name',
-                            'IDENTITY(businessUnit.businessUnitOwner) parent',
+                            'IDENTITY(businessUnit.owner) parent',
                         )
                     );
         if ($user && $user->getId()) {

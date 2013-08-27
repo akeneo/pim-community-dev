@@ -4,7 +4,7 @@ namespace Oro\Bundle\UserBundle\Tests\Unit\EventListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\UserBundle\EventListener\RecordOwnerDataListener;
+use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 
@@ -31,8 +31,6 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
     private $config;
 
     private $user;
-    private $businessUnit;
-    private $organization;
 
     private $listenerArguments;
 
@@ -54,12 +52,6 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->user = new User();
-        $this->businessUnit = new BusinessUnit();
-        $this->organization = new Organization();
-        $businessUnits = new ArrayCollection(array($this->businessUnit));
-
-        $this->businessUnit->setOrganization($this->organization);
-        $this->user->setBusinessUnits($businessUnits);
 
         $this->entity = new Entity();
 
@@ -91,37 +83,17 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-
         $this->listener = new RecordOwnerDataListener($this->container, $this->configProvider);
     }
 
     public function testPrePersistUser()
     {
         $this->config->expects($this->once())
-            ->method('getValues')
-            ->will($this->returnValue(array('owner_type' => OwnershipType::OWNERSHIP_TYPE_USER)));
+            ->method('get')
+            ->with('owner_type')
+            ->will($this->returnValue(OwnershipType::OWNERSHIP_TYPE_USER));
 
         $this->listener->prePersist($this->listenerArguments);
         $this->assertEquals($this->user, $this->entity->getOwner());
-    }
-
-    public function testPrePersistBusinessUnit()
-    {
-        $this->config->expects($this->once())
-            ->method('getValues')
-            ->will($this->returnValue(array('owner_type' => OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT)));
-
-        $this->listener->prePersist($this->listenerArguments);
-        $this->assertEquals($this->businessUnit, $this->entity->getOwner());
-    }
-
-    public function testPrePersistOrganization()
-    {
-        $this->config->expects($this->once())
-            ->method('getValues')
-            ->will($this->returnValue(array('owner_type' => OwnershipType::OWNERSHIP_TYPE_ORGANIZATION)));
-
-        $this->listener->prePersist($this->listenerArguments);
-        $this->assertEquals($this->organization, $this->entity->getOwner());
     }
 }

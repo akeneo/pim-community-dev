@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\EventListener;
+namespace Oro\Bundle\OrganizationBundle\Event;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -17,6 +17,9 @@ use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 
 class RecordOwnerDataListener
 {
+    /**
+     * TODO: Refactor direct field name useage after extened entities are implemented
+     */
     const OWNER_FIELD_NAME = 'owner';
 
     /**
@@ -60,36 +63,35 @@ class RecordOwnerDataListener
      * Handle prePersist.
      *
      * @param LifecycleEventArgs $args
+     * @throws \LogicException when getOwner method isn't implemented for entity with ownership type
      */
     public function prePersist(LifecycleEventArgs $args)
     {
         $token = $this->getSecurityContext()->getToken();
-        if ($token) {
-            $user = $token->getUser();
-            if ($user) {
-                $entity = $args->getEntity();
-                if ($this->configProvider->hasConfig(get_class($entity))) {
-                    $owner = null;
-                    if (method_exists($entity, 'getOwner')) {
-                        $owner = $entity->getOwner();
-                    }
-                    if (!$owner) {
-                        /** @var $config EntityConfig */
-                        $config = $this->configProvider->getConfig(get_class($entity));
-                        $entityValues = $config->getValues();
-                        if (OwnershipType::OWNERSHIP_TYPE_USER == $entityValues['owner_type']) {
-                            $owner = $user;
-                        } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $entityValues['owner_type']) {
-                            $businessUnits = $user->getBusinessUnits();
-                            $owner = $businessUnits->first();
-                        } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $entityValues['owner_type']) {
-                            $businessUnits = $user->getBusinessUnits();
-                            $owner = $businessUnits->first()->getOrganization();
-                        }
-                        if ($owner && method_exists($entity, 'setOwner')) {
-                            $entity->setOwner($owner);
-                        }
-                    }
+        if (!$token) {
+            return;
+        }
+        $user = $token->getUser();
+        if (!$user) {
+            return;
+        }
+        $entity = $args->getEntity();
+        if ($this->configProvider->hasConfig(get_class($entity))) {
+            if (!method_exists($entity, 'getOwner')) {
+                throw new \LogicException(
+                    sprintf('Method getOwner must be implemented for %s entity', get_class($entity))
+                );
+            }
+            if (!$entity->getOwner()) {
+                /** @var $config EntityConfig */
+                $config = $this->configProvider->getConfig(get_class($entity));
+                $ownerType = $config->get('owner_type');
+                /**
+                 * Automatically set current user as record owner
+                 */
+                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType
+                    && method_exists($entity, 'setOwner')) {
+                        $entity->setOwner($user);
                 }
             }
         }

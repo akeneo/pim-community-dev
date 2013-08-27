@@ -33,14 +33,6 @@ class BusinessUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($name, (string)$this->unit);
     }
 
-    public function testParent()
-    {
-        $parent = new BusinessUnit();
-        $this->assertNull($this->unit->getParent());
-        $this->unit->setParent($parent);
-        $this->assertEquals($parent, $this->unit->getParent());
-    }
-
     public function testOrganization()
     {
         $organization = new Organization();

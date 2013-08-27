@@ -10,9 +10,15 @@ class OwnershipType extends AbstractType
 {
     const NAME = 'oro_type_choice_ownership_type';
 
+    const OWNERSHIP_TYPE_NONE = 'NONE';
     const OWNERSHIP_TYPE_USER = 'USER';
     const OWNERSHIP_TYPE_BUSINESS_UNIT = 'BUSINESS_UNIT';
     const OWNERSHIP_TYPE_ORGANIZATION = 'ORGANIZATION';
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     /**
      * @param TranslatorInterface $translator
@@ -38,6 +44,7 @@ class OwnershipType extends AbstractType
     public static function getOwnershipsArray()
     {
         return  array(
+            self::OWNERSHIP_TYPE_NONE => 'None',
             self::OWNERSHIP_TYPE_USER => 'User',
             self::OWNERSHIP_TYPE_BUSINESS_UNIT => 'Business Unit',
             self::OWNERSHIP_TYPE_ORGANIZATION => 'Organization',

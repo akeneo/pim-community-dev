@@ -67,6 +67,11 @@ class UserSoap extends User
     protected $groups;
 
     /**
+     * @Soap\ComplexType("int", nillable=true)
+     */
+    protected $owner;
+
+    /**
      * @Soap\ComplexType("Oro\Bundle\SoapBundle\Entity\FlexibleAttribute[]", nillable=true)
      */
     protected $attributes;

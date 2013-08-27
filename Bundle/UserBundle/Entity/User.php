@@ -45,7 +45,7 @@ use DateTime;
  *  routeName="oro_user_index",
  *  defaultValues={
  *      "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
- *      "acl"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
  *  }
  * )
  */
@@ -220,8 +220,9 @@ class User extends AbstractEntityFlexible implements
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      */
-    protected $businessUnitOwner;
+    protected $owner;
 
     /**
      * Set name formatting using "%first%" and "%last%" placeholders
@@ -1263,16 +1264,16 @@ class User extends AbstractEntityFlexible implements
      */
     public function getOwner()
     {
-        return $this->businessUnitOwner;
+        return $this->owner;
     }
 
     /**
-     * @param BusinessUnit $businessUnitOwner
+     * @param BusinessUnit $owningBusinessUnit
      * @return User
      */
-    public function setOwner(BusinessUnit $businessUnitOwner)
+    public function setOwner($owningBusinessUnit)
     {
-        $this->businessUnitOwner = $businessUnitOwner;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }
