@@ -55,8 +55,7 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
             this.confirmModal = new Oro.BootstrapModal({
                 title: _.__('Delete Confirmation'),
                 content: _.__('Are you sure you want to delete this item?'),
-                okText: _.__('Yes, Delete'),
-                allowCancel: 'false'
+                okText: _.__('Yes, Delete')
             });
             this.confirmModal.on('ok', _.bind(this.doDelete, this));
         }
@@ -70,12 +69,12 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
      */
     getErrorDialog: function() {
         if (!this.errorModal) {
-            this.confirmModal = new Oro.BootstrapModal({
+            this.errorModal = new Oro.BootstrapModal({
                 title: _.__('Delete Error'),
                 content: _.__('Cannot delete item.'),
                 cancelText: false
             });
         }
-        return this.confirmModal;
+        return this.errorModal;
     }
 });

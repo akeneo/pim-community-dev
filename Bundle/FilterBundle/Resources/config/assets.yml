@@ -18,6 +18,7 @@ js:
       - '@OroFilterBundle/Resources/public/js/app/filter/datefilter.js'
       - '@OroFilterBundle/Resources/public/js/app/filter/datetimefilter.js'
       - '@OroFilterBundle/Resources/public/js/app/filter/selectfilter.js'
+      - '@OroFilterBundle/Resources/public/js/app/filter/selectrowfilter.js'
       - '@OroFilterBundle/Resources/public/js/app/filter/multiselectfilter.js'
 
       - '@OroFilterBundle/Resources/public/js/app/filter/list.js'

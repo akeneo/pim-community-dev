@@ -2,34 +2,49 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\PagerInterface as BasePagerInterface;
-
-interface PagerInterface extends BasePagerInterface
+interface PagerInterface
 {
     /**
+     * Initialize the pager.
+     *
+     * @return void
+     */
+    public function init();
+
+    /**
+     * Set query
+     *
      * @param ProxyQueryInterface $query
      * @return void
      */
     public function setQuery($query);
 
     /**
+     * Set max records per page
+     *
      * @param int $maxPerPage
      * @return void
      */
     public function setMaxPerPage($maxPerPage);
 
     /**
+     * Get max records per page
+     *
      * @return int
      */
     public function getMaxPerPage();
 
     /**
+     * Set current page
+     *
      * @param int $page
      * @return void
      */
     public function setPage($page);
 
     /**
+     * Get current page
+     *
      * @return int
      */
     public function getPage();

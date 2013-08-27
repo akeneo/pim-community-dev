@@ -4,9 +4,6 @@
     <head>
         {% block head %}
             <title>{% trans %}Loading...{% endtrans %}</title>
-            <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-            <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-            <script type="text/javascript" src="http://cdn.dev.skype.com/uri/skype-uri.js"></script>
             <script id="page-title" type="text/html">{{ oro_title_render() }}</script>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block head_style %}
@@ -100,6 +97,7 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
+                    {% block before_content %}
                     <div class="container-fluid breadcrumb-pin">
                         <div id="breadcrumb">
                             {% block breadcrumb %}
@@ -108,6 +106,7 @@
                         </div>
                         {% placeholder pin_button %}
                     </div>
+                    {% endblock before_content %}
                     <div id="flash-messages">
                         {% block messages %}
                             {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}

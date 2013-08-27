@@ -114,6 +114,24 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
                 if (isset($item['grid'])) {
+                    if (isset($item['grid']['choiceOptionsProvider'])) {
+                        $choices = array();
+                        list($class, $method) = explode('::', $item['grid']['choiceOptionsProvider']);
+                        if (class_exists($class) && method_exists($class, $method)) {
+                            $choices = call_user_func(array($class, $method));
+                        }
+                        if ($choices) {
+                            $translator = $this->translator;
+                            array_walk(
+                                $choices,
+                                function (&$c) use ($translator) {
+                                    $c = $translator->trans($c);
+                                }
+                            );
+                            $item['grid'] = array_merge($item['grid'], array('choices' => $choices));
+                        }
+                    }
+
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
                     $fieldObjectProvider->setOptions(
@@ -147,23 +165,6 @@ class ConfigDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $this->getDynamicFields($fieldsCollection);
-
-        $fieldObjectId = new FieldDescription();
-        $fieldObjectId->setName('id');
-        $fieldObjectId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldObjectId);
 
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('name');

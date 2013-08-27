@@ -52,11 +52,4 @@ interface ActionInterface
      * @param array $options
      */
     public function setOptions(array $options);
-
-    /**
-     * Check whether action allowed for current user
-     *
-     * @return mixed
-     */
-    public function isGranted();
 }

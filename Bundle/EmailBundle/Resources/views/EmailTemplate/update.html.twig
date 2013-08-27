@@ -2,9 +2,10 @@
 {% form_theme form with [
     'OroUIBundle:Form:fields.html.twig',
 ]%}
+{% import 'OroEmailBundle::macros.html.twig' as _emailMacros %}
 {% set title = form.vars.value.id
     ? 'Edit email template "%name%"'|trans({'%name%': form.vars.value.name})
-    : isClone ? 'Clone Email Template'|trans : 'Add Email Template'|trans
+    : isClone ? 'Clone Email Template'|trans : 'New Email Template'|trans
 %}
 {% if form.vars.value.id %}
     {% oro_title_set({params : {"%name%": form.vars.value.name} }) %}
@@ -16,6 +17,19 @@
 %}
 
 {% block navButtons %}
+    {% if resource_granted('oro_email_emailtemplate_preview') %}
+        {{ UI.button({
+                'path' :  path('oro_email_emailtemplate_preview', {'id': form.vars.value.id }),
+                'title' : 'Preview',
+                'label' : 'Preview',
+                aClass: 'btn-success dialog-form-renderer no-hash',
+                iClass: 'icon-share'
+            })
+        }}
+
+        {{ _emailMacros.renderPreviewDialog(form.vars.id, form.vars.value.subject) }}
+    {% endif %}
+
     {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_clone') %}
         {{ UI.button({
                 'path' :  path('oro_email_emailtemplate_clone', {'id': form.vars.value.id}),
@@ -27,6 +41,7 @@
         }}
         {{ UI.buttonSeparator() }}
     {% endif %}
+
     {% set cancelButton = UI.button({'path' : path('oro_email_emailtemplate_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) %}
     {% if form.vars.value.isSystem == false %}
         {% if form.vars.value.id and resource_granted('oro_email_emailtemplate_remove') %}
@@ -89,13 +104,17 @@
                 'data': [
                     form_widget(form.translations)
                 ]
+            },{
+                'title': 'Available variables'|trans,
+                'data': [
+                    _emailMacros.renderAvailableVariablesWidget(form.vars.value.entityName, form.entityName.vars.id)
+                ]
             }]
     }]
     %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
-        'hiddenData': form_rest(form)
         }
     %}
 
