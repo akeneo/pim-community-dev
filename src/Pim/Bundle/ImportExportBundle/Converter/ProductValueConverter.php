@@ -14,6 +14,8 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  */
 class ProductValueConverter
 {
+    const SCOPE_KEY = '[scope]';
+
     protected $entityManager;
 
     public function __construct(EntityManager $entityManager)
@@ -21,9 +23,9 @@ class ProductValueConverter
         $this->entityManager = $entityManager;
     }
 
-    public function convert($data, array $context = array())
+    public function convert($data)
     {
-        $context = $this->processContext($context);
+        $scope = $this->getScope($data);
 
         $result = array();
         foreach ($data as $key => $value) {
@@ -49,7 +51,7 @@ class ProductValueConverter
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
-                $key = $this->getProductValueKey($attribute, $key, $context);
+                $key = $this->getProductValueKey($attribute, $key, $scope);
                 $result[$key] = $value;
             }
         }
@@ -143,20 +145,20 @@ class ProductValueConverter
     }
 
     /**
-     * Define default values within the context
+     * Get the value of the self::SCOPE_KEY
      *
-     * @param array $constext
+     * @param array $data
      *
-     * @return array
+     * @return string
      */
-    private function processContext(array $context)
+    private function getScope(array &$data)
     {
-        return array_merge(
-            array(
-                'scope' => null
-            ),
-            $context
-        );
+        if (array_key_exists(self::SCOPE_KEY, $data)) {
+            $scope = $data[self::SCOPE_KEY];
+            unset($data[self::SCOPE_KEY]);
+
+            return $scope;
+        }
     }
 
     private function getAttribute($code)
@@ -182,15 +184,15 @@ class ProductValueConverter
      *
      * @param ProductAttribute $attribute
      * @param string           $key
-     * @param array            $context
+     * @param strint           $scope
      *
      * @return string
      */
-    private function getProductValueKey(ProductAttribute $attribute, $key, array $context)
+    private function getProductValueKey(ProductAttribute $attribute, $key, $scope)
     {
         $suffix = '';
         if ($attribute->getScopable()) {
-            $suffix = sprintf('_%s', $context['scope']);
+            $suffix = sprintf('_%s', $scope);
         }
 
         if ($this->isLocalized($key) && !$attribute->getTranslatable()) {
