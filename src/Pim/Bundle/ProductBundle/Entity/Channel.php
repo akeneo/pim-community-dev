@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Entity\Category;
@@ -18,7 +17,6 @@ use Pim\Bundle\ProductBundle\Entity\Locale;
  *
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ChannelRepository")
- * @UniqueEntity("code")
  * @ORM\HasLifecycleCallbacks
  */
 class Channel

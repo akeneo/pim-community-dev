@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
+use Pim\Bundle\ProductBundle\Entity\Family;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
@@ -22,14 +24,16 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     protected $calculator;
 
+    protected $attribute1;
+    protected $attribute2;
+
     protected $channel1;
     protected $channel2;
 
+    protected $family;
+
     protected $locale1;
     protected $locale2;
-
-    protected $attribute1;
-    protected $attribute2;
 
     protected $repository;
 
@@ -52,6 +56,7 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->initializeAttributes();
         $this->initializeChannels();
         $this->initializeLocales();
+        $this->family = new Family();
 
         // initialize mocks
         $this->initializeRepository();
@@ -135,7 +140,7 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      * Test related method
      *
      * @param string $channelCode
-     * @param array $values  Array of product values
+     * @param array  $values      Array of product values
      * array(
      *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
      *     ...
@@ -213,7 +218,7 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             ->repository
             ->expects($this->any())
             ->method('findBy')
-            ->with(array('channel' => $channel, 'required' => true))
+            ->with(array('channel' => $channel, 'family' => $this->family, 'required' => true))
             ->will($this->returnValue($requirementsList));
     }
 
@@ -232,6 +237,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getValue')
             ->will($this->returnValueMap($values));
+
+        $product->setFamily($this->family);
 
         return $product;
     }
@@ -397,9 +404,9 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      * Create attribute requirement entity
      *
      * @param ProductAttribute $attribute
-     * @param Channel $channel
-     * @param Locale $locale
-     * @param boolean $required
+     * @param Channel          $channel
+     * @param Locale           $locale
+     * @param boolean          $required
      *
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeRequirement
      */

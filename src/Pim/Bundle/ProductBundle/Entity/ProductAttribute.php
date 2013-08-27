@@ -1161,31 +1161,4 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
 
         return $this;
     }
-
-    /**
-     * TODO : will be replace by the use of normalizer
-     * @return array
-     */
-    public function getVersionedData()
-    {
-        $data = array('code' => $this->getCode());
-
-        $options = array();
-        foreach ($this->getOptions() as $option) {
-            $str = $option->getCode();
-            foreach ($option->getOptionValues() as $value) {
-                $str .= ' '.$value->getLocale().':'.$value->getValue();
-            }
-            $options[]= $str;
-        }
-        if (!empty($options)) {
-            $data['options'] = implode(',', $options);
-        }
-
-        foreach ($this->getTranslations() as $translation) {
-            $data['label_'.$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return $data;
-    }
 }

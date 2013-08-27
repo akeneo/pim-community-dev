@@ -12,7 +12,6 @@ use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class CategoryType extends AbstractSegmentType
 {
@@ -51,6 +50,10 @@ class CategoryType extends AbstractSegmentType
 
         $this->addTitleField($builder);
 
+        if ($options['import_mode']) {
+            $builder->add('dynamic');
+        }
+
         /*
         // Add isDynamic field is needed
         $subscriber = new CategorySubscriber($builder->getFormFactory());
@@ -84,7 +87,8 @@ class CategoryType extends AbstractSegmentType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->className
+                'data_class'  => $this->className,
+                'import_mode' => false
             )
         );
     }

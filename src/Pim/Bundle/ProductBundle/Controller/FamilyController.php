@@ -33,8 +33,16 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $manager    = $this->container->get('pim_product.manager.product');
+                $identifier = $manager->getIdentifierAttribute();
+                $family->addAttribute($identifier);
                 $this->persist($family);
                 $this->addFlash('success', 'Family successfully created');
+
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPendingVersion($family)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
             }
@@ -61,7 +69,7 @@ class FamilyController extends Controller
         $datagrid = $this->getDataAuditDatagrid($family, 'pim_product_family_edit', array('id' => $family->getId()));
         $datagridView = $datagrid->createView();
 
-        if ('json' == $this->getRequest()->getRequestFormat()) {
+        if ('json' === $request->getRequestFormat()) {
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
         }
 
@@ -81,6 +89,11 @@ class FamilyController extends Controller
             if ($form->isValid()) {
                 $this->flush();
                 $this->addFlash('success', 'Family successfully updated.');
+
+                $pendingManager = $this->container->get('pim_versioning.manager.pending');
+                if ($pending = $pendingManager->getPendingVersion($family)) {
+                    $pendingManager->createVersionAndAudit($pending);
+                }
 
                 return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
             }
@@ -155,18 +168,16 @@ class FamilyController extends Controller
         $attribute = $this->findOr404('PimProductBundle:ProductAttribute', $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            throw $this->createNotFoundException(
-                sprintf('Attribute "%s" is not attached to "%s"', $attribute, $family)
-            );
-        }
-
-        if ($attribute !== $family->getAttributeAsLabel()) {
+            $this->addFlash('error', sprintf('Attribute "%s" is not attached to "%s" family', $attribute, $family));
+        } elseif ($attribute->getAttributeType() === 'pim_product_identifier') {
+            $this->addFlash('error', 'Identifier attribute can not be removed from a family.');
+        } elseif ($attribute === $family->getAttributeAsLabel()) {
+            $this->addFlash('error', 'You cannot remove this attribute because it is used as label for the family.');
+        } else {
             $family->removeAttribute($attribute);
             $this->flush();
 
             $this->addFlash('success', 'The family is successfully updated.');
-        } else {
-            $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
         }
 
         return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));

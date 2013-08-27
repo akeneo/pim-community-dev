@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,7 +19,6 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
- * @UniqueEntity(fields="code", message="This code is already taken.")
  */
 class Family implements TranslatableInterface, VersionableInterface
 {
@@ -61,8 +58,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * @var string $code
      *
-     * @ORM\Column(unique=true)
-     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
+     * @ORM\Column(name="code", type="string", length=100, unique=true)
      */
     protected $code;
 
@@ -233,14 +229,9 @@ class Family implements TranslatableInterface, VersionableInterface
      * @param ProductAttribute $attribute
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
-     *
-     * @throw InvalidArgumentException
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
-            throw new \InvalidArgumentException('Identifier cannot be part of a family.');
-        }
         $this->attributes[] = $attribute;
 
         return $this;
@@ -251,10 +242,16 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
+     *
+     * @throws InvalidArgumentException
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
+        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
+        }
+
         $this->attributes->removeElement($attribute);
 
         return $this;
@@ -300,7 +297,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * @param ProductAttribute $attributeAsLabel
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeAsLabel($attributeAsLabel)
     {
@@ -434,11 +431,11 @@ class Family implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Setter attribute requirements
+     * Set attribute requirements
      *
      * @param array $attributeRequirements
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
+     * @return Family
      */
     public function setAttributeRequirements($attributeRequirements)
     {
@@ -447,6 +444,11 @@ class Family implements TranslatableInterface, VersionableInterface
         return $this;
     }
 
+    /**
+     * Get attribute requirements
+     *
+     * @return array
+     */
     public function getAttributeRequirements()
     {
         $result = array();
@@ -462,31 +464,16 @@ class Family implements TranslatableInterface, VersionableInterface
         return $result;
     }
 
+    /**
+     * Get attribute requirement key
+     *
+     * @param string $attributeCode
+     * @param string $channelCode
+     *
+     * @return string
+     */
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
-    }
-
-    /**
-     * TODO : will be replace by the use of normalizer
-     * @return array
-     */
-    public function getVersionedData()
-    {
-        $attributes = array();
-        foreach ($this->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
-        }
-
-        $data = array(
-            'code'       => $this->getCode(),
-            'attributes' => implode(',', $attributes),
-        );
-
-        foreach ($this->getTranslations() as $translation) {
-            $data['label_'.$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return $data;
     }
 }

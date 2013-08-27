@@ -52,12 +52,14 @@ class ValidDefaultValueValidator extends ConstraintValidator
 
         if (!$value instanceof \Datetime) {
             $this->context->addViolationAt($constraint->propertyPath, $constraint->dateFormatMessage);
+
             return;
         }
 
         if ($min = $entity->getDateMin()) {
             if ($min->getTimestamp() > $value->getTimestamp()) {
                 $this->context->addViolationAt($constraint->propertyPath, $constraint->dateMessage);
+
                 return;
             }
         }
@@ -81,16 +83,19 @@ class ValidDefaultValueValidator extends ConstraintValidator
 
         if ($entity->isNegativeAllowed() === false && $value < 0) {
             $this->context->addViolationAt($constraint->propertyPath, $constraint->negativeMessage);
+
             return;
         }
 
         if ($entity->getNumberMin() !== null && $value < $entity->getNumberMin()) {
             $this->context->addViolationAt($constraint->propertyPath, $constraint->numberMessage);
+
             return;
         }
 
         if ($entity->getNumberMax() !== null && $value > $entity->getNumberMax()) {
             $this->context->addViolationAt($constraint->propertyPath, $constraint->numberMessage);
+
             return;
         }
 
@@ -112,6 +117,7 @@ class ValidDefaultValueValidator extends ConstraintValidator
         if ($entity->getMaxCharacters() !== null) {
             if (strlen($value) > $entity->getMaxCharacters()) {
                 $this->context->addViolationAt($constraint->propertyPath, $constraint->charactersMessage);
+
                 return;
             }
         }

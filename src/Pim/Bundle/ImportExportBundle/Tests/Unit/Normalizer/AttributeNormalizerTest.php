@@ -57,10 +57,10 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'csv',  true),
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'json', false),
-            array('stdClass',                                         'csv',  false),
-            array('stdClass',                                         'json', false),
+            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'csv', false),
+            array('stdClass',                                         'json',  false),
+            array('stdClass',                                         'csv', false),
         );
     }
 
@@ -90,18 +90,21 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'type'                   => 'multiselect',
                     'code'                   => 'color',
-                    'label'                  => 'default:Color,en:Color,fr:Couleur',
+                    'label'                  => array('en' => 'Color', 'fr' => 'Couleur'),
                     'description'            => 'Color of the product',
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
                     'unique'                 => '0',
-                    'default_options'        => 'en:Red,fr:Rouge',
+                    'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'searchable'             => '1',
                     'localizable'            => '1',
-                    'available_locales'      => 'All',
+                    'available_locales'      => array('en', 'fr'),
                     'scope'                  => 'Global',
-                    'options'                => 'en:Green,fr:Vert|en:Red,fr:Rouge',
+                    'options'                => array(
+                        'green' => array('en' => 'Green', 'fr' => 'Vert'),
+                        'red'   => array('en' => 'Red', 'fr' => 'Rouge')
+                    ),
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
                     'value_creation_allowed' => '1',
@@ -111,19 +114,19 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'type'                   => 'text',
                     'code'                   => 'description',
-                    'label'                  => 'default:Description,en:Description,fr:Description',
+                    'label'                  => array('en' => 'Description', 'fr' => 'Description'),
                     'description'            => 'A desccription of the product',
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
                     'unique'                 => '0',
                     'default_value'          => 'No description',
-                    'default_options'        => '',
+                    'default_options'        => array(),
                     'searchable'             => '1',
                     'localizable'            => '1',
-                    'available_locales'      => 'en,fr',
+                    'available_locales'      => array('en', 'fr'),
                     'scope'                  => 'Channel',
-                    'options'                => '',
+                    'options'                => array(),
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '1',
                     'max_characters'         => '200',
@@ -152,10 +155,8 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($attribute, 'csv')
-        );
+        $normalized = $this->normalizer->normalize($attribute, 'json');
+        $this->assertEquals($expectedResult, $normalized);
     }
 
     /**
@@ -169,11 +170,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute = new ProductAttribute();
         $attribute->setAttributeType(sprintf('pim_product_%s', strtolower($data['type'])));
 
-        $labels = explode(',', $data['label']);
-        foreach ($labels as $label) {
-            $label  = explode(':', $label);
-            $locale = reset($label);
-            $label  = end($label);
+        foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);
             $translation->setLabel($label);
         }
@@ -194,23 +191,16 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
 
-        if (strtolower($data['available_locales']) !== 'all') {
-            $locales = explode(',', $data['available_locales']);
-            foreach ($locales as $localeCode) {
-                $locale = new Locale();
-                $locale->setCode($localeCode);
-                $attribute->addAvailableLocale($locale);
-            }
+        foreach ($data['available_locales'] as $code) {
+            $locale = new Locale();
+            $locale->setCode($code);
+            $attribute->addAvailableLocale($locale);
         }
 
-        $options = array_filter(explode('|', $data['options']));
-        foreach ($options as $option) {
+        foreach ($data['options'] as $code => $values) {
             $attributeOption = new AttributeOption();
-            $translations = explode(',', $option);
-            foreach ($translations as $translation) {
-                $translation = explode(':', $translation);
-                $locale      = reset($translation);
-                $value       = end($translation);
+            $attributeOption->setCode($code);
+            foreach ($values as $locale => $value) {
                 $optionValue = new AttributeOptionValue();
                 $optionValue->setLocale($locale);
                 $optionValue->setValue($value);
@@ -219,20 +209,10 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             $attribute->addOption($attributeOption);
         }
 
-        $defaultOptions = array_filter(explode('|', $data['default_options']));
-        foreach ($defaultOptions as $defaultOption) {
-            $translations = explode(',', $defaultOption);
-            $locale       = reset($translation);
-            $value        = end($translation);
-
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                $optionValues = $option->getOptionValues();
-                foreach ($optionValues as $optionValue) {
-                    if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
-                        $option->setDefault(true);
-                        break;
-                    }
+        foreach ($data['default_options'] as $code => $values) {
+            foreach ($attribute->getOptions() as $option) {
+                if ($code == $option->getCode()) {
+                    $option->setDefault(true);
                 }
             }
         }

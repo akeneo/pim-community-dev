@@ -21,6 +21,20 @@ Pim.Filter.ScopeFilter = Oro.Filter.SelectFilter.extend({
     contextSearch: false,
 
     /**
+     * @inheritDoc
+     */
+    disable: function() {
+        return this;
+    },
+
+    /**
+     * @inheritDoc
+     */
+    hide: function() {
+        return this;
+    },
+
+    /**
      * Filter template
      *
      * @override

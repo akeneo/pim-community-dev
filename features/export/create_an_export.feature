@@ -11,7 +11,7 @@ Feature: Create an export
     When I fill in the following information:
       | Code  | mobile_product_export |
       | Label | Mobile product export |
-    And I visit the "Export" tab
+    And I visit the "Configuration" tab
     And I fill in the following information:
       | Path  | /tmp/export.csv       |
     And I select the channel "Mobile"

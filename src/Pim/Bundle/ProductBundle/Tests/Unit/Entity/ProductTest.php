@@ -3,11 +3,8 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Channel;
-
 use Pim\Bundle\ProductBundle\Entity\Locale;
-
 use Pim\Bundle\ProductBundle\Entity\Completeness;
-
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\Family;
 
@@ -17,7 +14,6 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ProductTest extends \PHPUnit_Framework_TestCase
 {

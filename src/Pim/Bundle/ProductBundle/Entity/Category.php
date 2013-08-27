@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -26,7 +25,6 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
- * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  */
@@ -337,28 +335,5 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function __toString()
     {
         return $this->getTitle();
-    }
-
-    /**
-     * TODO : will be replace by the use of normalizer
-     * @return array
-     */
-    public function getVersionedData()
-    {
-        $data = array(
-            'code' => $this->getCode(),
-        );
-
-        $products = array();
-        foreach ($this->getProducts() as $product) {
-            $products[]= $product->getIdentifier();
-        }
-        $data['products']= implode(', ', $products);
-
-        foreach ($this->getTranslations() as $translation) {
-            $data['title_'.$translation->getLocale()]= $translation->getTitle();
-        }
-
-        return $data;
     }
 }
