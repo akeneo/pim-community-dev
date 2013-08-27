@@ -103,22 +103,38 @@ class Generator
         );
     }
 
+    /**
+     * @param $entityName
+     * @return string
+     */
     public function generateExtendClassName($entityName)
     {
         return 'Extend\\Entity\\' . $this->backend . '\\' . $this->generateClassName($entityName);
     }
 
+    /**
+     * @param $entityName
+     * @return string
+     */
     public function generateProxyClassName($entityName)
     {
         return 'Extend\\Proxy\\' . $this->generateClassName($entityName);
     }
 
+    /**
+     * @param $entityName
+     * @return string
+     */
     protected function generateClassName($entityName)
     {
         return str_replace('\\', '', $entityName);
     }
 
-
+    /**
+     * @param $entityName
+     * @param $validators
+     * @return mixed
+     */
     protected function generateValidator($entityName, $validators)
     {
         /** Constraints */
@@ -136,9 +152,7 @@ class Generator
 
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
-                ) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
                     $config = $this->configProvider->getConfigById($fieldId);
                     switch ($fieldId->getFieldType()) {
                         case 'integer':
@@ -189,6 +203,11 @@ class Generator
         return $validators;
     }
 
+    /**
+     * @param $entityName
+     * @param $extendClass
+     * @return array
+     */
     protected function generateDynamicYml($entityName, $extendClass)
     {
         $yml = array(

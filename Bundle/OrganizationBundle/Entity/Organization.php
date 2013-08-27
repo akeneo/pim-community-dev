@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Organization

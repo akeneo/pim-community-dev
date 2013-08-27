@@ -19,7 +19,6 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityExtendBundle\Tools\Schema;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
-
 /**
  * EntityExtendBundle controller.
  * @Route("/entity/extend")

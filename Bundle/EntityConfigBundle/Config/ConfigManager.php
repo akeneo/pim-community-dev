@@ -251,7 +251,7 @@ class ConfigManager
      */
     public function hasConfig(ConfigIdInterface $configId)
     {
-        if ($this->localCache->containsKey($configId->getId())) {
+        if ($this->localCache->containsKey($configId->toString())) {
             return true;
         }
 
