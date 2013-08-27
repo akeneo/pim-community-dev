@@ -56,7 +56,8 @@ class SoapDataAuditApiTest extends WebTestCase
             "plainPassword" => '1231231q',
             "firstName" => "firstName",
             "lastName" => "lastName",
-            "rolesCollection" => array("1")
+            "rolesCollection" => array("1"),
+            "owner" => "1"
         );
 
         $id = $this->client->getSoap()->createUser($request);

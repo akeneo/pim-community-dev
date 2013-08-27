@@ -1,0 +1,14 @@
+{% block oro_type_choice_ownership_type_widget %}
+    {% spaceless %}
+        {% if value %}
+            {% for choice in choices %}
+                {% if choice.value == value %}
+                    <p class="control-label">{{ choice.label }}</p>
+                {% endif %}
+            {% endfor %}
+            {{ block('hidden_widget') }}
+        {% else %}
+            {{ block('choice_widget') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

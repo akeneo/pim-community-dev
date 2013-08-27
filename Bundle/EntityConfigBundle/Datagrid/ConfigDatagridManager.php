@@ -114,6 +114,24 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
                 if (isset($item['grid'])) {
+                    if (isset($item['grid']['choiceOptionsProvider'])) {
+                        $choices = array();
+                        list($class, $method) = explode('::', $item['grid']['choiceOptionsProvider']);
+                        if (class_exists($class) && method_exists($class, $method)) {
+                            $choices = call_user_func(array($class, $method));
+                        }
+                        if ($choices) {
+                            $translator = $this->translator;
+                            array_walk(
+                                $choices,
+                                function (&$c) use ($translator) {
+                                    $c = $translator->trans($c);
+                                }
+                            );
+                            $item['grid'] = array_merge($item['grid'], array('choices' => $choices));
+                        }
+                    }
+
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);
                     $fieldObjectProvider->setOptions(

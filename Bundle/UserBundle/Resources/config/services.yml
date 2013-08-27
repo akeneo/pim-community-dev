@@ -175,3 +175,4 @@ services:
         class: %oro_user.email.owner.provider.class%
         tags:
             - { name: oro_email.owner.provider, order: 1 }
+

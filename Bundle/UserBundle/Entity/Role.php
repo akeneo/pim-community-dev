@@ -14,11 +14,20 @@ use JMS\Serializer\Annotation\Type;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 /**
  * Role Entity
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
  * @ORM\Table(name="oro_access_role")
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Role", "plural_label"="Roles"},
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class Role implements RoleInterface
 {
@@ -50,6 +59,14 @@ class Role implements RoleInterface
      * @Type("string")
      */
     protected $label;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $owner;
 
     /**
      * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
@@ -176,5 +193,24 @@ class Role implements RoleInterface
     public function setAclResources($resources)
     {
         $this->aclResources = $resources;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
+     * @return Role
+     */
+    public function setOwner($owningBusinessUnit)
+    {
+        $this->owner = $owningBusinessUnit;
+
+        return $this;
     }
 }

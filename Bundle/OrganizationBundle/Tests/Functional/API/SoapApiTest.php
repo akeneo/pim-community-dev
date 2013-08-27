@@ -26,6 +26,7 @@ class SoapApiTest extends WebTestCase
                 'fax' => '321-321-321',
                 'parent' => null,
                 'appendUsers' => array(1),
+                'owner' => '1',
             )
     );
 
