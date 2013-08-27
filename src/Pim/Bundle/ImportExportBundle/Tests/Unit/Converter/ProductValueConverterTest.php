@@ -172,6 +172,37 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertOptionsValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'colors'))
+            ->will($this->returnValue($this->getAttributeMock('options')));
+
+        $this->optionRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array(array('code' => 'red'), null, $this->getAttributeOptionMock(4)),
+                        array(array('code' => 'green'), null, $this->getAttributeOptionMock(8)),
+                        array(array('code' => 'blue'), null, $this->getAttributeOptionMock(15)),
+                    )
+                )
+            );
+
+        $this->assertEquals(
+            array(
+                'colors' => array(
+                    'options' => array(4, 8, 15)
+                )
+            ),
+            $this->converter->convert(array('colors' => 'red,green,blue'))
+        );
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');

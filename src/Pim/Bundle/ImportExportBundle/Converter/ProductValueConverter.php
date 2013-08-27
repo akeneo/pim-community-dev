@@ -60,6 +60,10 @@ class ProductValueConverter
                         $value = $this->convertOptionValue($value);
                         break;
 
+                    case 'options':
+                        $value = $this->convertOptionsValue($value);
+                        break;
+
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
@@ -118,8 +122,25 @@ class ProductValueConverter
         if ($option = $this->getOption($value)) {
             return $this->convertValue('option', $option->getId());
         }
+    }
 
-        return array();
+    /**
+     * Convert options value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function convertOptionsValue($value)
+    {
+        $options = array();
+        foreach (explode(',', $value) as $val) {
+            if ($option = $this->getOption($val)) {
+                $options[] = $option->getId();
+            }
+        }
+
+        return $this->convertValue('options', $options);
     }
 
 
