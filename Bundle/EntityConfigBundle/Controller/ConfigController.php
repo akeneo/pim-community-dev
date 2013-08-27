@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -178,9 +179,16 @@ class ConfigController extends Controller
         /** @var ConfigProvider $ownershipConfigProvider */
         $ownershipConfigProvider = $this->get('oro_entity_config.provider.ownership');
 
-        $entityCount = class_exists($entity->getClassName())
-            ? count($this->getDoctrine()->getRepository($entity->getClassName())->findAll())
-            : 0;
+
+        if (class_exists($entity->getClassName())) {
+            /** @var QueryBuilder $qb */
+            $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+            $qb->select('count(entity)');
+            $qb->from($entity->getClassName(), 'entity');
+            $entityCount = $qb->getQuery()->getSingleScalarResult();
+        } else {
+            $entityCount = 0;
+        }
 
         return array(
             'entity'           => $entity,
