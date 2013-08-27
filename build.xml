@@ -83,6 +83,7 @@
             <arg value="--jdepend-xml=${basedir}/app/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
+            <arg value="--ignore=Tests" />
             <arg path="${basedir}/src/Pim" />
         </exec>
     </target>

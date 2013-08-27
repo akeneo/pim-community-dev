@@ -31,7 +31,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createJobExecution(JobInstance $jobInstance)
     {
@@ -42,7 +42,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updateJobExecution(JobExecution $jobExecution)
     {
@@ -50,7 +50,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updateStepExecution(StepExecution $stepExecution)
     {
@@ -58,7 +58,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function flush()
     {

@@ -47,7 +47,7 @@ class CurrencyFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -55,7 +55,7 @@ class CurrencyFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -83,7 +83,7 @@ class CurrencyFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

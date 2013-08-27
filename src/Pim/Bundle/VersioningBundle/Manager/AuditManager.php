@@ -23,7 +23,7 @@ class AuditManager
     protected $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __construct(ObjectManager $em)
     {

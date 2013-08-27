@@ -30,7 +30,7 @@ class ValidLocaleFallback extends Constraint
     public $fallbackNotAllowed = 'Inherited locale may not be specified for this locale';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validatedBy()
     {
@@ -38,7 +38,7 @@ class ValidLocaleFallback extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

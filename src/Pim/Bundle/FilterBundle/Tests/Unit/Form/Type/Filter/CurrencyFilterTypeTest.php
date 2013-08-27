@@ -94,7 +94,7 @@ class CurrencyFilterTypeTest extends NumberFilterTypeTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptionsDataProvider()
     {
