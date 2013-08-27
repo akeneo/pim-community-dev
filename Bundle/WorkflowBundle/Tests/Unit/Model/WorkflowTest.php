@@ -99,6 +99,16 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getTransitions());
     }
 
+    public function getTransition()
+    {
+        $transition = $this->getTransitionMock('transition');
+
+        $workflow = $this->createWorkflow();
+        $workflow->setTransitions(array($transition));
+
+        $this->assertEquals($transition, $workflow->getTransition('transition'));
+    }
+
     public function testSetTransitions()
     {
         $transitionOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Transition')
@@ -170,25 +180,43 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider isAllowedDataProvider
      * @param bool $isAllowed
+     * @param string $transitionName
+     * @param bool $isStartTransition
+     * @param string $stepName
+     * @param bool $isAllowedForStep
+     * @dataProvider isAllowedDataProvider
      */
-    public function testIsTransitionAllowedTransition($isAllowed)
-    {
+    public function testIsTransitionAllowed(
+        $isAllowed,
+        $transitionName,
+        $isStartTransition = false,
+        $stepName = null,
+        $isAllowedForStep = false
+    ) {
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->getMock();
+        $workflowItem->expects($this->any())
+            ->method('getCurrentStepName')
+            ->will($this->returnValue($stepName));
 
-        $transition = $this->getTransitionMock('transition');
-        $transition->expects($this->exactly(2))
+        $transition = $this->getTransitionMock('transition', $isStartTransition);
+        $transition->expects($this->any())
             ->method('isAllowed')
             ->will($this->returnValue($isAllowed));
 
+        $step = $this->getStepMock('step');
+        $step->expects($this->any())
+            ->method('isAllowedTransition')
+            ->with('transition')
+            ->will($this->returnValue($isAllowedForStep));
+
         $workflow = $this->createWorkflow();
         $workflow->setTransitions(array($transition));
+        $workflow->setSteps(array($step));
 
-        $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, 'transition'));
-        $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, $transition));
+        $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, $transitionName));
     }
 
     /**
@@ -197,43 +225,44 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function isAllowedDataProvider()
     {
         return array(
-            'yes' => array(true),
-            'no' => array(false)
+            'no transition' => array(
+                'isAllowed'      => false,
+                'transitionName' => 'unknown_transition',
+            ),
+            'no_current_step_start_step' => array(
+                'isAllowed'         => true,
+                'transitionName'    => 'transition',
+                'isStartTransition' => true,
+                'stepName'          => 'unknown_step',
+            ),
+            'no_current_step_not_start_step' => array(
+                'isAllowed'         => false,
+                'transitionName'    => 'transition',
+                'isStartTransition' => false,
+                'stepName'          => 'unknown_step',
+            ),
+            'not allowed for step' => array(
+                'isAllowed'         => false,
+                'transitionName'    => 'transition',
+                'isStartTransition' => false,
+                'stepName'          => 'step',
+                'isAllowedForStep'  => false,
+            ),
+            'not allowed for workflow item' => array(
+                'isAllowed'                => false,
+                'transitionName'           => 'transition',
+                'isStartTransition'        => false,
+                'stepName'                 => 'step',
+                'isAllowedForStep'         => true,
+            ),
+            'allowed for workflow item' => array(
+                'isAllowed'                => true,
+                'transitionName'           => 'transition',
+                'isStartTransition'        => false,
+                'stepName'                 => 'step',
+                'isAllowedForStep'         => true,
+            ),
         );
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException
-     * @expectedExceptionMessage Unknown transition "unknown".
-     */
-    public function testTransitUnknownTransitionException()
-    {
-        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $workflow = $this->createWorkflow();
-        $workflow->transit($workflowItem, 'unknown');
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
-     * @expectedExceptionMessage Step "unknownStep" not found
-     */
-    public function testTransitUnknownStepException()
-    {
-        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $workflowItem->expects($this->any())
-            ->method('getCurrentStepName')
-            ->will($this->returnValue('unknownStep'));
-        $transition = $this->getTransitionMock('transition');
-
-        $workflow = $this->createWorkflow();
-        $workflow->setName('workflowName');
-        $workflow->setTransitions(array($transition));
-        $workflow->transit($workflowItem, $transition);
     }
 
     /**
@@ -272,6 +301,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('stepOne'));
 
         $transition = $this->getTransitionMock('transition');
+        $transition->expects($this->once())
+            ->method('isAllowed')
+            ->with($workflowItem)
+            ->will($this->returnValue(true));
         $transition->expects($this->once())
             ->method('transit')
             ->with($workflowItem);
@@ -417,17 +450,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($step1, $workflow->getStep('step1'));
         $this->assertEquals($step2, $workflow->getStep('step2'));
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
-     * @expectedExceptionMessage Step "unknown_step" not found
-     */
-    public function testGetStepUnknownStep()
-    {
-        $workflow = $this->createWorkflow();
-        $workflow->setSteps(array());
-        $workflow->getStep('unknown_step');
     }
 
     /**

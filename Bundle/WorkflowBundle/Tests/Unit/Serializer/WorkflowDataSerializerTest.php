@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Tests\Unit;
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Serializer;
 
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;

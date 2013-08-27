@@ -3,7 +3,6 @@ workflows:
         label: 'First Workflow'
         enabled: true
         start_step: first_step
-        managed_entity_class: Oro\Bundle\FooBundle\Entity\BarEntity
         steps:
             first_step:
                 label: 'First Step'

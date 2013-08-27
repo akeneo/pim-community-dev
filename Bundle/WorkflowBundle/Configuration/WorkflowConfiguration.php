@@ -57,7 +57,7 @@ class WorkflowConfiguration implements ConfigurationInterface
             ->end()
             ->enumNode('type')
                 ->cannotBeEmpty()
-                ->defaultValue('entity')
+                ->defaultValue(Workflow::TYPE_ENTITY)
                 ->values(array(Workflow::TYPE_ENTITY, Workflow::TYPE_WIZARD))
             ->end()
             ->booleanNode('enabled')

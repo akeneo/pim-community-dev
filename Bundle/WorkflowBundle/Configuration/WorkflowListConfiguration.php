@@ -10,7 +10,6 @@ class WorkflowListConfiguration implements ConfigurationInterface
 {
     const NODE_WORKFLOWS = 'workflows';
 
-
     /**
      * Processes and validates configuration
      *

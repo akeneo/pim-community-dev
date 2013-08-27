@@ -4,7 +4,6 @@ namespace Oro\Bundle\WorkflowBundle\Controller\Api\Rest;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use FOS\RestBundle\Controller\FOSRestController;
@@ -20,6 +19,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
+use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 
 /**
  * @NamePrefix("oro_api_workflow_")
@@ -27,75 +27,133 @@ use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 class WorkflowController extends FOSRestController
 {
     /**
+     * Returns:
+     * - HTTP_OK (200) response: array('workflowItemId' => workflowItemId)
+     * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
+     * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
+     * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
+     *
      * @Get("/start/{workflowName}/{entityClass}/{entityId}/{transitionName}")
      * @ApiDoc(description="Start workflow for entity from transition", resource=true)
      * @AclAncestor("oro_workflow")
+     *
+     * @param string $workflowName
+     * @param string $entityClass
+     * @param mixed $entityId
+     * @param string $transitionName
+     * @return Response
      */
     public function startAction($workflowName, $entityClass, $entityId, $transitionName)
     {
+        try {
+            /** @var WorkflowManager $workflowManager */
+            $workflowManager = $this->get('oro_workflow.manager');
+            $workflowItem = $workflowManager->startWorkflow(
+                $workflowName,
+                $entityClass,
+                $entityId,
+                $transitionName
+            );
+        } catch (WorkflowNotFoundException $e) {
+            return $this->handleNotFoundException($e->getMessage());
+        } catch (UnknownAttributeException $e) {
+            return $this->handleNotFoundException($e->getMessage());
+        } catch (UnknownTransitionException $e) {
+            return $this->handleNotFoundException($e->getMessage());
+        } catch (ForbiddenTransitionException $e) {
+            return $this->handleForbiddenException($e->getMessage());
+        } catch (\Exception $e) {
+            return $this->handleDefaultException($e);
+        }
+
         return $this->handleView(
-            $this->view(array('workflowItemId' => 1), Codes::HTTP_OK)
+            $this->view(array('workflowItemId' => $workflowItem->getId()), Codes::HTTP_OK)
         );
-
-        /** @var WorkflowManager $workflowManager */
-        /*
-        $workflowManager = $this->get('oro_workflow.manager');
-        $workflowItem = $workflowManager->startWorkflow(
-            $workflowName,
-            $entityClass,
-            $entityId,
-            $transitionName
-        );
-
-        return $this->redirect(
-            $this->generateUrl(
-                'acme_demoworkflow_workflowitem_edit',
-                array('id' => $workflowItem->getId())
-            )
-        );
-        */
     }
 
     /**
+     * Returns:
+     * - HTTP_OK (200) response: true
+     * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
+     * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
+     * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
+     *
      * @Get("/transit/{workflowItemId}/{transitionName}", requirements={"workflowItemId"="\d+"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Perform transition for workflow item", resource=true)
      * @AclAncestor("oro_workflow")
+     *
+     * @param WorkflowItem $workflowItem
+     * @param string $transitionName
+     * @return Response
      */
     public function transitAction(WorkflowItem $workflowItem, $transitionName)
     {
+        try {
+            $this->get('oro_workflow.manager')->transit($workflowItem, $transitionName);
+        } catch (WorkflowNotFoundException $e) {
+            return $this->handleNotFoundException($e->getMessage());
+        } catch (UnknownTransitionException $e) {
+            return $this->handleNotFoundException($e->getMessage());
+        } catch (ForbiddenTransitionException $e) {
+            return $this->handleForbiddenException($e->getMessage());
+        } catch (\Exception $e) {
+            return $this->handleDefaultException($e);
+        }
+
         return $this->handleView(
             $this->view(true, Codes::HTTP_OK)
         );
+    }
 
-        /*
-        try {
-            $this->get('oro_workflow.manager')->transit($workflowItem, $transitionName);
+    /**
+     * @param string $message
+     * @return array
+     */
+    protected function formatErrorResponse($message)
+    {
+        return array('message' => $message);
+    }
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Transition successfully performed.'
-            );
-        } catch (WorkflowNotFoundException $e) {
-            throw new HttpException(
-                500,
-                sprintf('Workflow "%s" not found', $workflowItem->getWorkflowName())
-            );
-        } catch (UnknownTransitionException $e) {
-            throw new HttpException(500, $e->getMessage());
-        } catch (ForbiddenTransitionException $e) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                sprintf('Transition "%s" is not allowed', $transitionName)
-            );
-        }
-
-        return $this->redirect(
-            $this->generateUrl(
-                'acme_demoworkflow_workflowitem_edit',
-                array('id' => $workflowItem->getId())
+    /**
+     * @param string $message
+     * @return Response
+     */
+    protected function handleNotFoundException($message)
+    {
+        return $this->handleView(
+            $this->view(
+                $this->formatErrorResponse($message),
+                Codes::HTTP_NOT_FOUND
             )
         );
-        */
+    }
+
+    /**
+     * @param string $message
+     * @return Response
+     */
+    protected function handleForbiddenException($message)
+    {
+        return $this->handleView(
+            $this->view(
+                $this->formatErrorResponse($message),
+                Codes::HTTP_FORBIDDEN
+            )
+        );
+    }
+
+    /**
+     * @param \Exception $exception
+     * @return Response
+     */
+    protected function handleDefaultException(\Exception $exception)
+    {
+        return $this->handleView(
+            $this->view(
+                $this->formatErrorResponse($exception->getMessage()),
+                Codes::HTTP_INTERNAL_SERVER_ERROR
+            )
+        );
     }
 }

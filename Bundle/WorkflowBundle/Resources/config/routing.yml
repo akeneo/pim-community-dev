@@ -7,4 +7,4 @@ oro_workflow_bundle_api:
     resource: "@OroWorkflowBundle/Resources/config/routing_api.yml"
     prefix:   api/rest/{version}
     defaults:
-        version:  latest
+        version: latest

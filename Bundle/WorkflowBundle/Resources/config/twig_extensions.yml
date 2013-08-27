@@ -1,0 +1,8 @@
+parameters:
+    oro_workflow.twig.extension.class_name.class: Oro\Bundle\WorkflowBundle\Twig\ClassNameExtension
+
+services:
+    oro_workflow.twig.extension.class_name:
+        class: %oro_workflow.twig.extension.class_name.class%
+        tags:
+            - { name: twig.extension }

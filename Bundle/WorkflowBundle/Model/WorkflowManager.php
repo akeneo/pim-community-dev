@@ -9,9 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
@@ -117,9 +115,7 @@ class WorkflowManager
      * Perform workflow item transition.
      *
      * @param WorkflowItem $workflowItem
-     * @param $transitionName
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException
+     * @param string $transitionName
      * @throws \Exception
      */
     public function transit(WorkflowItem $workflowItem, $transitionName)

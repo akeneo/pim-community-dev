@@ -24,7 +24,8 @@ class WorkflowBindEntity
     /**
      * @var WorkflowItem
      *
-     * @ORM\ManyToOne(targetEntity="WorkflowItem", inversedBy="entities")
+     * @ORM\ManyToOne(targetEntity="WorkflowItem", inversedBy="bindEntities")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $workflowItem;
 

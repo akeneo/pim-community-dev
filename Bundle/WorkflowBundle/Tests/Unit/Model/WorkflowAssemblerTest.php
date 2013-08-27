@@ -299,10 +299,12 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         $fullConfigWithCustomStart = $minimalConfig;
         $fullConfigWithCustomStart[WorkflowConfiguration::NODE_TRANSITIONS] += $customStartTransition;
         $fullConfigWithCustomStart[WorkflowConfiguration::NODE_TRANSITION_DEFINITIONS] += $customStartDefinition;
-        $getDefaultTransition = function ($stepName) {
+
+        $label = $this->workflowParameters['label'];
+        $getDefaultTransition = function ($stepName) use ($label) {
             return array(
                 Workflow::DEFAULT_START_TRANSITION_NAME => array(
-                    'label' => $this->workflowParameters['label'],
+                    'label' => $label,
                     'step_to' => $stepName,
                     'is_start' => true,
                     'transition_definition' => '__start___definition'

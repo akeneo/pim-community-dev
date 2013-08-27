@@ -35,19 +35,19 @@ class Workflow
     protected $enabled;
 
     /**
-     * @var Collection
+     * @var StepManager
      */
-    protected $steps;
+    protected $stepManager;
 
     /**
-     * @var Collection
+     * @var AttributeManager
      */
-    protected $attributes;
+    protected $attributeManager;
 
     /**
-     * @var Collection
+     * @var TransitionManager
      */
-    protected $transitions;
+    protected $transitionManager;
 
     /**
      * @var string
@@ -56,9 +56,10 @@ class Workflow
 
     public function __construct()
     {
-        $this->transitions = new ArrayCollection();
-        $this->steps = new ArrayCollection();
-        $this->attributes = new ArrayCollection();
+        $this->transitionManager = new TransitionManager();
+        $this->stepManager       = new StepManager();
+        $this->attributeManager  = new AttributeManager();
+
         $this->enabled = true;
     }
 
@@ -129,291 +130,6 @@ class Workflow
     }
 
     /**
-     * Get step by name
-     *
-     * @param string $stepName
-     * @return Step
-     * @throws UnknownStepException If step is not found
-     */
-    public function getStep($stepName)
-    {
-        $result = $this->getSteps()->get($stepName);
-        if (!$result) {
-            throw new UnknownStepException($stepName);
-        }
-        return $result;
-    }
-
-    /**
-     * Set steps.
-     *
-     * @param Step[]|Collection $steps
-     * @return Workflow
-     */
-    public function setSteps($steps)
-    {
-        if ($steps instanceof Collection) {
-            $this->steps = $steps;
-        } else {
-            $data = array();
-            foreach ($steps as $step) {
-                $data[$step->getName()] = $step;
-            }
-            unset($steps);
-            $this->steps = new ArrayCollection($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get steps.
-     *
-     * @return Collection
-     */
-    public function getSteps()
-    {
-        return $this->steps;
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param Attribute[]|Collection $attributes
-     * @return Workflow
-     */
-    public function setAttributes($attributes)
-    {
-        if ($attributes instanceof Collection) {
-            $this->attributes = $attributes;
-        } else {
-            $data = array();
-            foreach ($attributes as $attribute) {
-                $data[$attribute->getName()] = $attribute;
-            }
-            unset($attributes);
-            $this->attributes = new ArrayCollection($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get step attributes.
-     *
-     * @return Collection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Get attribute by name
-     *
-     * @param string $name
-     * @return Attribute|null
-     */
-    public function getAttribute($name)
-    {
-        return $this->attributes->get($name);
-    }
-
-    /**
-     * Get attributes with option "managed_entity"
-     *
-     * @return Collection
-     */
-    public function getManagedEntityAttributes()
-    {
-        return $this->getAttributes()->filter(
-            function (Attribute $attribute) {
-                return $attribute->getType() == 'entity' && $attribute->getOption('managed_entity');
-            }
-        );
-    }
-
-    /**
-     * Get list of attributes that require binding
-     *
-     * @return Collection
-     */
-    public function getBindEntityAttributes()
-    {
-        return $this->getAttributes()->filter(
-            function (Attribute $attribute) {
-                return $attribute->getType('entity') && $attribute->getOption('bind');
-            }
-        );
-    }
-
-    /**
-     * Get list of attributes names that require binding
-     *
-     * @return array
-     */
-    public function getBindEntityAttributeNames()
-    {
-        $result = array();
-
-        /** @var Attribute $attribute  */
-        foreach ($this->getBindEntityAttributes() as $attribute) {
-            $result[] = $attribute->getName();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set transitions.
-     *
-     * @param Transition[]|Collection $transitions
-     * @return Workflow
-     */
-    public function setTransitions($transitions)
-    {
-        if ($transitions instanceof Collection) {
-            $this->transitions = $transitions;
-        } else {
-            $data = array();
-            foreach ($transitions as $transition) {
-                $data[$transition->getName()] = $transition;
-            }
-            unset($transitions);
-            $this->transitions = new ArrayCollection($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get transitions.
-     *
-     * @return Collection
-     */
-    public function getTransitions()
-    {
-        return $this->transitions;
-    }
-
-    /**
-     * Check if transition allowed for workflow item.
-     *
-     * @param WorkflowItem $workflowItem
-     * @param string|Transition $transition
-     * @return bool
-     */
-    public function isTransitionAllowed($workflowItem, $transition)
-    {
-        $this->assertTransitionArgument($transition);
-        if (is_string($transition)) {
-            if (!$this->transitions->containsKey($transition)) {
-                return false;
-            }
-            $transition = $this->getTransitions()->get($transition);
-        }
-
-        return $transition->isAllowed($workflowItem);
-    }
-
-    /**
-     * Start workflow.
-     *
-     * @param array $data
-     * @param string $startTransitionName
-     * @return WorkflowItem
-     */
-    public function start(array $data = array(), $startTransitionName = null)
-    {
-        if (null === $startTransitionName) {
-            $startTransitionName = self::DEFAULT_START_TRANSITION_NAME;
-        }
-
-        $workflowItem = $this->createWorkflowItem($data);
-        $this->transit($workflowItem, $startTransitionName);
-
-        return $workflowItem;
-    }
-
-    /**
-     * Transit workflow item.
-     *
-     * @param WorkflowItem $workflowItem
-     * @param string|Transition $transition
-     * @throws ForbiddenTransitionException
-     * @throws UnknownStepException
-     * @throws UnknownTransitionException
-     */
-    public function transit(WorkflowItem $workflowItem, $transition)
-    {
-        $this->assertTransitionArgument($transition);
-        if (is_string($transition)) {
-            if (!$this->transitions->containsKey($transition)) {
-                throw new UnknownTransitionException(sprintf('Unknown transition "%s".', $transition));
-            }
-            $transition = $this->getTransitions()->get($transition);
-        }
-
-        if ($this->isAllowedTransition($transition, $workflowItem)) {
-            $transition->transit($workflowItem);
-        } else {
-            throw new ForbiddenTransitionException(
-                sprintf(
-                    'Transition "%s" is not allowed.',
-                    $transition->getName()
-                )
-            );
-        }
-    }
-
-    /**
-     * Check that transition is allowed to perform for given workflow item.
-     *
-     * @param Transition $transition
-     * @param WorkflowItem $workflowItem
-     * @return bool
-     * @throws UnknownStepException
-     */
-    protected function isAllowedTransition(Transition $transition, WorkflowItem $workflowItem)
-    {
-        /** @var Step $currentStep */
-        $currentStep = $this->getSteps()->get($workflowItem->getCurrentStepName());
-        if (!$currentStep && !$transition->isStart()) {
-            throw new UnknownStepException($workflowItem->getCurrentStepName());
-        }
-        return (!$currentStep && $transition->isStart()) || $currentStep->isAllowedTransition($transition->getName());
-    }
-
-    /**
-     * Create workflow item.
-     *
-     * @param array $data
-     * @return WorkflowItem
-     * @throws \LogicException
-     */
-    protected function createWorkflowItem(array $data = array())
-    {
-        $workflowItem = new WorkflowItem();
-        $workflowItem->setWorkflowName($this->getName());
-        $workflowItem->getData()->add($data);
-
-        return $workflowItem;
-    }
-
-    /**
-     * Check transition argument type.
-     *
-     * @param string|Transition $transition
-     * @throws \InvalidArgumentException
-     */
-    protected function assertTransitionArgument($transition)
-    {
-        if (!is_string($transition) && !($transition instanceof Transition)) {
-            throw new \InvalidArgumentException('Expected transition argument type is string or Transition');
-        }
-    }
-
-    /**
      * Set label.
      *
      * @param string $label
@@ -436,6 +152,225 @@ class Workflow
     }
 
     /**
+     * Get step by name
+     *
+     * @param string $stepName
+     * @return Step
+     */
+    public function getStep($stepName)
+    {
+        return $this->stepManager->getStep($stepName);
+    }
+
+    /**
+     * Set steps.
+     *
+     * @param Step[]|Collection $steps
+     * @return Workflow
+     */
+    public function setSteps($steps)
+    {
+        $this->stepManager->setSteps($steps);
+        return $this;
+    }
+
+    /**
+     * Get steps.
+     *
+     * @return Collection
+     */
+    public function getSteps()
+    {
+        return $this->stepManager->getSteps();
+    }
+
+    /**
+     * Set attributes.
+     *
+     * @param Attribute[]|Collection $attributes
+     * @return Workflow
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributeManager->setAttributes($attributes);
+        return $this;
+    }
+
+    /**
+     * Get step attributes.
+     *
+     * @return Collection
+     */
+    public function getAttributes()
+    {
+        return $this->attributeManager->getAttributes();
+    }
+
+    /**
+     * Get attribute by name
+     *
+     * @param string $attributeName
+     * @return Attribute|null
+     */
+    public function getAttribute($attributeName)
+    {
+        return $this->attributeManager->getAttribute($attributeName);
+    }
+
+    /**
+     * Get attributes with option "managed_entity"
+     *
+     * @return Collection
+     */
+    public function getManagedEntityAttributes()
+    {
+        return $this->attributeManager->getManagedEntityAttributes();
+    }
+
+    /**
+     * Get list of attributes that require binding
+     *
+     * @return Collection
+     */
+    public function getBindEntityAttributes()
+    {
+        return $this->attributeManager->getBindEntityAttributes();
+    }
+
+    /**
+     * Get list of attributes names that require binding
+     *
+     * @return array
+     */
+    public function getBindEntityAttributeNames()
+    {
+        return $this->attributeManager->getBindEntityAttributeNames();
+    }
+
+    /**
+     * Set transitions.
+     *
+     * @param Transition[]|Collection $transitions
+     * @return Workflow
+     */
+    public function setTransitions($transitions)
+    {
+        $this->transitionManager->setTransitions($transitions);
+        return $this;
+    }
+
+    /**
+     * Get transitions.
+     *
+     * @return Collection
+     */
+    public function getTransitions()
+    {
+        return $this->transitionManager->getTransitions();
+    }
+
+    /**
+     * @param string $transitionName
+     * @return Transition|null
+     */
+    public function getTransition($transitionName)
+    {
+        return $this->transitionManager->getTransition($transitionName);
+    }
+
+    /**
+     * Start workflow.
+     *
+     * @param array $data
+     * @param string $startTransitionName
+     * @return WorkflowItem
+     */
+    public function start(array $data = array(), $startTransitionName = null)
+    {
+        if (null === $startTransitionName) {
+            $startTransitionName = self::DEFAULT_START_TRANSITION_NAME;
+        }
+
+        $workflowItem = $this->createWorkflowItem($data);
+        $this->transit($workflowItem, $startTransitionName);
+
+        return $workflowItem;
+    }
+
+    /**
+     * Check if transition allowed for workflow item
+     *
+     * @param WorkflowItem $workflowItem
+     * @param string|Transition $transition
+     * @return bool
+     */
+    public function isTransitionAllowed(WorkflowItem $workflowItem, $transition)
+    {
+        // get current transition
+        $transition = $this->transitionManager->extractTransition($transition);
+        if (!$transition) {
+            return false;
+        }
+
+        // get current step
+        $currentStep = null;
+        $currentStepName = $workflowItem->getCurrentStepName();
+        if ($currentStepName) {
+            $currentStep = $this->getStep($currentStepName);
+        }
+
+        // if there is no current step - consider transition as a start transition
+        if (!$currentStep) {
+            return $transition->isStart();
+        }
+
+        // if transition is not allowed for current step
+        if (!$currentStep->isAllowedTransition($transition->getName())) {
+            return false;
+        }
+
+        return $transition->isAllowed($workflowItem);
+    }
+
+    /**
+     * Transit workflow item.
+     *
+     * @param WorkflowItem $workflowItem
+     * @param string|Transition $transition
+     * @throws ForbiddenTransitionException
+     * @throws UnknownStepException
+     * @throws UnknownTransitionException
+     */
+    public function transit(WorkflowItem $workflowItem, $transition)
+    {
+        $transition = $this->transitionManager->extractTransition($transition);
+
+        if ($this->isTransitionAllowed($workflowItem, $transition)) {
+            $transition->transit($workflowItem);
+        } else {
+            throw new ForbiddenTransitionException(
+                sprintf('Transition "%s" is not allowed.', $transition->getName())
+            );
+        }
+    }
+
+    /**
+     * Create workflow item.
+     *
+     * @param array $data
+     * @return WorkflowItem
+     * @throws \LogicException
+     */
+    protected function createWorkflowItem(array $data = array())
+    {
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setWorkflowName($this->getName());
+        $workflowItem->getData()->add($data);
+
+        return $workflowItem;
+    }
+
+    /**
      * Get allowed start transitions.
      *
      * @param array $data
@@ -444,10 +379,7 @@ class Workflow
     public function getAllowedStartTransitions(array $data = array())
     {
         $workflowItem = $this->createWorkflowItem($data);
-        return $this->getTransitions()->filter(
-            function (Transition $transition) use ($workflowItem) {
-                return $transition->isStart() && $transition->isAllowed($workflowItem);
-            }
-        );
+
+        return $this->transitionManager->getAllowedStartTransitions($workflowItem);
     }
 }
