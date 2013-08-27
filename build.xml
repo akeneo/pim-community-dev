@@ -114,7 +114,10 @@
     
     <target name="phpdoc" description="Check php documentation">
         <exec executable="phpdoc">
-            <arg line="-d ${basedir}/src -t ${basedir}/build/api" />
+            <arg line="--directory ${basedir}/src" />
+            <arg line="--target ${basedir}/build/api" />
+            <arg line="--quiet off" />
+            <arg line="--output HTML:Smarty:PHP" />
         </exec>
     </target>
 
