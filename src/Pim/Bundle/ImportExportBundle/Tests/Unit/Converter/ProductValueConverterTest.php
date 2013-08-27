@@ -13,22 +13,25 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
  */
 class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConvertBasicType()
+    protected function setUp()
     {
         $em = $this->getEntityManagerMock();
-        $repository = $this->getRepositoryMock();
+        $this->repository = $this->getRepositoryMock();
         $em->expects($this->any())
             ->method('getRepository')
             ->with('PimProductBundle:ProductAttribute')
-            ->will($this->returnValue($repository));
-
-        $attribute = $this->getAttributeMock('varchar');
-        $repository->expects($this->any())
-            ->method('findOneBy')
-            ->with(array('code' => 'sku'))
-            ->will($this->returnValue($attribute));
+            ->will($this->returnValue($this->repository));
 
         $this->converter = new ProductValueConverter($em);
+    }
+
+    public function testConvertBasicType()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'sku'))
+            ->will($this->returnValue($this->getAttributeMock('varchar')));
 
         $this->assertEquals(
             array('sku' => array('varchar' => 'sku-001')),
@@ -36,7 +39,21 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function getAttributeMock($backendType, $scopable = false)
+    public function testConvertLocalisedValue()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'name'))
+            ->will($this->returnValue($this->getAttributeMock('varchar', true)));
+
+        $this->assertEquals(
+            array('name_en_US' => array('varchar' => 'car')),
+            $this->converter->convert(array('name-en_US' => 'car'))
+        );
+    }
+
+    protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
@@ -47,6 +64,10 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getScopable')
             ->will($this->returnValue($scopable));
+
+        $attribute->expects($this->any())
+            ->method('getTranslatable')
+            ->will($this->returnValue($translatable));
 
         return $attribute;
     }

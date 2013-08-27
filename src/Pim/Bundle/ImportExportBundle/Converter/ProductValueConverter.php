@@ -43,6 +43,7 @@ class ProductValueConverter
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
+            $key = $this->getAttributeKey($key);
             $result[$key][$attribute->getBackendType()] = $value;
         }
 
@@ -51,8 +52,43 @@ class ProductValueConverter
 
     private function getAttribute($code)
     {
+        if ($this->isLocalised($code)) {
+            $code = $this->getAttributeCode($code);
+        }
+
         return $this->entityManager
             ->getRepository('PimProductBundle:ProductAttribute')
             ->findOneBy(array('code' => $code));
+    }
+
+    private function getAttributeKey($key)
+    {
+        return str_replace('-', '_', $key);
+    }
+
+    /**
+     * Wether or not the code is localised
+     *
+     * @param string $code
+     *
+     * @return boolean
+     */
+    private function isLocalised($code)
+    {
+        return false !== strpos($code, '-');
+    }
+
+    /**
+     * Return the code part of a localised attribute code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    private function getAttributeCode($code)
+    {
+        $parts = explode('-', $code);
+
+        return $parts[0];
     }
 }
