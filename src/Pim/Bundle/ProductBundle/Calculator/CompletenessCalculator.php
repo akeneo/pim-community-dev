@@ -187,7 +187,7 @@ class CompletenessCalculator
         $completenesses = array();
 
         if ($product->getFamily() === null) {
-            return $completeness;
+            return $completenesses;
         }
         foreach ($this->getChannels() as $channel) {
             $newCompletenesses = $this->calculateForAProductByChannel($product, $channel);
