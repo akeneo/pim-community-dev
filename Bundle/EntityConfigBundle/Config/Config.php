@@ -89,7 +89,7 @@ class Config implements ConfigInterface
      * @param callable $filter
      * @return array
      */
-    public function getValues(\Closure $filter = null)
+    public function all(\Closure $filter = null)
     {
         return $filter ? array_filter($this->values, $filter) : $this->values;
     }

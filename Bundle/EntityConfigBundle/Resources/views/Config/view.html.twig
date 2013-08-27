@@ -68,14 +68,6 @@
         UI.attibuteRow('Module', module_name),
     ]%}
 
-    {#{% for key,property in entity_config.getValues %}#}
-        {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
-    {#{% endfor %}#}
-    {#{% set general_fields = general_fields|merge([UI.attibuteRow('Type', entity_extend.get('type'))])%}#}
-    {#{% for key,property in entity_extend.getValues %}#}
-        {#{% set general_fields = general_fields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}#}
-    {#{% endfor %}#}
-
     {% set data = {
         'dataBlocks': [
             {

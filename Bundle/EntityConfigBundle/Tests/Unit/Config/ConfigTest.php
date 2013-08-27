@@ -35,8 +35,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $values = array('firstKey' => 'firstValue', 'secondKey' => 'secondValue', 'fourthKey' => new \stdClass());
         $this->config->setValues($values);
 
-        $this->assertEquals($values, $this->config->getValues());
-        $this->assertEquals(array('firstKey' => 'firstValue'), $this->config->getValues(function ($value) {
+        $this->assertEquals($values, $this->config->all());
+        $this->assertEquals(array('firstKey' => 'firstValue'), $this->config->all(function ($value) {
             return $value == 'firstValue';
         }));
 

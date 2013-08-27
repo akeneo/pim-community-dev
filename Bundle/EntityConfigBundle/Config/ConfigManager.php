@@ -369,7 +369,7 @@ class ConfigManager
             $serializableValues = $this->getProvider($config->getId()->getScope())
                 ->getPropertyConfig()
                 ->getSerializableValues($config->getId());
-            $model->fromArray($config->getId()->getScope(), $config->getValues(), $serializableValues);
+            $model->fromArray($config->getId()->getScope(), $config->all(), $serializableValues);
 
             if ($this->cache) {
                 $this->cache->removeConfigFromCache($config->getId());
@@ -398,17 +398,17 @@ class ConfigManager
         $originConfigValue = array();
         if ($this->originalConfigs->containsKey($config->getId()->toString())) {
             $originConfig      = $this->originalConfigs->get($config->getId()->toString());
-            $originConfigValue = $originConfig->getValues();
+            $originConfigValue = $originConfig->all();
         }
 
-        foreach ($config->getValues() as $key => $value) {
+        foreach ($config->all() as $key => $value) {
             if (!isset($originConfigValue[$key])) {
                 $originConfigValue[$key] = null;
             }
         }
 
         $diffNew = array_udiff_assoc(
-            $config->getValues(),
+            $config->all(),
             $originConfigValue,
             function ($a, $b) {
                 return ($a == $b) ? 0 : 1;
@@ -417,7 +417,7 @@ class ConfigManager
 
         $diffOld = array_udiff_assoc(
             $originConfigValue,
-            $config->getValues(),
+            $config->all(),
             function ($a, $b) {
                 return ($a == $b) ? 0 : 1;
             }
@@ -538,7 +538,7 @@ class ConfigManager
     {
         foreach ($this->persistConfigs as $persistConfig) {
             if ($config->getId()->toString() == $persistConfig->getId()->toString()) {
-                $config = array_merge($persistConfig->getValues(), $config->getValues());
+                $config = array_merge($persistConfig->all(), $config->all());
 
                 break;
             }

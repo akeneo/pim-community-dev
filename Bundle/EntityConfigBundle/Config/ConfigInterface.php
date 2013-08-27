@@ -40,7 +40,7 @@ interface ConfigInterface extends \Serializable
      * @param callable $filter
      * @return array
      */
-    public function getValues(\Closure $filter = null);
+    public function all(\Closure $filter = null);
 
     /**
      * @param $values
