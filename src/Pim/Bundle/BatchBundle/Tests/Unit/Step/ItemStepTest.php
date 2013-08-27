@@ -98,8 +98,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     private function getReaderMock(array $configuration, array $fields = array())
     {
-        $reader = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Reader\ProductReader')
+        $reader = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Reader\ProductReader')
             ->disableOriginalConstructor()
             ->getMock();
 
