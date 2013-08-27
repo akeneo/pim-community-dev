@@ -43,7 +43,10 @@ use DateTime;
  * @Oro\Loggable
  * @Config(
  *      routeName="oro_user_index",
- *      defaultValues={"entity"={"icon"="icon-user","label"="User", "plural_label"="Users"}}
+ *      defaultValues={
+ *          "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
+ *          "extend"={"is_extend"=true}
+ *      }
  * )
  */
 class User extends AbstractEntityFlexible implements

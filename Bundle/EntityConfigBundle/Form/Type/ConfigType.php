@@ -65,7 +65,7 @@ class ConfigType extends AbstractType
                         'block_config' => (array) $provider->getPropertyConfig()->getFormBlockConfig($configType)
                     )
                 );
-                $data[$provider->getScope()] = $config->getValues();
+                $data[$provider->getScope()] = $config->all();
             }
         }
 
