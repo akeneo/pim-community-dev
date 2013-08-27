@@ -20,7 +20,7 @@ function(_, Backgrid) {
          */
         fromRaw: function (rawData) {
             if (rawData == null) {
-            return '';
+                return '';
             }
             return Backgrid.CellFormatter.prototype.fromRaw.apply(this, arguments);
         }
