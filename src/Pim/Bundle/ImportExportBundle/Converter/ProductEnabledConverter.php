@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Convert a basic representation of a product enabled into a complex one bindable on a product form
  *

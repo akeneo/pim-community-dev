@@ -131,7 +131,6 @@ class ProductValueConverter
         return $this->convertValue('options', $options);
     }
 
-
     /**
      * Convert value
      *
