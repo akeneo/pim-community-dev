@@ -56,6 +56,10 @@ class ProductValueConverter
                         $value = $this->convertDateValue($value);
                         break;
 
+                    case 'option':
+                        $value = $this->convertOptionValue($value);
+                        break;
+
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
@@ -102,6 +106,22 @@ class ProductValueConverter
         return $this->convertValue('date', $date->format('m/d/Y'));
     }
 
+    /**
+     * Convert option value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    private function convertOptionValue($value)
+    {
+        if ($option = $this->getOption($value)) {
+            return $this->convertValue('option', $option->getId());
+        }
+
+        return array();
+    }
+
 
     /**
      * Convert value
@@ -115,6 +135,13 @@ class ProductValueConverter
         return array($type => $value);
     }
 
+    /**
+     * Define default values within the context
+     *
+     * @param array $constext
+     *
+     * @return array
+     */
     private function processContext(array $context)
     {
         return array_merge(
@@ -133,6 +160,13 @@ class ProductValueConverter
 
         return $this->entityManager
             ->getRepository('PimProductBundle:ProductAttribute')
+            ->findOneBy(array('code' => $code));
+    }
+
+    public function getOption($code)
+    {
+        return $this->entityManager
+            ->getRepository('PimProductBundle:AttributeOption')
             ->findOneBy(array('code' => $code));
     }
 

@@ -16,18 +16,25 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $em = $this->getEntityManagerMock();
-        $this->repository = $this->getRepositoryMock();
+        $this->attributeRepository = $this->getRepositoryMock();
+        $this->optionRepository = $this->getRepositoryMock();
         $em->expects($this->any())
             ->method('getRepository')
-            ->with('PimProductBundle:ProductAttribute')
-            ->will($this->returnValue($this->repository));
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('PimProductBundle:ProductAttribute', $this->attributeRepository),
+                        array('PimProductBundle:AttributeOption', $this->optionRepository),
+                    )
+                )
+            );
 
         $this->converter = new ProductValueConverter($em);
     }
 
     public function testConvertBasicType()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'sku'))
@@ -41,7 +48,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testIgnoreUnknownAttribute()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'foo'))
@@ -55,7 +62,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertLocalizedValue()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'name'))
@@ -69,7 +76,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertUnlocalizedValue()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'name'))
@@ -83,7 +90,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertScopableValue()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'description'))
@@ -97,7 +104,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertPricesValue()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'public_prices'))
@@ -124,7 +131,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertDateValue()
     {
-        $this->repository
+        $this->attributeRepository
             ->expects($this->any())
             ->method('findOneBy')
             ->with(array('code' => 'release_date'))
@@ -138,6 +145,30 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             $this->converter->convert(array('release_date' => $today->format('r')))
+        );
+    }
+
+    public function testConvertOptionValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'size'))
+            ->will($this->returnValue($this->getAttributeMock('option')));
+
+        $this->optionRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'XS'))
+            ->will($this->returnValue($this->getAttributeOptionMock(42)));
+
+        $this->assertEquals(
+            array(
+                'size' => array(
+                    'option' => 42
+                )
+            ),
+            $this->converter->convert(array('size' => 'XS'))
         );
     }
 
@@ -174,5 +205,19 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getAttributeOptionMock($id)
+    {
+        $option = $this
+            ->getMockBuilder('Pim\Bundle\ProductBundle\Entity\AttributeOption')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $option->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id));
+
+        return $option;
     }
 }
