@@ -41,7 +41,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getAttributeMock('varchar')));
 
         $this->assertEquals(
-            array('sku' => array('varchar' => 'sku-001')),
+            array('values' => array('sku' => array('varchar' => 'sku-001'))),
             $this->converter->convert(array('sku' => 'sku-001'))
         );
     }
@@ -69,7 +69,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getAttributeMock('varchar', true)));
 
         $this->assertEquals(
-            array('name_en_US' => array('varchar' => 'car')),
+            array('values' => array('name_en_US' => array('varchar' => 'car'))),
             $this->converter->convert(array('name-en_US' => 'car'))
         );
     }
@@ -83,7 +83,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getAttributeMock('varchar', false)));
 
         $this->assertEquals(
-            array('name' => array('varchar' => 'car')),
+            array('values' => array('name' => array('varchar' => 'car'))),
             $this->converter->convert(array('name-en_US' => 'car'))
         );
     }
@@ -97,7 +97,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getAttributeMock('varchar', false, true)));
 
         $this->assertEquals(
-            array('description_ecommerce' => array('varchar' => 'an awesome vehicle')),
+            array('values' => array('description_ecommerce' => array('varchar' => 'an awesome vehicle'))),
             $this->converter->convert(array('description' => 'an awesome vehicle'), array('scope' => 'ecommerce'))
         );
     }
@@ -112,17 +112,19 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'public_prices' => array(
-                    'prices' => array(
-                        array(
-                            'data'     => '99.90',
-                            'currency' => 'EUR',
+                'values' => array(
+                    'public_prices' => array(
+                        'prices' => array(
+                            array(
+                                'data'     => '99.90',
+                                'currency' => 'EUR',
+                            ),
+                            array(
+                                'data'     => '59.90',
+                                'currency' => 'USD',
+                            )
                         ),
-                        array(
-                            'data'     => '59.90',
-                            'currency' => 'USD',
-                        )
-                    ),
+                    )
                 )
             ),
             $this->converter->convert(array('public_prices' => '99.90 EUR,59.90 USD'))
@@ -140,8 +142,10 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $today = new \DateTime();
         $this->assertEquals(
             array(
-                'release_date' => array(
-                    'date' => $today->format('m/d/Y')
+                'values' => array(
+                    'release_date' => array(
+                        'date' => $today->format('m/d/Y')
+                    )
                 )
             ),
             $this->converter->convert(array('release_date' => $today->format('r')))
@@ -164,8 +168,10 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'size' => array(
-                    'option' => 42
+                'values' => array(
+                    'size' => array(
+                        'option' => 42
+                    )
                 )
             ),
             $this->converter->convert(array('size' => 'XS'))
@@ -195,8 +201,10 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'colors' => array(
-                    'options' => array(4, 8, 15)
+                'values' => array(
+                    'colors' => array(
+                        'options' => array(4, 8, 15)
+                    )
                 )
             ),
             $this->converter->convert(array('colors' => 'red,green,blue'))

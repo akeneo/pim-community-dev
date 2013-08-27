@@ -20,25 +20,7 @@ class ProductValueConverter
     {
         $this->entityManager = $entityManager;
     }
-    /**
-     * array(
-     *     'sku'        => 'sku-001',
-     *     'name-en_US' => 'car',
-     *     'name-fr_FR' => 'voiture,
-     * )
 
-     * array(
-     *     sku' => array(
-     *         'varchar' => 'sku-001',
-     *     ),
-     *     'name_en_US' => array(
-     *         'varchar' => 'car'
-     *     ),
-     *     'name_fr_FR' => array(
-     *         'varchar' => 'voiture'
-     *     ),
-     * )
-     */
     public function convert($data, array $context = array())
     {
         $context = $this->processContext($context);
@@ -72,7 +54,11 @@ class ProductValueConverter
             }
         }
 
-        return $result;
+        if (0 === count($result)) {
+            return array();
+        }
+
+        return array('values' => $result);
     }
 
     /**
