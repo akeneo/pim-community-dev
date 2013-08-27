@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
  * Convert a basic representation of a value into a complex one bindable on a product form
@@ -38,18 +39,30 @@ class ProductValueConverter
      *     ),
      * )
      */
-    public function convert($data)
+    public function convert($data, array $context = array())
     {
+        $context = $this->processContext($context);
+
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
             if ($attribute) {
-                $key = $this->getAttributeKey($key);
+                $key = $this->getAttributeKey($attribute, $key, $context);
                 $result[$key][$attribute->getBackendType()] = $value;
             }
         }
 
         return $result;
+    }
+
+    private function processContext(array $context)
+    {
+        return array_merge(
+            array(
+                'scope' => null
+            ),
+            $context
+        );
     }
 
     private function getAttribute($code)
@@ -63,9 +76,14 @@ class ProductValueConverter
             ->findOneBy(array('code' => $code));
     }
 
-    private function getAttributeKey($key)
+    private function getAttributeKey(ProductAttribute $attribute, $key, array $context)
     {
-        return str_replace('-', '_', $key);
+        $suffix = '';
+        if ($attribute->getScopable()) {
+            $suffix = sprintf('_%s', $context['scope']);
+        }
+
+        return str_replace('-', '_', $key).$suffix;
     }
 
     /**

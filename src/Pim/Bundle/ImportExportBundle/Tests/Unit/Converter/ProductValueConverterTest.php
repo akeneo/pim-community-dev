@@ -53,7 +53,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testConvertLocalisedValue()
+    public function testConvertLocalizedValue()
     {
         $this->repository
             ->expects($this->any())
@@ -64,6 +64,20 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array('name_en_US' => array('varchar' => 'car')),
             $this->converter->convert(array('name-en_US' => 'car'))
+        );
+    }
+
+    public function testConvertScopableValue()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'description'))
+            ->will($this->returnValue($this->getAttributeMock('varchar', false, true)));
+
+        $this->assertEquals(
+            array('description_ecommerce' => array('varchar' => 'an awesome vehicle')),
+            $this->converter->convert(array('description' => 'an awesome vehicle'), array('scope' => 'ecommerce'))
         );
     }
 
