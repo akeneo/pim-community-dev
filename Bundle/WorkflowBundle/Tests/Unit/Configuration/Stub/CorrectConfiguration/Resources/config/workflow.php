@@ -39,6 +39,7 @@ return array(
             'first_transition' => array(
                 'label' => 'First Transition',
                 'step_to' => 'first_step',
+                'is_start' => true,
                 'transition_definition' => 'first_transition_definition',
                 'options' => array(
                     'first_key' => 'first_value'
@@ -80,6 +81,7 @@ return array(
             'second_transition' => array(
                 'label' => 'Second Transition',
                 'step_to' => 'second_step',
+                'is_start' => false,
                 'transition_definition' => 'second_transition_definition',
                 'options' => array(
                     'second_key' => 'second_value'
