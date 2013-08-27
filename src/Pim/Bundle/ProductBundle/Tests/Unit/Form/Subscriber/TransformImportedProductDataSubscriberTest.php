@@ -17,21 +17,14 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
 {
     protected function setUp()
     {
-        $this->familyRepository = $this->getRepositoryMock();
-
-        $em = $this->getEntityManagerMock();
-        $em
-            ->expects($this->any())
-            ->method('getRepository')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array('PimProductBundle:Family', $this->familyRepository),
-                    )
-                )
-            );
-
-        $this->subscriber = new TransformImportedProductDataSubscriber($em);
+        $this->productEnabledConverter = $this->getConverterMock('ProductEnabledConverter');
+        $this->productValueConverter = $this->getConverterMock('ProductValueConverter');
+        $this->productFamilyConverter = $this->getConverterMock('ProductFamilyConverter');
+        $this->subscriber = new TransformImportedProductDataSubscriber(
+            $this->productEnabledConverter,
+            $this->productValueConverter,
+            $this->productFamilyConverter
+        );
         $this->form = $this->getFormMock();
     }
 
@@ -43,80 +36,39 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
-    public function testEnableImportedProduct()
+    public function testTransformImportedData()
     {
         $event = new FormEvent($this->form, array());
 
-        $this->subscriber->setProductEnabled(true);
+        $this->productEnabledConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue('1'));
+
+        $this->productValueConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue(array('sku' => 'sku-001')));
+
+        $this->productFamilyConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue(4));
 
         $this->subscriber->preSubmit($event);
 
         $data = $event->getData();
+
         $this->assertArrayHasKey('enabled', $data);
-        $this->assertTrue($data['enabled']);
-    }
-
-    public function testDisabledImportedProduct()
-    {
-        $event = new FormEvent($this->form, array());
-
-        $this->subscriber->setProductEnabled(false);
-
-        $this->subscriber->preSubmit($event);
-
-        $data = $event->getData();
-        $this->assertArrayHasKey('enabled', $data);
-        $this->assertFalse($data['enabled']);
-    }
-
-    public function testIgnoreUnsetProductProperties()
-    {
-        $event = new FormEvent($this->form, array());
-
-        $this->subscriber->preSubmit($event);
-
-        $data = $event->getData();
-        $this->assertArrayNotHasKey('enabled', $data);
-        $this->assertArrayNotHasKey('family', $data);
-    }
-
-    public function testSetImportedProductFamily()
-    {
-        $event = new FormEvent($this->form, array('family' => 'furniture'));
-
-        $this->subscriber->setFamilyKey('family');
-
-        $this->familyRepository
-            ->expects($this->once())
-            ->method('findOneBy')
-            ->with(array('code' => 'furniture'))
-            ->will($this->returnValue($this->getFamilyMock(1987)));
-
-        $this->subscriber->preSubmit($event);
-
-        $data = $event->getData();
+        $this->assertArrayHasKey('values', $data);
         $this->assertArrayHasKey('family', $data);
-        $this->assertEquals(1987, $data['family']);
+
+        $this->assertEquals('1', $data['enabled']);
+        $this->assertEquals(array('sku' => 'sku-001'), $data['values']);
+        $this->assertEquals(4, $data['family']);
     }
 
-    public function testIgnoreUnknownImportedProductFamily()
-    {
-        $event = new FormEvent($this->form, array('family' => 'furniture'));
-
-        $this->subscriber->setFamilyKey('family');
-
-        $this->familyRepository
-            ->expects($this->once())
-            ->method('findOneBy')
-            ->will($this->returnValue(null));
-
-        $this->subscriber->preSubmit($event);
-
-        $data = $event->getData();
-        $this->assertArrayNotHasKey('family', $data);
-    }
-
-    private function getFormMock()
+    protected function getFormMock()
     {
         return $this
             ->getMockBuilder('Symfony\Component\Form\Form')
@@ -124,30 +76,11 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->getMock();
     }
 
-    protected function getEntityManagerMock()
+    protected function getConverterMock($class)
     {
         return $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->getMockBuilder(sprintf('Pim\\Bundle\\ImportExportBundle\\Converter\\%s', $class))
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    protected function getRepositoryMock()
-    {
-        return $this
-            ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    protected function getFamilyMock($id)
-    {
-        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
-
-        $family->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue($id));
-
-        return $family;
     }
 }
