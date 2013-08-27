@@ -280,38 +280,62 @@ class Edit extends Form
     }
 
     /**
-     * @param string  $channelCode
-     * @param string  $localeCode
-     * @param string  $barType
-     * @param string  $info
-     * @param integer $ratio
+     * Check completeness state
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $state
      * @throws \InvalidArgumentException
-     * @return boolean
      */
-    public function checkCompleteness($channelCode, $localeCode, $barType, $info, $ratio)
+    public function checkCompletenessState($channelCode, $localeCode, $state)
     {
         $completenessCell = $this
             ->findCompletenessCell($channelCode, $localeCode)
             ->find('css', 'div.progress-cell');
 
         // check progress bar type
-        if (!$completenessCell->find('css', sprintf('div.bar-%s', $barType))) {
+        if (!$completenessCell->find('css', sprintf('div.bar-%s', $state))) {
             throw new \InvalidArgumentException(
-                sprintf('Progress bar is not %s for %s:%s', $barType, $channelCode, $localeCode)
+                sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
             );
         }
+    }
+
+    /**
+     * Check completeness message
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $info
+     * @throws \InvalidArgumentException
+     */
+    public function checkCompletenessMessage($channelCode, $localeCode, $info)
+    {
+        $completenessCell = $this
+            ->findCompletenessCell($channelCode, $localeCode)
+            ->find('css', 'div.progress-cell');
 
         // check message displayed bottom to the progress bar
-        if ($barType === 'disabled' || $info === 'Completed') {
-            $infoPassed = $completenessCell->getText() === $info;
-        } else {
-            $infoPassed = $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
-        }
+        $infoPassed = ($info === 'Completed')
+            ? ($completenessCell->getText() === $info)
+            : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
         if (!$infoPassed) {
             throw new \InvalidArgumentException(
                 sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
             );
         }
+    }
+
+    /**
+     * Check completeness ratio
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $ratio
+     * @throws \InvalidArgumentException
+     */
+    public function checkCompletenessRatio($channelCode, $localeCode, $ratio)
+    {
+        $completenessCell = $this
+            ->findCompletenessCell($channelCode, $localeCode)
+            ->find('css', 'div.progress-cell');
 
         // check progress bar width
         $title = $completenessCell
@@ -324,8 +348,6 @@ class Edit extends Form
                 sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
             );
         }
-
-        return true;
     }
 
     /**

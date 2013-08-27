@@ -1557,19 +1557,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I should see "([^"]*)" completeness with "([^"]*)" message and (\d+)% of ratio for channel "([^"]*)" and locale "([^"]*)"$/
+     * @Given /^I should see the completeness state "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
      */
-    public function iShouldSeeCompletenessWithMessageAndRatioForChannelAndLocale(
-        $state,
-        $message,
-        $ratio,
-        $channel,
-        $locale
-    ) {
+    public function iShouldSeeCompletenessStateForChannelAndLocale($state, $channel, $locale)
+    {
         $channelCode = strtoupper($channel);
 
         try {
-            $this->getPage('Product edit')->checkCompleteness($channelCode, $locale, $state, $message, $ratio);
+            $this->getPage('Product edit')->checkCompletenessState($channelCode, $locale, $state);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @Given /^I should see the completeness ratio (\d+)% for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenessRatioForChannelAndLocale($ratio, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessRatio($channelCode, $locale, $ratio);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @Given /^I should see the completeness message "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenesssMessageForChannelAndLocale($message, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessMessage($channelCode, $locale, $message);
         } catch (\InvalidArgumentException $e) {
             throw $this->createExpectationException($e->getMessage());
         }
