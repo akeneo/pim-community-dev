@@ -207,7 +207,8 @@ services:
         class: %oro_email.email_renderer.class%
         arguments:
             - @oro_email.twig.string_loader
-            - [] # twig environment options
+            -  # twig environment options
+              strict_variables: true
             - @oro_entity_config.provider.email
             - @oro_email.cache
             - %oro_email.cache.available_in_template_key%
