@@ -47,7 +47,7 @@ class ProductValueConverter
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
             if ($attribute) {
-                $key = $this->getAttributeKey($attribute, $key, $context);
+                $key = $this->getProductValueKey($attribute, $key, $context);
                 $result[$key][$attribute->getBackendType()] = $value;
             }
         }
@@ -76,7 +76,16 @@ class ProductValueConverter
             ->findOneBy(array('code' => $code));
     }
 
-    private function getAttributeKey(ProductAttribute $attribute, $key, array $context)
+    /**
+     * Get the product value key as the one used by Product::getValues()
+     *
+     * @param ProductAttribute $attribute
+     * @param string           $key
+     * @param array            $context
+     *
+     * @return string
+     */
+    private function getProductValueKey(ProductAttribute $attribute, $key, array $context)
     {
         $suffix = '';
         if ($attribute->getScopable()) {
