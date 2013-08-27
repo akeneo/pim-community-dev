@@ -134,7 +134,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {

@@ -82,7 +82,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read()
     {

@@ -26,7 +26,7 @@ class ChannelValidator extends ChoiceValidator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
     {

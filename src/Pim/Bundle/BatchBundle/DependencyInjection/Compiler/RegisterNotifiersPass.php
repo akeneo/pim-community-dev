@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterNotifiersPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

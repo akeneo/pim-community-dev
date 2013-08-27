@@ -12,7 +12,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 class HomogeneousCsvSerializerProcessor extends CsvSerializerProcessor
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process($item)
     {

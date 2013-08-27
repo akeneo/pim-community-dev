@@ -72,7 +72,7 @@ use JMS\Serializer\Annotation\Type;
 class CsvConfiguration extends AbstractConfiguration
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFormTypeServiceId()
     {

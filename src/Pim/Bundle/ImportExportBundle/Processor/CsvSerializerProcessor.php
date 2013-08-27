@@ -103,7 +103,7 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {

@@ -18,7 +18,7 @@ class Channel extends Choice
     public $message = 'The channel you selected does not exist.';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validatedBy()
     {

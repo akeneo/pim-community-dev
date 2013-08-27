@@ -19,7 +19,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     protected $notifiers = array();
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

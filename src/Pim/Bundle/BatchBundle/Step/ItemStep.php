@@ -95,7 +95,7 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -107,7 +107,7 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setConfiguration(array $config)
     {

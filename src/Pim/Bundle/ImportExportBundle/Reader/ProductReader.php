@@ -35,7 +35,7 @@ class ProductReader extends ORMReader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read()
     {

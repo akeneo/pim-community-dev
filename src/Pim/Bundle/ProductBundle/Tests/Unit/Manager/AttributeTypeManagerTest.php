@@ -50,7 +50,7 @@ class AttributeTypeManagerTest extends WebTestCase
     protected $factory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -71,7 +71,7 @@ class AttributeTypeManagerTest extends WebTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function tearDown()
     {

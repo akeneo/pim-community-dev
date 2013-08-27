@@ -15,7 +15,7 @@ use Doctrine\Common\Util\Inflector;
 class EntityRepository extends BaseEntityRepository
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __call($method, $arguments)
     {
