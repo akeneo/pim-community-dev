@@ -1,15 +1,23 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Extend;
+namespace Oro\Bundle\EntityBundle\ORM;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
 
-class ExtendManager extends EntityManager
+class OroEntityManager extends EntityManager
 {
+    /**
+     * Collection of query filters.
+     *
+     * @var FilterCollection
+     */
+    private $filterCollection;
+
     public static function create($conn, Configuration $config, EventManager $eventManager = null)
     {
         if (!$config->getMetadataDriverImpl()) {
@@ -26,6 +34,25 @@ class ExtendManager extends EntityManager
             throw new \InvalidArgumentException("Invalid argument: " . $conn);
         }
 
-        return new ExtendManager($conn, $config, $conn->getEventManager());
+        return new OroEntityManager($conn, $config, $conn->getEventManager());
+    }
+
+    public function setFilterCollection(FilterCollection $collection)
+    {
+        $this->filterCollection = $collection;
+    }
+
+    /**
+     * Gets the enabled filters.
+     *
+     * @return FilterCollection The active filter collection.
+     */
+    public function getFilters()
+    {
+        if (null === $this->filterCollection) {
+            $this->filterCollection = new FilterCollection($this);
+        }
+
+        return $this->filterCollection;
     }
 }
