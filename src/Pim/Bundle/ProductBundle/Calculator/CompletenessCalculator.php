@@ -186,6 +186,9 @@ class CompletenessCalculator
     {
         $completenesses = array();
 
+        if ($product->getFamily() === null) {
+            return $completenesses;
+        }
         foreach ($this->getChannels() as $channel) {
             $newCompletenesses = $this->calculateForAProductByChannel($product, $channel);
 
@@ -206,6 +209,9 @@ class CompletenessCalculator
      */
     public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
     {
+        if ($product->getFamily() === null) {
+            return array();
+        }
         $requiredAttributes = $this->getRequiredAttributes($channel, $product->getFamily());
         $requiredCount = count($requiredAttributes);
 
