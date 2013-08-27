@@ -39,7 +39,7 @@ class RequestEntity extends AbstractPostAction
      */
     public function execute($context)
     {
-        $entity = $this->requestEntityProxy();
+        $entity = $this->requestEntityProxy($context);
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
@@ -68,13 +68,14 @@ class RequestEntity extends AbstractPostAction
     /**
      * Returns entity proxy for specified entity with specified ID
      *
+     * @param mixed $context
      * @return object
      * @throws \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
      */
-    public function requestEntityProxy()
+    protected function requestEntityProxy($context)
     {
         $entityClassName = $this->getEntityClassName();
-        $entityIdentifier = $this->getEntityIdentifier();
+        $entityIdentifier = $this->getEntityIdentifier($context);
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->registry->getManagerForClass($entityClassName);
@@ -94,10 +95,21 @@ class RequestEntity extends AbstractPostAction
     }
 
     /**
-     * @return string
+     * @param mixed $context
+     * @return int|string|array
      */
-    protected function getEntityIdentifier()
+    protected function getEntityIdentifier($context)
     {
-        return $this->options['identifier'];
+        $identifier = $this->options['identifier'];
+
+        if (is_array($identifier)) {
+            foreach ($identifier as $key => $value) {
+                $identifier[$key] = $this->contextAccessor->getValue($context, $value);
+            }
+        } else {
+            $identifier = $this->contextAccessor->getValue($context, $identifier);
+        }
+
+        return $identifier;
     }
 }
