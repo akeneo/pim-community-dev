@@ -17,14 +17,18 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
 {
     protected function setUp()
     {
-        $this->productEnabledConverter = $this->getConverterMock('ProductEnabledConverter');
-        $this->productValueConverter = $this->getConverterMock('ProductValueConverter');
-        $this->productFamilyConverter = $this->getConverterMock('ProductFamilyConverter');
+        $this->productEnabledConverter    = $this->getConverterMock('ProductEnabledConverter');
+        $this->productValueConverter      = $this->getConverterMock('ProductValueConverter');
+        $this->productFamilyConverter     = $this->getConverterMock('ProductFamilyConverter');
+        $this->productCategoriesConverter = $this->getConverterMock('ProductCategoriesConverter');
+
         $this->subscriber = new TransformImportedProductDataSubscriber(
             $this->productEnabledConverter,
             $this->productValueConverter,
-            $this->productFamilyConverter
+            $this->productFamilyConverter,
+            $this->productCategoriesConverter
         );
+
         $this->form = $this->getFormMock();
     }
 
@@ -43,17 +47,22 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->productEnabledConverter
             ->expects($this->any())
             ->method('convert')
-            ->will($this->returnValue('1'));
+            ->will($this->returnValue(array('enabled' => '1')));
 
         $this->productValueConverter
             ->expects($this->any())
             ->method('convert')
-            ->will($this->returnValue(array('sku' => 'sku-001')));
+            ->will($this->returnValue(array('values' => array('sku' => 'sku-001'))));
 
         $this->productFamilyConverter
             ->expects($this->any())
             ->method('convert')
-            ->will($this->returnValue(4));
+            ->will($this->returnValue(array('family' => 4)));
+
+        $this->productCategoriesConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue(array('categories' => array(1, 2, 3))));
 
         $this->subscriber->preSubmit($event);
 
@@ -62,10 +71,12 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertArrayHasKey('enabled', $data);
         $this->assertArrayHasKey('values', $data);
         $this->assertArrayHasKey('family', $data);
+        $this->assertArrayHasKey('categories', $data);
 
         $this->assertEquals('1', $data['enabled']);
         $this->assertEquals(array('sku' => 'sku-001'), $data['values']);
         $this->assertEquals(4, $data['family']);
+        $this->assertEquals(array(1, 2, 3), $data['categories']);
     }
 
     protected function getFormMock()

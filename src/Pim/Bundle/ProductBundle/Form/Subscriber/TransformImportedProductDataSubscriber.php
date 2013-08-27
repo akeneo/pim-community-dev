@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 
 /**
  * Transform imported product data into a bindable data to the product form
@@ -18,18 +19,36 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
  */
 class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var ProductEnabledConverter $productEnabledConverter
+     */
     protected $productEnabledConverter;
+
+    /**
+     * @var ProductValueConverter $productValueConverter
+     */
     protected $productValueConverter;
+
+    /**
+     * @var ProductFamilyConverter $productFamilyConverter
+     */
     protected $productFamilyConverter;
+
+    /**
+     * @var ProductCategoriesConverter $productCategoriesConverter
+     */
+    protected $productCategoriesConverter;
 
     public function __construct(
         ProductEnabledConverter $productEnabledConverter,
         ProductValueConverter $productValueConverter,
-        ProductFamilyConverter $productFamilyConverter
+        ProductFamilyConverter $productFamilyConverter,
+        ProductCategoriesConverter $productCategoriesConverter
     ) {
-        $this->productEnabledConverter = $productEnabledConverter;
-        $this->productValueConverter   = $productValueConverter;
-        $this->productFamilyConverter  = $productFamilyConverter;
+        $this->productEnabledConverter    = $productEnabledConverter;
+        $this->productValueConverter      = $productValueConverter;
+        $this->productFamilyConverter     = $productFamilyConverter;
+        $this->productCategoriesConverter = $productCategoriesConverter;
     }
 
     /**
@@ -53,10 +72,11 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        $dataToSubmit = array(
-            'enabled' => $this->productEnabledConverter->convert($data),
-            'values' => $this->productValueConverter->convert($data),
-            'family' => $this->productFamilyConverter->convert($data),
+        $dataToSubmit = array_merge(
+            $this->productEnabledConverter->convert($data),
+            $this->productValueConverter->convert($data),
+            $this->productFamilyConverter->convert($data),
+            $this->productCategoriesConverter->convert($data)
         );
 
         $event->setData($dataToSubmit);
