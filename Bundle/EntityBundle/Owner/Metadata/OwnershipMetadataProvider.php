@@ -1,8 +1,9 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Owner\Metadata;
+namespace Oro\Bundle\EntityBundle\Owner\Metadata;
 
 use Doctrine\Common\Cache\CacheProvider;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 /**
@@ -26,6 +27,11 @@ class OwnershipMetadataProvider
     protected $userClass;
 
     /**
+     * @var ConfigProvider
+     */
+    protected $configProvider;
+
+    /**
      * @var CacheProvider
      */
     protected $cache;
@@ -39,11 +45,13 @@ class OwnershipMetadataProvider
      * Constructor
      *
      * @param array $owningEntityNames
+     * @param ConfigProvider $configProvider
      * @param EntityClassResolver $entityClassResolver
      * @param CacheProvider|null $cache
      */
     public function __construct(
         array $owningEntityNames,
+        ConfigProvider $configProvider,
         EntityClassResolver $entityClassResolver = null,
         CacheProvider $cache = null
     ) {
@@ -57,6 +65,7 @@ class OwnershipMetadataProvider
             ? $owningEntityNames['user']
             : $entityClassResolver->getEntityClass($owningEntityNames['user']);
 
+        $this->configProvider = $configProvider;
         $this->cache = $cache;
 
         $this->noOwnershipMetadata = new OwnershipMetadata();
@@ -65,22 +74,51 @@ class OwnershipMetadataProvider
     /**
      * Get the ownership related metadata for the given entity
      *
-     * @param string $entityName
+     * @param string $className
      * @return OwnershipMetadata
      */
-    public function getMetadata($entityName)
+    public function getMetadata($className)
     {
         $result = null;
         if ($this->cache) {
-            $result = $this->cache->fetch($entityName);
+            $result = $this->cache->fetch($className);
         }
-        if ($result === null) {
+        if (!$result) {
+            if ($this->configProvider->hasConfig($className)) {
+                $config = $this->configProvider->getConfig($className);
+                $result = new OwnershipMetadata(
+                    $config->get('owner_type'),
+                    $config->get('owner_field_name'),
+                    $config->get('owner_column_name')
+                );
+            }
+            if (!$result) {
+                $result = new OwnershipMetadata();
+            }
             if ($this->cache) {
-                $this->cache->save($entityName, $result);
+                $this->cache->save($className, $result);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Clears the ownership metadata cache
+     *
+     * If the class name is not specifies this method clears all cached data
+     *
+     * @param string|null $className
+     */
+    public function clearCache($className = null)
+    {
+        if ($this->cache) {
+            if ($className !== null) {
+                $this->cache->delete($className);
+            } else {
+                $this->cache->deleteAll();
+            }
+        }
     }
 
     /**
@@ -111,15 +149,5 @@ class OwnershipMetadataProvider
     public function getUserClass()
     {
         return $this->userClass;
-    }
-
-    /**
-     * Clears the ownership metadata cache
-     */
-    public function clearCache()
-    {
-        if ($this->cache) {
-            $this->cache->deleteAll();
-        }
     }
 }

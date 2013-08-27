@@ -1,21 +1,21 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Owner\Metadata;
+namespace Oro\Bundle\EntityBundle\Owner\Metadata;
 
 /**
  * This class represents the entity ownership metadata
  */
 class OwnershipMetadata implements \Serializable
 {
-    const OWNERSHIP_TYPE_NONE = 0;
-    const OWNERSHIP_TYPE_ORGANIZATION = 1;
-    const OWNERSHIP_TYPE_BUSINESS_UNIT = 2;
-    const OWNERSHIP_TYPE_USER = 3;
+    const OWNER_TYPE_NONE = 0;
+    const OWNER_TYPE_ORGANIZATION = 1;
+    const OWNER_TYPE_BUSINESS_UNIT = 2;
+    const OWNER_TYPE_USER = 3;
 
     /**
      * @var integer
      */
-    protected $ownershipType;
+    protected $ownerType;
 
     /**
      * @var string
@@ -30,35 +30,35 @@ class OwnershipMetadata implements \Serializable
     /**
      * Constructor
      *
-     * @param string $ownershipType Can be one of ORGANIZATION, BUSINESS_UNIT or USER
+     * @param string $ownerType Can be one of ORGANIZATION, BUSINESS_UNIT or USER
      * @param string $ownerFieldName
      * @param string $ownerColumnName
      * @throws \InvalidArgumentException
      */
-    public function __construct($ownershipType = '', $ownerFieldName = '', $ownerColumnName = '')
+    public function __construct($ownerType = '', $ownerFieldName = '', $ownerColumnName = '')
     {
-        switch ($ownershipType) {
+        switch ($ownerType) {
             case 'ORGANIZATION':
-                $this->ownershipType = self::OWNERSHIP_TYPE_ORGANIZATION;
+                $this->ownerType = self::OWNER_TYPE_ORGANIZATION;
                 break;
             case 'BUSINESS_UNIT':
-                $this->ownershipType = self::OWNERSHIP_TYPE_BUSINESS_UNIT;
+                $this->ownerType = self::OWNER_TYPE_BUSINESS_UNIT;
                 break;
             case 'USER':
-                $this->ownershipType = self::OWNERSHIP_TYPE_USER;
+                $this->ownerType = self::OWNER_TYPE_USER;
                 break;
             default:
-                if (!empty($ownershipType)) {
-                    throw new \InvalidArgumentException(sprintf('Unknown ownership type: %s.', $ownershipType));
+                if (!empty($ownerType)) {
+                    throw new \InvalidArgumentException(sprintf('Unknown owner type: %s.', $ownerType));
                 }
-                $this->ownershipType = self::OWNERSHIP_TYPE_NONE;
+                $this->ownerType = self::OWNER_TYPE_NONE;
                 break;
         }
-        if ($this->ownershipType !== self::OWNERSHIP_TYPE_NONE && empty($ownerFieldName)) {
+        if ($this->ownerType !== self::OWNER_TYPE_NONE && empty($ownerFieldName)) {
             throw new \InvalidArgumentException('The owner field name must not be empty.');
         }
         $this->ownerFieldName = $ownerFieldName;
-        if ($this->ownershipType !== self::OWNERSHIP_TYPE_NONE && empty($ownerColumnName)) {
+        if ($this->ownerType !== self::OWNER_TYPE_NONE && empty($ownerColumnName)) {
             throw new \InvalidArgumentException('The owner column name must not be empty.');
         }
         $this->ownerColumnName = $ownerColumnName;
@@ -71,7 +71,7 @@ class OwnershipMetadata implements \Serializable
      */
     public function hasOwner()
     {
-        return $this->ownershipType !== self::OWNERSHIP_TYPE_NONE;
+        return $this->ownerType !== self::OWNER_TYPE_NONE;
     }
 
     /**
@@ -81,7 +81,7 @@ class OwnershipMetadata implements \Serializable
      */
     public function isOrganizationOwned()
     {
-        return $this->ownershipType === self::OWNERSHIP_TYPE_ORGANIZATION;
+        return $this->ownerType === self::OWNER_TYPE_ORGANIZATION;
     }
 
     /**
@@ -91,7 +91,7 @@ class OwnershipMetadata implements \Serializable
      */
     public function isBusinessUnitOwned()
     {
-        return $this->ownershipType === self::OWNERSHIP_TYPE_BUSINESS_UNIT;
+        return $this->ownerType === self::OWNER_TYPE_BUSINESS_UNIT;
     }
 
     /**
@@ -101,7 +101,7 @@ class OwnershipMetadata implements \Serializable
      */
     public function isUserOwned()
     {
-        return $this->ownershipType === self::OWNERSHIP_TYPE_USER;
+        return $this->ownerType === self::OWNER_TYPE_USER;
     }
 
     /**
@@ -131,7 +131,7 @@ class OwnershipMetadata implements \Serializable
     {
         return serialize(
             array(
-                $this->ownershipType,
+                $this->ownerType,
                 $this->ownerFieldName,
                 $this->ownerColumnName,
             )
@@ -144,7 +144,7 @@ class OwnershipMetadata implements \Serializable
     public function unserialize($serialized)
     {
         list(
-            $this->ownershipType,
+            $this->ownerType,
             $this->ownerFieldName,
             $this->ownerColumnName,
             ) = unserialize($serialized);

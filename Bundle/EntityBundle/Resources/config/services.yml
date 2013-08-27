@@ -1,11 +1,43 @@
 parameters:
-    oro_entity.orm.entity_class_resolver.class:              Oro\Bundle\EntityBundle\ORM\EntityClassResolver
+    oro_entity.entity.owners:
+        organization: "OroOrganizationBundle:Organization"
+        business_unit: "OroOrganizationBundle:BusinessUnit"
+        user: "OroUserBundle:User"
+
+    oro_entity.orm.entity_class_resolver.class:                Oro\Bundle\EntityBundle\ORM\EntityClassResolver
+    oro_entity.orm.entity_class_accessor.class:                Oro\Bundle\EntityBundle\ORM\EntityClassAccessor
+    oro_entity.orm.entity_owner_accessor.class:                Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor
+    oro_entity.owner.ownership_metadata_provider.class:        Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider
+    oro_entity.owner.ownership_metadata_provider.cache_impl.class: Doctrine\Common\Cache\FilesystemCache
 
 services:
     oro_entity.orm.entity_class_resolver:
         class: %oro_entity.orm.entity_class_resolver.class%
         arguments:
             - @doctrine
+
+    oro_entity.orm.entity_class_accessor:
+        class: %oro_entity.orm.entity_class_accessor.class%
+
+    oro_entity.orm.entity_owner_accessor:
+        class: %oro_entity.orm.entity_owner_accessor.class%
+        arguments:
+            - @oro_entity.orm.entity_class_accessor
+            - @oro_entity.owner.ownership_metadata_provider
+
+    oro_entity.owner.ownership_metadata_provider:
+        class: %oro_entity.owner.ownership_metadata_provider.class%
+        arguments:
+            - %oro_entity.entity.owners%
+            - @oro_entity.config.ownership_config_provider
+            - @oro_entity.orm.entity_class_resolver
+            - @oro_entity.owner.ownership_metadata_provider.cache_impl
+
+    oro_entity.owner.ownership_metadata_provider.cache_impl:
+        public: false
+        class: %oro_entity.owner.ownership_metadata_provider.cache_impl.class%
+        arguments:
+            - %kernel.cache_dir%/oro_ownership_metadata
 
     oro_entity.config.entity_config_provider:
         tags:

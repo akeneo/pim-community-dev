@@ -25,7 +25,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  * @Configurable(
  *  defaultValues={
  *      "entity"={"label"="Role", "plural_label"="Roles"},
- *      "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={
+ *          "owner_type"="BUSINESS_UNIT",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="business_unit_owner_id"
+ *      }
  *  }
  * )
  */

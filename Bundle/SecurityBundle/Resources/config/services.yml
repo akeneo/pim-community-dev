@@ -1,9 +1,4 @@
 parameters:
-    oro_security.entity.owners:
-        organization: "OroOrganizationBundle:Organization"
-        business_unit: "OroOrganizationBundle:BusinessUnit"
-        user: "OroUserBundle:User"
-
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
@@ -13,31 +8,26 @@ parameters:
     oro_security.acl.permission_map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
     oro_security.acl.object_identity_factory.class:            Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
     oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
-    oro_security.acl.object_class_accessor.class:              Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor
     oro_security.acl.object_id_accessor.class:                 Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor
 
     oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
-    oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker
-    oro_security.owner.ownership_metadata_provider.class:      Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider
-    oro_security.owner.ownership_metadata_provider.cache_impl.class: Doctrine\Common\Cache\FilesystemCache
-    oro_security.owner.object_owner_accessor.class:            Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor
+    oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
 
 services:
     oro_security.acl.extension_selector:
         public: false
         class: %oro_security.acl.extension_selector.class%
         arguments:
-            - @oro_security.acl.object_class_accessor
             - @oro_security.acl.object_id_accessor
 
     oro_security.acl.extension.entity:
         public: false
         class: %oro_security.acl.extension.entity.class%
         arguments:
-            - @oro_security.acl.object_class_accessor
+            - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
             - @oro_entity.orm.entity_class_resolver
-            - @oro_security.owner.ownership_metadata_provider
+            - @oro_entity.owner.ownership_metadata_provider
             - @oro_security.owner.decision_maker
         tags:
             - { name: oro_security.acl.extension, priority: 20 }
@@ -77,10 +67,6 @@ services:
         arguments:
             - @oro_security.acl.object_identity_factory
 
-    oro_security.acl.object_class_accessor:
-        public: false
-        class: %oro_security.acl.object_class_accessor.class%
-
     oro_security.acl.object_id_accessor:
         public: false
         class: %oro_security.acl.object_id_accessor.class%
@@ -94,27 +80,8 @@ services:
         class: %oro_security.owner.decision_maker.class%
         arguments:
             - @oro_security.owner.tree
-            - @oro_security.acl.object_class_accessor
+            - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
-            - @oro_security.owner.object_owner_accessor
-            - @oro_security.owner.ownership_metadata_provider
-
-    oro_security.owner.ownership_metadata_provider:
-        class: %oro_security.owner.ownership_metadata_provider.class%
-        arguments:
-            - %oro_security.entity.owners%
-            - @oro_entity.orm.entity_class_resolver
-            - @oro_security.owner.ownership_metadata_provider.cache_impl
-
-    oro_security.owner.ownership_metadata_provider.cache_impl:
-        public: false
-        class: %oro_security.owner.ownership_metadata_provider.cache_impl.class%
-        arguments:
-            - %kernel.cache_dir%/oro_ownership_metadata
-
-    oro_security.owner.object_owner_accessor:
-        class: %oro_security.owner.object_owner_accessor.class%
-        arguments:
-            - @oro_security.acl.object_class_accessor
-            - @oro_security.owner.ownership_metadata_provider
+            - @oro_entity.orm.entity_owner_accessor
+            - @oro_entity.owner.ownership_metadata_provider
 

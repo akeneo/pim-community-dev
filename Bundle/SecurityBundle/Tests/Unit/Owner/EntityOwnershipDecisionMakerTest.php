@@ -2,19 +2,19 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Owner;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor;
-use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
+use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
-class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
+class EntityOwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OwnerTree
@@ -22,25 +22,25 @@ class OwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
     private $tree;
 
     /**
-     * @var OwnershipMetadataProvider
+     * @var OwnershipMetadataProviderStub
      */
     private $metadataProvider;
 
     /**
-     * @var OwnershipDecisionMaker
+     * @var EntityOwnershipDecisionMaker
      */
     private $decisionMaker;
 
     protected function setUp()
     {
         $this->tree = new OwnerTree();
-        $this->metadataProvider = new OwnershipMetadataProvider();
-        $classAccessor = new ObjectClassAccessor();
-        $this->decisionMaker = new OwnershipDecisionMaker(
+        $this->metadataProvider = new OwnershipMetadataProviderStub($this);
+        $classAccessor = new EntityClassAccessor();
+        $this->decisionMaker = new EntityOwnershipDecisionMaker(
             $this->tree,
             $classAccessor,
             new ObjectIdAccessor(),
-            new ObjectOwnerAccessor($classAccessor, $this->metadataProvider),
+            new EntityOwnerAccessor($classAccessor, $this->metadataProvider),
             $this->metadataProvider
         );
 

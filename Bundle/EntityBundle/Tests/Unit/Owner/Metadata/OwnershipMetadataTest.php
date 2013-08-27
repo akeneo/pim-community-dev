@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
+namespace Oro\Bundle\EntityBundle\Tests\Unit\Owner\Metadata;
 
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 
 class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testConstructorWithInvalidOwnershipType()
+    public function testConstructorWithInvalidOwnerType()
     {
         new OwnershipMetadata('test');
     }

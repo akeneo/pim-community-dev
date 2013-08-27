@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\Acl;
@@ -12,14 +12,14 @@ use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\PermissionGrantingStrategyContext;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor;
+use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
@@ -52,7 +52,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
     /** @var OwnerTree */
     private $ownerTree;
 
-    /** @var OwnershipMetadataProvider */
+    /** @var OwnershipMetadataProviderStub */
     private $metadataProvider;
 
     protected function setUp()
@@ -62,14 +62,14 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->ownerTree = new OwnerTree();
-        $this->metadataProvider = new OwnershipMetadataProvider();
-        $objectClassAccessor = new ObjectClassAccessor();
+        $this->metadataProvider = new OwnershipMetadataProviderStub($this);
+        $classAccessor = new EntityClassAccessor();
         $objectIdAccessor = new ObjectIdAccessor();
-        $decisionMaker = new OwnershipDecisionMaker(
+        $decisionMaker = new EntityOwnershipDecisionMaker(
             $this->ownerTree,
-            $objectClassAccessor,
+            $classAccessor,
             $objectIdAccessor,
-            new ObjectOwnerAccessor($objectClassAccessor, $this->metadataProvider),
+            new EntityOwnerAccessor($classAccessor, $this->metadataProvider),
             $this->metadataProvider
         );
         $this->strategy = new PermissionGrantingStrategy(

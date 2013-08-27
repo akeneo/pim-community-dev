@@ -2,16 +2,18 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
-use Oro\Bundle\SecurityBundle\Owner\ObjectOwnerAccessor;
-use Oro\Bundle\SecurityBundle\Owner\OwnershipDecisionMaker;
+use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
+
 
 class TestHelper
 {
@@ -39,9 +41,9 @@ class TestHelper
         OwnershipMetadataProvider $metadataProvider = null,
         OwnerTree $ownerTree = null
     ) {
-        $classAccessor = new ObjectClassAccessor();
+        $classAccessor = new EntityClassAccessor();
         $idAccessor = new ObjectIdAccessor();
-        $selector = new AclExtensionSelector($classAccessor, $idAccessor);
+        $selector = new AclExtensionSelector($idAccessor);
         $selector->addAclExtension(
             new ActionAclExtension()
         );
@@ -55,34 +57,34 @@ class TestHelper
     /**
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnerTree $ownerTree
-     * @param ObjectClassAccessor $classAccessor
+     * @param EntityClassAccessor $classAccessor
      * @param ObjectIdAccessor $idAccessor
      * @return EntityAclExtension
      */
     public function createEntityAclExtension(
         OwnershipMetadataProvider $metadataProvider = null,
         OwnerTree $ownerTree = null,
-        ObjectClassAccessor $classAccessor = null,
+        EntityClassAccessor $classAccessor = null,
         ObjectIdAccessor $idAccessor = null
     ) {
         if ($classAccessor === null) {
-            $classAccessor = new ObjectClassAccessor();
+            $classAccessor = new EntityClassAccessor();
         }
         if ($idAccessor === null) {
             $idAccessor = new ObjectIdAccessor();
         }
         if ($metadataProvider === null) {
-            $metadataProvider = new OwnershipMetadataProvider();
+            $metadataProvider = new OwnershipMetadataProviderStub($this->testCase);
         }
         if ($ownerTree === null) {
             $ownerTree = new OwnerTree();
         }
 
-        $decisionMaker = new OwnershipDecisionMaker(
+        $decisionMaker = new EntityOwnershipDecisionMaker(
             $ownerTree,
             $classAccessor,
             $idAccessor,
-            new ObjectOwnerAccessor($classAccessor, $metadataProvider),
+            new EntityOwnerAccessor($classAccessor, $metadataProvider),
             $metadataProvider
         );
 

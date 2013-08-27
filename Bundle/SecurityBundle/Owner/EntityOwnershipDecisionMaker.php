@@ -3,17 +3,21 @@
 namespace Oro\Bundle\SecurityBundle\Owner;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 
 /**
  * This class implements OwnershipDecisionMakerInterface interface and allows to make ownership related
  * decisions using the tree of owners.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
+class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
 {
     /**
      * @var OwnerTree
@@ -21,9 +25,9 @@ class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     protected $tree;
 
     /**
-     * @var ObjectClassAccessor
+     * @var EntityClassAccessor
      */
-    protected $objectClassAccessor;
+    protected $entityClassAccessor;
 
     /**
      * @var ObjectIdAccessor
@@ -31,9 +35,9 @@ class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     protected $objectIdAccessor;
 
     /**
-     * @var ObjectOwnerAccessor
+     * @var EntityOwnerAccessor
      */
-    protected $objectOwnerAccessor;
+    protected $entityOwnerAccessor;
 
     /**
      * @var OwnershipMetadataProvider
@@ -44,22 +48,22 @@ class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
      * Constructor
      *
      * @param OwnerTree $ownerTree
-     * @param ObjectClassAccessor $objectClassAccessor
+     * @param EntityClassAccessor $entityClassAccessor
      * @param ObjectIdAccessor $objectIdAccessor
-     * @param ObjectOwnerAccessor $objectOwnerAccessor
+     * @param EntityOwnerAccessor $entityOwnerAccessor
      * @param OwnershipMetadataProvider $metadataProvider
      */
     public function __construct(
         OwnerTree $ownerTree,
-        ObjectClassAccessor $objectClassAccessor,
+        EntityClassAccessor $entityClassAccessor,
         ObjectIdAccessor $objectIdAccessor,
-        ObjectOwnerAccessor $objectOwnerAccessor,
+        EntityOwnerAccessor $entityOwnerAccessor,
         OwnershipMetadataProvider $metadataProvider
     ) {
         $this->tree = $ownerTree;
-        $this->objectClassAccessor = $objectClassAccessor;
+        $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
-        $this->objectOwnerAccessor = $objectOwnerAccessor;
+        $this->entityOwnerAccessor = $entityOwnerAccessor;
         $this->metadataProvider = $metadataProvider;
     }
 
@@ -319,7 +323,7 @@ class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
      */
     protected function getObjectClass($domainObjectOrClassName)
     {
-        return $this->objectClassAccessor->getClass($domainObjectOrClassName);
+        return $this->entityClassAccessor->getClass($domainObjectOrClassName);
     }
 
     /**
@@ -340,8 +344,12 @@ class OwnershipDecisionMaker implements OwnershipDecisionMakerInterface
      * @return object
      * @throws InvalidDomainObjectException
      */
-    public function getOwner($domainObject)
+    protected function getOwner($domainObject)
     {
-        return $this->objectOwnerAccessor->getOwner($domainObject);
+        try {
+            return $this->entityOwnerAccessor->getOwner($domainObject);
+        } catch (InvalidEntityException $ex) {
+            throw new InvalidDomainObjectException($ex->getMessage(), 0, $ex);
+        }
     }
 }

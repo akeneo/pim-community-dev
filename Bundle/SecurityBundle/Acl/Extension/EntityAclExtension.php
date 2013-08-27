@@ -6,20 +6,20 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
 class EntityAclExtension extends AbstractAclExtension
 {
     /**
-     * @var ObjectClassAccessor
+     * @var EntityClassAccessor
      */
-    protected $objectClassAccessor;
+    protected $entityClassAccessor;
 
     /**
      * @var ObjectIdAccessor
@@ -44,20 +44,20 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Constructor
      *
-     * @param ObjectClassAccessor $objectClassAccessor
+     * @param EntityClassAccessor $entityClassAccessor
      * @param ObjectIdAccessor $objectIdAccessor
      * @param EntityClassResolver $entityClassResolver
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnershipDecisionMakerInterface $decisionMaker
      */
     public function __construct(
-        ObjectClassAccessor $objectClassAccessor,
+        EntityClassAccessor $entityClassAccessor,
         ObjectIdAccessor $objectIdAccessor,
         EntityClassResolver $entityClassResolver,
         OwnershipMetadataProvider $metadataProvider,
         OwnershipDecisionMakerInterface $decisionMaker
     ) {
-        $this->objectClassAccessor = $objectClassAccessor;
+        $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityClassResolver = $entityClassResolver;
         $this->metadataProvider = $metadataProvider;
@@ -109,8 +109,10 @@ class EntityAclExtension extends AbstractAclExtension
     public function supports($type, $id)
     {
         if ($type === $this->getRootType()) {
-            $type = $this->entityClassResolver->getEntityClass($id);
+            $type = $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($id));
             $id = null;
+        } else {
+            $type = $this->entityClassAccessor->getClass($type);
         }
 
         $delim = strrpos($type, '\\');
@@ -223,7 +225,7 @@ class EntityAclExtension extends AbstractAclExtension
 
         if ($type === $this->getRootType()) {
             return new ObjectIdentity(
-                $this->entityClassResolver->getEntityClass($this->objectClassAccessor->getClass($id)),
+                $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($id)),
                 $this->getRootType()
             );
         }
@@ -249,7 +251,7 @@ class EntityAclExtension extends AbstractAclExtension
         try {
             return new ObjectIdentity(
                 $this->objectIdAccessor->getId($domainObject),
-                $this->objectClassAccessor->getClass($domainObject)
+                $this->entityClassAccessor->getClass($domainObject)
             );
         } catch (\InvalidArgumentException $invalid) {
             throw new InvalidDomainObjectException($invalid->getMessage(), 0, $invalid);
@@ -332,7 +334,7 @@ class EntityAclExtension extends AbstractAclExtension
             $sortOfDescriptor = $className = null;
             $this->parseDescriptor($object, $sortOfDescriptor, $className);
         } else {
-            $className = $this->objectClassAccessor->getClass($object);
+            $className = $this->entityClassAccessor->getClass($object);
         }
 
         return $this->metadataProvider->getMetadata($className);

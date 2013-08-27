@@ -4,7 +4,6 @@ namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 
 /**
@@ -12,11 +11,6 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
  */
 class AclExtensionSelector
 {
-    /**
-     * @var ObjectClassAccessor
-     */
-    protected $objectClassAccessor;
-
     /**
      * @var ObjectIdAccessor
      */
@@ -30,16 +24,13 @@ class AclExtensionSelector
     /**
      * Constructor
      *
-     * @param ObjectClassAccessor $objectClassAccessor
      * @param ObjectIdAccessor $objectIdAccessor
      */
-    public function __construct(
-        ObjectClassAccessor $objectClassAccessor,
-        ObjectIdAccessor $objectIdAccessor
-    ) {
-        $this->objectClassAccessor = $objectClassAccessor;
+    public function __construct(ObjectIdAccessor $objectIdAccessor)
+    {
         $this->objectIdAccessor = $objectIdAccessor;
     }
+
     /**
      * Adds ACL extension
      *
@@ -75,7 +66,7 @@ class AclExtensionSelector
                 $type = $object->getType();
                 $id = $object->getIdentifier();
             } else {
-                $type = $this->objectClassAccessor->getClass($object);
+                $type = get_class($object);
                 $id = $this->objectIdAccessor->getId($object);
             }
         }
@@ -114,6 +105,7 @@ class AclExtensionSelector
         $objInfo = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)
             : (string)$object;
+
         return new InvalidDomainObjectException(
             sprintf('An ACL extension was not found for: %s. Type: %s. Id: %s', $objInfo, $type, (string)$id)
         );

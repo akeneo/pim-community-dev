@@ -4,13 +4,13 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 
 class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,12 +19,12 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    /** @var OwnershipMetadataProvider */
+    /** @var OwnershipMetadataProviderStub */
     private $metadataProvider;
 
     protected function setUp()
     {
-        $this->metadataProvider = new OwnershipMetadataProvider();
+        $this->metadataProvider = new OwnershipMetadataProviderStub($this);
         $this->metadataProvider->setMetadata(
             $this->metadataProvider->getOrganizationClass(),
             new OwnershipMetadata()
