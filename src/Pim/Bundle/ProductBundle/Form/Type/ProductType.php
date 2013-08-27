@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
+use Pim\Bundle\ProductBundle\Form\Subscriber\TransformImportedProductDataSubscriber;
 
 /**
  * Product form type
@@ -29,11 +30,16 @@ class ProductType extends FlexibleType
     /**
      * {@inheritdoc}
      */
-    public function __construct(FlexibleManager $flexibleManager, $valueFormAlias, ProductFormView $productFormView)
-    {
+    public function __construct(
+        FlexibleManager $flexibleManager,
+        $valueFormAlias,
+        ProductFormView $productFormView,
+        TransformImportedProductDataSubscriber $transformer
+    ) {
         parent::__construct($flexibleManager, $valueFormAlias);
 
         $this->productFormView = $productFormView;
+        $this->transformer     = $transformer;
     }
 
     /**
@@ -60,7 +66,8 @@ class ProductType extends FlexibleType
                     array(
                         'class' => 'PimProductBundle:Family',
                     )
-                );
+                )
+                ->addEventSubscriber($this->transformer);
         }
     }
 
