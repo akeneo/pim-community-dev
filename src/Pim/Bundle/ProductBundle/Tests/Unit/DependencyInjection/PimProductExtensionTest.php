@@ -38,6 +38,7 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension = new PimProductExtension();
         $this->container = new ContainerBuilder();
+        $this->container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', array());
     }
 
     /**
@@ -60,5 +61,9 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $configLocales);
         $this->assertArrayHasKey('locales', $configLocales);
         $this->assertTrue(is_array($configLocales['locales']));
+
+        // assert validation configuration
+        $yamlMappingFiles = $this->container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
+        $this->assertGreaterThanOrEqual(5, count($yamlMappingFiles));
     }
 }
