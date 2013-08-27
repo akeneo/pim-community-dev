@@ -35,7 +35,7 @@ class Daemon
      * Run daemon in background
      *
      * @throws \RuntimeException
-     * @return int|null The process id if running successfully, null otherwise
+     * @return int|null          The process id if running successfully, null otherwise
      */
     public function run()
     {
@@ -63,7 +63,7 @@ class Daemon
      * Stop daemon
      *
      * @throws \RuntimeException
-     * @return bool True if success, false otherwise
+     * @return bool              True if success, false otherwise
      */
     public function stop()
     {
