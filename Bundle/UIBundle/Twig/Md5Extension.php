@@ -18,7 +18,7 @@ class Md5Extension extends \Twig_Extension
      * PHP md5 wrapper
      *
      * @param string $string
-     * @return int
+     * @return string
      */
     public function md5($string)
     {

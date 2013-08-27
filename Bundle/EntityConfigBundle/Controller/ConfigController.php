@@ -175,21 +175,25 @@ class ConfigController extends Controller
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
 
+        /** @var ConfigProvider $ownershipConfigProvider */
+        $ownershipConfigProvider = $this->get('oro_entity_config.provider.ownership');
+
         $entityCount = class_exists($entity->getClassName())
             ? count($this->getDoctrine()->getRepository($entity->getClassName())->findAll())
             : 0;
 
         return array(
-            'entity'        => $entity,
-            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
-            'entity_extend' => $extendConfig,
-            'entity_count'  => $entityCount,
-            'entity_fields' => $datagrid->createView(),
-            'unique_key'    => $extendConfig->get('unique_key'),
-            'link'          => $link,
-            'entity_name'   => $entityName,
-            'module_name'   => $moduleName,
-            'button_config' => $datagridManager->getLayoutActions($entity),
+            'entity'           => $entity,
+            'entity_config'    => $entityConfigProvider->getConfig($entity->getClassName()),
+            'entity_extend'    => $extendConfig,
+            'entity_count'     => $entityCount,
+            'entity_fields'    => $datagrid->createView(),
+            'entity_ownership' => $ownershipConfigProvider->getConfig($entity->getClassName()),
+            'unique_key'       => $extendConfig->get('unique_key'),
+            'link'             => $link,
+            'entity_name'      => $entityName,
+            'module_name'      => $moduleName,
+            'button_config'    => $datagridManager->getLayoutActions($entity),
         );
     }
 

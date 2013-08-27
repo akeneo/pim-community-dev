@@ -5,6 +5,7 @@ namespace Oro\Bundle\OrganizationBundle\Entity;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
@@ -17,6 +18,12 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Configurable(
+ *  defaultValues={
+ *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
+ *      "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *  }
+ * )
  */
 class BusinessUnit
 {
@@ -38,16 +45,6 @@ class BusinessUnit
      * @Oro\Versioned
      */
     protected $name;
-
-    /**
-     * @var BusinessUnit
-     *
-     * @ORM\ManyToOne(targetEntity="BusinessUnit")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
-     */
-    protected $parent;
 
     /**
      * @var Organization
@@ -116,9 +113,17 @@ class BusinessUnit
     protected $tags;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", mappedBy="businessUnits")
      */
     protected $users;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $owner;
 
     /**
      * Get id
@@ -383,6 +388,25 @@ class BusinessUnit
         if ($this->getUsers()->contains($user)) {
             $this->getUsers()->removeElement($user);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
+     * @return BusinessUnit
+     */
+    public function setOwner($owningBusinessUnit)
+    {
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

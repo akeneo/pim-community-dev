@@ -1,0 +1,22 @@
+oro_entity_config:
+    ownership:
+        entity:
+            items:
+                owner_type:
+                    #TODO: Refactor choiceOptionsProvider after changes in entity config bundle are implemented
+                    grid:
+                        type:               options
+                        label:              'Ownership Type'
+                        filter_type:        oro_grid_orm_choice
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                        choiceOptionsProvider: 'Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType::getOwnershipsArray'
+                    form:
+                        type:               oro_type_choice_ownership_type
+                        options:
+                            block:          other
+                            required:       true
+                            label:          'Ownership Type'
+
