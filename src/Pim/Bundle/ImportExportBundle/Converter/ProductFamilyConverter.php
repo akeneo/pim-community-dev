@@ -36,7 +36,7 @@ class ProductFamilyConverter
      *
      * @param array $data The submitted data
      *
-     * @return int|null null if the familyKey wasn't sent in the data or the family code doesn't exist
+     * @return int|null null if the self::FAMILY_KEY wasn't sent in the data or the family code doesn't exist
      */
     private function getFamilyId(array $data)
     {
