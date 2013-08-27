@@ -96,8 +96,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     private function getReaderMock(array $configuration, array $fields = array())
     {
-        $reader = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Reader\ProductReader')
+        $reader = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Reader\ProductReader')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -157,7 +156,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
         $processor->expects($this->exactly(7))
             ->method('process')
-            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7,  null));
+            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
 
         $writer = $this ->getMock('Pim\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
 

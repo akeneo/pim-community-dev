@@ -136,9 +136,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteInterrupted()
     {
-        $exception = new \Exception('My test exception');
-
-        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = new JobExecution();
 
         $step = new InterruptedStep('my_interrupted_step');
@@ -165,7 +162,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteIncomplete()
     {
-        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
         $jobExecution = new JobExecution();
 
         $step = new IncompleteStep('my_incomplete_step');
