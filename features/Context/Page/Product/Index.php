@@ -116,7 +116,7 @@ class Index extends Grid
         $criteriaElt->fillField('value', $value);
 
         // Open the dropdown menu with currency list
-        $criteriaElt->find('xpath',"//button[contains(text(),'Currency')]")->click();
+        $criteriaElt->find('xpath', "//button[contains(text(),'Currency')]")->click();
 
         // Click on the Euro line in the currency menu
         $criteriaElt->find('css', 'a[data-value="EUR"]')->click();
