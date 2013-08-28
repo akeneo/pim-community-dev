@@ -91,11 +91,11 @@ class ProxyQuery implements ProxyQueryInterface
      */
     public function getTotalCount()
     {
-        $qb    = clone $this->getResultQueryBuilder();
-        $query = $qb->setFirstResult(null)
-           ->setMaxResults(null)
-           ->resetDQLPart('orderBy')
-           ->getQuery();
+        $query = $this->getCountQueryBuilder()
+            ->setFirstResult(null)
+            ->setMaxResults(null)
+            ->resetDQLPart('orderBy')
+            ->getQuery();
 
         $this->applyQueryHints($query);
 
@@ -128,6 +128,16 @@ class ProxyQuery implements ProxyQueryInterface
         $this->applyOrderByParameters($qb);
 
         return $qb;
+    }
+
+    /**
+     * Get query builder for result count query
+     *
+     * @return QueryBuilder
+     */
+    protected function getCountQueryBuilder()
+    {
+        return clone $this->getResultQueryBuilder();
     }
 
     /**

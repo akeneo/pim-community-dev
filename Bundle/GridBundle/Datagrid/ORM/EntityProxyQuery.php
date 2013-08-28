@@ -8,26 +8,6 @@ use Doctrine\ORM\Query;
 class EntityProxyQuery extends ProxyQuery
 {
     /**
-     * Get the total number of records
-     *
-     * @return int
-     */
-    public function getTotalCount()
-    {
-        $qb    = clone $this->getResultIdsQueryBuilder();
-        $query = $qb->setFirstResult(null)
-           ->setMaxResults(null)
-           ->resetDQLPart('orderBy')
-           ->getQuery();
-
-        $this->applyQueryHints($query);
-
-        $countCalculator = new CountCalculator();
-
-        return $countCalculator->getCount($query);
-    }
-
-    /**
      * Get query builder for result query
      *
      * @return QueryBuilder
@@ -40,6 +20,16 @@ class EntityProxyQuery extends ProxyQuery
         $this->applyOrderByParameters($qb);
 
         return $qb;
+    }
+
+    /**
+     * Get query builder for result count query
+     *
+     * @return QueryBuilder
+     */
+    protected function getCountQueryBuilder()
+    {
+        return clone $this->getResultIdsQueryBuilder();
     }
 
     /**
