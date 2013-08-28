@@ -7,6 +7,7 @@ use Pim\Bundle\ProductBundle\EventListener\UpdateCompletenessListener;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+use Pim\Bundle\ProductBundle\Entity\Locale;
 
 /**
  * Test related class
@@ -33,15 +34,7 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UpdateCompletenessListener();
         $this->assertFalse($listener->hasChanged());
-        $channel = new Channel();
-        $channel->setCode('mynewchan');
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock->expects($this->any())
-            ->method('getEntity')
-            ->will($this->returnValue($channel));
+        $mock = $this->getPostPersistMock();
         $listener->postPersist($mock);
         $this->assertTrue($listener->hasChanged());
     }
@@ -53,6 +46,61 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UpdateCompletenessListener();
         $this->assertFalse($listener->hasChanged());
+        $mock = $this->getPostUpdateMock();
+        $listener->postUpdate($mock);
+        $this->assertTrue($listener->hasChanged());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testPostFlush()
+    {
+        $listener = new UpdateCompletenessListener();
+        $mock = $this->getPostPersistMock();
+        $listener->postPersist($mock);
+        $mock = $this->getPostUpdateMock();
+        $listener->postUpdate($mock);
+
+        $emMock = $this->getEntityManagerMock();
+        $emMock->expects($this->any())
+            ->method('getPendingRepositoryMock')
+            ->will($this->returnValue($this->getPendingRepositoryMock()));
+
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\PostFlushEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->any())
+            ->method('getEntityManager')
+            ->will($this->returnValue($emMock));
+
+        $listener->postFlush($mock);
+    }
+
+    /**
+     * @return Doctrine\ORM\Event\LifecycleEventArgs
+     */
+    protected function getPostPersistMock()
+    {
+        $channel = new Channel();
+        $channel->setCode('mynewchan');
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($channel));
+
+        return $mock;
+    }
+
+    /**
+     * @return Doctrine\ORM\Event\LifecycleEventArgs
+     */
+    protected function getPostUpdateMock()
+    {
         $family = new Family();
         $requirement = new AttributeRequirement();
         $requirement->setFamily($family);
@@ -63,8 +111,8 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->any())
             ->method('getEntity')
             ->will($this->returnValue($requirement));
-        $listener->postUpdate($mock);
-        $this->assertTrue($listener->hasChanged());
+
+        return $mock;
     }
 
     /**
@@ -82,6 +130,19 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getPendingRepositoryMock()));
 
         return $emMock;
+    }
+
+    /**
+     * @return Doctrine\ORM\UnitOfWork
+     */
+    protected function getUnitOfWorkMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\UnitOfWork')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $mock;
     }
 
     /**
