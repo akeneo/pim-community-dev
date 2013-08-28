@@ -11,6 +11,7 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+use Pim\Bundle\ProductBundle\Entity\PendingCompleteness;
 
 /**
  * Aims to mark product completeness as to be re-calculated
@@ -46,7 +47,7 @@ class UpdateCompletenessListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('postPersist', 'onFlush', 'postFlush');
+        return array('postPersist', 'postUpdate', 'onFlush', 'postFlush');
     }
 
     /**
@@ -55,9 +56,23 @@ class UpdateCompletenessListener implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof Channel) {
-            $this->newChannels[]= $entity;
-        }
+        $this->addChannel($entity);
+        //$this->changeRequirement($entity);
+    }
+
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        $this->changeRequirement($entity);
+/*
+        if ($entity instanceof AttributeRequirement) {
+            if ($entity->getFamily()) {
+                $this->changeRequirementOfAFamily($entity->getFamily());
+            }
+        }*/
     }
 
     /**
@@ -67,9 +82,21 @@ class UpdateCompletenessListener implements EventSubscriber
     {
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
-        foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->addLocaleToAChannel($entity);
-            $this->changeRequirementOfAFamily($entity);
+        foreach ($uow->getScheduledCollectionUpdates() as $collection) {
+            $this->addLocaleToAChannel($collection);
+
+
+            //if ($collection->getOwner() instanceof Family /*and current($collection->getInsertDiff()) instanceof AttributeRequirement*/) {
+
+
+//                var_dump($collection);
+
+//                die('ICICICI');
+
+         /*       $family = $collection->getOwner();
+                $this->updatedFamilies[]= $family;
+            }*/
+
         }
     }
 
@@ -80,8 +107,10 @@ class UpdateCompletenessListener implements EventSubscriber
     {
         if ($this->hasChanged()) {
             $em = $args->getEntityManager();
-
-            // TODO
+            $this->addPendingForChannels($em);
+            $this->addPendingForLocales($em);
+            $this->addPendingForFamilies($em);
+            $em->flush();
         }
     }
 
@@ -96,27 +125,116 @@ class UpdateCompletenessListener implements EventSubscriber
     }
 
     /**
+     * Check if a new channel has been added
+     *
+     * @param object $entity
+     */
+    protected function addChannel($entity)
+    {
+        if ($entity instanceof Channel) {
+            if (!in_array($entity, $this->newChannels)) {
+                $this->newChannels[]= $entity;
+            }
+        }
+    }
+
+    /**
      * Check if a locale has been added to a channel
+     *
+     * @param array $collection
      */
     protected function addLocaleToAChannel($collection)
     {
-        if ($entity->getOwner() instanceof Channel and $entity->first() instanceof Locale) {
-            $channel = $entity->getOwner();
-            $this->newLocales[$channel->getId()]= array();
-            foreach ($entity->->getInsertDiff() as $locale) {
-                $this->newLocales[$channel->getId()][]= $locale;
+        if ($collection->getOwner() instanceof Channel and $collection->first() instanceof Locale) {
+            $channel = $collection->getOwner();
+            foreach ($collection->getInsertDiff() as $locale) {
+                $this->newLocalesPerChannel[]= array('channel' => $channel, 'locale' => $locale);
+            }
+        }
+    }
+
+
+    /**
+     * Check if a attribute requirement has been changed on a family
+     *
+     * @param object $entity
+     */
+    protected function changeRequirement($entity)
+    {
+        if ($entity instanceof AttributeRequirement) {
+            if ($entity->getFamily() and !in_array($entity->getFamily(), $this->updatedFamilies)) {
+                $this->updatedFamilies[]= $entity->getFamily();
             }
         }
     }
 
     /**
      * Check if a attribute requirement has been changed on a family
-     */
-    protected function changeRequirementOfAFamily($collection)
+     *
+    protected function changeRequirementOfAFamily($family)
     {
-        if ($entity->getOwner() instanceof Family and $entity->first() instanceof AttributeRequirement) {
-            $family = $entity->getOwner();
-            $this->updatedFamilies[]= $family
+        if (!in_array($family, $this->updatedFamilies)) {
+            $this->updatedFamilies[]= $family;
         }
+    }*/
+
+    /**
+     * Add pending completeness for channel
+     * @param EntityManager $em
+     */
+    protected function addPendingForChannels(EntityManager $em)
+    {
+        foreach ($this->newChannels as $channel) {
+            $pending = $em->getRepository('PimProductBundle:PendingCompleteness')->findOneBy(
+                array('channel' => $channel->getId(), 'locale' => null, 'family' => null)
+            );
+            if (!$pending) {
+                $pending = new PendingCompleteness();
+                $pending->setChannel($channel);
+                $em->persist($pending);
+            }
+        }
+        $this->newChannels = array();
+    }
+
+    /**
+     * Add pending completeness for locales
+     * @param EntityManager $em
+     */
+    protected function addPendingForLocales(EntityManager $em)
+    {
+        foreach ($this->newLocalesPerChannel as $data) {
+            $channel = $data['channel'];
+            $locale = $data['locale'];
+            $pending = $em->getRepository('PimProductBundle:PendingCompleteness')->findOneBy(
+                array('channel' => $channel->getId(), 'locale' => $locale->getId(), 'family' => null)
+            );
+            if (!$pending) {
+                $pending = new PendingCompleteness();
+                $pending->setChannel($channel);
+                $pending->setLocale($locale);
+                $em->persist($pending);
+            }
+        }
+        $this->newLocalesPerChannel = array();
+    }
+
+    /**
+     * Add pending completeness for locales
+     * @param EntityManager $em
+     */
+    protected function addPendingForFamilies(EntityManager $em)
+    {
+        foreach ($this->updatedFamilies as $family) {
+            $pending = $em->getRepository('PimProductBundle:PendingCompleteness')->findOneBy(
+                array('channel' => null, 'locale' => null, 'family' => $family->getId())
+            );
+            if (!$pending) {
+                $pending = new PendingCompleteness();
+                $pending->setFamily($family);
+                $em->persist($pending);
+            }
+        }
+        $this->updatedFamilies = array();
     }
 }
