@@ -213,26 +213,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
         $fieldsCollection->add($fieldUpdated);
 
-        $fieldCompleteness = new FieldDescription();
-        $fieldCompleteness->setName('completeness');
-        $fieldCompleteness->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Completeness'),
-                'field_name'  => 'completenesses',
-                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true
-            )
-        );
-        $fieldCompleteness->setProperty(
-            new TwigTemplateProperty(
-                $fieldCompleteness,
-                'PimProductBundle:Completeness:_completeness.html.twig'
-            )
-        );
-        $fieldsCollection->add($fieldCompleteness);
+        $field = $this->createCompletenessField();
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -333,6 +315,31 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $field;
     }
 
+    protected function createCompletenessField()
+    {
+        $fieldCompleteness = new FieldDescription();
+        $fieldCompleteness->setName('completeness');
+        $fieldCompleteness->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
+                'label'       => $this->translate('Completeness'),
+                'field_name'  => 'ratio',
+                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true
+            )
+        );
+        $fieldCompleteness->setProperty(
+            new TwigTemplateProperty(
+                $fieldCompleteness,
+                'PimProductBundle:Completeness:_completeness.html.twig'
+            )
+        );
+
+        return $fieldCompleteness;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -422,7 +429,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
+        $proxyQuery
+            ->addSelect('completenesses.ratio as ratio')
+            ->leftJoin($rootAlias .'.completenesses', 'completenesses')
+            ->innerJoin('completenesses.locale', 'locale', 'WITH', 'locale.code = :localeCode')
+            ->innerJoin('completenesses.channel', 'channel', 'WITH', 'channel.code = :channelCode');
+
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
 
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
