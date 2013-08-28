@@ -43,6 +43,35 @@ class YamlConverter implements QueryConverterInterface
             $qb->distinct((bool) $value['distinct']);
         }
 
+        if (isset($value['groupBy'])) {
+            $qb->groupBy($value['groupBy']);
+        }
+
+        if (isset($value['having'])) {
+            $qb->having($value['having']);
+        }
+
+        $this->addJoin($qb, $value);
+        $this->addWhere($qb, $value);
+        $this->addOrder($qb, $value);
+
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dump(QueryBuilder $input)
+    {
+        return '';
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $value
+     */
+    protected function addJoin(QueryBuilder $qb, $value)
+    {
         if (isset($value['join'])) {
             if (isset($value['join']['inner'])) {
                 foreach ((array) $value['join']['inner'] as $join) {
@@ -56,15 +85,14 @@ class YamlConverter implements QueryConverterInterface
                 }
             }
         }
+    }
 
-        if (isset($value['groupBy'])) {
-            $qb->groupBy($value['groupBy']);
-        }
-
-        if (isset($value['having'])) {
-            $qb->having($value['having']);
-        }
-
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $value
+     */
+    protected function addWhere(QueryBuilder $qb, $value)
+    {
         if (isset($value['where'])) {
             if (isset($value['where']['and'])) {
                 foreach ((array) $value['where']['and'] as $where) {
@@ -78,7 +106,14 @@ class YamlConverter implements QueryConverterInterface
                 }
             }
         }
+    }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $value
+     */
+    protected function addOrder(QueryBuilder $qb, $value)
+    {
         if (isset($value['orderBy'])) {
             $qb->resetDQLPart('orderBy');
 
@@ -86,15 +121,5 @@ class YamlConverter implements QueryConverterInterface
                 $qb->addOrderBy($order['column'], $order['dir']);
             }
         }
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dump(QueryBuilder $input)
-    {
-        return '';
     }
 }
