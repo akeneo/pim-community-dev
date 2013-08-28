@@ -89,7 +89,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openGroups(false)
             ->add()
             ->setName($this->newGroup['NAME'] . $randomPrefix)
-            ->setOwner('Default')
+            ->setOwner('Main')
             ->setRoles(array($this->newGroup['ROLE']))
             ->save()
             ->assertMessage('Group successfully saved')
