@@ -242,7 +242,7 @@ class ConfigFieldGridController extends Controller
         $configManager->persist($fieldConfig);
         $configManager->flush();
 
-        return new JsonResponse(array('message' => 'item was unremoved', 'successful' => true), Codes::HTTP_OK);
+        return new JsonResponse(array('message' => 'Item was removed.', 'successful' => true), Codes::HTTP_OK);
     }
 
     /**
