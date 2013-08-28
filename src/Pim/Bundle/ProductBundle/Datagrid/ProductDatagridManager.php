@@ -322,7 +322,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Completeness'),
+                'label'       => $this->translate('Completed'),
                 'field_name'  => 'completenesses',
                 'expression'  => 'pCompleteness',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
@@ -441,7 +441,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
         // prepare query for completeness
-        $this->prepareQueryForCompleteness($proxyQuery);
+        $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
@@ -468,7 +468,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * Prepare query for completeness field
      * @param ProxyQueryInterface $proxyQuery
      */
-    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery)
+    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
         $exprLocaleAndScope = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
         $exprFamilyIsNull   = $proxyQuery->expr()->isNull($rootAlias .'.family');
