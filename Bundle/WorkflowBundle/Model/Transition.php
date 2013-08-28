@@ -192,11 +192,12 @@ class Transition
     /**
      * Mark transition as start transition
      *
+     * @param boolean $start
      * @return Transition
      */
-    public function setStart()
+    public function setStart($start)
     {
-        $this->start = true;
+        $this->start = $start;
         return $this;
     }
 

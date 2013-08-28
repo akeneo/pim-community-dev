@@ -98,16 +98,15 @@ class TransitionAssembler extends AbstractAssembler
         }
         $stepTo = $steps[$stepToName];
         $transitionOptions = $this->getOption($options, 'options', array());
+        $isStart = $this->getOption($options, 'is_start', false);
 
         $transition = new Transition();
         $transition->setName($name)
             ->setLabel($options['label'])
             ->setStepTo($stepTo)
+            ->setStart($isStart)
             ->setOptions($transitionOptions);
 
-        if (!empty($options['is_start'])) {
-            $transition->setStart();
-        }
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);
             $transition->setCondition($condition);

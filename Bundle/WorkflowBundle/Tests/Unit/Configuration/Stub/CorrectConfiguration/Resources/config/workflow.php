@@ -3,14 +3,14 @@
 return array(
     'first_workflow' => array(
         'label' => 'First Workflow',
-        'enabled' => 1,
+        'enabled' => true,
         'start_step' => 'first_step',
         'steps' => array(
             'first_step' => array(
                 'label' => 'First Step',
                 'template' => 'My:Custom:template.html.twig',
                 'order' => 1,
-                'is_final' => 1,
+                'is_final' => true,
                 'form_type' => 'oro_workflow_step',
                 'form_options' => array(
                     'attribute_fields' => array(
