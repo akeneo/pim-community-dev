@@ -9,6 +9,7 @@ function($, _) {
      * @export oro/app
      */
     return {
+        /** @type {oro.Navigation|null} */
         hashNavigationInstance: null,
 
         /**
@@ -157,7 +158,7 @@ function($, _) {
          * @return {Boolean}
          */
         hashNavigationEnabled: function() {
-            return ((typeof this.Navigation != "undefined") && this.Navigation.prototype.enabled);
+            return Boolean(this.hashNavigationInstance);
         }
     };
 });

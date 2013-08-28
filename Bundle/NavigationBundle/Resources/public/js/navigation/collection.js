@@ -1,5 +1,14 @@
-var navigation = navigation || {};
+/* global define */
+define(['backbone', 'oro/navigation/model'],
+function(Backbone, NavigationModel) {
+    'use strict';
 
-navigation.ItemsList = Backbone.Collection.extend({
-    model: navigation.Item
-})
+    /**
+     * @export  oro/navigation/collection
+     * @class   oro.navigation.Collection
+     * @extends Backbone.Collection
+     */
+    return Backbone.Collection.extend({
+        model: NavigationModel
+    });
+});

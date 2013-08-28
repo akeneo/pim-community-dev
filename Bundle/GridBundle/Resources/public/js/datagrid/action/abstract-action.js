@@ -1,7 +1,7 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'oro/app', 'oro/translator', 'oro/mediator',
-    'oro/message', 'oro/error', 'oro/widget-manager', 'oro/bootstrap-modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, app, __, mediator, message, error, widgetManager, BootstrapModal, ActionLauncher) {
+    'oro/messenger', 'oro/error', 'oro/widget-manager', 'oro/bootstrap-modal', 'oro/datagrid/action-launcher'],
+function($, _, Backbone, routing, app, __, mediator, messenger, error, widgetManager, BootstrapModal, ActionLauncher) {
     'use strict';
 
     /**
@@ -201,9 +201,9 @@ function($, _, Backbone, routing, app, __, mediator, message, error, widgetManag
             this.datagrid.collection.fetch();
 
             var defaultMessage = data.successful ? this.messages.success : this.messages.error,
-                msg = data.message || defaultMessage;
-            if (msg) {
-                message.notificationFlashMessage(data.successful ? 'success' : 'error', msg);
+                message = data.message || defaultMessage;
+            if (message) {
+                messenger.notificationFlashMessage(data.successful ? 'success' : 'error', message);
             }
         },
 

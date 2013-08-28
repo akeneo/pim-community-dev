@@ -1,7 +1,9 @@
 <script type="text/javascript">
-    $(function() {
-        if (Oro.hashNavigationEnabled()) {
-            Oro.hashNavigationInstance = new Oro.Navigation({
+    require(['backbone', 'oro/app', 'oro/navigation'],
+    function(Backbone, app, Navigation){
+        if (app.hashNavigationEnabled()) {
+            /** @type {oro.Navigation} */
+            app.hashNavigationInstance = new Navigation({
                 baseUrl :  '{{ app.request.getSchemeAndHttpHost() }}',
                 headerId : '{{ oro_hash_navigation_header() }}'
             });
@@ -9,5 +11,5 @@
                 Backbone.history.start();
             }
         }
-    })
+    });
 </script>

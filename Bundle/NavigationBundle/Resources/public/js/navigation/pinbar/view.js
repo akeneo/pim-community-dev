@@ -1,313 +1,324 @@
-var navigation = navigation || {};
-navigation.pinbar = navigation.pinbar || {};
-
-navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
-    options: {
-        maxItems: 10,
-        tabTitle: 'Pinbar',
-        tabIcon: 'icon-folder-close',
-        el: '.pin-bar',
-        listBar: '.list-bar',
-        minimizeButton: '.top-action-box .minimize-button',
-        defaultUrl: '/',
-        tabId: 'pinbar',
-        collection: null
-    },
-
-    requireCleanup: true,
-    massAdd: false,
-
-    templates: {
-        noItemsMessage: _.template($("#template-no-pins-message").html())
-    },
-
-    initialize: function() {
-        this.$listBar = this.getBackboneElement(this.options.listBar);
-        this.$minimizeButton = Backbone.$(this.options.minimizeButton);
-        this.$icon = this.$minimizeButton.find('i');
-
-        if (!this.options.collection) {
-            this.options.collection = new navigation.pinbar.ItemsList();
-        }
-
-        this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
-        this.listenTo(this.options.collection, 'remove', this.onPageClose);
-        this.listenTo(this.options.collection, 'reset', this.addAll);
-        this.listenTo(this.options.collection, 'all', this.render);
-
-        this.listenTo(this.options.collection, 'positionChange', this.renderItem);
-        this.listenTo(this.options.collection, 'stateChange', this.handleItemStateChange);
-        this.listenTo(this.options.collection, 'urlChange', this.renderItem);
-
-        /**
-         * Changing pinbar state after grid is loaded
-         */
-        Oro.Events.bind(
-            "grid_load:complete",
-            this.updatePinbarState,
-            this
-        );
-
-        /**
-         * Change pinbar icon state after hash navigation request is completed
-         */
-        Oro.Events.bind(
-            "hash_navigation_request:complete",
-            this.checkPinbarIcon,
-            this
-        );
-
-        this.$minimizeButton.click(_.bind(this.minimizePage, this));
-
-        this.registerTab();
-        this.cleanup();
-        this.render();
-    },
-
-    resetCollection: _.bind(this.options.collection, this.options.collection.reset),
+/* jshint browser:true */
+/* global define */
+define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/navigation/abstract-view',
+    'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
+function($, _, Backbone, app, mediator, AbstractView,
+    PinbarItemView, PinbarCollection, PinbarModel) {
+    'use strict';
 
     /**
-     * Get backbone DOM element
-     *
-     * @param el
-     * @return {*}
+     * @export  oro/navigation/pinbar/view
+     * @class   oro.navigation.pinbar.View
+     * @extends oro.navigation.AbstractView
      */
-    getBackboneElement: function(el) {
-        return el instanceof Backbone.$ ? el : this.$(el);
-    },
+    return AbstractView.extend({
+        options: {
+            maxItems: 10,
+            tabTitle: 'Pinbar',
+            tabIcon: 'icon-folder-close',
+            el: '.pin-bar',
+            listBar: '.list-bar',
+            minimizeButton: '.top-action-box .minimize-button',
+            defaultUrl: '/',
+            tabId: 'pinbar',
+            collection: null
+        },
 
-    /**
-     * Handle item minimize/maximize state change
-     *
-     * @param item
-     */
-    handleItemStateChange: function(item) {
-        if (!this.massAdd) {
-            var url = null;
-            var changeLocation = item.get('maximized');
-            if (changeLocation) {
-                url = item.get('url');
+        requireCleanup: true,
+        massAdd: false,
+
+        templates: {
+            noItemsMessage: _.template($("#template-no-pins-message").html())
+        },
+
+        initialize: function() {
+            this.$listBar = this.getBackboneElement(this.options.listBar);
+            this.$minimizeButton = Backbone.$(this.options.minimizeButton);
+            this.$icon = this.$minimizeButton.find('i');
+
+            if (!this.options.collection) {
+                this.options.collection = new PinbarCollection();
             }
-            if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
-                if (Oro.hashNavigationEnabled() && changeLocation) {
-                    Oro.hashNavigationInstance.setLocation(url, {useCache: true});
+
+            this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
+            this.listenTo(this.options.collection, 'remove', this.onPageClose);
+            this.listenTo(this.options.collection, 'reset', this.addAll);
+            this.listenTo(this.options.collection, 'all', this.render);
+
+            this.listenTo(this.options.collection, 'positionChange', this.renderItem);
+            this.listenTo(this.options.collection, 'stateChange', this.handleItemStateChange);
+            this.listenTo(this.options.collection, 'urlChange', this.renderItem);
+
+            /**
+             * Changing pinbar state after grid is loaded
+             */
+            mediator.bind(
+                "grid_load:complete",
+                this.updatePinbarState,
+                this
+            );
+
+            /**
+             * Change pinbar icon state after hash navigation request is completed
+             */
+            mediator.bind(
+                "hash_navigation_request:complete",
+                this.checkPinbarIcon,
+                this
+            );
+
+            this.$minimizeButton.click(_.bind(this.minimizePage, this));
+
+            this.registerTab();
+            this.cleanup();
+            this.render();
+        },
+
+        resetCollection: _.bind(this.options.collection, this.options.collection.reset),
+
+        /**
+         * Get backbone DOM element
+         *
+         * @param el
+         * @return {*}
+         */
+        getBackboneElement: function(el) {
+            return el instanceof Backbone.$ ? el : this.$(el);
+        },
+
+        /**
+         * Handle item minimize/maximize state change
+         *
+         * @param item
+         */
+        handleItemStateChange: function(item) {
+            if (!this.massAdd) {
+                var url = null;
+                var changeLocation = item.get('maximized');
+                if (changeLocation) {
+                    url = item.get('url');
                 }
-                item.save(
-                    null,
-                    {
-                        wait: true,
-                        success: _.bind(function () {
-                            this.checkPinbarIcon();
-                            if (!Oro.hashNavigationEnabled() && changeLocation) {
-                                window.location.href = url;
-                            }
-                        }, this)
+                if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
+                    if (app.hashNavigationEnabled() && changeLocation) {
+                        app.hashNavigationInstance.setLocation(url, {useCache: true});
                     }
-                );
+                    item.save(
+                        null,
+                        {
+                            wait: true,
+                            success: _.bind(function () {
+                                this.checkPinbarIcon();
+                                if (!app.hashNavigationEnabled() && changeLocation) {
+                                    window.location.href = url;
+                                }
+                            }, this)
+                        }
+                    );
+                }
             }
-        }
-    },
+        },
 
-    checkPinbarIcon: function() {
-        if (this.getItemForCurrentPage().length) {
-            this.activate();
-        } else {
-            this.inactivate();
-        }
-    },
+        checkPinbarIcon: function() {
+            if (this.getItemForCurrentPage().length) {
+                this.activate();
+            } else {
+                this.inactivate();
+            }
+        },
 
-    /**
-     * Handle page close
-     */
-    onPageClose: function(item) {
-        this.checkPinbarIcon();
-        this.reorder();
-    },
+        /**
+         * Handle page close
+         */
+        onPageClose: function(item) {
+            this.checkPinbarIcon();
+            this.reorder();
+        },
 
-    /**
-     * Handle minimize page.
-     *
-     * @param e
-     */
-    minimizePage: function(e) {
-        Oro.Events.trigger('pinbar_item_minimized');
-        this.updatePinbarState();
-        var pinnedItem = this.getItemForCurrentPage(true);
-        if (pinnedItem.length) {
-            _.each(pinnedItem, function(item) {
-                item.set('maximized', false);
-            }, this);
-        } else {
-            var newItem = this.getNewItemData(Backbone.$(e.currentTarget));
-            newItem.url = this.cleanupUrl(newItem.url);
-            var currentItem = new navigation.pinbar.Item(newItem);
-            this.options.collection.unshift(currentItem);
-            this.handleItemStateChange(currentItem);
-        }
-    },
-
-    /**
-     *  Update current page item state to use new url
-     */
-    updatePinbarState: function() {
-        if (Oro.hashNavigationEnabled() && Oro.hashNavigationInstance.useCache) {
+        /**
+         * Handle minimize page.
+         *
+         * @param e
+         */
+        minimizePage: function(e) {
+            mediator.trigger('pinbar_item_minimized');
+            this.updatePinbarState();
             var pinnedItem = this.getItemForCurrentPage(true);
             if (pinnedItem.length) {
-                 var hashUrl = Oro.hashNavigationInstance.getHashUrl(true, true);
-                 _.each(pinnedItem, function(item) {
-                     if (item.get('url') !== hashUrl) {
-                         item.set('url', hashUrl);
-                         item.save();
-                     }
-                 }, this);
+                _.each(pinnedItem, function(item) {
+                    item.set('maximized', false);
+                }, this);
+            } else {
+                var newItem = this.getNewItemData(Backbone.$(e.currentTarget));
+                newItem.url = this.cleanupUrl(newItem.url);
+                var currentItem = new PinbarModel(newItem);
+                this.options.collection.unshift(currentItem);
+                this.handleItemStateChange(currentItem);
             }
-        }
-    },
+        },
 
-    /**
-     * Handle click on page close button
-     */
-    closePage: function()
-    {
-        var pinnedItem = this.getItemForCurrentPage(true);
-        if (pinnedItem.length) {
-            _.each(pinnedItem, function(item) {item.destroy({wait: true});});
-        }
-    },
+        /**
+         *  Update current page item state to use new url
+         */
+        updatePinbarState: function() {
+            if (app.hashNavigationEnabled() && app.hashNavigationInstance.useCache) {
+                var pinnedItem = this.getItemForCurrentPage(true);
+                if (pinnedItem.length) {
+                     var hashUrl = app.hashNavigationInstance.getHashUrl(true, true);
+                     _.each(pinnedItem, function(item) {
+                         if (item.get('url') !== hashUrl) {
+                             item.set('url', hashUrl);
+                             item.save();
+                         }
+                     }, this);
+                }
+            }
+        },
 
-    /**
-     * Mass add items
-     */
-    addAll: function() {
-        this.massAdd = true;
-        this.markCurrentPageMaximized();
-        this.options.collection.each(this.setItemPosition, this);
-        this.massAdd = false;
-    },
+        /**
+         * Handle click on page close button
+         */
+        closePage: function()
+        {
+            var pinnedItem = this.getItemForCurrentPage(true);
+            if (pinnedItem.length) {
+                _.each(pinnedItem, function(item) {item.destroy({wait: true});});
+            }
+        },
 
-    /**
-     * Mark current page as maximized to be able to minimize.
-     */
-    markCurrentPageMaximized: function()
-    {
-        var currentPageItems = this.getItemForCurrentPage(true);
-        if (currentPageItems.length) {
-            _.each(currentPageItems, function(item) {
-                item.set('maximized', new Date().toISOString());
+        /**
+         * Mass add items
+         */
+        addAll: function() {
+            this.massAdd = true;
+            this.markCurrentPageMaximized();
+            this.options.collection.each(this.setItemPosition, this);
+            this.massAdd = false;
+        },
+
+        /**
+         * Mark current page as maximized to be able to minimize.
+         */
+        markCurrentPageMaximized: function()
+        {
+            var currentPageItems = this.getItemForCurrentPage(true);
+            if (currentPageItems.length) {
+                _.each(currentPageItems, function(item) {
+                    item.set('maximized', new Date().toISOString());
+                });
+            }
+        },
+
+        /**
+         * Set item position if given or reorder items.
+         *
+         * @param {oro.navigation.pinbar.Model} item
+         * @param {number} position
+         */
+        setItemPosition: function(item, position) {
+            if (_.isUndefined(position)) {
+                this.reorder();
+            } else {
+                item.set({position: position});
+            }
+        },
+
+        /**
+         * Change position property of model based on current order
+         */
+        reorder: function() {
+            this.options.collection.each(function(item, position) {
+                item.set({position: position});
             });
-        }
-    },
+        },
 
-    /**
-     * Set item position if given or reorder items.
-     *
-     * @param {navigation.pinbar.Item} item
-     * @param {Integer} position
-     */
-    setItemPosition: function(item, position) {
-        if (_.isUndefined(position)) {
-            this.reorder();
-        } else {
-            item.set({position: position});
-        }
-    },
+        activate: function() {
+            this.$icon.addClass('icon-gold');
+        },
 
-    /**
-     * Change position property of model based on current order
-     */
-    reorder: function() {
-        this.options.collection.each(function(item, position) {
-            item.set({position: position});
-        });
-    },
+        inactivate: function() {
+            this.$icon.removeClass('icon-gold');
+        },
 
-    activate: function() {
-        this.$icon.addClass('icon-gold');
-    },
+        /**
+         * Choose container and add item to it.
+         *
+         * @param {oro.navigation.pinbar.Model} item
+         */
+        renderItem: function(item) {
+            var position = item.get('position');
+            var type = position >= this.options.maxItems ? 'tab': 'list';
 
-    inactivate: function() {
-        this.$icon.removeClass('icon-gold');
-    },
+            if (item.get('display_type') != type) {
+                this.cleanup();
+                item.set('display_type', type);
 
-    /**
-     * Choose container and add item to it.
-     *
-     * @param {navigation.pinbar.Item} item
-     */
-    renderItem: function(item) {
-        var position = item.get('position');
-        var type = position >= this.options.maxItems ? 'tab': 'list';
+                var view = new PinbarItemView({
+                    type: type,
+                    model: item
+                });
 
-        if (item.get('display_type') != type) {
-            this.cleanup();
-            item.set('display_type', type);
+                if (type == 'tab') {
+                    this.addItemToTab(view, !this.massAdd);
+                    /**
+                     * Backbone event. Fired when tab is changed
+                     * @event tab:changed
+                     */
+                    mediator.trigger("tab:changed", this.options.tabId);
+                } else {
+                    var rowEl = view.render().el;
+                    if (this.massAdd || position > 0) {
+                        this.$listBar.append(rowEl);
+                    } else {
+                        this.$listBar.prepend(rowEl);
+                    }
+                }
+            }
+        },
 
-            var view = new navigation.pinbar.ItemView({
-                type: type,
-                model: item
-            });
+        /**
+         * Checks if pinbar tab in 3 dots menu is used
+         *
+         * @return {Boolean}
+         */
+        needPinbarTab: function() {
+            return (this.options.collection.length > this.options.maxItems);
+        },
 
-            if (type == 'tab') {
-                this.addItemToTab(view, !this.massAdd);
+        /**
+         * Clean up all pinbar items from menus
+         */
+        cleanup: function()
+        {
+            if (this.requireCleanup) {
+                this.$listBar.empty();
+                this.cleanupTab();
+                this.requireCleanup = false;
+            }
+        },
+
+        /**
+         * Renders pinbar empty message if no items
+         * Show/hide tabs section in ... menu on each event
+         */
+        render: function() {
+            if (!this.massAdd) {
+                if (this.options.collection.length == 0) {
+                    this.requireCleanup = true;
+                    this.$listBar.html(this.templates.noItemsMessage());
+                    /**
+                     * Backbone event. Fired when pinbar help link is shown
+                     * @event pinbar_help:shown
+                     */
+                    mediator.trigger("pinbar_help:shown");
+                }
+
+                this.checkTabContent();
                 /**
                  * Backbone event. Fired when tab is changed
                  * @event tab:changed
                  */
-                Oro.Events.trigger("tab:changed", this.options.tabId);
-            } else {
-                var rowEl = view.render().el;
-                if (this.massAdd || position > 0) {
-                    this.$listBar.append(rowEl);
-                } else {
-                    this.$listBar.prepend(rowEl);
-                }
+                mediator.trigger("tab:changed", this.options.tabId);
             }
         }
-    },
-
-    /**
-     * Checks if pinbar tab in 3 dots menu is used
-     *
-     * @return {Boolean}
-     */
-    needPinbarTab: function() {
-        return (this.options.collection.length > this.options.maxItems);
-    },
-
-    /**
-     * Clean up all pinbar items from menus
-     */
-    cleanup: function()
-    {
-        if (this.requireCleanup) {
-            this.$listBar.empty();
-            this.cleanupTab();
-            this.requireCleanup = false;
-        }
-    },
-
-    /**
-     * Renders pinbar empty message if no items
-     * Show/hide tabs section in ... menu on each event
-     */
-    render: function() {
-        if (!this.massAdd) {
-            if (this.options.collection.length == 0) {
-                this.requireCleanup = true;
-                this.$listBar.html(this.templates.noItemsMessage());
-                /**
-                 * Backbone event. Fired when pinbar help link is shown
-                 * @event pinbar_help:shown
-                 */
-                Oro.Events.trigger("pinbar_help:shown");
-            }
-
-            this.checkTabContent();
-            /**
-             * Backbone event. Fired when tab is changed
-             * @event tab:changed
-             */
-            Oro.Events.trigger("tab:changed", this.options.tabId);
-        }
-    }
+    });
 });

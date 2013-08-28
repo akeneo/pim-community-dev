@@ -69,7 +69,7 @@ function(_, Backbone) {
         });
 
     /**
-     * @export oro/message
+     * @export oro/messenger
      */
     return {
         notificationMessage: function(type, message, options) {
