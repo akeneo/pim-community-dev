@@ -1,5 +1,5 @@
 /* global define */
-define(['underscore', 'oro/filter-list'],
+define(['underscore', 'oro/datafilter/list'],
 function(_, FilterList) {
     'use strict';
 

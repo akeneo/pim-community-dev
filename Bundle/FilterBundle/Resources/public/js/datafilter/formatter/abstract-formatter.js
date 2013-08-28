@@ -1,43 +1,47 @@
-var Oro = Oro || {};
-Oro.Filter = Oro.Filter || {};
-
-/**
- Just a convenient class for interested parties to subclass.
-
- The default Cell classes don't require the formatter to be a subclass of
- Formatter as long as the fromRaw(rawData) and toRaw(formattedData) methods
- are defined.
-
- @abstract
- @class Oro.Filter.Formatter
- @constructor
- */
-Oro.Filter.Formatter = function () {};
-_.extend(Oro.Filter.Formatter.prototype, {
+/* global define */
+define(function() {
+    'use strict';
 
     /**
-     Takes a raw value from a model and returns a formatted string for display.
-
-     @member Oro.Filter.Formatter
-     @param {*} rawData
-     @return {string}
+     * Just a convenient class for interested parties to subclass.
+     *
+     * The default Cell classes don't require the formatter to be a subclass of
+     * Formatter as long as the fromRaw(rawData) and toRaw(formattedData) methods
+     * are defined.
+     *
+     * @abstract
+     * @export  oro/datafilter/abstract-formatter
+     * @class   oro.datafilter.AbstractFormatter
      */
-    fromRaw: function (rawData) {
-        return rawData;
-    },
+    var AbstractFormatter = function() {};
 
-    /**
-     Takes a formatted string, usually from user input, and returns a
-     appropriately typed value for persistence in the model.
+    AbstractFormatter.prototype = {
+        /**
+         * Takes a raw value from a model and returns a formatted string for display.
+         *
+         * @memberOf oro.datafilter.AbstractFormatter
+         * @param {*} rawData
+         * @return {string}
+         */
+        fromRaw: function(rawData) {
+            return rawData;
+        },
 
-     If the user input is invalid or unable to be converted to a raw value
-     suitable for persistence in the model, toRaw must return `undefined`.
+        /**
+         * Takes a formatted string, usually from user input, and returns a
+         * appropriately typed value for persistence in the model.
+         *
+         * If the user input is invalid or unable to be converted to a raw value
+         * suitable for persistence in the model, toRaw must return `undefined`.
+         *
+         * @memberOf oro.datafilter.AbstractFormatter
+         * @param {string} formattedData
+         * @return {*|undefined}
+         */
+        toRaw: function(formattedData) {
+            return formattedData;
+        }
+    };
 
-     @member Oro.Filter.Formatter
-     @param {string} formattedData
-     @return {*|undefined}
-     */
-    toRaw: function (formattedData) {
-        return formattedData;
-    }
+    return AbstractFormatter;
 });

@@ -1,24 +1,17 @@
-/* jshint browser:true */
-(function (factory) {
-    "use strict";
-    /* global define, Oro, jQuery, _, Backbone */
-    if (typeof define === 'function' && define.amd) {
-        define(['Oro', 'jQuery', '_', 'Backbone', 'OroFilterSelectFilter'], factory);
-    } else {
-        factory(Oro, jQuery, _, Backbone, Oro.Filter.SelectFilter);
-    }
-}(function (Oro, $, _, Backbone, SelectFilter) {
-    "use strict";
-    Oro.Filter = Oro.Filter || {};
+/* global define */
+define(['underscore', 'backbone', 'oro/datafilter/select-filter'],
+function(_, Backbone, SelectFilter) {
+    'use strict';
 
     /**
      * Fetches information of rows selection
      * and implements filter by selected/Not selected rows
      *
-     * @class   Oro.Filter.SelectRowFilter
-     * @extends Oro.Filter.SelectFilter
+     * @export  oro/datafilter/select-row-filter
+     * @class   oro.datafilter.SelectRowFilter
+     * @extends oro.datafilter.SelectFilter
      */
-    Oro.Filter.SelectRowFilter = SelectFilter.extend({
+    return SelectFilter.extend({
 
         /**
          * Fetches raw format value on getting current value
@@ -69,7 +62,7 @@
         /**
          * Fetches selection of grid rows
          * Triggers an event 'backgrid:getSelected' on collection to get selected rows.
-         * Oro.Datagrid.Cell.SelectAllHeaderCell listening to this event and
+         * oro.datagrid.SelectAllHeaderCell is listening to this event and
          * fills in a passes flat object with selection information
          *
          * @returns {Object}
@@ -108,6 +101,4 @@
             );
         }
     });
-
-    return Oro.Filter.SelectRowFilter;
-}));
+});
