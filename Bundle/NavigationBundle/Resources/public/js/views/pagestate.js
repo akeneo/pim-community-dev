@@ -172,7 +172,3 @@ Oro.PageState.View = Backbone.View.extend({
         return base64_encode(url.pathname + (params != '' ? '?' + params.join('&') : ''));
     }
 });
-
-$(function() {
-    Oro.pagestate = new Oro.PageState.View({ model: new Oro.PageState.Model });
-});

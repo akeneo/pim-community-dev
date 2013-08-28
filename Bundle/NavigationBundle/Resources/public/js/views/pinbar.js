@@ -11,7 +11,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         minimizeButton: '.top-action-box .minimize-button',
         defaultUrl: '/',
         tabId: 'pinbar',
-        collection: navigation.pinbar.Items
+        collection: null
     },
 
     requireCleanup: true,
@@ -25,6 +25,10 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.$listBar = this.getBackboneElement(this.options.listBar);
         this.$minimizeButton = Backbone.$(this.options.minimizeButton);
         this.$icon = this.$minimizeButton.find('i');
+
+        if (!this.options.collection) {
+            this.options.collection = new navigation.pinbar.ItemsList();
+        }
 
         this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
         this.listenTo(this.options.collection, 'remove', this.onPageClose);
@@ -59,6 +63,8 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
         this.cleanup();
         this.render();
     },
+
+    resetCollection: _.bind(this.options.collection, this.options.collection.reset),
 
     /**
      * Get backbone DOM element

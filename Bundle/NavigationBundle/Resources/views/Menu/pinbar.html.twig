@@ -28,7 +28,7 @@
             var pinbarView = new navigation.pinbar.MainView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'defaultUrl'], options) -}});
             Oro.Registry.setElement('pinbar_view', pinbarView);
             {% if pinbarItems is defined %}
-            navigation.pinbar.Items.reset({{ pinbarItems|json_encode|raw }});
+            pinbarView.resetCollection({{ pinbarItems|json_encode|raw }});
             {% endif %}
         });
     </script>

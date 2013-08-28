@@ -22,5 +22,3 @@ navigation.pinbar.ItemsList = navigation.ItemsList.extend({
         this.trigger('urlChange', item);
     }
 });
-
-navigation.pinbar.Items = new navigation.pinbar.ItemsList();

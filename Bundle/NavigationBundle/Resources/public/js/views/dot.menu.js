@@ -168,8 +168,3 @@ navigation.dotMenu.MainView = Backbone.View.extend({
         return false;
     }
 });
-
-$(function() {
-    window.navigation.dotMenu.MainViewInstance = new navigation.dotMenu.MainView();
-});
-

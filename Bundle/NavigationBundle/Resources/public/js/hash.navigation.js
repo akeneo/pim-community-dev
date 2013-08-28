@@ -134,7 +134,7 @@ Oro.Navigation = Backbone.Router.extend({
     beforeDefaultAction: function() {
         //reset pagestate restore flag in case we left the page
         if (this.url !== this.getHashUrl(false, true)) {
-            Oro.pagestate.needServerRestore = true;
+            this.pagestate.needServerRestore = true;
         }
     },
 
@@ -162,6 +162,10 @@ Oro.Navigation = Backbone.Router.extend({
      * @param options
      */
     initialize: function(options) {
+        this.pagestate = new Oro.PageState.View({
+            model: new Oro.PageState.Model()
+        });
+
         for (var selector in this.selectors) if (this.selectors.hasOwnProperty(selector)) {
             this.selectorCached[selector] = $(this.selectors[selector]);
         }
@@ -263,9 +267,9 @@ Oro.Navigation = Backbone.Router.extend({
             formState = cacheData.states.getObjectCache('form');
         }
         if (formState['form_data'] && formState['form_data'].length) {
-            Oro.pagestate.updateState(formState['form_data']);
-            Oro.pagestate.restore();
-            Oro.pagestate.needServerRestore = false;
+            this.pagestate.updateState(formState['form_data']);
+            this.pagestate.restore();
+            this.pagestate.needServerRestore = false;
         }
     },
 

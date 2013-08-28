@@ -14,7 +14,9 @@ navigation.favorites.MainView = navigation.MainViewAbstract.extend({
     },
 
     initialize: function() {
-        this.options.collection = new navigation.ItemsList();
+        if (!this.options.collection) {
+            this.options.collection = new navigation.ItemsList();
+        }
 
         this.listenTo(this.getCollection(), 'add', this.addItemToTab);
         this.listenTo(this.getCollection(), 'reset', this.addAll);

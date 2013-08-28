@@ -9,12 +9,16 @@ navigation.MainViewAbstract = Backbone.View.extend({
         collection: null
     },
 
+    initialize: function() {
+        this.dotMenu = new navigation.dotMenu.MainView();
+    },
+
     getCollection: function() {
         return this.options.collection;
     },
 
     registerTab: function() {
-        navigation.dotMenu.MainViewInstance.addTab({
+        this.dotMenu.addTab({
             key: this.options.tabId,
             title: this.options.tabTitle,
             icon: this.options.tabIcon,
@@ -88,16 +92,16 @@ navigation.MainViewAbstract = Backbone.View.extend({
     },
 
     cleanupTab: function() {
-        navigation.dotMenu.MainViewInstance.cleanup(this.options.tabId);
-        navigation.dotMenu.MainViewInstance.hideTab(this.options.tabId);
+        this.dotMenu.cleanup(this.options.tabId);
+        this.dotMenu.hideTab(this.options.tabId);
     },
 
     addItemToTab: function(item, prepend) {
-        navigation.dotMenu.MainViewInstance.addTabItem(this.options.tabId, item, prepend);
+        this.dotMenu.addTabItem(this.options.tabId, item, prepend);
     },
 
     checkTabContent: function() {
-        navigation.dotMenu.MainViewInstance.checkTabContent(this.options.tabId);
+        this.dotMenu.checkTabContent(this.options.tabId);
     },
 
     render: function() {
