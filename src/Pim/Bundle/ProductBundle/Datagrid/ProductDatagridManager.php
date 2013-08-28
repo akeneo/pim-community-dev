@@ -210,6 +210,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldUpdated);
+
+        $fieldCompleteness = new FieldDescription();
+        $fieldCompleteness->setName('completeness');
+        $fieldCompleteness->setOptions(
+            array(
+                'type'        => false,//FieldDescriptionInterface::TYPE_INTEGER,
+                'label'       => $this->translate('Completeness'),
+                'field_name'  => 'completenesses',
+                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'show_column' => false
+            )
+        );
+        $fieldsCollection->add($fieldCompleteness);
     }
 
     /**
