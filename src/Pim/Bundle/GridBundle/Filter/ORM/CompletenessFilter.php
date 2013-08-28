@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\GridBundle\Filter\ORM\BooleanFilter;
 
 /**
- * Overriding of boolean filter
+ * Overriding of boolean filter to filter by the product completeness
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
