@@ -10,8 +10,8 @@ interface QueryConverterInterface
     /**
      * Parses a YAML string to a QueryBuilder object.
      *
-     * @param  string|array  $value A YAML string or structured associative array
-     * @param  EntityManager $em    Entity manager used to create QueryBuilder
+     * @param  string|array      $value A YAML string or structured associative array
+     * @param  EntityManager     $em    Entity manager used to create QueryBuilder
      * @return QueryBuilder
      * @throws \RuntimeException If the YAML is not valid
      */

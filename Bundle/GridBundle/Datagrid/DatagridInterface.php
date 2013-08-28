@@ -73,30 +73,30 @@ interface DatagridInterface
 
     /**
      * @param FilterInterface $filter
-     * @param boolean $prepend
+     * @param boolean         $prepend
      */
     public function addFilter(FilterInterface $filter, $prepend = false);
 
     /**
-     * @param PropertyInterface $property
+     * @param  PropertyInterface $property
      * @return void
      */
     public function addProperty(PropertyInterface $property);
 
     /**
-     * @param SorterInterface $sorter
+     * @param  SorterInterface $sorter
      * @return void
      */
     public function addSorter(SorterInterface $sorter);
 
     /**
-     * @param ActionInterface $action
+     * @param  ActionInterface $action
      * @return void
      */
     public function addRowAction(ActionInterface $action);
 
     /**
-     * @param MassActionInterface $action
+     * @param  MassActionInterface $action
      * @return void
      */
     public function addMassAction(MassActionInterface $action);
@@ -117,7 +117,7 @@ interface DatagridInterface
     public function getMassActions();
 
     /**
-     * @param string $name
+     * @param  string               $name
      * @return null|SorterInterface
      */
     public function getSorter($name);
@@ -206,7 +206,7 @@ interface DatagridInterface
      * Set identifier field
      *
      * @return FieldDescriptionInterface
-     * @throws \RuntimeException If there is no identifier field
+     * @throws \RuntimeException         If there is no identifier field
      */
     public function getIdentifierField();
 }
