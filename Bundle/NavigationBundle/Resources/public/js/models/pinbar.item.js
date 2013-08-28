@@ -8,6 +8,7 @@ navigation.pinbar.Item = navigation.Item.extend({
         position: null,
         type: 'pinbar',
         display_type: null,
-        maximized: false
+        maximized: false,
+        remove: false
     }
 });

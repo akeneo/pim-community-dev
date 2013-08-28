@@ -20,6 +20,7 @@ OroMapView.googlemaps = Backbone.View.extend({
             .appendTo(this.$el);
         this.$unknownAddress = Backbone.$('<div class="map-unknown">' + _.__('map.unknown.location') + '</div>')
             .appendTo(this.$el);
+        this.mapLocationUnknown();
     },
 
     _initMapOptions: function() {
