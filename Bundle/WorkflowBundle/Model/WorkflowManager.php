@@ -82,7 +82,7 @@ class WorkflowManager
      * @param string $workflowName
      * @param string|null $entityClass
      * @param mixed|null $entityId
-     * @return array
+     * @return Collection
      */
     public function getAllowedStartTransitions($workflowName, $entityClass = null, $entityId = null)
     {
@@ -90,6 +90,17 @@ class WorkflowManager
         $initData = $this->getWorkflowData($workflow, $entityClass, $entityId);
 
         return $workflow->getAllowedStartTransitions($initData);
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @return Collection
+     */
+    public function getAllowedTransitions(WorkflowItem $workflowItem)
+    {
+        $workflow = $this->workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
+
+        return $workflow->getAllowedTransitions($workflowItem);
     }
 
     /**
@@ -169,9 +180,7 @@ class WorkflowManager
     public function getApplicableWorkflows($entity, $workflowItems = null)
     {
         if (null === $workflowItems) {
-            /** @var WorkflowItemRepository $workflowItemsRepository */
-            $workflowItemsRepository = $this->doctrine->getRepository('OroWorkflowBundle:WorkflowItem');
-            $workflowItems = $workflowItemsRepository->findWorkflowItemsByEntity($entity);
+            $workflowItems = $this->getWorkflowItemsByEntity($entity);
         }
 
         $usedWorkflows = array();
@@ -200,5 +209,19 @@ class WorkflowManager
         }
 
         return $applicableWorkflows;
+    }
+
+    /**
+     * Get workflow items for entity.
+     *
+     * @param object $entity
+     * @return array
+     */
+    public function getWorkflowItemsByEntity($entity)
+    {
+        /** @var WorkflowItemRepository $workflowItemsRepository */
+        $workflowItemsRepository = $this->doctrine->getRepository('OroWorkflowBundle:WorkflowItem');
+
+        return $workflowItemsRepository->findWorkflowItemsByEntity($entity);
     }
 }

@@ -382,4 +382,28 @@ class Workflow
 
         return $this->transitionManager->getAllowedStartTransitions($workflowItem);
     }
+
+    /**
+     * Get allowed transitions for existing workflow item.
+     *
+     * @param WorkflowItem $workflowItem
+     * @return Collection
+     * @throws UnknownStepException
+     */
+    public function getAllowedTransitions(WorkflowItem $workflowItem)
+    {
+        $currentStepName = $workflowItem->getCurrentStepName();
+        $currentStep = $this->getStep($currentStepName);
+        if (!$currentStep) {
+            throw new UnknownStepException($currentStepName);
+        }
+        $transitionNames = $currentStep->getAllowedTransitions();
+        $allowedTransitions = array();
+        foreach ($transitionNames as $transitionName) {
+            if ($this->isTransitionAllowed($workflowItem, $transitionName)) {
+                $allowedTransitions[] = $this->getTransition($transitionName);
+            }
+        }
+        return new ArrayCollection($allowedTransitions);
+    }
 }
