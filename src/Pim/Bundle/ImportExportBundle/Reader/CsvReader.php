@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 use Pim\Bundle\ProductBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
@@ -13,11 +14,12 @@ use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Assert\Callback(groups={"Execution"}, methods={"isFilePathValid"})
  */
 class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     /**
-     * @Assert\NotBlank(groups={"Execution"})
      * @PimAssert\File(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
@@ -50,6 +52,18 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      * @var SplFileObject
      */
     private $csv;
+
+    /**
+     * Apply NotBlank constraint to filePath if file upload is not allowed
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function isFilePathValid(ExecutionContextInterface $context)
+    {
+        if ($this->allowUpload === false && empty($this->filePath)) {
+            $context->addViolationAt('filePath', 'This value should not be blank.');
+        }
+    }
 
     /**
      * Set file path
