@@ -1,7 +1,10 @@
 .filter-item {
     padding-left: 5px;
 }
-
+.filter-box .btn-group [class^='icon-'] {
+  padding-top:2px;
+  vertical-align:middle;
+}
 .filter-box .filter-item .disable-filter {
     background-color: #F5F5F5;
     border-bottom-right-radius: 4px;
@@ -19,7 +22,7 @@
 
 .filter-box .filter-select {
     padding-right: 4px;
-    height: 28px;
+    height: 29px;
 }
 
 .filter-box .filter-select .disable-filter {
@@ -84,8 +87,9 @@
     color: #ffffff;
 }
 .ui-multiselect-single .ui-multiselect-checkboxes label {
-  line-height:1.35em;
+  line-height:20px;
 }
+.ui-multiselect-menu.select-filter-widget { padding:0 0 2px 0; }
 .ui-multiselect-menu.select-filter-widget input[type="search"] {
     margin: 0;
 }

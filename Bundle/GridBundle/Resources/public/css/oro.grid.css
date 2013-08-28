@@ -3,13 +3,17 @@ table.grid thead th > span {
     text-transform: uppercase;
 }
 
-table.grid thead th span.caret {
-    display: none;
-    border: none;
+table.grid thead th {
+  span.caret {
+    /*display: none;
+    border: none;*/
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
+  }
 }
-
+.grid thead .btn-group .btn .caret {
+  margin-top:11px;
+}
 table.grid thead tr th.ascending span.caret {
     display: inline-block;
     border-top: 4px solid #000000;
