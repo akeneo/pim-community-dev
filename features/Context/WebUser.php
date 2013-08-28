@@ -1100,6 +1100,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @When /^I filter per price with value "([^"]*)" and currency "([^"]*)"$/
+     */
+    public function iFilterPerPrice($value, $currency)
+    {
+        $this->getPage('Product index')->filterPerPrice($value, $currency);
+        $this->wait();
+    }
+
+    /**
      * @Given /^I filter per unclassified category$/
      */
     public function iFilterPerUnclassifiedCategory()
