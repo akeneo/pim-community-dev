@@ -74,7 +74,7 @@
                 <div class="upload-info">
                     {% if not empty %}
                         {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}">
+                        <a class="no-hash upload-preview" target="_blank" href="{{ asset(form.vars.value.filePath) }}">
                             <i class="fa-icon-file upload-preview"></i>
                         </a>
                     {% else %}
@@ -83,7 +83,11 @@
                     <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
                     <i class="fa-icon-remove remove-upload{% if empty %} hide{% endif %}" rel="tooltip" data-original-title="{{ 'Remove this file'|trans }}"></i>
                 </div>
-                <input type="file"{% if not empty %} class="hide" disabled="disabled"{% endif %} {{ block('widget_attributes') }}>
+                {% if empty %}
+                    {{ form_widget(form.file) }}
+                {% else %}
+                    {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                {% endif %}
             </label>
             <div class="icons-container">
                 {{ form_errors(form) }}
@@ -114,7 +118,11 @@
                     <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
                     <i class="fa-icon-remove remove-upload{% if empty %} hide{% endif %}" rel="tooltip" data-original-title="{{ 'Remove this image'|trans }}"></i>
                 </div>
-                <input type="file"{% if not empty %} class="hide" disabled="disabled"{% endif %} {{ block('widget_attributes') }}>
+                {% if empty %}
+                    {{ form_widget(form.file) }}
+                {% else %}
+                    {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                {% endif %}
             </label>
             <div class="icons-container">
                 {{ form_errors(form) }}

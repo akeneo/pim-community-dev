@@ -257,22 +257,26 @@ function init() {
             $preview.removeClass('empty');
             $remove.removeClass('hide');
             $input.attr('disabled', 'disabled').addClass('hide');
-            $checkbox.removeAttr('checked').val(0);
+            $checkbox.removeAttr('checked');
         } else {
             $filename.html($filename.attr('data-empty-title'));
             $zone.addClass('empty');
             $preview.addClass('empty');
             $remove.addClass('hide');
             $input.removeAttr('disabled').removeClass('hide');
-            $checkbox.attr('checked', 'checked').val(1);
+            $checkbox.attr('checked', 'checked');
         }
+    });
+
+    $('form').on('submit', function() {
+        $('input[type="file"]').removeAttr('disabled');
     });
 
     $('.remove-upload').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var $checkbox = $(this).siblings('input[type="checkbox"]').first();
-        $checkbox.attr('checked', 'checked').val(1);
+        $checkbox.attr('checked', 'checked');
         var $input = $(this).parent().siblings('input[type="file"]');
         $input.removeAttr('disabled').removeClass('hide');
         $input.replaceWith($input.clone());
