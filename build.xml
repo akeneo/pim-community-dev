@@ -9,7 +9,7 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
 
-    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
