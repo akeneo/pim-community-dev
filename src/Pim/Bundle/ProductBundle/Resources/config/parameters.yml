@@ -53,6 +53,7 @@ parameters:
     pim_product.form.handler.channel.class:  Pim\Bundle\ProductBundle\Form\Handler\ChannelHandler
     pim_product.form.type.channel.class:     Pim\Bundle\ProductBundle\Form\Type\ChannelType
 
-    pim_product.event_listener.user_preferences.class:  Pim\Bundle\ProductBundle\EventListener\UserPreferencesListener
+    pim_product.event_listener.user_preferences.class:    Pim\Bundle\ProductBundle\EventListener\UserPreferencesListener
+    pim_product.event_listener.update_completeness.class: Pim\Bundle\ProductBundle\EventListener\UpdateCompletenessListener
 
     pim_product.calculator.completeness.class: Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator
