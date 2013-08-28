@@ -25,7 +25,7 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
         $options        = parent::prepareValueFormOptions($value);
         $orderBy        = $this->getEntityFieldToOrder();
         $isTranslatable = $this->isTranslatable();
-        $options['empty_value'] = false;
+        $options['empty_value'] = '';
         $options['class']       = $this->getEntityAlias();
         $options['expanded']    = false;
         $options['multiple']    = $this->isMultiselect();
