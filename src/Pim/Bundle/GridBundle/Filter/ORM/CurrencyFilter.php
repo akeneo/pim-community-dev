@@ -40,7 +40,7 @@ class CurrencyFilter extends NumberFilter
         $operator = $this->getOperator($data['type']);
         $currency = $data['currency'];
 
-        $newAlias = 'ValuePrices';
+        $newAlias = 'valuePrices';
 
         // Apply clause on currency code
         $paramCurrency = $this->getNewParameterName($proxyQuery);

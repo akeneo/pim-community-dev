@@ -397,7 +397,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->addSelect($selectConcat, true)
             ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('values.prices', 'valuePrices');
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
 
