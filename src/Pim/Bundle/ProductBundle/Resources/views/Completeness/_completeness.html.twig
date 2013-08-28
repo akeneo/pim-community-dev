@@ -1,6 +1,6 @@
 {% if value|length == 0 %}-{% endif %}
 {% for completeness in value %}
     {% if completeness.locale.code == localeCode and completeness.channel.code == channelCode %}
-        {{ completeness.ratio }}%
+        <span class="label">{{ completeness.ratio }}%</span>
     {% endif %}
 {% endfor %}
