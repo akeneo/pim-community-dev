@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -210,6 +212,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldUpdated);
+
+        $field = $this->createCompletenessField();
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -310,6 +315,41 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $field;
     }
 
+    protected function createCompletenessField()
+    {
+        $fieldCompleteness = new FieldDescription();
+        $fieldCompleteness->setName('completenesses');
+        $fieldCompleteness->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
+                'label'       => $this->translate('Completed'),
+                'field_name'  => 'completenesses',
+                'expression'  => 'pCompleteness',
+                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'filter_by_where' => true,
+                'sort_field_mapping' => array(
+                    'entityAlias' => 'pCompleteness',
+                    'fieldName'   => 'ratio'
+                )
+            )
+        );
+        $fieldCompleteness->setProperty(
+            new TwigTemplateProperty(
+                $fieldCompleteness,
+                'PimProductBundle:Completeness:_completeness.html.twig',
+                array(
+                    'localeCode'  => $this->flexibleManager->getLocale(),
+                    'channelCode' => $this->flexibleManager->getScope()
+                )
+            )
+        );
+
+        return $fieldCompleteness;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -394,6 +434,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                         "ELSE ft.label END ".
                         "as familyLabel";
 
+        // prepare query for family
         $proxyQuery
             ->addSelect($selectConcat, true)
             ->leftJoin($rootAlias .'.family', 'family')
@@ -401,8 +442,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.prices', 'valuePrices');
 
-        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+        // prepare query for completeness
+        $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
 
+        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+
+        // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
 
@@ -418,6 +464,21 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $proxyQuery->andWhere($expression);
             }
         }
+    }
+
+    /**
+     * Prepare query for completeness field
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
+    {
+        $exprLocaleAndScope = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
+        $exprFamilyIsNull   = $proxyQuery->expr()->isNull($rootAlias .'.family');
+        $proxyQuery
+            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
+            ->leftJoin('pCompleteness.locale', 'locale')
+            ->leftJoin('pCompleteness.channel', 'channel')
+            ->orWhere($exprLocaleAndScope, $exprFamilyIsNull);
     }
 
     /**
