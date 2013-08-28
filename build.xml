@@ -9,7 +9,7 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
 
-    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -83,6 +83,7 @@
             <arg value="--jdepend-xml=${basedir}/app/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
+            <arg value="--ignore=Tests" />
             <arg path="${basedir}/src/Pim" />
         </exec>
     </target>
@@ -109,6 +110,15 @@
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
             <arg path="${basedir}/features" />
+        </exec>
+    </target>
+    
+    <target name="phpdoc" description="Check php documentation">
+        <exec executable="phpdoc">
+            <arg line="--directory ${basedir}/src" />
+            <arg line="--target ${basedir}/build/api" />
+            <arg line="--quiet off" />
+            <arg line="--output HTML:Smarty:PHP" />
         </exec>
     </target>
 

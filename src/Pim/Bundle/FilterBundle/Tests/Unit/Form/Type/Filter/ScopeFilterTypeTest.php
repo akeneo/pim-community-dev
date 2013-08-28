@@ -83,7 +83,7 @@ class ScopeFilterTypeTest extends ChoiceFilterTypeTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptionsDataProvider()
     {

@@ -18,7 +18,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     protected $context;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -28,7 +28,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function tearDown()
     {

@@ -67,12 +67,22 @@
                     <tr>
                         <td>{{ attribute.label }}</td>
                         {% for channel in channels %}
-                            <td>{{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}</td>
+                            <td>
+                                {% if attribute.attributeType == 'pim_product_identifier' %}
+                                    <div class="attribute-requirement identifier">
+                                        <i class="fa-icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
+                                    </div>
+                                {% else %}
+                                    {{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                                {% endif %}
+                            </td>
                         {% endfor %}
                         <td>
-                            <a href="javascript:void(0);" data-url="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
-                                <i class="icon-trash"></i>
-                            </a>
+                            {% if attribute.attributeType != 'pim_product_identifier' %}
+                                <a href="javascript:void(0);" data-url="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                    <i class="icon-trash"></i>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -100,7 +110,7 @@
                 $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
             });
 
-            $('.attribute-requirement i').each(function() {
+            $('.attribute-requirement:not(.identifier) i').each(function() {
                 var $input = $(this).siblings('input[type="checkbox"]');
                 if ($input.attr('checked')) {
                     $(this).attr('data-original-title', $(this).parent().data('required-title'));

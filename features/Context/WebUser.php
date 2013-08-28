@@ -2,17 +2,15 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ExpectationException;
-
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -1547,6 +1545,57 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
         $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+    }
+
+    /**
+     * @Then /^I should see the completeness summary$/
+     */
+    public function iShouldSeeTheCompletenessSummary()
+    {
+        $this->getPage('Product edit')->findCompletenessContent();
+        $this->getPage('Product edit')->findCompletenessLegend();
+    }
+
+    /**
+     * @Given /^I should see the completeness state "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeCompletenessStateForChannelAndLocale($state, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessState($channelCode, $locale, $state);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @Given /^I should see the completeness ratio (\d+)% for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenessRatioForChannelAndLocale($ratio, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessRatio($channelCode, $locale, $ratio);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @Given /^I should see the completeness message "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenesssMessageForChannelAndLocale($message, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessMessage($channelCode, $locale, $message);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
     }
 
     /**

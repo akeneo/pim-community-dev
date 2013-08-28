@@ -98,7 +98,7 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function normalize($product, $format = null, array $context = array())
     {

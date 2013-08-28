@@ -24,7 +24,7 @@ class CategoryReader extends ORMCursorReader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read()
     {

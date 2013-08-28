@@ -32,7 +32,7 @@ class ValidDefaultValue extends Constraint
     public $propertyPath = 'defaultValue';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

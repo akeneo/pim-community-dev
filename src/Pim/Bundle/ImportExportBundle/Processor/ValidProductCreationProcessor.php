@@ -157,7 +157,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @return null|Product
      *
-     * @throw Exception when validation errors happenned
+     * @throws Exception when validation errors happenned
      */
     public function process($item)
     {
@@ -172,7 +172,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {

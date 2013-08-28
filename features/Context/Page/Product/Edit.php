@@ -15,6 +15,9 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class Edit extends Form
 {
+    /**
+     * @var string $path
+     */
     protected $path = '/enrich/product/{id}/edit';
 
     /**
@@ -32,6 +35,7 @@ class Edit extends Form
                 'Enable switcher'  => array('css' => '#pim_product_enabled'),
                 'Updates grid'     => array('css' => '#history table.grid'),
                 'Image preview'    => array('css' => '#lbImage'),
+                'Completeness'     => array('css' => 'div#completeness')
             )
         );
     }
@@ -189,5 +193,175 @@ class Edit extends Form
         }
 
         return $preview;
+    }
+
+    /**
+     * Get the completeness content
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findCompletenessContent()
+    {
+        $completenessContent = $this->getElement('Completeness')->find('css', 'table#progress-table');
+        if (!$completenessContent) {
+            throw new \InvalidArgumentException('Completeness content not found !!!');
+        }
+
+        return $completenessContent;
+    }
+
+    /**
+     * Find completeness channel
+     * @param string $name the channel name
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findCompletenessScope($name)
+    {
+        $channel = $this->findCompletenessContent()
+             ->find(sprintf('th .channel:contains("%s")', $name));
+
+        if (!$channel) {
+            throw new \InvalidArgumentException(sprintf('Completeness for channel %s not found', $name));
+        }
+
+        return $channel;
+    }
+
+    /**
+     * Find completeness locale
+     * @param string $code
+     * @throws \InvalidArgumentException
+     * @return boolean
+     */
+    public function findCompletenessLocale($code)
+    {
+        $flag   = $this->findCompletenessContent()
+            ->find('css', sprintf('td img.flag'));
+        $locale = $this->findCompletenessContent()
+            ->find('css', sprintf('td code.flag-language:contains("%s")'));
+
+        if ($flag && $locale) {
+            return true;
+        } else {
+            throw new \InvalidArgumentException(sprintf('Completeness for locale %s not found', $code));
+        }
+    }
+
+    /**
+     * Find a completeness cell from column and row (channel and locale codes)
+     * @param string $columnCode (channel code)
+     * @param string $rowCode    (locale code)
+     * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function findCompletenessCell($columnCode, $rowCode)
+    {
+        $completenessTable = $this->findCompletenessContent();
+
+        $columnIdx = 0;
+        foreach ($completenessTable->findAll('css', 'thead th') as $index => $header) {
+            if ($header->getText() === $columnCode) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+        if ($columnIdx === 0) {
+            throw new \InvalidArgumentException(sprintf('Column %s not found', $columnCode));
+        }
+
+        $cells = $completenessTable->findAll('css', sprintf('tbody tr:contains("%s") td', $rowCode));
+        if (!$cells || count($cells) < $columnIdx) {
+            throw new \InvalidArgumentException(sprintf('Row %s not found', $rowCode));
+        }
+
+        return $cells[$columnIdx];
+    }
+
+    /**
+     * Check completeness state
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $state
+     * @throws \InvalidArgumentException
+     */
+    public function checkCompletenessState($channelCode, $localeCode, $state)
+    {
+        $completenessCell = $this
+            ->findCompletenessCell($channelCode, $localeCode)
+            ->find('css', 'div.progress-cell');
+
+        // check progress bar type
+        if (!$completenessCell->find('css', sprintf('div.bar-%s', $state))) {
+            throw new \InvalidArgumentException(
+                sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
+            );
+        }
+    }
+
+    /**
+     * Check completeness message
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $info
+     * @throws \InvalidArgumentException
+     */
+    public function checkCompletenessMessage($channelCode, $localeCode, $info)
+    {
+        $completenessCell = $this
+            ->findCompletenessCell($channelCode, $localeCode)
+            ->find('css', 'div.progress-cell');
+
+        // check message displayed bottom to the progress bar
+        $infoPassed = ($info === 'Completed')
+            ? ($completenessCell->getText() === $info)
+            : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
+        if (!$infoPassed) {
+            throw new \InvalidArgumentException(
+                sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
+            );
+        }
+    }
+
+    /**
+     * Check completeness ratio
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $ratio
+     * @throws \InvalidArgumentException
+     */
+    public function checkCompletenessRatio($channelCode, $localeCode, $ratio)
+    {
+        $completenessCell = $this
+            ->findCompletenessCell($channelCode, $localeCode)
+            ->find('css', 'div.progress-cell');
+
+        // check progress bar width
+        $title = $completenessCell
+            ->find('css', 'div.progress')
+            ->getAttribute('title');
+
+        $pattern = sprintf('/^%s%% completed/', $ratio);
+        if (!$title || preg_match($pattern, $title) !== 1) {
+            throw new \InvalidArgumentException(
+                sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
+            );
+        }
+    }
+
+    /**
+     * Find legend div
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    public function findCompletenessLegend()
+    {
+        $legend = $this->getElement('Completeness')->find('css', 'div#legend');
+        if (!$legend) {
+            throw new \InvalidArgumentException('Legend content not found !!!');
+        }
+
+        return $legend;
     }
 }

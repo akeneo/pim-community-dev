@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class JobConfigurationType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
