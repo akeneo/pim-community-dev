@@ -8,7 +8,7 @@ oro_entity_config:
                     type:                   'ajax'
                     icon:                   'trash'
                     acl_resource:           'root'
-                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active']}
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active']}
                     args:                   ['id']
                 -
                     name:                   'Restore'
@@ -53,12 +53,12 @@ oro_entity_config:
                     options:
                         priority:           25
                         default_value:      'Active'
-                        label:              'Status'
+                        label:              'Schema status'
                     grid:
                         type:               string
-                        label:              'Status'
+                        label:              'Schema status'
                         filter_type:        oro_grid_orm_choice
-                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Updated', deleted: 'To be deleted'}
+                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
                         filterable:         false
@@ -95,7 +95,7 @@ oro_entity_config:
                     type:                   'ajax'
                     icon:                   'trash'
                     acl_resource:           'root'
-                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active'] }
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active'] }
                     args:                   ['id']
                 -
                     name:                   'Resore'
@@ -121,7 +121,7 @@ oro_entity_config:
                     entity_id:              true
                     aClass:                 'btn-danger entity-extend-apply'
                     void:                   true
-                    filter:                 { state: ['New', 'Updated', 'Deleted'] }
+                    filter:                 { state: ['New', 'Requires update', 'Deleted'] }
             items:
                 owner:
                     options:
@@ -145,12 +145,12 @@ oro_entity_config:
                     options:
                         priority:           25
                         default_value:      'Active'
-                        label:              'Status'
+                        label:              'Schema status'
                     grid:
                         type:               string
-                        label:              'Status'
+                        label:              'Schema status'
                         filter_type:        oro_grid_orm_choice
-                        choices:            { new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        choices:            { new: 'New', applied: 'Applied', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
                         filterable:         false

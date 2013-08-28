@@ -6,6 +6,9 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class PropertyConfigContainer
 {
     /**
@@ -26,6 +29,7 @@ class PropertyConfigContainer
 
     /**
      * @param $config
+     * @param ContainerInterface $container
      */
     public function __construct($config, ContainerInterface $container)
     {
