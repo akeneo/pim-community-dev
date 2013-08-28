@@ -14,9 +14,14 @@
                             {% endblock navButtons %}
                             <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
-                        {% if (entityClass is defined and form.vars.value.id) %}
-                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
-                        {% endif %}
+                        <div class="pull-right user-info-state">
+                            <ul class="inline-decorate">
+                            {% set audit_entity_id = audit_entity_id|default ? audit_entity_id : form.vars.value.id|default %}
+                            {% if (entityClass is defined and audit_entity_id) %}
+                                {% placeholder change_history_block with {'entity': entityClass, 'id': audit_entity_id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
+                            {% endif %}
+                            </ul>
+                        </div>
                     </div>
                     <div class="span9">
                         {% block pageHeader %}
@@ -60,7 +65,8 @@
             </div>
             <div class="layout-content">
                 {% block content_data %}
-                    {{ UI.scrollData(id, data, true) }}
+                    {% set data = oro_form_process(data, form) %}
+                    {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>
         </form>

@@ -95,6 +95,9 @@ Oro.Datagrid.Filter.List = Oro.Filter.List.extend({
      * @return {*}
      */
     _applyState: function(state) {
+        var toEnable  = [];
+        var toDisable = [];
+
         _.each(this.filters, function(filter, name) {
             var shortName = '__' + name;
             if (_.has(state, name)) {
@@ -104,21 +107,27 @@ Oro.Datagrid.Filter.List = Oro.Filter.List.extend({
                         value: filterState
                     }
                 }
-                this.enableFilter(filter.setValue(filterState));
+                filter.setValue(filterState);
+                toEnable.push(filter);
             } else if (_.has(state, shortName)) {
+                filter.reset();
                 if (Number(state[shortName])) {
-                    this.enableFilter(filter.reset());
+                    toEnable.push(filter);
                 } else {
-                    this.disableFilter(filter.reset());
+                    toDisable.push(filter);
                 }
             } else {
+                filter.reset();
                 if (filter.defaultEnabled) {
-                    this.enableFilter(filter.reset());
+                    toEnable.push(filter);
                 } else {
-                    this.disableFilter(filter.reset());
+                    toDisable.push(filter);
                 }
             }
         }, this);
+
+        this.enableFilters(toEnable);
+        this.disableFilters(toDisable);
 
         return this;
     }

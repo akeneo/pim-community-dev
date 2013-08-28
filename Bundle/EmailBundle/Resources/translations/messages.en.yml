@@ -6,3 +6,35 @@ oro:
                     message: "Template sucessfully saved"
         form:
             choose_template: "Choose a template..."
+        datagrid:
+            emailtemplate:
+                action:
+                    update: "Update"
+                    clone: "Clone"
+                    delete: "Delete"
+                column:
+                    entity_name: "Entity name"
+                    name: "Template name"
+                    isSystem: "Is system"
+                    type: "Type"
+                filter:
+                    type:
+                        html: "HTML"
+                        txt: "Plain text"
+                    isSystem:
+                        yes: "Yes"
+                        no:  "No"
+                page_size:
+                    all: "All"
+        handler:
+            attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
+"%subject% - Email": "%subject% - Email"
+"Emails": "Emails"
+"Email": "Email"
+"Subject": "Subject"
+"Sent": "Sent"
+"From": "From"
+"To": "To"
+"Cc": "Cc"
+"Bcc": "Bcc"
+"Attachments": "Attachments"

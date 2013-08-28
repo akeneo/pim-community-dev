@@ -45,6 +45,10 @@ $.widget( "ui.dialog", $.ui.dialog, {
         restore: null
     }),
 
+    _allowInteraction: function(e) {
+        return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
+    },
+
     _create: function () {
         this._super();
 

@@ -5,11 +5,11 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Table(name="oro_config_log")
- * @ORM\Entity(repositoryClass="Oro\Bundle\EntityConfigBundle\Entity\Repository\ConfigLogRepository")
+ * @ORM\Table(name="oro_entity_config_log")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
 class ConfigLog
@@ -25,8 +25,8 @@ class ConfigLog
     protected $id;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
+     * @var UserInterface
+     * @ORM\ManyToOne(targetEntity="Symfony\Component\Security\Core\User\UserInterface", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;
@@ -76,10 +76,10 @@ class ConfigLog
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      * @return $this
      */
-    public function setUser($user)
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
 
@@ -87,7 +87,7 @@ class ConfigLog
     }
 
     /**
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

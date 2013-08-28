@@ -37,7 +37,7 @@ class BusinessUnitController extends SoapController
     /**
      * @Soap\Method("createBusinessUnit")
      * @Soap\Param("business_unit", phpType = "Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
-     * @Soap\Result(phpType = "boolean")
+     * @Soap\Result(phpType = "int")
      * @AclAncestor("oro_business_unit_create")
      */
     public function createAction($business_unit)

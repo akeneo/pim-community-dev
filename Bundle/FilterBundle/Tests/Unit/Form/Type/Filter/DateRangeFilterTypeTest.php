@@ -55,11 +55,15 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
                     'operator_choices' => array(
                         DateRangeFilterType::TYPE_BETWEEN => 'label_date_type_between',
                         DateRangeFilterType::TYPE_NOT_BETWEEN => 'label_date_type_not_between',
+                        DateRangeFilterType::TYPE_MORE_THAN => 'label_date_type_more_than',
+                        DateRangeFilterType::TYPE_LESS_THAN => 'label_date_type_less_than',
                     ),
                     'widget_options' => array(),
                     'type_values' => array(
                         'between'    => DateRangeFilterType::TYPE_BETWEEN,
-                        'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN
+                        'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN,
+                        'moreThan'   => DateRangeFilterType::TYPE_MORE_THAN,
+                        'lessThan'   => DateRangeFilterType::TYPE_LESS_THAN
                     )
                 )
             )

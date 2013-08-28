@@ -6,16 +6,39 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery as BaseProxyQuery;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * TODO: This class should be refactored  (BAP-969).
  */
-class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
+class ProxyQuery implements ProxyQueryInterface
 {
+    /**
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    /**
+     * @var string
+     */
+    protected $sortBy;
+
+    /**
+     * @var string
+     */
+    protected $sortOrder;
+
+    /**
+     * @var string
+     */
+    protected $parameterUniqueId;
+
+    /**
+     * @var string
+     */
+    protected $entityJoinAliases;
+
     /**
      * @var string
      */
@@ -25,11 +48,6 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      * @var string
      */
     protected $rootAlias;
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
 
     /**
      * @var array
@@ -45,6 +63,16 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      * @var array
      */
     protected $queryHints = array();
+
+    /**
+     * @param mixed $queryBuilder
+     */
+    public function __construct($queryBuilder)
+    {
+        $this->queryBuilder      = $queryBuilder;
+        $this->uniqueParameterId = 0;
+        $this->entityJoinAliases = array();
+    }
 
     /**
      * Get query builder
@@ -372,6 +400,16 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
+     * Get a list of query hints
+     *
+     * @return array
+     */
+    public function getQueryHints()
+    {
+        return $this->queryHints;
+    }
+
+    /**
      * @param AbstractQuery $query
      */
     protected function applyQueryHints(AbstractQuery $query)
@@ -379,5 +417,121 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         foreach ($this->queryHints as $name => $value) {
             $query->setHint($name, $value);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __call($name, $args)
+    {
+        return call_user_func_array(array($this->queryBuilder, $name), $args);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __get($name)
+    {
+        return $this->queryBuilder->$name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSortBy($parentAssociationMappings, $fieldMapping)
+    {
+        $alias        = $this->entityJoin($parentAssociationMappings);
+        $this->sortBy = $alias . '.' . $fieldMapping['fieldName'];
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortBy()
+    {
+        return $this->sortBy;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSingleScalarResult()
+    {
+        /** @var Query $query */
+        $query = $this->queryBuilder->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __clone()
+    {
+        $this->queryBuilder = clone $this->queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFirstResult($firstResult)
+    {
+        $this->queryBuilder->setFirstResult($firstResult);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstResult()
+    {
+        return $this->queryBuilder->getFirstResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMaxResults($maxResults)
+    {
+        $this->queryBuilder->setMaxResults($maxResults);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxResults()
+    {
+        return $this->queryBuilder->getMaxResults();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueParameterId()
+    {
+        return $this->uniqueParameterId++;
     }
 }

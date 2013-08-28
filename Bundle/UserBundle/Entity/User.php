@@ -25,6 +25,9 @@ use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use DateTime;
 
@@ -38,12 +41,21 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Config(
+ *      routeName="oro_user_index",
+ *      defaultValues={
+ *          "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
+ *          "ownership"={"owner_type"="BUSINESS_UNIT"},
+ *          "extend"={"is_extend"=true}
+ *      }
+ * )
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
-    Taggable
+    Taggable,
+    EmailOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -105,7 +117,7 @@ class User extends AbstractEntityFlexible implements
      * @var DateTime
      *
      * @ORM\Column(name="birthday", type="datetime", nullable=true)
-     * @Soap\ComplexType("dateTime", nillable=true)
+     * @Soap\ComplexType("date", nillable=true)
      * @Type("dateTime")
      * @Oro\Versioned
      */
@@ -206,6 +218,14 @@ class User extends AbstractEntityFlexible implements
     protected $loginCount;
 
     /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $owner;
+
+    /**
      * Set name formatting using "%first%" and "%last%" placeholders
      *
      * @var string
@@ -289,7 +309,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * @var BusinessUnit[]
      *
-     * @ORM\ManyToMany(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
      * @ORM\JoinTable(name="oro_user_business_unit",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
@@ -357,6 +377,26 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
+     * Get entity class name.
+     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
+     * @return string
+     */
+    public function getClass()
+    {
+        return 'Oro\Bundle\UserBundle\Entity\User';
+    }
+
+    /**
+     * Get name of field contains the primary email address
+     *
+     * @return string
+     */
+    public function getPrimaryEmailField()
+    {
+        return 'email';
+    }
+
+    /**
      * Returns the user unique id.
      *
      * @return mixed
@@ -416,6 +456,11 @@ class User extends AbstractEntityFlexible implements
             array($this->getFirstname(), $this->getLastname()),
             $format ? $format : $this->getNameFormat()
         );
+    }
+
+    public function getName()
+    {
+        return $this->getFullname();
     }
 
     /**
@@ -1211,6 +1256,25 @@ class User extends AbstractEntityFlexible implements
         if ($this->getBusinessUnits()->contains($businessUnit)) {
             $this->getBusinessUnits()->removeElement($businessUnit);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
+     * @return User
+     */
+    public function setOwner($owningBusinessUnit)
+    {
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

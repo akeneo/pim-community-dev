@@ -52,7 +52,8 @@ $(function() {
 
             var modal = new Oro.BootstrapModal({
                 title: Oro.BackboneError.Header,
-                content: message
+                content: message,
+                cancelText: false
             });
             modal.open();
         },

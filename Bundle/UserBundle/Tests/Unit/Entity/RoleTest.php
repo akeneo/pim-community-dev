@@ -2,8 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 class RoleTest extends \PHPUnit_Framework_TestCase
 {
@@ -58,5 +62,17 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     protected function getRole()
     {
         return $this->role;
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->getRole();
+        $businessUnit = new BusinessUnit();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($businessUnit);
+
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }

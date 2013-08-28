@@ -39,9 +39,23 @@ class User extends AbstractEntity implements Entity
         $this->email = $this->byId('oro_user_user_form_email');
         $this->groups = $this->byId('oro_user_user_form_groups');
         $this->roles = $this->byId('oro_user_user_form_rolesCollection');
+        $this->owner = $this->select($this->byId('oro_user_user_form_owner'));
 
         return $this;
     }
+
+    public function setOwner($owner)
+    {
+        $this->owner->selectOptionByLabel($owner);
+
+        return $this;
+    }
+
+    public function getOwner()
+    {
+        return trim($this->owner->selectedLabel());
+    }
+
     public function setUsername($name)
     {
         $this->username->clear();

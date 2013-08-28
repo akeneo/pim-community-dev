@@ -4,8 +4,9 @@ namespace Oro\Bundle\TestFrameworkBundle\Test;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
+use Doctrine\ORM\EntityManager;
 
-class WebTestCase extends BaseWebTestCase
+abstract class WebTestCase extends BaseWebTestCase
 {
     const DB_ISOLATION = '/@db_isolation(.*)(\r|\n)/U';
     const DB_REINDEX = '/@db_reindex(.*)(\r|\n)/U';
@@ -28,7 +29,6 @@ class WebTestCase extends BaseWebTestCase
      */
     protected static function createClient(array $options = array(), array $server = array())
     {
-
         if (!self::$internalClient) {
             self::$internalClient = parent::createClient($options, $server);
 
@@ -48,6 +48,20 @@ class WebTestCase extends BaseWebTestCase
                 }
 
                 $client->startTransaction();
+                $pdoConnection = Client::getPdoConnection();
+                if ($pdoConnection) {
+                    //set transaction level to 1 for entityManager
+                    $connection = $client->createConnection($pdoConnection);
+                    $client->getContainer()->set('doctrine.dbal.default_connection', $connection);
+
+                    /** @var EntityManager $entityManager */
+                    $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+                    if (spl_object_hash($entityManager->getConnection()) != spl_object_hash($connection)) {
+                        $reflection = new \ReflectionProperty('Doctrine\ORM\EntityManager', 'conn');
+                        $reflection->setAccessible(true);
+                        $reflection->setValue($entityManager, $connection);
+                    }
+                }
             }
         }
 
@@ -99,5 +113,10 @@ class WebTestCase extends BaseWebTestCase
     public function setIsolation($dbIsolation = false)
     {
         self::$db_isolation = $dbIsolation;
+    }
+
+    public static function getInstance()
+    {
+        return self::$internalClient;
     }
 }

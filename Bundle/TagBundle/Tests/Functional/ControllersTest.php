@@ -9,7 +9,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 /**
  * @outputBuffering enabled
  * @db_isolation
- * @reindex
  */
 class ControllersTest extends WebTestCase
 {
@@ -43,12 +42,14 @@ class ControllersTest extends WebTestCase
 
     public function testCreate()
     {
-        $this->markTestIncomplete('BAP-1260');
         $crawler = $this->client->request('GET', $this->client->generate('oro_tag_create'));
         $form = $crawler->selectButton('Save')->form();
-        $form['oro_tag_tag_form[name]'] = 'testTag1';
-        $this->client->submit($form);
+        $form['oro_tag_tag_form[name]'] = 'tag758';
+        $form['oro_tag_tag_form[owner]'] = 1;
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
+        $this->assertContains("Tag successfully saved", $crawler->html());
     }
 }

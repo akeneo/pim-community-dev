@@ -7,3 +7,15 @@ oro:
             entity_post_update: "Entity update"
             entity_post_persist: "Entity create"
             entity_post_remove: "Entity remove"
+        datagrid:
+            action:
+                update: "Update"
+                delete: "Delete"
+            template: "Template"
+            event_name: "Event name"
+            entity_name: "Entity name"
+            recipient:
+                user: "Recipient users"
+                group: "Recipient groups"
+                custom_email: "Recipient email"
+                owner: "Recipient entity owner"

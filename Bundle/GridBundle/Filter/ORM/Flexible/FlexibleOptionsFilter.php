@@ -3,7 +3,8 @@
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;

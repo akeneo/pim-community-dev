@@ -49,7 +49,8 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
         currentPage: 'i',
         pageSize: 'p',
         sorters: 's',
-        filters: 'f'
+        filters: 'f',
+        gridName: 't'
     },
 
     /**
@@ -68,6 +69,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             }
             _.extend(this.state, options.state);
         }
+
         this.initialState = Oro.deepClone(this.state);
 
         if (options.url) {
@@ -119,6 +121,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      */
     encodeStateData: function(stateObject) {
         var data = _.pick(stateObject, _.keys(this.stateShortKeys));
+        data.gridName = this.inputName;
         data = Oro.invertKeys(data, this.stateShortKeys);
         return Oro.packToQueryString(data);
     },
@@ -140,13 +143,22 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      *
      * @param {Object} data
      * @param {Object} state
+     * @param {String} prefix
      * @return {Object}
      */
-    processFiltersParams: function(data, state) {
+    processFiltersParams: function(data, state, prefix) {
+        if (!state) {
+            state = this.state;
+        }
+
+        if (!prefix) {
+            prefix = this.inputName + '[_filter]'
+        }
+
         if (state.filters) {
             _.extend(
                 data,
-                this._generateParameterStrings(state.filters, this.inputName + '[_filter]')
+                this.generateParameterStrings(state.filters, prefix)
             );
         }
         return data;
@@ -158,9 +170,8 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
      * @param {Object} parameters
      * @param {String} prefix
      * @return {Object}
-     * @private
      */
-    _generateParameterStrings: function(parameters, prefix) {
+    generateParameterStrings: function(parameters, prefix) {
         var localStrings = {};
         var localPrefix = prefix;
         _.each(parameters, function(filterParameters, filterKey) {
@@ -170,7 +181,7 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
                 if (_.isObject(filterParameters)) {
                     _.extend(
                         localStrings,
-                        this._generateParameterStrings(filterParameters, filterKeyString)
+                        this.generateParameterStrings(filterParameters, filterKeyString)
                     );
                 } else {
                     localStrings[filterKeyString] = filterParameters;
@@ -236,11 +247,11 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             state.currentPage = currentPage = this.finiteInt(currentPage, "currentPage");
             state.firstPage = firstPage = this.finiteInt(firstPage, "firstPage");
 
-            if (pageSize < 1) {
-                throw new RangeError("`pageSize` must be >= 1");
+            if (pageSize < 0) {
+                throw new RangeError("`pageSize` must be >= 0");
             }
 
-            state.totalPages = totalPages = state.totalPages = Math.ceil(totalRecords / pageSize);
+            state.totalPages = pageSize == 0 ? 1 : totalPages = state.totalPages = Math.ceil(totalRecords / pageSize);
 
             if (firstPage < 0 || firstPage > 1) {
                 throw new RangeError("`firstPage` must be 0 or 1");
@@ -249,8 +260,12 @@ Oro.PageableCollection = Backbone.PageableCollection.extend({
             state.lastPage = firstPage === 0 ? totalPages - 1 : totalPages;
 
             // page out of range
-            if (currentPage > state.lastPage) {
+            if (currentPage > state.lastPage && state.pageSize > 0) {
                 state.currentPage = currentPage = state.lastPage;
+            }
+
+            if (state.pageSize == 0) {
+                state.currentPage = currentPage = 1;
             }
 
             // no results returned

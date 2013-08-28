@@ -17,15 +17,16 @@ class Account extends AbstractEntity implements Entity
     public function init()
     {
         $this->accountname = $this->byId('orocrm_account_form_name');
-        $this->street = $this->byId('orocrm_account_form_values_billing_address_address_street');
-        $this->city = $this->byId('orocrm_account_form_values_billing_address_address_city');
-        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_country']/a");
-        $this->zipcode = $this->byId('orocrm_account_form_values_billing_address_address_postalCode');
+        $this->street = $this->byId('orocrm_account_form_billingAddress_street');
+        $this->city = $this->byId('orocrm_account_form_billingAddress_city');
+        $this->country = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_country']/a");
+        $this->zipcode = $this->byId('orocrm_account_form_billingAddress_postalCode');
+        $this->owner = $this->byXpath("//div[@id='s2id_orocrm_account_form_owner']/a");
 
-        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
-            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        if ($this->byId('orocrm_account_form_billingAddress_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_billingAddress_state_text');
         } else {
-            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_state']/a");
         }
 
         return $this;
@@ -36,6 +37,27 @@ class Account extends AbstractEntity implements Entity
         $this->accountname->clear();
         $this->accountname->value($accountname);
         return $this;
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$owner}')]",
+            "Owner autocoplete doesn't return search value"
+        );
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$owner}')]")->click();
+
+        return $this;
+
+    }
+
+    public function getOwner()
+    {
+        return;
     }
 
     public function verifyTag($tag)
@@ -131,10 +153,10 @@ class Account extends AbstractEntity implements Entity
 
     public function setState($state)
     {
-        if ($this->byId('orocrm_account_form_values_billing_address_address_state_text')->displayed()) {
-            $this->state = $this->byId('orocrm_account_form_values_billing_address_address_state_text');
+        if ($this->byId('orocrm_account_form_billingAddress_state_text')->displayed()) {
+            $this->state = $this->byId('orocrm_account_form_billingAddress_state_text');
         } else {
-            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_values_billing_address_address_state']/a");
+            $this->state = $this->byXpath("//div[@id='s2id_orocrm_account_form_billingAddress_state']/a");
         }
 
         $this->state->click();

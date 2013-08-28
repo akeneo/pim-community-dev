@@ -12,18 +12,19 @@ class BusinessUnit extends AbstractEntity implements Entity
     public function init()
     {
         $this->businessunitname = $this->byId('oro_business_unit_form_name');
+        $this->owner = $this->select($this->byId('oro_business_unit_form_owner'));
 
         return $this;
     }
 
     /**
-     * @param $accountname
+     * @param $unitname
      * @return $this
      */
-    public function setBusinessUnitName($accountname)
+    public function setBusinessUnitName($unitname)
     {
         $this->businessunitname->clear();
-        $this->businessunitname->value($accountname);
+        $this->businessunitname->value($unitname);
         return $this;
     }
 
@@ -33,6 +34,18 @@ class BusinessUnit extends AbstractEntity implements Entity
     public function getBusinessUnitName()
     {
         return $this->businessunitname->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->selectOptionByLabel($owner);
+
+        return $this;
+    }
+
+    public function getOwner()
+    {
+        return trim($this->owner->selectedLabel());
     }
 
     public function edit()

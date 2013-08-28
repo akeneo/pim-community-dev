@@ -58,7 +58,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
     protected $testFieldMapping = array(
         'id'   => self::TEST_ID_FIELD,
-        'name' => self::TEST_FIELD_NAME
+        'fieldName' => self::TEST_FIELD_NAME
     );
 
     protected function setUp()

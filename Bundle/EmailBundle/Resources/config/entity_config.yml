@@ -1,0 +1,15 @@
+oro_entity_config:
+    email:
+        field:
+            items:
+                available_in_template:
+                    options:
+                        default_value:      false
+                        is_bool:            true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Available in email templates'

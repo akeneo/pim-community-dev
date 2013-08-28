@@ -16,19 +16,9 @@
     {{ __.renderAddressView(address, fields) }}
 {% endmacro %}
 
-{% macro renderAddressView(address, fields, renderFlexibleAttributes) %}
-    {# Render flexible attributes by default #}
-    {% set renderFlexibleAttributes = renderFlexibleAttributes|default(true) %}
-
-    {# Render static attributes #}
+{% macro renderAddressView(address, fields) %}
     {% for field in fields %}
         {{ block('addressStaticAttribute') }}
-    {% endfor %}
-
-    {# Render flexible attributes #}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% for value in address|getAttributes() %}
-        {{ UI.flexibleAttributeRow(value) }}
     {% endfor %}
 {% endmacro %}
 
