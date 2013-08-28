@@ -205,6 +205,27 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
             $product = $this->productManager->createFlexible();
+            $product->setScope($this->channel);
+            foreach (array_keys($item) as $code) {
+                $locale = null;
+
+                if (in_array($code, array($this->categoriesColumn, $this->familyColumn))) {
+                    continue;
+                }
+
+                if (strpos($code, '-')) {
+                    list($code, $locale) = explode('-', $code);
+                }
+
+                if ($locale) {
+                    $product->setLocale($locale);
+                }
+
+                if (false === $product->{'get'.ucfirst($code)}()) {
+                    $product->{'set'.ucfirst($code)}(null);
+                }
+            }
+            $this->productManager->addMissingPrices($product);
         }
 
         return $product;
