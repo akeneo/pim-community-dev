@@ -32,6 +32,15 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->form = $this->getFormMock();
     }
 
+    public function testInstanceOfEventSubscriber()
+    {
+        $this->assertInstanceOf(
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            $this->subscriber
+        );
+    }
+
+
     public function testSubscribedEvent()
     {
         $this->assertEquals(
