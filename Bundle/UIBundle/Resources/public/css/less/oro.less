@@ -2109,6 +2109,9 @@ footer{
   margin: 0;
 }
 
+.modal{
+  .border-radius(8px 8px 6px 6px);
+}
 .oro-modal-danger{
   top: 20%;
   background-color: #fde0e0;
@@ -2164,7 +2167,16 @@ footer{
     height: 83%;
   }
   .modal-header .close{
+    color: @white;
     font-size: 25px;
+    text-shadow: 2px 0px 2px rgba(111, 123, 148, 1);
+    .opacity(90);
+    &:hover,
+    &:focus {
+      color: @white;
+      .opacity(60);
+
+    }
   }
   .modal-footer{
     background: none;
