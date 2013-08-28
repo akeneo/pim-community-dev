@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\EntityBundle\Tests\Unit\Owner\Metadata;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 
@@ -110,7 +111,7 @@ class OwnershipMetadataProviderTest extends \PHPUnit_Framework_TestCase
             null
         );
 
-        $config = new EntityConfig('SomeClass', 'ownership');
+        $config = new Config(new EntityConfigId('SomeClass', 'ownership'));
         $config->set('owner_type', 'USER');
         $config->set('owner_field_name', 'test_field');
         $config->set('owner_column_name', 'test_column');
@@ -217,7 +218,7 @@ class OwnershipMetadataProviderTest extends \PHPUnit_Framework_TestCase
             $cache
         );
 
-        $config = new EntityConfig('SomeClass', 'ownership');
+        $config = new Config(new EntityConfigId('SomeClass', 'ownership'));
         $config->set('owner_type', 'USER');
         $config->set('owner_field_name', 'test_field');
         $config->set('owner_column_name', 'test_column');
