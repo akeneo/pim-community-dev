@@ -4,6 +4,9 @@ namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\HttpFoundation\File\File as FileObject;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * Constraint
@@ -19,15 +22,27 @@ class FileValidator extends BaseFileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        parent::validate($value, $constraint);
+        if ($value instanceof Media) {
+            $value = $value->getFile();
+        }
 
         if (null === $value || '' === $value) {
             return;
         }
 
+        parent::validate($value, $constraint);
+
         if ($constraint->allowedExtensions) {
-            $file = !$value instanceof \SplFileInfo ? new \SplFileInfo($value) : $value;
-            $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+            $file = $value instanceof \SplFileInfo ? $value : new FileObject($value);
+
+            if ($file instanceof UploadedFile) {
+                $extension = $file->getClientOriginalExtension();
+            } elseif ($file instanceof FileObject) {
+                $extension = $file->getExtension();
+            } else {
+                $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+            }
+
             if (!in_array($extension, $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
