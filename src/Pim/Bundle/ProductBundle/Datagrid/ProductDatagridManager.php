@@ -441,14 +441,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
         // prepare query for completeness
-        $andClause = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
-        $proxyQuery->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
-                   ->leftJoin('pCompleteness.locale', 'locale')
-                   ->leftJoin('pCompleteness.channel', 'channel')
-                   ->orWhere(
-                       $andClause,
-                       $rootAlias .'.family IS NULL'
-                   );
+        $this->prepareQueryForCompleteness($proxyQuery);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
@@ -469,6 +462,21 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $proxyQuery->andWhere($expression);
             }
         }
+    }
+
+    /**
+     * Prepare query for completeness field
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery)
+    {
+        $exprLocaleAndScope = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
+        $exprFamilyIsNull   = $proxyQuery->expr()->isNull($rootAlias .'.family');
+        $proxyQuery
+            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
+            ->leftJoin('pCompleteness.locale', 'locale')
+            ->leftJoin('pCompleteness.channel', 'channel')
+            ->orWhere($exprLocaleAndScope, $exprFamilyIsNull);
     }
 
     /**
