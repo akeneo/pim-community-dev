@@ -441,11 +441,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
         // prepare query for completeness
+        $andClause = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
         $proxyQuery->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
                    ->leftJoin('pCompleteness.locale', 'locale')
                    ->leftJoin('pCompleteness.channel', 'channel')
-                   ->andWhere('locale.code = :localeCode')
-                   ->andWhere('channel.code = :channelCode');
+                   ->orWhere(
+                       $andClause,
+                       $rootAlias .'.family IS NULL'
+                   );
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
