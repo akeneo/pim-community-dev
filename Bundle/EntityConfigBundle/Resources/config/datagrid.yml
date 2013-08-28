@@ -13,7 +13,7 @@ services:
             - name:                             oro_grid.datagrid.manager
               datagrid_name:                    entity
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      history
+              entity_hint:                      entity
               route_name:                       oro_entityconfig_index
               query_entity_alias:               ce
 
@@ -25,7 +25,7 @@ services:
             - name:                             oro_grid.datagrid.manager
               datagrid_name:                    field
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel
-              entity_hint:                      history
+              entity_hint:                      fields
               route_name:                       oro_entityconfig_fields
               query_entity_alias:               cf
               identifier_field:                 id
