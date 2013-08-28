@@ -1,7 +1,7 @@
-#oro_workflow_bundle:
-#    resource: "@OroWorkflowBundle/Controller"
-#    type:     annotation
-#    prefix:   /workflow
+oro_workflow_bundle:
+    resource: "@OroWorkflowBundle/Controller"
+    type:     annotation
+    prefix:   /workflow
 
 oro_workflow_bundle_api:
     resource: "@OroWorkflowBundle/Resources/config/routing_api.yml"

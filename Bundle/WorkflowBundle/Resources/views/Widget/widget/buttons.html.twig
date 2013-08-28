@@ -1,0 +1,33 @@
+<div class="widget-content">
+    {% for data in new_workflows_data %}
+        {% for transition in data.transitions %}
+            <a href="{{
+                path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: transition.name,
+                        _format: 'json'
+                    }
+                )
+            }}" class="btn icons-holder-text no-hash">{{ transition.label }}</a>
+        {% endfor %}
+    {% endfor %}
+
+    {% for data in exisiting_workflows_data %}
+        {% for transition in data.transitions %}
+            <a href="{{
+                path(
+                    'oro_workflow_api_rest_workflow_transit',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: transition.name,
+                        _format: 'json'
+                    }
+                )
+            }}" class="btn icons-holder-text no-hash">{{ transition.label }}</a>
+        {% endfor %}
+    {% endfor %}
+</div>

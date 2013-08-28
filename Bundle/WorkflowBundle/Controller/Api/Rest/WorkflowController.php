@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Controller\Api\Rest;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -46,14 +47,13 @@ class WorkflowController extends FOSRestController
     public function startAction($workflowName, $entityClass, $entityId, $transitionName)
     {
         try {
+            /** @var EntityManager $em */
+            $em = $this->getDoctrine()->getManagerForClass($entityClass);
+            $entity = $em->getReference($entityClass, $entityId);
+
             /** @var WorkflowManager $workflowManager */
             $workflowManager = $this->get('oro_workflow.manager');
-            $workflowItem = $workflowManager->startWorkflow(
-                $workflowName,
-                $entityClass,
-                $entityId,
-                $transitionName
-            );
+            $workflowItem = $workflowManager->startWorkflow($workflowName, $entity, $transitionName);
         } catch (WorkflowNotFoundException $e) {
             return $this->handleNotFoundException($e->getMessage());
         } catch (UnknownAttributeException $e) {
