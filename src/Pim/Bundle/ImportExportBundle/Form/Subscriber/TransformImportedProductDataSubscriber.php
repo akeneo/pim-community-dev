@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ProductBundle\Form\Subscriber;
+namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;

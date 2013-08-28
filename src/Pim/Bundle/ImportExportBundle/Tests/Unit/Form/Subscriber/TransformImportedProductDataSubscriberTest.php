@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Subscriber;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Subscriber;
 
-use Pim\Bundle\ProductBundle\Form\Subscriber\TransformImportedProductDataSubscriber;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Pim\Bundle\ImportExportBundle\Form\Subscriber\TransformImportedProductDataSubscriber;
 
 /**
  * Test related class
