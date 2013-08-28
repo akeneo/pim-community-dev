@@ -25,21 +25,20 @@ class CompletenessFilter extends BooleanFilter
             return;
         }
 
-        $fieldExpression = $this->createFieldExpression($field, $alias);
+        $fieldExpression = $this->createFieldExpression('pCompleteness.ratio', $alias);
         $expressionFactory = $this->getExpressionFactory();
 
         switch ($data['value']) {
-            case BooleanFilterType::TYPE_YES:
-                $expression = $expressionFactory->eq($fieldExpression, '100');
-                break;
             case BooleanFilterType::TYPE_NO:
-                $expression = $expressionFactory->neq($fieldExpression, '100');
+                $expression = $expressionFactory->neq($fieldExpression .'.ratio', '100');
                 break;
+            case BooleanFilterType::TYPE_YES:
             default:
+                $expression = $expressionFactory->eq($fieldExpression.'.ratio', '100');
                 break;
         }
 
-        $this->applyFilterToClause($queryBuilder, $expression);
+        $queryBuilder->andWhere($expression);
     }
 
     /**

@@ -318,22 +318,28 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function createCompletenessField()
     {
         $fieldCompleteness = new FieldDescription();
-        $fieldCompleteness->setName('completeness');
+        $fieldCompleteness->setName('completenesses');
         $fieldCompleteness->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Completeness'),
-                'field_name'  => 'ratio',
+                'field_name'  => 'completenesses',
+                'expression'  => 'pCompleteness',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => true
+                'show_filter' => true,
+                'filter_by_where' => true
             )
         );
         $fieldCompleteness->setProperty(
             new TwigTemplateProperty(
                 $fieldCompleteness,
-                'PimProductBundle:Completeness:_completeness.html.twig'
+                'PimProductBundle:Completeness:_completeness.html.twig',
+                array(
+                    'localeCode'  => $this->flexibleManager->getLocale(),
+                    'channelCode' => $this->flexibleManager->getScope()
+                )
             )
         );
 
@@ -424,20 +430,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
                         "ELSE ft.label END ".
                         "as familyLabel";
 
+        // prepare query for family
         $proxyQuery
             ->addSelect($selectConcat, true)
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
-        $proxyQuery
-            ->addSelect('completenesses.ratio as ratio')
-            ->leftJoin($rootAlias .'.completenesses', 'completenesses')
-            ->innerJoin('completenesses.locale', 'locale', 'WITH', 'locale.code = :localeCode')
-            ->innerJoin('completenesses.channel', 'channel', 'WITH', 'channel.code = :channelCode');
+        // prepare query for completeness
+        $proxyQuery->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
+                   ->leftJoin('pCompleteness.locale', 'locale')
+                   ->leftJoin('pCompleteness.channel', 'channel')
+                   ->andWhere('locale.code = :localeCode')
+                   ->andWhere('channel.code = :channelCode');
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
 
+        // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
 
