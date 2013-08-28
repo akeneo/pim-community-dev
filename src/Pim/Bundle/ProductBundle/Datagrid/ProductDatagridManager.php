@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -215,14 +217,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setName('completeness');
         $fieldCompleteness->setOptions(
             array(
-                'type'        => false,//FieldDescriptionInterface::TYPE_INTEGER,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Completeness'),
                 'field_name'  => 'completenesses',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => true,
-                'show_column' => false
+                'show_filter' => true
+            )
+        );
+        $fieldCompleteness->setProperty(
+            new TwigTemplateProperty(
+                $fieldCompleteness,
+                'PimProductBundle:Completeness:_completeness.html.twig'
             )
         );
         $fieldsCollection->add($fieldCompleteness);
