@@ -235,7 +235,7 @@ function init() {
 
     $('[rel="tooltip"]').tooltip();
 
-    $('input[type="file"]').on('change', function() {
+    $('form').on('change', 'input[type="file"]', function() {
         var filename = $(this).val().split('\\').pop();
         var $input = $(this);
         var $info = $input.siblings('.upload-info').first();
@@ -255,22 +255,24 @@ function init() {
             $zone.removeClass('empty');
             $preview.removeClass('empty');
             $remove.removeClass('hide');
-            $input.attr('disabled', 'disabled').hide();
+            $input.attr('disabled', 'disabled').addClass('hide');
         } else {
             $filename.html($filename.attr('data-empty-title'));
             $zone.addClass('empty');
             $preview.addClass('empty');
             $remove.addClass('hide');
-            $input.removeAttr('disabled').show();
+            $input.removeAttr('disabled').removeClass('hide');
         }
     });
 
     $('.remove-upload').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $input = $(this).siblings('input[type="checkbox"]').first();
-        $input.attr('checked', 'checked').val(1);
-        $(this).parent().siblings('input[type="file"]').removeAttr('disabled').show();
+        var $checkbox = $(this).siblings('input[type="checkbox"]').first();
+        $checkbox.attr('checked', 'checked').val(1);
+        var $input = $(this).parent().siblings('input[type="file"]');
+        $input.removeAttr('disabled').removeClass('hide');
+        $input.replaceWith($input.clone());
 
         var $info = $(this).siblings('.upload-filename');
         $info.html($info.attr('data-empty-title'));
