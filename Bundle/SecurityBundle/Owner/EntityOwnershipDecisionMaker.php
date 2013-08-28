@@ -100,22 +100,24 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
         $this->validateObject($domainObject);
 
         if ($this->isOrganization($domainObject)) {
-            $userOrganizationId = $this->tree->getUserOrganizationId($this->getObjectId($user));
-            if ($userOrganizationId === null) {
+            $userOrganizationIds = $this->tree->getUserOrganizationIds($this->getObjectId($user));
+            if (empty($userOrganizationIds)) {
                 return false;
             }
 
-            return $this->getObjectId($domainObject) === $userOrganizationId;
+            return in_array($this->getObjectId($domainObject), $userOrganizationIds);
         }
 
         if ($this->isBusinessUnit($domainObject)) {
-            $userOrganizationId = $this->tree->getUserOrganizationId($this->getObjectId($user));
-            if ($userOrganizationId === null) {
+            $userOrganizationIds = $this->tree->getUserOrganizationIds($this->getObjectId($user));
+            if (empty($userOrganizationIds)) {
                 return false;
             }
-            $organizationId = $this->tree->getBusinessUnitOrganizationId($this->getObjectId($domainObject));
 
-            return $organizationId === $userOrganizationId;
+            return in_array(
+                $this->tree->getBusinessUnitOrganizationId($this->getObjectId($domainObject)),
+                $userOrganizationIds
+            );
         }
 
         $metadata = $this->getObjectMetadata($domainObject);
@@ -123,18 +125,18 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
             return false;
         }
 
-        $userOrganizationId = $this->tree->getUserOrganizationId($this->getObjectId($user));
-        if ($userOrganizationId === null) {
+        $userOrganizationIds = $this->tree->getUserOrganizationIds($this->getObjectId($user));
+        if (empty($userOrganizationIds)) {
             return false;
         }
 
         $ownerId = $this->getObjectIdIgnoreNull($this->getOwner($domainObject));
         if ($metadata->isOrganizationOwned()) {
-            return $userOrganizationId === $ownerId;
+            return in_array($ownerId, $userOrganizationIds);
         } elseif ($metadata->isBusinessUnitOwned()) {
-            return $userOrganizationId === $this->tree->getBusinessUnitOrganizationId($ownerId);
+            return in_array($this->tree->getBusinessUnitOrganizationId($ownerId), $userOrganizationIds);
         } elseif ($metadata->isUserOwned()) {
-            return $userOrganizationId === $this->tree->getUserOrganizationId($ownerId);
+            return 0 !== count(array_intersect($this->tree->getUserOrganizationIds($ownerId), $userOrganizationIds));
         }
 
         return false;

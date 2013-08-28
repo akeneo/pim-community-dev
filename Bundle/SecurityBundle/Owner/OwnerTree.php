@@ -35,6 +35,15 @@ class OwnerTree
     protected $userOwningBusinessUnitId;
 
     /**
+     * An associative array to store organizations assigned to an user
+     * key = userId
+     * value = array of organizationId
+     *
+     * @var array
+     */
+    protected $userOrganizationIds;
+
+    /**
      * An associative array to store business units assigned to an user
      * key = userId
      * value = array of businessUnitId
@@ -92,6 +101,19 @@ class OwnerTree
     }
 
     /**
+     * Gets all organization ids assigned to the given user id
+     *
+     * @param int|string $userId
+     * @return int|string|null
+     */
+    public function getUserOrganizationIds($userId)
+    {
+        return isset($this->userOrganizationIds[$userId])
+            ? $this->userOrganizationIds[$userId]
+            : array();
+    }
+
+    /**
      * Gets the owning business unit id for the given user id
      *
      * @param int|string $userId
@@ -105,7 +127,7 @@ class OwnerTree
     }
 
     /**
-     * Gets all business unit ids for the given user id
+     * Gets all business unit ids assigned to the given user id
      *
      * @param int|string $userId
      * @return array of int|string
@@ -179,10 +201,6 @@ class OwnerTree
     {
         $this->businessUnitOwningOrganizationId[$businessUnitId] = $owningOrganizationId;
 
-        if (!isset($this->businessUnitUserIds[$businessUnitId])) {
-            $this->businessUnitUserIds[$businessUnitId] = array();
-        }
-
         if ($owningOrganizationId !== null) {
             if (!isset($this->organizationBusinessUnitIds[$owningOrganizationId])) {
                 $this->organizationBusinessUnitIds[$owningOrganizationId] = array();
@@ -190,9 +208,14 @@ class OwnerTree
             $this->organizationBusinessUnitIds[$owningOrganizationId][] = $businessUnitId;
         }
 
+        $this->businessUnitUserIds[$businessUnitId] = array();
         foreach ($this->userOwningBusinessUnitId as $userId => $buId) {
-            if ($buId === $businessUnitId) {
+            if ($businessUnitId === $buId) {
+                $this->businessUnitUserIds[$businessUnitId][] = $userId;
                 $this->userOwningOrganizationId[$userId] = $owningOrganizationId;
+                if ($owningOrganizationId !== null) {
+                    $this->userOrganizationIds[$userId][] = $owningOrganizationId;
+                }
             }
         }
     }
@@ -233,16 +256,24 @@ class OwnerTree
         $this->userOwningBusinessUnitId[$userId] = $owningBusinessUnitId;
 
         if ($owningBusinessUnitId !== null) {
-            if (!isset($this->businessUnitUserIds[$owningBusinessUnitId])) {
-                $this->businessUnitUserIds[$owningBusinessUnitId] = array();
+            if (isset($this->businessUnitUserIds[$owningBusinessUnitId])) {
+                $this->businessUnitUserIds[$owningBusinessUnitId][] = $userId;
             }
-            $this->businessUnitUserIds[$owningBusinessUnitId][] = $userId;
 
+            $this->userOrganizationIds[$userId] = array();
             if (isset($this->businessUnitOwningOrganizationId[$owningBusinessUnitId])) {
                 $this->userOwningOrganizationId[$userId] =
                     $this->businessUnitOwningOrganizationId[$owningBusinessUnitId];
+                $this->userOrganizationIds[$userId][] = $this->businessUnitOwningOrganizationId[$owningBusinessUnitId];
+            } else {
+                $this->userOwningOrganizationId[$userId] = null;
             }
+        } else {
+            $this->userOwningOrganizationId[$userId] = null;
+            $this->userOrganizationIds[$userId] = array();
         }
+
+        $this->userBusinessUnitIds[$userId] = array();
     }
 
     /**
@@ -250,14 +281,18 @@ class OwnerTree
      *
      * @param int|string $userId
      * @param int|string $businessUnitId
+     * @throws \LogicException
      */
     public function addUserBusinessUnit($userId, $businessUnitId)
     {
         if (!isset($this->userBusinessUnitIds[$userId])) {
-            $this->userBusinessUnitIds[$userId] = array();
+            throw new \LogicException(sprintf('First call addUser for userId: %s.', (string)$userId));
         }
         if ($businessUnitId !== null) {
             $this->userBusinessUnitIds[$userId][] = $businessUnitId;
+            if (isset($this->businessUnitOwningOrganizationId[$businessUnitId])) {
+                $this->userOrganizationIds[$userId][] = $this->businessUnitOwningOrganizationId[$businessUnitId];
+            }
         }
     }
 
@@ -271,6 +306,7 @@ class OwnerTree
         $this->organizationBusinessUnitIds = array();
         $this->userOwningBusinessUnitId = array();
         $this->subordinateBusinessUnitIds = array();
+        $this->userOrganizationIds = array();
         $this->userBusinessUnitIds = array();
         $this->businessUnitUserIds = array();
     }
