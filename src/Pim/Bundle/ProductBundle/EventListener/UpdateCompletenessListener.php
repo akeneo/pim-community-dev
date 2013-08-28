@@ -10,6 +10,7 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\PendingCompleteness;
 
@@ -57,7 +58,6 @@ class UpdateCompletenessListener implements EventSubscriber
     {
         $entity = $args->getEntity();
         $this->addChannel($entity);
-        //$this->changeRequirement($entity);
     }
 
     /**
@@ -66,13 +66,7 @@ class UpdateCompletenessListener implements EventSubscriber
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $this->changeRequirement($entity);
-/*
-        if ($entity instanceof AttributeRequirement) {
-            if ($entity->getFamily()) {
-                $this->changeRequirementOfAFamily($entity->getFamily());
-            }
-        }*/
+        $this->updateRequirement($entity);
     }
 
     /**
@@ -84,19 +78,6 @@ class UpdateCompletenessListener implements EventSubscriber
         $uow = $em->getUnitOfWork();
         foreach ($uow->getScheduledCollectionUpdates() as $collection) {
             $this->addLocaleToAChannel($collection);
-
-
-            //if ($collection->getOwner() instanceof Family /*and current($collection->getInsertDiff()) instanceof AttributeRequirement*/) {
-
-
-//                var_dump($collection);
-
-//                die('ICICICI');
-
-         /*       $family = $collection->getOwner();
-                $this->updatedFamilies[]= $family;
-            }*/
-
         }
     }
 
@@ -153,13 +134,12 @@ class UpdateCompletenessListener implements EventSubscriber
         }
     }
 
-
     /**
      * Check if a attribute requirement has been changed on a family
      *
      * @param object $entity
      */
-    protected function changeRequirement($entity)
+    protected function updateRequirement($entity)
     {
         if ($entity instanceof AttributeRequirement) {
             if ($entity->getFamily() and !in_array($entity->getFamily(), $this->updatedFamilies)) {
@@ -167,16 +147,6 @@ class UpdateCompletenessListener implements EventSubscriber
             }
         }
     }
-
-    /**
-     * Check if a attribute requirement has been changed on a family
-     *
-    protected function changeRequirementOfAFamily($family)
-    {
-        if (!in_array($family, $this->updatedFamilies)) {
-            $this->updatedFamilies[]= $family;
-        }
-    }*/
 
     /**
      * Add pending completeness for channel
