@@ -33,7 +33,7 @@ class FileValidator extends BaseFileValidator
         parent::validate($value, $constraint);
 
         if ($constraint->allowedExtensions) {
-            $file = $value instanceof \SplFileInfo ? $value : new FileObject($value);
+            $file = $value instanceof \SplFileInfo ? $value : new \SplFileInfo($value);
 
             if ($file instanceof UploadedFile) {
                 $extension = $file->getClientOriginalExtension();

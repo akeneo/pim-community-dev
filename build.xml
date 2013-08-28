@@ -117,8 +117,6 @@
         <exec executable="phpdoc">
             <arg line="--directory ${basedir}/src" />
             <arg line="--target ${basedir}/build/api" />
-            <arg line="--quiet off" />
-            <arg line="--output HTML:Smarty:PHP" />
         </exec>
     </target>
 
