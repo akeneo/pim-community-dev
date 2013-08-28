@@ -11,7 +11,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: tags
               entity_name: %oro_tag.tag.entity.class%
-              entity_hint: tags
+              entity_hint: tag
               route_name: oro_tag_index
 
     oro_tag.datagrid_results.datagrid_manager:
@@ -20,7 +20,7 @@ services:
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: %oro_tag.datagrid_results.grid_name%
-              entity_hint: results
+              entity_hint: result
               query_factory: oro_tag.datagrid_results.query_factory
               route_name: oro_tag_search_ajax
 
