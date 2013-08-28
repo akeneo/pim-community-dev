@@ -15,14 +15,14 @@ use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Role Entity
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
  * @ORM\Table(name="oro_access_role")
- * @Configurable(
+ * @Config(
  *  defaultValues={
  *      "entity"={"label"="Role", "plural_label"="Roles"},
  *      "ownership"={

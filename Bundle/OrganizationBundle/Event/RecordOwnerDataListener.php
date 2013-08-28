@@ -76,7 +76,7 @@ class RecordOwnerDataListener
             return;
         }
         $entity = $args->getEntity();
-        if ($this->configProvider->hasConfig(get_class($entity))) {
+        if ($this->configProvider->isConfigurable(get_class($entity))) {
             if (!method_exists($entity, 'getOwner')) {
                 throw new \LogicException(
                     sprintf('Method getOwner must be implemented for %s entity', get_class($entity))

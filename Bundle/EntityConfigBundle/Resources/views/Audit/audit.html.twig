@@ -1,14 +1,16 @@
-{% set gridId = "entity-grid-" ~ random() %}
+<div class="widget-container">
+    {% set gridId = "entity-grid-" ~ random() %}
 
-{% block head_script %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#' ~ gridId} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
-{% endblock %}
+    {% block head_script %}
+        {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#' ~ gridId} %}
+        {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+    {% endblock %}
 
-{% block page_container %}
-    <div class="container-fluid">
-        {% block content %}
-            <div id="{{ gridId }}"></div>
-        {% endblock %}
-    </div>
-{% endblock %}
+    {% block page_container %}
+        <div class="container-fluid">
+            {% block content %}
+                <div id="{{ gridId }}"></div>
+            {% endblock %}
+        </div>
+    {% endblock %}
+</div>

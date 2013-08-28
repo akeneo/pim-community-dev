@@ -11,6 +11,10 @@ parameters:
     oro_entity.owner.ownership_metadata_provider.cache_impl.class: Doctrine\Common\Cache\FilesystemCache
 
 services:
+    oro_entity_config.link.provider_bag.method:
+        tags:
+            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: testAction }
+
     oro_entity.orm.entity_class_resolver:
         class: %oro_entity.orm.entity_class_resolver.class%
         arguments:
@@ -38,11 +42,3 @@ services:
         class: %oro_entity.owner.ownership_metadata_provider.cache_impl.class%
         arguments:
             - %kernel.cache_dir%/oro_ownership_metadata
-
-    oro_entity.config.entity_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: entity }
-
-    oro_entity.config.datagrid_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: datagrid }
