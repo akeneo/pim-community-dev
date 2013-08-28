@@ -6,10 +6,10 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Form\View\ProductFormView;
-use Pim\Bundle\ProductBundle\Form\Subscriber\TransformImportedProductDataSubscriber;
 
 /**
  * Product form type
@@ -34,7 +34,7 @@ class ProductType extends FlexibleType
         FlexibleManager $flexibleManager,
         $valueFormAlias,
         ProductFormView $productFormView,
-        TransformImportedProductDataSubscriber $transformer
+        EventSubscriberInterface $transformer
     ) {
         parent::__construct($flexibleManager, $valueFormAlias);
 

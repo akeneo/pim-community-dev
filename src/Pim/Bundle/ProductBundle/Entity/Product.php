@@ -11,6 +11,7 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * Flexible product
@@ -266,19 +267,18 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         return $this->categories;
     }
 
-    /**
-     * Set the product categories
-     *
-     * @param ArrayCollection $categories
-     *
-     * @return Procuct
-     */
-    public function setCategories($categories)
+    public function addCategory(Category $category)
     {
-        foreach ($categories as $category) {
-            $category->addProduct($this);
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
-        $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
 
         return $this;
     }
