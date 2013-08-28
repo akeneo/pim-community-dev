@@ -24,7 +24,6 @@ class ProductCategoriesConverter
 
     public function convert($data)
     {
-        ;
         if (null !== $ids = $this->getCategoryIds($data)) {
             return array('categories' => $ids);
         }
