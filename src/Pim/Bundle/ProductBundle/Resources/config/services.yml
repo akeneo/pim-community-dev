@@ -32,6 +32,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    pim_product.form.transform_imported_product_data_subscriber:
+        public: false
+        class: %pim_product.form.transform_imported_product_data_subscriber.class%
+
     # Validators
     pim_product.form.validator.metric:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator

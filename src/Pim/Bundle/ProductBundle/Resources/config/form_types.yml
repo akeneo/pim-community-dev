@@ -10,6 +10,7 @@ services:
             - @pim_product.manager.product
             - 'pim_product_value'
             - @pim_product.form.type.product.view
+            - @pim_product.form.transform_imported_product_data_subscriber
         tags:
             - { name: form.type, alias: pim_product }
 

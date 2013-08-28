@@ -29,6 +29,7 @@ parameters:
     pim_product.listener.user_context.class:           Pim\Bundle\ProductBundle\EventListener\UserContextListener
 
     pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_product.form.transform_imported_product_data_subscriber.class: Pim\Bundle\ProductBundle\Form\Subscriber\TransformImportedProductDataSubscriber
 
     pim_product.manager.attribute_type.class:          Pim\Bundle\ProductBundle\Manager\AttributeTypeManager
     pim_product.manager.media.class:                   Pim\Bundle\ProductBundle\Manager\MediaManager

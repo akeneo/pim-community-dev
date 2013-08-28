@@ -24,10 +24,10 @@ services:
         public: false
         class: %pim_import_export.form.transform_imported_product_data_subscriber.class%
         arguments:
-         - @pim_import_export.converter.product_enabled_converter
-         - @pim_import_export.converter.product_value_converter
-         - @pim_import_export.converter.product_family_converter
-         - @pim_import_export.converter.product_categories_converter
+            - @pim_import_export.converter.product_enabled_converter
+            - @pim_import_export.converter.product_value_converter
+            - @pim_import_export.converter.product_family_converter
+            - @pim_import_export.converter.product_categories_converter
 
     pim_import_export.converter.product_enabled_converter:
         public: false
