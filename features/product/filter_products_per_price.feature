@@ -30,7 +30,7 @@ Feature: Filter products per price
       | postit  | price       |        | mobile    | 10.5                     |
       | postit  | price       |        | ecommerce | 12.5                     |
       | book    | SKU         |        |           | book                     |
-      | book    | price       |        | mobile    | 20.5                     |
+      | book    | price       |        | mobile    | 20                       |
       | book    | price       |        | ecommerce | 22.5                     |
     And I am logged in as "admin"
 
@@ -42,8 +42,7 @@ Feature: Filter products per price
 
   Scenario: Successfully filter per Price
     Given I am on the products page
-    When I filter per price with value "20.5" and currency "Euro"
-    And print last response
+    When I filter per price with value "20" and currency "Euro"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
