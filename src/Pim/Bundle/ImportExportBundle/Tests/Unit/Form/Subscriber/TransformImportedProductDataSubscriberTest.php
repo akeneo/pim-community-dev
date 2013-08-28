@@ -40,7 +40,6 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
-
     public function testSubscribedEvent()
     {
         $this->assertEquals(

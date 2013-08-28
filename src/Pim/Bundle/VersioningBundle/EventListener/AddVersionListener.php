@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
@@ -14,10 +13,8 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 

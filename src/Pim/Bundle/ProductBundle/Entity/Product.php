@@ -10,7 +10,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
-use Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer;
 use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
