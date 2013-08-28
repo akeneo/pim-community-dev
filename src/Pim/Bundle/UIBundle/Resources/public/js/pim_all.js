@@ -240,14 +240,15 @@ function init() {
         var $input = $(this);
         var $info = $input.siblings('.upload-info').first();
         var $zone = $info.parent();
-        var $filename = $zone.find('.upload-filename');
-        var $remove = $zone.find('.remove-upload');
+        var $filename = $info.find('.upload-filename');
+        var $remove = $info.find('.remove-upload');
+        var $checkbox = $info.find('input[type="checkbox"]');
 
-        var $preview = $zone.find('.upload-preview');
+        var $preview = $info.find('.upload-preview');
         if ($preview.prop('tagName').toLowerCase() !== 'i') {
             var iconClass = $zone.hasClass('image') ? 'fa-icon-camera-retro' : 'fa-icon-file';
             $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
-            $preview = $zone.find('.upload-preview');
+            $preview = $info.find('.upload-preview');
         }
 
         if (filename) {
@@ -256,12 +257,14 @@ function init() {
             $preview.removeClass('empty');
             $remove.removeClass('hide');
             $input.attr('disabled', 'disabled').addClass('hide');
+            $checkbox.removeAttr('checked').val(0);
         } else {
             $filename.html($filename.attr('data-empty-title'));
             $zone.addClass('empty');
             $preview.addClass('empty');
             $remove.addClass('hide');
             $input.removeAttr('disabled').removeClass('hide');
+            $checkbox.attr('checked', 'checked').val(1);
         }
     });
 

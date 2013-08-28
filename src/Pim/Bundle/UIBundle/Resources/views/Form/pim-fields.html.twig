@@ -74,7 +74,9 @@
                 <div class="upload-info">
                     {% if not empty %}
                         {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}">{{ form.vars.value.originalFilename }}</a>
+                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}">
+                            <i class="fa-icon-file upload-preview"></i>
+                        </a>
                     {% else %}
                         <i class="fa-icon-file upload-preview empty"></i>
                     {% endif %}
