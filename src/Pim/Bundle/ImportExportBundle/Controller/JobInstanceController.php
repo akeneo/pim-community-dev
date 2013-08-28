@@ -10,6 +10,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
+use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 /**
  * Job Instance controller
@@ -114,11 +115,21 @@ class JobInstanceController extends Controller
             return $this->redirectToIndexView();
         }
 
+        $uploadAllowed = false;
+        $job = $jobInstance->getJob();
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $uploadAllowed = true;
+            }
+        }
+
         return $this->render(
             sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
             array(
-                'jobInstance' => $jobInstance,
-                'violations'  => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
+                'jobInstance'   => $jobInstance,
+                'violations'    => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
+                'uploadAllowed' => $uploadAllowed,
             )
         );
     }
@@ -204,11 +215,12 @@ class JobInstanceController extends Controller
     /**
      * Launch a job
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return RedirectResponse
      */
-    public function launchAction($id)
+    public function launchAction(Request $request, $id)
     {
         try {
             $jobInstance = $this->getJobInstance($id);
@@ -222,6 +234,24 @@ class JobInstanceController extends Controller
             $jobExecution = new JobExecution;
             $jobExecution->setJobInstance($jobInstance);
             $job = $jobInstance->getJob();
+
+            if ($request->isMethod('POST')) {
+                $form = $this->createUploadForm();
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $media = $data['file'];
+                    $file = $media->getFile();
+
+                    foreach ($job->getSteps() as $step) {
+                        $reader = $step->getReader();
+                        if ($reader instanceof UploadedFileAwareInterface) {
+                            $reader->setUploadedFile($file);
+                        }
+                    }
+                }
+            }
+
             $job->execute($jobExecution);
 
             if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
@@ -326,5 +356,17 @@ class JobInstanceController extends Controller
         $managerAlias = sprintf('pim_import_export.datagrid.manager.%s', $this->getJobType());
 
         return $this->get($managerAlias);
+    }
+
+    /**
+     * Create file upload form
+     *
+     * @return Form
+     */
+    protected function createUploadForm()
+    {
+        return $this->createFormBuilder()
+            ->add('file', 'oro_media')
+            ->getForm();
     }
 }

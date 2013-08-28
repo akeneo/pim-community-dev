@@ -38,3 +38,9 @@ pim_importexport_import_launch:
     defaults: { _controller: PimImportExportBundle:Import:launch }
     requirements:
         id: \d+
+
+pim_importexport_import_upload:
+    path: /{id}/upload
+    defaults: { _controller: PimImportExportBundle:Import:upload }
+    requirements:
+        id: \d+

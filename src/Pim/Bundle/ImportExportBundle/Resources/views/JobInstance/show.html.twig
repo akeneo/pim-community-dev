@@ -33,6 +33,9 @@
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if violations|length == 0 %}
+            {% if uploadAllowed and uploadRoute is defined %}
+                {{ elements.link('Upload and '~title~' now', null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form': 'dialog', 'data-form-url': uploadRoute }}) }}
+            {% endif %}
             {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}

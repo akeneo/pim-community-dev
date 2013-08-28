@@ -4,9 +4,11 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\ProductBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 /**
  * Csv reader
@@ -17,7 +19,7 @@ use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
  *
  * @Assert\Callback(groups={"Execution"}, methods={"isFilePathValid"})
  */
-class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface, UploadedFileAwareInterface
 {
     /**
      * @PimAssert\File(groups={"Execution"}, allowedExtensions={"csv"})
@@ -63,6 +65,19 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
         if ($this->allowUpload === false && empty($this->filePath)) {
             $context->addViolationAt('filePath', 'This value should not be blank.');
         }
+    }
+
+    /**
+     * Set uploaded file
+     * @param string $uploadedFile
+     *
+     * @return CsvReader
+     */
+    public function setUploadedFile(UploadedFile $uploadedFile)
+    {
+        $this->filePath = $uploadedFile->getRealPath();
+
+        return $this;
     }
 
     /**

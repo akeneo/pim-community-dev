@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
@@ -13,6 +15,37 @@ use Pim\Bundle\BatchBundle\Entity\JobInstance;
  */
 class ImportController extends JobInstanceController
 {
+    /**
+     * Upload a file to run the import
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return template
+     */
+    public function uploadAction(Request $request, $id)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToIndexView();
+        }
+
+        try {
+            $jobInstance = $this->getJobInstance($id);
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+
+        return $this->render(
+            'PimImportExportBundle:Import:upload.html.twig',
+            array(
+                'form'        => $this->createUploadForm()->createView(),
+                'jobInstance' => $jobInstance,
+            )
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
