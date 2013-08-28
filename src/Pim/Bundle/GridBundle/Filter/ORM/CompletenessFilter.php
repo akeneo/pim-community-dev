@@ -25,7 +25,7 @@ class CompletenessFilter extends BooleanFilter
             return;
         }
 
-        $fieldExpression = $this->createFieldExpression('pCompleteness.ratio', $alias);
+        $fieldExpression = $this->createFieldExpression($field, $alias);
         $expressionFactory = $this->getExpressionFactory();
 
         switch ($data['value']) {
@@ -34,7 +34,7 @@ class CompletenessFilter extends BooleanFilter
                 break;
             case BooleanFilterType::TYPE_YES:
             default:
-                $expression = $expressionFactory->eq($fieldExpression.'.ratio', '100');
+                $expression = $expressionFactory->eq($fieldExpression .'.ratio', '100');
                 break;
         }
 
