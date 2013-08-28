@@ -19,10 +19,3 @@ services:
             - @pim_product.manager.channel
         tags:
             - { name: form.type, alias: pim_type_scope_filter }
-
-    pim_filter.form.type.filter.completeness:
-        class:     %pim_filter.form.type.filter.completeness_class%
-        arguments:
-            - @translator
-        tags:
-            - { name: form.type, alias: pim_type_completeness_filter }
