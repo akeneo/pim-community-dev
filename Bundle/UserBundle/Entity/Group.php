@@ -11,22 +11,22 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
-use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
- * @Configurable(
- *  routeName="oro_user_group_index",
- *  defaultValues={
- *      "entity"={"icon"="group","label"="Group","plural_label"="Groups"},
- *      "ownership"={"owner_type"="BUSINESS_UNIT"}
- *  }
+ * @Config(
+ *      routeName="oro_user_group_index",
+ *      mode="readonly",
+ *      defaultValues={
+ *          "entity"= {"icon"="group","label"="Group","plural_label"="Groups" },
+ *          "extend"= {"is_extend"=true},
+ *          "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *      }
  * )
- * @Extend
  */
 class Group
 {
@@ -114,7 +114,6 @@ class Group
 
     /**
      * Returns the group roles
-     *
      * @return Collection The roles
      */
     public function getRoles()
@@ -124,8 +123,7 @@ class Group
 
     /**
      * Get role by string
-     *
-     * @param  string    $roleName Role name
+     * @param  string $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
@@ -141,7 +139,7 @@ class Group
     }
 
     /**
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return boolean
      * @throws \InvalidArgumentException
      */
@@ -157,13 +155,12 @@ class Group
             );
         }
 
-        return (bool) $this->getRole($roleName);
+        return (bool)$this->getRole($roleName);
     }
 
     /**
      * Adds a Role to the Collection
-     *
-     * @param  Role  $role
+     * @param  Role $role
      * @return Group
      */
     public function addRole(Role $role)
@@ -177,8 +174,7 @@ class Group
 
     /**
      * Remove the Role object from collection
-     *
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return Group
      * @throws \InvalidArgumentException
      */
@@ -202,8 +198,7 @@ class Group
 
     /**
      * Set new Roles collection
-     *
-     * @param  array|Collection          $roles
+     * @param  array|Collection $roles
      * @return Group
      * @throws \InvalidArgumentException
      */

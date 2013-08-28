@@ -360,7 +360,13 @@ Oro.Datagrid.Grid = Backgrid.Grid.extend({
                 datagrid: this,
                 model: row.model
             });
-            action.run();
+            var actionConfiguration = row.model.get('action_configuration');
+            if (_.isUndefined(actionConfiguration)
+                || _.isUndefined(actionConfiguration[action.name])
+                || actionConfiguration[action.name]
+                ) {
+                    action.run();
+            }
         }
     },
 

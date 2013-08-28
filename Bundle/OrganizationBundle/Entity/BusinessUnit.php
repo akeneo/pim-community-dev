@@ -5,7 +5,7 @@ namespace Oro\Bundle\OrganizationBundle\Entity;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
@@ -18,7 +18,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(
+ * @Config(
  *  defaultValues={
  *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
  *      "ownership"={"owner_type"="BUSINESS_UNIT"}

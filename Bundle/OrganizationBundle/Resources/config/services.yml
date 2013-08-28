@@ -60,15 +60,15 @@ services:
         class:                        %oro_organization.business_unit.manager.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
 
-    oro_entity.config.ownership_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: ownership }
-
     oro_organization.form.type.ownership_type:
         class:                        %oro_organization.type.ownership_type.class%
         arguments:                    ["@translator"]
         tags:
             - { name: form.type, alias: oro_type_choice_ownership_type }
+
+    oro_organization.method.get_ownership_type:
+        tags:
+            - { name: oro_service_method, service: oro_organization.form.type.ownership_type, method: getOwnershipsArray }
 
     oro_organization.form.type.business_unit_tree_select_type:
         class:                        %oro_organization.form.type.business_unit_tree_select_type.class%
@@ -80,7 +80,7 @@ services:
         class:                        %oro_organization.type.form_type.class%
         arguments:
             - @security.context
-            - @oro_entity.config.ownership_config_provider
+            - @oro_entity_config.provider.ownership
             - @oro_organization.business_unit_manager
             - @oro_user.acl_manager
             - @translator
@@ -99,12 +99,12 @@ services:
     oro_organization.twig.get_owner:
         class: %oro_organization.twig.get_owner.class%
         arguments:
-            - @oro_entity.config.ownership_config_provider
+            - @oro_entity_config.provider.ownership
         tags:
             - { name: twig.extension }
 
     oro_organization.entity_ownership.listener:
         class:                        %oro_organization.entity_ownership.listener.class%
-        arguments:                    ["@service_container", "@oro_entity.config.ownership_config_provider"]
+        arguments:                    ["@service_container", "@oro_entity_config.provider.ownership"]
         tags:
              - { name: doctrine.event_listener, event: prePersist }

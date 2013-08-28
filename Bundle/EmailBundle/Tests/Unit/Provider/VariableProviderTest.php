@@ -57,66 +57,91 @@ class VariableProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTemplateVariables($entityIsUser)
     {
-        $configurableEntities =  array(
-            get_class($this->user),
-            self::TEST_ENTITY_NAME,
-            self::TEST_NOT_NEEDED_ENTITY_NAME
-        );
+        $configId1Mock = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface');
+        $configId1Mock
+            ->expects($this->once())->method('getClassName')
+            ->will($this->returnValue(get_class($this->user)));
+        $configId2Mock = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface');
+        $configId2Mock
+            ->expects($this->once())->method('getClassName')
+            ->will($this->returnValue(self::TEST_ENTITY_NAME));
+        $configId3Mock = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface');
+        $configId3Mock
+            ->expects($this->once())->method('getClassName')
+            ->will($this->returnValue(self::TEST_NOT_NEEDED_ENTITY_NAME));
 
-        $this->configProvider->expects($this->at(0))->method('getAllConfigurableEntityNames')
+        $configurableEntities =  array($configId1Mock, $configId2Mock, $configId3Mock);
+
+        $this->configProvider->expects($this->once())->method('getIds')
             ->will($this->returnValue($configurableEntities));
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
-            ->disableOriginalConstructor()->getMock();
-
-        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
-            ->disableOriginalConstructor()->getMock();
-        $field2 = clone $field1;
-
-        $field1->expects($this->atLeastOnce())->method('is')->with('available_in_template')
-            ->will($this->returnValue(true));
-        $field1->expects($this->atLeastOnce())->method('getCode')
+        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $field1Id->expects($this->any())
+            ->method('getFieldName')
             ->will($this->returnValue('someCode'));
 
-        $field2->expects($this->atLeastOnce())->method('is')->with('available_in_template')
-            ->will($this->returnValue(false));
+        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
 
+        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+
+        $field1->expects($this->any())
+            ->method('is')
+            ->with('available_in_template')
+            ->will($this->returnValue(true));
+        $field1->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($field1Id));
+
+        $field2->expects($this->any())
+            ->method('is')
+            ->with('available_in_template')
+            ->will($this->returnValue(false));
 
         // fields for entity
         $fieldsCollection = new ArrayCollection();
-        $config->expects($this->at(0))->method('getFields')
+        $this->configProvider->expects($this->at(1))->method('filter')
             ->will(
                 $this->returnCallback(
                     function ($callback) use ($fieldsCollection) {
-                        return $fieldsCollection->filter($callback);
+                        return $fieldsCollection->filter($callback)->toArray();
                     }
                 )
             );
-        $fieldsCollection['someCode'] = ($field1);
-        $fieldsCollection['anotherCode'] = ($field2);
+        $fieldsCollection[] = $field1;
+        $fieldsCollection[] = $field2;
 
-        $this->configProvider->expects($this->at(1))->method('getConfig')->with(get_class($this->user))
-            ->will($this->returnValue($config));
 
         if (!$entityIsUser) {
-            $field3 = clone $field1;
-            $field3->expects($this->atLeastOnce())->method('is')->with('available_in_template')
-                ->will($this->returnValue(true));
-            $field3->expects($this->atLeastOnce())->method('getCode')
+            $field3Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+                ->disableOriginalConstructor()
+                ->getMock();
+            $field3Id->expects($this->any())
+                ->method('getFieldName')
                 ->will($this->returnValue('someAnotherCode'));
 
-            $config->expects($this->at(1))->method('getFields')
+            $field3 = clone $field1;
+            $field3->expects($this->atLeastOnce())->method('is')
+                ->with('available_in_template')
+                ->will($this->returnValue(true));
+            $field3->expects($this->atLeastOnce())->method('getId')
+                ->will($this->returnValue($field3Id));
+
+            $this->configProvider->expects($this->at(2))->method('filter')
                 ->will(
                     $this->returnCallback(
                         function ($callback) use ($fieldsCollection, $field3) {
-                            $fieldsCollection['someAnotherCode'] = $field3;
-                            return $fieldsCollection->filter($callback);
+                            $fieldsCollection[] = $field3;
+                            return $fieldsCollection->filter($callback)->toArray();
                         }
                     )
                 );
 
-            $this->configProvider->expects($this->at(2))->method('getConfig')->with(self::TEST_ENTITY_NAME)
-                ->will($this->returnValue($config));
             $result = $this->provider->getTemplateVariables(self::TEST_ENTITY_NAME);
         } else {
             $result = $this->provider->getTemplateVariables(get_class($this->user));

@@ -1,7 +1,6 @@
 js:
   'entityextend':
       - '@OroEntityExtendBundle/Resources/public/js/extend.apply.js'
-      - '@OroEntityExtendBundle/Resources/public/js/extend.field.create.js'
 css:
   'entityextend':
       - '@OroEntityExtendBundle/Resources/public/css/extend.css'

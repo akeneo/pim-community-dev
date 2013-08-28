@@ -1,6 +1,27 @@
 oro_entity_config:
     extend:
         entity:
+            grid_action:
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_entity_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active']}
+                    args:                   ['id']
+                -
+                    name:                   'Restore'
+                    route:                  'oro_entityextend_entity_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted']}
+                    args:                   ['id']
+            layout_action:
+                -
+                    name:                   'Create Entity'
+                    route:                  'oro_entityextend_entity_create'
             items:
                 owner:
                     options:
@@ -22,14 +43,12 @@ oro_entity_config:
                             read_only:      true
                             required:       false
                             label:          'Type'
-                    view:
-                        type:               string
-                        stats:              false
-                        block:
+
                 is_extend:
                     options:
                         default_value:      false
                         internal:           true
+
                 state:
                     options:
                         priority:           25
@@ -44,24 +63,65 @@ oro_entity_config:
                         sortable:           true
                         filterable:         false
                         show_filter:        false
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                        internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true
+
                 extend_class:
                     options:
                         internal:           true
+
                 unique_key:
                     options:
                         internal:           true
                         serializable:       true
+
                 proxy_class:
                     options:
                         internal:           true
 
         field:
             grid_action:
-                -                           {'name':'Remove', 'route':'oro_entityextend_field_remove', 'type':'delete', 'icon':'trash', 'acl_resource':'root', 'filter':'is_extend', 'args':['id']}
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_field_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['New', 'Updated', 'Active'] }
+                    args:                   ['id']
+                -
+                    name:                   'Resore'
+                    route:                  'oro_entityextend_field_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted'] }
+                    args:                   ['id']
             layout_action:
-                -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
-                -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
-                -                           {'name':'Update schema', 'route':'oro_entityextend_update', 'entity_id':true, 'aClass':'btn-danger entity-extend-apply', 'void':true}
+                -
+                    name:                   'Manage unique keys'
+                    route:                  'oro_entityextend_entity_unique_key'
+                    entity_id:              true
+                -
+                    name:                   'Create field'
+                    route:                  'oro_entityextend_field_create'
+                    entity_id:              true
+                    filter:                 { is_extend: true }
+                -
+                    name:                   'Update schema'
+                    route:                  'oro_entityextend_update'
+                    entity_id:              true
+                    aClass:                 'btn-danger entity-extend-apply'
+                    void:                   true
+                    filter:                 { state: ['New', 'Updated', 'Deleted'] }
             items:
                 owner:
                     options:
@@ -100,66 +160,78 @@ oro_entity_config:
                     options:
                         priority:           40
                         default_value:      false
-                        is_bool:            true
                         internal:           true
-#                    grid:
-#                        type:               boolean
-#                        label:              'Is Extend Field'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         false
-#                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        block:              entity
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            read_only:      true
-#                            required:       false
-#                            label:          "Is Extend Field"
 
                 length:
                     options:
                         default_value:      255
+                        allowed_type:       [string]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            1
+                            max:            255
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Length'
-                            allowed_type:   'string'
                             block:          entity
                             subblock:       properties
 
                 precision:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Precision'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
 
                 scale:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Scale'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                        internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true

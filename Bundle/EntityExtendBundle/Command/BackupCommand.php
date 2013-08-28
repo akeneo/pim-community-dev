@@ -64,7 +64,7 @@ class BackupCommand extends ContainerAwareCommand
         //$tables    = array('oro_config_entity', 'oro_config_field');
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->getContainer()->get('oro_entity_extend.config.extend_config_provider');
+        $extendConfigProvider = $this->getContainer()->get('oro_entity_config.provider.extend');
 
         /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager('default');
