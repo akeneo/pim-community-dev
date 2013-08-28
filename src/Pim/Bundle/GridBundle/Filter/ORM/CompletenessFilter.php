@@ -5,7 +5,6 @@ namespace Pim\Bundle\GridBundle\Filter\ORM;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\GridBundle\Filter\ORM\BooleanFilter;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\CompletenessFilterType;
 
 /**
  * Overriding of boolean filter
@@ -49,7 +48,7 @@ class CompletenessFilter extends BooleanFilter
     public function getDefaultOptions()
     {
         return array(
-            'form_type' => CompletenessFilterType::NAME
+            'form_type' => BooleanFilterType::NAME
         );
     }
 }
