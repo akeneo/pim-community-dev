@@ -36,7 +36,7 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->assertTitle('Create Business Unit - Business Units - System')
             ->setBusinessUnitName($unitname)
-            ->setOwner('Default')
+            ->setOwner('Main')
             ->save()
             ->assertMessage('Business Unit successfully saved')
             ->assertTitle('Business Units - System')
