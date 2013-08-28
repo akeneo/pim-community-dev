@@ -23,6 +23,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         'name' => 'test_name',
         'label' => 'Test Label',
         'enabled' => true,
+        'type' => Workflow::TYPE_ENTITY,
     );
 
     protected $stepConfiguration = array(
@@ -58,6 +59,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             ->setName($this->workflowParameters['name'])
             ->setLabel($this->workflowParameters['label'])
             ->setEnabled($this->workflowParameters['enabled'])
+            ->setType($this->workflowParameters['type'])
             ->setConfiguration($configuration);
 
         return $workflowDefinition;
@@ -316,32 +318,32 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
             'full configuration with start' => array(
                 'configuration' => $fullConfig,
                 'startStepName' => 'test_start_step',
-                $transitions + $getDefaultTransition('test_start_step'),
-                $this->transitionDefinition + array('__start___definition' => array())
+                'expectedTransitions' => $transitions + $getDefaultTransition('test_start_step'),
+                'expectedDefinitions' => $this->transitionDefinition + array('__start___definition' => array())
             ),
             'minimal configuration with start' => array(
                 'configuration' => $minimalConfig,
                 'startStepName' => 'test_start_step',
-                $transitions + $getDefaultTransition('test_start_step'),
-                $this->transitionDefinition + array('__start___definition' => array())
+                'expectedTransitions' => $transitions + $getDefaultTransition('test_start_step'),
+                'expectedDefinitions' => $this->transitionDefinition + array('__start___definition' => array())
             ),
             'full configuration without start' => array(
                 'configuration' => $fullConfig,
                 'startStepName' => null,
-                $transitions,
-                array()
+                'expectedTransitions' => $transitions,
+                'expectedDefinitions' => array()
             ),
             'minimal configuration without start' => array(
                 'configuration' => $minimalConfig,
                 'startStepName' => null,
-                $transitions,
-                array()
+                'expectedTransitions' => $transitions,
+                'expectedDefinitions' => array()
             ),
             'full configuration with start custom config' => array(
                 'configuration' => $fullConfigWithCustomStart,
                 'startStepName' => 'test_start_step',
-                $transitions + $customStartTransition,
-                $this->transitionDefinition + $customStartDefinition
+                'expectedTransitions' => $transitions + $customStartTransition,
+                'expectedDefinitions' => $this->transitionDefinition + $customStartDefinition
             ),
         );
     }

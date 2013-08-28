@@ -59,6 +59,9 @@ class RequestEntity extends AbstractPostAction
         if (empty($options['attribute'])) {
             throw new InvalidParameterException('Attribute name parameter is required');
         }
+        if (!$options['attribute'] instanceof PropertyPath) {
+            throw new InvalidParameterException('Attribute must be valid property definition.');
+        }
 
         $this->options = $options;
 

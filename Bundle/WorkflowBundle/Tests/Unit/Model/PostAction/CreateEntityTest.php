@@ -5,7 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\CreateEntity;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\ItemStub;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
@@ -35,6 +34,13 @@ class CreateEntityTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->postAction = new CreateEntity($this->contextAccessor, $this->registry);
+    }
+
+    protected function tearDown()
+    {
+        unset($this->contextAccessor);
+        unset($this->registry);
+        unset($this->postAction);
     }
 
     /**
@@ -78,10 +84,7 @@ class CreateEntityTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         $options = array('class' => 'stdClass', 'attribute' => $this->getPropertyPath());
-        $this->assertInstanceOf(
-            'Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface',
-            $this->postAction->initialize($options)
-        );
+        $this->assertEquals($this->postAction, $this->postAction->initialize($options));
         $this->assertAttributeEquals($options, 'options', $this->postAction);
     }
 
@@ -103,6 +106,7 @@ class CreateEntityTest extends \PHPUnit_Framework_TestCase
 
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
+            ->with($options['class'])
             ->will($this->returnValue($em));
 
         $context = new ItemStub(array());

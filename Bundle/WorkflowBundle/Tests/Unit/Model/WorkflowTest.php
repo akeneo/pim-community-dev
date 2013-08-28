@@ -99,7 +99,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getTransitions());
     }
 
-    public function getTransition()
+    public function testGetTransition()
     {
         $transition = $this->getTransitionMock('transition');
 

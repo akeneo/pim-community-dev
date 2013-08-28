@@ -29,6 +29,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             'name' => array('name', 'test'),
             'label' => array('label', 'test'),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
+            'options' => array('options', array('key' => 'value')),
             'condition' => array(
                 'condition',
                 $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
@@ -184,5 +185,16 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($obj->isStart());
         $obj->setStart(true);
         $this->assertTrue($obj->isStart());
+    }
+
+    public function testGetSetOption()
+    {
+        $obj = new Transition();
+        $obj->setOptions(array('key' => 'test'));
+        $this->assertEquals('test', $obj->getOption('key'));
+        $obj->setOption('key2', 'test2');
+        $this->assertEquals(array('key' => 'test', 'key2' => 'test2'), $obj->getOptions());
+        $obj->setOption('key', 'test_changed');
+        $this->assertEquals('test_changed', $obj->getOption('key'));
     }
 }
