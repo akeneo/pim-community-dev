@@ -329,7 +329,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
-                'filter_by_where' => true
+                'filter_by_where' => true,
+                'sort_field_mapping' => array(
+                    'entityAlias' => 'pCompleteness',
+                    'fieldName'   => 'ratio'
+                )
             )
         );
         $fieldCompleteness->setProperty(
