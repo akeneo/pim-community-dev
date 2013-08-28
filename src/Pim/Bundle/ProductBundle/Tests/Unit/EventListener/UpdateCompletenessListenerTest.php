@@ -4,6 +4,9 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Pim\Bundle\ProductBundle\EventListener\UpdateCompletenessListener;
+use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 
 /**
  * Test related class
@@ -21,5 +24,80 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UpdateCompletenessListener();
         $this->assertEquals($listener->getSubscribedEvents(), array('postPersist', 'postUpdate', 'onFlush', 'postFlush'));
+    }
+
+    /**
+     * Test related method
+     */
+    public function testPostPersist()
+    {
+        $listener = new UpdateCompletenessListener();
+        $this->assertFalse($listener->hasChanged());
+        $channel = new Channel();
+        $channel->setCode('mynewchan');
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($channel));
+        $listener->postPersist($mock);
+        $this->assertTrue($listener->hasChanged());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testPostUpdate()
+    {
+        $listener = new UpdateCompletenessListener();
+        $this->assertFalse($listener->hasChanged());
+        $family = new Family();
+        $requirement = new AttributeRequirement();
+        $requirement->setFamily($family);
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($requirement));
+        $listener->postUpdate($mock);
+        $this->assertTrue($listener->hasChanged());
+    }
+
+    /**
+     * @return Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManagerMock()
+    {
+        $emMock = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $emMock->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($this->getPendingRepositoryMock()));
+
+        return $emMock;
+    }
+
+    /**
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getPendingRepositoryMock()
+    {
+        $repo = $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValue(null));
+
+        return $repo;
     }
 }

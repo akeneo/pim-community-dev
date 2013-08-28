@@ -100,7 +100,7 @@ class UpdateCompletenessListener implements EventSubscriber
      *
      * @return boolean
      */
-    protected function hasChanged()
+    public function hasChanged()
     {
         return (!empty($this->newChannels) or !empty($this->newLocalesPerChannel) or !empty($this->updatedFamilies));
     }
