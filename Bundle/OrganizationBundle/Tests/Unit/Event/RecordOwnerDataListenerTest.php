@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\UserBundle\Tests\Unit\EventListener;
+namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Event;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -56,10 +56,10 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
         $this->entity = new Entity();
 
         $this->configProvider->expects($this->once())
-            ->method('hasConfig')
+            ->method('isConfigurable')
             ->will($this->returnValue(true));
 
-        $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
+        $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

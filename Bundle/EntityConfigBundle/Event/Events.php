@@ -7,10 +7,7 @@ final class Events
     /**
      * Config Event Names
      */
-    const NEW_ENTITY     = 'entity_config.new.entity';
-    const NEW_FIELD      = 'entity_config.new.field';
-    const PERSIST_CONFIG = 'entity_config.persist.config';
-    const PRE_FLUSH      = 'entity_config.pre.flush';
-    const ON_FLUSH       = 'entity_config.on.flush';
-    const POST_FLUSH     = 'entity_config.post.flush';
+    const NEW_ENTITY_CONFIG_MODEL = 'entity_config.new.entity.config.model';
+    const NEW_FIELD_CONFIG_MODEL  = 'entity_config.new.field.config.model';
+    const PRE_PERSIST_CONFIG      = 'entity_config.persist.config';
 }

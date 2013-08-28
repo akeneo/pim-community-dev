@@ -4,6 +4,7 @@ namespace Oro\Bundle\EmailBundle\Tests\Unit\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 use Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
@@ -49,12 +50,14 @@ class ConfigureSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewEntityConfig(ArrayCollection $fieldsCollection, $shouldClearCache)
     {
-        $cmMock = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
+        $cmMock = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()->getMock();
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
-            ->disableOriginalConstructor()->getMock();
-        $config->expects($this->once())->method('getFields')
+        $cpMock = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $cpMock->expects($this->once())->method('filter')
             ->will(
                 $this->returnCallback(
                     function ($callback) use ($fieldsCollection) {
@@ -63,11 +66,15 @@ class ConfigureSubscriberTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $cmMock->expects($this->once())->method('hasConfig')->with(self::TEST_CLASS_NAME)
-            ->will($this->returnValue(true));
-        $cmMock->expects($this->once())->method('getConfig')->with(self::TEST_CLASS_NAME)
-            ->will($this->returnValue($config));
-        $event = new NewEntityEvent(self::TEST_CLASS_NAME, $cmMock);
+        $cmMock->expects($this->once())->method('getProvider')
+            ->with('email')
+            ->will($this->returnValue($cpMock));
+
+        $entityModel = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event = new NewEntityConfigModelEvent($entityModel, $cmMock);
 
         $this->cache->expects($this->exactly((int)$shouldClearCache))->method('delete');
 
@@ -79,22 +86,21 @@ class ConfigureSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function newEntityFieldsProvider()
     {
-        $field = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
-            ->disableOriginalConstructor()->getMock();
-        $field->expects($this->at(0))->method('is')->with('available_in_template')
+        $config = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface');
+        $config->expects($this->at(0))->method('is')->with('available_in_template')
             ->will($this->returnValue(true));
-        $field->expects($this->at(1))->method('is')->with('available_in_template')
+        $config->expects($this->at(1))->method('is')->with('available_in_template')
             ->will($this->returnValue(false));
-        $field->expects($this->at(2))->method('is')->with('available_in_template')
+        $config->expects($this->at(2))->method('is')->with('available_in_template')
             ->will($this->returnValue(false));
 
         return array(
             'should clear cache' => array(
-                new ArrayCollection(array($field, $field)),
+                new ArrayCollection(array($config, $config)),
                 true
             ),
             'cache should not be cleared' => array(
-                new ArrayCollection(array($field)),
+                new ArrayCollection(array($config)),
                 false
             )
         );
@@ -108,16 +114,23 @@ class ConfigureSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPersistConfig($scope, $change, $shouldClearCache)
     {
-        $cmMock = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
+        $cmMock = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()->getMock();
         $cmMock->expects($this->once())->method('calculateConfigChangeSet');
         $cmMock->expects($this->once())->method('getConfigChangeSet')
             ->will($this->returnValue($change));
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
+        $configId = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface')
             ->disableOriginalConstructor()->getMock();
-        $config->expects($this->once())->method('getScope')
+
+        $configId->expects($this->once())->method('getScope')
             ->will($this->returnValue($scope));
+
+        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
+            ->disableOriginalConstructor()->getMock();
+
+        $config->expects($this->once())->method('getId')
+            ->will($this->returnValue($configId));
 
         $event = new PersistConfigEvent($config, $cmMock);
         $this->cache->expects($this->exactly((int)$shouldClearCache))->method('delete');

@@ -40,7 +40,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->assertTitle('Create User - Users - System')
             ->setUsername($username)
             ->enable()
-            ->setOwner('Default')
+            ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstname('First_'.$username)

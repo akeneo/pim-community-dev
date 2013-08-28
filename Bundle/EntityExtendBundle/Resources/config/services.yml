@@ -11,15 +11,18 @@ parameters:
 services:
     oro_entity_extend.extend.extend_manager:
         class:                                              %oro_entity_extend.extend.extend_manager.class%
-        arguments:                                          [@oro_entity_config.proxy.entity_manager, @oro_entity_extend.config.extend_config_provider, %oro_entity_extend.backend%, %kernel.root_dir%/entities]
-
-    oro_entity_extend.config.extend_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: extend }
+        arguments:
+            - @oro_entity_config.link.entity_manager
+            - @oro_entity_config.provider.extend
+            - %oro_entity_extend.backend%
+            - %kernel.root_dir%/entities
 
     oro_entity_extend.tools.schema:
         class:                                              %oro_entity_extend.tools.schema.class%
-        arguments:                                          [@doctrine.orm.default_entity_manager, %oro_entity_extend.backend%, @oro_entity_extend.extend.extend_manager]
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - %oro_entity_extend.backend%
+            - @oro_entity_extend.extend.extend_manager
 
     oro_entity_extend.listener.doctrine_subscriber:
         class:                                              %oro_entity_extend.listener.doctrine_subscriber.class%
@@ -29,7 +32,8 @@ services:
 
     oro_entity_extend.listener.config_subscriber:
         class:                                              %oro_entity_extend.listener.config_subscriber.class%
-        arguments:                                          [@oro_entity_extend.extend.extend_manager, @oro_entity_extend.metadata.annotation_metadata_factory]
+        arguments:
+            - @oro_entity_extend.extend.extend_manager
         tags:
             - { name: kernel.event_subscriber}
 

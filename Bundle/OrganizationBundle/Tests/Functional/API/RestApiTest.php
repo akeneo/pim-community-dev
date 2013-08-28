@@ -24,7 +24,7 @@ class RestApiTest extends WebTestCase
                 'website' => 'http://localhost',
                 'email' => 'email@email.localhost',
                 'fax' => '321-321-321',
-                'appendUsers' => null,
+                'appendUsers' => array(1),
                 'owner' => '1',
             )
     );
