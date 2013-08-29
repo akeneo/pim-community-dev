@@ -126,13 +126,16 @@ class JobInstanceController extends Controller
             }
         }
 
+        $validator = $this->getValidator();
+
         return $this->render(
             sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
             array(
-                'jobInstance'   => $jobInstance,
-                'violations'    => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
-                'uploadAllowed' => $uploadAllowed,
-                'form'          => $form,
+                'jobInstance'      => $jobInstance,
+                'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
+                'uploadViolations' => $validator->validate($jobInstance, array('Default', 'UploadExecution')),
+                'uploadAllowed'    => $uploadAllowed,
+                'form'             => $form,
             )
         );
     }
@@ -233,12 +236,15 @@ class JobInstanceController extends Controller
             return $this->redirectToIndexView();
         }
 
-        if (count($this->getValidator()->validate($jobInstance, array('Default', 'Execution'))) === 0) {
+        $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
+        $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
+
+        if (count($violations) === 0 || count($uploadViolations) === 0) {
             $jobExecution = new JobExecution;
             $jobExecution->setJobInstance($jobInstance);
             $job = $jobInstance->getJob();
 
-            if ($request->isMethod('POST')) {
+            if ($request->isMethod('POST') && count($uploadViolations) === 0) {
                 $form = $this->createUploadForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {

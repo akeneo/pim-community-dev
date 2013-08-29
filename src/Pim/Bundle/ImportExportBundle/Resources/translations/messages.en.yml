@@ -69,6 +69,9 @@ pim_batch:
         escape:
             label: 'Escape'
             help: 'One character used to set the field escape'
+        allowUpload:
+            label: 'Allow file upload'
+            help: 'Whether or not to allow uploading the file directly'
 
     valid_product_creation_processor:
         title: 'Product creation'

@@ -32,10 +32,10 @@
         {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
+        {% if uploadViolations|length == 0 %}
+            {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+        {% endif %}
         {% if violations|length == 0 %}
-            {% if uploadAllowed %}
-                {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
-            {% endif %}
             {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
