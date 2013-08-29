@@ -5,7 +5,7 @@ Oro.widget.Buttons = Oro.widget.Abstract.extend({
     options: _.extend(
         _.extend({}, Oro.widget.Abstract.prototype.options),
         {
-            class: 'pull-left btn-group icons-holder',
+            cssClass: 'pull-left btn-group icons-holder',
             type: 'buttons'
         }
     ),
@@ -15,7 +15,7 @@ Oro.widget.Buttons = Oro.widget.Abstract.extend({
         this.initializeWidget(options);
 
         this.widget = this.$el;
-        this.widget.addClass(this.options.class);
+        this.widget.addClass(this.options.cssClass);
     },
 
     setTitle: function(title) {
