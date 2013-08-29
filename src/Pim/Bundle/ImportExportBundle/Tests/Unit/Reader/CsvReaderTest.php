@@ -13,19 +13,29 @@ use Pim\Bundle\ImportExportBundle\Reader\CsvReader;
  */
 class CsvReaderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     protected function setUp()
     {
         $this->reader = new CsvReader;
     }
 
+    /**
+     * Test related method
+     */
     public function testDefaultValues()
     {
         $this->assertEquals(null, $this->reader->getFilePath());
         $this->assertEquals(';', $this->reader->getDelimiter());
         $this->assertEquals('"', $this->reader->getEnclosure());
         $this->assertEquals('\\', $this->reader->getEscape());
+        $this->assertEquals(false, $this->reader->getAllowUpload());
     }
 
+    /**
+     * Test related method
+     */
     public function testRead()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/import.csv');

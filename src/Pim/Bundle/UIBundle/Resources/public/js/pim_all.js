@@ -234,6 +234,65 @@ function init() {
     });
 
     $('[rel="tooltip"]').tooltip();
+
+    $('form').on('change', 'input[type="file"]', function() {
+        var filename = $(this).val().split('\\').pop();
+        var $input = $(this);
+        var $info = $input.siblings('.upload-info').first();
+        var $zone = $info.parent();
+        var $filename = $info.find('.upload-filename');
+        var $remove = $info.find('.remove-upload');
+        var $checkbox = $info.find('input[type="checkbox"]');
+
+        var $preview = $info.find('.upload-preview');
+        if ($preview.prop('tagName').toLowerCase() !== 'i') {
+            var iconClass = $zone.hasClass('image') ? 'fa-icon-camera-retro' : 'fa-icon-file';
+            $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
+            $preview = $info.find('.upload-preview');
+        }
+
+        if (filename) {
+            $filename.html(filename);
+            $zone.removeClass('empty');
+            $preview.removeClass('empty');
+            $remove.removeClass('hide');
+            $input.attr('disabled', 'disabled').addClass('hide');
+            $checkbox.removeAttr('checked');
+        } else {
+            $filename.html($filename.attr('data-empty-title'));
+            $zone.addClass('empty');
+            $preview.addClass('empty');
+            $remove.addClass('hide');
+            $input.removeAttr('disabled').removeClass('hide');
+            $checkbox.attr('checked', 'checked');
+        }
+    });
+
+    $('form').on('submit', function() {
+        $('input[type="file"]').removeAttr('disabled');
+    });
+
+    $('.remove-upload').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $checkbox = $(this).siblings('input[type="checkbox"]').first();
+        $checkbox.attr('checked', 'checked');
+        var $input = $(this).parent().siblings('input[type="file"]');
+        $input.removeAttr('disabled').removeClass('hide');
+        $input.replaceWith($input.clone());
+
+        var $info = $(this).siblings('.upload-filename');
+        $info.html($info.attr('data-empty-title'));
+
+        $(this).siblings('.upload-preview').addClass('empty');
+        $(this).addClass('hide');
+        $(this).parent().parent().addClass('empty');
+    });
+
+    $('[data-form-toggle]').on('click', function() {
+        $('#' + $(this).attr('data-form-toggle')).show();
+        $(this).hide();
+    });
 }
 
 $(function() {

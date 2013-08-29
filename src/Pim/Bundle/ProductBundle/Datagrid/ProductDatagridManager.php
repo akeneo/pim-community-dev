@@ -472,7 +472,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        $exprLocaleAndScope = $proxyQuery->expr()->andX('locale.code = :localeCode', 'channel.code = :channelCode');
+        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
+            'locale.code = :localeCode',
+            'channel.code = :channelCode'
+        );
         $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
         $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
         $proxyQuery

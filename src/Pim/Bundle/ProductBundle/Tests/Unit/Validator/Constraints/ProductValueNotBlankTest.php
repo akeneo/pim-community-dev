@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
 use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Test related class
@@ -25,7 +26,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->constraint = new ProductValueNotBlank();
+        $this->constraint = new ProductValueNotBlank(array('channel' => new Channel()));
     }
 
     /**
@@ -43,5 +44,15 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNotNull($this->constraint->messageNotBlank);
         $this->assertNotNull($this->constraint->messageNotNull);
+    }
+
+    /**
+     * Test get channel
+     */
+    public function testGetChannel()
+    {
+        $channel1 = new Channel();
+        $constraint = new ProductValueNotBlank(array('channel' => $channel1));
+        $this->assertEquals($channel1, $constraint->getChannel());
     }
 }

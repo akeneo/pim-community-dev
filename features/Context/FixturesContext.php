@@ -130,7 +130,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string    $sku
+     * @param string $sku
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      *
@@ -281,6 +281,7 @@ class FixturesContext extends RawMinkContext
         foreach ($channels as $channel) {
             $em->remove($channel);
         }
+        $em->flush();
     }
 
     /**
