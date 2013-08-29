@@ -75,7 +75,8 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     public function getUploadedFileConstraints()
     {
         return array(
-            new File(array('allowedExtensions' => array("csv"))),
+            new Assert\NotBlank(),
+            new File(array('allowedExtensions' => array('csv'))),
         );
     }
 
