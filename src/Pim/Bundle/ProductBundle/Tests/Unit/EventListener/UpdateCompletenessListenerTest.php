@@ -24,7 +24,10 @@ class UpdateCompletenessListenerTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvents()
     {
         $listener = new UpdateCompletenessListener();
-        $this->assertEquals($listener->getSubscribedEvents(), array('postPersist', 'postUpdate', 'onFlush', 'postFlush'));
+        $this->assertEquals(
+            $listener->getSubscribedEvents(),
+            array('postPersist', 'postUpdate', 'onFlush', 'postFlush')
+        );
     }
 
     /**
