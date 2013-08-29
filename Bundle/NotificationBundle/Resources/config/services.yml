@@ -26,6 +26,7 @@ parameters:
     oro_notification.mailer.transport.spool_db.class: Oro\Bundle\NotificationBundle\Provider\Mailer\DbSpool
     oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
 
+    swiftmailer.mailer.db_spool_mailer.spool.enabled: true
 services:
     # Email notification form services
     oro_notification.form.email_notification:
@@ -106,12 +107,11 @@ services:
     oro_notification.email_handler:
         class: %oro_notification.email_handler.class%
         arguments:
-            - @oro_notification.twig
-            - @oro_notification.mailer
+            - @oro_email.email_renderer
+            - @swiftmailer.mailer.db_spool_mailer
             - @doctrine.orm.entity_manager
             - %oro_notification.send_from%
             - @logger
-            - @security.context
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
@@ -125,51 +125,21 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
 
-    swiftmailer.spool.db:
-        alias: oro_notification.mailer.spool_db
+
+    oro_notification.mailer.transport.eventdispatcher:
+        parent: swiftmailer.transport.eventdispatcher.abstract
 
     oro_notification.mailer.transport:
-        class: Swift_Transport_SpoolTransport
+        parent: swiftmailer.transport.spool.abstract
         arguments:
-            - @swiftmailer.transport.eventdispatcher
+            - @oro_notification.mailer.transport.eventdispatcher
             - @oro_notification.mailer.spool_db
 
     # notification mailer instance
-    oro_notification.mailer:
+    swiftmailer.mailer.db_spool_mailer:
         class: %swiftmailer.class%
         arguments:
             - @oro_notification.mailer.transport
 
-    # notification twig instance
-    oro_notification.twig.string_loader:
-        class: Twig_Loader_String
-
-    oro_notification.twig:
-        class: Twig_Environment
-        arguments:
-            - @oro_notification.twig.string_loader
-        calls:
-            # add extension sandbox using method call and not twig.extension tag cause we need to add sandbox only to this instance
-            - [ addExtension, [@oro_notification.twig.email_sandbox] ]
-
-    oro_notification.twig.email_security_policy:
-        class: Twig_Sandbox_SecurityPolicy
-        arguments:
-            # tags
-            - [ 'if', 'app' ]
-            # filters
-            - [ 'upper', 'escape' ]
-            # methods
-            -
-              Oro\Bundle\UserBundle\Entity\User: [getusername, getfirstname, getlastname]
-              Oro\Bundle\TagBundle\Entity\Tag: [getcreatedby, getname]
-            # properties
-            - []
-            # functions
-            - []
-
-    oro_notification.twig.email_sandbox:
-        class: Twig_Extension_Sandbox
-        arguments:
-            - @oro_notification.twig.email_security_policy
-            - true # use sandbox globally in instance
+    swiftmailer.mailer.db_spool_mailer.transport.real:
+        alias: swiftmailer.transport.real

@@ -32,7 +32,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @property
      */
     selectors: {
-        links:          'a:not([href^=#],[href^=javascript],[href^=mailto]),span[data-url]',
+        links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype]),span[data-url]',
         scrollLinks:    'a[href^=#]',
         forms:          'form',
         content:        '#content',
@@ -91,6 +91,8 @@ Oro.Navigation = Backbone.Router.extend({
     useCache: false,
 
     skipAjaxCall: false,
+
+    skipGridStateChange: false,
 
     maxCachedPages: 10,
 
@@ -198,21 +200,40 @@ Oro.Navigation = Backbone.Router.extend({
                 this.afterRequest();
             } else {
                 var pageUrl = this.baseUrl + this.url;
+
+                if (this.encodedStateData) {
+                    var state = Oro.PageableCollection.prototype.decodeStateData(this.encodedStateData);
+                    var collection = new Oro.PageableCollection({}, {inputName: state.gridName});
+
+                    var stringState = {};
+                    stringState = collection.processQueryParams(stringState, state);
+                    stringState = collection.processFiltersParams(stringState, state);
+
+                    Oro.Events.once(
+                        "datagrid_filters:rendered",
+                        function (collection) {
+                            collection.trigger('updateState', collection);
+                        },
+                        this
+                    );
+
+                    this.skipGridStateChange = true;
+                } else {
+                    var stringState = [];
+                    this.skipGridStateChange = false;
+                }
+
                 var useCache = this.useCache;
                 $.ajax({
                     url: pageUrl,
                     headers: this.headerObject,
+                    data: stringState,
                     beforeSend: function( xhr ) {
                         //remove standard ajax header because we already have a custom header sent
                         xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                     },
 
-                    error: _.bind(function (jqXHR, textStatus, errorThrown) {
-                        this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
-                        this.updateDebugToolbar(jqXHR);
-                        this.afterRequest();
-                        this.loadingMask.hide();
-                    }, this),
+                    error: _.bind(this.processError, this),
 
                     success: _.bind(function (data, textStatus, jqXHR) {
                         if (!cacheData) {
@@ -364,6 +385,9 @@ Oro.Navigation = Backbone.Router.extend({
                     dtContainer.html(data);
                     var scrollable = $('.scrollable-container:last');
                     var container = scrollable.length ? scrollable : this.selectorCached['container'];
+                    if (!container.closest('body').length) {
+                        container = $(document.body);
+                    }
                     $('.sf-toolbar').remove();
                     container.append(dtContainer);
                 }, this)
@@ -586,7 +610,9 @@ Oro.Navigation = Backbone.Router.extend({
             "grid_route:loaded",
             function (route) {
                 this.gridRoute = route;
-                this.gridChangeState();
+                if (!this.skipGridStateChange) {
+                    this.gridChangeState();
+                }
             },
             this
         );
@@ -834,7 +860,7 @@ Oro.Navigation = Backbone.Router.extend({
             if (Oro.debug) {
                 document.body.innerHTML = rawData;
             } else {
-                this.showError('', _.__('Sorry, page was not loaded correctly'));
+                this.showMessage(_.__('Sorry, page was not loaded correctly'));
             }
         }
         this.triggerCompleteEvent();
@@ -875,17 +901,23 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Show error message
      *
-     * @param title
-     * @param message
+     * @param {XMLHttpRequest} XMLHttpRequest
+     * @param {String} textStatus
+     * @param {String} errorThrown
      */
-    showError: function(title, message) {
-        if (!_.isUndefined(Oro.BootstrapModal)) {
-            var errorModal = new Oro.BootstrapModal({
-                title: title,
-                content: message,
-                cancelText: false
-            });
-            errorModal.open();
+    processError: function(XMLHttpRequest, textStatus, errorThrown) {
+        if (Oro.debug) {
+            document.body.innerHTML = XMLHttpRequest.responseText;
+            this.updateDebugToolbar(XMLHttpRequest);
+        } else {
+            this.showMessage(_.__('Sorry, page was not loaded correctly'));
+            this.loadingMask.hide();
+        }
+    },
+
+    showMessage: function(message) {
+        if (!_.isUndefined(Oro.NotificationFlashMessage)) {
+            Oro.NotificationFlashMessage('error', message);
         } else {
             alert(message);
         }
@@ -1018,6 +1050,9 @@ Oro.Navigation = Backbone.Router.extend({
     processForms: function(selector) {
         $(selector).on('submit', _.bind(function (e) {
             var target = e.currentTarget;
+            if ($(target).data('nohash')) {
+                return;
+            }
             e.preventDefault();
 
             var url = $(target).attr('action');
@@ -1038,11 +1073,7 @@ Oro.Navigation = Backbone.Router.extend({
                         $(target).ajaxSubmit({
                             data: this.headerObject,
                             headers: this.headerObject,
-                            error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
-                                this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
-                                this.afterRequest();
-                                this.loadingMask.hide();
-                            }, this),
+                            error: _.bind(this.processError, this),
                             success: _.bind(function (data) {
                                 this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response
                                 this.afterRequest();

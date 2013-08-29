@@ -5,12 +5,13 @@ namespace Oro\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="oro_user_email")
  */
-class Email
+class Email implements EmailInterface
 {
     /**
      * @ORM\Id
@@ -30,6 +31,22 @@ class Email
      * @ORM\Column(type="string", length=255)
      */
     protected $email;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailField()
+    {
+        return 'email';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailOwner()
+    {
+        return $this->getUser();
+    }
 
     /**
      * Get id

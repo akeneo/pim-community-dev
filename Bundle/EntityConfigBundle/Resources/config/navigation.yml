@@ -17,3 +17,4 @@ oro_titles:
     oro_entityconfig_index: ~
     oro_entityconfig_view: %%entityName%%
     oro_entityconfig_update: %%entityName%%
+    oro_entityconfig_field_update: %%entityName%%

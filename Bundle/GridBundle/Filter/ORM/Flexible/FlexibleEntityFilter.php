@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -54,7 +56,7 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
     /**
      * {@inheritdoc}
      */
-    public function filter(\Sonata\AdminBundle\Datagrid\ProxyQueryInterface $proxyQuery, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parentFilter->parseData($data);
         if (!$data) {
@@ -100,31 +102,6 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
                                                ->getMetadataFor($valueName);
 
         return $valueMetadata->getAssociationTargetClass($this->getOption('backend_type'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
-    {
-        $attribute = $this->getAttribute($field);
-        /** @var $qb FlexibleQueryBuilder */
-        $qb = $proxyQuery->getQueryBuilder();
-
-        // inner join to value
-        $joinAlias = 'filter'.$field;
-        $condition = $qb->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $rootAlias = $qb->getRootAliases();
-        $qb->innerJoin($rootAlias[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
-
-        // then join to linked entity with filter on id
-        $joinAliasEntity = 'filterentity'.$field;
-        $backendField = sprintf('%s.id', $joinAliasEntity);
-        $condition = $qb->prepareCriteriaCondition($backendField, $operator, $value);
-        $qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
-
-        // filter is active since it's applied to the flexible repository
-        $this->active = true;
     }
 
     /**

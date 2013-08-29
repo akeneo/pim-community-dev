@@ -1,0 +1,7 @@
+# behat.yml
+default:
+  context:
+    class: FeatureContext
+  paths:
+    features:   'src\Oro\src\Oro\Bundle\UserBundle\Tests\Behat\features'
+    bootstrap:  'src\Oro\src\Oro\Bundle\UserBundle\Tests\Behat\features\bootstrap'

@@ -1,0 +1,40 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% oro_title_set({params : {"%entityName%": 'N/A' }}) %}
+
+{% set title = 'Create Entity' %}
+{% set formAction = path('oro_entityextend_entity_create') %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'N/A',
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'configentity-create' %}
+    {% set dataBlocks = form_data_blocks(form) %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

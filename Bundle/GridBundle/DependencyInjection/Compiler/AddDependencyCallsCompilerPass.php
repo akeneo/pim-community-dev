@@ -14,6 +14,8 @@ use Oro\Bundle\GridBundle\DependencyInjection\OroGridExtension;
 
 class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
 {
+    const REGISTRY_SERVICE             = 'oro_grid.datagrid_manager.registry';
+
     const QUERY_FACTORY_ATTRIBUTE      = 'query_factory';
     const ROUTE_GENERATOR_ATTRIBUTE    = 'route_generator';
     const DATAGRID_BUILDER_ATTRIBUTE   = 'datagrid_builder';
@@ -23,13 +25,29 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     const TRANSLATION_DOMAIN_ATTRIBUTE = 'translation_domain';
     const VALIDATOR_ATTRIBUTE          = 'validator';
     const ROUTER_ATTRIBUTE             = 'router';
+    const ENTITY_MANAGER_ATTRIBUTE     = 'entity_manager';
+    const ENTITY_NAME_ATTRIBUTE        = 'entity_name';
     const ENTITY_HINT_ATTRIBUTE        = 'entity_hint';
+    const QUERY_ENTITY_ALIAS_ATTRIBUTE = 'query_entity_alias';
+    const IDENTIFIER_FIELD             = 'identifier_field';
+
+    /**
+     * @var Definition
+     */
+    protected $registryDefinition;
+
+    /**
+     * @var array
+     */
+    protected $datagridNames = array();
 
     /**
      * {@inheritDoc}
      */
     public function processDatagrid()
     {
+        $this->registryDefinition = $this->container->getDefinition(self::REGISTRY_SERVICE);
+
         $this->applyConfigurationFromAttributes();
         $this->applyDefaults();
     }
@@ -39,10 +57,22 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
      */
     protected function applyConfigurationFromAttributes()
     {
-        $this->definition->addMethodCall('setName', array($this->getMandatoryAttribute('datagrid_name')));
+        $datagridName = $this->getMandatoryAttribute('datagrid_name');
+        if (in_array($datagridName, $this->datagridNames)) {
+            throw new InvalidDefinitionException(
+                sprintf('Datagrid manager with name "%s" already exists', $datagridName)
+            );
+        }
+        $this->datagridNames[] = $datagridName;
+
+        $this->definition->addMethodCall('setName', array($datagridName));
+
+        // add service to datagrid manager registry
+        $this->registryDefinition->addMethodCall('addDatagridManagerService', array($datagridName, $this->serviceId));
 
         // add services
         $serviceKeys = array(
+            self::ENTITY_MANAGER_ATTRIBUTE,
             self::QUERY_FACTORY_ATTRIBUTE,
             self::ROUTE_GENERATOR_ATTRIBUTE,
             self::DATAGRID_BUILDER_ATTRIBUTE,
@@ -64,8 +94,11 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
 
         // add other attributes
         $attributeKeys = array(
+            self::ENTITY_NAME_ATTRIBUTE,
+            self::QUERY_ENTITY_ALIAS_ATTRIBUTE,
             self::ENTITY_HINT_ATTRIBUTE,
-            self::TRANSLATION_DOMAIN_ATTRIBUTE
+            self::TRANSLATION_DOMAIN_ATTRIBUTE,
+            self::IDENTIFIER_FIELD
         );
 
         foreach ($attributeKeys as $key) {
@@ -90,6 +123,8 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             self::QUERY_FACTORY_ATTRIBUTE    => array($this, 'getDefaultQueryFactoryServiceId'),
             self::ROUTE_GENERATOR_ATTRIBUTE  => array($this, 'getDefaultRouteGeneratorServiceId'),
             self::PARAMETERS_ATTRIBUTE       => array($this, 'getDefaultParametersServiceId'),
+            self::PARAMETERS_ATTRIBUTE       => array($this, 'getDefaultParametersServiceId'),
+            self::ENTITY_MANAGER_ATTRIBUTE   => array($this, 'getDefaultEntityManagerServiceId'),
             self::DATAGRID_BUILDER_ATTRIBUTE => 'oro_grid.builder.datagrid',
             self::LIST_BUILDER_ATTRIBUTE     => 'oro_grid.builder.list',
             self::TRANSLATOR_ATTRIBUTE       => 'translator',
@@ -104,7 +139,9 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
                 if (is_callable($serviceId)) {
                     $serviceId = call_user_func($serviceId);
                 }
-                $this->definition->addMethodCall($method, array(new Reference($serviceId)));
+                if ($serviceId) {
+                    $this->definition->addMethodCall($method, array(new Reference($serviceId)));
+                }
             }
         }
 
@@ -143,16 +180,16 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     protected function createDefaultQueryFactoryDefinition()
     {
         $arguments = array();
-        if ($this->hasAttribute('entity_name')) {
+        if ($this->hasAttribute(self::ENTITY_NAME_ATTRIBUTE)) {
             $queryFactoryClass = '%oro_grid.orm.query_factory.entity.class%';
 
             $arguments = array(
                 new Reference('doctrine'),
-                $this->getAttribute('entity_name'),
+                $this->getAttribute(self::ENTITY_NAME_ATTRIBUTE),
             );
 
-            if ($this->hasAttribute('query_entity_alias')) {
-                $arguments[] = $this->getAttribute('query_entity_alias');
+            if ($this->hasAttribute(self::QUERY_ENTITY_ALIAS_ATTRIBUTE)) {
+                $arguments[] = $this->getAttribute(self::QUERY_ENTITY_ALIAS_ATTRIBUTE);
             }
         } else {
             $queryFactoryClass = '%oro_grid.orm.query_factory.query.class%';
@@ -225,6 +262,42 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
         $definition = new Definition('%oro_grid.datagrid.parameters.class%');
         $definition->setPublic(false);
         $definition->setArguments($arguments);
+
+        return $definition;
+    }
+
+    /**
+     * Get id of default entity manager service
+     *
+     * @return string|null
+     */
+    protected function getDefaultEntityManagerServiceId()
+    {
+        $entityManagerServiceId = null;
+        if ($this->hasAttribute(self::ENTITY_NAME_ATTRIBUTE)) {
+            $entityManagerServiceId = sprintf('%s.entity_manager', $this->serviceId);
+            $this->container->setDefinition(
+                $entityManagerServiceId,
+                $this->createEntityManagerDefinition($this->createEntityManagerDefinition())
+            );
+        }
+
+        return $entityManagerServiceId;
+    }
+
+    /**
+     * Create entity manager definition based on entity_name attribute
+     *
+     * @return Definition
+     * @throws InvalidDefinitionException
+     */
+    protected function createEntityManagerDefinition()
+    {
+        $definition = new Definition('%doctrine.orm.entity_manager.class%');
+        $definition->setPublic(false);
+        $definition->setFactoryService('doctrine');
+        $definition->setFactoryMethod('getManagerForClass');
+        $definition->setArguments(array($this->getAttribute(self::ENTITY_NAME_ATTRIBUTE)));
 
         return $definition;
     }

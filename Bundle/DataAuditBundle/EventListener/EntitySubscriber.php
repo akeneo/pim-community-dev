@@ -27,7 +27,6 @@ class EntitySubscriber implements EventSubscriber
     /**
      * @param LoggableManager       $loggableManager
      * @param ExtendMetadataFactory $metadataFactory
-     * @param ConfigProvider        $auditConfigProvider
      */
     public function __construct(LoggableManager $loggableManager, ExtendMetadataFactory $metadataFactory)
     {
@@ -60,7 +59,9 @@ class EntitySubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        if ($metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())) {
+        if ($event->getClassMetadata()->getReflectionClass()
+            && $metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())
+        ) {
             $this->loggableManager->addConfig($metadata);
         }
     }

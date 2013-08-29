@@ -2,5 +2,6 @@
 request:
     role: Role_2_%str%
     label: Role_2_%str%
+    owner: 1
 response:
     return: true

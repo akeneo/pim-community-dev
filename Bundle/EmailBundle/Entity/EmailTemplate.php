@@ -10,6 +10,8 @@ use Gedmo\Translatable\Translatable;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 /**
  * EmailTemplate
  *
@@ -19,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          @ORM\Index(name="email_is_system_idx", columns={"isSystem"}),
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
  * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
- * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")*
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")
  */
 class EmailTemplate implements Translatable
 {
@@ -356,6 +358,14 @@ class EmailTemplate implements Translatable
         $this->parent = $this->id;
         $this->id = null;
         $this->isSystem = false;
+
+        if ($this->getTranslations() instanceof ArrayCollection) {
+            $clonedTranslations = new ArrayCollection();
+            foreach ($this->getTranslations() as $translation) {
+                $clonedTranslations->add(clone $translation);
+            }
+            $this->setTranslations($clonedTranslations);
+        }
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\EmailBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -112,5 +114,45 @@ class EmailTemplateController extends Controller
     public function cloneAction(EmailTemplate $entity)
     {
         return $this->updateAction(clone $entity, true);
+    }
+
+    /**
+     * @Route("/preview/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
+     * @Acl(
+     *      id="oro_email_emailtemplate_preview",
+     *      name="Preview email template",
+     *      description="Preview email template",
+     *      parent="oro_email_emailtemplate"
+     * )
+     * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
+     * @param bool|int $emailTemplateId
+     * @return array
+     */
+    public function previewAction($emailTemplateId = false)
+    {
+        if (!$emailTemplateId) {
+            $emailTemplate = new EmailTemplate();
+        } else {
+            /** @var EntityManager $em */
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->getRepository('Oro\Bundle\EmailBundle\Entity\EmailTemplate')->find($emailTemplateId);
+        }
+
+        /** @var FormInterface $form */
+        $form = $this->get('oro_email.form.emailtemplate');
+        $form->setData($emailTemplate);
+        $request = $this->get('request');
+
+        if (in_array($request->getMethod(), array('POST', 'PUT'))) {
+            $form->submit($request);
+        }
+
+        list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
+            ->compileMessage($emailTemplate);
+
+        return array(
+            'subject' => $subjectRendered,
+            'content' => $templateRendered,
+        );
     }
 }

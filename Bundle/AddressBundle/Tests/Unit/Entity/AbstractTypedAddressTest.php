@@ -51,6 +51,21 @@ class AbstractTypedAddressTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('billing', 'shipping'), $this->address->getTypeNames());
     }
 
+    public function testGetTypeLabels()
+    {
+        $this->assertEquals(array(), $this->address->getTypeLabels());
+
+        $billing = new AddressType('billing');
+        $billing->setLabel('Billing');
+        $this->address->addType($billing);
+
+        $shipping = new AddressType('shipping');
+        $shipping->setLabel('Shipping');
+        $this->address->addType($shipping);
+
+        $this->assertEquals(array('Billing', 'Shipping'), $this->address->getTypeLabels());
+    }
+
     public function testGetTypeByName()
     {
         $addressType = new AddressType('billing');
@@ -68,6 +83,15 @@ class AbstractTypedAddressTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->address->hasTypeWithName('shipping'));
     }
 
+    public function testPrimary()
+    {
+        $this->assertFalse($this->address->isPrimary());
+
+        $this->address->setPrimary(true);
+
+        $this->assertTrue($this->address->isPrimary());
+    }
+
     public function testRemoveType()
     {
         $type = new AddressType('testAddressType');
@@ -76,5 +100,15 @@ class AbstractTypedAddressTest extends \PHPUnit_Framework_TestCase
 
         $this->address->removeType($type);
         $this->assertEmpty($this->address->getTypes()->toArray());
+    }
+
+    public function testIsEmpty()
+    {
+        $this->assertTrue($this->address->isEmpty());
+        $this->address->setPrimary(true);
+        $this->assertFalse($this->address->isEmpty());
+        $this->address->setPrimary(false);
+        $this->address->addType(new AddressType('billing'));
+        $this->assertFalse($this->address->isEmpty());
     }
 }

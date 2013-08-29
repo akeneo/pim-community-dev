@@ -22,12 +22,45 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
         return new Oro.Tags.TagCollection(filtered);
     },
 
-    toArray: function() {
-        var tagArray = [];
-        _.each(this.models, function(tag) {
-            tagArray.push(tag.attributes);
-        });
+    /**
+     * Used for adding item on tag_update view
+     *
+     * @param {Object} value
+     */
+    addItem: function(value) {
+        // check if exists tag
+        var exist = this.where({name: value.name});
+        if (exist.length && exist[0].get('owner') == false) {
+            // adding to owner
+            exist[0].set('owner', true);
+            this.trigger('add');
 
-        return tagArray;
+            return;
+        }
+
+        var tag = new this.model({id: value.id, name: value.name, owner: true, notSaved: true});
+
+        this.add(tag);
+    },
+
+    /**
+     * Remove item from collection, or uncheck "owner" if filter is not in global mdoe
+     *
+     * @param {String}|{Number} id
+     * @param {String} filterState
+     */
+    removeItem: function(id, filterState) {
+        var model = this.where({'id': id});
+        if (model.length) {
+            model = model[0];
+            if (filterState == 'owner' && model.get('owner') === true && model.get('moreOwners') === true) {
+                model.set('owner', false);
+
+                this.trigger('remove');
+
+                return;
+            }
+            this.remove(model);
+        }
     }
 });

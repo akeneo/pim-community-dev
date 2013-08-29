@@ -4,17 +4,26 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
+
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
+
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+
+use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class EntityFieldsDatagridManager extends DatagridManager
 {
@@ -24,7 +33,7 @@ class EntityFieldsDatagridManager extends DatagridManager
     protected $fieldsCollection;
 
     /**
-     * @var ConfigEntity id
+     * @var integer id
      */
     protected $entityId;
 
@@ -47,23 +56,36 @@ class EntityFieldsDatagridManager extends DatagridManager
     }
 
     /**
-     * @param  ConfigEntity $entity
+     * @param  EntityConfigModel $entity
      * @return array
      */
-    public function getLayoutActions(ConfigEntity $entity)
+    public function getLayoutActions(EntityConfigModel $entity)
     {
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldLayoutActions() as $config) {
-                if (isset($config['filter'])
-                    && !$provider->getConfig($entity->getClassName())->is($config['filter'])
-                ) {
-                    continue;
+            foreach ($provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
+                if (isset($config['filter'])) {
+                    foreach ($config['filter'] as $key => $value) {
+                        if (is_array($value)) {
+                            $error = true;
+                            foreach ($value as $v) {
+                                if ($provider->getConfig($entity->getClassName())->get($key) == $v) {
+                                    $error = false;
+                                }
+                            }
+                            if ($error) {
+                                continue 2;
+                            }
+                        } elseif ($provider->getConfig($entity->getClassName())->get($key) != $value) {
+                            continue 2;
+                        }
+                    }
                 }
 
                 if (isset($config['entity_id']) && $config['entity_id'] == true) {
                     $config['args'] = array('id' => $entity->getId());
                 }
+
                 $actions[] = $config;
             }
         }
@@ -79,15 +101,67 @@ class EntityFieldsDatagridManager extends DatagridManager
         $properties = array(
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_field_update', array('id')),
         );
+
+        $filters = array();
+        $actions = array();
+
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
+            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 $properties[] = new UrlProperty(
                     strtolower($config['name']) . '_link',
                     $this->router,
                     $config['route'],
                     (isset($config['args']) ? $config['args'] : array())
                 );
+
+                if (isset($config['filter'])) {
+                    $filters[strtolower($config['name'])] = $config['filter'];
+                }
+
+                $actions[strtolower($config['name'])] = true;
             }
+        }
+
+        if (count($filters)) {
+            $properties[] = new ActionConfigurationProperty(
+                function (ResultRecord $record) use ($filters, $actions) {
+                    if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
+                        $actions = array_map(
+                            function () {
+                                return false;
+                            },
+                            $actions
+                        );
+
+                        $actions['update']   = false;
+                        $actions['rowClick'] = false;
+                    } else {
+                        foreach ($filters as $action => $filter) {
+                            foreach ($filter as $key => $value) {
+                                if (is_array($value)) {
+                                    $error = true;
+                                    foreach ($value as $v) {
+                                        if ($record->getValue($key) == $v) {
+                                            $error = false;
+                                        }
+                                    }
+                                    if ($error) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
+                                } else {
+                                    if ($record->getValue($key) != $value) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return $actions;
+                }
+            );
         }
 
         return $properties;
@@ -98,30 +172,26 @@ class EntityFieldsDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
+        $fieldObjectClassName = new FieldDescription();
+        $fieldObjectClassName->setName('className');
+        $fieldObjectClassName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_filter' => false,
+                'label'       => 'ClassName',
+                'field_name'  => 'className',
                 'show_column' => false,
+                'expression'  => 'ce.className'
             )
         );
-        $fieldsCollection->add($fieldId);
+        $fieldsCollection->add($fieldObjectClassName);
 
         $fieldCode = new FieldDescription();
-        $fieldCode->setName('code');
+        $fieldCode->setName('fieldName');
         $fieldCode->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => 'Name',
-                'field_name'  => 'code',
+                'field_name'  => 'fieldName',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -158,14 +228,19 @@ class EntityFieldsDatagridManager extends DatagridManager
         $fields = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 if (isset($item['grid'])) {
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
-                    $fieldObject->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cfv_' . $code . '.value',
-                        'field_name' => $code,
-                    )));
+                    $fieldObject->setOptions(
+                        array_merge(
+                            $item['grid'],
+                            array(
+                                'expression' => 'cfv_' . $code . '.value',
+                                'field_name' => $code,
+                            )
+                        )
+                    );
 
                     if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
                         $fields[$item['options']['priority']] = $fieldObject;
@@ -212,7 +287,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         $actions = array($clickAction, $updateAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
+            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
                 $configItem = array(
                     'name'         => strtolower($config['name']),
                     'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
@@ -230,6 +305,9 @@ class EntityFieldsDatagridManager extends DatagridManager
                             break;
                         case 'redirect':
                             $configItem['type'] = ActionInterface::TYPE_REDIRECT;
+                            break;
+                        case 'ajax':
+                            $configItem['type'] = ActionInterface::TYPE_AJAX;
                             break;
                     }
                 } else {
@@ -250,14 +328,27 @@ class EntityFieldsDatagridManager extends DatagridManager
     {
         /** @var ProxyQueryInterface|Query $query */
         $query = parent::createQuery();
+        $query->where('cf.mode <> :mode');
+        $query->setParameter('mode', ConfigModelManager::MODE_HIDDEN);
         $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
         $query->addSelect('ce.id as entity_id', true);
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 //$code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
-                $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+
+                if (isset($item['grid']['query'])) {
+                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
+                    $query->setParameter($alias, $item['grid']['query']['value']);
+                }
+
+                $query->leftJoin(
+                    'cf.values',
+                    $alias,
+                    'WITH',
+                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
+                );
                 $query->addSelect($alias . '.value as ' . $code, true);
             }
         }

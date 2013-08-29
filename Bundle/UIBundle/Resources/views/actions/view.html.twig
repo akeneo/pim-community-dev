@@ -10,9 +10,35 @@
                     {% block navButtons %}
                     {% endblock navButtons %}
                 </div>
-                {% if (entity is defined and entityClass is defined) %}
-                    {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': audit_title|default(entity), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
-                {% endif %}
+                <div class="pull-right user-info-state">
+                    <ul class="inline-decorate">
+                        {% block pageActions %}
+                            {% if entity.owner is defined and entity.owner %}
+                                {% set ownerType = oro_get_owner_type(entity) %}
+                                <li>
+                                    {{ 'Owner'|trans }}:
+                                    {% if (ownerType == 'USER') %}
+                                        {% if resource_granted('oro_user_user_view') %}
+                                            {% set ownerPath = path('oro_user_view', {'id': entity.owner.id}) %}
+                                        {% endif %}
+                                    {% elseif (ownerType == 'BUSINESS_UNIT') %}
+                                        {% if resource_granted('oro_business_unit_view') %}
+                                            {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if ownerPath is defined %}
+                                        <a href="{{ ownerPath }}">{{ entity.owner.name }}</a>
+                                    {% else %}
+                                        {{ entity.owner.name }}
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endblock pageActions %}
+                        {% if (entity is defined and entityClass is defined) %}
+                            {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': audit_title|default(entity), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
             <div class="span9">
             {% block pageHeader %}
@@ -26,7 +52,13 @@
                         <div class="clearfix">
                             {% block breadcrumbs %}
                                 <div class="pull-left">
-                                    <div class="sub-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
+                                    <div class="sub-title">
+                                    {%- if breadcrumbs.indexPath is defined -%}
+                                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                                    {%- else -%}
+                                        {{ breadcrumbs.indexLabel|trans }}
+                                    {%- endif -%}
+                                    </div>
                                     <span class="separator">/</span>
                                     {% if breadcrumbs.additional is defined %}
                                         {% for breadcrumb in breadcrumbs.additional %}

@@ -10,7 +10,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: business_units
               entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-              entity_hint: business_units
+              entity_hint: business unit
               route_name: oro_business_unit_index
 
     oro_organization.business_unit_update_user_datagrid_manager:
@@ -20,7 +20,7 @@ services:
                   datagrid_name: business_units_update_users
                   entity_name: Oro\Bundle\UserBundle\Entity\User
                   query_entity_alias: user
-                  entity_hint: users
+                  entity_hint: user
                   route_name: oro_business_update_unit_user_grid
 
     oro_organization.business_unit_view_user_datagrid_manager:
@@ -30,5 +30,5 @@ services:
                   datagrid_name: business_units_view_users
                   entity_name: Oro\Bundle\UserBundle\Entity\User
                   query_entity_alias: user
-                  entity_hint: users
+                  entity_hint: user
                   route_name: oro_business_view_unit_user_grid

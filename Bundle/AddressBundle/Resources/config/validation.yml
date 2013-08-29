@@ -32,3 +32,15 @@ Oro\Bundle\AddressBundle\Entity\AbstractAddress:
     constraints:
         - Callback:
             methods: [isStateValid]
+
+
+Oro\Bundle\AddressBundle\Entity\AbstractEmail:
+    properties:
+        email:
+            - NotBlank: ~
+            - Email: ~
+
+Oro\Bundle\AddressBundle\Entity\AbstractPhone:
+    properties:
+        phone:
+            - NotBlank: ~

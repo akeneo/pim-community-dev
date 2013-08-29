@@ -18,11 +18,7 @@ class RestApiUserTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -33,7 +29,8 @@ class RestApiUserTest extends WebTestCase
         $request = array(
             "role" => array (
                 "role" => "new_role_" . mt_rand(),
-                "label" => "new_label_" . mt_rand()
+                "label" => "new_label_" . mt_rand(),
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
@@ -71,10 +68,15 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "role" => array (
                 "role" => "~",
-                "label" => "new_label_update"
+                "label" => "new_label_update",
+                "owner" => "1"
             )
         );
-        $this->client->request('PUT', $this->client->generate('oro_api_put_role', array('id' => $roleId)), $requestUpdate);
+        $this->client->request(
+            'PUT',
+            $this->client->generate('oro_api_put_role', array('id' => $roleId)),
+            $requestUpdate
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
         $this->client->request('GET', $this->client->generate('oro_api_get_roles'));
@@ -109,7 +111,8 @@ class RestApiUserTest extends WebTestCase
         $requestGroup = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(2)
+                "roles" => array(2),
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_group'), $requestGroup);
@@ -146,10 +149,15 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(3)
+                "roles" => array(3),
+                "owner" => "1"
             )
         );
-        $this->client->request('PUT', $this->client->generate('oro_api_put_group', array('id' => $groupId)), $requestUpdate);
+        $this->client->request(
+            'PUT',
+            $this->client->generate('oro_api_put_group', array('id' => $groupId)),
+            $requestUpdate
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
         $this->client->request('GET', $this->client->generate('oro_api_get_groups'));

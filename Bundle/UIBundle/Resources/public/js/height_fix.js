@@ -1,4 +1,8 @@
 /* dynamic height for central column */
+jQuery.expr[':'].parents = function(a, i, m){
+    return jQuery(a).parents(m[3]).length < 1;
+};
+
 $(document).ready(function () {
     var debugBar = $('.sf-toolbar');
     var anchor = $('#bottom-anchor');
@@ -17,7 +21,7 @@ $(document).ready(function () {
 
     var initializeContent = function() {
         if (!content) {
-            content = $('.scrollable-container');
+            content = $('.scrollable-container').filter(':parents(.ui-widget)');
             content.css('overflow', 'auto');
 
             $('.scrollable-substructure').css({

@@ -431,7 +431,9 @@ class LoggableManager
                     );
 
                 } elseif ($newData instanceof \DateTime) {
-                    $oldData = $oldData->format(\DateTime::ISO8601);
+                    if ($oldData instanceof \DateTime) {
+                        $oldData = $oldData->format(\DateTime::ISO8601);
+                    }
                     $newData = $newData->format(\DateTime::ISO8601);
 
                 } elseif (is_object($newData)) {
@@ -509,15 +511,15 @@ class LoggableManager
             return;
         }
 
-        if ($this->auditConfigProvider->hasConfig($entityClassName)
+        if ($this->auditConfigProvider->isConfigurable($entityClassName)
             && $this->auditConfigProvider->getConfig($entityClassName)->is('auditable')
         ) {
             $reflection    = new \ReflectionClass($entityClassName);
             $classMetadata = new ClassMetadata($reflection->getName());
 
             foreach ($reflection->getProperties() as $reflectionProperty) {
-                if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $reflectionProperty->getName())
-                    && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $reflectionProperty->getName()))
+                if ($this->auditConfigProvider->hasConfig($entityClassName, $reflectionProperty->getName())
+                    && ($fieldConfig = $this->auditConfigProvider->getConfig($entityClassName, $reflectionProperty->getName()))
                     && $fieldConfig->is('auditable')
                 ) {
                     $propertyMetadata = new PropertyMetadata($entityClassName, $reflectionProperty->getName());

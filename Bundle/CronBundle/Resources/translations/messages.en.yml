@@ -1,0 +1,38 @@
+oro:
+    cron:
+        header:
+            jobs:         Jobs
+            id:           ID
+            command:      Command
+            state:        State
+            created:      Created at
+            runtime:      Runtime, s
+            memory:       Memory usage, MB
+            retry:        Retry jobs
+            trace:        Stack trace
+            output:       Output
+            error:        Error output
+            statistics:   Statistics
+        no_jobs:          There are no jobs
+        na:               N/A
+        sidebar:
+            status:       Daemon status
+            pid:          Daemon PID
+            running:      Running
+            not_running:  Not running
+            run:          Run daemon
+            stop:         Stop daemon
+            refresh:      Refresh list
+            check:        Check status
+        view:
+            original:     Original Job
+            related:      Related Entities
+            deps:         Dendencies
+            in_deps:      Incoming Dependencies
+        message:
+            start:
+                fail:     Failed to start daemon
+                success:  Daemon started
+            stop:
+                fail:     Failed to stop daemon
+                success:  Daemon stopped

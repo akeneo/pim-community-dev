@@ -41,7 +41,9 @@ $(function() {
     });
 
     $(document).on('click', '#view-activity-btn', function (e) {
-        new Oro.widget.DialogView({
+        e.stopImmediatePropagation();
+
+        Oro.widget.Manager.createWidget('dialog', {
             url: $(this).attr('href'),
             dialogOptions: {
                 allowMaximize: true,

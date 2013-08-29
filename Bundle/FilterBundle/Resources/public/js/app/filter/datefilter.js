@@ -76,7 +76,7 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
     dateWidgetOptions: {
         changeMonth: true,
         changeYear:  true,
-        yearRange:  '-50:+1',
+        yearRange:  '-80:+1',
         dateFormat: 'yy-mm-dd',
         altFormat:  'yy-mm-dd',
         className:      'date-filter-widget',
@@ -109,7 +109,9 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
      */
     typeValues: {
         between:    1,
-        notBetween: 2
+        notBetween: 2,
+        moreThan:   3,
+        lessThan:   4
     },
 
     /**
@@ -127,6 +129,17 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
         Oro.Filter.ChoiceFilter.prototype.initialize.apply(this, arguments);
     },
 
+    changeFilterType: function(e) {
+        var select = this.$el.find(e.currentTarget);
+        var selectedValue = select.val();
+
+        if (_.indexOf([this.typeValues.moreThan, this.typeValues.lessThan], parseInt(selectedValue)) !== -1) {
+            this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
+        } else {
+            this.$el.find('.filter-separator').show().end().find(this.criteriaValueSelectors.value.end).show();
+        }
+    },
+
     /**
      * @inheritDoc
      */
@@ -136,6 +149,8 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             choices: this.choices,
             inputClass: this.inputClass
         }));
+
+        $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
 
         _.each(this.criteriaValueSelectors.value, function(actualSelector, name) {
             this.dateWidgets[name] = this._initializeDateWidget(actualSelector);
@@ -166,13 +181,15 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
 
         var widget = $(this.dateWidgetSelector);
         elements.push(widget);
-        elements = _.union(elements, widget.find('span'));
-
-        var clickedElement = _.find(elements, function(elem) {
-            return _.isEqual(elem.get(0), e.target) || elem.has(e.target).length;
+        widget.find('span').each(function(i, el) {
+            elements.push($(el));
         });
 
-        if (!clickedElement && $(e.target).prop('tagName') == 'BUTTON') {
+        var clickedElement = _.find(elements, function(elem) {
+            return elem.get(0) === e.target || elem.has(e.target).length;
+        });
+
+        if (!clickedElement && $(e.target).is(":button, .ui-icon, :has(.ui-icon)")) {
             clickedElement = e.target;
         }
 
@@ -194,23 +211,29 @@ Oro.Filter.DateFilter = Oro.Filter.ChoiceFilter.extend({
             var type  = value.type ? value.type.toString() : '';
 
             switch (type) {
+                case this.typeValues.moreThan.toString():
+                    hint += [_.__('more than'), start].join(' ');
+                    break;
+                case this.typeValues.lessThan.toString():
+                    hint += [_.__('less than'), start].join(' ');
+                    break;
                 case this.typeValues.notBetween.toString():
                     if (start && end) {
-                        hint += this.choices[this.typeValues.notBetween] + ' ' + start + ' and ' + end
+                        hint += [this.choices[this.typeValues.notBetween], start, _.__('and'), end].join(' ');
                     } else if (start) {
-                        hint += ' before ' + start;
+                        hint += [_.__('before'), start].join(' ');
                     } else if (end) {
-                        hint += ' after ' + end;
+                        hint += [_.__('after'), end].join(' ');
                     }
                     break;
                 case this.typeValues.between.toString():
                 default:
                     if (start && end) {
-                        hint += this.choices[this.typeValues.between] + ' ' + start + ' and ' + end
+                        hint += [this.choices[this.typeValues.between], start, _.__('and'), end].join(' ');
                     } else if (start) {
-                        hint += ' from ' + start;
+                        hint += [_.__('from'), start].join(' ');
                     } else if (end) {
-                        hint += ' to ' + end;
+                        hint += [_.__('to'), end].join(' ');
                     }
                     break;
             }

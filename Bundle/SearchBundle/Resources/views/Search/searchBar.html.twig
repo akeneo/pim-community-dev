@@ -13,10 +13,14 @@
                         <li data-alias="">
                             <a href="javascript: void(0);">{% trans %}All{% endtrans %}</a>
                         </li>
+                        {% set searchEntities = [] %}
                         {% for entity in entities %}
-                        <li data-alias="{{ entity.alias }}">
-                            <a href="javascript: void(0);">{{ oro_config_entity(entity.class).name|trans({}, 'config') }}</a>
-                        </li>
+                            {% set searchEntities = searchEntities|merge({(entity.alias) : oro_config_entity(entity.class).name|trans({}, 'config')}) %}
+                        {% endfor %}
+                        {% for alias,name in searchEntities|sort %}
+                            <li data-alias="{{ alias }}">
+                                <a href="javascript: void(0);">{{ name }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

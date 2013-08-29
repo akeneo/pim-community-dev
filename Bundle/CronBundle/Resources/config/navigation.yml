@@ -1,0 +1,25 @@
+oro_menu_config:
+    items:
+        oro_cron_job:
+            label: Job Queue
+            route: oro_cron_job_index
+
+
+        oro_cron_job_shortcut:
+            label: Jobs List
+            route: oro_cron_job_index
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_cron_job: ~
+
+        shortcuts:
+            children:
+                oro_cron_job_shortcut: ~
+
+oro_titles:
+    oro_cron_job_index: Job Queue
+    oro_cron_job_view:  'Job "%%command%%" (ID: %%id%%)'

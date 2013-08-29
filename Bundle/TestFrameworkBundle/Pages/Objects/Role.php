@@ -17,6 +17,7 @@ class Role extends AbstractEntity implements Entity
         parent::__construct($testCase, $redirect);
         $this->name = $this->byId('oro_user_role_form_role');
         $this->label = $this->byId('oro_user_role_form_label');
+        $this->owner = $this->select($this->byId('oro_user_role_form_owner'));
     }
 
     public function setName($name)
@@ -39,6 +40,18 @@ class Role extends AbstractEntity implements Entity
     public function getLabel()
     {
         return $this->label->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->selectOptionByLabel($owner);
+
+        return $this;
+    }
+
+    public function getOwner()
+    {
+        return trim($this->owner->selectedLabel());
     }
 
     public function selectAcl($aclName)

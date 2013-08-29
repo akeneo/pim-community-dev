@@ -2,16 +2,21 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Audit;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
+/**
+ * Audit config data
+ */
 class AuditManager
 {
     /**
@@ -20,18 +25,18 @@ class AuditManager
     protected $configManager;
 
     /**
-     * @var ServiceProxy
+     * @var ServiceLink
      */
-    protected $security;
+    protected $securityLink;
 
     /**
      * @param ConfigManager $configManager
-     * @param ServiceProxy  $security
+     * @param ServiceLink   $securityLink
      */
-    public function __construct(ConfigManager $configManager, ServiceProxy $security)
+    public function __construct(ConfigManager $configManager, ServiceLink $securityLink)
     {
         $this->configManager = $configManager;
-        $this->security      = $security;
+        $this->securityLink  = $securityLink;
     }
 
     /**
@@ -46,12 +51,12 @@ class AuditManager
         $log = new ConfigLog();
         $log->setUser($this->getUser());
 
-        foreach (array_merge($this->configManager->getUpdatedEntityConfig(), $this->configManager->getUpdatedFieldConfig()) as $config) {
+        foreach ($this->configManager->getUpdateConfig() as $config) {
             $this->logConfig($config, $log);
         }
 
         if ($log->getDiffs()->count()) {
-            $this->configManager->em()->persist($log);
+            $this->configManager->getEntityManager()->persist($log);
         }
     }
 
@@ -63,12 +68,9 @@ class AuditManager
     {
         $changes = $this->configManager->getConfigChangeSet($config);
 
-        $configContainer = $this->configManager->getProvider($config->getScope())->getConfigContainer();
-        if ($config instanceof FieldConfigInterface) {
-            $internalValues = $configContainer->getFieldInternalValues();
-        } else {
-            $internalValues = $configContainer->getEntityInternalValues();
-        }
+        $configId        = $config->getId();
+        $configContainer = $this->configManager->getProvider($config->getId()->getScope())->getPropertyConfig();
+        $internalValues  = $configContainer->getInternalValues($configId);
 
         $changes = array_diff_key($changes, $internalValues);
 
@@ -77,12 +79,12 @@ class AuditManager
         }
 
         $diff = new ConfigLogDiff();
-        $diff->setScope($config->getScope());
+        $diff->setScope($configId->getScope());
         $diff->setDiff($changes);
-        $diff->setClassName($config->getClassName());
+        $diff->setClassName($configId->getClassName());
 
-        if ($config instanceof FieldConfigInterface) {
-            $diff->setFieldName($config->getCode());
+        if ($configId instanceof FieldConfigIdInterface) {
+            $diff->setFieldName($configId->getFieldName());
         }
 
         $log->addDiff($diff);
@@ -93,10 +95,12 @@ class AuditManager
      */
     protected function getUser()
     {
-        if (!$this->security->getService()->getToken() || !$this->security->getService()->getToken()->getUser()) {
+        /** @var SecurityContext $security */
+        $security = $this->securityLink->getService();
+        if (!$security->getToken() || !$security->getToken()->getUser()) {
             return false;
         }
 
-        return $this->security->getService()->getToken()->getUser();
+        return $security->getToken()->getUser();
     }
 }

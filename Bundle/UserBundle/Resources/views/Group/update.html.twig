@@ -1,6 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Update Group'|trans : 'Create Group'|trans %}
+{% set title = form.vars.value.id ? 'Update Group'|trans : 'New Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_user_group_update', { 'id': form.vars.value.id}) : path('oro_user_group_create') %}
@@ -92,7 +92,6 @@
         {
             'formErrors': form_errors(form)? form_errors(form) : null,
             'dataBlocks': dataBlocks,
-            'hiddenData': form_rest(form)
         }
     %}
     {{ parent() }}
