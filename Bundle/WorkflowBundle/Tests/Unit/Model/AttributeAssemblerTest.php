@@ -43,9 +43,8 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
             'invalid_type' => array(
                 array('name' => array('label' => 'Label', 'type' => 'text')),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                //@codingStandardsIgnoreStart
-                'Invalid attribute type "text", allowed types are "bool", "boolean", "int", "integer", "float", "string", "array", "object", "entity"'
-                //@codingStandardsIgnoreEnd
+                'Invalid attribute type "text", allowed types are "bool", "boolean", "int", "integer", ' .
+                    '"float", "string", "array", "object", "entity"'
             ),
             'invalid_type_class' => array(
                 array(
@@ -110,16 +109,13 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
                     'name' => array(
                         'label' => 'Label', 'type' => 'entity',
                         'options' => array(
-                            'class' => 'DateTime',
-                            'managed_entity' => true,
-                            'bind' => false,
-                            'multiple' => false
+                            'class' => 'DateTime', 'managed_entity' => true, 'bind' => false, 'multiple' => false
                         )
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
                 'Options "multiple" and "bind" for managed entity in attribute "name" ' .
-                'cannot be both false simultaneously'
+                    'cannot be both false simultaneously'
             ),
         );
     }

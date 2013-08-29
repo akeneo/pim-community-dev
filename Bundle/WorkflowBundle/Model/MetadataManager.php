@@ -39,13 +39,12 @@ class MetadataManager
             throw new NotManageableEntityException($entityClass);
         }
 
-        $entityManager = $this->registry->getManagerForClass($entityClass);
-
         if ($entity instanceof Proxy && !$entity->__isInitialized()) {
             $identifierProperty = new \ReflectionProperty(get_class($entity), '_identifier');
             $identifierProperty->setAccessible(true);
             $identifier = $identifierProperty->getValue($entity);
         } else {
+            $entityManager = $this->registry->getManagerForClass($entityClass);
             $metadata = $entityManager->getClassMetadata($entityClass);
             $identifier = $metadata->getIdentifierValues($entity);
         }
