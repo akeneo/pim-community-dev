@@ -8,6 +8,9 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -26,6 +29,37 @@ class ReportDatagridManager extends DatagridManager
      * @var string
      */
     protected $jobType = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareQuery(ProxyQueryInterface $proxyQuery)
+    {
+        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.jobInstance', 'jobInstance');
+        $proxyQuery->addSelect('jobInstance.code as jobCode');
+        $proxyQuery->addSelect('jobInstance.label as jobLabel');
+        $proxyQuery->addSelect('jobInstance.alias as jobAlias');
+        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
+
+        if ($this->jobType !== null) {
+            $proxyQuery->andWhere('jobInstance.type = :job_type');
+            $proxyQuery->setParameter('job_type', $this->jobType);
+        }
+    }
+
+    /**
+     * Set job type
+     *
+     * @param string $jobType
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+     */
+    public function setJobType($jobType)
+    {
+        $this->jobType = $jobType;
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
@@ -89,6 +123,44 @@ class ReportDatagridManager extends DatagridManager
         $fieldsCollection->add($field);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getProperties()
+    {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
+            )
+        );
+
+        return array(
+            new FieldProperty($fieldId),
+            new UrlProperty('download_link', $this->router, 'pim_importexport_report_download', array('id')),
+        );
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRowActions()
+    {
+        $downloadLogFileAction = array(
+            'name'         => 'download',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('download'),
+                'icon'    => 'download',
+                'link'    => 'download_link',
+                'backUrl' => true
+            )
+        );
+
+        return array($downloadLogFileAction);
+    }
     /**
      * Create status field
      *
@@ -156,36 +228,5 @@ class ReportDatagridManager extends DatagridManager
         );
 
         return $field;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareQuery(ProxyQueryInterface $proxyQuery)
-    {
-        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.jobInstance', 'jobInstance');
-        $proxyQuery->addSelect('jobInstance.code as jobCode');
-        $proxyQuery->addSelect('jobInstance.label as jobLabel');
-        $proxyQuery->addSelect('jobInstance.alias as jobAlias');
-        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
-
-        if ($this->jobType !== null) {
-            $proxyQuery->andWhere('jobInstance.type = :job_type');
-            $proxyQuery->setParameter('job_type', $this->jobType);
-        }
-    }
-
-    /**
-     * Set job type
-     *
-     * @param string $jobType
-     *
-     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
-     */
-    public function setJobType($jobType)
-    {
-        $this->jobType = $jobType;
-
-        return $this;
     }
 }

@@ -22,11 +22,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
 
         $root = $treeBuilder->root('pim_batch');
-        $root
-            ->children()
-                ->scalarNode('log_dir')->defaultValue('log')->end()
-            ->end()
-        ->end();
 
         return $treeBuilder;
     }
