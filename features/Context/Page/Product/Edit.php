@@ -213,6 +213,7 @@ class Edit extends Form
     /**
      * Find completeness channel
      * @param string $name the channel name
+     *
      * @throws \InvalidArgumentException
      * @return \Behat\Mink\Element\NodeElement
      */
@@ -231,6 +232,7 @@ class Edit extends Form
     /**
      * Find completeness locale
      * @param string $code
+     *
      * @throws \InvalidArgumentException
      * @return boolean
      */
@@ -252,6 +254,7 @@ class Edit extends Form
      * Find a completeness cell from column and row (channel and locale codes)
      * @param string $columnCode (channel code)
      * @param string $rowCode    (locale code)
+     *
      * @throws \InvalidArgumentException
      *
      * @return \Behat\Mink\Element\NodeElement
@@ -284,6 +287,7 @@ class Edit extends Form
      * @param string $channelCode
      * @param string $localeCode
      * @param string $state
+     *
      * @throws \InvalidArgumentException
      */
     public function checkCompletenessState($channelCode, $localeCode, $state)
@@ -305,6 +309,7 @@ class Edit extends Form
      * @param string $channelCode
      * @param string $localeCode
      * @param string $info
+     *
      * @throws \InvalidArgumentException
      */
     public function checkCompletenessMessage($channelCode, $localeCode, $info)
@@ -329,6 +334,7 @@ class Edit extends Form
      * @param string $channelCode
      * @param string $localeCode
      * @param string $ratio
+     *
      * @throws \InvalidArgumentException
      */
     public function checkCompletenessRatio($channelCode, $localeCode, $ratio)
