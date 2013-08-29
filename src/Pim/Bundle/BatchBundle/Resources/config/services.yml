@@ -1,14 +1,15 @@
 parameters:
-    pim_batch.connectors.class:                Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-    pim_batch.job_repository.class:            Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
-    pim_batch.job_factory.class:               Pim\Bundle\BatchBundle\Job\JobFactory
-    pim_batch.step_factory.class:              Pim\Bundle\BatchBundle\Step\StepFactory
-    pim_batch.logger_subscriber.class:         Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
-    pim_batch.notification_subscriber.class:   Pim\Bundle\BatchBundle\EventListener\NotificationSubscriber
-    pim_batch.logger.batch_log_handler.class:  Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
-    pim_batch.mail_notifier.class:             Pim\Bundle\BatchBundle\Notification\MailNotifier
-    pim_batch.connectors_config:               ~
-    pim_batch.jobs_config:                     ~
+    pim_batch.connectors.class:                            Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
+    pim_batch.job_repository.class:                        Pim\Bundle\BatchBundle\Job\DoctrineJobRepository
+    pim_batch.job_factory.class:                           Pim\Bundle\BatchBundle\Job\JobFactory
+    pim_batch.step_factory.class:                          Pim\Bundle\BatchBundle\Step\StepFactory
+    pim_batch.logger_subscriber.class:                     Pim\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    pim_batch.notification_subscriber.class:               Pim\Bundle\BatchBundle\EventListener\NotificationSubscriber
+    pim_batch.logger.batch_log_handler.class:              Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    pim_batch.mail_notifier.class:                         Pim\Bundle\BatchBundle\Notification\MailNotifier
+    pim_batch.set_job_execution_log_file_subscriber.class: Pim\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
+    pim_batch.connectors_config:                           ~
+    pim_batch.jobs_config:                                 ~
 
 services:
     # connectors registry
@@ -61,5 +62,11 @@ services:
     pim_batch.logger.batch_log_handler:
         class: %pim_batch.logger.batch_log_handler.class%
         arguments:
-            - %kernel.root_dir%
-            - %pim_batch.log_dir%
+            - %kernel.logs_dir%/batch
+
+    pim_batch.set_job_execution_log_file_subscriber:
+        class: %pim_batch.set_job_execution_log_file_subscriber.class%
+        arguments:
+            - @pim_batch.logger.batch_log_handler
+        tags:
+            - { name: kernel.event_subscriber }

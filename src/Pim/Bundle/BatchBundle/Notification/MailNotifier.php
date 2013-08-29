@@ -15,18 +15,18 @@ use Pim\Bundle\BatchBundle\Entity\JobExecution;
  */
 class MailNotifier implements Notifier
 {
-    protected $handler;
+    protected $logger;
     protected $securityContext;
     protected $twig;
     protected $mailer;
 
     public function __construct(
-        BatchLogHandler $handler,
+        BatchLogHandler $logger,
         SecurityContextInterface $securityContext,
         \Twig_Environment $twig,
         \Swift_Mailer $mailer
     ) {
-        $this->handler         = $handler;
+        $this->logger          = $logger;
         $this->securityContext = $securityContext;
         $this->twig            = $twig;
         $this->mailer          = $mailer;
@@ -39,10 +39,11 @@ class MailNotifier implements Notifier
             return;
         }
 
+        $filename = $this->logger->getFilename();
         $parameters = array(
             'user'         => $user,
             'jobExecution' => $jobExecution,
-            'log'          => $this->handler->getFilename(),
+            'log'          => $this->logger->getRealPath($filename),
         );
 
         $txtBody  = $this->twig->render('PimBatchBundle:Mails:notification.txt.twig', $parameters);
