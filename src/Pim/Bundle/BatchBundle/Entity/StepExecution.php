@@ -293,21 +293,7 @@ class StepExecution
      */
     public function getFilterCount()
     {
-        return $this->filterCount;
-    }
-
-    /**
-     * Public setter for the number of items filtered out of this execution.
-     * @param integer $filterCount the number of items filtered out of this execution to
-     * set
-     *
-     * @return $this
-     */
-    public function setFilterCount($filterCount)
-    {
-        $this->filterCount = $filterCount;
-
-        return $this;
+        return $this->readCount - $this->writeCount;
     }
 
     /**
