@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ "$1" != "" ]; then
   env=$1
@@ -15,6 +16,7 @@ if [ $env != "behat" ]; then
     php app/console oro:acl:load --env=$env
     php app/console pim:search:reindex en_US --env=$env
     php app/console pim:versioning:refresh
+    php app/console pim:product:completeness-calculator
 else
     php app/console cache:clear --env=$env
 fi

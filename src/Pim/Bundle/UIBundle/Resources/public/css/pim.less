@@ -352,6 +352,69 @@ div.btn-group > .has-switch {
   z-index: 900;
 }
 
+.upload-zone {
+  min-width: 300px;
+  height: 100px;
+  border: 1px solid @textColor + #888;
+  border-radius: 10px;
+  color: @textColor + #333;
+  cursor: pointer;
+  &.empty {
+    border-style: dashed;
+    border-width: 2px;
+    &:hover {
+      border-color: @textColor + #555;
+    }
+  }
+  &:hover {
+    background-color: @color-purple_hover;
+  }
+  div.upload-info {
+    display: block;
+    min-width: 280px;
+    height: 80px;
+    margin: 10px;
+    z-index: 0;
+    font-size: 22px;
+    .upload-preview, img {
+      float: left;
+      display: inline-block;
+      min-width: 40px;
+      max-width: 120px;
+      max-height: 80px;
+      line-height: 80px;
+      font-size: 40px;
+      text-align: center;
+      color: @textColor + #333;
+      &.empty {
+        opacity: 0;
+        min-width: 15px;
+        width: 15px;
+      }
+    }
+    span.upload-filename {
+      float: left;
+      margin: 30px 5px 0;
+    }
+    .remove-upload {
+      float: right;
+      margin-top: 30px;
+    }
+  }
+}
+
+input[type="file"] {
+  display: block;
+  z-index: 99;
+  position: relative;
+  top: -100px;
+  width: 100%!important;
+  height: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
 /* Collapsable sidebar **********************************************************************************************/
 
 .sidebarized {
@@ -845,6 +908,28 @@ div.entity-updated {
 i.icon-tick { background: url("../../pimproduct/images/tick.png") 0px 0px no-repeat !important;}
 i.icon-tick-off { background: url("../../pimproduct/images/tick-off.png") 0px 0px no-repeat !important;}
 
+/* Import upload file form */
+
+form.form-upload {
+  text-align: center;
+  .control-group {
+    margin-botton: 0;
+    .control-label {
+      display: none;
+    }
+    .controls {
+      margin-left: 20px;
+      margin-right: 20px;
+      .upload-zone {
+        width: 100%;
+      }
+      .icons-container {
+        float: right;
+      }
+    }
+  }
+}
+
 /* Pim multiselect styles */
 button.pimmultiselect {
   height: 32px;
@@ -1058,7 +1143,7 @@ ul.medias label.remove-media {
 
 /** Product completeness *******************************************************************************/
 div#legend {
-  margin-left: 15%;
+  margin-left: 15px;
   margin-top: 15px;
   .progress {
     margin-top: 5px;

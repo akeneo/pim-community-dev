@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ProductBundle\Entity\Family;
@@ -52,6 +54,16 @@ class LoadFamilyData extends AbstractInstallerFixture
 
         foreach ($data['attributes'] as $attribute) {
             $family->addAttribute($this->getReference('product-attribute.'.$attribute));
+        }
+
+        foreach ($data['requirements'] as $channel => $attributes) {
+            foreach ($attributes as $attribute) {
+                $requirement =  new AttributeRequirement();
+                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
+                $requirement->setChannel($this->getReference('channel.'.$channel));
+                $requirement->setRequired(true);
+                $family->addAttributeRequirements($requirement);
+            }
         }
 
         if (isset($data['attributeAsLabel'])) {

@@ -32,6 +32,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    pim_product.event_listener.update_completeness:
+        class: %pim_product.event_listener.update_completeness.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
     pim_product.form.transform_imported_product_data_subscriber:
         public: false
         class: %pim_product.form.transform_imported_product_data_subscriber.class%

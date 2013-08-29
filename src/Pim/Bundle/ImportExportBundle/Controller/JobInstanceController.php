@@ -10,6 +10,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
+use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 /**
  * Job Instance controller
@@ -114,11 +115,27 @@ class JobInstanceController extends Controller
             return $this->redirectToIndexView();
         }
 
+        $uploadAllowed = false;
+        $form = null;
+        $job = $jobInstance->getJob();
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $uploadAllowed = true;
+                $form = $this->createUploadForm()->createView();
+            }
+        }
+
+        $validator = $this->getValidator();
+
         return $this->render(
             sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
             array(
-                'jobInstance' => $jobInstance,
-                'violations'  => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
+                'jobInstance'      => $jobInstance,
+                'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
+                'uploadViolations' => $validator->validate($jobInstance, array('Default', 'UploadExecution')),
+                'uploadAllowed'    => $uploadAllowed,
+                'form'             => $form,
             )
         );
     }
@@ -204,11 +221,12 @@ class JobInstanceController extends Controller
     /**
      * Launch a job
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return RedirectResponse
      */
-    public function launchAction($id)
+    public function launchAction(Request $request, $id)
     {
         try {
             $jobInstance = $this->getJobInstance($id);
@@ -218,10 +236,43 @@ class JobInstanceController extends Controller
             return $this->redirectToIndexView();
         }
 
-        if (count($this->getValidator()->validate($jobInstance, array('Default', 'Execution'))) === 0) {
+        $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
+        $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
+
+        if (count($violations) === 0 || count($uploadViolations) === 0) {
             $jobExecution = new JobExecution;
             $jobExecution->setJobInstance($jobInstance);
             $job = $jobInstance->getJob();
+
+            if ($request->isMethod('POST') && count($uploadViolations) === 0) {
+                $form = $this->createUploadForm();
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $media = $data['file'];
+                    $file = $media->getFile();
+
+                    foreach ($job->getSteps() as $step) {
+                        $reader = $step->getReader();
+
+                        if ($reader instanceof UploadedFileAwareInterface) {
+                            $constraints = $reader->getUploadedFileConstraints();
+                            $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                            if ($errors->count()) {
+                                foreach ($errors as $error) {
+                                    $this->addFlash('error', $error->getMessage());
+                                }
+
+                                return $this->redirectToShowView($jobInstance->getId());
+                            }
+
+                            $reader->setUploadedFile($file);
+                        }
+                    }
+                }
+            }
+
             $job->execute($jobExecution);
 
             if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
@@ -326,5 +377,17 @@ class JobInstanceController extends Controller
         $managerAlias = sprintf('pim_import_export.datagrid.manager.%s', $this->getJobType());
 
         return $this->get($managerAlias);
+    }
+
+    /**
+     * Create file upload form
+     *
+     * @return Form
+     */
+    protected function createUploadForm()
+    {
+        return $this->createFormBuilder()
+            ->add('file', 'oro_media')
+            ->getForm();
     }
 }

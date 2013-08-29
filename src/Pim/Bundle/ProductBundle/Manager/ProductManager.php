@@ -418,10 +418,8 @@ class ProductManager extends FlexibleManager
     {
         foreach ($product->getValues() as $value) {
             if ($media = $value->getMedia()) {
-                $this->mediaManager->handle(
-                    $value->getMedia(),
-                    $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
-                );
+                $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
+                $this->mediaManager->handle($media, $filenamePrefix);
             }
         }
     }
