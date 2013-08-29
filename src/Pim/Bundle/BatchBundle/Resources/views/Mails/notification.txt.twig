@@ -12,7 +12,7 @@ Results:
     - {{ stepExecution.writeCount }} item(s) written
 {% endfor %}
 
-Please find the execution log here: {{ app.request.schemeAndHttpHost ~ '/' ~ log }}.
+Please find the execution log here: {{ url('pim_importexport_report_download', { 'id': jobExecution.id }) }}.
 
 --
 Akeneo - PIM

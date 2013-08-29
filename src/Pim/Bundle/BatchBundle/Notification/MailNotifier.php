@@ -39,11 +39,10 @@ class MailNotifier implements Notifier
             return;
         }
 
-        $filename = $this->logger->getFilename();
         $parameters = array(
             'user'         => $user,
             'jobExecution' => $jobExecution,
-            'log'          => $this->logger->getRealPath($filename),
+            'log'          => $this->logger->getFilename(),
         );
 
         $txtBody  = $this->twig->render('PimBatchBundle:Mails:notification.txt.twig', $parameters);
