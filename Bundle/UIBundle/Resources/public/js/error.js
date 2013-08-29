@@ -16,7 +16,18 @@ function(_, Backbone, routing, app, Modal) {
                 var self = error.dispatch;
                 self.init(model, xhr, _.extend({}, defaults, options));
             }
-        };
+        },
+        sync = Backbone.sync;
+
+    // Override default Backbone.sync
+    Backbone.sync = function(method, model, options) {
+        options = options || {};
+        if (!_.has(options, 'error')) {
+            options.error = error.dispatch;
+        }
+
+        sync.call(Backbone, method, model, options);
+    };
 
     _.extend(error.dispatch, {
         /**

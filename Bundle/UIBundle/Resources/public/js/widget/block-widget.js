@@ -1,10 +1,15 @@
-var Oro = Oro || {};
-Oro.widget = Oro.widget || {};
+/* global define */
+define(['underscore', 'backbone', 'oro/widget-manager', 'oro/abstract-widget'],
+function(_, Backbone, widgetManager, AbstractWidget) {
+    'use strict';
 
-Oro.widget.Block = Oro.widget.Abstract.extend({
-    options: _.extend(
-        _.extend({}, Oro.widget.Abstract.prototype.options),
-        {
+    /**
+     * @export  oro/block-widget
+     * @class   oro.BlockWidget
+     * @extends oro.AbstractWidget
+     */
+    var BlockWidget = AbstractWidget.extend({
+        options: _.extend({}, AbstractWidget.prototype.options, {
             type: 'block',
             titleContainer: '.widget-title',
             actionsContainer: '.widget-actions-container',
@@ -17,61 +22,63 @@ Oro.widget.Block = Oro.widget.Abstract.extend({
                 '</div>' +
                 '<div class="row-fluid <%= contentClasses.join(\' \') %>"></div>' +
             '</div>')
-        }
-    ),
+        }),
 
-    initialize: function(options) {
-        options = options || {}
-        this.initializeWidget(options);
+        initialize: function(options) {
+            options = options || {};
+            this.initializeWidget(options);
 
-        this.widget = Backbone.$(this.options.template({
-            'title': this.options.title,
-            'contentClasses': this.options.contentClasses
-        }));
-        this.widgetContentContainer = this.widget.find(this.options.contentContainer);
-    },
+            this.widget = Backbone.$(this.options.template({
+                'title': this.options.title,
+                'contentClasses': this.options.contentClasses
+            }));
+            this.widgetContentContainer = this.widget.find(this.options.contentContainer);
+        },
 
-    setTitle: function(title) {
-        this.options.title = title;
-        this._getTitleContainer().html(this.options.title);
-    },
+        setTitle: function(title) {
+            this.options.title = title;
+            this._getTitleContainer().html(this.options.title);
+        },
 
-    getActionsElement: function() {
-        if (this.actionsContainer === undefined) {
-            this.actionsContainer = this.widget.find(this.options.actionsContainer);
-        }
-        return this.actionsContainer;
-    },
-
-    _getTitleContainer: function() {
-        if (this.titleContainer === undefined) {
-            this.titleContainer = this.widget.find(this.options.titleContainer);
-        }
-        return this.titleContainer;
-    },
-
-    show: function() {
-        if (!this.$el.data('wid')) {
-            if (this.$el.parent().length) {
-                this._showStatic();
-            } else {
-                this._showRemote();
+        getActionsElement: function() {
+            if (this.actionsContainer === undefined) {
+                this.actionsContainer = this.widget.find(this.options.actionsContainer);
             }
+            return this.actionsContainer;
+        },
+
+        _getTitleContainer: function() {
+            if (this.titleContainer === undefined) {
+                this.titleContainer = this.widget.find(this.options.titleContainer);
+            }
+            return this.titleContainer;
+        },
+
+        show: function() {
+            if (!this.$el.data('wid')) {
+                if (this.$el.parent().length) {
+                    this._showStatic();
+                } else {
+                    this._showRemote();
+                }
+            }
+            AbstractWidget.prototype.show.apply(this);
+        },
+
+        _showStatic: function() {
+            var anchorDiv = Backbone.$('<div/>');
+            anchorDiv.insertAfter(this.$el);
+            this.widgetContentContainer.append(this.$el);
+            anchorDiv.replaceWith(Backbone.$(this.widget));
+        },
+
+        _showRemote: function() {
+            this.widgetContentContainer.empty();
+            this.widgetContentContainer.append(this.$el);
         }
-        Oro.widget.Abstract.prototype.show.apply(this);
-    },
+    });
 
-    _showStatic: function() {
-        var anchorDiv = Backbone.$('<div/>');
-        anchorDiv.insertAfter(this.$el);
-        this.widgetContentContainer.append(this.$el);
-        anchorDiv.replaceWith(Backbone.$(this.widget));
-    },
+    widgetManager.registerWidgetContainer('block', BlockWidget);
 
-    _showRemote: function() {
-        this.widgetContentContainer.empty();
-        this.widgetContentContainer.append(this.$el);
-    }
+    return BlockWidget;
 });
-
-Oro.widget.Manager.registerWidgetContainer('block', Oro.widget.Block);

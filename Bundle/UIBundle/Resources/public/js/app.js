@@ -9,6 +9,9 @@ function($, _) {
      * @export oro/app
      */
     return {
+        /** @type {boolean} */
+        debug: false,
+
         /** @type {oro.Navigation|null} */
         hashNavigationInstance: null,
 

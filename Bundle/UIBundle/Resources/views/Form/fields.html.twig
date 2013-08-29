@@ -58,11 +58,14 @@
 
 {% block choice_widget_collapsed %}
     <script type="text/javascript">
-        $(function() {
-            $('#{{ id }}').on('uniformInit', function () {
-                $(this).filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
+        require(['jquery'],
+        function($){
+            $(function() {
+                $('#{{ id }}').on('uniformInit', function () {
+                    $(this).filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
+                });
             });
-        })
+        });
     </script>
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
@@ -70,11 +73,14 @@
 {% block form_widget_simple %}
     {% if type is defined and type == 'file' %}
         <script type="text/javascript">
-            $(function() {
-                $('#{{ id }}').on('uniformInit', function () {
-                    $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
+            require(['jquery'],
+            function($){
+                $(function() {
+                    $('#{{ id }}').on('uniformInit', function () {
+                        $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
+                    });
                 });
-            })
+            });
         </script>
     {% endif %}
     {{ parent() }}
