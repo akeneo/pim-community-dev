@@ -84,27 +84,30 @@ class BatchCompletenessCalculator
         $this->completenessCalculator->setChannels($channels);
         $this->completenessCalculator->calculate($products);
         $this->saveCompletenesses($products);
-//         $this->removePendings();
+        $this->removePendings();
 
         $locales = $this->getPendingLocales();
         $this->completenessCalculator->setLocales($locales);
+        $this->completenessCalculator->setChannels(array());
         $this->completenessCalculator->calculate($products);
         $this->saveCompletenesses($products);
-//         $this->removePendings();
+        $this->removePendings();
 
-//         $completenesses = $this->completenessCalculator->calculate($products);
-
-//         foreach ($products as $product) {
-//             var_dump(count($product->getCompletenesses()));
-//         }
-
+        $families = $this->getPendingFamilies();
+        $products = $this->getProductsToCalculate($families);
+        $this->completenessCalculator->setLocales(array());
+        $this->completenessCalculator->setChannels(array());
+        $this->completenessCalculator->calculate($products);
+        $this->saveCompletenesses($products);
+        $this->removePendings();
     }
 
     /**
+     * Save products with cascading persist on completeness entities linked
      *
-     * @param unknown_type $products
+     * @param \Pim\Bundle\ProductBundle\Entity\Product[] $products
      */
-    protected function saveCompletenesses($products)
+    protected function saveCompletenesses(array $products)
     {
         foreach ($products as $product) {
             $this->entityManager->persist($product);
@@ -116,20 +119,24 @@ class BatchCompletenessCalculator
     /**
      * Get products to be calculated
      *
+     * @param \Pim\Bundle\ProductBundle\Entity\Family[]
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    protected function getProductsToCalculate()
+    protected function getProductsToCalculate(array $families = array())
     {
-        return $this
-            ->productManager
-            ->getFlexibleRepository()
-            ->findByExistingFamily();
+        $flexibleRepo = $this->productManager->getFlexibleRepository();
+        if (!empty($families)) {
+            return $flexibleRepo->findBy(array('family' => $families));
+        } else {
+            return $flexibleRepo->findByExistingFamily($families);
+        }
     }
 
     /**
      * Find pending completeness and channels which need completeness recalculation
      *
-     * @return Channel[]
+     * @return \Pim\Bundle\ProductBundle\Entity\Channel[]
      */
     protected function getPendingChannels()
     {
@@ -148,7 +155,7 @@ class BatchCompletenessCalculator
     /**
      * Find pending completeness and locales which need completeness recalculation
      *
-     * @return Locale[]
+     * @return \Pim\Bundle\ProductBundle\Entity\Locale[]
      */
     protected function getPendingLocales()
     {
@@ -156,7 +163,7 @@ class BatchCompletenessCalculator
 
         $locales = array();
         foreach ($this->pendings as $pendingLocale) {
-            if (in_array($pendingLocale->getLocale(), $locales)) {
+            if (!in_array($pendingLocale->getLocale(), $locales)) {
                 $locales[] = $pendingLocale->getLocale();
             }
         }
@@ -165,7 +172,27 @@ class BatchCompletenessCalculator
     }
 
     /**
+     * Find pending completeness and families which need completeness recalculation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Family[]
+     */
+    protected function getPendingFamilies()
+    {
+        $this->pendings = $this->getPendingCompletenessRepository()->findByNotNull('family');
+
+        $families = array();
+        foreach ($this->pendings as $pendingFamily) {
+            if (!in_array($pendingFamily->getFamily(), $families)) {
+                $families[] = $pendingFamily->getFamily();
+            }
+        }
+
+        return $families;
+    }
+
+    /**
      * Get repository for pending completeness entity
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     protected function getPendingCompletenessRepository()
