@@ -7,7 +7,7 @@
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
@@ -164,7 +164,7 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat">
+        <exec executable="bin/behat" failonerror="true">
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
