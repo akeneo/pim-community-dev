@@ -7,8 +7,10 @@
         <div class="row">
             <div class="pull-right">
                 <div class="pull-right">
+                    {% placeholder navButtons_before with {entity: entity} %}
                     {% block navButtons %}
                     {% endblock navButtons %}
+                    {% placeholder navButtons_after with {entity: entity} %}
                 </div>
                 {% if (entity is defined and entityClass is defined) %}
                     {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': audit_title|default(entity), 'audit_path': audit_path|default('oro_dataaudit_history') } %}

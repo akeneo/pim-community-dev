@@ -1,0 +1,9 @@
+placeholders:
+    navButtons_before:
+        label: Header Logo
+        items:
+            workflow_buttons:
+                order: 100
+items:
+   workflow_buttons:
+        template: OroWorkflowBundle:Widget:buttons.html.twig
