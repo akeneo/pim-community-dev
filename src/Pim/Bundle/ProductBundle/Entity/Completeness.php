@@ -74,13 +74,6 @@ class Completeness
     protected $requiredCount = 0;
 
     /**
-     * @var boolean $toReindex
-     *
-     * @ORM\Column(name="to_reindex", type="boolean")
-     */
-    protected $toReindex = false;
-
-    /**
      * @var datetime $updated
      *
      * @Gedmo\Timestampable(on="update")
@@ -235,30 +228,6 @@ class Completeness
     public function setRequiredCount($requiredCount)
     {
         $this->requiredCount = $requiredCount;
-
-        return $this;
-    }
-
-    /**
-     * Getter to reindex
-     *
-     * @return boolean
-     */
-    public function isToReindex()
-    {
-        return $this->toReindex;
-    }
-
-    /**
-     * Setter to reindex
-     *
-     * @param boolean $toReindex
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
-     */
-    public function setToReindex($toReindex)
-    {
-        $this->toReindex = $toReindex;
 
         return $this;
     }
