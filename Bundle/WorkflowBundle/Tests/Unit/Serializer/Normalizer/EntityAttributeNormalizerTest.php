@@ -29,7 +29,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $classMetadata;
+    protected $metadataManager;
 
     /**
      * @var EntityAttributeNormalizer
@@ -41,12 +41,11 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
 
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->setMethods(array('getClassMetadata', 'getReference'))
+            ->setMethods(array('getReference'))
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-            ->setMethods(array('getIdentifierValues'))
+        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -60,7 +59,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->normalizer = new EntityAttributeNormalizer($this->registry);
+        $this->normalizer = new EntityAttributeNormalizer($this->registry, $this->metadataManager);
     }
 
     /**
@@ -100,7 +99,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\SerializerException
      * @expectedExceptionMessage Attribute "test_attribute" of workflow "test_workflow" must exist
      */
-    public function testNormalizeExceptionNoEntityManager()
+    public function testDenormalizeExceptionNoEntityManager()
     {
         $workflowName = 'test_workflow';
         $attributeName = 'test_attribute';
@@ -109,7 +108,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->workflow->expects($this->once())->method('getName')->will($this->returnValue($workflowName));
 
-        $this->attribute->expects($this->exactly(2))->method('getOption')->with('class')
+        $this->attribute->expects($this->once())->method('getOption')->with('class')
             ->will($this->returnValue(get_class($attributeValue)));
 
         $this->attribute->expects($this->once())
@@ -127,7 +126,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                 get_class($attributeValue)
             )
         );
-        $this->normalizer->normalize($this->workflow, $this->attribute, $attributeValue);
+        $this->normalizer->denormalize($this->workflow, $this->attribute, array());
     }
 
     public function testNormalizeEntity()
@@ -136,18 +135,14 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->workflow->expects($this->never())->method($this->anything());
 
-        $this->attribute->expects($this->exactly(3))->method('getOption')->with('class')
+        $this->attribute->expects($this->once())
+            ->method('getOption')
+            ->with('class')
             ->will($this->returnValue(get_class($attributeValue)));
 
-        $this->registry->expects($this->once())->method('getManagerForClass')->with(get_class($attributeValue))
-            ->will($this->returnValue($this->entityManager));
-
-        $this->entityManager->expects($this->once())->method('getClassMetadata')
-            ->with(get_class($attributeValue))
-            ->will($this->returnValue($this->classMetadata));
-
         $expectedId = array('id' => 123);
-        $this->classMetadata->expects($this->once())->method('getIdentifierValues')
+        $this->metadataManager->expects($this->once())
+            ->method('getEntityIdentifier')
             ->with($attributeValue)
             ->will($this->returnValue($expectedId));
 

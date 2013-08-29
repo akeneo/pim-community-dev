@@ -2,24 +2,25 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository;
+use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 
 class WorkflowManager
 {
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
-    protected $doctrine;
+    protected $registry;
 
     /**
      * @var WorkflowRegistry
@@ -27,13 +28,23 @@ class WorkflowManager
     protected $workflowRegistry;
 
     /**
-     * @param Registry $doctrine
-     * @param WorkflowRegistry $workflowRegistry
+     * @var MetadataManager
      */
-    public function __construct(Registry $doctrine, WorkflowRegistry $workflowRegistry)
-    {
-        $this->doctrine = $doctrine;
+    protected $metadataManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param WorkflowRegistry $workflowRegistry
+     * @param MetadataManager $metadataManager
+     */
+    public function __construct(
+        ManagerRegistry $registry,
+        WorkflowRegistry $workflowRegistry,
+        MetadataManager $metadataManager
+    ) {
+        $this->registry = $registry;
         $this->workflowRegistry = $workflowRegistry;
+        $this->metadataManager = $metadataManager;
     }
 
     /**
@@ -65,15 +76,25 @@ class WorkflowManager
      * @param object|null $entity
      * @param string|Transition|null $transition
      * @return WorkflowItem
+     * @throws \Exception
      */
     public function startWorkflow($workflow, $entity = null, $transition = null)
     {
         $workflow = $this->getWorkflow($workflow);
         $initData = $this->getWorkflowData($workflow, $entity);
-        $workflowItem = $workflow->start($initData, $transition);
 
-        $this->doctrine->getManager()->persist($workflowItem);
-        $this->doctrine->getManager()->flush();
+        /** @var EntityManager $em */
+        $em = $this->registry->getManager();
+        $em->beginTransaction();
+        try {
+            $workflowItem = $workflow->start($initData, $transition);
+            $em->persist($workflowItem);
+            $em->flush();
+            $em->commit();
+        } catch (\Exception $e) {
+            $em->rollback();
+            throw $e;
+        }
 
         return $workflowItem;
     }
@@ -88,7 +109,8 @@ class WorkflowManager
     public function transit(WorkflowItem $workflowItem, $transition)
     {
         $workflow = $this->getWorkflow($workflowItem);
-        $em = $this->doctrine->getManager();
+        /** @var EntityManager $em */
+        $em = $this->registry->getManager();
         $em->beginTransaction();
         try {
             $workflow->transit($workflowItem, $transition);
@@ -117,7 +139,8 @@ class WorkflowManager
             $usedWorkflows[] = $workflowItem->getWorkflowName();
         }
 
-        $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntity($entity);
+        $entityClass = $this->metadataManager->getEntityClass($entity);
+        $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntityClass($entityClass);
 
         $applicableWorkflows = array();
         foreach ($allowedWorkflows as $workflow) {
@@ -142,10 +165,13 @@ class WorkflowManager
      */
     public function getWorkflowItemsByEntity($entity)
     {
-        /** @var WorkflowItemRepository $workflowItemsRepository */
-        $workflowItemsRepository = $this->doctrine->getRepository('OroWorkflowBundle:WorkflowItem');
+        $entityClass = $this->metadataManager->getEntityClass($entity);
+        $entityIdentifier = $this->metadataManager->getEntityIdentifier($entity);
 
-        return $workflowItemsRepository->findWorkflowItemsByEntity($entity);
+        /** @var WorkflowItemRepository $workflowItemsRepository */
+        $workflowItemsRepository = $this->registry->getRepository('OroWorkflowBundle:WorkflowItem');
+
+        return $workflowItemsRepository->findByEntityMetadata($entityClass, $entityIdentifier);
     }
 
     /**
@@ -188,13 +214,15 @@ class WorkflowManager
      */
     protected function getManagedEntityAttributesByEntity(Workflow $workflow, $entity)
     {
+        $entityClass = $this->metadataManager->getEntityClass($entity);
+
         /** @var Attribute $attribute */
-        $entityClass = ClassUtils::getRealClass(get_class($entity));
         foreach ($workflow->getManagedEntityAttributes() as $attribute) {
             if ($attribute->getOption('class') == $entityClass) {
                 return $attribute;
             }
         }
+
         return null;
     }
 
@@ -218,6 +246,7 @@ class WorkflowManager
         } elseif ($workflowIdentifier instanceof Workflow) {
             return $workflowIdentifier;
         }
+
         throw new WorkflowException('Could not find workflow by given identifier.');
     }
 }

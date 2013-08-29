@@ -82,7 +82,7 @@ class ConfigurationWorkflowDefinitionBuilder
                 $options = $this->getConfigurationOption($attributeData, 'options', array());
                 $this->assertConfigurationOptions($options, array('class'));
 
-                if (!empty($options[Workflow::MANAGED_ENTITY_KEY])) {
+                if (!empty($options['managed_entity'])) {
                     $managedEntityClasses[] = $this->getConfigurationOption($options, 'class', null);
                 }
             }

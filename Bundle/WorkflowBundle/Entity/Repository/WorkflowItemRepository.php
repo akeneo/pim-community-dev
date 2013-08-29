@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Entity\Repository;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
@@ -12,14 +11,13 @@ class WorkflowItemRepository extends EntityRepository
     /**
      * Get workflow items associated with entity.
      *
-     * @param object $entity
+     * @param string $entityClass
+     * @param string|array $entityIdentifier
      * @return array
      */
-    public function findWorkflowItemsByEntity($entity)
+    public function findByEntityMetadata($entityClass, $entityIdentifier)
     {
-        $entityClass = ClassUtils::getRealClass(get_class($entity));
-        $metadata = $this->getEntityManager()->getClassMetadata($entityClass);
-        $entityId = WorkflowBindEntity::convertIdentifiersToString($metadata->getIdentifierValues($entity));
+        $entityIdentifierString = WorkflowBindEntity::convertIdentifiersToString($entityIdentifier);
 
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
@@ -29,7 +27,7 @@ class WorkflowItemRepository extends EntityRepository
             ->where('wbe.entityClass = :entityClass')
             ->andWhere('wbe.entityId = :entityId')
             ->setParameter('entityClass', $entityClass)
-            ->setParameter('entityId', $entityId);
+            ->setParameter('entityId', $entityIdentifierString);
 
         return $qb->getQuery()->getResult();
     }

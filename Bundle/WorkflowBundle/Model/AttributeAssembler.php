@@ -40,7 +40,6 @@ class AttributeAssembler extends AbstractAssembler
         $attribute->setName($name);
         $attribute->setLabel($options['label']);
         $attribute->setType($options['type']);
-
         $attribute->setOptions($this->getOption($options, 'options', array()));
 
         $this->validateAttribute($attribute);
@@ -55,7 +54,7 @@ class AttributeAssembler extends AbstractAssembler
                 $options['options'] : array();
 
             $options['options'] = array_merge(
-                array('multiple' => false, 'bind' => true),
+                array('multiple' => false, 'bind' => !empty($options['options']['managed_entity'])),
                 $options['options']
             );
         }
@@ -77,12 +76,14 @@ class AttributeAssembler extends AbstractAssembler
         }
 
         if ($attribute->getType() == 'entity') {
+            $managedEntity = $attribute->getOption('managed_entity');
             $multiple = $attribute->getOption('multiple');
             $bind = $attribute->getOption('bind');
-            if (!$multiple && !$bind) {
+            if ($managedEntity && !$multiple && !$bind) {
                 throw new AssemblerException(
                     sprintf(
-                        'Options "multiple" and "bind" in attribute "%s" cannot be false simultaneously',
+                        'Options "multiple" and "bind" for managed entity in attribute "%s" ' .
+                        'cannot be both false simultaneously',
                         $attribute->getName()
                     )
                 );

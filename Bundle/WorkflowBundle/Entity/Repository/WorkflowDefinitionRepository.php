@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Entity\Repository;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
@@ -10,14 +9,14 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 class WorkflowDefinitionRepository extends EntityRepository
 {
     /**
-     * Get available workflow definitions for entity.
+     * Get available workflow definitions for entity class
      *
-     * @param object $entity
+     * @param string $entityClass
      * @return WorkflowDefinition[]
      */
-    public function findWorkflowDefinitionsByEntity($entity)
+    public function findByEntityClass($entityClass)
     {
-        $entityClasses = $this->getAllEntityClasses($entity);
+        $entityClasses = $this->getAllEntityClasses($entityClass);
 
         $queryBuilder = $this->createQueryBuilder('wd');
         $queryBuilder->innerJoin('wd.workflowDefinitionEntities', 'wde')
@@ -27,13 +26,11 @@ class WorkflowDefinitionRepository extends EntityRepository
     }
 
     /**
-     * @param object $entity
+     * @param string $entityClass
      * @return array
      */
-    protected function getAllEntityClasses($entity)
+    protected function getAllEntityClasses($entityClass)
     {
-        $entityClass = ClassUtils::getRealClass(get_class($entity));
-
         $classes = array($entityClass);
         $classes = array_merge($classes, class_parents($entityClass));
         $classes = array_merge($classes, class_implements($entityClass));

@@ -3,12 +3,12 @@
 namespace Oro\Bundle\WorkflowBundle\Serializer\Normalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\SerializerException;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
 
 class EntityAttributeNormalizer implements AttributeNormalizer
 {
@@ -18,11 +18,18 @@ class EntityAttributeNormalizer implements AttributeNormalizer
     protected $registry;
 
     /**
-     * @param ManagerRegistry $registry
+     * @var MetadataManager
      */
-    public function __construct(ManagerRegistry $registry)
+    protected $metadataManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param MetadataManager $metadataManager
+     */
+    public function __construct(ManagerRegistry $registry, MetadataManager $metadataManager)
     {
         $this->registry = $registry;
+        $this->metadataManager = $metadataManager;
     }
 
     /**
@@ -33,17 +40,10 @@ class EntityAttributeNormalizer implements AttributeNormalizer
         if (null === $attributeValue) {
             return null;
         }
+
         $this->validateAttributeValue($workflow, $attribute, $attributeValue);
 
-        if ($attributeValue instanceof Proxy && !$attributeValue->__isInitialized()) {
-            $identifierProperty = new \ReflectionProperty(get_class($attributeValue), '_identifier');
-            $identifierProperty->setAccessible(true);
-            return $identifierProperty->getValue($attributeValue);
-        } else {
-            $em = $this->getEntityManager($workflow, $attribute);
-            $metadata = $em->getClassMetadata($attribute->getOption('class'));
-            return $metadata->getIdentifierValues($attributeValue);
-        }
+        return $this->metadataManager->getEntityIdentifier($attributeValue);
     }
 
     /**

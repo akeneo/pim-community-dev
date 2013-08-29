@@ -5,24 +5,24 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
 
 class EqualTo extends AbstractComparison
 {
     /**
-     * @var ManagerRegistry
+     * @var MetadataManager
      */
-    protected $registry;
+    protected $metadataManager;
 
     /**
-     * Constructor
-     *
-     * @param ManagerRegistry $registry
+     * @param MetadataManager $metadataManager
      * @param ContextAccessor $contextAccessor
      */
-    public function __construct(ManagerRegistry $registry, ContextAccessor $contextAccessor)
+    public function __construct(ContextAccessor $contextAccessor, MetadataManager $metadataManager)
     {
-        $this->registry = $registry;
         parent::__construct($contextAccessor);
+
+        $this->metadataManager = $metadataManager;
     }
 
     /**
@@ -35,22 +35,20 @@ class EqualTo extends AbstractComparison
     protected function doCompare($left, $right)
     {
         if (is_object($left) && is_object($right)) {
-            $leftClass = get_class($left);
-            $rightClass = get_class($right);
-            $leftManager = $this->registry->getManagerForClass(get_class($left));
-            $rightManager = $this->registry->getManagerForClass(get_class($right));
-            if ($leftManager && $rightManager) {
-                $leftMetadata = $leftManager->getClassMetadata($leftClass);
-                $rightMetadata = $rightManager->getClassMetadata($rightClass);
-                if ($leftMetadata->getName() == $rightMetadata->getName()) {
-                    $leftIdentifiers = $leftMetadata->getIdentifierValues($left);
-                    $rightIdentifiers = $rightMetadata->getIdentifierValues($right);
-                    return $leftIdentifiers == $rightIdentifiers;
-                } else {
-                    return false;
-                }
+            $leftClass = $this->metadataManager->getEntityClass($left);
+            $rightClass = $this->metadataManager->getEntityClass($right);
+
+            if ($leftClass == $rightClass
+                && $this->metadataManager->isManageableEntity($left)
+                && $this->metadataManager->isManageableEntity($right)
+            ) {
+                $leftIdentifier = $this->metadataManager->getEntityIdentifier($left);
+                $rightIdentifier = $this->metadataManager->getEntityIdentifier($right);
+
+                return $leftIdentifier == $rightIdentifier;
             }
         }
+
         return $left == $right;
     }
 }

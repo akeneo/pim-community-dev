@@ -109,11 +109,17 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'name' => array(
                         'label' => 'Label', 'type' => 'entity',
-                        'options' => array('class' => 'DateTime', 'bind' => false, 'multiple' => false)
+                        'options' => array(
+                            'class' => 'DateTime',
+                            'managed_entity' => true,
+                            'bind' => false,
+                            'multiple' => false
+                        )
                     )
                 ),
                 'Oro\Bundle\WorkflowBundle\Exception\AssemblerException',
-                'Options "multiple" and "bind" in attribute "name" cannot be false simultaneously'
+                'Options "multiple" and "bind" for managed entity in attribute "name" ' .
+                'cannot be both false simultaneously'
             ),
         );
     }
@@ -187,7 +193,22 @@ class AttributeAssemblerTest extends \PHPUnit_Framework_TestCase
                     'attribute_one',
                     'label',
                     'entity',
-                    array('class' => 'stdClass', 'multiple' => false, 'bind' => true)
+                    array('class' => 'stdClass', 'multiple' => false, 'bind' => false)
+                )
+            ),
+            'managed_entity_minimal' => array(
+                array(
+                    'attribute_one' => array(
+                        'label' => 'label',
+                        'type' => 'entity',
+                        'options' => array('class' => 'stdClass', 'managed_entity' => true),
+                    )
+                ),
+                $this->getAttribute(
+                    'attribute_one',
+                    'label',
+                    'entity',
+                    array('class' => 'stdClass', 'managed_entity' => true, 'multiple' => false, 'bind' => true)
                 )
             ),
             'entity_full' => array(

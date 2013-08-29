@@ -27,6 +27,7 @@ services:
         class: %oro_workflow.data_serialize.attribute_normalizer.entity.class%
         arguments:
             - @doctrine
+            - @oro_workflow.metadata_manager
         tags:
             - { name: oro_workflow.attribute_normalizer }
 

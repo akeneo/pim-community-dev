@@ -10,6 +10,9 @@ use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
+use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
+use Oro\Bundle\WorkflowBundle\Model\StepManager;
+use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 class OroWorkflowStepTest extends FormIntegrationTestCase
 {
@@ -94,10 +97,10 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
         );
 
         // workflow fixture
-        $workflow = new Workflow($this->getEntityBinder());
+        $workflow = $this->createWorkflow();
         $workflow->getSteps()->set($step->getName(), $step);
 
-        $workflowWithAttributes = new Workflow($this->getEntityBinder());
+        $workflowWithAttributes = $this->createWorkflow();
         $workflowWithAttributes->getAttributes()->set($firstAttribute->getName(), $firstAttribute);
         $workflowWithAttributes->getAttributes()->set($secondAttribute->getName(), $secondAttribute);
         $workflowWithAttributes->getSteps()->set($stepWithAttributes->getName(), $stepWithAttributes);
@@ -147,7 +150,7 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
     {
         $step = new Step();
         $step->setName('test_step');
-        $workflow = new Workflow($this->getEntityBinder());
+        $workflow = $this->createWorkflow();
 
         $stepUnknownAttribute = new Step();
         $stepUnknownAttribute->setName('test_step');
@@ -158,7 +161,7 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                 )
             )
         );
-        $workflowUnknownAttribute = new Workflow($this->getEntityBinder());
+        $workflowUnknownAttribute = $this->createWorkflow();
         $workflowUnknownAttribute->setName('test_workflow');
         $workflowUnknownAttribute->getSteps()->set($stepUnknownAttribute->getName(), $stepUnknownAttribute);
 
@@ -176,7 +179,7 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                 )
             )
         );
-        $workflowNoFormType = new Workflow($this->getEntityBinder());
+        $workflowNoFormType = $this->createWorkflow();
         $workflowNoFormType->setName('test_workflow');
         $workflowNoFormType->getAttributes()->set($attribute->getName(), $attribute);
         $workflowNoFormType->getSteps()->set($stepNoFormType->getName(), $stepNoFormType);
@@ -225,6 +228,18 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                     'step'     => $stepNoFormType
                 )
             ),
+        );
+    }
+
+    /**
+     * @return Workflow
+     */
+    protected function createWorkflow()
+    {
+        return new Workflow(
+            new StepManager(),
+            new AttributeManager(),
+            new TransitionManager()
         );
     }
 }

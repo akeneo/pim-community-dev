@@ -4,6 +4,9 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
+use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
+use Oro\Bundle\WorkflowBundle\Model\StepManager;
+use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 class EntityBinderTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,17 +18,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $doctrineRegistry;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $entityManager;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $classMetadata;
+    protected $metadataManager;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -51,23 +44,26 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     {
         $this->workflowRegistry = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry')
             ->setMethods(array('getWorkflow'))
-            ->disableOriginalConstructor()->getMock();
-        $this->doctrineRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()->getMock();
-        $this->classMetadata = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
         $this->workflowData = $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData');
-        $this->workflow = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Workflow');
-        $this->binder = new EntityBinder($this->workflowRegistry, $this->doctrineRegistry);
+        $this->workflow = $this->getMock(
+            'Oro\Bundle\WorkflowBundle\Model\Workflow',
+            array(),
+            array(new StepManager(), new AttributeManager(), new TransitionManager())
+        );
+
+        $this->binder = new EntityBinder($this->workflowRegistry, $this->metadataManager);
     }
 
     public function testBindEntitiesNotModified()
     {
         $this->workflowItem->expects($this->once())->method('getData')->will($this->returnValue($this->workflowData));
         $this->workflowData->expects($this->once())->method('isModified')->will($this->returnValue(false));
-        $this->workflowRegistry->expects($this->never())->method($this->anything());
-        $this->doctrineRegistry->expects($this->never())->method($this->anything());
 
         $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
@@ -91,8 +87,6 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
 
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
             ->will($this->returnValue(array()));
-
-        $this->doctrineRegistry->expects($this->never())->method($this->anything());
 
         $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
@@ -121,23 +115,17 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
             ->will($this->returnValue(array('foo' => $fooEntity, 'bar' => $barEntity)));
 
-        $this->doctrineRegistry->expects($this->at(0))->method('getManagerForClass')
-            ->with(get_class($fooEntity))
-            ->will($this->returnValue($this->entityManager));
-        $this->doctrineRegistry->expects($this->at(1))->method('getManagerForClass')
-            ->with(get_class($barEntity))
-            ->will($this->returnValue($this->entityManager));
-
-        $this->entityManager->expects($this->at(0))->method('getClassMetadata')
-            ->with(get_class($fooEntity))
-            ->will($this->returnValue($this->classMetadata));
-        $this->entityManager->expects($this->at(1))->method('getClassMetadata')
-            ->with(get_class($barEntity))
-            ->will($this->returnValue($this->classMetadata));
-
-        $this->classMetadata->expects($this->at(0))->method('getIdentifierValues')->with($fooEntity)
+        $this->metadataManager->expects($this->at(0))->method('getEntityClass')
+            ->with($fooEntity)
+            ->will($this->returnValue(get_class($fooEntity)));
+        $this->metadataManager->expects($this->at(1))->method('getEntityIdentifier')
+            ->with($fooEntity)
             ->will($this->returnValue($fooIds));
-        $this->classMetadata->expects($this->at(1))->method('getIdentifierValues')->with($barEntity)
+        $this->metadataManager->expects($this->at(2))->method('getEntityClass')
+            ->with($barEntity)
+            ->will($this->returnValue(get_class($barEntity)));
+        $this->metadataManager->expects($this->at(3))->method('getEntityIdentifier')
+            ->with($barEntity)
             ->will($this->returnValue($barIds));
 
         $this->workflowItem->expects($this->at(2))->method('hasBindEntity')

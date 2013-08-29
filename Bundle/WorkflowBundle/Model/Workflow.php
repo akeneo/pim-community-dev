@@ -14,7 +14,6 @@ use Oro\Bundle\WorkflowBundle\Model\Transition;
 
 class Workflow
 {
-    const MANAGED_ENTITY_KEY = 'managed_entity';
     const DEFAULT_START_TRANSITION_NAME = '__start__';
     const TYPE_ENTITY = 'entity';
     const TYPE_WIZARD = 'wizard';
@@ -54,11 +53,19 @@ class Workflow
      */
     protected $label;
 
-    public function __construct()
-    {
-        $this->transitionManager = new TransitionManager();
-        $this->stepManager       = new StepManager();
-        $this->attributeManager  = new AttributeManager();
+    /**
+     * @param StepManager $stepManager
+     * @param AttributeManager $attributeManager
+     * @param TransitionManager $transitionManager
+     */
+    public function __construct(
+        StepManager $stepManager,
+        AttributeManager $attributeManager,
+        TransitionManager $transitionManager
+    ) {
+        $this->stepManager       = $stepManager;
+        $this->attributeManager  = $attributeManager;
+        $this->transitionManager = $transitionManager;
 
         $this->enabled = true;
     }
@@ -397,13 +404,16 @@ class Workflow
         if (!$currentStep) {
             throw new UnknownStepException($currentStepName);
         }
+
+        $allowedTransitions = new ArrayCollection();
         $transitionNames = $currentStep->getAllowedTransitions();
-        $allowedTransitions = array();
         foreach ($transitionNames as $transitionName) {
             if ($this->isTransitionAllowed($workflowItem, $transitionName)) {
-                $allowedTransitions[] = $this->getTransition($transitionName);
+                $transition = $this->getTransition($transitionName);
+                $allowedTransitions->add($transition);
             }
         }
-        return new ArrayCollection($allowedTransitions);
+
+        return $allowedTransitions;
     }
 }

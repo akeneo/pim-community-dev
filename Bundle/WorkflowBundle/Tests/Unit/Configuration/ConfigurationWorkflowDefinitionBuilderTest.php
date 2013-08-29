@@ -78,7 +78,7 @@ class ConfigurationWorkflowDefinitionBuilderTest extends \PHPUnit_Framework_Test
                     'type' => 'entity',
                     'options' => array(
                         'class' => 'TestManagedClass',
-                        Workflow::MANAGED_ENTITY_KEY => true,
+                        'managed_entity' => true,
                     ),
                 ),
             )

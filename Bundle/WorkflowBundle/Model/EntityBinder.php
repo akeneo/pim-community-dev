@@ -2,11 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
+use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
 
 /**
  * Runs binding of workflow items with entities
@@ -19,25 +17,25 @@ class EntityBinder
     protected $workflowRegistry;
 
     /**
-     * @var ManagerRegistry
+     * @var MetadataManager
      */
-    protected $doctrineRegistry;
+    protected $metadataManager;
 
     /**
      * @param WorkflowRegistry $workflowRegistry
-     * @param ManagerRegistry $doctrineRegistry
+     * @param MetadataManager $metadataManager
      */
-    public function __construct(WorkflowRegistry $workflowRegistry, ManagerRegistry $doctrineRegistry)
+    public function __construct(WorkflowRegistry $workflowRegistry, MetadataManager $metadataManager)
     {
-        $this->workflowRegistry = $workflowRegistry;
-        $this->doctrineRegistry = $doctrineRegistry;
+        $this->workflowRegistry  = $workflowRegistry;
+        $this->metadataManager = $metadataManager;
     }
 
     /**
      * Bind entities to workflow item
      *
      * @param WorkflowItem $workflowItem
-     * @return bool Returns true if new entities were binded
+     * @return bool Returns true if new entities were bound
      */
     public function bindEntities(WorkflowItem $workflowItem)
     {
@@ -71,8 +69,8 @@ class EntityBinder
     protected function bindEntity(WorkflowItem $workflowItem, $entity)
     {
         $bindEntity = new WorkflowBindEntity();
-        $bindEntity->setEntityClass($this->getEntityClass($entity));
-        $bindEntity->setEntityId($this->getEntityId($entity));
+        $bindEntity->setEntityClass($this->metadataManager->getEntityClass($entity));
+        $bindEntity->setEntityId($this->metadataManager->getEntityIdentifier($entity));
 
         if (!$workflowItem->hasBindEntity($bindEntity)) {
             $workflowItem->addBindEntity($bindEntity);
@@ -80,28 +78,5 @@ class EntityBinder
         }
 
         return false;
-    }
-
-    /**
-     * Get values of entity identifiers
-     *
-     * @param $entity
-     * @return array
-     */
-    protected function getEntityId($entity)
-    {
-        $entityClass = get_class($entity);
-        $entityManager = $this->doctrineRegistry->getManagerForClass($entityClass);
-        $classMetadata = $entityManager->getClassMetadata($entityClass);
-        return $classMetadata->getIdentifierValues($entity);
-    }
-
-    /**
-     * @param object $entity
-     * @return string
-     */
-    protected function getEntityClass($entity)
-    {
-        return ClassUtils::getRealClass(get_class($entity));
     }
 }

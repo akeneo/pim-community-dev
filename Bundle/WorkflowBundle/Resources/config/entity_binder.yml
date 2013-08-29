@@ -7,7 +7,7 @@ services:
         class: %oro_workflow.entity_binder.class%
         arguments:
             - @oro_workflow.registry
-            - @doctrine
+            - @oro_workflow.metadata_manager
 
     oro_workflow.entity_binder.doctrine_subscriber:
         class: %oro_workflow.entity_binder.doctrine_subscriber.class%

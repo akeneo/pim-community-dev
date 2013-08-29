@@ -219,6 +219,6 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function createWorkflow()
     {
-        return $this->container->get('oro_workflow.workflow_prototype');
+        return $this->container->get('oro_workflow.prototype.workflow');
     }
 }

@@ -4,6 +4,9 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Serializer\Normalizer;
 
 use Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
+use Oro\Bundle\WorkflowBundle\Model\StepManager;
+use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +41,11 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer'
         );
         $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
-        $this->workflow = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Workflow');
+        $this->workflow = $this->getMock(
+            'Oro\Bundle\WorkflowBundle\Model\Workflow',
+            array(),
+            array(new StepManager(), new AttributeManager(), new TransitionManager())
+        );
         $this->attribute = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Attribute');
         $this->normalizer = new WorkflowDataNormalizer();
     }

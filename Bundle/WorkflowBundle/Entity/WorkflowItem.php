@@ -229,8 +229,8 @@ class WorkflowItem
     public function addBindEntity(WorkflowBindEntity $entity)
     {
         if (!$this->hasBindEntity($entity)) {
-            $this->getBindEntities()->add($entity);
             $entity->setWorkflowItem($this);
+            $this->getBindEntities()->add($entity);
         }
 
         return $this;

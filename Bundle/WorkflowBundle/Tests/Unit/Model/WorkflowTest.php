@@ -5,6 +5,12 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\Step;
+use Oro\Bundle\WorkflowBundle\Model\Transition;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
+use Oro\Bundle\WorkflowBundle\Model\StepManager;
+use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -550,6 +556,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $step->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));
+
         return $step;
     }
 
@@ -571,15 +578,55 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
                 ->method('getStepTo')
                 ->will($this->returnValue($this->getStepMock($step)));
         }
+
         return $transition;
     }
 
+    public function testGetAllowedTransitions()
+    {
+        $firstTransition = new Transition();
+        $firstTransition->setName('first_transition');
+
+        $secondTransition = new Transition();
+        $secondTransition->setName('second_transition');
+
+        $step = new Step();
+        $step->setName('test_step');
+        $step->setAllowedTransitions(array($secondTransition->getName()));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setSteps(array($step));
+        $workflow->setTransitions(array($firstTransition, $secondTransition));
+
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setCurrentStepName($step->getName());
+
+        $actualTransitions = $workflow->getAllowedTransitions($workflowItem);
+        $this->assertEquals(array($secondTransition), $actualTransitions->getValues());
+    }
+
     /**
-     * @param array $data
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownStepException
+     * @expectedExceptionMessage Step "unknown_step" not found
+     */
+    public function testGetAllowedTransitionsUnknownStepException()
+    {
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setCurrentStepName('unknown_step');
+
+        $workflow = $this->createWorkflow();
+        $workflow->getAllowedTransitions($workflowItem);
+    }
+
+    /**
      * @return Workflow
      */
-    protected function createWorkflow(array $data = array())
+    protected function createWorkflow()
     {
-        return new Workflow($data);
+        return new Workflow(
+            new StepManager(),
+            new AttributeManager(),
+            new TransitionManager()
+        );
     }
 }

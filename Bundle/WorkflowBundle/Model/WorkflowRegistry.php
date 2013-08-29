@@ -29,8 +29,10 @@ class WorkflowRegistry
      * @param ManagerRegistry $managerRegistry
      * @param WorkflowAssembler $workflowAssembler
      */
-    public function __construct(ManagerRegistry $managerRegistry, WorkflowAssembler $workflowAssembler)
-    {
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        WorkflowAssembler $workflowAssembler
+    ) {
         $this->managerRegistry = $managerRegistry;
         $this->workflowAssembler = $workflowAssembler;
     }
@@ -71,15 +73,15 @@ class WorkflowRegistry
     }
 
     /**
-     * Get list of Workflows that are applicable to entity
+     * Get list of Workflows that are applicable to entity class
      *
-     * @param object $entity
+     * @param string $entityClass
      * @return Workflow[]
      */
-    public function getWorkflowsByEntity($entity)
+    public function getWorkflowsByEntityClass($entityClass)
     {
         $result = array();
-        $workflowDefinitions = $this->getWorkflowDefinitionRepository()->findWorkflowDefinitionsByEntity($entity);
+        $workflowDefinitions = $this->getWorkflowDefinitionRepository()->findByEntityClass($entityClass);
 
         foreach ($workflowDefinitions as $workflowDefinition) {
             $result[$workflowDefinition->getName()] = $this->getAssembledWorkflow($workflowDefinition);

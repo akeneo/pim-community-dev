@@ -19,7 +19,7 @@ class WorkflowRegistryTest extends \PHPUnit_Framework_TestCase
         $workflowDefinitionRepository
             = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('find', 'findWorkflowDefinitionsByEntity'))
+            ->setMethods(array('find', 'findByEntityClass'))
             ->getMock();
 
         return $workflowDefinitionRepository;
@@ -112,9 +112,9 @@ class WorkflowRegistryTest extends \PHPUnit_Framework_TestCase
         $workflowRegistry->getWorkflow($workflowName);
     }
 
-    public function testGetWorkflowsByEntity()
+    public function testGetWorkflowsByEntityClass()
     {
-        $entity = new \DateTime('now');
+        $entityClass = '\stdClass';
         $workflowName = 'test_workflow';
         $workflowDefinition = new WorkflowDefinition();
         $workflowDefinition->setName($workflowName);
@@ -125,15 +125,15 @@ class WorkflowRegistryTest extends \PHPUnit_Framework_TestCase
 
         $workflowDefinitionRepository = $this->createWorkflowDefinitionRepositoryMock();
         $workflowDefinitionRepository->expects($this->once())
-            ->method('findWorkflowDefinitionsByEntity')
-            ->with($entity)
+            ->method('findByEntityClass')
+            ->with($entityClass)
             ->will($this->returnValue(array($workflowDefinition)));
         $managerRegistry = $this->createManagerRegistryMock($workflowDefinitionRepository);
         $workflowAssembler = $this->createWorkflowAssemblerMock($workflowDefinition, $workflow);
 
         $workflowRegistry = new WorkflowRegistry($managerRegistry, $workflowAssembler);
         $expectedWorkflows = array($workflowName => $workflow);
-        $actualWorkflows = $workflowRegistry->getWorkflowsByEntity($entity);
+        $actualWorkflows = $workflowRegistry->getWorkflowsByEntityClass($entityClass);
         $this->assertEquals($expectedWorkflows, $actualWorkflows);
     }
 }

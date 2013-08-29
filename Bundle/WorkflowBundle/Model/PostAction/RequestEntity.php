@@ -39,7 +39,7 @@ class RequestEntity extends AbstractPostAction
      */
     public function execute($context)
     {
-        $entity = $this->requestEntityProxy($context);
+        $entity = $this->getEntityReference($context);
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);
     }
 
@@ -75,7 +75,7 @@ class RequestEntity extends AbstractPostAction
      * @return object
      * @throws \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
      */
-    protected function requestEntityProxy($context)
+    protected function getEntityReference($context)
     {
         $entityClassName = $this->getEntityClassName();
         $entityIdentifier = $this->getEntityIdentifier($context);

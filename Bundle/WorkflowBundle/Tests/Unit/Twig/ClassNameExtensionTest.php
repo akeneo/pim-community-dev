@@ -8,19 +8,32 @@ use Oro\Bundle\WorkflowBundle\Tests\Unit\Twig\Stub\__CG__\EntityProxy;
 
 class ClassNameExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    const TEST_CLASS = '\stdClass';
+
     /**
      * @var ClassNameExtension
      */
     protected $twigExtension;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $metadataManager;
+
     protected function setUp()
     {
-        $this->twigExtension = new ClassNameExtension();
+        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getEntityClass'))
+            ->getMock();
+
+        $this->twigExtension = new ClassNameExtension($this->metadataManager);
     }
 
     protected function tearDown()
     {
         unset($this->twigExtension);
+        unset($this->metadataManager);
     }
 
     public function testGetFunctions()
@@ -42,6 +55,16 @@ class ClassNameExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClassName($expectedClass, $object)
     {
+        if (is_object($object)) {
+            $this->metadataManager->expects($this->once())
+                ->method('getEntityClass')
+                ->with($object)
+                ->will($this->returnValue(self::TEST_CLASS));
+        } else {
+            $this->metadataManager->expects($this->never())
+                ->method('getEntityClass');
+        }
+
         $this->assertEquals($expectedClass, $this->twigExtension->getClassName($object));
     }
 
@@ -52,17 +75,9 @@ class ClassNameExtensionTest extends \PHPUnit_Framework_TestCase
                 'expectedClass' => null,
                 'object'        => 'string',
             ),
-            'simple object' => array(
-                'expectedClass' => 'DateTime',
-                'object'        => new \DateTime,
-            ),
-            'entity' => array(
-                'expectedClass' => 'Oro\Bundle\WorkflowBundle\Tests\Unit\Twig\Stub\Entity',
-                'object'        => new Entity(),
-            ),
-            'entity proxy' => array(
-                'expectedClass' => 'EntityProxy',
-                'object'        => new EntityProxy(),
+            'object' => array(
+                'expectedClass' => self::TEST_CLASS,
+                'object'        => new \stdClass(),
             ),
         );
     }

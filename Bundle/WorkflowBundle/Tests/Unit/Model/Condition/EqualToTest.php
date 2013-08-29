@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,23 +9,14 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 use Oro\Bundle\WorkflowBundle\Model\Condition;
+use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
 
 class EqualToTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataManager|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $registry;
-
-    /**
-     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $entityManager;
-
-    /**
-     * @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $classMetadata;
+    protected $metadataManager;
 
     /**
      * @var Condition\EqualTo
@@ -35,8 +25,8 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->condition = new Condition\EqualTo($this->registry, new ContextAccessor());
+        $this->metadataManager = $this->getMockMetadataManager();
+        $this->condition = new Condition\EqualTo(new ContextAccessor(), $this->metadataManager);
     }
 
     /**
@@ -60,12 +50,14 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockRegistry()
+    protected function getMockMetadataManager()
     {
-        if (!$this->registry) {
-            $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        if (!$this->metadataManager) {
+            $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+                ->disableOriginalConstructor()
+                ->getMock();
         }
-        return $this->registry;
+        return $this->metadataManager;
     }
 
     /**
@@ -80,39 +72,40 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
             'scalars_equal' => array(
                 'options' => $options,
                 'context' => array('foo' => 'value', 'bar' => 'value'),
-                'expectedCalls' => array('registry' => array()),
+                'expectedCalls' => array('metadataManager' => array()),
                 'expectedResult' => true
             ),
             'scalars_not_equal' => array(
                 'options' => $options,
                 'context' => array('foo' => 'fooValue', 'bar' => 'barValue'),
-                'expectedCalls' => array('registry' => array()),
+                'expectedCalls' => array('metadataManager' => array()),
                 'expectedResult' => false
             ),
-            'objects_not_equal' => array(
+            'objects_equal' => array(
                 'options' => $options,
                 'context' => array(
                     'foo' => $left = $this->createMockObject(),
                     'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), null),
-                        array('getManagerForClass', array(get_class($right)), null),
+                    'metadataManager' => array(
+                        array('getEntityClass', array($left), '\stdClass'),
+                        array('getEntityClass', array($right), '\stdClass'),
                     ),
                 ),
                 'expectedResult' => true
             ),
-            'objects_equal' => array(
+            'objects_not_equal' => array(
                 'options' => $options,
                 'context' => array(
-                    'foo' => $this->createMockObject(array('foo' => 'bar')),
-                    'bar' => $this->createMockObject(array('foo' => 'baz')),
+                    'foo' => $left = $this->createMockObject(array('foo' => 'bar')),
+                    'bar' => $right = $this->createMockObject(array('foo' => 'baz')),
                 ),
                 'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), null),
-                        array('getManagerForClass', array(get_class($right)), null),
+                    'metadataManager' => array(
+                        array('getEntityClass', array($left), '\stdClass'),
+                        array('getEntityClass', array($right), '\stdClass'),
+                        array('isManageableEntity', array($left), false),
                     ),
                 ),
                 'expectedResult' => false
@@ -124,57 +117,32 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), array('self', 'getMockEntityManager')),
-                        array('getManagerForClass', array(get_class($right)), null),
+                    'metadataManager' => array(
+                        array('getEntityClass', array($left), '\stdClass'),
+                        array('getEntityClass', array($right), '\stdClass'),
+                        array('isManageableEntity', array($left), true),
+                        array('isManageableEntity', array($right), false),
                     ),
-                    'entityManager' => array()
                 ),
                 'expectedResult' => false
             ),
             'entities_equal' => array(
                 'options' => $options,
                 'context' => array(
-                    'foo' => $left = $this->createMockObject(), 'bar' => $right = $this->createMockObject(),
+                    'foo' => $left = $this->createMockObject(),
+                    'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), array('self', 'getMockEntityManager')),
-                        array('getManagerForClass', array(get_class($right)), array('self', 'getMockEntityManager')),
-                    ),
-                    'entityManager' => array(
-                        array('getClassMetadata', array(get_class($left)), array('self', 'getMockClassMetadata')),
-                        array('getClassMetadata', array(get_class($right)), array('self', 'getMockClassMetadata')),
-                    ),
-                    'classMetadata' => array(
-                        array('getName', array(), 'FooEntityClass'),
-                        array('getName', array(), 'FooEntityClass'),
-                        array('getIdentifierValues', array($left), array(100)),
-                        array('getIdentifierValues', array($right), array(100)),
+                    'metadataManager' => array(
+                        array('getEntityClass', array($left), '\stdClass'),
+                        array('getEntityClass', array($right), '\stdClass'),
+                        array('isManageableEntity', array($left), true),
+                        array('isManageableEntity', array($right), true),
+                        array('getEntityIdentifier', array($left), array('id' => 1)),
+                        array('getEntityIdentifier', array($right), array('id' => 1)),
                     ),
                 ),
                 'expectedResult' => true
-            ),
-            'entities_not_equal_metadata' => array(
-                'options' => $options,
-                'context' => array(
-                    'foo' => $left = $this->createMockObject(), 'bar' => $right = $this->createMockObject(),
-                ),
-                'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), array('self', 'getMockEntityManager')),
-                        array('getManagerForClass', array(get_class($right)), array('self', 'getMockEntityManager')),
-                    ),
-                    'entityManager' => array(
-                        array('getClassMetadata', array(get_class($left)), array('self', 'getMockClassMetadata')),
-                        array('getClassMetadata', array(get_class($right)), array('self', 'getMockClassMetadata')),
-                    ),
-                    'classMetadata' => array(
-                        array('getName', array(), 'FooEntityClass'),
-                        array('getName', array(), 'BarEntityClass')
-                    ),
-                ),
-                'expectedResult' => false
             ),
             'entities_not_equal_identifiers' => array(
                 'options' => $options,
@@ -182,23 +150,18 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'foo' => $left = $this->createMockObject(), 'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'registry' => array(
-                        array('getManagerForClass', array(get_class($left)), array('self', 'getMockEntityManager')),
-                        array('getManagerForClass', array(get_class($right)), array('self', 'getMockEntityManager')),
-                    ),
-                    'entityManager' => array(
-                        array('getClassMetadata', array(get_class($left)), array('self', 'getMockClassMetadata')),
-                        array('getClassMetadata', array(get_class($right)), array('self', 'getMockClassMetadata')),
-                    ),
-                    'classMetadata' => array(
-                        array('getName', array(), 'FooEntityClass'),
-                        array('getName', array(), 'FooEntityClass'),
-                        array('getIdentifierValues', array($left), array(100)),
-                        array('getIdentifierValues', array($right), array(200)),
+                    'metadataManager' => array(
+                        array('getEntityClass', array($left), '\stdClass'),
+                        array('getEntityClass', array($right), '\stdClass'),
+                        array('isManageableEntity', array($left), true),
+                        array('isManageableEntity', array($right), true),
+                        array('getEntityIdentifier', array($left), array('id' => 1)),
+                        array('getEntityIdentifier', array($right), array('id' => 2)),
                     ),
                 ),
                 'expectedResult' => false
             ),
+
         );
     }
 
@@ -228,36 +191,6 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
         } else {
             $mock->expects($this->never())->method($this->anything());
         }
-    }
-
-    /**
-     * @return ObjectManager|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function getMockEntityManager()
-    {
-        if (!$this->entityManager) {
-            $this->entityManager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getClassMetadata'))
-                ->getMockForAbstractClass();
-        }
-
-        return $this->entityManager;
-    }
-
-    /**
-     * @return ClassMetadata|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function getMockClassMetadata()
-    {
-        if (!$this->classMetadata) {
-            $this->classMetadata = $this->getMockBuilder('Doctrine\Common\Persistence\Mapping\ClassMetadata')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getSingleIdentifierFieldName'))
-                ->getMockForAbstractClass();
-        }
-
-        return $this->classMetadata;
     }
 
     /**
