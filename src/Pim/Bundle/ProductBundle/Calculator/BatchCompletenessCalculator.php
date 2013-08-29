@@ -81,9 +81,9 @@ class BatchCompletenessCalculator
     /**
      * Launch calculator for specific channels, locales and products
      * Then automatically remove concerned pendings
-     * @param array $products
-     * @param array $channels
-     * @param array $locales
+     * @param ProductInterface[] $products
+     * @param Channel[]          $channels
+     * @param Locale[]           $locales
      */
     protected function calculate(array $products, array $channels = array(), array $locales = array())
     {
@@ -96,7 +96,7 @@ class BatchCompletenessCalculator
     /**
      * Save products with cascading persist on completeness entities linked
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\Product[] $products
+     * @param ProductInterface[] $products
      */
     protected function saveCompletenesses(array $products)
     {
