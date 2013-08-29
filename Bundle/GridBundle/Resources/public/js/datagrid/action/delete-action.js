@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/app', 'oro/translator', 'oro/bootstrap-modal', 'oro/datagrid/model-action'],
-function(_, app, __, BootstrapModal, ModelAction) {
+define(['underscore', 'oro/app', 'oro/translator', 'oro/modal', 'oro/datagrid/model-action'],
+function(_, app, __, Modal, ModelAction) {
     'use strict';
 
     /**
@@ -12,10 +12,10 @@ function(_, app, __, BootstrapModal, ModelAction) {
      */
     return ModelAction.extend({
 
-        /** @property Backbone.BootstrapModal */
+        /** @type oro.Modal */
         errorModal: undefined,
 
-        /** @property Backbone.BootstrapModal */
+        /** @type oro.Modal */
         confirmModal: undefined,
 
         /**
@@ -46,11 +46,11 @@ function(_, app, __, BootstrapModal, ModelAction) {
         /**
          * Get view for confirm modal
          *
-         * @return {oro.BootstrapModal}
+         * @return {oro.Modal}
          */
         getConfirmDialog: function() {
             if (!this.confirmModal) {
-                this.confirmModal = new BootstrapModal({
+                this.confirmModal = new Modal({
                     title: __('Delete Confirmation'),
                     content: __('Are you sure you want to delete this item?'),
                     okText: __('Yes, Delete')
@@ -63,11 +63,11 @@ function(_, app, __, BootstrapModal, ModelAction) {
         /**
          * Get view for error modal
          *
-         * @return {oro.BootstrapModal}
+         * @return {oro.Modal}
          */
         getErrorDialog: function() {
             if (!this.errorModal) {
-                this.errorModal = new BootstrapModal({
+                this.errorModal = new Modal({
                     title: __('Delete Error'),
                     content: __('Cannot delete item.'),
                     cancelText: false

@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/app', 'oro/translator', 'oro/bootstrap-modal', 'oro/datagrid/abstract-action'],
-function(_, app, __, BootstrapModal, AbstractAction) {
+define(['underscore', 'oro/app', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
+function(_, app, __, Modal, AbstractAction) {
     'use strict';
 
     /**
@@ -69,10 +69,10 @@ function(_, app, __, BootstrapModal, AbstractAction) {
         /**
          * Get view for confirm modal
          *
-         * @return {oro.BootstrapModal}
+         * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new BootstrapModal({
+            return new Modal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok

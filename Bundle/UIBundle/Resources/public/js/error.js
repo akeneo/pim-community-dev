@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'routing', 'oro/app', 'oro/bootstrap-modal'],
-function(_, routing, app, BootstrapModal) {
+define(['underscore', 'backbone', 'routing', 'oro/app', 'oro/modal'],
+function(_, Backbone, routing, app, Modal) {
     'use strict';
 
     var defaults = {
@@ -47,7 +47,7 @@ function(_, routing, app, BootstrapModal) {
                 message += '<br><b>Debug:</b>' + xhr.responseText;
             }
 
-            modal = new BootstrapModal({
+            modal = new Modal({
                 title: options.header,
                 content: message,
                 cancelText: false

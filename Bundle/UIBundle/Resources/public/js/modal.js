@@ -7,8 +7,8 @@ function(_, BootstrapModal, __) {
      * Implementation of Bootstrap Modal
      * Oro extension of Bootstrap Modal wrapper for use with Backbone.
      *
-     * @export  oro.bootstrap-modal
-     * @class   oro.BootstrapModal
+     * @export  oro/modal
+     * @class   oro.Modal
      * @extends Backbone.BootstrapModal
      */
     return BootstrapModal.extend({

@@ -1,10 +1,10 @@
 /* jshint browser:true, devel:true */
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
-    'oro/bootstrap-modal', 'oro/loading-mask', 'oro/navigations/pagestate/view', 'oro/navigations/pagestate/model',
+    'oro/modal', 'oro/loading-mask', 'oro/navigations/pagestate/view', 'oro/navigations/pagestate/model',
     'oro/pageable-collection'],
 function($, _, Backbone, __, app, mediator, messenger, registry,
-         BootstrapModal, LoadingMask, PagestateView, PagestateModel,
+         Modal, LoadingMask, PagestateView, PagestateModel,
          PageableCollection) {
     'use strict';
 
@@ -684,7 +684,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 this
             );
 
-            this.confirmModal = new BootstrapModal({
+            this.confirmModal = new Modal({
                 title: __('Refresh Confirmation'),
                 content: __('Your local changes will be lost. Are you sure you want to refresh the page?'),
                 okText: __('Ok, got it.'),

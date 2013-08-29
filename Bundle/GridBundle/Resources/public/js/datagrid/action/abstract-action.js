@@ -1,7 +1,7 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'oro/app', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/widget-manager', 'oro/bootstrap-modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, app, __, mediator, messenger, error, widgetManager, BootstrapModal, ActionLauncher) {
+    'oro/messenger', 'oro/error', 'oro/widget-manager', 'oro/modal', 'oro/datagrid/action-launcher'],
+function($, _, Backbone, routing, app, __, mediator, messenger, error, widgetManager, Modal, ActionLauncher) {
     'use strict';
 
     /**
@@ -247,10 +247,10 @@ function($, _, Backbone, routing, app, __, mediator, messenger, error, widgetMan
         /**
          * Get view for confirm modal
          *
-         * @return {BootstrapModal}
+         * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new BootstrapModal({
+            return new Modal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok

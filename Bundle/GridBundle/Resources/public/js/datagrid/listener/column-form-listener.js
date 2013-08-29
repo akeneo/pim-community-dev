@@ -1,7 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/bootstrap-modal',
-    'oro/datagrid/abstract-listener'],
-function($, _, __, mediator, BootstrapModal, AbstractListener) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
+function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
 
     /**
@@ -236,7 +235,7 @@ function($, _, __, mediator, BootstrapModal, AbstractListener) {
         _openConfirmDialog: function(type, options, callback) {
             this.confirmModal = this.confirmModal || {};
             if (!this.confirmModal[type]) {
-                this.confirmModal[type] = new BootstrapModal(_.extend({
+                this.confirmModal[type] = new Modal(_.extend({
                     title: __('Confirmation'),
                     okText: __('Ok, got it.'),
                     className: 'modal modal-primary',
