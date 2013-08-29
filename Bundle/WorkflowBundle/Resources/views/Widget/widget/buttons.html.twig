@@ -1,6 +1,8 @@
 {% macro renderTransition(workflow, transition, url) %}
-    <a href="{{ url }}" class="btn icons-holder-text no-hash" id="transition-{{ workflow.name }}-{{ transition.name }}">
-        {% if transition.options.frontend is defined and transition.options.frontend.icon %}
+    <a href="{{ url }}"
+       class="btn icons-holder-text no-hash {% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
+       id="transition-{{ workflow.name }}-{{ transition.name }}">
+        {% if transition.options.frontend is defined and transition.options.frontend.icon is defined %}
             <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label }}</i>
         {% endif %}
         {{ transition.label }}
