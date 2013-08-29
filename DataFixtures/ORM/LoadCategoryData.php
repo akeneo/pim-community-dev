@@ -92,8 +92,6 @@ class LoadCategoryData extends AbstractDemoFixture
         $this->translate($nodeJeansEu, $locale, 'Jeans');
         $this->translate($nodeShoesEu, $locale, 'Shoes');
 
-        $this->manager->flush();
-
         // translate data in fr_FR
         $locale = $this->getReference('locale.fr_FR');
         $this->translate($treeCatalog, $locale, 'Catalogue Principal');

@@ -8,7 +8,18 @@
             - 'short_description'
             - 'manufacturer'
             - 'color'
+            - 'release_date'
+            - 'price'
         'attributeAsLabel': 'name'
+        'requirements':
+            'ecommerce':
+                - 'name'
+                - 'short_description'
+                - 'color'
+                - 'price'
+            'mobile':
+                - 'name'
+                - 'color'
     'shirt':
         'labels':
             'en_US': 'Shirt'
@@ -18,7 +29,19 @@
             - 'short_description'
             - 'size'
             - 'color'
+            - 'price'
         'attributeAsLabel': 'name'
+        'requirements':
+            'ecommerce':
+                - 'name'
+                - 'short_description'
+                - 'color'
+                - 'size'
+                - 'price'
+            'mobile':
+                - 'name'
+                - 'color'
+                - 'size'
     'shoe':
         'labels':
             'en_US': 'Shoe'
@@ -30,4 +53,18 @@
             - 'size'
             - 'color'
             - 'image_upload'
+            - 'price'
         'attributeAsLabel': 'name'
+        'requirements':
+            'ecommerce':
+                - 'name'
+                - 'short_description'
+                - 'long_description'
+                - 'color'
+                - 'size'
+                - 'price'
+            'mobile':
+                - 'name'
+                - 'short_description'
+                - 'color'
+                - 'size'
