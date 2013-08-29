@@ -99,9 +99,17 @@ services:
 
     # Product completeness calculator
     pim_product.calculator.completeness:
-      class: %pim_product.calculator.completeness.class%
-      arguments:
-          - @pim_product.manager.channel
-          - @pim_product.manager.locale
-          - @doctrine.orm.entity_manager
-          - @validator
+        class: %pim_product.calculator.completeness.class%
+        arguments:
+            - @pim_product.manager.channel
+            - @pim_product.manager.locale
+            - @doctrine.orm.entity_manager
+            - @validator
+
+    # Batch completeness calculator
+    pim_product.calculator.batch_completeness:
+        class: %pim_product.calculator.batch_completeness.class%
+        arguments:
+            - @pim_product.calculator.completeness
+            - @pim_product.manager.product
+            - @doctrine.orm.entity_manager
