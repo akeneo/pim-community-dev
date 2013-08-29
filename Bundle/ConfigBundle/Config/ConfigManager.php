@@ -4,8 +4,6 @@ namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\ConfigBundle\Entity\Config;
-
 class ConfigManager
 {
     /**

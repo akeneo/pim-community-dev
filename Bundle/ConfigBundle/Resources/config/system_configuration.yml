@@ -1,5 +1,5 @@
 oro_system_configuration:
-    scopes:
+    levels:
        - global
        # here we wil define only not default scopes(not bundle/application)
        # also if scope already defined exception will not be thrown this will avoid bundle dependence
@@ -8,14 +8,14 @@ oro_system_configuration:
        platform:
             # it's horizontal tab definition
             # also if tab already defined exception will not be thrown this will avoid bundle dependence
-            label: 'Platform'
+            label: 'Platform' # label is required
             icon:  icon-hdd
 
     vtabs:
        # it's vertical tab definition
        # also if tab already defined exception will not be thrown this will avoid bundle dependence
        locale_settings:
-            label: 'Locale'
+            label: 'Locale' # label is required
             icon:  icon-time
 
     fieldsets:
@@ -32,8 +32,7 @@ oro_system_configuration:
                label: 'Date format'
                # here we can override any default option of the given form type
                # also here can be added field tooltips
-            scopes: [ global ]
-            config_field: 'oro_user.config.locale.date_format'
+            levels: [ global ]
 
     tree:
         platform:
@@ -41,38 +40,38 @@ oro_system_configuration:
                 locale_options:
                     - date_format
 
-
-# Custom bundle config example
-oro_system_configuration:
-# we can copy/paste all tabs/fieldset definitions here or add dependency on bundle that creates items used in custom bundle
-
-    fields:
-        name_format:
-            type: choices
-            options:
-               label: 'Name format'
-            scopes: [ global ]
-            config_field: 'oro_user.config.locale.name_format'
-
-    tree:
-        platform:
-            locale_settings:
-                locale_options:
-                    - name_format
-
-oro_system_configuration:
-    scopes:
-      - user
-
-    fields:
-        asdasd:
-            type: dasd
-            scopes: [user]
-        name_format:
-            scopes: [global, user]
-
-    tree:
-        platform:
-            locale_settings:
-                locale_options:
-                    - asdasd
+#
+## Custom bundle config example
+#oro_system_configuration:
+## we can copy/paste all tabs/fieldset definitions here or add dependency on bundle that creates items used in custom bundle
+#
+#    fields:
+#        name_format:
+#            type: choices
+#            options:
+#               label: 'Name format'
+#            levels: [ global ]
+#            config_field: 'oro_user.config.locale.name_format'
+#
+#    tree:
+#        platform:
+#            locale_settings:
+#                locale_options:
+#                    - name_format
+#
+#oro_system_configuration:
+#    scopes:
+#      - user
+#
+#    fields:
+#        asdasd:
+#            type: dasd
+#            scopes: [user]
+#        name_format:
+#            levels: [global, user]
+#
+#    tree:
+#        platform:
+#            locale_settings:
+#                locale_options:
+#                    - asdasd
