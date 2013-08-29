@@ -1,0 +1,12 @@
+parameters:
+    oro_entity.orm.entity_class_resolver.class:                Oro\Bundle\EntityBundle\ORM\EntityClassResolver
+    oro_entity.orm.entity_class_accessor.class:                Oro\Bundle\EntityBundle\ORM\EntityClassAccessor
+
+services:
+    oro_entity.orm.entity_class_resolver:
+        class: %oro_entity.orm.entity_class_resolver.class%
+        arguments:
+            - @doctrine
+
+    oro_entity.orm.entity_class_accessor:
+        class: %oro_entity.orm.entity_class_accessor.class%
