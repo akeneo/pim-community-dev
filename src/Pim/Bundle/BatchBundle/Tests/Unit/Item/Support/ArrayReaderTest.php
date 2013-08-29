@@ -25,17 +25,19 @@ class ArrayReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testReadNull()
     {
-        $this->assertNull($this->arrayReader->read());
+        $stepExecution = $this->getStepExecutionMock();
+        $this->assertNull($this->arrayReader->read($stepExecution));
     }
 
     public function testRead()
     {
+        $stepExecution = $this->getStepExecutionMock();
         $items = array('item1', 'item2', 'item3');
         $this->assertEntity($this->arrayReader->setItems($items));
 
         $readItems = array();
 
-        while (($item = $this->arrayReader->read())) {
+        while (($item = $this->arrayReader->read($stepExecution))) {
             $readItems[] = $item;
         }
 
@@ -50,5 +52,13 @@ class ArrayReaderTest extends \PHPUnit_Framework_TestCase
     protected function assertEntity($entity)
     {
         $this->assertInstanceOf('Pim\Bundle\BatchBundle\Item\Support\ArrayReader', $entity);
+    }
+
+    private function getStepExecutionMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

@@ -25,4 +25,5 @@ interface EventInterface
     const STEP_EXECUTION_INTERRUPTED = 'pim_batch.step_execution_interrupted';
     const STEP_EXECUTION_ERRORED     = 'pim_batch.step_execution_errored';
     const STEP_EXECUTION_COMPLETED   = 'pim_batch.step_execution_completed';
+    const INVALID_READER_EXECUTION   = 'pim_batch.invalid_reader_execution';
 }
