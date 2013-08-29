@@ -62,8 +62,7 @@ services:
     pim_batch.logger.batch_log_handler:
         class: %pim_batch.logger.batch_log_handler.class%
         arguments:
-            - %kernel.root_dir%
-            - %pim_batch.log_dir%
+            - %kernel.logs_dir%/batch
 
     pim_batch.set_job_execution_log_file_subscriber:
         class: %pim_batch.set_job_execution_log_file_subscriber.class%

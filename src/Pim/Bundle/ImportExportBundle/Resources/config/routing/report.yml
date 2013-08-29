@@ -15,3 +15,9 @@ pim_importexport_report_import:
     defaults: { _controller: PimImportExportBundle:Report:import, _format: html }
     requirements:
         _format: html|json
+
+pim_importexport_report_download:
+    path: extract/report/{id}/download
+    defaults: { _controller: PimImportExportBundle:Report:downloadLogFile }
+    requirements:
+        id: \d+
