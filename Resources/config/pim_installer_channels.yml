@@ -5,9 +5,14 @@ channels:
         'locales':
             - 'en_US'
             - 'fr_FR'
+        'currencies':
+            - 'EUR'
+            - 'USD'
     'mobile':
         'code':  'mobile'
         'label': 'Mobile'
         'locales':
             - 'en_US'
             - 'fr_FR'
+        'currencies':
+            - 'EUR'
