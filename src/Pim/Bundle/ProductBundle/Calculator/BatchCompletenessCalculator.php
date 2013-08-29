@@ -196,6 +196,5 @@ class BatchCompletenessCalculator
         }
 
         $this->entityManager->flush();
-//         $this->entityManager->clear();
     }
 }
