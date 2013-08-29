@@ -246,9 +246,9 @@ class StepExecution
     public function addReaderWarning(ItemReaderInterface $reader, $message, $data)
     {
         $this->readerWarnings[] = array(
-            'reader'  => $reader,
-            'message' => $message,
-            'data'    => $data,
+            'reader' => $reader,
+            'reason' => $message,
+            'data'   => $data,
         );
     }
 
@@ -260,6 +260,16 @@ class StepExecution
     public function getReaderWarnings()
     {
         return $this->readerWarnings;
+    }
+
+    /**
+     * Get the last reader warning
+     *
+     * @return array
+     */
+    public function getLastReaderWarning()
+    {
+        return end($this->readerWarnings);
     }
 
     /**

@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Subscriber to log job execution result
@@ -18,6 +19,8 @@ use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
 class LoggerSubscriber implements EventSubscriberInterface
 {
     protected $logger;
+
+    private $readerWarningCount = 0;
 
     public function __construct(LoggerInterface $logger)
     {
@@ -37,6 +40,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
             EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
             EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
+            EventInterface::INVALID_READER_EXECUTION   => 'invalidReaderExecution',
         );
     }
 
@@ -117,5 +121,49 @@ class LoggerSubscriber implements EventSubscriberInterface
         $stepExecution = $event->getStepExecution();
 
         $this->logger->debug(sprintf('Step execution complete: %s', $stepExecution));
+    }
+
+    public function invalidReaderExecution(StepExecutionEvent $event)
+    {
+        $stepExecution  = $event->getStepExecution();
+        $readerWarnings = $stepExecution->getReaderWarnings();
+
+        if (count($readerWarnings) <= $this->readerWarningCount) {
+            return;
+        }
+
+        $lastWarning = end($readerWarnings);
+        $this->readerWarningCount++;
+
+        $this->logger->warning(
+            sprintf(
+                'The %s was unable to handle the following data: %s (REASON: %s).',
+                get_class($lastWarning['reader']),
+                $this->formatAsString($lastWarning['data']),
+                $lastWarning['reason']
+            )
+        );
+    }
+
+    private function formatAsString($data)
+    {
+        if (is_array($data)) {
+            $result = array();
+            foreach ($data as $key => $value) {
+                $result[] = sprintf(
+                    '%s => %s',
+                    $this->formatAsString($key),
+                    $this->formatAsString($value)
+                );
+            }
+
+            return sprintf("[%s]", join(', ', $result));
+        }
+
+        if (is_bool($data)) {
+            return $data ? 'true' : 'false';
+        }
+
+        return (string) $data;
     }
 }

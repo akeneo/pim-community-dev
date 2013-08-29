@@ -172,13 +172,13 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     public function testAddReaderWarning()
     {
         $reader = $this->getMock('Pim\Bundle\BatchBundle\Item\ItemReaderInterface');
-        $message = 'something is wrong';
+        $reason = 'something is wrong';
         $data = array('foo' => 'bar');
 
-        $this->stepExecution->addReaderWarning($reader, $message, $data);
+        $this->stepExecution->addReaderWarning($reader, $reason, $data);
 
         $this->assertEquals(
-            array(array('reader' => $reader, 'message' => $message, 'data' => $data)),
+            array(array('reader' => $reader, 'reason' => $reason, 'data' => $data)),
             $this->stepExecution->getReaderWarnings()
         );
     }
