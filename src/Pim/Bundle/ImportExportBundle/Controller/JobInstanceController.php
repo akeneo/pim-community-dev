@@ -116,11 +116,13 @@ class JobInstanceController extends Controller
         }
 
         $uploadAllowed = false;
+        $form = null;
         $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
             $reader = $step->getReader();
             if ($reader instanceof UploadedFileAwareInterface) {
                 $uploadAllowed = true;
+                $form = $this->createUploadForm()->createView();
             }
         }
 
@@ -130,6 +132,7 @@ class JobInstanceController extends Controller
                 'jobInstance'   => $jobInstance,
                 'violations'    => $this->getValidator()->validate($jobInstance, array('Default', 'Execution')),
                 'uploadAllowed' => $uploadAllowed,
+                'form'          => $form,
             )
         );
     }
@@ -245,7 +248,19 @@ class JobInstanceController extends Controller
 
                     foreach ($job->getSteps() as $step) {
                         $reader = $step->getReader();
+
                         if ($reader instanceof UploadedFileAwareInterface) {
+                            $constraints = $reader->getUploadedFileConstraints();
+                            $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                            if (!empty($errors)) {
+                                foreach ($errors as $error) {
+                                    $this->addFlash('error', $error->getMessage());
+                                }
+
+                                return $this->redirectToShowView($jobInstance->getId());
+                            }
+
                             $reader->setUploadedFile($file);
                         }
                     }

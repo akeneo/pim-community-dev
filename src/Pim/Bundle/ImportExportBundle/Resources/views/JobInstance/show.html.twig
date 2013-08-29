@@ -33,14 +33,24 @@
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if violations|length == 0 %}
-            {% if uploadAllowed and uploadRoute is defined %}
-                {{ elements.link('Upload and '~title~' now', null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form': 'dialog', 'data-form-url': uploadRoute }}) }}
+            {% if uploadAllowed %}
+                {{ elements.link('Upload and '~title~' now', null, {icon: 'upload-alt', class: 'btn-primary'}) }}
             {% endif %}
             {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle, left) }}
+
+    {% if form is defined and form is not empty %}
+        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+            {{ elements.form_errors(form) }}
+            <div class="row-fluid">
+                {{ form_row(form.file) }}
+                {{ form_row(form._token) }}
+            </div>
+        </form>
+    {% endif %}
 
     {% set accordionContent = {} %}
     {% for stepTitle, stepConfig in jobInstance.job.configuration %}

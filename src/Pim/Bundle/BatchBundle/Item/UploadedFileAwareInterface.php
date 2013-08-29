@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 interface UploadedFileAwareInterface
 {
     /**
+     * Get uploaded file constraints
+     */
+    public function getUploadedFileConstraints();
+
+    /**
      * Set uploaded file
      *
      * @param UploadedFile $uploadedFile
