@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Product repository
@@ -42,13 +43,17 @@ class ProductRepository extends FlexibleEntityRepository
      *
      * @return QueryBuilder
      */
-    public function buildByScopeAndCompleteness($scope)
+    public function buildByChannelAndCompleteness(Channel $channel)
     {
+        $scope = $channel->getCode();
         $qb = $this->buildByScope($scope);
         $rootAlias = $qb->getRootAlias();
-        $qb
-            ->innerJoin($rootAlias .'.completenesses', 'pCompleteness', 'WITH', $qb->expr()->eq('pCompleteness.ratio', '100'))
-            ->innerJoin('pCompleteness.channel', 'channel', 'WITH', $qb->expr()->eq('channel.code', $qb->expr()->literal($scope)));
+        $qb->innerJoin(
+            $rootAlias .'.completenesses',
+            'pCompleteness',
+            'WITH',
+            $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.$qb->expr()->eq('pCompleteness.channel', $channel->getId())
+        );
 
         return $qb;
     }
