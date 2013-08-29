@@ -70,8 +70,6 @@ class ProductCreateHandler
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
-                $this->calculator->calculateForAProduct($entity);
-
                 $this->onSuccess($entity);
 
                 return true;
@@ -88,5 +86,10 @@ class ProductCreateHandler
     protected function onSuccess(ProductInterface $entity)
     {
         $this->manager->save($entity);
+
+        $product = $this->manager->find($entity->getId());
+        $this->calculator->calculateForAProduct($product);
+
+        $this->manager->save($product);
     }
 }

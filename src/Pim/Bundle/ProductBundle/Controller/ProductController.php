@@ -125,6 +125,7 @@ class ProductController extends Controller
             array('currentLocale' => $this->getDataLocale())
         );
 
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
