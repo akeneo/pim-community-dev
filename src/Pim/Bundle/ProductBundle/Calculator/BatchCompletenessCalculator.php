@@ -37,6 +37,11 @@ class BatchCompletenessCalculator
     protected $pendings;
 
     /**
+     * @staticvar integer
+     */
+    const MAX_BATCH_SIZE = 200;
+
+    /**
      * Constructor
      * @param CompletenessCalculator $calculator
      * @param ProductManager $productManager
@@ -98,7 +103,7 @@ class BatchCompletenessCalculator
         $batchSize = 0;
         foreach ($products as $product) {
             $this->entityManager->persist($product);
-            if ($batchSize++ === 200) {
+            if ($batchSize++ === self::MAX_BATCH_SIZE) {
                 $this->entityManager->flush();
                 $batchSize = 0;
             }
