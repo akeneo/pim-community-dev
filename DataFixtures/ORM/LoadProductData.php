@@ -227,7 +227,7 @@ class LoadProductData extends AbstractDemoFixture
             }
 
         } elseif ($attribute->getCode() === 'price') {
-            $prices = $product->getPrices();
+            $prices = $product->getPrice();
             if (empty($prices)) {
                 foreach ($currencies as $currency) {
                     $price = new ProductPrice($generator->randomFloat(2, 5, 100), $currency);
