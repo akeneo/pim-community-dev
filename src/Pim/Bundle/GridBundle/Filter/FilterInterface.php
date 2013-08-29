@@ -17,7 +17,7 @@ interface FilterInterface extends OroFilterInterface
      * Allowed filter types
      * @staticvar string
      */
-    const TYPE_CURRENCY = 'pim_grid_orm_currency';
-    const TYPE_LOCALE   = 'pim_grid_orm_locale';
-    const TYPE_SCOPE    = 'pim_grid_orm_scope';
+    const TYPE_CURRENCY     = 'pim_grid_orm_currency';
+    const TYPE_SCOPE        = 'pim_grid_orm_scope';
+    const TYPE_COMPLETENESS = 'pim_grid_orm_completeness';
 }
