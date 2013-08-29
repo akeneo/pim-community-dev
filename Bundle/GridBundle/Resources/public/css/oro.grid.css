@@ -15,13 +15,16 @@ table.grid thead th {
   margin-top:11px;
 }
 table.grid thead tr th.ascending span.caret {
+  margin-top:4px;
     display: inline-block;
-    border-top: 4px solid #000000;
+    border-top:4px solid transparent;
+    border-bottom: 4px solid #000000;
 }
 
 table.grid thead tr th.descending span.caret {
     display: inline-block;
-    border-bottom: 4px solid #000000;
+    border-bottom:4px solid transparent;
+    border-top: 4px solid #000000;
 }
 
 table.grid tbody tr.row-click-action {

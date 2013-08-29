@@ -65,6 +65,7 @@
 {% endblock stats %}
 
 {% block content_data %}
+  <div class="user-profile-cols">
     {% set attributes = {} %}
     {% for value in entity|getAttributes() %}
         {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
@@ -110,4 +111,5 @@
         }
     %}
     {{ parent() }}
+  </div>
 {% endblock content_data %}

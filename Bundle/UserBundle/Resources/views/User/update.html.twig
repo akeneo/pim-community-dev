@@ -66,6 +66,7 @@
 {% endblock stats %}
 
 {% block content_data %}
+<div class="user-profile-cols">
     {% set id = 'user-profile' %}
 
     {% set dataBlocks = [{
@@ -164,4 +165,5 @@
         }
     %}
     {{ parent() }}
+    </div>
 {% endblock content_data %}

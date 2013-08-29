@@ -102,7 +102,7 @@ var OroAddressBook = Backbone.View.extend({
                 'dialogOptions': {
                     'modal': true,
                     'resizable': false,
-                    'width': 400,
+                    'width': 475,
                     'autoResize':true,
                     'close': _.bind(function() {
                         delete this.addressEditDialog;
