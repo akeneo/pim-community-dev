@@ -152,7 +152,7 @@ class BatchCompletenessCalculator
     {
         $this->pendings = $this->getPendingCompletenessRepository()->findByNotNull('locale');
 
-        $locales = array();
+        $locales = array('locales' => array(), 'channels' => array());
         foreach ($this->pendings as $pendingLocale) {
             if (!in_array($pendingLocale->getLocale(), $locales)) {
                 $locales['locales']  = $pendingLocale->getLocale();
