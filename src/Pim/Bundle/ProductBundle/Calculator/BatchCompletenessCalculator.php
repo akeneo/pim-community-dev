@@ -95,8 +95,13 @@ class BatchCompletenessCalculator
      */
     protected function saveCompletenesses(array $products)
     {
+        $batchSize = 0;
         foreach ($products as $product) {
             $this->entityManager->persist($product);
+            if ($batchSize++ === 200) {
+                $this->entityManager->flush();
+                $batchSize = 0;
+            }
         }
 
         $this->entityManager->flush();
