@@ -4,6 +4,7 @@ namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Tests related to the ItemStep class
@@ -177,17 +178,43 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
 
-        $stepExecution->expects($this->once())
-            ->method('setReadCount')
-            ->with($this->equalTo(7));
+        $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
 
-        $stepExecution->expects($this->once())
-            ->method('setWriteCount')
-            ->with($this->equalTo(6));
+    public function testDispatchReaderWarning()
+    {
+        $reader = $this ->getMock('Pim\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader->expects($this->exactly(2))
+            ->method('read')
+            ->will($this->onConsecutiveCalls(false, null));
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                EventInterface::INVALID_READER_EXECUTION,
+                $this->isInstanceOf('Pim\Bundle\BatchBundle\Event\StepExecutionEvent')
+            );
 
-        $stepExecution->expects($this->once())
-            ->method('setFilterCount')
-            ->with($this->equalTo(1));
+        $processor = $this ->getMock('Pim\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor->expects($this->never())
+            ->method('process');
+
+        $writer = $this ->getMock('Pim\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer->expects($this->never())
+            ->method('write');
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+
+        $stepExecution = $this->getMockBuilder('Pim\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
 
         $this->itemStep->setBatchSize(5);
         $this->itemStep->execute($stepExecution);

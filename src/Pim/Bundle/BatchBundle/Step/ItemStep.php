@@ -7,6 +7,7 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -121,29 +122,27 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $readCount = 0;
-        $writeCount = 0;
         $itemsToWrite = array();
+        $writeCount = 0;
 
-        while (($item = $this->reader->read()) !== null) {
-            $readCount ++;
-            $processedItem = $this->processor->process($item);
-            if ($processedItem != null) {
+        while (($item = $this->reader->read($stepExecution)) !== null) {
+            if (false === $item) {
+                $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
+                continue;
+            }
+
+            if (null !== $processedItem = $this->processor->process($item)) {
                 $itemsToWrite[] = $processedItem;
                 $writeCount ++;
-                if (($writeCount % $this->batchSize) == 0) {
+                if (0 === ($writeCount % $this->batchSize)) {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 }
             }
         }
+
         if (count($itemsToWrite) > 0) {
             $this->writer->write($itemsToWrite);
         }
-
-        $stepExecution->setReadCount($readCount);
-        $stepExecution->setWriteCount($writeCount);
-        $stepExecution->setFilterCount($readCount - $writeCount);
-
     }
 }
