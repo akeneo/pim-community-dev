@@ -4,3 +4,5 @@ channels:
         'label':   'Default'
         'locales':
             - 'en_US'
+        'currencies':
+            - 'USD'
