@@ -37,6 +37,9 @@ class OroEntityManager extends EntityManager
         return new OroEntityManager($conn, $config, $conn->getEventManager());
     }
 
+    /**
+     * @param FilterCollection $collection
+     */
     public function setFilterCollection(FilterCollection $collection)
     {
         $this->filterCollection = $collection;

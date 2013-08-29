@@ -20,22 +20,7 @@ class DoctrineFiltersConfigurationPass implements CompilerPassInterface
             return;
         }
         $filtersDefinition = $container->getDefinition(self::FILTERS_SERVICE_KEY);
-
-        $taggedServices = $container->findTaggedServiceIds(self::TAG);
-        $filters = array();
-        $enabled = false;
-        $name = self::TAG . rand(0, 1000);
-        foreach ($taggedServices as $id => $tagAttributes) {
-            foreach ($tagAttributes as $attributes) {
-                if (!empty($attributes['enabled'])) {
-                    $enabled = (bool)$attributes['enabled'];
-                }
-                if (!empty($attributes['filter_name'])) {
-                    $name = $attributes['filter_name'];
-                }
-            }
-            $filters[] = array('id' => $id, 'enabled' => $enabled, 'filter_name' => $name);
-        }
+        $filters = $this->loadFilters($container);
         foreach ($filters as $filter) {
             $filtersDefinition->addMethodCall(
                 'addFilter',
@@ -50,5 +35,32 @@ class DoctrineFiltersConfigurationPass implements CompilerPassInterface
         }
         $em = $container->findDefinition('doctrine.orm.entity_manager');
         $em->addMethodCall('setFilterCollection', array(new Reference(self::FILTERS_SERVICE_KEY)));
+    }
+
+    /**
+     * Load sql filters by tag
+     *
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    protected function loadFilters(ContainerBuilder $container)
+    {
+        $taggedServices = $container->findTaggedServiceIds(self::TAG);
+        $filters = array();
+        $enabled = false;
+        $name = uniqid(self::TAG);
+        foreach ($taggedServices as $id => $tagAttributes) {
+            foreach ($tagAttributes as $attributes) {
+                if (!empty($attributes['enabled'])) {
+                    $enabled = (bool)$attributes['enabled'];
+                }
+                if (!empty($attributes['filter_name'])) {
+                    $name = $attributes['filter_name'];
+                }
+            }
+            $filters[] = array('id' => $id, 'enabled' => $enabled, 'filter_name' => $name);
+        }
+
+        return $filters;
     }
 }

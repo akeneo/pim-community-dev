@@ -40,10 +40,10 @@ class OwnershipType extends AbstractType
     public function getOwnershipsArray()
     {
         return  array(
-            self::OWNERSHIP_TYPE_NONE => $this->translator->trans('None'),
-            self::OWNERSHIP_TYPE_USER => $this->translator->trans('User'),
-            self::OWNERSHIP_TYPE_BUSINESS_UNIT => $this->translator->trans('Business Unit'),
-            self::OWNERSHIP_TYPE_ORGANIZATION => $this->translator->trans('Organization'),
+            self::OWNER_TYPE_NONE => $this->translator->trans('None'),
+            self::OWNER_TYPE_USER => $this->translator->trans('User'),
+            self::OWNER_TYPE_BUSINESS_UNIT => $this->translator->trans('Business Unit'),
+            self::OWNER_TYPE_ORGANIZATION => $this->translator->trans('Organization'),
         );
     }
 
