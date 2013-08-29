@@ -1,0 +1,3 @@
+Pim\Bundle\ProductBundle\Entity\Completeness:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [locale, channel, product]

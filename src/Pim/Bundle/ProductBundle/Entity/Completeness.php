@@ -16,7 +16,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity
- * @ORM\Table(name="pim_product_completeness")
+ * @ORM\Table(
+ *     name="pim_product_completeness",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="searchunique_idx",
+ *             columns={"channel_id", "locale_id", "product_id"}
+ *         )
+ *     }
+ * )
  */
 class Completeness
 {
