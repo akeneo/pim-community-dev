@@ -14,7 +14,7 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
         $defaultBusinessUnit = new BusinessUnit();
 
         $defaultBusinessUnit
-            ->setName('Default')
+            ->setName('Main')
             ->setOrganization($this->getReference('default_organization'));
 
         $this->addReference('default_business_unit', $defaultBusinessUnit);

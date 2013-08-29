@@ -7,6 +7,7 @@ interface ActionInterface
     /**
      * Action types
      */
+    const TYPE_AJAX     = 'oro_grid_action_ajax';
     const TYPE_REDIRECT = 'oro_grid_action_redirect';
     const TYPE_DELETE   = 'oro_grid_action_delete';
 

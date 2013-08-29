@@ -209,7 +209,7 @@ services:
             - @oro_email.twig.string_loader
             -  # twig environment options
               strict_variables: true
-            - @oro_email.config.available_in_templates
+            - @oro_entity_config.provider.email
             - @oro_email.cache
             - %oro_email.cache.available_in_template_key%
             - @security.context
@@ -235,15 +235,11 @@ services:
             - @oro_email.twig.email_security_policy
             - true # use sandbox globally in instance
 
-    oro_email.config.available_in_templates:
-        tags:
-            - { name: oro_entity_config.provider, scope: email }
-
     oro_email.provider.variable_provider:
         class: %oro_email.provider.variable_provider.class%
         arguments:
             - @security.context
-            - @oro_email.config.available_in_templates
+            - @oro_entity_config.provider.email
 
     oro_email.validator.variables_validator:
         class: Oro\Bundle\EmailBundle\Validator\VariablesValidator

@@ -4,43 +4,63 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
+                        title:              'General'
                         priority:           20
+
             items:
                 icon:
                     options:
                         priority:           10
+                    constraints:
+                        - NotBlank:         ~
                     form:
-                        type:               text
+                        type:               oro_icon_select
+                        required:           true
                         options:
                             block:          entity
                             required:       true
                 label:
                     options:
                         priority:           20
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
                     grid:
-                        type:               string
+                        type:               html
                         label:              'Label'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
                         filterable:         true
                         show_filter:        true
+                        template:           OroEntityConfigBundle:Config:propertyLabel.html.twig
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
+
                 plural_label:
                     options:
-                        priority:           30
+                        priority:           35
+                    constraints:
+                        - Length:
+                            min:            2
+                            max:            50
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           50
+                    constraints:
+                        - Length:
+                            max:            500
                     grid:
                         type:               text
                         label:              'Description'
@@ -58,12 +78,17 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
-                        title:              'Field Information'
+                        title:              'General'
                         priority:           20
             items:
                 label:
                     options:
                         priority:           10
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
                     grid:
                         type:               string
                         label:              'Label'
@@ -77,9 +102,13 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           30
+                    constraints:
+                        - Length:
+                            max:            500
                     grid:
                         type:               text
                         label:              'Description'
@@ -96,17 +125,10 @@ oro_entity_config:
 
     datagrid:
         field:
-#            form:
-#                block_config:
-#                    datagrid:
-#                        title:              'Datagrid Config'
-#                        subblocks:
-#                            base:           ~
             items:
                 is_searchable:
                     options:
                         default_value:      false
-                        is_bool:            true
                     grid:
                         type:               boolean
                         label:              'Grid'

@@ -2,13 +2,12 @@
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = 'Update Entity' %}
-{% oro_title_set({params : {"%username%": 'User' }}) %}
-
-{% set formAction = path('oro_entityconfig_field_update', {id: field.id}) %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set entityClass = field.entity.className|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label') %}
 {% set audit_path = 'oro_entityconfig_audit_field' %}
+{% set audit_entity_id = field.id %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
@@ -22,7 +21,7 @@
         'entity'      : 'entity',
         'indexPath'   : path('oro_entityconfig_index'),
         'indexLabel'  : 'Entities',
-        'entityTitle' : field.id ? field_config.get('label')|default(field.code|capitalize) : 'New Field'|trans,
+        'entityTitle' : field.id ? field_config.get('label')|default(field.fieldName|capitalize) : 'New Field'|trans,
         'additional'  : [
             {
                 'indexPath'  : path('oro_entityconfig_view', {id: field.entity.id}),
