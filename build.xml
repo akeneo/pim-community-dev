@@ -5,28 +5,13 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-no-coverage"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
-
-    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
-
-    <target name="tools-parallel" description="Run tools in parallel">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd-ci"/>
-            </sequential>
-            <antcall target="phpcpd"/>
-            <antcall target="phpcs-ci"/>
-            <antcall target="phploc"/>
-            <antcall target="phpdox"/>
-        </parallel>
-    </target>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -149,18 +134,18 @@
         </exec>
     </target>
 
-    <target name="phpunit" description="Run unit tests with PHPUnit">
+    <target name="phpunit-coverage" description="Run unit tests with PHPUnit and generate coverage">
         <exec executable="phpunit">
             <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
+            <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
 
-    <target name="phpunit-no-coverage" description="Run unit tests with PHPUnit without coverage">
+    <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit">
             <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins-no-coverage.xml" />
+            <arg path="${basedir}/app/phpunit.jenkins.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
