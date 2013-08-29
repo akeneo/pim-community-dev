@@ -19,3 +19,4 @@ Pim\Bundle\ProductBundle\Entity\Channel:
             
         locales:
             - Count: { min: 1 }
+            
