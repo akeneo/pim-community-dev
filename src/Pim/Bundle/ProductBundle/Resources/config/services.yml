@@ -113,4 +113,5 @@ services:
             - @pim_product.calculator.completeness
             - @pim_product.manager.channel
             - @pim_product.manager.locale
+            - @pim_product.manager.product
             - @doctrine.orm.entity_manager
