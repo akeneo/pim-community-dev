@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
+use Doctrine\ORM\AbstractQuery;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -22,18 +24,38 @@ class PendingCompletenessRepository extends EntityRepository
      * @throws \Exception
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findWith($fieldType)
-    {
-        $expectedFields = array('channel', 'locale', 'family');
-        if (in_array($fieldType, $expectedFields)) {
-            $qb = $this->createQueryBuilder('pc');
-            $qb->where(
-                $qb->expr()->isNotNull(sprintf('pc.%s', $fieldType))
-            );
+//     public function findByType($fieldType)
+//     {
+//         $expectedFields = array('channel', 'locale', 'family');
+//         if (in_array($fieldType, $expectedFields)) {
+//             $qb = $this->createQueryBuilder('pc');
+//             $field = sprintf('pc.%s', $fieldType);
+//             $qb
+//                 ->where($qb->expr()->isNotNull($field))
+//                 ->groupBy($field);
 
-            return $qb->getQuery()->getResult();
-        } else {
-            throw new \Exception(sprintf('Unexpected field type %s', $fieldType));
-        }
+//             return $qb->getQuery()->getResult();
+//         } else {
+//             throw new \Exception(sprintf('Unexpected field type %s', $fieldType));
+//         }
+//     }
+
+    public function findPendingChannels()
+    {
+        $qb = $this->createQueryBuilder('pc');
+        $qb
+            ->where($qb->expr()->isNotNull('pc.channel'));
+//             ->andWhere($qb->expr()->isNull('pc.locale'))
+//             ->groupBy('pc.channel');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findPendingLocales()
+    {
+        $qb = $this->createQueryBuilder('pc');
+        $qb->where($qb->expr()->isNotNull('pc.locale'));
+
+        return $qb->getQuery()->getResult();
     }
 }
