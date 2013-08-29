@@ -164,7 +164,7 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat">
+        <exec executable="bin/behat" failonerror="true">
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
