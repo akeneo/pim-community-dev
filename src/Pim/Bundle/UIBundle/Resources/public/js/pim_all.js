@@ -236,13 +236,13 @@ function init() {
     $('[rel="tooltip"]').tooltip();
 
     $('form').on('change', 'input[type="file"]', function() {
-        var filename = $(this).val().split('\\').pop();
         var $input = $(this);
+        var filename = $input.val().split('\\').pop();
+        var $zone = $input.parent();
         var $info = $input.siblings('.upload-info').first();
-        var $zone = $info.parent();
         var $filename = $info.find('.upload-filename');
-        var $remove = $info.find('.remove-upload');
-        var $checkbox = $info.find('input[type="checkbox"]');
+        var $removeBtn = $input.siblings('.remove-upload');
+        var $removeCheckbox = $input.siblings('input[type="checkbox"]');
 
         var $preview = $info.find('.upload-preview');
         if ($preview.prop('tagName').toLowerCase() !== 'i') {
@@ -255,16 +255,16 @@ function init() {
             $filename.html(filename);
             $zone.removeClass('empty');
             $preview.removeClass('empty');
-            $remove.removeClass('hide');
+            $removeBtn.removeClass('hide');
             $input.attr('disabled', 'disabled').addClass('hide');
-            $checkbox.removeAttr('checked');
+            $removeCheckbox.removeAttr('checked');
         } else {
             $filename.html($filename.attr('data-empty-title'));
             $zone.addClass('empty');
             $preview.addClass('empty');
-            $remove.addClass('hide');
+            $removeBtn.addClass('hide');
             $input.removeAttr('disabled').removeClass('hide');
-            $checkbox.attr('checked', 'checked');
+            $removeCheckbox.attr('checked', 'checked');
         }
     });
 
@@ -275,18 +275,9 @@ function init() {
     $('.remove-upload').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var $checkbox = $(this).siblings('input[type="checkbox"]').first();
-        $checkbox.attr('checked', 'checked');
-        var $input = $(this).parent().siblings('input[type="file"]');
-        $input.removeAttr('disabled').removeClass('hide');
+        var $input = $(this).siblings('input[type="file"]').first();
         $input.replaceWith($input.clone());
-
-        var $info = $(this).siblings('.upload-filename');
-        $info.html($info.attr('data-empty-title'));
-
-        $(this).siblings('.upload-preview').addClass('empty');
-        $(this).addClass('hide');
-        $(this).parent().parent().addClass('empty');
+        $(this).siblings('input[type="file"]').trigger('change');
     });
 
     $('[data-form-toggle]').on('click', function() {
