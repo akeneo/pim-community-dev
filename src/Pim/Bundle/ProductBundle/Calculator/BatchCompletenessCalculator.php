@@ -25,16 +25,6 @@ class BatchCompletenessCalculator
     protected $completenessCalculator;
 
     /**
-     * @var \Pim\Bundle\ProductBundle\Manager\ChannelManager $channelManager
-     */
-    protected $channelManager;
-
-    /**
-     * @var \Pim\Bundle\ProductBundle\Manager\LocaleManager $localeManager
-     */
-    protected $localeManager;
-
-    /**
      * @var \Pim\Bundle\ProductBundle\Manager\ProductManager $productManager
      */
     protected $productManager;
@@ -52,21 +42,15 @@ class BatchCompletenessCalculator
     /**
      * Constructor
      * @param CompletenessCalculator $calculator
-     * @param ChannelManager $channelManager
-     * @param LocaleManager $localeManager
      * @param ProductManager $productManager
      * @param EntityManager $em
      */
     public function __construct(
         CompletenessCalculator $calculator,
-        ChannelManager $channelManager,
-        LocaleManager $localeManager,
         ProductManager $productManager,
         EntityManager $em
     ) {
         $this->completenessCalculator = $calculator;
-        $this->channelManager         = $channelManager;
-        $this->localeManager          = $localeManager;
         $this->productManager         = $productManager;
         $this->entityManager          = $em;
 
@@ -74,7 +58,10 @@ class BatchCompletenessCalculator
     }
 
     /**
-     * TODO : Maybe we can save completenesses only one time !
+     * Execute calculator on each needed part defined in pending completeness
+     * - channels
+     * - locales
+     * - families
      */
     public function execute()
     {
@@ -83,15 +70,15 @@ class BatchCompletenessCalculator
         $channels = $this->getPendingChannels();
         $this->completenessCalculator->setChannels($channels);
         $this->completenessCalculator->calculate($products);
-        $this->saveCompletenesses($products);
         $this->removePendings();
 
         $locales = $this->getPendingLocales();
         $this->completenessCalculator->setLocales($locales);
         $this->completenessCalculator->setChannels(array());
         $this->completenessCalculator->calculate($products);
-        $this->saveCompletenesses($products);
         $this->removePendings();
+
+        $this->saveCompletenesses($products);
 
         $families = $this->getPendingFamilies();
         $products = $this->getProductsToCalculate($families);
