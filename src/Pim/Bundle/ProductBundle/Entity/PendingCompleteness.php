@@ -15,7 +15,9 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity
+ * @ORM\Entity(
+ *     repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\PendingCompletenessRepository"
+ * )
  * @ORM\Table(name="pim_product_pending_completeness")
  */
 class PendingCompleteness
@@ -40,6 +42,7 @@ class PendingCompleteness
      * @var Channel $channel
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Channel")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $channel;
 
