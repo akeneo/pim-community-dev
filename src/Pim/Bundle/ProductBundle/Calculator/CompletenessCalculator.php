@@ -163,10 +163,8 @@ class CompletenessCalculator
 
         foreach ($products as $product) {
             $sku = $product->getSku()->__toString();
-            $completenesses[$sku] = $this->calculateForAProduct($product);
+            $this->calculateForAProduct($product);
         }
-
-        return $completenesses;
     }
 
     /**
@@ -181,15 +179,11 @@ class CompletenessCalculator
         $completenesses = array();
 
         if ($product->getFamily() === null) {
-            return $completenesses;
+            return;
         }
         foreach ($this->getChannels() as $channel) {
-            $newCompletenesses = $this->calculateForAProductByChannel($product, $channel);
-
-            $completenesses = array_merge($completenesses, $newCompletenesses);
+            $this->calculateForAProductByChannel($product, $channel);
         }
-
-        return $completenesses;
     }
 
     /**
@@ -241,10 +235,8 @@ class CompletenessCalculator
             $completeness->setMissingCount($missingCount);
             $completeness->setRatio($ratio);
 
-            $completenesses[] = $completeness;
+            $product->addCompleteness($completeness);
         }
-
-        return $completenesses;
     }
 
     /**

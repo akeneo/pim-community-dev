@@ -155,8 +155,7 @@ class ProductController extends Controller
         // Always calculate the completeness on edit view after saving
         // completeness is set to the product to allow calls of getCompleteness method
         $calculator = $this->container->get('pim_product.calculator.completeness');
-        $completenesses = $calculator->calculateForAProduct($product);
-        $product->setCompletenesses($completenesses);
+        $calculator->calculateForAProduct($product);
 
         return array(
             'form'           => $form->createView(),
