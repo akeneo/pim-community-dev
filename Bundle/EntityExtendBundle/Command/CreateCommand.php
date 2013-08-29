@@ -84,27 +84,6 @@ class CreateCommand extends ContainerAwareCommand
         }
 
         $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
-
-        $argumentsCache = array_merge(
-            $input->getArguments(),
-            array(
-                //'--no-warmup' => true,
-            )
-        );
-        $arrayInputCache = new ArrayInput($argumentsCache);
-        $this->getApplication()->find('cache:clear')->run($arrayInputCache, $output);
-
-        $argumentsDoctrine = array_merge(
-            $input->getArguments(),
-            array(
-                '--force' => true,
-            )
-        );
-        $arrayInputDoctrine = new ArrayInput($argumentsDoctrine);
-        $this->getApplication()->find('doctrine:schema:update')->run($arrayInputDoctrine, $output);
-
-        $this->getApplication()->find('oro:search:create-index')->run($input, $output);
-        $this->getApplication()->find('cache:clear')->run($input, $output);
     }
 
     /**
