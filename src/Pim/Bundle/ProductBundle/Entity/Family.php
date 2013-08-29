@@ -11,7 +11,6 @@ use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
-
 /**
  * Family entity
  *
