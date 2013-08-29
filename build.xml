@@ -173,19 +173,6 @@
         </exec>
     </target>
 
-    <target name="behat-check" description="Check Behat output">
-        <fail message="At least one scenario has failed">
-            <condition>
-                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="failed"/>
-            </condition>
-        </fail>
-        <fail message="A fatal error occured">
-            <condition>
-                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="PHP Fatal error"/>
-            </condition>
-        </fail>
-    </target>
-
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
         <exec executable="phpcb">
             <arg value="--log" />
