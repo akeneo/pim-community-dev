@@ -110,7 +110,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Doctrine\ORM\EntityRepository
+     * @return Doctrine\ORM\EntityManager
      */
     protected function getEntityManagerMock()
     {
