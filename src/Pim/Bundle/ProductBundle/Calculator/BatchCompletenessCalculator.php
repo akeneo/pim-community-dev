@@ -63,8 +63,8 @@ class BatchCompletenessCalculator
         $channels = $this->getPendingChannels();
         $this->calculate($products, $channels);
 
-        $locales = $this->getPendingLocales();
-        $this->calculate($products, array(), $locales);
+        $pendingLocales = $this->getPendingLocales();
+        $this->calculate($products, $pendingLocales['channels'], $pendingLocales['locales']);
         $this->saveCompletenesses($products);
 
         $families = $this->getPendingFamilies();
@@ -155,7 +155,8 @@ class BatchCompletenessCalculator
         $locales = array();
         foreach ($this->pendings as $pendingLocale) {
             if (!in_array($pendingLocale->getLocale(), $locales)) {
-                $locales[] = $pendingLocale->getLocale();
+                $locales['locales']  = $pendingLocale->getLocale();
+                $locales['channels'] = $pendingLocale->getChannel();
             }
         }
 
