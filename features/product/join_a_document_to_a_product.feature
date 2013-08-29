@@ -3,7 +3,7 @@ Feature: Join a document to a product
   As an user
   I need to be able to upload it and preview it
 
-  Scenario: Succesfully leave the documet empty
+  Scenario: Succesfully leave the document empty
     Given a "Car" product
     And the following product attribute:
       | product | label       | type |

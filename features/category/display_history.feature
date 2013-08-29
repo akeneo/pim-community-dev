@@ -5,16 +5,24 @@ Feature: Display the category history
 
   @javascript
   Scenario: Display category updates
-    Given the following categories:
-      | code | title |
-      | shoe | Shoe  |
-      | book | Book  |
-    And I am logged in as "admin"
-    And the following category "shoe" updates:
-      | action | loggedAt  | updatedBy | change               |
-      | update | yesterday | admin     | title: Shoe => Shoes |
-    And I am on the "book" category page
-    And I change the Code to "eBook"
+    Given I am logged in as "admin"
+    And I am on the category tree creation page
+    When I fill in the following information:
+      | Code    | book |
     And I save the category
+    And I edit the "book" category
+    When I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+    | action | version | data      |
+    | create | 1       | code:book |
+    When I visit the "Properties" tab
+    And I change the Code to "ebook"
+    And I save the category
+    And I edit the "ebook" category
     When I visit the "History" tab
     Then there should be 2 updates
+    And I should see history:
+    | action | version | data           |
+    | create | 1       | code:book      |
+    | update | 2       | code:bookebook |
