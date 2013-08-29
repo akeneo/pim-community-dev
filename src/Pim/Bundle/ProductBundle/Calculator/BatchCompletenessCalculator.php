@@ -60,26 +60,31 @@ class BatchCompletenessCalculator
     public function execute()
     {
         $products = $this->getProductsToCalculate();
-
         $channels = $this->getPendingChannels();
-        $this->completenessCalculator->setChannels($channels);
-        $this->completenessCalculator->calculate($products);
-        $this->removePendings();
+        $this->calculate($products, $channels);
 
         $locales = $this->getPendingLocales();
-        $this->completenessCalculator->setLocales($locales);
-        $this->completenessCalculator->setChannels(array());
-        $this->completenessCalculator->calculate($products);
-        $this->removePendings();
-
+        $this->calculate($products, array(), $locales);
         $this->saveCompletenesses($products);
 
         $families = $this->getPendingFamilies();
         $products = $this->getProductsToCalculate($families);
-        $this->completenessCalculator->setLocales(array());
-        $this->completenessCalculator->setChannels(array());
-        $this->completenessCalculator->calculate($products);
+        $this->calculate($products);
         $this->saveCompletenesses($products);
+    }
+
+    /**
+     * Launch calculator for specific channels, locales and products
+     * Then automatically remove concerned pendings
+     * @param array $products
+     * @param array $channels
+     * @param array $locales
+     */
+    protected function calculate(array $products, array $channels = array(), array $locales = array())
+    {
+        $this->completenessCalculator->setChannels($channels);
+        $this->completenessCalculator->setLocales($locales);
+        $this->completenessCalculator->calculate($products);
         $this->removePendings();
     }
 
