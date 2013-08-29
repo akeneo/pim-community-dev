@@ -126,9 +126,14 @@ class BatchCompletenessCalculator
             ->findByExistingFamily();
     }
 
+    /**
+     * Find pending completeness and channels which need completeness recalculation
+     *
+     * @return Channel[]
+     */
     protected function getPendingChannels()
     {
-        $this->pendings = $this->getPendingCompletenessRepository()->findPendingChannels();
+        $this->pendings = $this->getPendingCompletenessRepository()->findByNotNull('channel');
 
         $channels = array();
         foreach ($this->pendings as $pendingChannel) {
@@ -140,9 +145,14 @@ class BatchCompletenessCalculator
         return $channels;
     }
 
+    /**
+     * Find pending completeness and locales which need completeness recalculation
+     *
+     * @return Locale[]
+     */
     protected function getPendingLocales()
     {
-        $this->pendings = $this->getPendingCompletenessRepository()->findPendingLocales();
+        $this->pendings = $this->getPendingCompletenessRepository()->findByNotNull('locale');
 
         $locales = array();
         foreach ($this->pendings as $pendingLocale) {
