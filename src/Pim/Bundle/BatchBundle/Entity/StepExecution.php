@@ -230,6 +230,14 @@ class StepExecution
     }
 
     /**
+     * Increment the read count by 1
+     */
+    public function incrementReadCount()
+    {
+        $this->readCount++;
+    }
+
+    /**
      * Add a reader warning
      *
      * @param string $message

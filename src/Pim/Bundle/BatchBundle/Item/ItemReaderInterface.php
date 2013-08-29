@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BatchBundle\Item;
 
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 /**
  * Interface to provide data.
  *
@@ -32,5 +34,5 @@ interface ItemReaderInterface
      * read might succeed.
      * @throws Exception if an there is a non-specific error.
      */
-    public function read();
+    public function read(StepExecution $stepExecution);
 }

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Category reader
@@ -26,7 +27,7 @@ class CategoryReader extends ORMCursorReader
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if (!$this->query) {
             $this->query = $this->em
