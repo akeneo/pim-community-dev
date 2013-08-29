@@ -221,8 +221,5 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
-pim_batch:
-    log_dir: %batch_log_dir%
-
 pim_demo:
     load_data: true

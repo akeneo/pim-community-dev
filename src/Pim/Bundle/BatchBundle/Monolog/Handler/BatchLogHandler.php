@@ -13,16 +13,19 @@ use Monolog\Handler\StreamHandler;
  */
 class BatchLogHandler extends StreamHandler
 {
-    public function __construct($rootDir, $logDir)
-    {
-        $this->filename = $this->generateLogFilename($logDir);
 
-        $logFile = sprintf('%s/../web/%s', $rootDir, $this->filename);
-        if (!is_dir(dirname($logFile))) {
-            mkdir(dirname($logFile), 0755, true);
+    protected $filename;
+
+    public function __construct($logDir)
+    {
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true);
         }
 
-        parent::__construct($logFile);
+        $this->logDir   = $logDir;
+        $this->filename = $this->generateLogFilename();
+
+        parent::__construct($this->getRealPath($this->filename));
     }
 
     public function getFilename()
@@ -30,10 +33,13 @@ class BatchLogHandler extends StreamHandler
         return $this->filename;
     }
 
-    private function generateLogFilename($logDir)
+    public function getRealPath($filename)
     {
-        $hash = sha1(uniqid(rand(), true));
+        return sprintf('%s/%s', $this->logDir, $filename);
+    }
 
-        return sprintf('%s/batch_%s.log', rtrim($logDir, '/'), $hash);
+    private function generateLogFilename()
+    {
+        return sprintf('batch_%s.log', sha1(uniqid(rand(), true)));
     }
 }

@@ -51,6 +51,9 @@ pim_batch:
         escape:
             label: 'Escape'
             help: 'One character used to set the field escape'
+        allowUpload:
+            label: 'Allow file upload'
+            help: 'Whether or not to allow uploading the file directly'
 
     csv_file_reader:
         title: 'CSV File Reader'
@@ -66,12 +69,15 @@ pim_batch:
         escape:
             label: 'Escape'
             help: 'One character used to set the field escape'
+        allowUpload:
+            label: 'Allow file upload'
+            help: 'Whether or not to allow uploading the file directly'
 
     valid_product_creation_processor:
         title: 'Product creation'
         enabled:
             label: 'Enable the product?'
-            help: 'Wether or not imported product should be enabled'
+            help: 'Whether or not imported product should be enabled'
         categoriesColumn:
             label: 'Categories column'
             help: 'Name of the categories column'
@@ -107,7 +113,7 @@ pim_batch:
             help: 'One character used to set the field enclosure'
         withHeader:
             label: 'With header'
-            help: 'Wether or not to print the column name'
+            help: 'Whether or not to print the column name'
 
     homogeneous_csv_serializer_processor:
         title: 'CSV configuration'
@@ -119,7 +125,7 @@ pim_batch:
             help: 'One character used to set the field enclosure'
         withHeader:
             label: 'With header'
-            help: 'Wether or not to print the column name'
+            help: 'Whether or not to print the column name'
 
     file_writer:
         title: 'File configuration'

@@ -109,6 +109,13 @@ class JobExecution
     private $failureExceptions;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="log_file", type="string", length=255, nullable=true)
+     */
+    private $logFile;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -454,6 +461,30 @@ class JobExecution
     public function getJobInstance()
     {
         return $this->jobInstance;
+    }
+
+    /**
+     * Set the log file
+     *
+     * @param string $logFile
+     *
+     * @return JobExecution
+     */
+    public function setLogFile($logFile)
+    {
+        $this->logFile = $logFile;
+
+        return $this;
+    }
+
+    /**
+     * Get the log file
+     *
+     * @return string
+     */
+    public function getLogFile()
+    {
+        return $this->logFile;
     }
 
     /**
