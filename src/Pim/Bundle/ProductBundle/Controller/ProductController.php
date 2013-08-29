@@ -129,6 +129,10 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
+                // Call completeness calculator after validating data
+                $calculator = $this->container->get('pim_product.calculator.completeness');
+                $calculator->calculateForAProduct($product);
+
                 $categoriesData = $this->getCategoriesData($request->request->all());
                 $categories = $this->getCategoryManager()->getCategoriesByIds($categoriesData['categories']);
 
@@ -151,11 +155,6 @@ class ProductController extends Controller
         }
 
         $auditManager = $this->container->get('pim_versioning.manager.audit');
-
-        // Always calculate the completeness on edit view after saving
-        // completeness is set to the product to allow calls of getCompleteness method
-        $calculator = $this->container->get('pim_product.calculator.completeness');
-        $calculator->calculateForAProduct($product);
 
         return array(
             'form'           => $form->createView(),

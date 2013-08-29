@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\ProductBundle\Form\Subscriber\ChannelSubscriber;
 
 /**
  * Type for channel form
@@ -59,6 +60,8 @@ class ChannelType extends AbstractType
 
         $builder->add('name', 'text', array('label' => 'Default label'));
 
+        $builder->addEventSubscriber(new ChannelSubscriber());
+        
         $this->addCurrencyField($builder);
 
         $this->addLocaleField($builder);

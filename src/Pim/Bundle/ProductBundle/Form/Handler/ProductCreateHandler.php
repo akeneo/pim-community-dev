@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator;
 
 /**
  * Form handler for product creation form type
@@ -32,16 +33,27 @@ class ProductCreateHandler
     protected $manager;
 
     /**
-     * Constructor for handler
-     * @param FormInterface  $form    Form called
-     * @param Request        $request Web request
-     * @param ProductManager $manager Product manager
+     * @var CompletenessCalculator
      */
-    public function __construct(FormInterface $form, Request $request, ProductManager $manager)
-    {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+    protected $calculator;
+
+    /**
+     * Constructor for handler
+     * @param FormInterface          $form       Form called
+     * @param Request                $request    Web request
+     * @param ProductManager         $manager    Product manager
+     * @param CompletenessCalculator $calculator Completeness calculator
+     */
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ProductManager $manager,
+        CompletenessCalculator $calculator
+    ) {
+        $this->form       = $form;
+        $this->request    = $request;
+        $this->manager    = $manager;
+        $this->calculator = $calculator;
     }
 
     /**
@@ -58,6 +70,8 @@ class ProductCreateHandler
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
+                $this->calculator->calculateForAProduct($entity);
+
                 $this->onSuccess($entity);
 
                 return true;
