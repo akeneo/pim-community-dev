@@ -46,3 +46,13 @@ services:
         class: %oro_entity.owner.ownership_metadata_provider.cache_impl.class%
         arguments:
             - %kernel.cache_dir%/oro_ownership_metadata
+
+    oro_entity.orm.query.filter_collection:
+        class:             %oro_entity.orm.query.filter_collection.class%
+        arguments:         ["@doctrine.orm.entity_manager"]
+
+    oro_entity.filter:
+        class:           %oro_filter%
+        arguments:       ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: oro_entity.sql_filter, filter_name: customFilter, enabled: true }

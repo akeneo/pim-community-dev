@@ -16,7 +16,7 @@ class OroEntityManager extends EntityManager
      *
      * @var FilterCollection
      */
-    private $filterCollection;
+    protected $filterCollection;
 
     public static function create($conn, Configuration $config, EventManager $eventManager = null)
     {
@@ -57,5 +57,25 @@ class OroEntityManager extends EntityManager
         }
 
         return $this->filterCollection;
+    }
+
+    /**
+     * Checks whether the state of the filter collection is clean.
+     *
+     * @return boolean True, if the filter collection is clean.
+     */
+    public function isFiltersStateClean()
+    {
+        return null === $this->filterCollection || $this->filterCollection->isClean();
+    }
+
+    /**
+     * Checks whether the Entity Manager has filters.
+     *
+     * @return True, if the EM has a filter collection.
+     */
+    public function hasFilters()
+    {
+        return null !== $this->filterCollection;
     }
 }
