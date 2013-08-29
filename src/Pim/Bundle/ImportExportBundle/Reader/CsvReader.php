@@ -8,6 +8,7 @@ use Pim\Bundle\ProductBundle\Validator\Constraints\File;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Csv reader
@@ -193,7 +194,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if (null === $this->csv) {
             $this->csv = new \SplFileObject($this->filePath);
@@ -212,15 +213,20 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
             if ($data === array(null) || $data === null) {
                 return null;
             }
+            $stepExecution->incrementReadCount();
 
             if (count($this->fieldNames) !== count($data)) {
-                throw new \Exception(
+                $stepExecution->addReaderWarning(
+                    $this,
                     sprintf(
                         'Expecting to have %d columns, actually have %d.',
                         count($this->fieldNames),
                         count($data)
-                    )
+                    ),
+                    $data
                 );
+
+                return false;
             }
 
             $data = array_combine($this->fieldNames, $data);

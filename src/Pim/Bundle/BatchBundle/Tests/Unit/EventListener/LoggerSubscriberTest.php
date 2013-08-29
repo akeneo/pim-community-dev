@@ -38,6 +38,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
                 EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
                 EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
+                EventInterface::INVALID_READER_EXECUTION   => 'invalidReaderExecution',
             ),
             LoggerSubscriber::getSubscribedEvents()
         );
@@ -172,6 +173,69 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $stepExecution = $this->getStepExecutionMock();
         $event = $this->getStepExecutionEventMock($stepExecution);
         $this->subscriber->stepExecutionCompleted($event);
+    }
+
+    public function testInvalidReaderExecution()
+    {
+        $this->logger
+            ->expects($this->once())
+            ->method('warning')
+            ->with(
+                $this->matchesRegularExpression(
+                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
+                    '\(REASON: This is a valid reason\.\)\.$/'
+                )
+            );
+
+        $stepExecution = $this->getStepExecutionMock();
+        $stepExecution->expects($this->any())
+            ->method('getReaderWarnings')
+            ->will(
+                $this->returnValue(
+                    array(
+                        array(
+                            'reader' => $this->getMock('Pim\Bundle\BatchBundle\Item\ItemReaderInterface'),
+                            'reason' => 'This is a valid reason.',
+                            'data' => array('foo' => 'bar'),
+                        )
+                    )
+                )
+            );
+
+        $event = $this->getStepExecutionEventMock($stepExecution);
+        $this->subscriber->invalidReaderExecution($event);
+    }
+
+    public function testDoNotLogTwiceTheSameInvalidReaderExecution()
+    {
+        $this->logger
+            ->expects($this->once())
+            ->method('warning')
+            ->with(
+                $this->matchesRegularExpression(
+                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
+                    '\(REASON: This is a valid reason\.\)\.$/'
+                )
+            );
+
+        $stepExecution = $this->getStepExecutionMock();
+        $stepExecution->expects($this->any())
+            ->method('getReaderWarnings')
+            ->will(
+                $this->returnValue(
+                    array(
+                        array(
+                            'reader' => $this->getMock('Pim\Bundle\BatchBundle\Item\ItemReaderInterface'),
+                            'reason' => 'This is a valid reason.',
+                            'data' => array('foo' => 'bar'),
+                        )
+                    )
+                )
+            );
+
+        $event = $this->getStepExecutionEventMock($stepExecution);
+        $this->subscriber->invalidReaderExecution($event);
+        $this->subscriber->invalidReaderExecution($event);
     }
 
     private function getLoggerMock()
