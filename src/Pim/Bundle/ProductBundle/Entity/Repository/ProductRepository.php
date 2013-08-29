@@ -33,12 +33,15 @@ class ProductRepository extends FlexibleEntityRepository
 
     /**
      * Find products by existing family
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findByExistingFamily()
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->where($qb->expr()->isNotNull('p.family'));
+        $qb->where(
+            $qb->expr()->isNotNull('p.family')
+        );
 
         return $qb->getQuery()->getResult();
     }
