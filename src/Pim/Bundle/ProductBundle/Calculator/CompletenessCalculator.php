@@ -11,7 +11,7 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Completeness;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\Locale;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Product completeness calculator
@@ -153,7 +153,7 @@ class CompletenessCalculator
      *     )
      * )
      *
-     * @param Product[] $products
+     * @param ProductInterface[] $products
      *
      * @return Completeness[] $completenesses
      */
@@ -170,11 +170,11 @@ class CompletenessCalculator
     /**
      * Calculate the completeness of a product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return Completeness[] $completenesses List of completeness entities for the product
      */
-    public function calculateForAProduct(Product $product)
+    public function calculateForAProduct(ProductInterface $product)
     {
         $completenesses = array();
 
@@ -189,14 +189,17 @@ class CompletenessCalculator
     /**
      * Calculate the completeness of a product for a specific channel
      *
-     * @param Product        $product
-     * @param Channel        $channel
-     * @param Completeness[] $completenesses
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     * @param Completeness[]   $completenesses
      *
      * @return Completeness[] $completenesses List of completeness entities
      */
-    public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
-    {
+    public function calculateForAProductByChannel(
+        ProductInterface $product,
+        Channel $channel,
+        array $completenesses = array()
+    ) {
         if ($product->getFamily() === null) {
             return array();
         }
@@ -242,13 +245,13 @@ class CompletenessCalculator
     /**
      * Create a product completeness
      *
-     * @param Product $product
-     * @param Channel $channel
-     * @param Locale  $locale
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     * @param Locale           $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    protected function createCompleteness(Product $product, Channel $channel, Locale $locale)
+    protected function createCompleteness(ProductInterface $product, Channel $channel, Locale $locale)
     {
         $completeness = new Completeness();
 
