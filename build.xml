@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
+    <property name="jobName" value="${env.JOB_NAME}" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
@@ -49,8 +50,8 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
-        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
-        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
+        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
+        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
     </target>
 
