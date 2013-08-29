@@ -41,8 +41,11 @@ class ProductReader extends ORMReader
     {
         if (!$this->query) {
             $this->query = $this->repository
-                ->buildByScope($this->channel)
+                ->buildByScopeAndCompleteness($this->channel)
                 ->getQuery();
+
+
+            echo $this->query->getSQL(); exit();
         }
 
         return parent::read();

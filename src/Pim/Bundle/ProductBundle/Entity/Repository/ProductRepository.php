@@ -13,11 +13,15 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  */
 class ProductRepository extends FlexibleEntityRepository
 {
+    /**
+     * @param string $scope
+     *
+     * @return QueryBuilder
+     */
     public function buildByScope($scope)
     {
         $qb = $this->findByWithAttributesQB();
-
-        return $qb
+        $qb
             ->andWhere(
                 $qb->expr()->eq('Entity.enabled', '?1')
             )
@@ -29,5 +33,23 @@ class ProductRepository extends FlexibleEntityRepository
             )
             ->setParameter(1, true)
             ->setParameter(2, $scope);
+
+        return $qb;
+    }
+
+    /**
+     * @param string $scope
+     *
+     * @return QueryBuilder
+     */
+    public function buildByScopeAndCompleteness($scope)
+    {
+        $qb = $this->buildByScope($scope);
+        $rootAlias = $qb->getRootAlias();
+        $qb
+            ->innerJoin($rootAlias .'.completenesses', 'pCompleteness', 'WITH', $qb->expr()->eq('pCompleteness.ratio', '100'))
+            ->innerJoin('pCompleteness.channel', 'channel', 'WITH', $qb->expr()->eq('channel.code', $qb->expr()->literal($scope)));
+
+        return $qb;
     }
 }
