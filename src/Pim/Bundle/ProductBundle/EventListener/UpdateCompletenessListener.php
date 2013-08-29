@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -57,7 +58,9 @@ class UpdateCompletenessListener implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $this->addChannel($entity);
+        if ($entity instanceof Channel) {
+            $this->addChannel($entity);
+        }
     }
 
     /**
@@ -66,7 +69,9 @@ class UpdateCompletenessListener implements EventSubscriber
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $this->updateRequirement($entity);
+        if ($entity instanceof AttributeRequirement) {
+            $this->updateRequirement($entity);
+        }
     }
 
     /**
@@ -108,29 +113,12 @@ class UpdateCompletenessListener implements EventSubscriber
     /**
      * Check if a new channel has been added
      *
-     * @param object $entity
+     * @param Channel $channel
      */
-    protected function addChannel($entity)
+    protected function addChannel(Channel $channel)
     {
-        if ($entity instanceof Channel) {
-            if (!in_array($entity, $this->newChannels)) {
-                $this->newChannels[]= $entity;
-            }
-        }
-    }
-
-    /**
-     * Check if a locale has been added to a channel
-     *
-     * @param array $collection
-     */
-    protected function addLocaleToAChannel($collection)
-    {
-        if ($collection->getOwner() instanceof Channel and $collection->first() instanceof Locale) {
-            $channel = $collection->getOwner();
-            foreach ($collection->getInsertDiff() as $locale) {
-                $this->newLocalesPerChannel[]= array('channel' => $channel, 'locale' => $locale);
-            }
+        if (!in_array($channel, $this->newChannels)) {
+            $this->newChannels[]= $channel;
         }
     }
 
@@ -139,11 +127,24 @@ class UpdateCompletenessListener implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function updateRequirement($entity)
+    protected function updateRequirement(AttributeRequirement $requirement)
     {
-        if ($entity instanceof AttributeRequirement) {
-            if ($entity->getFamily() and !in_array($entity->getFamily(), $this->updatedFamilies)) {
-                $this->updatedFamilies[]= $entity->getFamily();
+        if ($requirement->getFamily() and !in_array($requirement->getFamily(), $this->updatedFamilies)) {
+            $this->updatedFamilies[]= $requirement->getFamily();
+        }
+    }
+
+    /**
+     * Check if a locale has been added to a channel
+     *
+     * @param Collection $collection
+     */
+    protected function addLocaleToAChannel(Collection $collection)
+    {
+        if ($collection->getOwner() instanceof Channel and $collection->first() instanceof Locale) {
+            $channel = $collection->getOwner();
+            foreach ($collection->getInsertDiff() as $locale) {
+                $this->newLocalesPerChannel[]= array('channel' => $channel, 'locale' => $locale);
             }
         }
     }
