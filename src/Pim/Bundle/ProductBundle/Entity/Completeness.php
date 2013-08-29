@@ -48,6 +48,7 @@ class Completeness
      * @var \Pim\Bundle\ProductBundle\Entity\Channel $channel
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Channel")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $channel;
 
