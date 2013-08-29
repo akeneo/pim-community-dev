@@ -140,8 +140,8 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetFilterCount()
     {
-        $this->assertEquals(0, $this->stepExecution->getFilterCount());
-        $this->assertEntity($this->stepExecution->setFilterCount(5));
+        $this->stepExecution->setReadCount(10);
+        $this->stepExecution->setWriteCount(5);
         $this->assertEquals(5, $this->stepExecution->getFilterCount());
     }
 
