@@ -61,11 +61,6 @@ class CompletenessCalculator
     protected $locales;
 
     /**
-     * @var \Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank
-     */
-    protected $notBlankConstraint;
-
-    /**
      * Constructor
      *
      * @param ChannelManager $channelManager
@@ -84,7 +79,6 @@ class CompletenessCalculator
         $this->em             = $em;
 
         $this->validator      = $validator;
-        $this->notBlankConstraint = new ProductValueNotBlank();
     }
 
     /**
@@ -212,6 +206,9 @@ class CompletenessCalculator
         if ($product->getFamily() === null) {
             return array();
         }
+
+        $notBlankConstraint = new ProductValueNotBlank(array('channel' => $channel));
+
         $requiredAttributes = $this->getRequiredAttributes($channel, $product->getFamily());
         $requiredCount = count($requiredAttributes);
 
@@ -229,7 +226,7 @@ class CompletenessCalculator
                 $attribute = $requiredAttribute->getAttribute();
                 $value     = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
 
-                $errorList = $this->validator->validateValue($value, $this->notBlankConstraint);
+                $errorList = $this->validator->validateValue($value, $notBlankConstraint);
                 if (count($errorList) === 0) {
                     $wellCount++;
                 } else {
