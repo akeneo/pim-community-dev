@@ -169,6 +169,20 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
 
+    public function testAddReaderWarning()
+    {
+        $reader = $this->getMock('Pim\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $message = 'something is wrong';
+        $data = array('foo' => 'bar');
+
+        $this->stepExecution->addReaderWarning($reader, $message, $data);
+
+        $this->assertEquals(
+            array(array('reader' => $reader, 'message' => $message, 'data' => $data)),
+            $this->stepExecution->getReaderWarnings()
+        );
+    }
+
     /**
      * Assert the entity tested
      *
