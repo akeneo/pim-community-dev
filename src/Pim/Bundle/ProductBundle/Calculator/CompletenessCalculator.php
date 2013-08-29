@@ -237,8 +237,9 @@ class CompletenessCalculator
             $completeness->setRequiredCount($requiredCount);
             $completeness->setMissingCount($missingCount);
             $completeness->setRatio($ratio);
+
+            $product->addCompleteness($completeness);
         }
-        $product->addCompleteness($completeness);
     }
 
     /**

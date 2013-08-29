@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Calculator;
 
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-
-use Pim\Bundle\ProductBundle\Manager\LocaleManager;
-use Pim\Bundle\ProductBundle\Manager\ChannelManager;
-use Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator;
-
 use Doctrine\ORM\EntityManager;
+
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator;
 
 /**
  * Batch launching the calculator
@@ -45,11 +42,8 @@ class BatchCompletenessCalculator
      * @param ProductManager $productManager
      * @param EntityManager $em
      */
-    public function __construct(
-        CompletenessCalculator $calculator,
-        ProductManager $productManager,
-        EntityManager $em
-    ) {
+    public function __construct(CompletenessCalculator $calculator, ProductManager $productManager, EntityManager $em)
+    {
         $this->completenessCalculator = $calculator;
         $this->productManager         = $productManager;
         $this->entityManager          = $em;
