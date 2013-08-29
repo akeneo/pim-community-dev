@@ -29,4 +29,12 @@ class ChannelRepository extends EntityRepository
     {
         return parent::findOneBy($criteria, $orderBy);
     }
+
+    public function findPendingCompleteness()
+    {
+        $qb = $this->createQueryBuilder('f');
+        $qb->innerJoin('f.pendingCompleteness', 'pc');
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -37,18 +37,8 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
         $this
             ->setName('pim:product:completeness-calculator')
             ->setDescription('Launch the product completeness calculator')
-            ->addOption(
-                'channels',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'list of channels'
-            )
-            ->addOption(
-                'locales',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'list of locales'
-            )
+            ->addOption('channels', null, InputOption::VALUE_OPTIONAL, 'list of channels')
+            ->addOption('locales', null, InputOption::VALUE_OPTIONAL, 'list of locales')
             ->addOption(
                 'forced',
                 null,
@@ -66,37 +56,40 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
         $locales  = $input->getOption('locales');
         $forced   = $input->getOption('forced');
 
-        $this->calculator = $this->getCompletenessCalculator();
+        $batchCalculator = $this->getContainer()->get('pim_product.calculator.batch_completeness');
+        $batchCalculator->execute();
 
-        // define channels
-        if ($channels !== null) {
-            $channels = explode(',', $channels);
-            $channels = $this->getChannelManager()->getChannels(array('code' => $channels));
+//         $this->calculator = $this->getCompletenessCalculator();
 
-            $this->calculator->setChannels($channels);
-        }
+//         // define channels
+//         if ($channels !== null) {
+//             $channels = explode(',', $channels);
+//             $channels = $this->getChannelManager()->getChannels(array('code' => $channels));
 
-        // define locales
-        if ($locales !== null) {
-            $locales = explode(',', $locales);
-            $locales = $this->getLocaleManager()->getLocales(array('code' => $locales));
+//             $this->calculator->setChannels($channels);
+//         }
 
-            $this->calculator->setLocales($locales);
-        }
+//         // define locales
+//         if ($locales !== null) {
+//             $locales = explode(',', $locales);
+//             $locales = $this->getLocaleManager()->getLocales(array('code' => $locales));
 
-        // TODO : define the products where the completeness must be recalculated
-        // depending of the forced option
-        $products = $this->getProductManager()->getFlexibleRepository()->findAll();
+//             $this->calculator->setLocales($locales);
+//         }
 
-        // Call calculator and persists entities
-        $completenesses = $this->calculator->calculate($products);
-        foreach ($completenesses as $sku => $productCompleteness) {
-            foreach ($productCompleteness as $completeness) {
-                $this->getEntityManager()->persist($completeness);
-            }
-        }
+//         // TODO : define the products where the completeness must be recalculated
+//         // depending of the forced option
+//         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
 
-        $this->getEntityManager()->flush();
+//         // Call calculator and persists entities
+//         $completenesses = $this->calculator->calculate($products);
+//         foreach ($completenesses as $sku => $productCompleteness) {
+//             foreach ($productCompleteness as $completeness) {
+//                 $this->getEntityManager()->persist($completeness);
+//             }
+//         }
+
+//         $this->getEntityManager()->flush();
     }
 
     /**

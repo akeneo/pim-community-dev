@@ -58,6 +58,25 @@ class BatchCompletenessCalculator
 
     public function execute()
     {
+        $results = $this
+            ->entityManager
+            ->getRepository('PimProductBundle:Channel')
+            ->findPendingCompleteness();
 
+        var_dump(count($results));
     }
+
+    /**
+     * Get repository for pending completeness entity
+     * @return \Doctrine\ORM\EntityRepository
+     */
+//     protected function getPendingCompletenessRepository()
+//     {
+//         return $this->entityManager->getRepository('PimProductBundle:PendingCompleteness');
+//     }
+
+//     protected function getPendingFamilies()
+//     {
+//         $this->getPendingCompletenessRepository()->findBy(array('family' => ))
+//     }
 }
