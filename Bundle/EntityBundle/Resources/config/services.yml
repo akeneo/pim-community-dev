@@ -5,6 +5,7 @@ parameters:
         organization: "OroOrganizationBundle:Organization"
         business_unit: "OroOrganizationBundle:BusinessUnit"
         user: "OroUserBundle:User"
+
     oro_entity.orm.query.filter_collection.class: Oro\Bundle\EntityBundle\ORM\Query\FilterCollection
     oro_filter: Oro\Bundle\EntityBundle\Filter\Filter
 
