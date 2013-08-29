@@ -288,6 +288,11 @@ function init() {
         $(this).addClass('hide');
         $(this).parent().parent().addClass('empty');
     });
+
+    $('[data-form-toggle]').on('click', function() {
+        $('#' + $(this).attr('data-form-toggle')).show();
+        $(this).hide();
+    });
 }
 
 $(function() {

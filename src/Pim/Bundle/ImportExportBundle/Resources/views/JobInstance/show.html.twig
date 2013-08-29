@@ -34,7 +34,7 @@
         {% endif %}
         {% if violations|length == 0 %}
             {% if uploadAllowed %}
-                {{ elements.link('Upload and '~title~' now', null, {icon: 'upload-alt', class: 'btn-primary'}) }}
+                {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
             {% endif %}
             {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
@@ -43,11 +43,12 @@
     {{ elements.page_header(title, buttons, subtitle, left) }}
 
     {% if form is defined and form is not empty %}
-        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
             {{ elements.form_errors(form) }}
             <div class="row-fluid">
                 {{ form_row(form.file) }}
                 {{ form_row(form._token) }}
+                {{ elements.submitBtn('Upload and '~title|lower~' now'|trans) }}
             </div>
         </form>
     {% endif %}

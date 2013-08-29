@@ -253,7 +253,7 @@ class JobInstanceController extends Controller
                             $constraints = $reader->getUploadedFileConstraints();
                             $errors = $this->getValidator()->validateValue($file, $constraints);
 
-                            if (!empty($errors)) {
+                            if ($errors->count()) {
                                 foreach ($errors as $error) {
                                     $this->addFlash('error', $error->getMessage());
                                 }
