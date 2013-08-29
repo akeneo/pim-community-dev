@@ -72,32 +72,10 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
-    private function getStepExecutionEventMock($stepExecution = null)
-    {
-        $event = $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Event\StepExecutionEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $event->expects($this->any())
-            ->method('getStepExecution')
-            ->will($this->returnValue($stepExecution));
-
-        return $event;
-    }
-
     private function getJobExecutionMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\JobExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    private function getStepExecutionMock()
-    {
-        return $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }
