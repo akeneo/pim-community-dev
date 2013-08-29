@@ -276,8 +276,8 @@ function init() {
         e.preventDefault();
         e.stopPropagation();
         var $input = $(this).siblings('input[type="file"]').first();
-        $input.replaceWith($input.clone());
-        $(this).siblings('input[type="file"]').trigger('change');
+        $input.wrap('<form>').closest('form').get(0).reset();
+        $input.unwrap().trigger('change');
     });
 
     $('[data-form-toggle]').on('click', function() {
