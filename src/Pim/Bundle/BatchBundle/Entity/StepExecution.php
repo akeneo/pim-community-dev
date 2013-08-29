@@ -263,16 +263,6 @@ class StepExecution
     }
 
     /**
-     * Get the last reader warning
-     *
-     * @return array
-     */
-    public function getLastReaderWarning()
-    {
-        return end($this->readerWarnings);
-    }
-
-    /**
      * Returns the current number of items written for this execution
      *
      * @return the current number of items written for this execution
