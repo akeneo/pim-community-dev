@@ -11,6 +11,11 @@ Oro.widget.Abstract = Backbone.View.extend({
         wid: null
     },
 
+    initialize: function(options) {
+        options = options || {};
+        this.initializeWidget(options);
+    },
+
     setTitle: function(title) {
         console.warn('Implement setTitle');
     },
@@ -220,7 +225,10 @@ Oro.widget.Abstract = Backbone.View.extend({
     },
 
     _clearActionsContainer: function() {
-        this.getActionsElement().empty();
+        var actionsEl = this.getActionsElement();
+        if (actionsEl) {
+            actionsEl.empty();
+        }
     },
 
     /**
@@ -265,7 +273,7 @@ Oro.widget.Abstract = Backbone.View.extend({
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
-                this.setElement($(content));
+                this.setElement($(content).filter('.widget-content'));
                 this._show();
             } catch (error) {
                 // Remove state with unrestorable content
@@ -282,13 +290,13 @@ Oro.widget.Abstract = Backbone.View.extend({
     },
 
     show: function() {
-        this.$el.attr('data-wid', this.getWid());
+        this.setWidToElement(this.$el);
         this._renderActions();
-        if (this.$el.hasClass('widget-content')) {
-            this.$el.trigger('widgetize', this);
-        } else {
-            this.$el.find('.widget-content').trigger('widgetize', this);
-        }
+        this.$el.trigger('widgetize', this);
         this.trigger('widgetRender', this.$el, this);
+    },
+
+    setWidToElement: function(el) {
+        el.attr('data-wid', this.getWid());
     }
 });
