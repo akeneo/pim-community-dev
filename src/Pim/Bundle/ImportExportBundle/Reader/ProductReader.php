@@ -46,7 +46,7 @@ class ProductReader extends ORMReader
                 ->getQuery();
         }
 
-        return parent::read();
+        return parent::read($stepExecution);
     }
 
     /**
