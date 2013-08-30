@@ -1,0 +1,4 @@
+oro_system_configuration:
+    # required not empty levels node
+    levels:
+       - global

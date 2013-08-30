@@ -53,6 +53,7 @@ class ProcessorDecorator
                         break;
                     // merge recursive all nodes in tree
                     case self::TREE_ROOT:
+                    case self::TAGS_ROOT:
                         $source[self::ROOT][$nodeName] = array_merge_recursive(
                             $source[self::ROOT][$nodeName],
                             $node

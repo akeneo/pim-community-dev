@@ -23,7 +23,7 @@ oro_system_configuration:
 This node should be also declared under root node and contains array of available field groups with its properties
 Group is abstract fields bag, view representation of group managed on template level of specific configuration template
 and dependent on its position in tree.
-This means that group could be rendered as fieldset or 1tab or like part of accordion list.
+This means that group could be rendered as fieldset or tab or like part of accordion list.
 
 ```
 oro_system_configuration:
