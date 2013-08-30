@@ -12,7 +12,7 @@ parameters:
 
     oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
-    oro_filter:                                                Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
+    oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
 
 services:
     oro_security.acl.extension_selector:
@@ -86,9 +86,8 @@ services:
             - @oro_entity.owner.entity_owner_accessor
             - @oro_entity.owner.ownership_metadata_provider
 
-    oro_entity.filter:
-        class:           %oro_filter%
+    oro_security.orm.ownership_sql_filter:
+        class:           %oro_security.orm.ownership_sql_filter.class%
         arguments:       ["@doctrine.orm.entity_manager"]
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
-

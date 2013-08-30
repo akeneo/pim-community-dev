@@ -105,22 +105,22 @@ class FilterCollection
      */
     public function enable($name)
     {
-        if (!isset($this->enabledFilters[$name]) && !isset($this->disabledFilters[$name])) {
-            /**
-             * Keeping logic of doctrine filters
-             */
-            if (null === $filterClass = $this->config->getFilterClassName($name)) {
-                throw new \InvalidArgumentException("Filter '" . $name . "' does not exist.");
+        if (!isset($this->enabledFilters[$name])) {
+            if (isset($this->disabledFilters[$name])) {
+                $this->enabledFilters[$name] = $this->disabledFilters[$name];
+                unset($this->disabledFilters[$name]);
+            } else {
+                /**
+                 * Keeping logic of doctrine filters
+                 */
+                if (null === $filterClass = $this->config->getFilterClassName($name)) {
+                    throw new \InvalidArgumentException("Filter '" . $name . "' does not exist.");
+                }
+
+                $this->enabledFilters[$name] = new $filterClass($this->em);
             }
-
-            $this->enabledFilters[$name] = new $filterClass($this->em);
-            $this->sortFilters();
-        }
-
-        if (!isset($this->enabledFilters[$name]) && isset($this->disabledFilters[$name])) {
-            $this->enabledFilters[$name] = $this->disabledFilters[$name];
-            unset($this->disabledFilters[$name]);
-            $this->sortFilters();
+            ksort($this->enabledFilters);
+            $this->setFiltersStateDirty();
         }
 
         return $this->enabledFilters[$name];
@@ -212,18 +212,6 @@ class FilterCollection
      */
     public function setFiltersStateDirty()
     {
-        $this->filtersState = self::FILTERS_STATE_DIRTY;
-    }
-
-    /**
-     * Sort enabled filters
-     */
-    protected function sortFilters()
-    {
-        // Keep the enabled filters sorted for the hash
-        ksort($this->enabledFilters);
-
-        // Now the filter collection is dirty
         $this->filtersState = self::FILTERS_STATE_DIRTY;
     }
 }

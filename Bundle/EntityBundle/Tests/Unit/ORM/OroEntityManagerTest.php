@@ -51,8 +51,10 @@ class OroEntityManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->setFilterCollection($this->filterCollection);
         $this->assertAttributeEquals($this->filterCollection, 'filterCollection', $this->manager);
         $this->assertEquals($this->filterCollection, $this->manager->getFilters());
+        $this->assertFalse($this->manager->hasFilters());
+        $this->filterCollection->expects($this->once())->method('getEnabledFilters')
+            ->will($this->returnValue(true));
         $this->assertTrue($this->manager->hasFilters());
-
         $this->filterCollection->expects($this->at(0))->method('isClean')
             ->will($this->returnValue(true));
         $this->filterCollection->expects($this->at(1))->method('isClean')

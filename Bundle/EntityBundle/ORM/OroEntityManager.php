@@ -72,10 +72,10 @@ class OroEntityManager extends EntityManager
     /**
      * Checks whether the Entity Manager has filters.
      *
-     * @return True, if the EM has a filter collection.
+     * @return boolean True, if the EM has a filter collection with enabled filters.
      */
     public function hasFilters()
     {
-        return null !== $this->filterCollection;
+        return null !== $this->filterCollection && $this->filterCollection->getEnabledFilters();
     }
 }

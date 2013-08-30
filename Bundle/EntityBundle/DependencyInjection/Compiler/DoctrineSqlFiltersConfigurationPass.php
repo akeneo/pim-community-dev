@@ -38,24 +38,37 @@ class DoctrineSqlFiltersConfigurationPass implements CompilerPassInterface
     }
 
     /**
-     * Load sql filters by tag
-     *
      * @param ContainerBuilder $container
      * @return array
+     * @throws \LogicException
      */
     protected function loadFilters(ContainerBuilder $container)
     {
         $taggedServices = $container->findTaggedServiceIds(self::TAG);
         $filters = array();
         $enabled = false;
-        $name = uniqid(self::TAG);
+        $names = array();
+        $name = '';
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
+                if (empty($attributes['filter_name'])) {
+                    throw new \LogicException(
+                        sprintf('Attribute filter_name is required for %s service', $id)
+                    );
+                }
+                if (in_array($attributes['filter_name'], $names)) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Attribute filter_name "%s" for %s service is already used',
+                            $id,
+                            $attributes['filter_name']
+                        )
+                    );
+                }
+                $name = $attributes['filter_name'];
+                $names[] = $name;
                 if (!empty($attributes['enabled'])) {
                     $enabled = (bool)$attributes['enabled'];
-                }
-                if (!empty($attributes['filter_name'])) {
-                    $name = $attributes['filter_name'];
                 }
             }
             $filters[] = array('id' => $id, 'enabled' => $enabled, 'filter_name' => $name);
