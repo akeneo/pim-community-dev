@@ -31,6 +31,68 @@ class ProcessorDecorator
     }
 
     /**
+     * Merge configs by specified rules
+     *
+     * @param array $source
+     * @param array $newData
+     * @return array
+     */
+    public function merge($source, $newData)
+    {
+        // prevent key isset and is_array checks
+        $source = array_merge($this->getEmptyFinalArray(), $source);
+
+        if (!empty($newData[self::ROOT])) {
+            foreach ((array)$newData[self::ROOT] as $nodeName => $node) {
+                switch ($nodeName) {
+                    // merge levels node
+                    case self::LEVELS_ROOT:
+                        $source[self::ROOT][$nodeName] = array_merge(
+                            $source[self::ROOT][$nodeName],
+                            $node
+                        );
+                        break;
+                    // merge recursive all nodes in tree
+                    case self::TREE_ROOT:
+                        $source[self::ROOT][$nodeName] = array_merge_recursive(
+                            $source[self::ROOT][$nodeName],
+                            $node
+                        );
+                        break;
+                    // replace all overrides in other nodes
+                    default:
+                        $source[self::ROOT][$nodeName] = array_replace_recursive(
+                            $source[self::ROOT][$nodeName],
+                            $node
+                        );
+                }
+            }
+        }
+
+        return $source;
+    }
+
+    /**
+     * Returns empty array representation of valid config structure
+     *
+     * @return array
+     */
+    protected function getEmptyFinalArray()
+    {
+        $result = array(
+            self::ROOT => array_fill_keys(
+                array(
+                    self::LEVELS_ROOT, self::VERTICAL_TABS_ROOT, self::HORIZONTAL_TABS_ROOT,
+                    self::FIELDSETS_ROOT, self::FIELDS_ROOT, self::TREE_ROOT
+                ),
+                array()
+            )
+        );
+
+        return $result;
+    }
+
+    /**
      * Getter for processor
      *
      * @return Processor
@@ -69,10 +131,10 @@ class ProcessorDecorator
         $builder = new TreeBuilder();
 
         $node = $builder->root(self::LEVELS_ROOT)
-            ->isRequired()
-            ->requiresAtLeastOneElement()
-            ->prototype('scalar')
-        ->end();
+                ->isRequired()
+                ->requiresAtLeastOneElement()
+                ->prototype('scalar')
+            ->end();
 
         return $node;
     }
