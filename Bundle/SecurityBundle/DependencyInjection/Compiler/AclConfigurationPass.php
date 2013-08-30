@@ -39,8 +39,8 @@ class AclConfigurationPass implements CompilerPassInterface
         if ($container->hasDefinition(self::ACL_EXTENSION_SELECTOR)) {
             $selectorDef = $container->getDefinition(self::ACL_EXTENSION_SELECTOR);
             $extensions = $this->loadAclExtensions($container);
-            foreach ($extensions as $extensionServiceId) {
-                $selectorDef->addMethodCall('addAclExtension', array(new Reference($extensionServiceId)));
+            foreach ($extensions as $extensionService) {
+                $selectorDef->addMethodCall('addAclExtension', array(new Reference($extensionService['id'])));
             }
         }
     }
@@ -110,13 +110,22 @@ class AclConfigurationPass implements CompilerPassInterface
             $priority = 0;
             foreach ($attributes as $attr) {
                 if (isset($attr['priority'])) {
-                    $priority = (int)isset($attr['priority']);
+                    $priority = (int) $attr['priority'];
                     break;
                 }
             }
-            $extensions[$priority] = $id;
+
+            $extensions[] = array('id' => $id, 'priority' => $priority);
         }
-        ksort($extensions);
+        usort(
+            $extensions,
+            function ($a, $b) {
+                if ($a['priority'] == $b['priority']) {
+                    return 0;
+                }
+                return ($a['priority'] < $b['priority']) ? -1 : 1;
+            }
+        );
 
         return $extensions;
     }

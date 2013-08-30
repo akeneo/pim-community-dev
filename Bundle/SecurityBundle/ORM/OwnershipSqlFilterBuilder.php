@@ -11,13 +11,14 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 class OwnershipSqlFilterBuilder
 {
     /**
-     * @var SecurityContextInterface
+     * @var ServiceLink
      */
-    protected $securityContext;
+    protected $securityContextLink;
 
     /**
      * @var ObjectIdAccessor
@@ -42,20 +43,20 @@ class OwnershipSqlFilterBuilder
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param AclVoter $aclVoter
+     * @param ServiceLink $securityContextLink
      * @param ObjectIdAccessor $objectIdAccessor
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnerTree $tree
+     * @param AclVoter $aclVoter
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
-        AclVoter $aclVoter,
+        ServiceLink $securityContextLink,
         ObjectIdAccessor $objectIdAccessor,
         OwnershipMetadataProvider $metadataProvider,
-        OwnerTree $tree
+        OwnerTree $tree,
+        AclVoter $aclVoter = null
     ) {
-        $this->securityContext = $securityContext;
+        $this->securityContextLink = $securityContextLink;
         $this->aclVoter = $aclVoter;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->metadataProvider = $metadataProvider;
@@ -75,13 +76,16 @@ class OwnershipSqlFilterBuilder
      */
     public function buildFilterConstraint($targetEntityClassName, $targetTableAlias)
     {
+        if ($this->aclVoter === null || !$this->getUserId()) {
+            return '';
+        }
         $constraint = null;
 
         // @TODO Add check for service entities (not annotated as ACL)
 
         $observer = new OneShotIsGrantedObserver();
         $this->aclVoter->addOneShotIsGrantedObserver($observer);
-        $isGranted = $this->securityContext->isGranted('VIEW', 'entity:' . $targetEntityClassName);
+        $isGranted = $this->getSecurityContext()->isGranted('VIEW', 'entity:' . $targetEntityClassName);
 
         $metadata = $this->metadataProvider->getMetadata($targetEntityClassName);
         if ($isGranted) {
@@ -253,7 +257,11 @@ class OwnershipSqlFilterBuilder
      */
     protected function getUserId()
     {
-        $user = $this->securityContext->getToken()->getUser();
+        $token = $this->getSecurityContext()->getToken();
+        if (!$token) {
+            return null;
+        }
+        $user = $token->getUser();
         if (!is_object($user) || !is_a($user, $this->metadataProvider->getUserClass())) {
             throw new InvalidDomainObjectException(
                 sprintf(
@@ -311,5 +319,13 @@ class OwnershipSqlFilterBuilder
         return empty($targetTableAlias)
             ? $columnName
             : $targetTableAlias . '.' . $columnName;
+    }
+
+    /**
+     * @return SecurityContextInterface
+     */
+    protected function getSecurityContext()
+    {
+        return $this->securityContextLink->getService();
     }
 }

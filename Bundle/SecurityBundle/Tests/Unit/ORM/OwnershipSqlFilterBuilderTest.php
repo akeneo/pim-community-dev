@@ -55,16 +55,21 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->securityContextLink = $this->getMockBuilder(
+            'Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink'
+        )->disableOriginalConstructor()->getMock();
+        $this->securityContextLink->expects($this->any())->method('getService')
+            ->will($this->returnValue($this->securityContext));
         $this->aclVoter = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->builder = new OwnershipSqlFilterBuilder(
-            $this->securityContext,
-            $this->aclVoter,
+            $this->securityContextLink,
             new ObjectIdAccessor(),
             $this->metadataProvider,
-            $this->tree
+            $this->tree,
+            $this->aclVoter
         );
     }
 

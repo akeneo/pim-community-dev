@@ -13,6 +13,7 @@ parameters:
     oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
     oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
+    oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder
 
 services:
     oro_security.acl.extension_selector:
@@ -86,8 +87,21 @@ services:
             - @oro_entity.owner.entity_owner_accessor
             - @oro_entity.owner.ownership_metadata_provider
 
+    oro_security.orm.ownership_sql_filter_builder:
+        public: true
+        class:           %oro_security.orm.ownership_sql_filter_builder.class%
+        arguments:
+            - @oro_entity_config.link.security_context
+            - @oro_security.acl.object_id_accessor
+            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.tree
+            - @security.acl.voter.basic_permissions
+
     oro_security.orm.ownership_sql_filter:
         class:           %oro_security.orm.ownership_sql_filter.class%
-        arguments:       ["@doctrine.orm.entity_manager"]
+        arguments:
+            - @doctrine.orm.entity_manager
+        calls:
+            - [setBuilder, ["@oro_security.orm.ownership_sql_filter_builder"]]
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
