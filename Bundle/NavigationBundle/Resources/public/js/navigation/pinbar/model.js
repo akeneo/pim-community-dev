@@ -15,7 +15,8 @@ function(NavigationModel) {
             position: null,
             type: 'pinbar',
             display_type: null,
-            maximized: false
+            maximized: false,
+            remove: false
         }
     });
 });

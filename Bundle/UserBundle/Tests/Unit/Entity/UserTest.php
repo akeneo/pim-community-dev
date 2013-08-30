@@ -459,4 +459,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains($businessUnit, $user->getBusinessUnits());
     }
+
+    public function testOwners()
+    {
+        $entity = new User();
+        $businessUnit = new BusinessUnit();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($businessUnit);
+
+        $this->assertEquals($businessUnit, $entity->getOwner());
+    }
 }

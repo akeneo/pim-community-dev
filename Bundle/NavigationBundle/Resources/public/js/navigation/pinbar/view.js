@@ -67,7 +67,7 @@ function($, _, Backbone, app, mediator, AbstractView,
                 this
             );
 
-            this.$minimizeButton.click(_.bind(this.minimizePage, this));
+            this.$minimizeButton.click(_.bind(this.changePageState, this));
 
             this.registerTab();
             this.cleanup();
@@ -135,6 +135,20 @@ function($, _, Backbone, app, mediator, AbstractView,
         },
 
         /**
+         * Handle minimize/maximize page.
+         *
+         * @param e
+         */
+        changePageState: function(e) {
+            var item = this.getItemForCurrentPage(true);
+            if (item.length) {
+                this.closePage(item);
+            } else {
+                this.minimizePage(e);
+            }
+        },
+
+        /**
          * Handle minimize page.
          *
          * @param e
@@ -175,14 +189,14 @@ function($, _, Backbone, app, mediator, AbstractView,
         },
 
         /**
-         * Handle click on page close button
+         * Handle pinbar close
+         *
+         * @param item
          */
-        closePage: function()
-        {
-            var pinnedItem = this.getItemForCurrentPage(true);
-            if (pinnedItem.length) {
-                _.each(pinnedItem, function(item) {item.destroy({wait: true});});
-            }
+        closePage: function(item) {
+            _.each(item, function(item) {
+                item.set('remove', true);
+            });
         },
 
         /**

@@ -26,7 +26,7 @@ class BusinessUnitManager
      * @param User $entity
      * @return array
      */
-    public function getBusinessUnitsTree(User $entity)
+    public function getBusinessUnitsTree(User $entity = null)
     {
         return $this->getBusinessUnitRepo()->getBusinessUnitsTree($entity);
     }
@@ -48,7 +48,7 @@ class BusinessUnitManager
     /**
      * @return BusinessUnitRepository
      */
-    protected function getBusinessUnitRepo()
+    public function getBusinessUnitRepo()
     {
         return $this->em->getRepository('OroOrganizationBundle:BusinessUnit');
     }

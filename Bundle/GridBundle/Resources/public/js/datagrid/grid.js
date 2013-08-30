@@ -366,8 +366,11 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
                 var action = new this.rowClickAction({
                     datagrid: this,
                     model: row.model
-                });
-                action.run();
+                }),
+                actionConfiguration = row.model.get('action_configuration');
+                if (!actionConfiguration || actionConfiguration[action.name] !== false) {
+                    action.run();
+                }
             }
         },
 
