@@ -70,8 +70,7 @@ class UserPreferencesListener implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
-        
-        
+
         if (($entity instanceof Locale) &&
             $args->hasChangedField('activated') &&
             $args->getNewValue('activated')) {
