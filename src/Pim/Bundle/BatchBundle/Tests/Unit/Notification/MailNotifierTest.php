@@ -48,7 +48,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
 
         $this->handler
             ->expects($this->once())
-            ->method('getRealPath')
+            ->method('getFilename')
             ->will($this->returnValue('/tmp/foo.log'));
 
         $jobExecution = $this->getDisabledConstructorMock('Pim\Bundle\BatchBundle\Entity\JobExecution');
