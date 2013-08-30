@@ -144,13 +144,14 @@ class WorkflowManager
 
         $applicableWorkflows = array();
         foreach ($allowedWorkflows as $workflow) {
-            /** @var Attribute $attribute */
-            $managedEntityAttribute = $this->getManagedEntityAttributesByEntity($workflow, $entity);
-            $isMultiple = $managedEntityAttribute->getOption('multiple') == true;
+            $managedEntityAttribute = $this->getManagedEntityAttributeByEntity($workflow, $entity);
+            if ($managedEntityAttribute) {
+                $isMultiple = $managedEntityAttribute->getOption('multiple') == true;
 
-            // if workflow allows multiple workflow items or there is no workflow item for current class
-            if ($isMultiple || !in_array($workflow->getName(), $usedWorkflows)) {
-                $applicableWorkflows[$workflow->getName()] = $workflow;
+                // if workflow allows multiple workflow items or there is no workflow item for current class
+                if ($isMultiple || !in_array($workflow->getName(), $usedWorkflows)) {
+                    $applicableWorkflows[$workflow->getName()] = $workflow;
+                }
             }
         }
 
@@ -161,7 +162,7 @@ class WorkflowManager
      * Get workflow items for entity.
      *
      * @param object $entity
-     * @return array
+     * @return WorkflowItem[]
      */
     public function getWorkflowItemsByEntity($entity)
     {
@@ -187,7 +188,7 @@ class WorkflowManager
         // try to find appropriate entity
         if ($entity) {
             $entityAttributeName = null;
-            $managedEntityAttribute = $this->getManagedEntityAttributesByEntity($workflow, $entity);
+            $managedEntityAttribute = $this->getManagedEntityAttributeByEntity($workflow, $entity);
             if ($managedEntityAttribute) {
                 $entityAttributeName = $managedEntityAttribute->getName();
             }
@@ -212,7 +213,7 @@ class WorkflowManager
      * @param object $entity
      * @return null|Attribute
      */
-    protected function getManagedEntityAttributesByEntity(Workflow $workflow, $entity)
+    protected function getManagedEntityAttributeByEntity(Workflow $workflow, $entity)
     {
         $entityClass = $this->metadataManager->getEntityClass($entity);
 
@@ -247,6 +248,6 @@ class WorkflowManager
             return $workflowIdentifier;
         }
 
-        throw new WorkflowException('Could not find workflow by given identifier.');
+        throw new WorkflowException('Can\'t find workflow by given identifier.');
     }
 }

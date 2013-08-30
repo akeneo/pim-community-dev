@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\ItemStub;
 use Symfony\Component\PropertyAccess\PropertyPath;
+
+use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\ItemStub;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Zend\Server\Reflection;
 
 class ContextAccessorTest extends \PHPUnit_Framework_TestCase
 {
@@ -116,6 +119,30 @@ class ContextAccessorTest extends \PHPUnit_Framework_TestCase
                 'expectedValue' => null
             ),
         );
+    }
+
+    public function testGetValueNoSuchProperty()
+    {
+        $context = $this->createObject(array());
+        $value = new PropertyPath('test');
+
+        $propertyAccessor = $this->getMockBuilder('Symfony\Component\PropertyAccess\PropertyAccessor')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getValue'))
+            ->getMock();
+        $propertyAccessor->expects($this->once())
+            ->method('getValue')
+            ->with($context, $value)
+            ->will($this->throwException(new NoSuchPropertyException('No such property')));
+
+        $propertyAccessorReflection = new \ReflectionProperty(
+            'Oro\Bundle\WorkflowBundle\Model\ContextAccessor',
+            'propertyAccessor'
+        );
+        $propertyAccessorReflection->setAccessible(true);
+        $propertyAccessorReflection->setValue($this->contextAccessor, $propertyAccessor);
+
+        $this->assertNull($this->contextAccessor->getValue($context, $value));
     }
 
     protected function createObject(array $data)
