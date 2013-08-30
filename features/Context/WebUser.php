@@ -916,7 +916,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function attachFileToField($file, $field)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                .DIRECTORY_SEPARATOR.$file;
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }
