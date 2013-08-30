@@ -126,6 +126,9 @@ class StepExecution
      */
     private $failureExceptions = null;
 
+    /**
+     * @var array
+     */
     private $readerWarnings = array();
 
     /**
@@ -240,8 +243,9 @@ class StepExecution
     /**
      * Add a reader warning
      *
-     * @param string $message
-     * @param mixed  $data
+     * @param ItemReaderInterface $reader
+     * @param string              $message
+     * @param mixed               $data
      */
     public function addReaderWarning(ItemReaderInterface $reader, $message, $data)
     {
