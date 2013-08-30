@@ -121,11 +121,11 @@ class BatchCompletenessCalculator
      */
     protected function getProductsToCalculate(array $families = array())
     {
-        $flexibleRepo = $this->productManager->getFlexibleRepository();
+        $productRepo = $this->productManager->getFlexibleRepository();
         if (!empty($families)) {
-            return $flexibleRepo->findBy(array('family' => $families));
+            return $productRepo->findBy(array('family' => $families));
         } else {
-            return $flexibleRepo->findByExistingFamily();
+            return $productRepo->findByExistingFamily();
         }
     }
 
