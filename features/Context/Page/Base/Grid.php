@@ -94,7 +94,9 @@ class Grid extends Index
         $action = $rowElement->find('css', sprintf('a.action[title=%s]', $actionName));
 
         if (!$action) {
-            throw new \Exception(sprintf('Could not find action "%s".', $actionName));
+            throw new \InvalidArgumentException(
+                sprintf('Could not find action "%s".', $actionName)
+            );
         }
 
         $action->click();
@@ -117,7 +119,9 @@ class Grid extends Index
             $elt->fillField('value', $value);
             $filter->find('css', 'button.filter-update')->click();
         } else {
-            throw new \InvalidArgumentException(sprintf('Filtering by "%s" is not yet implemented"', $filterName));
+            throw new \InvalidArgumentException(
+                sprintf('Filtering by "%s" is not yet implemented"', $filterName)
+            );
         }
     }
 
