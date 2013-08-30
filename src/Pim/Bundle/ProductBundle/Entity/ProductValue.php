@@ -250,6 +250,9 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function setPrices($prices)
     {
+        if (null === $prices) {
+            $prices = array();
+        }
         $this->prices = $prices;
 
         return $this;

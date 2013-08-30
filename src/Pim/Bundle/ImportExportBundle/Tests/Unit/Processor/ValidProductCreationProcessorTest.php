@@ -3,6 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
+use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 
 /**
  * Test related class
@@ -15,13 +19,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->em             = $this->getEntityManagerMock();
         $this->formFactory    = $this->getFormFactoryMock();
         $this->productManager = $this->getProductManagerMock();
         $this->channelManager = $this->getChannelManagerMock();
 
         $this->processor = new ValidProductCreationProcessor(
-            $this->em,
             $this->formFactory,
             $this->productManager,
             $this->channelManager
@@ -30,52 +32,13 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $attributeRepository = $this->getRepositoryMock();
-        $categoryRepository  = $this->getRepositoryMock();
-        $familyRepository    = $this->getRepositoryMock();
-        $repoMap = array(
-            array('PimProductBundle:ProductAttribute', $attributeRepository),
-            array('PimProductBundle:Category', $categoryRepository),
-            array('PimProductBundle:Family', $familyRepository),
-        );
-
-        $this->em
-            ->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValueMap($repoMap));
-
-        $attributesMap = array(
-            array(array('code' => 'sku'), null, $this->getAttributeMock('sku', 'varchar')),
-            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar', true)),
-            array(array('code' => 'description'), null, $this->getAttributeMock('description', 'longtext')),
-        );
-        $attributeRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValueMap($attributesMap));
-
-        $categoriesMap = array(
-            array(array('code' => 'cat_1'), null, $this->getCategoryMock(1)),
-            array(array('code' => 'cat_2'), null, $this->getCategoryMock(2)),
-            array(array('code' => 'cat_3'), null, $this->getCategoryMock(3)),
-        );
-        $categoryRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValueMap($categoriesMap));
-
-        $familyRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue($this->getFamilyMock(1)));
-
         $product = $this->getProductMock();
         $this->productManager
             ->expects($this->any())
             ->method('createFlexible')
             ->will($this->returnValue($product));
 
-        $form = $this->getFormMock();
+        $form = $this->getFormMock(true);
         $this->formFactory
             ->expects($this->any())
             ->method('create')
@@ -86,27 +49,22 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('submit')
             ->with(
                 array(
-                    'enabled' => '1',
-                    'values' => array(
-                        'sku' => array(
-                            'varchar' => 'foo-1',
-                        ),
-                        'name_en_US_phpunit' => array(
-                            'varchar' => 'car',
-                        ),
-                        'name_fr_FR_phpunit' => array(
-                            'varchar' => 'voiture',
-                        ),
-                        'description' => array(
-                            'longtext' => 'A foo product'
-                        )
-                    ),
-                    'categories' => array(1, 2, 3),
-                    'family' => 1
+                    ProductEnabledConverter::ENABLED_KEY       => true,
+                    ProductValueConverter::SCOPE_KEY           => 'ecommerce',
+                    ProductFamilyConverter::FAMILY_KEY         => 'vehicle',
+                    ProductCategoriesConverter::CATEGORIES_KEY => 'cat_1,cat_2,cat_3',
+                    'sku'                                      => 'foo-1',
+                    'name-en_US'                               => 'car',
+                    'name-fr_FR'                               => 'voiture',
+                    'description'                              => 'A foo product',
                 )
             );
 
-        $this->processor->setChannel('phpunit');
+        $this->processor->setChannel('ecommerce');
+        $this->processor->setEnabled(true);
+        $this->processor->setFamilyColumn('family');
+        $this->processor->setCategoriesColumn('categories');
+
         $this->assertEquals(
             $product,
             $this->processor->process(
@@ -127,38 +85,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidProcess()
     {
-        $attributeRepository = $this->getRepositoryMock();
-        $categoryRepository  = $this->getRepositoryMock();
-        $repoMap = array(
-            array('PimProductBundle:ProductAttribute', $attributeRepository),
-            array('PimProductBundle:Category', $categoryRepository),
-        );
-
-        $this->em
-            ->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValueMap($repoMap));
-
-        $attributesMap = array(
-            array(array('code' => 'sku'), null, $this->getAttributeMock('sku', 'varchar')),
-            array(array('code' => 'name'), null, $this->getAttributeMock('name', 'varchar', true)),
-            array(array('code' => 'description'), null, $this->getAttributeMock('description', 'longtext')),
-        );
-        $attributeRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValueMap($attributesMap));
-
-        $categoriesMap = array(
-            array(array('code' => 'cat_1'), null, $this->getCategoryMock(1)),
-            array(array('code' => 'cat_2'), null, $this->getCategoryMock(2)),
-            array(array('code' => 'cat_3'), null, $this->getCategoryMock(3)),
-        );
-        $categoryRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValueMap($categoriesMap));
-
         $product = $this->getProductMock();
         $this->productManager
             ->expects($this->any())
@@ -172,16 +98,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with('pim_product', $product, array('csrf_protection' => false, 'import_mode' => true))
             ->will($this->returnValue($form));
 
-        $this->processor->setChannel('phpunit');
-        $this->processor->process(
-            array(
-                'sku'         => 'foo-1',
-                'name-en_US'  => 'car',
-                'name-fr_FR'  => 'voiture',
-                'description' => 'A foo product',
-                'categories'  => 'cat_1,cat_2,cat_3'
-            )
-        );
+        $this->processor->process(array());
     }
 
     protected function getFormFactoryMock()

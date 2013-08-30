@@ -140,8 +140,8 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetFilterCount()
     {
-        $this->assertEquals(0, $this->stepExecution->getFilterCount());
-        $this->assertEntity($this->stepExecution->setFilterCount(5));
+        $this->stepExecution->setReadCount(10);
+        $this->stepExecution->setWriteCount(5);
         $this->assertEquals(5, $this->stepExecution->getFilterCount());
     }
 
@@ -167,6 +167,20 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $expectedString = "id=0, name=[my_step_execution], status=[2], exitCode=[EXECUTING], exitDescription=[], "
             ."readCount=0, writeCount=0, filterCount=0";
         $this->assertEquals($expectedString, (string) $this->stepExecution);
+    }
+
+    public function testAddReaderWarning()
+    {
+        $reader = $this->getMock('Pim\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $reason = 'something is wrong';
+        $data = array('foo' => 'bar');
+
+        $this->stepExecution->addReaderWarning($reader, $reason, $data);
+
+        $this->assertEquals(
+            array(array('reader' => $reader, 'reason' => $reason, 'data' => $data)),
+            $this->stepExecution->getReaderWarnings()
+        );
     }
 
     /**

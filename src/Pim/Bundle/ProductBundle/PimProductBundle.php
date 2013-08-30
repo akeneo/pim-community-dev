@@ -4,7 +4,7 @@ namespace Pim\Bundle\ProductBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\ProductBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
+use Pim\Bundle\ProductBundle\DependencyInjection\Compiler;
 
 /**
  * Pim Product Bundle
@@ -22,6 +22,7 @@ class PimProductBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterAttributeConstraintGuessersPass);
+        $container->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass);
+        $container->addCompilerPass(new Compiler\SetImportedProductDataTransformerPass);
     }
 }

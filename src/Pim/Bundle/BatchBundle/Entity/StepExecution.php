@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
+use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -125,6 +126,8 @@ class StepExecution
      */
     private $failureExceptions = null;
 
+    private $readerWarnings = array();
+
     /**
      * Constructor with mandatory properties.
      *
@@ -227,6 +230,39 @@ class StepExecution
     }
 
     /**
+     * Increment the read count by 1
+     */
+    public function incrementReadCount()
+    {
+        $this->readCount++;
+    }
+
+    /**
+     * Add a reader warning
+     *
+     * @param string $message
+     * @param mixed  $data
+     */
+    public function addReaderWarning(ItemReaderInterface $reader, $message, $data)
+    {
+        $this->readerWarnings[] = array(
+            'reader' => $reader,
+            'reason' => $message,
+            'data'   => $data,
+        );
+    }
+
+    /**
+     * Get the reader warnings
+     *
+     * @return array[]
+     */
+    public function getReaderWarnings()
+    {
+        return $this->readerWarnings;
+    }
+
+    /**
      * Returns the current number of items written for this execution
      *
      * @return the current number of items written for this execution
@@ -257,21 +293,7 @@ class StepExecution
      */
     public function getFilterCount()
     {
-        return $this->filterCount;
-    }
-
-    /**
-     * Public setter for the number of items filtered out of this execution.
-     * @param integer $filterCount the number of items filtered out of this execution to
-     * set
-     *
-     * @return $this
-     */
-    public function setFilterCount($filterCount)
-    {
-        $this->filterCount = $filterCount;
-
-        return $this;
+        return $this->readCount - $this->writeCount;
     }
 
     /**
