@@ -59,7 +59,6 @@ class RefreshCommand extends ContainerAwareCommand
             $output->writeln(sprintf('<info>Versioning is already up to date.</info>'));
 
         } else {
-
             $progress = $this->getHelperSet()->get('progress');
             $ind = 0;
             $batchSize = $input->getOption('batch-size');

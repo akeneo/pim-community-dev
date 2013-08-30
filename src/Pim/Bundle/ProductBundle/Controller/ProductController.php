@@ -19,7 +19,6 @@ use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
  */
 class ProductController extends Controller
 {
-
     const CATEGORY_PREFIX = "category_node_";
     const TREE_APPLY_PREFIX = "apply_on_tree_";
 
@@ -124,7 +123,6 @@ class ProductController extends Controller
             $product,
             array('currentLocale' => $this->getDataLocale())
         );
-
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -310,7 +308,6 @@ class ProductController extends Controller
         foreach ($requestParameters as $key => $value) {
             if ($value === "1") {
                 if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-
                     $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
                     if ($catId > 0) {
                         $categories[] = $catId;

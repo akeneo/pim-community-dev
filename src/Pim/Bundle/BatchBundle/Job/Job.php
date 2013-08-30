@@ -71,6 +71,13 @@ class Job implements JobInterface
         return $this;
     }
 
+    /**
+     * Set the event dispatcher
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     *
+     * @return Job
+     */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -162,7 +169,7 @@ class Job implements JobInterface
     /**
      * Run the specified job, handling all listener and repository calls, and
      * delegating the actual processing to {@link #doExecute(JobExecution)}.
-     * @param JobExecution $execution
+     * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
      * @throws StartLimitExceededException
@@ -174,14 +181,12 @@ class Job implements JobInterface
 
         try {
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
-
                 $jobExecution->setStartTime(new \DateTime());
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
 
                 // Todo Listener beforeJob
                  $this->doExecute($jobExecution);
             } else {
-
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));

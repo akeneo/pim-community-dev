@@ -13,7 +13,6 @@ use Pim\Bundle\BatchBundle\Job\ExitStatus;
  */
 class ExitStatusTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSetExitCode()
     {
         $status = new ExitStatus(ExitStatus::COMPLETED);
