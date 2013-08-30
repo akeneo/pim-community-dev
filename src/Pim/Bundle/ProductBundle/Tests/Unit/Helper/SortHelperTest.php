@@ -30,6 +30,10 @@ class SortHelperTest extends \PHPUnit_Framework_TestCase
             'sort_numerically' => array(
                 array('a' => 52, 'b' => 2, 'c' => 14, 'd' => 10, 'e' => 03),
                 array('e' => 03, 'b' => 2, 'd' => 10, 'c' => 14, 'a' => 52)
+            ),
+            'sort_with_some_identique_values' => array(
+                array(1 => 'a', 2 => 'b', 3 => 'a', 4 => 'b'),
+                array(1 => 'a', 3 => 'a', 2 => 'b', 4 => 'b')
             )
         );
     }
