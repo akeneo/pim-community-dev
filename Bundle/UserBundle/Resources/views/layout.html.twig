@@ -23,7 +23,7 @@
         {% endstylesheets %}
     {% endif %}
 
-    {% javascripts
+    {# % javascripts
         '@OroUIBundle/Resources/public/lib/jquery-1.10.2.js'
         '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
         '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'
@@ -33,17 +33,22 @@
 
         filter='?yui_js'
         output='js/oro.user.js'
-    %}
+    % }
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    { % endjavascripts % #}
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
+    <script type="text/javascript">
+        require(['jquery', 'bootstrap', 'oro/init-layout', 'oro/init-signin'])
+    </script>
 
     <!--[if lte IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
-    <script src="{{ asset('bundles/oroui/lib/jquery/jquery.placeholder.js') }}"></script>
     <script type="text/javascript">
-        jQuery(document).ready(function() {
-            jQuery('input, textarea').placeholder();
+        require(['jquery', 'bundles/oroui/lib/html5', 'bundles/oroui/lib/jquery/jquery.placeholder'],
+        function($){
+            $(function() {
+                $('input[placeholder], textarea[placeholder]').placeholder();
+            });
         });
     </script>
     <![endif]-->
