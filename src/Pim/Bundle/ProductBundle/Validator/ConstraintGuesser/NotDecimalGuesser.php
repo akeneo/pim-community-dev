@@ -38,7 +38,7 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if (!$attribute->isDecimalsAllowed()) {
-            $constraints[] = new NotDecimal;
+            $constraints[] = new NotDecimal();
         }
 
         return $constraints;

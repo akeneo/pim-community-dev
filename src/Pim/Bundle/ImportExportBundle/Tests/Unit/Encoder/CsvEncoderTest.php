@@ -43,7 +43,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportCsv()
     {
-        $encode = new CsvEncoder;
+        $encode = new CsvEncoder();
         $this->assertTrue($encode->supportsEncoding('csv'));
     }
 
@@ -72,7 +72,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testEncodeCollectionOfHashes()
     {
-        $encoder = new CsvEncoder;
+        $encoder = new CsvEncoder();
 
         $this->assertEquals(
             "foo;bar\nbaz;buz\n",
@@ -88,7 +88,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testEncodeEmptyArray()
     {
-        $encoder = new CsvEncoder;
+        $encoder = new CsvEncoder();
 
         $this->assertEquals("\n", $encoder->encode(array(), 'csv'));
     }
@@ -99,7 +99,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeUnexpectedValue($value)
     {
-        $encoder = new CsvEncoder;
+        $encoder = new CsvEncoder();
 
         $encoder->encode($value, 'csv');
     }
@@ -155,7 +155,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleEncodeOfHeterogeneousData()
     {
-        $encoder = new CsvEncoder;
+        $encoder = new CsvEncoder();
 
         $encoder->encode(array('foo' => 'bar'), 'csv', array('heterogeneous' => true));
         $encoder->encode(array('boo' => 'far'), 'csv', array('heterogeneous' => true));
@@ -163,7 +163,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testMultipleEncodeOfHomogeneousData()
     {
-        $encoder = new CsvEncoder;
+        $encoder = new CsvEncoder();
 
         $this->assertEquals(
             "foo\nbar\n",

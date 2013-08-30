@@ -32,7 +32,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->target = new FileValidator;
+        $this->target = new FileValidator();
     }
 
     public function testInstanceOfConstraintValidator()

@@ -13,7 +13,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new RegexGuesser;
+        $this->target = new RegexGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

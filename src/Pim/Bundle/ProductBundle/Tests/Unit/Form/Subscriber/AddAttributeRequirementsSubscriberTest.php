@@ -32,7 +32,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $channels    = array($mobile, $ecommerce);
         $attributes  = array($name, $description);
 
-        $family      = new Family;
+        $family      = new Family();
         $event       = $this->getEventMock($family);
 
         $subscriber  = new AddAttributeRequirementsSubscriber($channels, $attributes);

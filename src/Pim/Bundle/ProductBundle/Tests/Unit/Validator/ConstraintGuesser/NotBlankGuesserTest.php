@@ -13,7 +13,7 @@ class NotBlankGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new NotBlankGuesser;
+        $this->target = new NotBlankGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

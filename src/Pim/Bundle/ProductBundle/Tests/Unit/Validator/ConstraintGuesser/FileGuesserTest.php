@@ -13,7 +13,7 @@ class FileGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new FileGuesser;
+        $this->target = new FileGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()
