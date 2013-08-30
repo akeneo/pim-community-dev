@@ -191,15 +191,11 @@ class CompletenessCalculator
      *
      * @param ProductInterface $product
      * @param Channel          $channel
-     * @param Completeness[]   $completenesses
      *
-     * @return Completeness[] $completenesses List of completeness entities
+     * @return null
      */
-    public function calculateForAProductByChannel(
-        ProductInterface $product,
-        Channel $channel,
-        array $completenesses = array()
-    ) {
+    public function calculateForAProductByChannel(ProductInterface $product, Channel $channel)
+    {
         if ($product->getFamily() === null) {
             return array();
         }
