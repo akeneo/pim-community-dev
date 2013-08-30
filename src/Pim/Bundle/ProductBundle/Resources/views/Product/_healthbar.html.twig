@@ -1,6 +1,8 @@
 <div class="progress-cell">
-{% if completeness is null %}
+{% if product.getFamily is null %}
     {{ 'Impossible to calculate' | trans }}
+{% elseif completeness is null %}
+    {{ 'Not yet calculated' | trans }}
 {% else %}
     {% set titleProgressBar = completeness.ratio|number_format(0) ~'% completed ('~ completeness.requiredCount ~' required values)' %}
     <div class="progress" title="{{ titleProgressBar }}">

@@ -15,7 +15,11 @@
                 {% for channel in channels %}
                 <td>
                     {% include 'PimProductBundle:Product:_healthbar.html.twig'
-                        with {'channel': channel, 'completeness': product.completeness(locale.code, channel.code)} %}
+                        with {
+                            'channel': channel,
+                            'completeness': product.completeness(locale.code, channel.code),
+                            'product': product
+                    } %}
                 </td>
                 {% endfor %}
                 <td>&nbsp;</td>
