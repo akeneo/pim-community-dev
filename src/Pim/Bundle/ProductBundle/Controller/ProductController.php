@@ -70,6 +70,12 @@ class ProductController extends Controller
         $entity = $this->getProductManager()->createFlexible(true);
 
         if ($this->get('pim_product.form.handler.product_create')->process($entity)) {
+
+            $pendingManager = $this->container->get('pim_versioning.manager.pending');
+            if ($pending = $pendingManager->getPendingVersion($entity)) {
+                $pendingManager->createVersionAndAudit($pending);
+            }
+
             $this->addFlash('success', 'Product successfully saved.');
 
             if ($dataLocale === null) {
