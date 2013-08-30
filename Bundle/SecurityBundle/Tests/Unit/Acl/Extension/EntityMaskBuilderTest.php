@@ -280,6 +280,9 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public static function groupProvider()
     {
         return array(

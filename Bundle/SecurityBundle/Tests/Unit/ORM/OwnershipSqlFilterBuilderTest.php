@@ -5,13 +5,8 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\ORM;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder;
-use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
-use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -76,29 +71,31 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     private function buildTestTree()
     {
         /**
-         * org1  org2  org3       org4
-         *             |          |
-         * bu1   bu2   bu3        bu4
-         *       |     |          |
-         *       |     +-bu31     |
-         *       |     | |        |
-         *       |     | +-user31 |
-         *       |     |          |
-         * user1 user2 user3      user4
-         *                        |
-         *                        +-bu3
-         *                        +-bu4
-         *                          |
-         *                          +-bu41
-         *                            |
-         *                            +-bu411
-         *                              |
-         *                              +-user411
+         * org1  org2     org3         org4
+         *                |            |
+         *  bu1   bu2     +-bu3        +-bu4
+         *        |       | |            |
+         *        |       | +-bu31       |
+         *        |       | | |          |
+         *        |       | | +-user31   |
+         *        |       | |            |
+         *  user1 +-user2 | +-user3      +-user4
+         *                |                |
+         *                +-bu3a           +-bu3
+         *                  |              +-bu4
+         *                  +-bu3a1          |
+         *                                   +-bu41
+         *                                     |
+         *                                     +-bu411
+         *                                       |
+         *                                       +-user411
          */
         $this->tree->addBusinessUnit('bu1', null);
         $this->tree->addBusinessUnit('bu2', null);
         $this->tree->addBusinessUnit('bu3', 'org3');
         $this->tree->addBusinessUnit('bu31', 'org3');
+        $this->tree->addBusinessUnit('bu3a', 'org3');
+        $this->tree->addBusinessUnit('bu3a1', 'org3');
         $this->tree->addBusinessUnit('bu4', 'org4');
         $this->tree->addBusinessUnit('bu41', 'org4');
         $this->tree->addBusinessUnit('bu411', 'org4');
@@ -107,6 +104,8 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnitRelation('bu2', null);
         $this->tree->addBusinessUnitRelation('bu3', null);
         $this->tree->addBusinessUnitRelation('bu31', 'bu3');
+        $this->tree->addBusinessUnitRelation('bu3a', null);
+        $this->tree->addBusinessUnitRelation('bu3a1', 'bu3a');
         $this->tree->addBusinessUnitRelation('bu4', null);
         $this->tree->addBusinessUnitRelation('bu41', 'bu4');
         $this->tree->addBusinessUnitRelation('bu411', 'bu41');
@@ -204,7 +203,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'BUSINESS_UNIT',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (bu3,bu4,bu31,bu41,bu411)'
+                'owner_id IN (bu3,bu31,bu3a,bu3a1,bu4,bu41,bu411)'
             ),
             array(
                 'user4',
@@ -215,6 +214,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id IN (user3,user31,user4,user41,user411)'
             ),
+            array('user4', true, AccessLevel::GLOBAL_LEVEL, null, self::ORGANIZATION, '', 'id IN (org3,org4)'),
             array('user4', true, AccessLevel::DEEP_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::DEEP_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
             array(
@@ -234,6 +234,15 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 '',
                 'owner_id IN (user3,user4,user31,user41,user411)'
+            ),
+            array(
+                'user4',
+                true,
+                AccessLevel::DEEP_LEVEL,
+                null,
+                self::BUSINESS_UNIT,
+                '',
+                'id IN (bu3,bu4,bu31,bu41,bu411)'
             ),
             array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::LOCAL_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
@@ -255,6 +264,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id IN (user3,user4)'
             ),
+            array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::BUSINESS_UNIT, '', 'id IN (bu3,bu4)'),
             array('user4', true, AccessLevel::BASIC_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::BASIC_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
             array('user4', true, AccessLevel::BASIC_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', '1 = 0'),
@@ -267,6 +277,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id = user4'
             ),
+            array('user4', true, AccessLevel::BASIC_LEVEL, null, self::USER, '', 'id = user4'),
         );
     }
 }

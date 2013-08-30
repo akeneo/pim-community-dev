@@ -90,29 +90,31 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
     private function buildTestTree()
     {
         /**
-         * org1  org2  org3       org4
-         *             |          |
-         * bu1   bu2   bu3        bu4
-         *       |     |          |
-         *       |     +-bu31     |
-         *       |     | |        |
-         *       |     | +-user31 |
-         *       |     |          |
-         * user1 user2 user3      user4
-         *                        |
-         *                        +-bu3
-         *                        +-bu4
-         *                          |
-         *                          +-bu41
-         *                            |
-         *                            +-bu411
-         *                              |
-         *                              +-user411
+         * org1  org2     org3         org4
+         *                |            |
+         *  bu1   bu2     +-bu3        +-bu4
+         *        |       | |            |
+         *        |       | +-bu31       |
+         *        |       | | |          |
+         *        |       | | +-user31   |
+         *        |       | |            |
+         *  user1 +-user2 | +-user3      +-user4
+         *                |                |
+         *                +-bu3a           +-bu3
+         *                  |              +-bu4
+         *                  +-bu3a1          |
+         *                                   +-bu41
+         *                                     |
+         *                                     +-bu411
+         *                                       |
+         *                                       +-user411
          */
         $this->tree->addBusinessUnit('bu1', null);
         $this->tree->addBusinessUnit('bu2', null);
         $this->tree->addBusinessUnit('bu3', 'org3');
         $this->tree->addBusinessUnit('bu31', 'org3');
+        $this->tree->addBusinessUnit('bu3a', 'org3');
+        $this->tree->addBusinessUnit('bu3a1', 'org3');
         $this->tree->addBusinessUnit('bu4', 'org4');
         $this->tree->addBusinessUnit('bu41', 'org4');
         $this->tree->addBusinessUnit('bu411', 'org4');
@@ -121,6 +123,8 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
         $this->tree->addBusinessUnitRelation('bu2', null);
         $this->tree->addBusinessUnitRelation('bu3', null);
         $this->tree->addBusinessUnitRelation('bu31', 'bu3');
+        $this->tree->addBusinessUnitRelation('bu3a', null);
+        $this->tree->addBusinessUnitRelation('bu3a1', 'bu3a');
         $this->tree->addBusinessUnitRelation('bu4', null);
         $this->tree->addBusinessUnitRelation('bu41', 'bu4');
         $this->tree->addBusinessUnitRelation('bu411', 'bu41');

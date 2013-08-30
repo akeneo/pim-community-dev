@@ -44,11 +44,12 @@ class ObjectIdentityFactory
     }
 
     /**
-     * Constructs an ObjectIdentity based on the given descriptor
+     * Constructs an ObjectIdentity for the given domain object or based on the given descriptor
      * Examples:
-     *     create('Class:AcmeBundle\SomeClass')
-     *     create('Entity:AcmeBundle:SomeEntity')
-     *     create('Action:Some Action')
+     *     get($object)
+     *     get('Entity:AcmeBundle\SomeClass')
+     *     get('Entity:AcmeBundle:SomeEntity')
+     *     get('Action:Some Action')
      *
      * @param mixed $domainObjectOrDescriptor An domain object or the object identity descriptor
      * @return ObjectIdentity
