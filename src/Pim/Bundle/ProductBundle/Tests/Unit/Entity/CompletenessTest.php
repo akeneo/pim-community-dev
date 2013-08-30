@@ -154,22 +154,6 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test predicate for toReindex property
-     */
-    public function testIsSetToReindex()
-    {
-        $this->assertFalse($this->completeness->isToReindex());
-
-        $expectedToReindex = true;
-        $this->assertEntity($this->completeness->setToReindex($expectedToReindex));
-        $this->assertTrue($expectedToReindex, $this->completeness->isToReindex());
-
-        $expectedToReindex = false;
-        $this->completeness->setToReindex($expectedToReindex);
-        $this->assertFalse($expectedToReindex, $this->completeness->isToReindex());
-    }
-
-    /**
      * Test predicate for updated property
      */
     public function testGetSetUpdated()
