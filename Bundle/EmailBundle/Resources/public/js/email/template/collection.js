@@ -1,24 +1,32 @@
-Oro = Oro || {};
-Oro.EmailTemplatesUpdater = Oro.EmailTemplatesUpdater || {};
-
-Oro.EmailTemplatesUpdater.Collection = Backbone.Collection.extend({
-    route: 'oro_api_get_emailtemplate',
-    url: null,
-    model: Oro.EmailTemplatesUpdater.EmailTemplate,
+/* global define */
+define(['backbone', 'routing', 'oro/email/template/model'],
+function(Backbone, routing, EmailTemplateModel) {
+    'use strict';
 
     /**
-     * Constructor
+     * @export  oro/email/template/collection
+     * @class   oro.email.template.Collection
+     * @extends Backbone.Collection
      */
-    initialize: function () {
-        this.url = Routing.generate(this.route, {entityName: null});
-    },
+    return Backbone.Collection.extend({
+        route: 'oro_api_get_emailtemplate',
+        url: null,
+        model: EmailTemplateModel,
 
-    /**
-     * Regenerate route for selected entity
-     *
-     * @param id {String}
-     */
-    setEntityId: function (id) {
-        this.url = Routing.generate(this.route, {entityName: id});
-    }
+        /**
+         * Constructor
+         */
+        initialize: function () {
+            this.url = routing.generate(this.route, {entityName: null});
+        },
+
+        /**
+         * Regenerate route for selected entity
+         *
+         * @param id {String}
+         */
+        setEntityId: function (id) {
+            this.url = routing.generate(this.route, {entityName: id});
+        }
+    });
 });

@@ -1,10 +1,18 @@
-Oro = Oro || {};
-Oro.EmailTemplatesUpdater = Oro.EmailTemplatesUpdater || {};
+/* global define */
+define(['backbone'],
+function(Backbone) {
+    'use strict';
 
-Oro.EmailTemplatesUpdater.EmailTemplate = Backbone.Model.extend({
-    defaults: {
-        entity: '',
-        id: '',
-        name: ''
-    }
+    /**
+     * @export  oro/email/template/model
+     * @class   oro.email.template.Model
+     * @extends Backbone.Model
+     */
+    return Backbone.Model.extend({
+        defaults: {
+            entity: '',
+            id: '',
+            name: ''
+        }
+    });
 });

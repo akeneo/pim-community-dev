@@ -1,81 +1,88 @@
-Oro = Oro || {};
-Oro.Email = Oro.Email || {};
-Oro.Email.VariablesUpdater = Oro.Email.VariablesUpdater || {};
-
-Oro.Email.VariablesUpdater.View = Backbone.View.extend({
-    events: {
-        'click ul li a': 'addVariable'
-    },
-    target: null,
-
-    lastElement: null,
+/* global define */
+define(['jquery', 'underscore', 'backbone'],
+function($, _, Backbone) {
+    'use strict';
 
     /**
-     * Constructor
-     *
-     * @param options {Object}
+     * @export  oro/email/variable/view
+     * @class   oro.email.variable.View
+     * @extends Backbone.View
      */
-    initialize: function (options) {
-        this.target = options.target;
+    return Backbone.View.extend({
+        events: {
+            'click ul li a': 'addVariable'
+        },
+        target: null,
+        lastElement: null,
 
-        this.listenTo(this.model, 'sync', this.render);
-        this.target.on('change', _.bind(this.selectionChanged, this));
+        /**
+         * Constructor
+         *
+         * @param options {Object}
+         */
+        initialize: function (options) {
+            this.target = options.target;
 
-        $('input[name*="subject"], textarea[name*="content"]').on('blur', _.bind(this._updateElementsMetaData, this));
-        this.render();
-    },
+            this.listenTo(this.model, 'sync', this.render);
+            this.target.on('change', _.bind(this.selectionChanged, this));
 
-    /**
-     * onChange event listener
-     *
-     * @param e {Object}
-     */
-    selectionChanged: function (e) {
-        var entityName = $(e.currentTarget).val();
-        this.model.set('entityName', entityName.split('\\').join('_'));
-        this.model.fetch();
-    },
+            $('input[name*="subject"], textarea[name*="content"]')
+                .on('blur', _.bind(this._updateElementsMetaData, this));
+            this.render();
+        },
 
-    /**
-     * Renders target element
-     *
-     * @returns {*}
-     */
-    render: function() {
-        var html = _.template(this.options.template.html(), {
-            userVars: this.model.get('user'),
-            entityVars: this.model.get('entity')
-        });
+        /**
+         * onChange event listener
+         *
+         * @param e {Object}
+         */
+        selectionChanged: function (e) {
+            var entityName = $(e.currentTarget).val();
+            this.model.set('entityName', entityName.split('\\').join('_'));
+            this.model.fetch();
+        },
 
-        $(this.el).html(html);
+        /**
+         * Renders target element
+         *
+         * @returns {*}
+         */
+        render: function() {
+            var html = _.template(this.options.template.html(), {
+                userVars: this.model.get('user'),
+                entityVars: this.model.get('entity')
+            });
 
-        return this;
-    },
+            $(this.el).html(html);
 
-    /**
-     * Add variable to last element
-     *
-     * @param e
-     * @returns {*}
-     */
-    addVariable: function(e) {
-        if (!_.isNull(this.lastElement) && this.lastElement.is(':visible')) {
-            this.lastElement.val(this.lastElement.val() + $(e.currentTarget).html());
+            return this;
+        },
+
+        /**
+         * Add variable to last element
+         *
+         * @param e
+         * @returns {*}
+         */
+        addVariable: function(e) {
+            if (!_.isNull(this.lastElement) && this.lastElement.is(':visible')) {
+                this.lastElement.val(this.lastElement.val() + $(e.currentTarget).html());
+            }
+
+            return this;
+        },
+
+        /**
+         * Update elements metadata
+         *
+         * @param e
+         * @private
+         * @returns {*}
+         */
+        _updateElementsMetaData: function(e) {
+            this.lastElement = $(e.currentTarget);
+
+            return this;
         }
-
-        return this;
-    },
-
-    /**
-     * Update elements metadata
-     *
-     * @param e
-     * @private
-     * @returns {*}
-     */
-    _updateElementsMetaData: function(e) {
-        this.lastElement = $(e.currentTarget);
-
-        return this;
-    }
+    });
 });
