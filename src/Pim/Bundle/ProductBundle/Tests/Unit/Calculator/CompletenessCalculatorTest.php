@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
 use Pim\Bundle\ProductBundle\Entity\Family;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
