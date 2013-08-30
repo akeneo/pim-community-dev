@@ -125,7 +125,7 @@ class BatchCompletenessCalculator
         if (!empty($families)) {
             return $flexibleRepo->findBy(array('family' => $families));
         } else {
-            return $flexibleRepo->findByExistingFamily($families);
+            return $flexibleRepo->findByExistingFamily();
         }
     }
 
