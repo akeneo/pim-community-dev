@@ -78,7 +78,7 @@ Tags is one level tree that allows to group similar fields into small logical gr
 This declaration maybe useful when developer should provide a way to change some configuration values in modal window
 ```
 oro_system_configuration:
-    tree:
+    tags:
         tag_name:
             - some_field
             ...
