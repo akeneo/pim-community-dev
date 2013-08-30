@@ -1,6 +1,10 @@
 parameters:
+    doctrine.orm.entity_manager.class:                         Oro\Bundle\EntityBundle\ORM\OroEntityManager
+
     oro_entity.orm.entity_class_resolver.class:                Oro\Bundle\EntityBundle\ORM\EntityClassResolver
     oro_entity.orm.entity_class_accessor.class:                Oro\Bundle\EntityBundle\ORM\EntityClassAccessor
+    oro_entity.orm.query.filter_collection.class:              Oro\Bundle\EntityBundle\ORM\Query\FilterCollection
+    oro_filter:                                                Oro\Bundle\EntityBundle\Filter\Filter
 
 services:
     oro_entity.orm.entity_class_resolver:
@@ -10,3 +14,13 @@ services:
 
     oro_entity.orm.entity_class_accessor:
         class: %oro_entity.orm.entity_class_accessor.class%
+
+    oro_entity.orm.sql_filter_collection:
+        class:             %oro_entity.orm.query.filter_collection.class%
+        arguments:         ["@doctrine.orm.entity_manager"]
+
+    oro_entity.filter:
+        class:           %oro_filter%
+        arguments:       ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: oro_entity.orm.sql_filter, filter_name: customFilter, enabled: true }

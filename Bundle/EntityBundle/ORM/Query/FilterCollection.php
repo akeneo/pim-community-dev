@@ -113,10 +113,8 @@ class FilterCollection
                 throw new \InvalidArgumentException("Filter '" . $name . "' does not exist.");
             }
 
-            if (!isset($this->enabledFilters[$name])) {
-                $this->enabledFilters[$name] = new $filterClass($this->em);
-                $this->sortFilters();
-            }
+            $this->enabledFilters[$name] = new $filterClass($this->em);
+            $this->sortFilters();
         }
 
         if (!isset($this->enabledFilters[$name]) && isset($this->disabledFilters[$name])) {

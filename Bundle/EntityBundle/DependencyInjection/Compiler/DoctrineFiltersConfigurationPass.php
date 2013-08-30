@@ -6,10 +6,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class DoctrineFiltersConfigurationPass implements CompilerPassInterface
+class DoctrineSqlFiltersConfigurationPass implements CompilerPassInterface
 {
-    const TAG = 'oro_entity.sql_filter';
-    const FILTERS_SERVICE_KEY = 'oro_entity.orm.query.filter_collection';
+    const TAG = 'oro_entity.orm.sql_filter';
+    const FILTERS_SERVICE_KEY = 'oro_entity.orm.sql_filter_collection';
 
     /**
      * {@inheritDoc}

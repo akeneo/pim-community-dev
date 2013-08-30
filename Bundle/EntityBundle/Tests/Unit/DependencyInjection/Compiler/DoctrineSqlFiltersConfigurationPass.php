@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\EntityBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineFiltersConfigurationPass;
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineSqlFiltersConfigurationPass;
 
-class DoctrineFiltersConfigurationPassTest extends \PHPUnit_Framework_TestCase
+class DoctrineSqlFiltersConfigurationPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
@@ -12,7 +12,7 @@ class DoctrineFiltersConfigurationPassTest extends \PHPUnit_Framework_TestCase
 
         $containerBuilder->expects($this->once())
             ->method('hasDefinition')
-            ->with($this->equalTo(DoctrineFiltersConfigurationPass::FILTERS_SERVICE_KEY))
+            ->with($this->equalTo(DoctrineSqlFiltersConfigurationPass::FILTERS_SERVICE_KEY))
             ->will($this->returnValue(true));
 
         $service = $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')
@@ -21,12 +21,12 @@ class DoctrineFiltersConfigurationPassTest extends \PHPUnit_Framework_TestCase
 
         $containerBuilder->expects($this->once())
             ->method('getDefinition')
-            ->with($this->equalTo(DoctrineFiltersConfigurationPass::FILTERS_SERVICE_KEY))
+            ->with($this->equalTo(DoctrineSqlFiltersConfigurationPass::FILTERS_SERVICE_KEY))
             ->will($this->returnValue($service));
 
         $containerBuilder->expects($this->once())
             ->method('findTaggedServiceIds')
-            ->with($this->equalTo(DoctrineFiltersConfigurationPass::TAG))
+            ->with($this->equalTo(DoctrineSqlFiltersConfigurationPass::TAG))
             ->will(
                 $this->returnValue(
                     array(
@@ -55,7 +55,7 @@ class DoctrineFiltersConfigurationPassTest extends \PHPUnit_Framework_TestCase
                 $this->containsOnlyInstancesOf('\Symfony\Component\DependencyInjection\Reference')
             );
 
-        $pass = new DoctrineFiltersConfigurationPass();
+        $pass = new DoctrineSqlFiltersConfigurationPass();
         $pass->process($containerBuilder);
     }
 }
