@@ -948,6 +948,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $link
+     *
+     * @return Step\Given
+     * @Given /^I open "([^"]*)" in the current window$/
+     */
+    public function iOpenInTheCurrentWindow($link)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('[target]').removeAttr('target');"
+            );
+
+            return new Step\Given(sprintf('I follow "%s"', $link));
+        } catch (UnsupportedDriverActionException $e) {
+            throw $this->createExpectationException('You must use selenium for this feature.');
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute types should have the following fields$/
@@ -1679,6 +1698,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param integer $seconds
+     *
+     * @Then /^I wait (\d+) seconds$/
+     */
+    public function iWaitSeconds($seconds)
+    {
+        $this->wait($seconds * 1000, false);
     }
 
     /**
