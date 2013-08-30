@@ -17,15 +17,16 @@
     {{ form_widget(form) }}
 
     <script type="text/javascript">
-        $(function() {
-            var regions = new Oro.RegionUpdater.Collection();
-
-            var regionView = new Oro.RegionUpdater.View({
-                el: $('{{ country_field }}'),
-                target: $('#{{ id }}'),
-                simpleEl: $('{{ state_text_field }}'),
-                collection: regions,
-                showSelect: {{ (choices is not empty)|json_encode }}
+        require(['jquery', 'oro/region/view', 'oro/region/collection'],
+        function($, RegionView, RegionCollection){
+            $(function() {
+                new RegionView({
+                    el: $('{{ country_field }}'),
+                    target: $('#{{ id }}'),
+                    simpleEl: $('{{ state_text_field }}'),
+                    collection: new RegionCollection(),
+                    showSelect: {{ (choices is not empty)|json_encode }}
+                });
             });
         });
     </script>

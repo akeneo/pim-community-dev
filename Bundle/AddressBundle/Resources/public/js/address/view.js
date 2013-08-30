@@ -1,54 +1,65 @@
-var OroAddressView = Backbone.View.extend({
-    tagName: 'div',
+/* jshint devel:true */
+/* global define */
+define([ 'underscore', 'backbone', 'oro/translator'],
+function( _, Backbone, __) {
+    'use strict';
 
-    attributes: {
-        'class': 'map-item'
-    },
+    var $ = Backbone.$;
 
-    events: {
-        'click': 'activate',
-        'click button:has(.icon-remove)': 'close',
-        'click button:has(.icon-edit)': 'edit'
-    },
+    /**
+     * @export  oro/address/view
+     * @class   oro.address.View
+     * @extends Backbone.View
+     */
+    return Backbone.View.extend({
+        tagName: 'div',
 
-    initialize: function() {
-        this.template = _.template($("#template-contact-address").html());
-        this.listenTo(this.model, 'destroy', this.remove)
-        this.listenTo(this.model, 'change:active', this.toggleActive)
-    },
+        attributes: {
+            'class': 'map-item'
+        },
 
-    activate: function() {
-        this.model.set('active', true);
-    },
+        events: {
+            'click': 'activate',
+            'click button:has(.icon-remove)': 'close',
+            'click button:has(.icon-edit)': 'edit'
+        },
 
-    toggleActive: function() {
-        if (this.model.get('active')) {
-            this.$el.addClass('active');
-        } else {
-            this.$el.removeClass('active');
+        initialize: function() {
+            this.template = _.template($("#template-contact-address").html());
+            this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'change:active', this.toggleActive);
+        },
+
+        activate: function() {
+            this.model.set('active', true);
+        },
+
+        toggleActive: function() {
+            if (this.model.get('active')) {
+                this.$el.addClass('active');
+            } else {
+                this.$el.removeClass('active');
+            }
+        },
+
+        edit: function(e) {
+            this.trigger('edit', this, this.model);
+        },
+
+        close: function() {
+            if (this.model.get('primary')) {
+                alert(__('Primary address can not be removed'));
+            } else {
+                this.model.destroy({wait: true});
+            }
+        },
+
+        render: function() {
+            this.$el.append(this.template(this.model.toJSON()));
+            if (this.model.get('primary')) {
+                this.activate();
+            }
+            return this;
         }
-    },
-
-    edit: function(e) {
-        this.trigger('edit', this, this.model);
-    },
-
-    close: function()
-    {
-        if (this.model.get('primary')) {
-            alert(_.__('Primary address can not be removed'));
-        } else {
-            this.model.destroy({wait: true});
-        }
-    },
-
-    render: function () {
-        this.$el.append(
-            this.template(this.model.toJSON())
-        );
-        if (this.model.get('primary')) {
-            this.activate();
-        }
-        return this;
-    }
+    });
 });

@@ -1,10 +1,18 @@
-Oro = Oro || {};
-Oro.RegionUpdater = Oro.RegionUpdater || {};
+/* global define */
+define(['backbone'],
+function(Backbone) {
+    'use strict';
 
-Oro.RegionUpdater.Region = Backbone.Model.extend({
-    defaults: {
-        country: '',
-        code: '',
-        name: ''
-    }
+    /**
+     * @export  oro/region/model
+     * @class   oro.region.Model
+     * @extends Backbone.Model
+     */
+    return Backbone.Model.extend({
+        defaults: {
+            country: '',
+            code: '',
+            name: ''
+        }
+    });
 });

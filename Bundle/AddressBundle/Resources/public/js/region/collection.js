@@ -1,24 +1,32 @@
-Oro = Oro || {};
-Oro.RegionUpdater = Oro.RegionUpdater || {};
-
-Oro.RegionUpdater.Collection = Backbone.Collection.extend({
-    route: 'oro_api_country_get_regions',
-    url: null,
-    model: Oro.RegionUpdater.Region,
+/* global define */
+define(['backbone', 'routing', 'oro/region/model'],
+function(Backbone, routing, RegionModel) {
+    'use strict';
 
     /**
-     * Constructor
+     * @export  oro/region/collection
+     * @class   oro.region.Collection
+     * @extends Backbone.Collection
      */
-    initialize: function () {
-        this.url = Routing.generate(this.route);
-    },
+    return Backbone.Collection.extend({
+        route: 'oro_api_country_get_regions',
+        url: null,
+        model: RegionModel,
 
-    /**
-     * Regenerate route for selected country
-     *
-     * @param id {String}
-     */
-    setCountryId: function (id) {
-        this.url = Routing.generate(this.route, {country: id});
-    }
+        /**
+         * Constructor
+         */
+        initialize: function () {
+            this.url = routing.generate(this.route);
+        },
+
+        /**
+         * Regenerate route for selected country
+         *
+         * @param id {string}
+         */
+        setCountryId: function (id) {
+            this.url = routing.generate(this.route, {country: id});
+        }
+    });
 });
