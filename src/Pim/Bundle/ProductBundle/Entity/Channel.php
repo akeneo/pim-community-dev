@@ -17,6 +17,7 @@ use Pim\Bundle\ProductBundle\Entity\Locale;
  *
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ChannelRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Channel
 {
