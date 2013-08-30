@@ -93,7 +93,7 @@ class CurrencyDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translate('Toggle'),
+                'label'         => $this->translate('Change status'),
                 'icon'          => 'random',
                 'link'          => 'toggle_link',
                 'backUrl'       => true
