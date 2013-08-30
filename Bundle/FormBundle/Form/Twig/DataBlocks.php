@@ -144,7 +144,11 @@ class DataBlocks
      */
     protected function createBlock($code, $blockConfig = array())
     {
-        $block = new BlockConfig($code);
+        if ($this->formConfig->hasBlock($code)) {
+            $block = $this->formConfig->getBlock($code);
+        } else {
+            $block = new BlockConfig($code);
+        }
         $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
         $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
 

@@ -2,29 +2,32 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
 
 class ConfigType extends AbstractType
 {
     /**
-     * @var array
+     * @var ConfigManager
      */
-    protected $items;
+    protected $configManager;
 
     /**
-     * @var string
+     * @param ConfigManager $configManager
      */
-    protected $fieldType;
-
-    /**
-     * @param $items
-     * @param $fieldType
-     */
-    public function __construct($items, $fieldType = null)
+    public function __construct(ConfigManager $configManager)
     {
-        $this->items     = $items;
-        $this->fieldType = $fieldType;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -32,16 +35,57 @@ class ConfigType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->items as $code => $config) {
-            if (isset($config['form']) && isset($config['form']['type'])) {
-                $options = isset($config['form']['options']) ? $config['form']['options'] : array();
+        $configModel = $options['config_model'];
+        $data        = array();
 
-                if ($this->fieldType) {
-                    $options['field_type'] = $this->fieldType;
-                }
-                $builder->add($code, $config['form']['type'], $options);
+        if ($configModel instanceof FieldConfigModel) {
+            $className  = $configModel->getEntity()->getClassName();
+            $fieldName  = $configModel->getFieldName();
+            $fieldType  = $configModel->getType();
+            $configType = PropertyConfigContainer::TYPE_FIELD;
+        } else {
+            $className  = $configModel->getClassName();
+            $fieldName  = null;
+            $fieldType  = null;
+            $configType = PropertyConfigContainer::TYPE_ENTITY;
+        }
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            if ($provider->getPropertyConfig()->hasForm($configType, $fieldType)) {
+                $config = $provider->getConfig($className, $fieldName);
+                $builder->add(
+                    $provider->getScope(),
+                    new ConfigScopeType(
+                        $provider->getPropertyConfig()->getFormItems($configType, $fieldType),
+                        $config,
+                        $this->configManager,
+                        $configModel
+                    ),
+                    array(
+                        'block_config' => (array) $provider->getPropertyConfig()->getFormBlockConfig($configType)
+                    )
+                );
+                $data[$provider->getScope()] = $config->all();
             }
         }
+
+        $builder->setData($data);
+
+        $builder->addEventSubscriber(new ConfigSubscriber($this->configManager));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('config_model'));
+
+        $resolver->setAllowedTypes(
+            array(
+                'config_model' => 'Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel'
+            )
+        );
     }
 
     /**
@@ -49,6 +93,6 @@ class ConfigType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_entity_config_config_type';
+        return 'oro_entity_config_type';
     }
 }

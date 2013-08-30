@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Command;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,8 +29,25 @@ class UpdateCommand extends BaseCommand
     {
         $output->writeln($this->getDescription());
 
-        foreach ($this->getConfigManager()->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
-            $this->getConfigManager()->initConfigByDoctrineMetadata($doctrineMetadata);
+        /** @var ClassMetadataInfo[] $doctrineAllMetadata */
+        $doctrineAllMetadata = $this->getConfigManager()->getEntityManager()->getMetadataFactory()->getAllMetadata();
+        foreach ($doctrineAllMetadata as $doctrineMetadata) {
+            if (($metadata = $this->getConfigManager()->getEntityMetadata($doctrineMetadata->getName()))
+                && $metadata->name == $doctrineMetadata->getName()
+                && $metadata->configurable
+            ) {
+                $this->getConfigManager()->createConfigEntityModel($doctrineMetadata->getName());
+
+                foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
+                    $type = $doctrineMetadata->getTypeOfField($fieldName);
+                    $this->getConfigManager()->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+                }
+
+                foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
+                    $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
+                    $this->getConfigManager()->createConfigFieldModel($doctrineMetadata->getName(), $fieldName, $type);
+                }
+            }
         }
 
         $this->getConfigManager()->flush();

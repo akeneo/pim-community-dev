@@ -6,7 +6,7 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
 class Login extends Page
 {
-    public function __construct($testCase, $args = array())
+    public function __construct($testCase, $args = array('url' => '/'))
     {
         if (array_key_exists('url', $args)) {
             $this->redirectUrl = $args['url'];

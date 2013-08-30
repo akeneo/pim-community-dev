@@ -90,6 +90,9 @@
                         {% if action.type == constant(actionTypePrefix ~ 'TYPE_DELETE') %}
                             {% set currentOptions = currentOptions|merge({'name': action.name}) %}
                             Oro.Datagrid.Action.DeleteAction.extend({{ currentOptions|json_encode|raw }})
+                        {% elseif action.type == constant(actionTypePrefix ~ 'TYPE_AJAX') %}
+                            {% set currentOptions = currentOptions|merge({'name': action.name}) %}
+                            Oro.Datagrid.Action.AjaxAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
                             {# merge additional options to navigateAction to use execute method #}
                             {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}

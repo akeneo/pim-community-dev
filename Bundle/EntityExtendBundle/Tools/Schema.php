@@ -5,8 +5,9 @@ namespace Oro\Bundle\EntityExtendBundle\Tools;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class Schema
@@ -28,7 +29,7 @@ class Schema
 
     /**
      * @param EntityManager $em
-     * @param $backend
+     * @param               $backend
      * @param ExtendManager $extendManager
      */
     public function __construct(EntityManager $em, $backend, ExtendManager $extendManager)
@@ -63,37 +64,37 @@ class Schema
     }
 
     /**
-     * @param $field FieldConfig
+     * @param $fieldId FieldConfigIdInterface
      * @return bool
      */
-    public function checkFieldIsSystem(FieldConfig $field)
+    public function checkFieldIsSystem(FieldConfigIdInterface $fieldId)
     {
         $isSystem = false;
-        $metadata = $this->em->getClassMetadata($field->getClassName());
-        if (in_array($field->getCode(), $metadata->fieldNames)) {
-            $isSystem =  true;
+        $metadata = $this->em->getClassMetadata($fieldId->getClassName());
+        if (in_array($fieldId->getFieldName(), $metadata->fieldNames)) {
+            $isSystem = true;
         }
 
         return $isSystem;
     }
 
     /**
-     * @param $field FieldConfig
+     * @param $fieldId FieldConfigIdInterface
      * @return bool
      */
-    public function checkFieldCanDelete(FieldConfig $field)
+    public function checkFieldCanDelete(FieldConfigIdInterface $fieldId)
     {
         $canDelete = false;
 
-        if ($field->getClassName()
-            && $field->getCode()
-            && !$this->checkFieldIsSystem($field)
+        if ($fieldId->getClassName()
+            && $fieldId->getFieldName()
+            && !$this->checkFieldIsSystem($fieldId)
         ) {
-            $extendClass = $this->extendManager->getExtendClass($field->getClassName());
+            $extendClass = $this->extendManager->getExtendClass($fieldId->getClassName());
 
             /** @var QueryBuilder $builder */
             $builder = $this->em->getRepository($extendClass)->createQueryBuilder('ex');
-            $builder->select('MAX(ex.'.$field->getCode(). ')');
+            $builder->select('MAX(ex.' . $fieldId->getFieldName() . ')');
 
             if (!$builder->getQuery()->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR)) {
                 $canDelete = true;
