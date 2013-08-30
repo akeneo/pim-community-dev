@@ -138,7 +138,7 @@ class OwnershipSqlFilterBuilder
                         $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias);
                     } elseif ($metadata->isBusinessUnitOwned()) {
                         $buIds = array();
-                        $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
+                        $this->fillOrganizationBusinessUnitIds($this->getUserId(), $buIds);
                         $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
                     } elseif ($metadata->isUserOwned()) {
                         $userIds = array();
@@ -212,6 +212,22 @@ class OwnershipSqlFilterBuilder
     }
 
     /**
+     * Adds all business unit ids within all organizations the given user is associated
+     *
+     * @param int|string $userId
+     * @param array $result [output]
+     */
+    protected function fillOrganizationBusinessUnitIds($userId, array &$result)
+    {
+        foreach ($this->tree->getUserOrganizationIds($userId) as $orgId) {
+            $buIds = $this->tree->getOrganizationBusinessUnitIds($orgId);
+            if (!empty($buIds)) {
+                $result = array_merge($result, $buIds);
+            }
+        }
+    }
+
+    /**
      * Adds all user ids within all organizations the given user is associated
      *
      * @param int|string $userId
@@ -263,18 +279,15 @@ class OwnershipSqlFilterBuilder
     {
         $result = null;
         if (!empty($idOrIds)) {
-            if (is_array($idOrIds)) {
-                if (count($idOrIds) > 1) {
-                    $result = sprintf(
-                        '%s IN (%s)',
-                        $this->getColumnName($metadata, $targetTableAlias, $columnName),
-                        implode(',', $idOrIds)
-                    );
-                } else {
-                    $result = $this->getColumnName($metadata, $targetTableAlias, $columnName) . ' = ' . $idOrIds[0];
-                }
+            $idOrIds = (array) $idOrIds;
+            if (count($idOrIds) > 1) {
+                $result = sprintf(
+                    '%s IN (%s)',
+                    $this->getColumnName($metadata, $targetTableAlias, $columnName),
+                    implode(',', $idOrIds)
+                );
             } else {
-                $result = $this->getColumnName($metadata, $targetTableAlias, $columnName) . ' = ' . $idOrIds;
+                $result = $this->getColumnName($metadata, $targetTableAlias, $columnName) . ' = ' . $idOrIds[0];
             }
         }
 
