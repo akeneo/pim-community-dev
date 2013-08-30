@@ -54,7 +54,7 @@ class AssignValue extends AbstractPostAction
         if (!isset($options['attribute']) && !isset($options[0])) {
             throw new InvalidParameterException('Attribute must be defined.');
         }
-        if (!isset($options['value']) && !isset($options[1])) {
+        if (!array_key_exists('value', $options) && !isset($options[1])) {
             throw new InvalidParameterException('Value must be defined.');
         }
         if (!($this->getAttribute() instanceof PropertyPath)) {

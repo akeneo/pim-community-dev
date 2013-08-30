@@ -4,8 +4,10 @@ parameters:
     oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor
     oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable
     oro_workflow.post_action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\AssignValue
+    oro_workflow.post_action.unset_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\UnsetValue
     oro_workflow.post_action.create_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\CreateEntity
     oro_workflow.post_action.request_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\RequestEntity
+    oro_workflow.post_action.call_method.class: Oro\Bundle\WorkflowBundle\Model\PostAction\CallMethod
 
 services:
     oro_workflow.post_action_factory:
@@ -35,6 +37,13 @@ services:
         tags:
             - { name: oro_workflow.post_action, alias: assign_value }
 
+    oro_workflow.post_action.unset_value:
+        class: %oro_workflow.post_action.unset_value.class%
+        arguments:
+            - @oro_workflow.post_action.assign_value
+        tags:
+            - { name: oro_workflow.post_action, alias: unset_value }
+
     oro_workflow.post_action.create_entity:
         class: %oro_workflow.post_action.create_entity.class%
         arguments:
@@ -50,3 +59,10 @@ services:
             - @doctrine
         tags:
             - { name: oro_workflow.post_action, alias: request_entity }
+
+    oro_workflow.post_action.call_method:
+        class: %oro_workflow.post_action.call_method.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.post_action, alias: call_method }
