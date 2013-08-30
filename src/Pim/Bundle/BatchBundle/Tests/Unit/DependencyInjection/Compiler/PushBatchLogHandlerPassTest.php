@@ -16,12 +16,12 @@ class PushBatchLogHandlerPassTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->pass = new PushBatchLogHandlerPass;
+        $this->pass = new PushBatchLogHandlerPass();
     }
 
     public function testProcessWithBatchChannel()
     {
-        $logger    = new Definition;
+        $logger    = new Definition();
         $container = $this->getContainerBuilderMock($logger);
 
         $container->expects($this->any())

@@ -231,7 +231,7 @@ class ProductAttributeType extends AttributeType
     /**
      * @param FormBuilderInterface $builder
      *
-     * @return void
+     * @return null
      */
     protected function addPositionField(FormBuilderInterface $builder)
     {

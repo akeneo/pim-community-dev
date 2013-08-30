@@ -27,6 +27,11 @@ class ReportController extends Controller
         return $this->renderDatagrid($gridManager);
     }
 
+    /**
+     * Download the log file of the job execution
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function downloadLogFileAction($id)
     {
         $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);

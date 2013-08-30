@@ -20,10 +20,11 @@ Feature: Join a document to a product
     And I save the product
     Then I should see "akeneo.txt"
 
+  @javascript
   Scenario: Succesfully display the document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
-    And I follow "akeneo.txt"
+    And I open "akeneo.txt" in the current window
     Then I should see the "akeneo.txt" content
 
   @javascript

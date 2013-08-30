@@ -34,7 +34,6 @@
     }
 
     function prepareLabels(el) {
-
         var $fields = prepareFields(el);
 
         for (var i = 0; i < $fields.length; i++) {

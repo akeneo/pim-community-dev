@@ -9,6 +9,7 @@ services:
             - @event_dispatcher
             - @oro_flexibleentity.attributetype.factory
             - @pim_product.manager.media
+            - @pim_product.manager.currency
         tags:
             - { name: oro_flexibleentity_manager, entity: %pim_product.entity.product.class%}
         calls:

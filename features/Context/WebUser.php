@@ -916,7 +916,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function attachFileToField($file, $field)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                .DIRECTORY_SEPARATOR.$file;
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }
@@ -943,6 +944,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             );
         } catch (UnsupportedDriverActionException $e) {
             $this->getCurrentPage()->removeFileFromField($field);
+        }
+    }
+
+    /**
+     * @param string $link
+     *
+     * @return Step\Given
+     * @Given /^I open "([^"]*)" in the current window$/
+     */
+    public function iOpenInTheCurrentWindow($link)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('[target]').removeAttr('target');"
+            );
+
+            return new Step\Given(sprintf('I follow "%s"', $link));
+        } catch (UnsupportedDriverActionException $e) {
+            throw $this->createExpectationException('You must use selenium for this feature.');
         }
     }
 
@@ -1678,6 +1698,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param integer $seconds
+     *
+     * @Then /^I wait (\d+) seconds$/
+     */
+    public function iWaitSeconds($seconds)
+    {
+        $this->wait($seconds * 1000, false);
     }
 
     /**

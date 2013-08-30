@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
+
 /**
  * Csv file reader
  * Reads the whole csv file
@@ -12,12 +14,18 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
  */
 class CsvFileReader extends CsvReader
 {
+    /**
+     * Since this reader reads the whole file at once, store the executed state
+     * and return null when read is called the second time to indicate completion
+     *
+     * @var boolean
+     */
     private $executed = false;
 
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if ($this->executed) {
             return null;

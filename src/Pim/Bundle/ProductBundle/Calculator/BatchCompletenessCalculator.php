@@ -17,9 +17,9 @@ use Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator;
 class BatchCompletenessCalculator
 {
     /**
-     * @var \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator $completenessCalculator
+     * @var \Pim\Bundle\ProductBundle\Calculator\CompletenessCalculator $calculator
      */
-    protected $completenessCalculator;
+    protected $calculator;
 
     /**
      * @var \Pim\Bundle\ProductBundle\Manager\ProductManager $productManager
@@ -49,9 +49,9 @@ class BatchCompletenessCalculator
      */
     public function __construct(CompletenessCalculator $calculator, ProductManager $productManager, EntityManager $em)
     {
-        $this->completenessCalculator = $calculator;
-        $this->productManager         = $productManager;
-        $this->entityManager          = $em;
+        $this->calculator     = $calculator;
+        $this->productManager = $productManager;
+        $this->entityManager  = $em;
 
         $this->pendings = array();
     }
@@ -87,9 +87,9 @@ class BatchCompletenessCalculator
      */
     protected function calculate(array $products, array $channels = array(), array $locales = array())
     {
-        $this->completenessCalculator->setChannels($channels);
-        $this->completenessCalculator->setLocales($locales);
-        $this->completenessCalculator->calculate($products);
+        $this->calculator->setChannels($channels);
+        $this->calculator->setLocales($locales);
+        $this->calculator->calculate($products);
         $this->removePendings();
     }
 
@@ -121,11 +121,11 @@ class BatchCompletenessCalculator
      */
     protected function getProductsToCalculate(array $families = array())
     {
-        $flexibleRepo = $this->productManager->getFlexibleRepository();
+        $productRepo = $this->productManager->getFlexibleRepository();
         if (!empty($families)) {
-            return $flexibleRepo->findBy(array('family' => $families));
+            return $productRepo->findBy(array('family' => $families));
         } else {
-            return $flexibleRepo->findByExistingFamily($families);
+            return $productRepo->findByExistingFamily();
         }
     }
 

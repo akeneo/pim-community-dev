@@ -309,7 +309,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
 
     /**
      * Return the identifier-based validation group for validation of properties
-     * @return array:string
+     * @return string[]
      */
     public function getGroupSequence()
     {
@@ -502,7 +502,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
             return $this->group;
         }
 
-        $group = new AttributeGroup;
+        $group = new AttributeGroup();
         $group->setId(0);
         $group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
         $group->setSortOrder(-1);

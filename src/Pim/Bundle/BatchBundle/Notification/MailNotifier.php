@@ -7,7 +7,7 @@ use Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
- * Mailer job execution notifier
+ * Notify Job execution result by mail
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,11 +15,32 @@ use Pim\Bundle\BatchBundle\Entity\JobExecution;
  */
 class MailNotifier implements Notifier
 {
+    /**
+     * @var BatchLogHandler $logger
+     */
     protected $logger;
+
+    /**
+     * @var SecurityContextInterface $securityContext
+     */
     protected $securityContext;
+
+    /**
+     * @var Twig_Environment $twig
+     */
     protected $twig;
+
+    /**
+     * @var Swift_Mailer $mailer
+     */
     protected $mailer;
 
+    /**
+     * @param BatchLogHandler          $logger
+     * @param SecurityContextInterface $securityContext
+     * @param \Twig_Environment        $twig
+     * @param \Swift_Mailer            $mailer
+     */
     public function __construct(
         BatchLogHandler $logger,
         SecurityContextInterface $securityContext,
@@ -32,6 +53,9 @@ class MailNotifier implements Notifier
         $this->mailer          = $mailer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function notify(JobExecution $jobExecution)
     {
         $user = $this->getUser();
@@ -58,6 +82,11 @@ class MailNotifier implements Notifier
         $this->mailer->send($message);
     }
 
+    /**
+     * Get the current authenticated user
+     *
+     * @return null|UserInterface
+     */
     private function getUser()
     {
         if (null === $token = $this->securityContext->getToken()) {

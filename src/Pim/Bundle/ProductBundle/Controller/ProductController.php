@@ -19,7 +19,6 @@ use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
  */
 class ProductController extends Controller
 {
-
     const CATEGORY_PREFIX = "category_node_";
     const TREE_APPLY_PREFIX = "apply_on_tree_";
 
@@ -125,7 +124,6 @@ class ProductController extends Controller
             array('currentLocale' => $this->getDataLocale())
         );
 
-
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
@@ -182,7 +180,7 @@ class ProductController extends Controller
     {
         $product             = $this->findProductOr404($id);
         $manager             = $this->getProductManager();
-        $availableAttributes = new AvailableProductAttributes;
+        $availableAttributes = new AvailableProductAttributes();
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $product->getAttributes(),
             $availableAttributes
@@ -310,7 +308,6 @@ class ProductController extends Controller
         foreach ($requestParameters as $key => $value) {
             if ($value === "1") {
                 if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-
                     $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
                     if ($catId > 0) {
                         $categories[] = $catId;
@@ -436,8 +433,7 @@ class ProductController extends Controller
 
         // TODO : Maybe just check if the locale is well activated
 
-        $currencyManager = $this->container->get('pim_product.manager.currency');
-        $this->getProductManager()->addMissingPrices($currencyManager, $product);
+        $this->getProductManager()->addMissingPrices($product);
 
         return $product;
     }

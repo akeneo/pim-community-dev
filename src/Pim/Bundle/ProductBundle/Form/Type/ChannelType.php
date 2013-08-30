@@ -61,7 +61,7 @@ class ChannelType extends AbstractType
         $builder->add('name', 'text', array('label' => 'Default label'));
 
         $builder->addEventSubscriber(new ChannelSubscriber());
-        
+
         $this->addCurrencyField($builder);
 
         $this->addLocaleField($builder);
@@ -74,7 +74,7 @@ class ChannelType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return void
+     * @return null
      */
     protected function addCurrencyField(FormBuilderInterface $builder)
     {
@@ -97,7 +97,7 @@ class ChannelType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return void
+     * @return null
      */
     protected function addLocaleField(FormBuilderInterface $builder)
     {
@@ -123,7 +123,7 @@ class ChannelType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return void
+     * @return null
      */
     protected function addCategoryField(FormBuilderInterface $builder)
     {

@@ -66,7 +66,7 @@ class CategoryNormalizer implements NormalizerInterface
      *
      * @param CategoryInterface $category
      *
-     * @return void
+     * @return array
      */
     protected function normalizeTitle(CategoryInterface $category)
     {

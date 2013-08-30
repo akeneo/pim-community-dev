@@ -4,6 +4,7 @@ namespace Context\Page\Base;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
  * Base page

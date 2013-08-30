@@ -62,7 +62,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TranslatableEntity implements Translatable
 {
-
     // ... define properties
 
     /**

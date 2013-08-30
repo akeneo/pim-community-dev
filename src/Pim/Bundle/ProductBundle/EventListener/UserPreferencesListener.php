@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 /**
  * Aims to add / remove locales and channels
@@ -13,7 +14,6 @@ use Pim\Bundle\ProductBundle\Entity\Locale;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class UserPreferencesListener implements EventSubscriber
 {
@@ -44,7 +44,8 @@ class UserPreferencesListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'prePersist'
+            'prePersist',
+            'preUpdate'
         );
     }
 
@@ -62,6 +63,22 @@ class UserPreferencesListener implements EventSubscriber
 
         } elseif ($entity instanceof Channel) {
             $this->addOptionValue('catalogscope', $entity->getCode());
+        }
+    }
+
+    /**
+     * Before update
+     *
+     * @param PreUpdateEventArgs $args
+     */
+    public function preUpdate(PreUpdateEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if ($entity instanceof Locale
+            && $args->hasChangedField('activated')
+            && $args->getNewValue('activated')) {
+            $this->addOptionValue('cataloglocale', $entity->getCode());
         }
     }
 

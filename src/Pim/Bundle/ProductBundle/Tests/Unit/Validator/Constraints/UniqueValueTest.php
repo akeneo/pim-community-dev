@@ -13,7 +13,7 @@ class UniqueValueTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->constraint = new UniqueValue;
+        $this->constraint = new UniqueValue();
     }
 
     public function testExtendsConstraint()

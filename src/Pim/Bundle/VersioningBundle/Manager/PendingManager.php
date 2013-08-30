@@ -38,11 +38,11 @@ class PendingManager
      * @param AuditManager   $am
      * @param ObjectManager  $em
      */
-    public function __construct(VersionManager $vm, AuditManager $am, ObjectManager $em)
+    public function __construct(VersionManager $versionM, AuditManager $auditM, ObjectManager $em)
     {
-        $this->em = $em;
-        $this->versionManager = $vm;
-        $this->auditManager = $am;
+        $this->em             = $em;
+        $this->versionManager = $versionM;
+        $this->auditManager   = $auditM;
     }
 
     /**

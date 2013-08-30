@@ -13,7 +13,7 @@ class LengthGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new LengthGuesser;
+        $this->target = new LengthGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

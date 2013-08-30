@@ -105,7 +105,7 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return array
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
@@ -122,7 +122,7 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return array
      */
     protected function normalizeAvailableLocales($attribute)
     {
@@ -138,6 +138,8 @@ class AttributeNormalizer implements NormalizerInterface
      * Normalize options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return array
      */
     protected function normalizeOptions($attribute)
     {
@@ -157,6 +159,8 @@ class AttributeNormalizer implements NormalizerInterface
      * Normalize default options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return array
      */
     protected function normalizeDefaultOptions($attribute)
     {

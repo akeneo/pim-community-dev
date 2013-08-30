@@ -13,7 +13,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
 {
     public function setUp()
     {
-        $this->target = new RegisterAttributeConstraintGuessersPass;
+        $this->target = new RegisterAttributeConstraintGuessersPass();
     }
 
     public function testInstanceOfCompilerPassInterface()

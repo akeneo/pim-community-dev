@@ -43,6 +43,7 @@ Feature: Display the completeness of a product
       | phone      | name        | ecommerce | yes      |
       | phone      | name        | mobile    | no       |
     And I am logged in as "admin"
+    And I launched the completeness calculator
 
   Scenario: Successfully display the completeness of the product
     Given I am on the "postit" product page

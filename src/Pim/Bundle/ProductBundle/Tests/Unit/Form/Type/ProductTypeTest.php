@@ -73,7 +73,6 @@ class ProductTypeTest extends AbstractFormTypeTest
      */
     public function testFormCreate()
     {
-
         $this->assertEquals($this->flexibleClass, $this->form->getConfig()->getDataClass());
 
         $this->assertEquals('pim_product', $this->form->getName());

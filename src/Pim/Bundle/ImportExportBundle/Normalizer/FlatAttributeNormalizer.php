@@ -48,7 +48,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return string
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
@@ -70,7 +70,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return string
      */
     protected function normalizeAvailableLocales($attribute)
     {

@@ -26,7 +26,7 @@ class FlatCategoryNormalizer extends CategoryNormalizer
      *
      * @param CategoryInterface $category
      *
-     * @return void
+     * @return string
      */
     protected function normalizeTitle(CategoryInterface $category)
     {

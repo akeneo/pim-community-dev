@@ -28,13 +28,13 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(
-                EventInterface::BEFORE_JOB_EXECUTION => 'beforeJobExecution',
+                EventInterface::BEFORE_JOB_EXECUTION => 'setJobExecutionLogFile',
             ),
             SetJobExecutionLogFileSubscriber::getSubscribedEvents()
         );
     }
 
-    public function testBeforeJobExecution()
+    public function testSetJobExecutionLogFile()
     {
         $this->logger
             ->expects($this->any())
@@ -47,7 +47,7 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
             ->with('/tmp/foo.log');
 
         $event = $this->getJobExecutionEventMock($jobExecution);
-        $this->subscriber->beforeJobExecution($event);
+        $this->subscriber->setJobExecutionLogFile($event);
     }
 
     private function getLoggerMock()

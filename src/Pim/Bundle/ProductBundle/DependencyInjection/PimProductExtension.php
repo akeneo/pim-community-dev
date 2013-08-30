@@ -32,6 +32,11 @@ class PimProductExtension extends Extension
 
         $config = $this->processConfiguration(new Configuration, $configs);
 
+        $container->setParameter(
+            'pim_product.imported_product_data_transformer',
+            $config['imported_product_data_transformer']
+        );
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
         $loader->load('services.yml');

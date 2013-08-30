@@ -20,14 +20,53 @@ use Pim\Bundle\ProductBundle\Entity\Category;
  */
 class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
+    /**
+     * Entity manager
+     *
+     * @var EntityManager
+     */
     protected $entityManager;
+
+    /**
+     * Form factory
+     *
+     * @var FormFactoryInterface
+     */
     protected $formFactory;
 
+    /**
+     * Delimiter separating the translated titles
+     *
+     * @var string
+     */
     protected $titleDelimiter    = ',';
+
+    /**
+     * Delimiter separating locale from the title
+     *
+     * @var string
+     */
     protected $localeDelimiter   = ':';
+
+    /**
+     * If true, category data will be checked to make sure that there are no circular references between the categories
+     *
+     * @var boolean
+     */
     protected $checkCircularRefs = true;
 
+    /**
+     * Property for storing data during execution
+     *
+     * @var ArrayCollection
+     */
     protected $data;
+
+    /**
+     * Property for storing valid categories during execution
+     *
+     * @var ArrayCollection
+     */
     protected $categories;
 
     /**
@@ -121,12 +160,12 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      *
      * @param mixed $data Data to be processed
      *
-     * @return array:Category
+     * @return Category[]
      */
     public function process($data)
     {
         $this->data = new ArrayCollection($data);
-        $this->categories = new ArrayCollection;
+        $this->categories = new ArrayCollection();
 
         foreach ($this->data as $item) {
             $this->processItem($item);
@@ -159,7 +198,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      *
      * @param array $item
      *
-     * @throws Exception when validation errors are present
+     * @throws InvalidObjectException when validation errors are present
      */
     private function processItem($item)
     {
@@ -179,7 +218,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * @param Category $category
      * @param string   $parentCode
      *
-     * @return void
+     * @return null
      */
     private function addParent(Category $category, $parentCode)
     {
@@ -213,7 +252,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      *
      * @param string $parentCode
      *
-     * @return void
+     * @return null
      */
     private function processInvalidParent($parentCode)
     {
@@ -259,7 +298,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     /**
      * Checks for circular references in the category tree
      *
-     * @return void
+     * @return null
      */
     private function checkCircularReferences()
     {
@@ -280,7 +319,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * @param Category|null $category
      * @param array         $visited
      *
-     * @return void
+     * @return null
      */
     private function checkParent($category, array $visited)
     {
@@ -301,13 +340,13 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      *
      * @param array $item
      *
-     * @return Product
+     * @return Category
      */
     private function getCategory(array $item)
     {
         $category = $this->findCategory($item['code']);
         if (!$category) {
-            $category = new Category;
+            $category = new Category();
             $category->setCode($item['code']);
         }
 

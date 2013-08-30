@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
 use Pim\Bundle\ProductBundle\Entity\Family;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
@@ -169,9 +168,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($errors[0], $errors[1], $errors[2], $errors[3]));
 
         // call the calculator
-        $completenesses = $this->calculator->calculateForAProductByChannel($product, $channelUsed);
-        $this->assertCount(count($results), $completenesses);
-        $product->setCompletenesses($completenesses);
+        $this->calculator->calculateForAProductByChannel($product, $channelUsed);
+        $this->assertCount(count($results), $product->getCompletenesses());
 
         foreach ($results as $result) {
             $completeness = $product->getCompleteness($result['locale'], $result['channel']);
@@ -181,6 +179,58 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($result['results']['missing_count'], $completeness->getMissingCount());
             $this->assertEquals($result['results']['required_count'], $completeness->getRequiredCount());
         }
+    }
+
+    /**
+     * Data provider for calculator for the method calculateForAProductWithoutFamilyByChannel
+     *
+     * array(
+     *     channel,
+     *     product values -> array()
+     * )
+     *
+     * @return array
+     */
+    public function dataProviderCalculatorForAProductWithoutFamilyByChannel()
+    {
+        return array(
+            'all data set' => array(
+                self::CHANNEL_1,
+                array(
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                )
+            )
+        );
+    }
+
+    /**
+     * Test calculateForAProduct method with a product without family
+     * No completeness must be returned because there is no calculation possible without family
+     *
+     * @param string $channelCode
+     * @param array  $values      Array of product values
+     * array(
+     *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
+     *     ...
+     * )
+     *
+     * @dataProvider dataProviderCalculatorForAProductWithoutFamilyByChannel
+     */
+    public function testCalculatorForAProductWithoutFamilyByChannel($channelCode, array $values)
+    {
+        $product = $this->createProductMock($values);
+        $product->setFamily(null);
+
+        // update repository mock
+        $channelUsed = $this->getChannel($channelCode);
+        $this->mockRepository($channelUsed);
+
+        // call the calculator
+        $this->calculator->calculateForAProductByChannel($product, $channelUsed);
+        $this->assertCount(0, $product->getCompletenesses());
     }
 
     /**

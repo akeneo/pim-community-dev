@@ -155,14 +155,11 @@ class CompletenessCalculator
      *
      * @param ProductInterface[] $products
      *
-     * @return Completeness[] $completenesses
+     * @return null
      */
     public function calculate(array $products = array())
     {
-        $completenesses = array();
-
         foreach ($products as $product) {
-            $sku = $product->getSku()->__toString();
             $this->calculateForAProduct($product);
         }
     }
@@ -172,12 +169,10 @@ class CompletenessCalculator
      *
      * @param ProductInterface $product
      *
-     * @return Completeness[] $completenesses List of completeness entities for the product
+     * @return null
      */
     public function calculateForAProduct(ProductInterface $product)
     {
-        $completenesses = array();
-
         if ($product->getFamily() === null) {
             return;
         }
@@ -191,17 +186,13 @@ class CompletenessCalculator
      *
      * @param ProductInterface $product
      * @param Channel          $channel
-     * @param Completeness[]   $completenesses
      *
-     * @return Completeness[] $completenesses List of completeness entities
+     * @return null
      */
-    public function calculateForAProductByChannel(
-        ProductInterface $product,
-        Channel $channel,
-        array $completenesses = array()
-    ) {
+    public function calculateForAProductByChannel(ProductInterface $product, Channel $channel)
+    {
         if ($product->getFamily() === null) {
-            return array();
+            return;
         }
 
         $notBlankConstraint = new ProductValueNotBlank(array('channel' => $channel));
@@ -274,6 +265,12 @@ class CompletenessCalculator
     {
         $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
 
-        return $repo->findBy(array('channel' => $channel, 'family' => $family, 'required' => true));
+        return $repo->findBy(
+            array(
+                'channel' => $channel,
+                'family' => $family,
+                'required' => true
+            )
+        );
     }
 }
