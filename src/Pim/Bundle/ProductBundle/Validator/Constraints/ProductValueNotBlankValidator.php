@@ -23,7 +23,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value === null) {
+        if ($value === null or $value === false) {
             $this->context->addViolation($constraint->messageNotNull);
         }
 

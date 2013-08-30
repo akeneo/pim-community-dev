@@ -14,7 +14,7 @@ use Pim\Bundle\ProductBundle\Form\Subscriber\ChannelSubscriber;
 class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     
-    public function getTestDisableCodeData()
+    public function getTestAddCodeFieldData()
     {
         return array(
             array(null),
@@ -24,43 +24,43 @@ class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getTestDisableCodeData
+     * @dataProvider getTestAddCodeFieldData
      */
-    public function testDisableCode($id)
+    public function testAddCodeField($id)
     {
         $event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $event->expects($this->any())
-                ->method('getForm')
-                ->will($this->returnValue($form));
-                
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
         if ($id === null) {
             $event->expects($this->once())
-                    ->method('getData')
-                    ->will($this->returnValue(null));
+                ->method('getData')
+                ->will($this->returnValue(null));
             $event->expects($this->never())
                 ->method('getForm');
         } else {
             $channel = $this->getMock('Pim\Bundle\ProductBundle\Entity\Product');
             $event->expects($this->once())
-                    ->method('getData')
-                    ->will($this->returnValue($channel));
+                ->method('getData')
+                ->will($this->returnValue($channel));
             $channel->expects($this->once())
-                    ->method('getId')
-                    ->will($this->returnValue($id));
+                ->method('getId')
+                ->will($this->returnValue($id));
             $form->expects($this->once())
-                    ->method('add')
-                    ->with(
-                        $this->equalTo('code'),
-                        $this->equalTo('text'),
-                        $this->equalTo(array('disabled'=>(bool)$id))
-                    );
+                ->method('add')
+                ->with(
+                    $this->equalTo('code'),
+                    $this->equalTo('text'),
+                    $this->equalTo(array('disabled'=>(bool)$id))
+                );
         }
         $subscriber = new ChannelSubscriber;
-        $subscriber->disableCode($event);
+        $subscriber->addCodeField($event);
     }
 }

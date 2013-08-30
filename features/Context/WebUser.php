@@ -908,6 +908,46 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $file
+     * @param string $field
+     *
+     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
+     */
+    public function attachFileToField($file, $field)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                .DIRECTORY_SEPARATOR.$file;
+            if (is_file($fullPath)) {
+                $file = $fullPath;
+            }
+        }
+
+        $this->getCurrentPage()->attachFileToField($field, $file);
+
+        try {
+            $this->getSession()->executeScript('$("[disabled]").removeAttr("disabled");');
+        } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Given /^I remove the "([^"]*)" file$/
+     */
+    public function iRemoveTheFile($field)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('label:contains(\"{$field}\")').parent().find('.remove-upload').click();"
+            );
+        } catch (UnsupportedDriverActionException $e) {
+            $this->getCurrentPage()->removeFileFromField($field);
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute types should have the following fields$/

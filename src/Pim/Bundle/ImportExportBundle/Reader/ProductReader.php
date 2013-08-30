@@ -40,8 +40,9 @@ class ProductReader extends ORMReader
     public function read()
     {
         if (!$this->query) {
+            $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
             $this->query = $this->repository
-                ->buildByScope($this->channel)
+                ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
         }
 
