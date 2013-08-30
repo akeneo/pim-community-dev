@@ -35,8 +35,8 @@ class UserConfigManagerTest extends ConfigManagerTest
         $this->group1     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
         $this->group2     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
 
-        $token  = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $user   = new User();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $user  = new User();
 
         $this->om
             ->expects($this->any())
@@ -78,47 +78,61 @@ class UserConfigManagerTest extends ConfigManagerTest
         $configUser  = new Config();
         $configGroup = new Config();
 
-        $configUser->setSettings(array(
-            'oro_user' => array(
-                'level' => 30,
-             ),
-        ));
+        $configUser->setSettings(
+            array(
+                'oro_user' => array(
+                    'level' => 30,
+                ),
+            )
+        );
 
-        $configGroup->setSettings(array(
-            'oro_test' => array(
-                'anysetting' => 'qwerty',
-             ),
-        ));
+        $configGroup->setSettings(
+            array(
+                'oro_test' => array(
+                    'anysetting' => 'qwerty',
+                ),
+            )
+        );
 
         $this->repository
             ->expects($this->any())
             ->method('findOneBy')
-            ->with($this->logicalOr(
-                $this->equalTo(array(
-                    'entity'   => 'Oro\Bundle\UserBundle\Entity\User',
-                    'recordId' => 1,
-                )),
-                $this->equalTo(array(
-                    'entity'   => get_class($this->group1),
-                    'recordId' => 2
-                )),
-                $this->equalTo(array(
-                    'entity'   => get_class($this->group2),
-                    'recordId' => 3
-                ))
-            ))
-            ->will($this->returnCallback(
-                function ($param) use ($configUser, $configGroup) {
-                    switch ($param['recordId']) {
-                        case 1:
-                            return $configUser;
-                        case 2:
-                            return $configGroup;
-                        case 3:
-                            return null;
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo(
+                        array(
+                            'entity'   => 'Oro\Bundle\UserBundle\Entity\User',
+                            'recordId' => 1,
+                        )
+                    ),
+                    $this->equalTo(
+                        array(
+                            'entity'   => get_class($this->group1),
+                            'recordId' => 2
+                        )
+                    ),
+                    $this->equalTo(
+                        array(
+                            'entity'   => get_class($this->group2),
+                            'recordId' => 3
+                        )
+                    )
+                )
+            )
+            ->will(
+                $this->returnCallback(
+                    function ($param) use ($configUser, $configGroup) {
+                        switch ($param['recordId']) {
+                            case 1:
+                                return $configUser;
+                            case 2:
+                                return $configGroup;
+                            case 3:
+                                return null;
+                        }
                     }
-                }
-            ));
+                )
+            );
 
         $object->setSecurity($this->security);
 

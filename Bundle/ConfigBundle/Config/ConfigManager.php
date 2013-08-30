@@ -57,10 +57,12 @@ class ConfigManager
      */
     protected function mergeSettings($entity, $recordId)
     {
-        $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(array(
-            'entity'   => $entity,
-            'recordId' => (int) $recordId,
-        ));
+        $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(
+            array(
+                'entity'   => $entity,
+                'recordId' => (int) $recordId,
+            )
+        );
 
         if (!$scope) {
             return;
