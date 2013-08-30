@@ -69,6 +69,8 @@ class OwnershipSqlFilterBuilder
      * @param string $targetTableAlias
      * @return string The constraint SQL if there is available, empty string otherwise
      *
+     * The cyclomatic complexity warning is suppressed by performance reasons
+     * (to avoid unnecessary cloning od arrays)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function buildFilterConstraint($targetEntityClassName, $targetTableAlias)
@@ -84,17 +86,31 @@ class OwnershipSqlFilterBuilder
         $metadata = $this->metadataProvider->getMetadata($targetEntityClassName);
         if ($isGranted) {
             $accessLevel = $observer->getAccessLevel();
-            if (!$metadata->hasOwner() || AccessLevel::SYSTEM_LEVEL === $accessLevel) {
+            if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
                 $constraint = '';
+            } elseif (!$metadata->hasOwner()) {
+                if (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
+                    if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
+                        $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
+                        $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias, 'id');
+                    } else {
+                        $constraint = '';
+                    }
+                } else {
+                    $constraint = '';
+                }
             } else {
                 if (AccessLevel::BASIC_LEVEL === $accessLevel) {
-                    // @TODO handle User
-                    if ($metadata->isUserOwned()) {
+                    if ($this->metadataProvider->getUserClass() === $targetEntityClassName) {
+                        $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias, 'id');
+                    } elseif ($metadata->isUserOwned()) {
                         $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias);
                     }
                 } elseif (AccessLevel::LOCAL_LEVEL === $accessLevel) {
-                    // @TODO handle BusinessUnit
-                    if ($metadata->isBusinessUnitOwned()) {
+                    if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
+                        $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
+                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
+                    } elseif ($metadata->isBusinessUnitOwned()) {
                         $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
                         $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
                     } elseif ($metadata->isUserOwned()) {
@@ -103,8 +119,11 @@ class OwnershipSqlFilterBuilder
                         $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
                     }
                 } elseif (AccessLevel::DEEP_LEVEL === $accessLevel) {
-                    // @TODO handle BusinessUnit
-                    if ($metadata->isBusinessUnitOwned()) {
+                    if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
+                        $buIds = array();
+                        $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
+                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
+                    } elseif ($metadata->isBusinessUnitOwned()) {
                         $buIds = array();
                         $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
                         $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
@@ -114,7 +133,6 @@ class OwnershipSqlFilterBuilder
                         $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
                     }
                 } elseif (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
-                    // @TODO handle Organization
                     if ($metadata->isOrganizationOwned()) {
                         $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
                         $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias);
@@ -238,9 +256,10 @@ class OwnershipSqlFilterBuilder
      * @param int|int[]|null $idOrIds
      * @param OwnershipMetadata $metadata
      * @param string $targetTableAlias
+     * @param string|null $columnName
      * @return string|null A string represents SQL condition or null if the given owner id(s) is not provided
      */
-    protected function getCondition($idOrIds, OwnershipMetadata $metadata, $targetTableAlias)
+    protected function getCondition($idOrIds, OwnershipMetadata $metadata, $targetTableAlias, $columnName = null)
     {
         $result = null;
         if (!empty($idOrIds)) {
@@ -248,14 +267,14 @@ class OwnershipSqlFilterBuilder
                 if (count($idOrIds) > 1) {
                     $result = sprintf(
                         '%s IN (%s)',
-                        $this->getColumnName($metadata, $targetTableAlias),
+                        $this->getColumnName($metadata, $targetTableAlias, $columnName),
                         implode(',', $idOrIds)
                     );
                 } else {
-                    $result = $this->getColumnName($metadata, $targetTableAlias) . ' = ' . $idOrIds[0];
+                    $result = $this->getColumnName($metadata, $targetTableAlias, $columnName) . ' = ' . $idOrIds[0];
                 }
             } else {
-                $result = $this->getColumnName($metadata, $targetTableAlias) . ' = ' . $idOrIds;
+                $result = $this->getColumnName($metadata, $targetTableAlias, $columnName) . ' = ' . $idOrIds;
             }
         }
 
@@ -267,12 +286,17 @@ class OwnershipSqlFilterBuilder
      *
      * @param OwnershipMetadata $metadata
      * @param string $targetTableAlias
+     * @param string|null $columnName
      * @return string
      */
-    protected function getColumnName(OwnershipMetadata $metadata, $targetTableAlias)
+    protected function getColumnName(OwnershipMetadata $metadata, $targetTableAlias, $columnName = null)
     {
+        if ($columnName === null) {
+            $columnName = $metadata->getOwnerColumnName();
+        }
+
         return empty($targetTableAlias)
-            ? $metadata->getOwnerColumnName()
-            : $targetTableAlias . '.' . $metadata->getOwnerColumnName();
+            ? $columnName
+            : $targetTableAlias . '.' . $columnName;
     }
 }

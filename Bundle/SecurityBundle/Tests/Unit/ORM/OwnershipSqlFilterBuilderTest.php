@@ -215,6 +215,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id IN (user3,user31,user4,user41,user411)'
             ),
+            array('user4', true, AccessLevel::GLOBAL_LEVEL, null, self::ORGANIZATION, '', 'id IN (org3,org4)'),
             array('user4', true, AccessLevel::DEEP_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::DEEP_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
             array(
@@ -234,6 +235,15 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 '',
                 'owner_id IN (user3,user4,user31,user41,user411)'
+            ),
+            array(
+                'user4',
+                true,
+                AccessLevel::DEEP_LEVEL,
+                null,
+                self::BUSINESS_UNIT,
+                '',
+                'id IN (bu3,bu4,bu31,bu41,bu411)'
             ),
             array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::LOCAL_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
@@ -255,6 +265,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id IN (user3,user4)'
             ),
+            array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::BUSINESS_UNIT, '', 'id IN (bu3,bu4)'),
             array('user4', true, AccessLevel::BASIC_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::BASIC_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
             array('user4', true, AccessLevel::BASIC_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', '1 = 0'),
@@ -267,6 +278,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 '',
                 'owner_id = user4'
             ),
+            array('user4', true, AccessLevel::BASIC_LEVEL, null, self::USER, '', 'id = user4'),
         );
     }
 }

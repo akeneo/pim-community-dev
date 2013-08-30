@@ -14,7 +14,6 @@ use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 
-
 class TestHelper
 {
     public static function get(\PHPUnit_Framework_TestCase $testCase)
