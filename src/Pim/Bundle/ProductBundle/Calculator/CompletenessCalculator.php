@@ -155,14 +155,11 @@ class CompletenessCalculator
      *
      * @param ProductInterface[] $products
      *
-     * @return Completeness[] $completenesses
+     * @return null
      */
     public function calculate(array $products = array())
     {
-        $completenesses = array();
-
         foreach ($products as $product) {
-            $sku = $product->getSku()->__toString();
             $this->calculateForAProduct($product);
         }
     }
@@ -172,12 +169,10 @@ class CompletenessCalculator
      *
      * @param ProductInterface $product
      *
-     * @return Completeness[] $completenesses List of completeness entities for the product
+     * @return null
      */
     public function calculateForAProduct(ProductInterface $product)
     {
-        $completenesses = array();
-
         if ($product->getFamily() === null) {
             return;
         }
