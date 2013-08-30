@@ -35,7 +35,8 @@ class Edit extends Form
                 'Enable switcher'  => array('css' => '#pim_product_enabled'),
                 'Updates grid'     => array('css' => '#history table.grid'),
                 'Image preview'    => array('css' => '#lbImage'),
-                'Completeness'     => array('css' => 'div#completeness')
+                'Completeness'     => array('css' => 'div#completeness'),
+                'Updates grid'     => array('css' => '#history table.grid'),
             )
         );
     }
@@ -369,5 +370,13 @@ class Edit extends Form
         }
 
         return $legend;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHistoryRows()
+    {
+        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 }

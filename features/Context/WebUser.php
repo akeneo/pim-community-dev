@@ -860,6 +860,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locale
+     *
+     * @Given /^I select the locale "([^"]*)"$/
+     */
+    public function iSelectLocale($locale)
+    {
+        $this->getPage('Channel creation')->selectLocale($locale);
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @Given /^I select the currency "([^"]*)"$/
+     */
+    public function iSelectCurrency($currency)
+    {
+        $this->getPage('Channel creation')->selectCurrency($currency);
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
