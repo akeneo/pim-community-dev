@@ -192,7 +192,7 @@ class CompletenessCalculator
     public function calculateForAProductByChannel(ProductInterface $product, Channel $channel)
     {
         if ($product->getFamily() === null) {
-            return array();
+            return;
         }
 
         $notBlankConstraint = new ProductValueNotBlank(array('channel' => $channel));
@@ -265,6 +265,12 @@ class CompletenessCalculator
     {
         $repo = $this->em->getRepository('PimProductBundle:AttributeRequirement');
 
-        return $repo->findBy(array('channel' => $channel, 'family' => $family, 'required' => true));
+        return $repo->findBy(
+            array(
+                'channel' => $channel,
+                'family' => $family,
+                'required' => true
+            )
+        );
     }
 }

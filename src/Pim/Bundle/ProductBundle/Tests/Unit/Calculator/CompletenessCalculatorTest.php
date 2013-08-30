@@ -183,6 +183,59 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for calculator for the method calculateForAProductWithoutFamilyByChannel
+     *
+     * array(
+     *     channel,
+     *     product values -> array()
+     * )
+     *
+     * @return array
+     */
+    public function dataProviderCalculatorForAProductWithoutFamilyByChannel()
+    {
+        return array(
+            'all data set' => array(
+                self::CHANNEL_1,
+                array(
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_1, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_1, 'channel' => self::CHANNEL_1),
+                    array('attribute' => self::ATTR_2, 'locale' => self::LOCALE_2, 'channel' => self::CHANNEL_1),
+                )
+            )
+        );
+    }
+
+    /**
+     *
+     * Test calculateForAProduct method with a product without family
+     * No completeness must be returned because there is no calculation possible without family
+     *
+     * @param string $channelCode
+     * @param array  $values      Array of product values
+     * array(
+     *     array('locale' => locale1, 'channel' => channel1, 'return' => product value),
+     *     ...
+     * )
+     *
+     * @dataProvider dataProviderCalculatorForAProductWithoutFamilyByChannel
+     */
+    public function testCalculatorForAProductWithoutFamilyByChannel($channelCode, array $values)
+    {
+        $product = $this->createProductMock($values);
+        $product->setFamily(null);
+
+        // update repository mock
+        $channelUsed = $this->getChannel($channelCode);
+        $this->mockRepository($channelUsed);
+
+        // call the calculator
+        $this->calculator->calculateForAProductByChannel($product, $channelUsed);
+        $this->assertCount(0, $product->getCompletenesses());
+    }
+
+    /**
      * Method to get channel entity from a code
      *
      * @param string $channelCode
