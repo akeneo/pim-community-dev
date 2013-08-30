@@ -44,10 +44,11 @@ class NavigationListener
                     $config = $this->entityConfigProvider->getConfig($entity->getClassname());
 
                     $childs[$config->get('label')] = array(
-                        'label'   => $config->get('label') . '<i class="' . $config->get(
-                            'icon'
-                        ) . ' hide-text pull-right"></i>',
+                        'label'   => $config->get('label'),
                         'options' => array(
+                            'label'   => $config->get('label') . '<i class="' . $config->get(
+                                'icon'
+                            ) . ' hide-text pull-right"></i>',
                             'route'           => 'oro_entity_index',
                             'routeParameters' => array(
                                 'id' => str_replace('\\', '_', $entity->getId())
