@@ -23,7 +23,7 @@ class NavigationListener
      */
     public function __construct(EntityManager $entityManager, ConfigProvider $entityConfigProvider)
     {
-        $this->em = $entityManager;
+        $this->em                   = $entityManager;
         $this->entityConfigProvider = $entityConfigProvider;
     }
 
@@ -32,7 +32,8 @@ class NavigationListener
      */
     public function onNavigationConfigure(ConfigureMenuEvent $event)
     {
-        $menu = $event->getMenu();
+        $menu   = $event->getMenu();
+        $childs = array();
 
         $entitiesMenuItem = $menu->getChild('system_tab')->getChild('entities_list');
         if ($entitiesMenuItem) {
@@ -41,19 +42,27 @@ class NavigationListener
             if ($entities) {
                 foreach ($entities as $entity) {
                     $config = $this->entityConfigProvider->getConfig($entity->getClassname());
-                    $entitiesMenuItem->addChild(
-                        $config->get('label') . '<i class="'.$config->get('icon').' hide-text pull-right"></i>',
-                        array(
-                            'route'  => 'oro_entity_index',
+
+                    $childs[$config->get('label')] = array(
+                        'label'   => $config->get('label') . '<i class="' . $config->get(
+                            'icon'
+                        ) . ' hide-text pull-right"></i>',
+                        'options' => array(
+                            'route'           => 'oro_entity_index',
                             'routeParameters' => array(
                                 'id' => str_replace('\\', '_', $entity->getId())
                             ),
-                            'extras' => array(
+                            'extras'          => array(
                                 'safe_label' => true,
                                 //'icon' => $config->get('icon'),
                             ),
                         )
                     );
+                }
+
+                sort($childs);
+                foreach ($childs as $child) {
+                    $entitiesMenuItem->addChild($child['label'], $child['options']);
                 }
             }
         }
