@@ -5,11 +5,10 @@ namespace Oro\Bundle\ConfigBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Oro\Bundle\NavigationBundle\Annotation\TitleTemplate;
-use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass;
 
 class ConfigurationController extends Controller
 {
@@ -20,12 +19,6 @@ class ConfigurationController extends Controller
      */
     public function indexAction()
     {
-        $data = array();
-        $processor = new ProcessorDecorator();
-        foreach (array('system_configuration.yml', 'test.yml', 'test2.yml') as $fn) {
-            $data = $processor->merge($data, Yaml::parse(realpath(__DIR__ . '/../Resources/config/' . $fn)));
-        }
-
-        return array('data' => $processor->process($data));
+        return array('data' => $this->container->getParameter(SystemConfigurationPass::CONFIG_PARAM_NAME));
     }
 }

@@ -6,11 +6,10 @@ Root node should be `oro_system_configuration`
 
 ####Available nodes:####
 - `levels`    - definition of available config levels. More [details](#levels)
-- `htabs`     - definition of horizontal tabs. More [details](#tabs)
-- `vtabs`     - definition of vertical tabs. More [details](#tabs)
-- `fieldsets` - definition of fields group. More [details](#fieldsets)
+- `groups`    - definition of field groups. More [details](#groups)
 - `fields`    - definition of field (form type). More [details](#fields)
 - `tree`      - definition of configuration form tree. More [details](#tree)
+- `tags`      - definition of tags tree. More [details](#tags)
 
 #### Levels
 Levels node should be declared under root node and contains array of available config levels.
@@ -20,35 +19,27 @@ oro_system_configuration:
     levels:
        - global
 ```
-#### Tabs
-This node should be also declared under root node and contains array of available tabs with properties.
+#### Groups
+This node should be also declared under root node and contains array of available field groups with its properties
+Group is abstract fields bag, view representation of group managed on template level of specific configuration template
+and dependent on its position in tree.
+This means that group could be rendered as fieldset or 1tab or like part of accordion list.
+
 ```
 oro_system_configuration:
-    htabs:
+    groups:
         platform: #unique name
             label: 'Platform' # label is required
             icon:  icon-hdd
-    vtabs:
-        ...
-        ...
 ```
 
-Tabs definitions will be replaced recursive from configs that will parse after original definition.
-So way to override existed tab label is just to redefine tab with the same name and `label` value
+Groups definitions will be replaced recursive from configs that will parse after original definition.
+So way to override existed group label is just to redefine group with the same name and `label` value
 ```
 oro_system_configuration:
-    htabs:
+    groups:
         platform:
             label: 'New label' # overridden label
-```
-#### Fieldsets
-Fielset declaration is similar to the tabs declaration, but only `label` is allowed here and it's required
-    fieldsets:
-```
-oro_system_configuration:
-    fieldsets:
-        locale_options: #unique name
-            label: 'Locale options'
 ```
 #### Fields
 Field declaration have 2 required properties `type` and `levels`.
@@ -74,9 +65,22 @@ Configuration form tree makes definition of nested form elements.
 ```
 oro_system_configuration:
     tree:
-        some_htab_name:
-            some_vtab_name:
-                some_fieldsets:
+        group1:
+            some_group2:
+                some_group3:
+                    - some_field
+                    ...
+                    - some_another_field
+```
+#### Tags
+Tags is one level tree that allows to group similar fields into small logical groups.
+This declaration maybe useful when developer should provide a way to change some configuration values in modal window
+```
+oro_system_configuration:
+    tree:
+        group1:
+            some_group2:
+                some_group3:
                     - some_field
                     ...
                     - some_another_field

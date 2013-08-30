@@ -10,11 +10,10 @@ class ProcessorDecorator
 {
     const ROOT                 = 'oro_system_configuration';
     const LEVELS_ROOT          = 'levels';
-    const VERTICAL_TABS_ROOT   = 'vtabs';
-    const HORIZONTAL_TABS_ROOT = 'htabs';
-    const FIELDSETS_ROOT       = 'fieldsets';
+    const GROUPS_NODE          = 'groups';
     const FIELDS_ROOT          = 'fields';
     const TREE_ROOT            = 'tree';
+    const TAGS_ROOT            = 'tags';
 
     /** @var Processor */
     protected $processor;
@@ -81,10 +80,7 @@ class ProcessorDecorator
     {
         $result = array(
             self::ROOT => array_fill_keys(
-                array(
-                    self::LEVELS_ROOT, self::VERTICAL_TABS_ROOT, self::HORIZONTAL_TABS_ROOT,
-                    self::FIELDSETS_ROOT, self::FIELDS_ROOT, self::TREE_ROOT
-                ),
+                array(self::LEVELS_ROOT, self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT , self::TAGS_ROOT),
                 array()
             )
         );
@@ -113,11 +109,10 @@ class ProcessorDecorator
 
         $tree->root(self::ROOT)->children()
                 ->append($this->getLevelsNode())
-                ->append($this->getTabsNode(self::VERTICAL_TABS_ROOT))
-                ->append($this->getTabsNode(self::HORIZONTAL_TABS_ROOT))
-                ->append($this->getFieldsetsNode())
+                ->append($this->getGroupsNode())
                 ->append($this->getFieldsNode())
                 ->append($this->getTreeNode())
+                ->append($this->getTagsNode())
             ->end();
 
         return $tree;
@@ -140,35 +135,18 @@ class ProcessorDecorator
     }
 
     /**
-     * @param string $nodeName
      * @return NodeDefinition
      */
-    protected function getTabsNode($nodeName)
+    protected function getGroupsNode()
     {
         $builder = new TreeBuilder();
 
-        $node = $builder->root($nodeName)
+        $node = $builder->root(self::GROUPS_NODE)
             ->prototype('array')
                 ->children()
                     ->scalarNode('label')->isRequired()->end()
                     ->scalarNode('icon')->end()
-                ->end()
-            ->end();
-
-        return $node;
-    }
-
-    /**
-     * @return NodeDefinition
-     */
-    protected function getFieldsetsNode()
-    {
-        $builder = new TreeBuilder();
-
-        $node = $builder->root(self::FIELDSETS_ROOT)
-            ->prototype('array')
-                ->children()
-                    ->scalarNode('label')->isRequired()->end()
+                    ->integerNode('position')->end()
                 ->end()
             ->end();
 
@@ -214,6 +192,22 @@ class ProcessorDecorator
                         ->prototype('scalar')->end()
                     ->end()
                 ->end()
+            ->end();
+
+        return $node;
+    }
+
+    /**
+     * @return NodeDefinition
+     */
+    protected function getTagsNode()
+    {
+        $builder = new TreeBuilder();
+
+        // tags is group of fields
+        $node = $builder->root(self::TAGS_ROOT)
+            ->prototype('array')
+                ->prototype('scalar')->end()
             ->end();
 
         return $node;
