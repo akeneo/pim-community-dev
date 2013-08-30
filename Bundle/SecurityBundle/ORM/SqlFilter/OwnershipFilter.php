@@ -8,6 +8,6 @@ class OwnershipFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        return '1=1';
+        return '';
     }
 }
