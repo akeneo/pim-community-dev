@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Calculator;
 
 use Pim\Bundle\ProductBundle\Entity\Family;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Locale;
@@ -208,7 +207,6 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * Test calculateForAProduct method with a product without family
      * No completeness must be returned because there is no calculation possible without family
      *
