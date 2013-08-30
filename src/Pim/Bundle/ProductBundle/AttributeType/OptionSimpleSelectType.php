@@ -23,7 +23,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
-        $options['empty_value']   = false;
+        $options['empty_value']   = '';
         $options['class']         = 'PimProductBundle:AttributeOption';
         $options['query_builder'] = function (EntityRepository $repository) use ($attribute) {
             return $repository->findAllForAttribute($attribute);
