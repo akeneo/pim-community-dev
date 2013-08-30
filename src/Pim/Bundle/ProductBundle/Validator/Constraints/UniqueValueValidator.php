@@ -64,7 +64,7 @@ class UniqueValueValidator extends ConstraintValidator
     /**
      * Get entity
      *
-     * @return mixed|void
+     * @return mixed|null
      */
     private function getEntity()
     {

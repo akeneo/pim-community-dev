@@ -14,6 +14,12 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
  */
 class CsvFileReader extends CsvReader
 {
+    /**
+     * Since this reader reads the whole file at once, store the executed state
+     * and return null when read is called the second time to indicate completion
+     *
+     * @var boolean
+     */
     private $executed = false;
 
     /**

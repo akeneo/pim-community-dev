@@ -132,8 +132,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Persist object
      *
      * @param mixed $object
-     *
-     * @return void
      */
     protected function persist($object)
     {
@@ -142,8 +140,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
     /**
      * Flush objects
-     *
-     * @return void
      */
     protected function flush()
     {
