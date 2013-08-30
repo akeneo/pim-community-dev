@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * ORM cursor reader
@@ -30,7 +31,7 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements ItemRea
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if (!$this->cursor) {
             $this->cursor = $this->query->iterate();

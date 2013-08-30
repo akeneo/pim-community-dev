@@ -218,7 +218,7 @@ abstract class AbstractStep implements StepInterface
      * @param string        $eventName Name of the event
      * @param StepInterface $step      Step object
      */
-    private function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
     {
         $event = new StepExecutionEvent($stepExecution);
         $this->dispatch($eventName, $event);

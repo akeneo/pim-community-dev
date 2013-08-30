@@ -1,6 +1,11 @@
 parameters:
-    pim_import_export.twig.normalize_configuration_extension.class:  Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
-    pim_import_export.validator.constraints.channel_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
+    pim_import_export.twig.normalize_configuration_extension.class:          Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
+    pim_import_export.validator.constraints.channel_validator.class:         Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
+    pim_import_export.form.transform_imported_product_data_subscriber.class: Pim\Bundle\ImportExportBundle\Form\Subscriber\TransformImportedProductDataSubscriber
+    pim_import_export.converter.product_enabled_converter.class:             Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter
+    pim_import_export.converter.product_value_converter.class:               Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter
+    pim_import_export.converter.product_family_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter
+    pim_import_export.converter.product_categories_converter.class:          Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -14,3 +19,34 @@ services:
             - @pim_product.manager.channel
         tags:
             - { name: validator.constraint_validator, alias: channel_validator }
+
+    pim_import_export.form.transform_imported_product_data_subscriber:
+        public: false
+        class: %pim_import_export.form.transform_imported_product_data_subscriber.class%
+        arguments:
+            - @pim_import_export.converter.product_enabled_converter
+            - @pim_import_export.converter.product_value_converter
+            - @pim_import_export.converter.product_family_converter
+            - @pim_import_export.converter.product_categories_converter
+
+    pim_import_export.converter.product_enabled_converter:
+        public: false
+        class: %pim_import_export.converter.product_enabled_converter.class%
+
+    pim_import_export.converter.product_value_converter:
+        public: false
+        class: %pim_import_export.converter.product_value_converter.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    pim_import_export.converter.product_family_converter:
+        public: false
+        class: %pim_import_export.converter.product_family_converter.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    pim_import_export.converter.product_categories_converter:
+        public: false
+        class: %pim_import_export.converter.product_categories_converter.class%
+        arguments:
+            - @doctrine.orm.entity_manager

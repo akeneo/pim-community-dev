@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * ORM reader
@@ -30,7 +31,7 @@ class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInt
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if (!$this->executed) {
             $this->executed = true;

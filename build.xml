@@ -163,7 +163,6 @@
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
-            <arg value="--no-paths" />
             <arg value="--tags=~skip" />
         </exec>
     </target>

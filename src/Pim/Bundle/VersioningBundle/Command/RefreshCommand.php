@@ -3,15 +3,12 @@
 namespace Pim\Bundle\VersioningBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Monolog\Handler\StreamHandler;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Manager\PendingManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Refresh versioning data

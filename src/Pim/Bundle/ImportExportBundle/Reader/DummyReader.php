@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation
@@ -17,7 +18,7 @@ class DummyReader extends AbstractConfigurableStepElement implements ItemReaderI
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         return null;
     }

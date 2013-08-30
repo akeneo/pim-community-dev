@@ -436,8 +436,7 @@ class ProductController extends Controller
 
         // TODO : Maybe just check if the locale is well activated
 
-        $currencyManager = $this->container->get('pim_product.manager.currency');
-        $this->getProductManager()->addMissingPrices($currencyManager, $product);
+        $this->getProductManager()->addMissingPrices($product);
 
         return $product;
     }
