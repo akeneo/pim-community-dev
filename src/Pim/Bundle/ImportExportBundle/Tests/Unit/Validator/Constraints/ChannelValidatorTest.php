@@ -36,7 +36,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidChannel()
     {
-        $constraint = new Channel;
+        $constraint = new Channel();
         $this->context->expects($this->once())
             ->method('addViolation')
             ->with($constraint->message);

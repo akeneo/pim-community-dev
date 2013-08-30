@@ -122,7 +122,7 @@ class AttributeGroupController extends Controller
     public function addProductAttributesAction($id)
     {
         $group               = $this->findOr404('PimProductBundle:AttributeGroup', $id);
-        $availableAttributes = new AvailableProductAttributes;
+        $availableAttributes = new AvailableProductAttributes();
 
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $this->getGroupedAttributes(),

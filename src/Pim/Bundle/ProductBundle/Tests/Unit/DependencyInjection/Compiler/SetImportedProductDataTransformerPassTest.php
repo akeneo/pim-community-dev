@@ -14,7 +14,7 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
 {
     protected function setUp()
     {
-        $this->pass = new SetImportedProductDataTransformerPass;
+        $this->pass = new SetImportedProductDataTransformerPass();
     }
 
     public function testInstanceOfCompilerPassInterface()

@@ -18,7 +18,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->reader = new CsvReader;
+        $this->reader = new CsvReader();
     }
 
     /**

@@ -14,7 +14,7 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new UniqueValueGuesser;
+        $this->target = new UniqueValueGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

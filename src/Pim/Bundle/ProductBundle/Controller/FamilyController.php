@@ -26,7 +26,7 @@ class FamilyController extends Controller
      */
     public function createAction(Request $request)
     {
-        $family   = new Family;
+        $family   = new Family();
         $families = $this->getRepository('PimProductBundle:Family')->getIdToLabelOrderedByLabel();
 
         $form = $this->createForm('pim_family', $family);
@@ -137,7 +137,7 @@ class FamilyController extends Controller
     public function addProductAttributesAction($id)
     {
         $family              = $this->findOr404('PimProductBundle:Family', $id);
-        $availableAttributes = new AvailableProductAttributes;
+        $availableAttributes = new AvailableProductAttributes();
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes

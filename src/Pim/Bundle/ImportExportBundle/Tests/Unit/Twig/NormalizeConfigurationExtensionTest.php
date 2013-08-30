@@ -15,7 +15,7 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->extension = new NormalizeConfigurationExtension;
+        $this->extension = new NormalizeConfigurationExtension();
     }
 
     public function testInstanceOfTwigExtension()

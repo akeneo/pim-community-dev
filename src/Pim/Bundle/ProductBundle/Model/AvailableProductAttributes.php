@@ -18,7 +18,7 @@ class AvailableProductAttributes
      */
     public function __construct()
     {
-        $this->attributes = new ArrayCollection;
+        $this->attributes = new ArrayCollection();
     }
 
     /**

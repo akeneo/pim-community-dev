@@ -165,7 +165,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     public function process($data)
     {
         $this->data = new ArrayCollection($data);
-        $this->categories = new ArrayCollection;
+        $this->categories = new ArrayCollection();
 
         foreach ($this->data as $item) {
             $this->processItem($item);

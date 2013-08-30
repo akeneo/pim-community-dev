@@ -17,7 +17,7 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->constraint = new Channel;
+        $this->constraint = new Channel();
     }
 
     public function testExtendsChoiceConstraint()

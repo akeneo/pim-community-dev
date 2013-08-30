@@ -13,7 +13,7 @@ class UrlGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new UrlGuesser;
+        $this->target = new UrlGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

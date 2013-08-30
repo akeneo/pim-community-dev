@@ -13,7 +13,7 @@ class EmailGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new EmailGuesser;
+        $this->target = new EmailGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

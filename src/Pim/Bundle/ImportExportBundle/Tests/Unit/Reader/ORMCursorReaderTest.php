@@ -18,7 +18,7 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testRead()
     {
-        $reader = new ORMCursorReader;
+        $reader = new ORMCursorReader();
         $stepExecution = $this->getStepExecutionMock();
         $query  = $this->getQueryMock();
         $result = $this->getIterableResultMock(

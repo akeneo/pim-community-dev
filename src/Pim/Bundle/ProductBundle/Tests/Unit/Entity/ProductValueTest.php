@@ -102,7 +102,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
 
     private function getTargetedClass()
     {
-        return new ProductValue;
+        return new ProductValue();
     }
 
     private function getFamilyMock()

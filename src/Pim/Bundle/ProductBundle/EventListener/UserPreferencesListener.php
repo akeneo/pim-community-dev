@@ -14,7 +14,6 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class UserPreferencesListener implements EventSubscriber
 {
@@ -67,13 +66,18 @@ class UserPreferencesListener implements EventSubscriber
         }
     }
 
+    /**
+     * Before update
+     *
+     * @param PreUpdateEventArgs $args
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
 
-        if (($entity instanceof Locale) &&
-            $args->hasChangedField('activated') &&
-            $args->getNewValue('activated')) {
+        if ($entity instanceof Locale
+            && $args->hasChangedField('activated')
+            && $args->getNewValue('activated')) {
             $this->addOptionValue('cataloglocale', $entity->getCode());
         }
     }
