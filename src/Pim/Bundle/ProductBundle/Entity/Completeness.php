@@ -98,8 +98,10 @@ class Completeness
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
      * @ORM\JoinTable(
      *     name="pim_product_completenesses_attributes",
-     *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id")
+     *     }
      * )
      */
     protected $missingAttributes;
