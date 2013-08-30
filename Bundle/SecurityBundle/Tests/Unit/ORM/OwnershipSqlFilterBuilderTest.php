@@ -150,7 +150,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
 
         /** @var OneShotIsGrantedObserver $aclObserver */
         $aclObserver = null;
-        $this->aclVoter->expects($this->once())
+        $this->aclVoter->expects($this->any())
             ->method('addOneShotIsGrantedObserver')
             ->will(
                 $this->returnCallback(
@@ -167,13 +167,13 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue($user));
-        $this->securityContext->expects($this->once())
+        $this->securityContext->expects($this->any())
             ->method('isGranted')
             ->with($this->equalTo('VIEW'), $this->equalTo('entity:' . $targetEntityClassName))
             ->will($this->returnValue($isGranted));
         $this->securityContext->expects($this->any())
             ->method('getToken')
-            ->will($this->returnValue($token));
+            ->will($this->returnValue($userId ? $token : null));
 
         $this->assertEquals(
             $expectedConstraint,
@@ -184,8 +184,8 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     public static function buildFilterConstraintProvider()
     {
         return array(
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, '', '1 = 0'),
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, 't', "'t' = ''"),
+            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, '', ''),
+            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, 't', ''),
             array('', true, AccessLevel::UNDEFINED, null, '\stdClass', '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', ''),
