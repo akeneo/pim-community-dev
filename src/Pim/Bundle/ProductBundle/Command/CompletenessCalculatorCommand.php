@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
@@ -12,11 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  *
  * Launch command :
  * php app/console pim:product:completeness-calculator
- *
- * You can add options :
- *     - channels : List of channels code on which you want to calculate completeness
- *     - locales  : List of locales code on which you want to calculate completeness
- *     - forced   : Predicate allowing to forced to recalculate a value even if don't need to be reindexed
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -36,25 +30,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:product:completeness-calculator')
-            ->setDescription('Launch the product completeness calculator')
-            ->addOption(
-                'channels',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'list of channels'
-            )
-            ->addOption(
-                'locales',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'list of locales'
-            )
-            ->addOption(
-                'forced',
-                null,
-                InputOption::VALUE_NONE,
-                'if defined, the calculator doesn\'t take care about reindex'
-            );
+            ->setDescription('Launch the product completeness calculator');
     }
 
     /**
@@ -62,41 +38,8 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $channels = $input->getOption('channels');
-        $locales  = $input->getOption('locales');
-        $forced   = $input->getOption('forced');
-
-        $this->calculator = $this->getCompletenessCalculator();
-
-        // define channels
-        if ($channels !== null) {
-            $channels = explode(',', $channels);
-            $channels = $this->getChannelManager()->getChannels(array('code' => $channels));
-
-            $this->calculator->setChannels($channels);
-        }
-
-        // define locales
-        if ($locales !== null) {
-            $locales = explode(',', $locales);
-            $locales = $this->getLocaleManager()->getLocales(array('code' => $locales));
-
-            $this->calculator->setLocales($locales);
-        }
-
-        // TODO : define the products where the completeness must be recalculated
-        // depending of the forced option
-        $products = $this->getProductManager()->getFlexibleRepository()->findAll();
-
-        // Call calculator and persists entities
-        $completenesses = $this->calculator->calculate($products);
-        foreach ($completenesses as $sku => $productCompleteness) {
-            foreach ($productCompleteness as $completeness) {
-                $this->getEntityManager()->persist($completeness);
-            }
-        }
-
-        $this->getEntityManager()->flush();
+        $batchCalculator = $this->getContainer()->get('pim_product.calculator.batch_completeness');
+        $batchCalculator->execute();
     }
 
     /**

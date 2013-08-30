@@ -31,14 +31,14 @@ Feature: Display the family history
     And I should see history:
     | action | version | data            |
     | create | 1       | code:Flyer      |
-    | update | 2       | label_en_US:Fly |
+    | update | 2       | label:en_US:Fly |
     When I visit the "Attributes" tab
     And I add available attributes Description
     And I save the family
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-    | action | version | data                   |
-    | create | 1       | code:Flyer             |
-    | update | 2       | label_en_US:Fly        |
-    | update | 3       | attributes:description |
+    | action | version | data                          |
+    | create | 1       | code:Flyer                    |
+    | update | 2       | label:en_US:Fly               |
+    | update | 3       | attributes:skusku,description |

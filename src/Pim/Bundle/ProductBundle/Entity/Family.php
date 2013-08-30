@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -426,6 +427,21 @@ class Family implements TranslatableInterface, VersionableInterface
     public function setLabel($label)
     {
         $this->getTranslation()->setLabel($label);
+
+        return $this;
+    }
+
+    /**
+     * Add attribute requirement
+     *
+     * @param AttributeRequirement $requirement
+     *
+     * @return Family
+     */
+    public function addAttributeRequirements(AttributeRequirement $requirement)
+    {
+        $requirement->setFamily($this);
+        $this->attributeRequirements[] = $requirement;
 
         return $this;
     }

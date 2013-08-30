@@ -2,9 +2,14 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\Constraints;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank;
-
 use Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlankValidator;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Entity\Currency;
 
 class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +29,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->validator = new ProductValueNotBlankValidator();
-        $this->constraint = new ProductValueNotBlank();
+        $this->constraint = new ProductValueNotBlank(array('channel' => $this->getChannel()));
     }
 
     /**
@@ -65,6 +70,13 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderWithRightSimpleData()
     {
+        $attribute = new ProductAttribute();
+        $attribute->setCode('price');
+        $attribute->setAttributeType('pim_product_price_collection');
+        $price = new ProductPrice();
+        $price->setCurrency('EUR');
+        $price->setData(12.5);
+
         return array(
             array('char' => 'a'),
             array('string' => 'test'),
@@ -80,7 +92,9 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
             array('boolean true' => true),
             array('boolean false' => false),
             array('not empty array' => array('A')),
-            array('object' => new \stdClass())
+            array('object' => new \stdClass()),
+            array('not empty option collection' => new ArrayCollection(array(new AttributeOption()))),
+            array('expected price collection' => new ArrayCollection(array($price)), $attribute),
         );
     }
 
@@ -89,14 +103,14 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider dataProviderWithRightSimpleData
      */
-    public function testWithRightSimpleData($return)
+    public function testWithRightSimpleData($return, $attribute = null)
     {
         $context = $this->getExecutionContext();
         $context
             ->expects($this->never())
             ->method('addViolation');
 
-        $productValue = $this->getProductValueMock($return);
+        $productValue = $this->getProductValueMock($return, $attribute);
 
         $this->validator->initialize($context);
         $this->validator->validate($productValue, $this->constraint);
@@ -110,10 +124,18 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderWithWrongSimpleData()
     {
+        $attribute = new ProductAttribute();
+        $attribute->setCode('price');
+        $attribute->setAttributeType('pim_product_price_collection');
+        $price = new ProductPrice();
+        $price->setCurrency('EUR');
+        $price->setData(null);
+
         return array(
             array('null' => null),
             array('empty string' => ''),
-            array('empty array' => array())
+            array('empty option collection' => new ArrayCollection()),
+            array('unexpected price collection' => new ArrayCollection(array($price)), $attribute),
         );
     }
 
@@ -122,14 +144,14 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider dataProviderWithWrongSimpleData
      */
-    public function testWithWrongSimpleData($return)
+    public function testWithWrongSimpleData($return, $attribute = null)
     {
         $context = $this->getExecutionContext();
         $context
             ->expects($this->once())
             ->method('addViolation');
 
-        $productValue = $this->getProductValueMock($return);
+        $productValue = $this->getProductValueMock($return, $attribute);
 
         $this->validator->initialize($context);
         $this->validator->validate($productValue, $this->constraint);
@@ -152,10 +174,11 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      * Get a product value mock
      *
      * @param mixed $return
+     * @param ProductAttribute $attribute
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
      */
-    protected function getProductValueMock($return)
+    protected function getProductValueMock($return, $attribute = null)
     {
         $productValue = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue');
 
@@ -164,6 +187,25 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue($return));
 
+        $productValue
+            ->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($attribute));
+
         return $productValue;
+    }
+
+    /**
+     * @return Channel
+     */
+    protected function getChannel()
+    {
+        $channel = new Channel();
+        $channel->setCode('catalog');
+        $currency = new Currency();
+        $currency->setCode('EUR');
+        $channel->addCurrency($currency);
+
+        return $channel;
     }
 }

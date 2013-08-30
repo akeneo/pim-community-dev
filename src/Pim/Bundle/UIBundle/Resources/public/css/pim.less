@@ -340,8 +340,10 @@ div.btn-group > .has-switch {
 }
 
 #attribute-buttons {
-  margin-right: 10px;
-  float: right;
+  margin-top:    10px;
+  margin-bottom: 10px;
+  margin-right:  10px;
+  float:         right;
 }
 
 #lbCenter {
@@ -350,6 +352,82 @@ div.btn-group > .has-switch {
 
 #lbOverlay {
   z-index: 900;
+}
+
+.upload-zone {
+  height: 100px;
+  margin: 1px;
+  border: 1px solid @textColor + #888;
+  border-radius: 10px;
+  color: @textColor + #333;
+  cursor: pointer;
+  &.empty {
+    margin: 0;
+    border-style: dashed;
+    border-width: 2px;
+    &:hover {
+      border-color: @textColor + #555;
+    }
+    div.upload-info {
+      min-width: 278px;
+    }
+  }
+  &:hover {
+    background-color: @color-purple_hover;
+  }
+  div.upload-info {
+    display: inline-block;
+    min-width: 229px;
+    height: 80px;
+    line-height: 80px;
+    margin: 10px;
+    font-size: 22px;
+    text-align: center;
+    .upload-preview, img {
+      display: inline-block;
+      min-width: 40px;
+      max-width: 120px;
+      max-height: 80px;
+      font-size: 40px;
+      line-height: 80px;
+      color: @textColor + #333;
+      vertical-align: middle;
+      &.empty {
+        display: none;
+      }
+    }
+    img {
+      display: block;
+    }
+    span.upload-filename {
+      padding: 0 5px;
+      line-height: 80px;
+    }
+  }
+  .remove-upload {
+    float: right;
+    height: 100px;
+    margin-top: -1px;
+    margin-right: -1px;
+    padding: 0 9px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 100px;
+    font-size: 26px;
+    width: 30px;
+  }
+}
+
+input[type="file"] {
+  display: block;
+  z-index: 99;
+  position: relative;
+  top: -100px;
+  width: 100%!important;
+  height: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+  opacity: 0;
 }
 
 /* Collapsable sidebar **********************************************************************************************/
@@ -845,6 +923,28 @@ div.entity-updated {
 i.icon-tick { background: url("../../pimproduct/images/tick.png") 0px 0px no-repeat !important;}
 i.icon-tick-off { background: url("../../pimproduct/images/tick-off.png") 0px 0px no-repeat !important;}
 
+/* Import upload file form */
+
+form.form-upload {
+  text-align: center;
+  .control-group {
+    margin-botton: 0;
+    .control-label {
+      display: none;
+    }
+    .controls {
+      margin-left: 20px;
+      margin-right: 20px;
+      .upload-zone {
+        width: 100%;
+      }
+      .icons-container {
+        float: right;
+      }
+    }
+  }
+}
+
 /* Pim multiselect styles */
 button.pimmultiselect {
   height: 32px;
@@ -1058,7 +1158,7 @@ ul.medias label.remove-media {
 
 /** Product completeness *******************************************************************************/
 div#legend {
-  margin-left: 15%;
+  margin-left: 15px;
   margin-top: 15px;
   .progress {
     margin-top: 5px;

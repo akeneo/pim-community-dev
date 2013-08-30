@@ -32,6 +32,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    pim_product.event_listener.update_completeness:
+        class: %pim_product.event_listener.update_completeness.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
     # Validators
     pim_product.form.validator.metric:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricValidator
@@ -94,9 +99,17 @@ services:
 
     # Product completeness calculator
     pim_product.calculator.completeness:
-      class: %pim_product.calculator.completeness.class%
-      arguments:
-          - @pim_product.manager.channel
-          - @pim_product.manager.locale
-          - @doctrine.orm.entity_manager
-          - @validator
+        class: %pim_product.calculator.completeness.class%
+        arguments:
+            - @pim_product.manager.channel
+            - @pim_product.manager.locale
+            - @doctrine.orm.entity_manager
+            - @validator
+
+    # Batch completeness calculator
+    pim_product.calculator.batch_completeness:
+        class: %pim_product.calculator.batch_completeness.class%
+        arguments:
+            - @pim_product.calculator.completeness
+            - @pim_product.manager.product
+            - @doctrine.orm.entity_manager

@@ -32,12 +32,26 @@
         {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
+        {% if uploadViolations|length == 0 %}
+            {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+        {% endif %}
         {% if violations|length == 0 %}
             {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle, left) }}
+
+    {% if form is defined and form is not empty and uploadViolations|length == 0 %}
+        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+            {{ elements.form_errors(form) }}
+            <div class="row-fluid">
+                {{ form_row(form.file) }}
+                {{ form_row(form._token) }}
+                {{ elements.submitBtn('Upload and '~title|lower~' now'|trans) }}
+            </div>
+        </form>
+    {% endif %}
 
     {% set accordionContent = {} %}
     {% for stepTitle, stepConfig in jobInstance.job.configuration %}

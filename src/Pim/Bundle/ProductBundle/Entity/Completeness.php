@@ -16,7 +16,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity
- * @ORM\Table(name="pim_product_completeness")
+ * @ORM\Table(
+ *     name="pim_product_completeness",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="searchunique_idx",
+ *             columns={"channel_id", "locale_id", "product_id"}
+ *         )
+ *     }
+ * )
  */
 class Completeness
 {
@@ -40,6 +48,7 @@ class Completeness
      * @var \Pim\Bundle\ProductBundle\Entity\Channel $channel
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Channel")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $channel;
 
@@ -63,13 +72,6 @@ class Completeness
      * @ORM\Column(name="required_count", type="integer")
      */
     protected $requiredCount = 0;
-
-    /**
-     * @var boolean $toReindex
-     *
-     * @ORM\Column(name="to_reindex", type="boolean")
-     */
-    protected $toReindex = false;
 
     /**
      * @var datetime $updated
@@ -226,30 +228,6 @@ class Completeness
     public function setRequiredCount($requiredCount)
     {
         $this->requiredCount = $requiredCount;
-
-        return $this;
-    }
-
-    /**
-     * Getter to reindex
-     *
-     * @return boolean
-     */
-    public function isToReindex()
-    {
-        return $this->toReindex;
-    }
-
-    /**
-     * Setter to reindex
-     *
-     * @param boolean $toReindex
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Completeness
-     */
-    public function setToReindex($toReindex)
-    {
-        $this->toReindex = $toReindex;
 
         return $this;
     }

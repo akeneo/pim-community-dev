@@ -234,6 +234,56 @@ function init() {
     });
 
     $('[rel="tooltip"]').tooltip();
+
+    $('form').on('change', 'input[type="file"]', function() {
+        var $input = $(this);
+        var filename = $input.val().split('\\').pop();
+        var $zone = $input.parent();
+        var $info = $input.siblings('.upload-info').first();
+        var $filename = $info.find('.upload-filename');
+        var $removeBtn = $input.siblings('.remove-upload');
+        var $removeCheckbox = $input.siblings('input[type="checkbox"]');
+
+        var $preview = $info.find('.upload-preview');
+        if ($preview.prop('tagName').toLowerCase() !== 'i') {
+            var iconClass = $zone.hasClass('image') ? 'fa-icon-camera-retro' : 'fa-icon-file';
+            $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
+            $preview = $info.find('.upload-preview');
+        }
+
+        if (filename) {
+            $filename.html(filename);
+            $zone.removeClass('empty');
+            $preview.removeClass('empty');
+            $removeBtn.removeClass('hide');
+            $input.attr('disabled', 'disabled').addClass('hide');
+            $removeCheckbox.removeAttr('checked');
+        } else {
+            $filename.html($filename.attr('data-empty-title'));
+            $zone.addClass('empty');
+            $preview.addClass('empty');
+            $removeBtn.addClass('hide');
+            $input.removeAttr('disabled').removeClass('hide');
+            $removeCheckbox.attr('checked', 'checked');
+        }
+    });
+
+    $('form').on('submit', function() {
+        $('input[type="file"]').removeAttr('disabled');
+    });
+
+    $('.remove-upload').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $input = $(this).siblings('input[type="file"]').first();
+        $input.wrap('<form>').closest('form').get(0).reset();
+        $input.unwrap().trigger('change');
+    });
+
+    $('[data-form-toggle]').on('click', function() {
+        $('#' + $(this).attr('data-form-toggle')).show();
+        $(this).hide();
+    });
 }
 
 $(function() {

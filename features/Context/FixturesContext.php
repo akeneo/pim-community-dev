@@ -71,6 +71,8 @@ class FixturesContext extends RawMinkContext
         foreach ($this->channels as $code => $locales) {
             $this->createChannel($code, $locales);
         }
+
+        $this->flush();
     }
 
     /**
@@ -92,6 +94,14 @@ class FixturesContext extends RawMinkContext
         $this->createAcl('oro_login', $oroSecurity);
         $this->createAcl('oro_login_check', $oroSecurity);
         $this->createAcl('oro_logout', $oroSecurity);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearUOW()
+    {
+        $this->getEntityManager()->clear();
     }
 
     /**
@@ -130,7 +140,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string    $sku
+     * @param string $sku
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      *
@@ -279,8 +289,9 @@ class FixturesContext extends RawMinkContext
         $channels = $em->getRepository('PimProductBundle:Channel')->findAll();
 
         foreach ($channels as $channel) {
-            $em->remove($channel);
+            $this->remove($channel);
         }
+        $this->flush();
     }
 
     /**
@@ -292,8 +303,9 @@ class FixturesContext extends RawMinkContext
         $attributes = $em->getRepository('PimProductBundle:ProductAttribute')->findAll();
 
         foreach ($attributes as $attribute) {
-            $em->remove($attribute);
+            $this->remove($attribute);
         }
+        $this->flush();
     }
 
     /**

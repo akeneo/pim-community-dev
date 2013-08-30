@@ -3,7 +3,7 @@
         <thead>
             <th width="8%">{{ 'Locales'|upper }}</th>
             {% for channel in channels %}
-                <th class="channel" width="200">{{ channel.name|upper }}</th>
+                <th class="channel" width="150">{{ channel.name|upper }}</th>
             {% endfor %}
             <th>&nbsp;</th>
         </thead>
@@ -18,32 +18,20 @@
                         with {'channel': channel, 'completeness': product.completeness(locale.code, channel.code)} %}
                 </td>
                 {% endfor %}
+                <td>&nbsp;</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <div id="legend">
-        <b>{{ 'Legend' | trans }} :</b>
         <div class="row-fluid">
             <div class="pull-left progress-bars">
-                <div class="progress">
-                    <div class="bar bar-success" style="width: 100%;"></div>
-                </div>
-                <div class="progress">
-                    <div class="bar bar-warning" style="width: 100%;"></div>
-                </div>
-                <div class="progress">
-                    <div class="bar bar-danger" style="width: 100%;"></div>
-                </div>
                 <div class="progress">
                     <div class="bar bar-disabled" style="width: 100%;"></div>
                 </div>
             </div>
             <div class="pull-left progress-legend">
-                <span>100% {{ 'completeness' | trans }}</span>
-                <span>Between 1% and 99% {{ 'completeness' | trans }}</span>
-                <span>0% {{ 'completeness' | trans }}</span>
                 <span>{{ 'Non activated locale on this channel' | trans }}</span>
             </div>
         </div>
