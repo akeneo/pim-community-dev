@@ -51,7 +51,6 @@ Feature: Join a document to a product
     And I save the product
     And I remove the "Description" file
     And I attach file "akeneo2.txt" to "Description"
-    And I remove the "Description" file
     And I save the product
     Then I should not see "akeneo.txt"
     But I should see "akeneo2.txt"
