@@ -208,7 +208,6 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * Test calculateForAProduct method with a product without family
      * No completeness must be returned because there is no calculation possible without family
      *
