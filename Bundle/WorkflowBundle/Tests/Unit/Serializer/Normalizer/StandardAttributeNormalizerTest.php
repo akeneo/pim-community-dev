@@ -181,7 +181,7 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getOption')->with('class')
             ->will($this->returnValue($class));
 
-        $this->assertEquals($expected, $this->normalizer->normalize($this->workflow, $this->attribute, $value));
+        $this->assertEquals($expected, $this->normalizer->denormalize($this->workflow, $this->attribute, $value));
     }
 
     /**
