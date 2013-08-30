@@ -32,7 +32,7 @@
         {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
-        {% if uploadViolations|length == 0 %}
+        {% if uploadAllowed and uploadViolations|length == 0 %}
             {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
         {% endif %}
         {% if violations|length == 0 %}
@@ -42,7 +42,7 @@
 
     {{ elements.page_header(title, buttons, subtitle, left) }}
 
-    {% if form is defined and form is not empty and uploadViolations|length == 0 %}
+    {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
         <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
             {{ elements.form_errors(form) }}
             <div class="row-fluid">
