@@ -13,9 +13,7 @@ Pim\Bundle\ProductBundle\Entity\Channel:
             - NotBlank: ~
             - Length:
                 max: 100
-        
         currencies:
             - Count: { min: 1 }
-            
         locales:
             - Count: { min: 1 }
