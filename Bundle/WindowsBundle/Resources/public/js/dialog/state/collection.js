@@ -1,12 +1,18 @@
-var Oro = Oro || {};
-Oro.widget = Oro.widget || {};
+/* global define */
+define(['backbone', 'oro/dialog/state/model'],
+function(Backbone, StateModel) {
+    'use strict';
 
-Oro.widget.StateCollection = Backbone.Collection.extend({
-    model: Oro.widget.StateModel,
+    /**
+     * @export  oro/dialog/state/collection
+     * @class   oro.dialog.state.Collection
+     * @extends Backbone.Collection
+     */
+    return Backbone.Collection.extend({
+        model: StateModel,
 
-    url: function() {
-        return this.model.prototype.urlRoot;
-    }
+        url: function() {
+            return this.model.prototype.urlRoot;
+        }
+    });
 });
-
-Oro.widget.States = new Oro.widget.StateCollection();

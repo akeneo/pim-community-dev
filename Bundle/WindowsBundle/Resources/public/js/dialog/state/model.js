@@ -1,5 +1,12 @@
-var Oro = Oro || {};
-Oro.widget = Oro.widget || {};
+/* global define */
+define(['backbone'],
+function(Backbone) {
+    'use strict';
 
-Oro.widget.StateModel = Backbone.Model.extend({
+    /**
+     * @export  oro/dialog/state/model
+     * @class   oro.dialog.state.Model
+     * @extends Backbone.Model
+     */
+    return Backbone.Model.extend({});
 });
