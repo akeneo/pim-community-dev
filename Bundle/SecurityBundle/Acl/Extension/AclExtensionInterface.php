@@ -30,11 +30,12 @@ interface AclExtensionInterface
      *
      * This method throws InvalidAclMaskException if the mask is invalid.
      *
+     * @param string $permission
      * @param int $mask The bitmask
      * @param mixed $object An object to test
      * @throws InvalidAclMaskException
      */
-    public function validateMask($mask, $object);
+    public function validateMask($permission, $mask, $object);
 
     /**
      * Constructs an ObjectIdentity for the given object
@@ -48,9 +49,10 @@ interface AclExtensionInterface
      * Gets the new instance of the mask builder which can be used to build permission bitmask
      * is supported by this ACL extension
      *
+     * @param string $permission
      * @return MaskBuilder
      */
-    public function createMaskBuilder();
+    public function createMaskBuilder($permission);
 
     /**
      * Returns an array of bitmasks for the given permission.
@@ -71,16 +73,40 @@ interface AclExtensionInterface
     public function hasMasks($permission);
 
     /**
+     * Remove all bits except service ones from the given mask
+     *
+     * @param int $mask
+     * @return int The mask without service bits
+     */
+    public function getServiceBits($mask);
+
+    /**
+     * Remove service bits from the given mask
+     *
+     * @param int $mask
+     * @return int The mask without service bits
+     */
+    public function removeServiceBits($mask);
+
+    /**
+     * Gets the access level by the given mask
+     *
+     * @param int $mask
+     * @return int Can be one of AccessLevel::*_LEVEL constants
+     */
+    public function getAccessLevel($mask);
+
+    /**
      * Determines whether the access to the given domain object is granted
      * for an user is represented by the given security token.
      *
      * You can use this method to perform an additional check whether an access to the particular object is granted.
      * This method is called by the PermissionGrantingStrategy class after the suitable ACE found.
      *
-     * @param int $aceMask The mask of triggered ACE
+     * @param int $triggeredMask The triggered mask
      * @param mixed $object
      * @param TokenInterface $securityToken
      * @return bool
      */
-    public function decideIsGranting($aceMask, $object, TokenInterface $securityToken);
+    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken);
 }

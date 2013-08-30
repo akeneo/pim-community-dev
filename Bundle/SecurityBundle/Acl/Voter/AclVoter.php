@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategyContextInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 
 /**
  * This voter uses ACL to determine whether the access to the particular resource is granted or not.
@@ -41,6 +42,11 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     private $extension = null;
 
     /**
+     * @var OneShotIsGrantedObserver|OneShotIsGrantedObserver[]
+     */
+    protected $oneShotIsGrantedObserver = null;
+
+    /**
      * Sets the ACL extension selector
      *
      * @param AclExtensionSelector $selector
@@ -48,6 +54,23 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     public function setAclExtensionSelector(AclExtensionSelector $selector)
     {
         $this->extensionSelector = $selector;
+    }
+
+    /**
+     * Adds an observer is used to inform a caller about IsGranted operation details
+     *
+     * @param OneShotIsGrantedObserver $observer
+     */
+    public function addOneShotIsGrantedObserver(OneShotIsGrantedObserver $observer)
+    {
+        if ($this->oneShotIsGrantedObserver !== null) {
+            if (!is_array($this->oneShotIsGrantedObserver)) {
+                $this->oneShotIsGrantedObserver = array($this->oneShotIsGrantedObserver);
+            }
+            $this->oneShotIsGrantedObserver[] = $observer;
+        } else {
+            $this->oneShotIsGrantedObserver = $observer;
+        }
     }
 
     /**
@@ -64,6 +87,10 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
         $this->extension = null;
         $this->object = null;
         $this->securityToken = null;
+        if ($this->oneShotIsGrantedObserver) {
+            $this->oneShotIsGrantedObserver = null;
+        }
+
         return $result;
     }
 
@@ -89,5 +116,22 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     public function getAclExtension()
     {
         return $this->extension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTriggeredMask($mask)
+    {
+        if ($this->oneShotIsGrantedObserver !== null) {
+            if (is_array($this->oneShotIsGrantedObserver)) {
+                /** @var OneShotIsGrantedObserver $observer */
+                foreach ($this->oneShotIsGrantedObserver as $observer) {
+                    $observer->setAccessLevel($this->extension->getAccessLevel($mask));
+                }
+            } else {
+                $this->oneShotIsGrantedObserver->setAccessLevel($this->extension->getAccessLevel($mask));
+            }
+        }
     }
 }

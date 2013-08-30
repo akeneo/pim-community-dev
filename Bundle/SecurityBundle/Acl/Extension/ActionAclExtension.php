@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 class ActionAclExtension extends AbstractAclExtension
@@ -37,7 +38,7 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function validateMask($mask, $object)
+    public function validateMask($permission, $mask, $object)
     {
         if ($mask === 0) {
             return;
@@ -46,7 +47,7 @@ class ActionAclExtension extends AbstractAclExtension
             return;
         }
 
-        throw $this->createInvalidAclMaskException($mask, $object);
+        throw $this->createInvalidAclMaskException($permission, $mask, $object);
     }
 
     /**
@@ -63,8 +64,16 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder()
+    public function createMaskBuilder($permission)
     {
         return new ActionMaskBuilder();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessLevel($mask)
+    {
+        return AccessLevel::SYSTEM_LEVEL;
     }
 }

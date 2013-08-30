@@ -93,8 +93,10 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function isBelongToOrganization($user, $domainObject)
+    public function isAssociatedWithOrganization($user, $domainObject)
     {
         $this->validateUserObject($user);
         $this->validateObject($domainObject);
@@ -120,6 +122,17 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
             );
         }
 
+        if ($this->isUser($domainObject)) {
+            $userId = $this->getObjectId($user);
+            $objId = $this->getObjectId($domainObject);
+            if ($userId === $objId) {
+                $userOrganizationId = $this->tree->getUserOrganizationId($userId);
+                $objOrganizationId = $this->tree->getUserOrganizationId($objId);
+
+                return $userOrganizationId !== null && $userOrganizationId === $objOrganizationId;
+            }
+        }
+
         $metadata = $this->getObjectMetadata($domainObject);
         if (!$metadata->hasOwner()) {
             return false;
@@ -136,7 +149,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
         } elseif ($metadata->isBusinessUnitOwned()) {
             return in_array($this->tree->getBusinessUnitOrganizationId($ownerId), $userOrganizationIds);
         } elseif ($metadata->isUserOwned()) {
-            return 0 !== count(array_intersect($this->tree->getUserOrganizationIds($ownerId), $userOrganizationIds));
+            return in_array($this->tree->getUserOrganizationId($ownerId), $userOrganizationIds);
         }
 
         return false;
@@ -145,13 +158,20 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * {@inheritdoc}
      */
-    public function isBelongToBusinessUnit($user, $domainObject, $deep = false)
+    public function isAssociatedWithBusinessUnit($user, $domainObject, $deep = false)
     {
         $this->validateUserObject($user);
         $this->validateObject($domainObject);
 
         if ($this->isBusinessUnit($domainObject)) {
             return $this->isUserBusinessUnit($this->getObjectId($user), $this->getObjectId($domainObject), $deep);
+        }
+
+        if ($this->isUser($domainObject)) {
+            $userId = $this->getObjectId($user);
+            if ($userId === $this->getObjectId($domainObject) && $this->tree->getUserBusinessUnitId($userId) !== null) {
+                return true;
+            }
         }
 
         $metadata = $this->getObjectMetadata($domainObject);
@@ -181,7 +201,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * {@inheritdoc}
      */
-    public function isBelongToUser($user, $domainObject)
+    public function isAssociatedWithUser($user, $domainObject)
     {
         $this->validateUserObject($user);
         $this->validateObject($domainObject);
@@ -214,44 +234,13 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
             return false;
         }
 
-        $userOwningBusinessUnitId = $this->tree->getUserBusinessUnitId($userId);
-        if ($userOwningBusinessUnitId !== null) {
-            if ($businessUnitId === $userOwningBusinessUnitId) {
-                return true;
-            }
-            if ($deep && $this->isSubordinateBusinessUnit($businessUnitId, $userOwningBusinessUnitId)) {
-                return true;
-            }
-        }
-
         foreach ($this->tree->getUserBusinessUnitIds($userId) as $buId) {
-            $alreadyTested = $userOwningBusinessUnitId !== null && $buId === $userOwningBusinessUnitId;
-            if (!$alreadyTested) {
-                if ($businessUnitId === $buId) {
-                    return true;
-                }
-                if ($deep && $this->isSubordinateBusinessUnit($businessUnitId, $buId)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determines whether the given business unit is subordinate one for the given parent business unit
-     *
-     * @param int|string $businessUnitIdToTest A business unit id to be tested if it is subordinate business unit
-     * @param int|string $parentBusinessUnitId The parent business unit id
-     * @return bool
-     */
-    protected function isSubordinateBusinessUnit($businessUnitIdToTest, $parentBusinessUnitId)
-    {
-        foreach ($this->tree->getSubordinateBusinessUnitIds($parentBusinessUnitId) as $buId) {
-            if ($businessUnitIdToTest === $buId) {
+            if ($businessUnitId === $buId) {
                 return true;
-            };
+            }
+            if ($deep && in_array($businessUnitId, $this->tree->getSubordinateBusinessUnitIds($buId))) {
+                return true;
+            }
         }
 
         return false;

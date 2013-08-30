@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
@@ -30,7 +31,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function validateMask($mask, $object)
+    public function validateMask($permission, $mask, $object)
     {
         throw new InvalidAclMaskException('Not supported by NullAclExtension.');
     }
@@ -46,7 +47,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder()
+    public function createMaskBuilder($permission)
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -70,7 +71,31 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($aceMask, $object, TokenInterface $securityToken)
+    public function getServiceBits($mask)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeServiceBits($mask)
+    {
+        return $mask;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessLevel($mask)
+    {
+        return AccessLevel::SYSTEM_LEVEL;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
     {
         return true;
     }

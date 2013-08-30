@@ -31,7 +31,23 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($aceMask, $object, TokenInterface $securityToken)
+    public function getServiceBits($mask)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeServiceBits($mask)
+    {
+        return $mask;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
     {
         return true;
     }
@@ -63,19 +79,20 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * Builds InvalidAclMaskException object
      *
+     * @param string $permission
      * @param int $mask
      * @param mixed $object
      * @param string|null $errorDescription
      * @return InvalidAclMaskException
      */
-    protected function createInvalidAclMaskException($mask, $object, $errorDescription = null)
+    protected function createInvalidAclMaskException($permission, $mask, $object, $errorDescription = null)
     {
         $objectDescription = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)
             : (string)$object;
         $msg = sprintf(
             'Invalid ACL mask "%s" for %s.',
-            $this->createMaskBuilder()->getPatternFor($mask),
+            $this->createMaskBuilder($permission)->getPatternFor($mask),
             $objectDescription
         );
         if (!empty($errorDescription)) {
