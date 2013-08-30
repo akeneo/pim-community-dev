@@ -142,6 +142,7 @@ class ReportDatagridManager extends DatagridManager
             new UrlProperty('download_link', $this->router, 'pim_importexport_report_download', array('id')),
         );
     }
+
     /**
      * {@inheritdoc}
      */
