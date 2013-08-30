@@ -169,9 +169,8 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($errors[0], $errors[1], $errors[2], $errors[3]));
 
         // call the calculator
-        $completenesses = $this->calculator->calculateForAProductByChannel($product, $channelUsed);
-        $this->assertCount(count($results), $completenesses);
-        $product->setCompletenesses($completenesses);
+        $this->calculator->calculateForAProductByChannel($product, $channelUsed);
+        $this->assertCount(count($results), $product->getCompletenesses());
 
         foreach ($results as $result) {
             $completeness = $product->getCompleteness($result['locale'], $result['channel']);
