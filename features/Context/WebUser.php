@@ -1862,6 +1862,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     * @return \Pim\Bundle\ProductBundle\Entity\Channel
+     */
+    private function getChannel($code)
+    {
+        return $this->getFixturesContext()->getChannel($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
