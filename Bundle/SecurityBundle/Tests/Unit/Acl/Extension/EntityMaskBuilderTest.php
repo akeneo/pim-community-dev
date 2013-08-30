@@ -328,13 +328,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
                 | EntityMaskBuilder::MASK_ASSIGN_SYSTEM
                 | EntityMaskBuilder::MASK_SHARE_SYSTEM
             ),
-            'GROUP_CRUD_GLOBAL' => array(
-                EntityMaskBuilder::GROUP_CRUD_GLOBAL,
-                EntityMaskBuilder::MASK_VIEW_GLOBAL
-                | EntityMaskBuilder::MASK_CREATE_GLOBAL
-                | EntityMaskBuilder::MASK_EDIT_GLOBAL
-                | EntityMaskBuilder::MASK_DELETE_GLOBAL
-            ),
             'GROUP_CRUD_SYSTEM' => array(
                 EntityMaskBuilder::GROUP_CRUD_SYSTEM,
                 EntityMaskBuilder::MASK_VIEW_SYSTEM

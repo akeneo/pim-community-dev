@@ -179,6 +179,25 @@ class OwnerTree
     }
 
     /**
+     * Gets all user ids for the given organization id
+     *
+     * @param int|string $organizationId
+     * @return array of int|string
+     */
+    public function getOrganizationUserIds($organizationId)
+    {
+        $result = array();
+        foreach ($this->getOrganizationBusinessUnitIds($organizationId) as $buId) {
+            $userIds = $this->getBusinessUnitUserIds($buId);
+            if (!empty($userIds)) {
+                $result = array_merge($result, $userIds);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Gets all subordinate business unit ids for the given business unit id
      *
      * @param int|string $businessUnitId
@@ -213,9 +232,6 @@ class OwnerTree
             if ($businessUnitId === $buId) {
                 $this->businessUnitUserIds[$businessUnitId][] = $userId;
                 $this->userOwningOrganizationId[$userId] = $owningOrganizationId;
-                if ($owningOrganizationId !== null) {
-                    $this->userOrganizationIds[$userId][] = $owningOrganizationId;
-                }
             }
         }
     }
@@ -264,7 +280,6 @@ class OwnerTree
             if (isset($this->businessUnitOwningOrganizationId[$owningBusinessUnitId])) {
                 $this->userOwningOrganizationId[$userId] =
                     $this->businessUnitOwningOrganizationId[$owningBusinessUnitId];
-                $this->userOrganizationIds[$userId][] = $this->businessUnitOwningOrganizationId[$owningBusinessUnitId];
             } else {
                 $this->userOwningOrganizationId[$userId] = null;
             }

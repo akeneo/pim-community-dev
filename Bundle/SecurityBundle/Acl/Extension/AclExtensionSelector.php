@@ -45,8 +45,8 @@ class AclExtensionSelector
      * Gets ACL extension responsible for work with the given domain object
      *
      * @param mixed $object A domain object, ObjectIdentity or descriptor (type:id)
+     * @throws \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
      * @return AclExtensionInterface
-     * @throws InvalidDomainObjectException
      */
     public function select($object)
     {

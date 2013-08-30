@@ -71,17 +71,17 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('org', $tree->getUserOrganizationId('user'));
     }
 
-    public function testAddBusinessUnitShouldSetUserOwningOrganizationIds()
+    public function testAddBusinessUnitShouldNotSetUserOrganizationIds()
     {
         $tree = new OwnerTree();
 
         $tree->addUser('user', 'bu');
 
         $tree->addBusinessUnit('bu', 'org');
-        $this->assertEquals(array('org'), $tree->getUserOrganizationIds('user'));
+        $this->assertEquals(array(), $tree->getUserOrganizationIds('user'));
     }
 
-    public function testAddBusinessUnitShouldNotSetUserOwningOrganizationIdsIfOrganizationIdIsNull()
+    public function testAddBusinessUnitShouldNotSetUserOrganizationIdsIfOrganizationIdIsNull()
     {
         $tree = new OwnerTree();
 
@@ -128,14 +128,14 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('user', 'user1'), $tree->getBusinessUnitUserIds('bu'));
     }
 
-    public function testAddUserShouldSetUserOrganizationIds()
+    public function testAddUserShouldNotSetUserOrganizationIds()
     {
         $tree = new OwnerTree();
 
         $tree->addBusinessUnit('bu', 'org');
 
         $tree->addUser('user', 'bu');
-        $this->assertEquals(array('org'), $tree->getUserOrganizationIds('user'));
+        $this->assertEquals(array(), $tree->getUserOrganizationIds('user'));
     }
 
     public function testAddUserShouldNotSetUserOrganizationIdsIfOrganizationIdIsNull()
@@ -171,14 +171,14 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \LogicException
      */
-    public function testUserBusinessUnitShouldThrowExceptionIfUserDoesNotSet()
+    public function testAddUserBusinessUnitShouldThrowExceptionIfUserDoesNotSet()
     {
         $tree = new OwnerTree();
 
         $tree->addUserBusinessUnit('user', null);
     }
 
-    public function testUserBusinessUnitShouldNotSetUserBusinessUnitIdsIfBusinessUnitIdIsNull()
+    public function testAddUserBusinessUnitShouldNotSetUserBusinessUnitIdsIfBusinessUnitIdIsNull()
     {
         $tree = new OwnerTree();
 
@@ -188,7 +188,7 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $tree->getUserBusinessUnitIds('user'));
     }
 
-    public function testUserBusinessUnitShouldSetUserBusinessUnitIds()
+    public function testAddUserBusinessUnitShouldSetUserBusinessUnitIds()
     {
         $tree = new OwnerTree();
 
@@ -201,7 +201,7 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('bu', 'bu1'), $tree->getUserBusinessUnitIds('user'));
     }
 
-    public function testUserBusinessUnitShouldNotSetUserOrganizationIdsIfOrganizationIdIsNull()
+    public function testAddUserBusinessUnitShouldNotSetUserOrganizationIdsIfOrganizationIdIsNull()
     {
         $tree = new OwnerTree();
 
@@ -212,7 +212,7 @@ class OwnerTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $tree->getUserOrganizationIds('user'));
     }
 
-    public function testUserBusinessUnitShouldSetUserOrganizationIds()
+    public function testAddUserBusinessUnitShouldSetUserOrganizationIds()
     {
         $tree = new OwnerTree();
 

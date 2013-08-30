@@ -82,6 +82,6 @@ services:
             - @oro_security.owner.tree
             - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
-            - @oro_entity.orm.entity_owner_accessor
+            - @oro_entity.owner.entity_owner_accessor
             - @oro_entity.owner.ownership_metadata_provider
 

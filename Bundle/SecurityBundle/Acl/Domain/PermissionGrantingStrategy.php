@@ -155,7 +155,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         $administrativeMode
     ) {
         $triggeredAce = null;
-        $isGrantingAce = false;
+        $triggeredMask = 0;
+        $result = false;
 
         foreach ($masks as $requiredMask) {
             foreach ($sids as $sid) {
@@ -168,7 +169,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
                         // give an additional chance for the appropriate ACL extension to decide
                         // whether an access to a domain object is granted or not
                         $decisionResult = $this->context->getAclExtension()->decideIsGranting(
-                            $ace->getMask(),
+                            $requiredMask,
                             $this->context->getObject(),
                             $this->context->getSecurityToken()
                         );
@@ -179,13 +180,15 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
                         if ($isGranting) {
                             // the access is granted if there is at least one granting ACE
                             $triggeredAce = $ace;
-                            $isGrantingAce = true;
+                            $triggeredMask = $requiredMask;
+                            $result = true;
                             // break all loops when granting ACE was found
                             break 3;
                         } else {
                             // remember the first denying ACE
                             if (null === $triggeredAce) {
                                 $triggeredAce = $ace;
+                                $triggeredMask = $requiredMask;
                             }
                             // go to the next mask
                             break 2;
@@ -198,13 +201,15 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         if ($triggeredAce === null) {
             // ACE was not found
             return null;
+        } else {
+            $this->context->setTriggeredMask($triggeredMask);
         }
 
         if (!$administrativeMode && null !== $this->auditLogger) {
-            $this->auditLogger->logIfNeeded($isGrantingAce, $triggeredAce);
+            $this->auditLogger->logIfNeeded($result, $triggeredAce);
         }
 
-        return $isGrantingAce;
+        return $result;
     }
 
     /**
@@ -228,14 +233,22 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      */
     protected function isAceApplicable($requiredMask, EntryInterface $ace)
     {
+        $extension = $this->context->getAclExtension();
+        $aceMask = $ace->getMask();
+        if ($extension->getServiceBits($requiredMask) !== $extension->getServiceBits($aceMask)) {
+            return false;
+        }
+
+        $requiredMask = $extension->removeServiceBits($requiredMask);
+        $aceMask = $extension->removeServiceBits($aceMask);
         $strategy = $ace->getStrategy();
         switch ($strategy) {
             case self::ALL:
-                return $requiredMask === ($ace->getMask() & $requiredMask);
+                return $requiredMask === ($aceMask & $requiredMask);
             case self::ANY:
-                return 0 !== ($ace->getMask() & $requiredMask);
+                return 0 !== ($aceMask & $requiredMask);
             case self::EQUAL:
-                return $requiredMask === $ace->getMask();
+                return $requiredMask === $aceMask;
             default:
                 throw new \RuntimeException(sprintf('The strategy "%s" is not supported.', $strategy));
         }
