@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Validate if a product value is not null and not empty
@@ -53,23 +54,39 @@ class ProductValueNotBlankValidator extends ConstraintValidator
 
         if ($value->getAttribute() and $value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
             $channel = $constraint->getChannel();
-            $expectedCurrencies = array_map(
-                function ($currency) {
-                    return $currency->getCode();
-                },
-                $channel->getCurrencies()->toArray()
-            );
-            foreach ($expectedCurrencies as $currency) {
-                foreach ($data as $price) {
-                    if ($price->getCurrency() === $currency) {
-                        if ($price->getData() === null) {
-                            $this->context->addViolation($constraint->messageNotBlank);
+            if (!$this->validatePrices($value, $channel)) {
+                $this->context->addViolation($constraint->messageNotBlank);
+            }
+        }
+    }
 
-                            return;
-                        }
+    /**
+     * Validate that prices contains expected currencies
+     *
+     * @param ProductValueInterface $value
+     * @param Channel               $channel
+     *
+     * @return boolean
+     */
+    protected function validatePrices(ProductValueInterface $value, Channel $channel)
+    {
+        $expectedCurrencies = array_map(
+            function ($currency) {
+                return $currency->getCode();
+            },
+            $channel->getCurrencies()->toArray()
+        );
+        foreach ($expectedCurrencies as $currency) {
+            foreach ($value->getData() as $price) {
+                if ($price->getCurrency() === $currency) {
+                    if ($price->getData() === null) {
+
+                        return false;
                     }
                 }
             }
         }
+
+        return true;
     }
 }

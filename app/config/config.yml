@@ -223,3 +223,6 @@ knp_gaufrette:
 
 pim_demo:
     load_data: true
+
+pim_product:
+    imported_product_data_transformer: pim_import_export.form.transform_imported_product_data_subscriber

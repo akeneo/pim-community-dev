@@ -22,9 +22,14 @@ use Pim\Bundle\ProductBundle\Manager\CurrencyManager;
 class ProductManager extends FlexibleManager
 {
     /**
-     * @var \Pim\Bundle\ProductBundle\Manager\MediaManager
+     * @var \Pim\Bundle\ProductBundle\Manager\MediaManager $mediaManager
      */
     protected $mediaManager;
+
+    /**
+     * @var \Pim\Bundle\ProductBundle\Manager\ChannelManager
+     */
+    protected $channelManager;
 
     /**
      * {@inheritdoc}
@@ -35,11 +40,13 @@ class ProductManager extends FlexibleManager
         ObjectManager $storageManager,
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
-        $mediaManager
+        MediaManager $mediaManager,
+        CurrencyManager $currencyManager
     ) {
         parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
 
-        $this->mediaManager = $mediaManager;
+        $this->mediaManager    = $mediaManager;
+        $this->currencyManager = $currencyManager;
     }
 
     /**
@@ -178,14 +185,13 @@ class ProductManager extends FlexibleManager
     /**
      * Add missing prices (a price per currency)
      *
-     * @param CurrencyManager  $manager the currency manager
      * @param ProductInterface $product the product
      */
-    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product)
+    public function addMissingPrices(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
-                $activeCurrencies = $manager->getActiveCodes();
+                $activeCurrencies = $this->currencyManager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
                 $value->removeDisabledPrices($activeCurrencies);
             }

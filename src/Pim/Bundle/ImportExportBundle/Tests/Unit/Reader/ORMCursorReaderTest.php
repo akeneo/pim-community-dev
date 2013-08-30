@@ -19,6 +19,7 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
     public function testRead()
     {
         $reader = new ORMCursorReader;
+        $stepExecution = $this->getStepExecutionMock();
         $query  = $this->getQueryMock();
         $result = $this->getIterableResultMock(
             array(
@@ -33,10 +34,10 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($result));
 
         $reader->setQuery($query);
-        $this->assertEquals($item1, $reader->read());
-        $this->assertEquals($item2, $reader->read());
-        $this->assertEquals($item3, $reader->read());
-        $this->assertNull($reader->read());
+        $this->assertEquals($item1, $reader->read($stepExecution));
+        $this->assertEquals($item2, $reader->read($stepExecution));
+        $this->assertEquals($item3, $reader->read($stepExecution));
+        $this->assertNull($reader->read($stepExecution));
     }
 
     private function getQueryMock()
@@ -62,5 +63,13 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
         }
 
         return $mock;
+    }
+
+    private function getStepExecutionMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

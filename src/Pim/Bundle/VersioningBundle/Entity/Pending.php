@@ -47,9 +47,9 @@ class Pending
     /**
      * Constructor
      *
-     * @param string  $resourceName
-     * @param string  $resourceId
-     * @param string  $username
+     * @param string $resourceName
+     * @param string $resourceId
+     * @param string $username
      */
     public function __construct($resourceName, $resourceId, $username)
     {

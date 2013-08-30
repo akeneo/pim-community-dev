@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Item\Support;
 
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Simple reader that provides data from an array
@@ -31,7 +32,7 @@ class ArrayReader implements ItemReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         $item = null;
 

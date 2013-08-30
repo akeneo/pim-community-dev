@@ -108,7 +108,6 @@ class PendingManagerTest extends \PHPUnit_Framework_TestCase
             ->method('findAll')
             ->will($this->returnValue(array(new Pending('resourcename', 1, 'user'))));
 
-
         return $repo;
     }
 
