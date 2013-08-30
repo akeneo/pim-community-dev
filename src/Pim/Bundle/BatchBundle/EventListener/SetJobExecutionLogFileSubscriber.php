@@ -16,21 +16,35 @@ use Pim\Bundle\BatchBundle\Event\JobExecutionEvent;
  */
 class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var BatchLogHandler $logger
+     */
     protected $logger;
 
+    /**
+     * @param BatchLogHandler $logger
+     */
     public function __construct(BatchLogHandler $logger)
     {
         $this->logger = $logger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
-            EventInterface::BEFORE_JOB_EXECUTION => 'beforeJobExecution',
+            EventInterface::BEFORE_JOB_EXECUTION => 'setJobExecutionLogFile',
         );
     }
 
-    public function beforeJobExecution(JobExecutionEvent $event)
+    /**
+     * Set the job execution log file
+     *
+     * @param JobExecutionEvent $event
+     */
+    public function setJobExecutionLogFile(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
         $jobExecution->setLogFile(
