@@ -13,8 +13,8 @@ use Pim\Bundle\ProductBundle\Form\Subscriber\ChannelSubscriber;
  */
 class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function getTestDisableCodeData()
+    
+    public function getTestAddCodeFieldData()
     {
         return array(
             array(null),
@@ -24,9 +24,9 @@ class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getTestDisableCodeData
+     * @dataProvider getTestAddCodeFieldData
      */
-    public function testDisableCode($id)
+    public function testAddCodeField($id)
     {
         $event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
             ->disableOriginalConstructor()
