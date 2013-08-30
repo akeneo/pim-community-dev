@@ -31,6 +31,7 @@ oro_system_configuration:
         platform: #unique name
             label: 'Platform' # label is required
             icon:  icon-hdd
+            position: 30      # sort order
 ```
 
 Groups definitions will be replaced recursive from configs that will parse after original definition.
@@ -78,10 +79,8 @@ This declaration maybe useful when developer should provide a way to change some
 ```
 oro_system_configuration:
     tree:
-        group1:
-            some_group2:
-                some_group3:
-                    - some_field
-                    ...
-                    - some_another_field
+        tag_name:
+            - some_field
+            ...
+            - some_another_field
 ```
