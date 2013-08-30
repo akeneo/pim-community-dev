@@ -29,7 +29,8 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 array(
                     'en_US' => 'anglais (États-Unis)',
                     'en_EN' => 'anglais',
-                    'fr_FR' => 'français'
+                    'fr_FR' => 'français',
+                    'azert' => 'azert'
                 )
             )
         );
