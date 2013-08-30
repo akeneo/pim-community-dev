@@ -20,11 +20,14 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
  * @ORM\Table(name="oro_access_group")
  * @Config(
  *      routeName="oro_user_group_index",
- *      mode="readonly",
  *      defaultValues={
- *          "entity"= {"icon"="group","label"="Group","plural_label"="Groups" },
+ *          "entity"={"icon"="group", "label"="Group", "plural_label"="Groups"},
  *          "extend"= {"is_extend"=true},
- *          "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *          "ownership"={
+ *              "owner_type"="BUSINESS_UNIT",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="business_unit_owner_id"
+ *          }
  *      }
  * )
  */
