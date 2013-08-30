@@ -5,6 +5,7 @@ oro_menu_config:
             currentClass: 'active'
             ancestorClass: 'active'
             rootClass: 'nav nav-multilevel'
+            allow_safe_labels: true
         dots_menu:
             template: 'OroNavigationBundle:Menu:dots_menu.html.twig'
         shortcuts:

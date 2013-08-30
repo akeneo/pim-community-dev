@@ -1,0 +1,20 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{#{% set gridId = 'entity-grid' %}#}
+{% set gridId = '' %}
+
+{% block content %}
+    {% set pageTitle = 'Custom Entity index page.... (to be customized)' %}
+    {% set buttons = [] %}
+    {#{% for button in buttonConfig %}#}
+        {#{% set buttons = buttons|merge([UI.addButton({#}
+            {#'path': path(button.route, button.args|default({})),#}
+            {#'title': button.title|default(button.name),#}
+            {#'label': button.name,#}
+            {#'aClass': button.aClass|default('')#}
+        {#})]) %}#}
+    {#{% endfor %}#}
+
+    {{ parent() }}
+{% endblock %}
