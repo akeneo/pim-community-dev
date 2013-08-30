@@ -240,7 +240,7 @@ class JobInstanceController extends Controller
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
         if (count($violations) === 0 || count($uploadViolations) === 0) {
-            $jobExecution = new JobExecution;
+            $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
             $job = $jobInstance->getJob();
 

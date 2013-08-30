@@ -15,7 +15,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->formView = new ProductFormView;
+        $this->formView = new ProductFormView();
     }
 
     public function testAddChildrenWithBasicValue()

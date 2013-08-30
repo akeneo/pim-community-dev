@@ -26,8 +26,8 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
-        $this->constraint = new ValidDefaultValue;
-        $this->validator = new ValidDefaultValueValidator;
+        $this->constraint = new ValidDefaultValue();
+        $this->validator = new ValidDefaultValueValidator();
         $this->validator->initialize($this->context);
     }
 

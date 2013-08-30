@@ -502,7 +502,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
             return $this->group;
         }
 
-        $group = new AttributeGroup;
+        $group = new AttributeGroup();
         $group->setId(0);
         $group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
         $group->setSortOrder(-1);

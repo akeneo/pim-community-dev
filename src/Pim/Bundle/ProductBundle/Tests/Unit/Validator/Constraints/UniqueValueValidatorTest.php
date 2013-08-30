@@ -296,7 +296,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(array($this->getProductValueMock())));
 
-        $constraint = new UniqueValue;
+        $constraint = new UniqueValue();
         $this
             ->context
             ->expects($this->once())

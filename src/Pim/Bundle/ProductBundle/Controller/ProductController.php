@@ -180,7 +180,7 @@ class ProductController extends Controller
     {
         $product             = $this->findProductOr404($id);
         $manager             = $this->getProductManager();
-        $availableAttributes = new AvailableProductAttributes;
+        $availableAttributes = new AvailableProductAttributes();
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $product->getAttributes(),
             $availableAttributes

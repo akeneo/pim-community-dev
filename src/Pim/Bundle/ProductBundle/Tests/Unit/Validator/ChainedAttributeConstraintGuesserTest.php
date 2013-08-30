@@ -14,7 +14,7 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new ChainedAttributeConstraintGuesser;
+        $this->target = new ChainedAttributeConstraintGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

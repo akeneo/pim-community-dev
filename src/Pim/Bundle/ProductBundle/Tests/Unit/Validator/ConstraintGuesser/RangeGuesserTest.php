@@ -13,7 +13,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new RangeGuesser;
+        $this->target = new RangeGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()
