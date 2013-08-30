@@ -1,66 +1,75 @@
-Oro = Oro || {};
-Oro.Tags = Oro.Tags || {};
-
-Oro.Tags.TagCollection = Backbone.Collection.extend({
-    model: Oro.Tags.Tag,
-
-    /**
-     * Return filtered collection
-     *
-     * @param type
-     * @returns {Oro.Tags.TagCollection}
-     */
-    getFilteredCollection: function(type) {
-        var filtered = this.filter(function(tag) {
-            if (type == "owner") {
-                return tag.get("owner");
-            }
-
-            return true;
-        });
-
-        return new Oro.Tags.TagCollection(filtered);
-    },
+/* global define */
+define(['backbone', 'oro/tag/model'],
+function(Backbone, TagModel) {
+    'use strict';
 
     /**
-     * Used for adding item on tag_update view
-     *
-     * @param {Object} value
+     * @export  oro/tag/collection
+     * @class   oro.tag.Collection
+     * @extends Backbone.Collection
      */
-    addItem: function(value) {
-        // check if exists tag
-        var exist = this.where({name: value.name});
-        if (exist.length && exist[0].get('owner') == false) {
-            // adding to owner
-            exist[0].set('owner', true);
-            this.trigger('add');
+    var TagCollection = Backbone.Collection.extend({
+        model: TagModel,
 
-            return;
-        }
+        /**
+         * Return filtered collection
+         *
+         * @param type
+         * @returns {oro.tag.Collection}
+         */
+        getFilteredCollection: function(type) {
+            var filtered = this.filter(function(tag) {
+                return type === "owner" ? tag.get("owner") : true;
+            });
 
-        var tag = new this.model({id: value.id, name: value.name, owner: true, notSaved: true});
+            return new TagCollection(filtered);
+        },
 
-        this.add(tag);
-    },
-
-    /**
-     * Remove item from collection, or uncheck "owner" if filter is not in global mdoe
-     *
-     * @param {String}|{Number} id
-     * @param {String} filterState
-     */
-    removeItem: function(id, filterState) {
-        var model = this.where({'id': id});
-        if (model.length) {
-            model = model[0];
-            if (filterState == 'owner' && model.get('owner') === true && model.get('moreOwners') === true) {
-                model.set('owner', false);
-
-                this.trigger('remove');
+        /**
+         * Used for adding item on tag_update view
+         *
+         * @param {Object} value
+         */
+        addItem: function(value) {
+            // check if exists tag
+            var exist = this.where({name: value.name});
+            if (exist.length && exist[0].get('owner') == false) {
+                // adding to owner
+                exist[0].set('owner', true);
+                this.trigger('add');
 
                 return;
             }
-            this.remove(model);
+
+            this.add(new this.model({
+                id: value.id,
+                name: value.name,
+                owner: true,
+                notSaved: true
+            }));
+        },
+
+        /**
+         * Remove item from collection, or uncheck "owner" if filter is not in global mdoe
+         *
+         * @param {string|number} id
+         * @param {string} filterState
+         */
+        removeItem: function(id, filterState) {
+            var model = this.where({'id': id});
+            if (model.length) {
+                model = model[0];
+                if (filterState === 'owner' && model.get('owner') === true && model.get('moreOwners') === true) {
+                    model.set('owner', false);
+
+                    this.trigger('remove');
+
+                    return;
+                }
+                this.remove(model);
+            }
         }
-    }
+    });
+
+    return TagCollection;
 });

@@ -1,12 +1,20 @@
-Oro = Oro || {};
-Oro.Tags = Oro.Tags || {};
+/* global define */
+define(['backbone'],
+function(Backbone) {
+    'use strict';
 
-Oro.Tags.Tag = Backbone.Model.extend({
-    defaults: {
-        owner     : false,
-        notSaved  : false,
-        moreOwners: false,
-        url       : '',
-        name      : ''
-    }
+    /**
+     * @export  oro/tag/model
+     * @class   oro.tag.Model
+     * @extends Backbone.Model
+     */
+    return Backbone.Model.extend({
+        defaults: {
+            owner     : false,
+            notSaved  : false,
+            moreOwners: false,
+            url       : '',
+            name      : ''
+        }
+    });
 });
