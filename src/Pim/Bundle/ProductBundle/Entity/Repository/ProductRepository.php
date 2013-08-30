@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Product repository
@@ -13,11 +14,15 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  */
 class ProductRepository extends FlexibleEntityRepository
 {
+    /**
+     * @param string $scope
+     *
+     * @return QueryBuilder
+     */
     public function buildByScope($scope)
     {
         $qb = $this->findByWithAttributesQB();
-
-        return $qb
+        $qb
             ->andWhere(
                 $qb->expr()->eq('Entity.enabled', '?1')
             )
@@ -29,5 +34,44 @@ class ProductRepository extends FlexibleEntityRepository
             )
             ->setParameter(1, true)
             ->setParameter(2, $scope);
+
+        return $qb;
+    }
+
+    /**
+     * @param string $scope
+     *
+     * @return QueryBuilder
+     */
+    public function buildByChannelAndCompleteness(Channel $channel)
+    {
+        $scope = $channel->getCode();
+        $qb = $this->buildByScope($scope);
+        $rootAlias = $qb->getRootAlias();
+        $expression = $qb->expr()->eq('pCompleteness.ratio', '100').' AND '
+            .$qb->expr()->eq('pCompleteness.channel', $channel->getId());
+        $qb->innerJoin(
+            $rootAlias .'.completenesses',
+            'pCompleteness',
+            'WITH',
+            $expression
+        );
+
+        return $qb;
+    }
+
+    /**
+     * Find products by existing family
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findByExistingFamily()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where(
+            $qb->expr()->isNotNull('p.family')
+        );
+
+        return $qb->getQuery()->getResult();
     }
 }

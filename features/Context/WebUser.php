@@ -886,6 +886,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $field = $this->getCurrentPage()->findField($fieldName);
             if (!$field) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
+
                 return;
             }
             if (!$field->hasAttribute('disabled')) {
@@ -903,6 +904,46 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @param string $file
+     * @param string $field
+     *
+     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
+     */
+    public function attachFileToField($file, $field)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                .DIRECTORY_SEPARATOR.$file;
+            if (is_file($fullPath)) {
+                $file = $fullPath;
+            }
+        }
+
+        $this->getCurrentPage()->attachFileToField($field, $file);
+
+        try {
+            $this->getSession()->executeScript('$("[disabled]").removeAttr("disabled");');
+        } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Given /^I remove the "([^"]*)" file$/
+     */
+    public function iRemoveTheFile($field)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('label:contains(\"{$field}\")').parent().find('.remove-upload').click();"
+            );
+        } catch (UnsupportedDriverActionException $e) {
+            $this->getCurrentPage()->removeFileFromField($field);
         }
     }
 
@@ -1100,7 +1141,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param string $value
+     * @param string $currency
      *
      * @When /^I filter per price with value "([^"]*)" and currency "([^"]*)"$/
      */
@@ -1182,7 +1224,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $data
+     * @param TableNode $table
      *
      * @Then /^I should see history:$/
      */
@@ -1341,7 +1383,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" import job page$/
      */
@@ -1352,7 +1394,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Given /^I am on the "([^"]*)" import job page$/
      */
@@ -1363,7 +1405,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @When /^I launch the "([^"]*)" import job$/
      */
@@ -1393,7 +1435,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" export job page$/
      */
@@ -1404,7 +1446,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Given /^I am on the "([^"]*)" export job page$/
      */
@@ -1463,7 +1505,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @When /^I launch the "([^"]*)" export job$/
      */
@@ -1568,6 +1610,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $state
+     * @param string $channel
+     * @param string $locale
+     *
      * @Given /^I should see the completeness state "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
      */
     public function iShouldSeeCompletenessStateForChannelAndLocale($state, $channel, $locale)
@@ -1582,6 +1628,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $ratio
+     * @param string $channel
+     * @param string $locale
+     *
      * @Given /^I should see the completeness ratio (\d+)% for channel "([^"]*)" and locale "([^"]*)"$/
      */
     public function iShouldSeeTheCompletenessRatioForChannelAndLocale($ratio, $channel, $locale)
@@ -1596,6 +1646,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $message
+     * @param string $channel
+     * @param string $locale
+     *
      * @Given /^I should see the completeness message "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
      */
     public function iShouldSeeTheCompletenesssMessageForChannelAndLocale($message, $channel, $locale)
@@ -1610,6 +1664,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $email
+     *
      * @Given /^an email to "([^"]*)" should have been sent$/
      */
     public function anEmailToShouldHaveBeenSent($email)
@@ -1805,7 +1861,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @return Job
      */

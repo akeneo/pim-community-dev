@@ -11,7 +11,7 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
 use Pim\Bundle\ProductBundle\Entity\Completeness;
 use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\Locale;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Product completeness calculator
@@ -61,11 +61,6 @@ class CompletenessCalculator
     protected $locales;
 
     /**
-     * @var \Pim\Bundle\ProductBundle\Validator\Constraints\ProductValueNotBlank
-     */
-    protected $notBlankConstraint;
-
-    /**
      * Constructor
      *
      * @param ChannelManager $channelManager
@@ -84,7 +79,6 @@ class CompletenessCalculator
         $this->em             = $em;
 
         $this->validator      = $validator;
-        $this->notBlankConstraint = new ProductValueNotBlank();
     }
 
     /**
@@ -159,7 +153,7 @@ class CompletenessCalculator
      *     )
      * )
      *
-     * @param Product[] $products
+     * @param ProductInterface[] $products
      *
      * @return Completeness[] $completenesses
      */
@@ -169,49 +163,49 @@ class CompletenessCalculator
 
         foreach ($products as $product) {
             $sku = $product->getSku()->__toString();
-            $completenesses[$sku] = $this->calculateForAProduct($product);
+            $this->calculateForAProduct($product);
         }
-
-        return $completenesses;
     }
 
     /**
      * Calculate the completeness of a product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return Completeness[] $completenesses List of completeness entities for the product
      */
-    public function calculateForAProduct(Product $product)
+    public function calculateForAProduct(ProductInterface $product)
     {
         $completenesses = array();
 
         if ($product->getFamily() === null) {
-            return $completenesses;
+            return;
         }
         foreach ($this->getChannels() as $channel) {
-            $newCompletenesses = $this->calculateForAProductByChannel($product, $channel);
-
-            $completenesses = array_merge($completenesses, $newCompletenesses);
+            $this->calculateForAProductByChannel($product, $channel);
         }
-
-        return $completenesses;
     }
 
     /**
      * Calculate the completeness of a product for a specific channel
      *
-     * @param Product        $product
-     * @param Channel        $channel
-     * @param Completeness[] $completenesses
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     * @param Completeness[]   $completenesses
      *
      * @return Completeness[] $completenesses List of completeness entities
      */
-    public function calculateForAProductByChannel(Product $product, Channel $channel, array $completenesses = array())
-    {
+    public function calculateForAProductByChannel(
+        ProductInterface $product,
+        Channel $channel,
+        array $completenesses = array()
+    ) {
         if ($product->getFamily() === null) {
             return array();
         }
+
+        $notBlankConstraint = new ProductValueNotBlank(array('channel' => $channel));
+
         $requiredAttributes = $this->getRequiredAttributes($channel, $product->getFamily());
         $requiredCount = count($requiredAttributes);
 
@@ -229,7 +223,7 @@ class CompletenessCalculator
                 $attribute = $requiredAttribute->getAttribute();
                 $value     = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
 
-                $errorList = $this->validator->validateValue($value, $this->notBlankConstraint);
+                $errorList = $this->validator->validateValue($value, $notBlankConstraint);
                 if (count($errorList) === 0) {
                     $wellCount++;
                 } else {
@@ -244,22 +238,20 @@ class CompletenessCalculator
             $completeness->setMissingCount($missingCount);
             $completeness->setRatio($ratio);
 
-            $completenesses[] = $completeness;
+            $product->addCompleteness($completeness);
         }
-
-        return $completenesses;
     }
 
     /**
      * Create a product completeness
      *
-     * @param Product $product
-     * @param Channel $channel
-     * @param Locale  $locale
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     * @param Locale           $locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    protected function createCompleteness(Product $product, Channel $channel, Locale $locale)
+    protected function createCompleteness(ProductInterface $product, Channel $channel, Locale $locale)
     {
         $completeness = new Completeness();
 

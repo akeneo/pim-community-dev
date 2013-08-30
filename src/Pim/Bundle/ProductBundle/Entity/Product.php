@@ -70,7 +70,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\ProductBundle\Entity\Completeness",
-     *     mappedBy="product"
+     *     mappedBy="product",
+     *     cascade={"persist", "remove"}
      * )
      */
     protected $completenesses;

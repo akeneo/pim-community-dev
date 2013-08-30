@@ -44,51 +44,7 @@
         {{ form_row(form._token) }}
 
         <div class="tab-pane" id="attributes">
-
-            <div id="attribute-buttons"></div>
-
-            {% set columnWidth = 100/(channels|length + 1) %}
-            <table class="table groups">
-                <thead>
-                    <th width="{{ columnWidth }}%">{{ 'Label'|upper }}</th>
-                    {% for channel in channels %}
-                        <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
-                    {% endfor %}
-                    <th>&nbsp;</th>
-                </thead>
-
-                {% set colspan = channels|length + 2 %}
-                {% for groupName, attributes in family.groupedAttributes %}
-                <tbody>
-                    <tr class="group">
-                        <td colspan="{{ colspan }}"><i class="fa-icon-collapse-alt"></i> {{ groupName }}</td>
-                    </tr>
-                    {% for attribute in attributes %}
-                    <tr>
-                        <td>{{ attribute.label }}</td>
-                        {% for channel in channels %}
-                            <td>
-                                {% if attribute.attributeType == 'pim_product_identifier' %}
-                                    <div class="attribute-requirement identifier">
-                                        <i class="fa-icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
-                                    </div>
-                                {% else %}
-                                    {{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
-                                {% endif %}
-                            </td>
-                        {% endfor %}
-                        <td>
-                            {% if attribute.attributeType != 'pim_product_identifier' %}
-                                <a href="javascript:void(0);" data-url="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
-                                    <i class="icon-trash"></i>
-                                </a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                {% endfor %}
-            </table>
+            {% include 'PimProductBundle:Family:_attributeRequirements.html.twig' %}
         </div>
 
         <div class="tab-pane" id="history">

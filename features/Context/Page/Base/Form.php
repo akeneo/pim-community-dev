@@ -148,4 +148,52 @@ class Form extends Base
             )
         );
     }
+
+    /**
+     * Attach file to file field
+     *
+     * @param string $locator
+     * @param string $path
+     *
+     * @throws ElementNotFoundException
+     */
+    public function attachFileToField($locator, $path)
+    {
+        $field = $this->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
+        }
+
+        $field->attachFile($path);
+    }
+
+    /**
+     * Remove file from file field
+     *
+     * @param string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function removeFileFromField($locator)
+    {
+        $field = $this->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
+        }
+
+        $checkbox = $field->getParent()->find('css', 'input[type="checkbox"]');
+
+        if (null === $checkbox) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                'Remove checkbox',
+                'associated file input',
+                $locator
+            );
+        }
+
+        $checkbox->check();
+    }
 }

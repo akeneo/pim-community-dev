@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
+use Pim\Bundle\ProductBundle\Entity\Channel;
 
 /**
  * Not Blank constraint for ProductValue
@@ -22,4 +23,25 @@ class ProductValueNotBlank extends Constraint
      * @var string
      */
     public $messageNotNull  = 'This value should not be null';
+
+    /**
+     * @var Channel
+     */
+    protected $channel;
+
+    /**
+     * @return Channel
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequiredOptions()
+    {
+        return array('channel');
+    }
 }
