@@ -91,7 +91,7 @@ class Grid extends Index
         $rowElement = $this->getRow($element);
         $rowElement->find('css', 'a.dropdown-toggle')->click();
 
-        $action = $rowElement->find('css', sprintf('a.action[title=%s]', $actionName));
+        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
         if (!$action) {
             throw new \InvalidArgumentException(
