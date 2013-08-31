@@ -143,14 +143,16 @@
     {% set has_types = form.vars.prototype.types is defined %}
     {% if has_primary or has_types or show_form_when_empty %}
         <script type="text/javascript">
-            $(function() {
-                var container = $('#{{ id }}_collection');
+            require('jquery',
+            function($){
+                $(function() {
+                    var container = $('#{{ id }}_collection');
 
-                /**
-                 * Allow only 1 primary checkbox to be checked.
-                 * This logic convert checkbox logic to logic used in radiobutton
-                 */
                 {% if has_primary %}
+                    /**
+                     * Allow only 1 primary checkbox to be checked.
+                     * This logic convert checkbox logic to logic used in radiobutton
+                     */
                     container.on('click', '[name$="[primary]"]', function() {
                         container.find('[name$="[primary]"]').each(function (idx, el) {
                             el.checked = false;
@@ -159,10 +161,10 @@
                     });
                 {% endif %}
 
-                /**
-                 * Allow only 1 item with selected type
-                 */
                 {% if has_types %}
+                    /**
+                     * Allow only 1 item with selected type
+                     */
                     container.on('click', '[name$="[types][]"]', function() {
                         if (this.checked) {
                             container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
@@ -172,6 +174,7 @@
                         }
                     });
                 {% endif %}
+                });
             });
         </script>
     {% endif %}
