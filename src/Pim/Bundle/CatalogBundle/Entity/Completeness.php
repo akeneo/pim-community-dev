@@ -17,7 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Entity
  * @ORM\Table(
- *     name="pim_product_completeness",
+ *     name="pim_catalog_completeness",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(
  *             name="searchunique_idx",
@@ -97,7 +97,7 @@ class Completeness
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
      * @ORM\JoinTable(
-     *     name="pim_product_completenesses_attributes",
+     *     name="pim_catalog_completenesses_attributes",
      *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={
      *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id")

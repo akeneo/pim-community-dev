@@ -21,7 +21,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository")
  * @ORM\Table(
- *     name="pim_category",
+ *     name="pim_catalog_category",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
@@ -68,7 +68,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *     cascade={"persist"}
      * )
      * @ORM\JoinTable(
-     *     name="pim_category_product",
+     *     name="pim_catalog_category_product",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )

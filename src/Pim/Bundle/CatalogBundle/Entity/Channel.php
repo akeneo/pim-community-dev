@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_channel")
+ * @ORM\Table(name="pim_catalog_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -55,7 +55,7 @@ class Channel
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Currency", cascade={"persist"})
      * @ORM\JoinTable(
-     *    name="pim_channel_currency",
+     *    name="pim_catalog_channel_currency",
      *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
@@ -71,7 +71,7 @@ class Channel
      *     cascade={"persist"}
      * )
      * @ORM\JoinTable(
-     *    name="pim_channel_locale",
+     *    name="pim_catalog_channel_locale",
      *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
      * )

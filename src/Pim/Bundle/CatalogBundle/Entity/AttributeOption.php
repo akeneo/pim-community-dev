@@ -13,7 +13,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_product_attribute_option")
+ * @ORM\Table(name="pim_catalog_attribute_option")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository")
  */
 class AttributeOption extends AbstractEntityAttributeOption

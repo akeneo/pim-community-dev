@@ -20,7 +20,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(
- *     name="pim_product_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     name="pim_catalog_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository")
@@ -104,7 +104,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @var $availableLocales ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
-     * @ORM\JoinTable(name="pim_product_attribute_locale")
+     * @ORM\JoinTable(name="pim_catalog_attribute_locale")
      */
     protected $availableLocales;
 

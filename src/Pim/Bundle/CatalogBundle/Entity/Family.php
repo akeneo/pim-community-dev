@@ -18,7 +18,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_product_family")
+ * @ORM\Table(name="pim_catalog_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository")
  */
 class Family implements TranslatableInterface, VersionableInterface
@@ -68,7 +68,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute", cascade={"persist"})
      * @ORM\JoinTable(
-     *    name="pim_product_family_attribute",
+     *    name="pim_catalog_family_attribute",
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )

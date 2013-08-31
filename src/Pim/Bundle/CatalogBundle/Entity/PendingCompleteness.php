@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  * @ORM\Entity(
  *     repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\PendingCompletenessRepository"
  * )
- * @ORM\Table(name="pim_product_pending_completeness")
+ * @ORM\Table(name="pim_catalog_pending_completeness")
  */
 class PendingCompleteness
 {

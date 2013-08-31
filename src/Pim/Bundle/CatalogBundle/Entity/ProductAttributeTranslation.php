@@ -13,7 +13,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity()
- * @ORM\Table(name="pim_product_attribute_translation")
+ * @ORM\Table(name="pim_catalog_attribute_translation")
  */
 class ProductAttributeTranslation extends AbstractTranslation
 {

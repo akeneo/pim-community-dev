@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_product_value")
+ * @ORM\Table(name="pim_catalog_product_value")
  * @ORM\Entity
  * @Oro\Loggable
  */
@@ -108,7 +108,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @var ArrayCollection options
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption")
-     * @ORM\JoinTable(name="pim_product_value_option",
+     * @ORM\JoinTable(name="pim_catalog_value_option",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
