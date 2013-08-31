@@ -1,70 +1,84 @@
-$(function() {
-    $(document).on('click', '#run-daemon, #stop-daemon', function (e) {
-        var el = $(this),
-            img = $('#status-daemon').closest('div').find('img');
+/* jshint browser:true, devel:true */
+/* global require */
+require(['jquery', 'oro/translator'],
+function($, __) {
+    'use strict';
+    $(function() {
+        $(document).on('click', '#run-daemon, #stop-daemon', function (e) {
+            var el = $(this),
+                img = $('#status-daemon').closest('div').find('img');
 
-        img.show();
+            img.show();
 
-        $.getJSON(el.attr('href'), function (data) {
-            if (data.error) {
-                alert(data.message);
+            $.getJSON(el.attr('href'), function (data) {
+                if (data.error) {
+                    alert(data.message);
+                } else {
+                    el.closest('div')
+                            .find('span:first')
+                                .toggleClass('label-success label-important')
+                                .text($.isNumeric(data.message) ? __('Running') : __('Not running'))
+                            .end()
+                        .closest('div').find('span:last').text(data.message).end();
+
+                    switchButtons(!$.isNumeric(data.message));
+                }
+
+                img.hide();
+            });
+
+            return false;
+        });
+
+        $(document).on('click', '.stack-trace a', function (e) {
+            var el = $(this),
+                traceCon = el.closest('.stack-trace').find('.traces'),
+                traceConVis = traceCon.is(':visible');
+
+            if (el.next('.trace').length) {
+                el.next('.trace').toggle();
             } else {
-                el
-                  .closest('div').find('span:first').toggleClass('label-success label-important').text($.isNumeric(data.message) ? _.__('Running') : _.__('Not running')).end()
-                  .closest('div').find('span:last').text(data.message).end();
-
-                switchButtons(!$.isNumeric(data.message));
+                $('.traces').hide();
+                traceCon.toggle(!traceConVis);
             }
 
-            img.hide();
+            el.find('img').toggleClass('hide');
+
+            return false;
         });
 
-        return false;
-    });
+        setInterval(function () {
+            var statusBtn = $('#status-daemon'),
+                img = statusBtn.closest('div').find('img');
 
-    $(document).on('click', '.stack-trace a', function (e) {
-        var el = $(this),
-            traceCon = el.closest('.stack-trace').find('.traces'),
-            traceConVis = traceCon.is(':visible');
+            img.show();
 
-        if (el.next('.trace').length) {
-            el.next('.trace').toggle();
-        } else {
-            $('.traces').hide();
-            traceCon.toggle(!traceConVis);
+            $.get(statusBtn.attr('href'), function (data) {
+                data = parseInt(data, 10);
+
+                statusBtn
+                    .closest('div')
+                        .find('span:first')
+                            .removeClass(data > 0 ? 'label-important' : 'label-success')
+                            .addClass(data > 0 ? 'label-success' : 'label-important')
+                            .text(data > 0 ? __('Running') : __('Not running'))
+                        .end()
+                    .closest('div').find('span:last').text(data > 0 ? data : __('N/A')).end();
+
+                switchButtons(!data);
+
+                img.hide();
+            });
+        }, 30000);
+
+        function switchButtons(run) {
+            if (run) {
+                $('#run-daemon').show();
+                $('#stop-daemon').hide();
+            } else {
+                $('#run-daemon').hide();
+                $('#stop-daemon').show();
+            }
         }
-
-        el.find('img').toggleClass('hide');
-
-        return false;
     });
-
-    setInterval(function () {
-        var statusBtn = $('#status-daemon'),
-            img = statusBtn.closest('div').find('img');
-
-        img.show();
-
-        $.get(statusBtn.attr('href'), function (data) {
-            data = parseInt(data);
-
-            statusBtn
-              .closest('div').find('span:first').removeClass(data > 0 ? 'label-important' : 'label-success').addClass(data > 0 ? 'label-success' : 'label-important').text(data > 0 ? _.__('Running') : _.__('Not running')).end()
-              .closest('div').find('span:last').text(data > 0 ? data : _.__('N/A')).end();
-
-            switchButtons(!data);
-
-            img.hide();
-        });
-    }, 30000);
-
-    function switchButtons(run) {
-        if (run) {
-            $('#run-daemon').show();
-            $('#stop-daemon').hide();
-        } else {
-            $('#run-daemon').hide();
-            $('#stop-daemon').show();
-        }
-    }
-})
+});

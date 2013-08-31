@@ -166,6 +166,7 @@
         <h3>{{ 'oro.cron.header.statistics'|trans }}</h3>
         <div id="statistics" style="width:900px; height:300px;"></div>
         <script type="text/javascript">
+            var Oro = Oro || {};
             Oro.Job = Oro.Job || {};
             Oro.Job.statistics = {{ statistics|json_encode|raw }};
         </script>
