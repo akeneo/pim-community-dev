@@ -21,7 +21,11 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
- *      "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={
+ *          "owner_type"="BUSINESS_UNIT",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="business_unit_owner_id"
+ *      }
  *  }
  * )
  */

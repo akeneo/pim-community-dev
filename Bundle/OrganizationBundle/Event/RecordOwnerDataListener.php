@@ -89,7 +89,7 @@ class RecordOwnerDataListener
                 /**
                  * Automatically set current user as record owner
                  */
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType
+                if (OwnershipType::OWNER_TYPE_USER == $ownerType
                     && method_exists($entity, 'setOwner')) {
                         $entity->setOwner($user);
                 }

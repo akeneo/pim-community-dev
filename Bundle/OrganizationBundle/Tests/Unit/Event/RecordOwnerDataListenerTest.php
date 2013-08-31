@@ -91,7 +91,7 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
         $this->config->expects($this->once())
             ->method('get')
             ->with('owner_type')
-            ->will($this->returnValue(OwnershipType::OWNERSHIP_TYPE_USER));
+            ->will($this->returnValue(OwnershipType::OWNER_TYPE_USER));
 
         $this->listener->prePersist($this->listenerArguments);
         $this->assertEquals($this->user, $this->entity->getOwner());
