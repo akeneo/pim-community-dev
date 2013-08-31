@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Symfony\Component\Yaml\Yaml;
 
 use CG\Core\DefaultGeneratorStrategy;
@@ -13,7 +11,10 @@ use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
 use CG\Generator\Writer;
 
+use Oro\Bundle\EntityBundle\Exception\RuntimeException;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class Generator
 {
@@ -77,7 +78,7 @@ class Generator
             $this->writeFile($proxyClass, '.php', $this->generateProxyClass($entityName, $proxyClass, $extend));
         }
 
-        $validatorsPath  = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
+        $validatorsPath = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
         if (!file_exists($validatorsPath)) {
             touch($validatorsPath);
         }
@@ -94,6 +95,7 @@ class Generator
      * @param $className
      * @param $fileExtension
      * @param $content
+     * @throws RuntimeException
      */
     protected function writeFile($className, $fileExtension, $content)
     {
@@ -108,12 +110,15 @@ class Generator
         if (!is_dir($filePath)) {
             if (true === mkdir($filePath, 0777, true)) {
                 if (false == touch($filePath . $fileName . $fileExtension)) {
-                    /** TODO Exception */
-                    die('can\'t create file');
+                    throw new RuntimeException(
+                        sprintf(
+                            'Could not create file "%s".',
+                            $filePath . $fileName . $fileExtension
+                        )
+                    );
                 }
             } else {
-                /** TODO Exception */
-                die('can\'t create dir');
+                throw new RuntimeException(sprintf('Could not create cache directory "%s".', $filePath));
             }
         }
 
