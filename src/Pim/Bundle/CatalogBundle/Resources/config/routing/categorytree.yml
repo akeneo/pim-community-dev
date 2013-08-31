@@ -1,0 +1,39 @@
+pim_product_categorytree_listtree:
+    path: /list-tree.{_format}
+    defaults: { _controller: PimCatalogBundle:CategoryTree:listTree }
+    requirements:
+        _format: json
+
+pim_product_categorytree_movenode:
+    path: /move-node
+    defaults: { _controller: PimCatalogBundle:CategoryTree:moveNode }
+
+pim_product_categorytree_children:
+    path: /children.{_format}
+    defaults: { _controller: PimCatalogBundle:CategoryTree:children }
+    requirements:
+        _format: json
+
+pim_product_categorytree_listitems:
+    path: /list-items.{_format}/{id}
+    defaults: { _controller: PimCatalogBundle:CategoryTree:listItems }
+    requirements:
+        _format: json
+        id: \d+
+
+pim_product_categorytree_create:
+    path: /create/{parent}
+    defaults: { _controller: PimCatalogBundle:CategoryTree:create, parent: null }
+
+pim_product_categorytree_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimCatalogBundle:CategoryTree:edit }
+    requirements:
+        id: \d+
+
+pim_product_categorytree_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimCatalogBundle:CategoryTree:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]

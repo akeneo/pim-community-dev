@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\ProductBundle\Validator\Constraints\File;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;

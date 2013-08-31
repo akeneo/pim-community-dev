@@ -83,7 +83,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * Create mock for locale manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected function getLocaleManagerMock()
     {
@@ -91,12 +91,12 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $securityContext = $this->getSecurityContextMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\LocaleManager')
+        $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
                             ->setConstructorArgs(array($objectManager, $securityContext));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\ProductBundle\Manager\LocaleManager',
+            'Pim\Bundle\CatalogBundle\Manager\LocaleManager',
             array('getActiveCodes')
         );
         $localeManager->expects($this->any())

@@ -61,7 +61,7 @@ class ProductFamilyConverter
     private function getFamily($code)
     {
         return $this->entityManager
-            ->getRepository('PimProductBundle:Family')
+            ->getRepository('PimCatalogBundle:Family')
             ->findOneBy(array('code' => $code));
     }
 }

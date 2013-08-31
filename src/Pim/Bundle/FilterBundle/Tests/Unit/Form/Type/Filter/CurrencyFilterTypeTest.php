@@ -61,11 +61,11 @@ class CurrencyFilterTypeTest extends NumberFilterTypeTest
     /**
      * Create mock currency manager
      *
-     * @return Pim\Bundle\ProductBundle\Manager\CurrencyManager
+     * @return Pim\Bundle\CatalogBundle\Manager\CurrencyManager
      */
     protected function createMockCurrencyManager()
     {
-        $currencyManager = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\CurrencyManager')
+        $currencyManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
                                 ->disableOriginalConstructor()
                                 ->getMock();
 

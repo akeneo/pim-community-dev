@@ -1,0 +1,92 @@
+{% extends 'PimCatalogBundle:Family:index.html.twig' %}
+
+{% block familyTab %}
+
+{% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+'form': attributesForm,
+'action': path('pim_product_family_addproductattributes', {'id': family.id})
+} %}
+
+{{ JSFV(form) }}
+
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
+
+    {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
+    {% set buttons %}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(path('pim_product_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
+        {% endif %}
+        {{ elements.submitBtn }}
+    {% endset %}
+
+    {% set right %}
+        <div class="pull-right entity-updated">
+            <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+        </div>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, right) }}
+
+    {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
+
+    <div class="tab-content">
+
+        {{ elements.form_errors(form) }}
+
+        <div class="tab-pane active" id="properties">
+            {% set generalProperties %}
+                {{ form_row(form.code) }}
+                {{ form_row(form.attributeAsLabel) }}
+            {% endset %}
+
+            {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
+        </div>
+        {{ form_row(form._token) }}
+
+        <div class="tab-pane" id="attributes">
+            {% include 'PimCatalogBundle:Family:_attributeRequirements.html.twig' %}
+        </div>
+
+        <div class="tab-pane" id="history">
+            <div id="history-grid"></div>
+        </div>
+
+    </div>
+</form>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function() {
+            'use strict';
+            $('.group').click(function() {
+                $(this).parent().find('tr:not(.group)').toggle();
+                $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
+            });
+
+            $('.attribute-requirement:not(.identifier) i').each(function() {
+                var $input = $(this).siblings('input[type="checkbox"]');
+                if ($input.attr('checked')) {
+                    $(this).attr('data-original-title', $(this).parent().data('required-title'));
+                } else {
+                    $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
+                }
+            }).click(function() {
+                $(this).toggleClass('fa-icon-ok required');
+                $(this).toggleClass('fa-icon-circle non-required');
+
+                var $input = $(this).siblings('input[type="checkbox"]');
+                if ($input.attr('checked')) {
+                    $(this).attr('data-original-title', $(this).parent().data('not-required-title')).tooltip('show');
+                    $input.removeAttr('checked').trigger('change');
+                } else {
+                    $(this).attr('data-original-title', $(this).parent().data('required-title')).tooltip('show');
+                    $input.attr('checked', 'checked').trigger('change');
+                }
+            });
+        });
+    </script>
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+{% endblock %}

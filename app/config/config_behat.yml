@@ -18,5 +18,5 @@ swiftmailer:
 assetic:
     use_controller: false
 
-pim_product:
+pim_catalog:
     record_mails: true
