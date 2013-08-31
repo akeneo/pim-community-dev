@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimProductExtension;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Test related class
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\PimProductExtension;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
+class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Symfony\Component\HttpKernel\DependencyInjection\Extension
@@ -36,7 +36,7 @@ class PimProductExtensionTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->extension = new PimProductExtension();
+        $this->extension = new PimCatalogExtension();
         $this->container = new ContainerBuilder();
         $this->container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', array());
     }
