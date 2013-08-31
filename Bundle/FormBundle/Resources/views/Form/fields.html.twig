@@ -17,7 +17,8 @@
 
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
-        (function() {
+        require(['jquery', 'oro/select2-config', 'jquery/select2'],
+        function($, Select2Config){
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
@@ -44,7 +45,7 @@
             {% endif %}
 
             if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
-                var configurator = new OroSelect2Config(select2Config, {{ url|json_encode|raw }}, {{ configs.per_page|default(10) }});
+                var configurator = new Select2Config(select2Config, {{ url|json_encode|raw }}, {{ configs.per_page|default(10) }});
                 select2Config = configurator.getConfig();
             }
 
@@ -52,7 +53,7 @@
 
             $field.trigger('select2-init');
             {% endblock %}
-        })();
+        });
     </script>
 {% endblock %}
 
@@ -89,44 +90,47 @@
 
 {% block oro_ticker_symbol_widget %}
     <script type="text/javascript">
-        $(function() {
-            var cache = {};
-            $("#{{ id }}").typeahead({
-                source: function (request, process) {
-                    YAHOO = {
-                        Finance: {
-                            SymbolSuggest: {
-                                ssCallback: function (data) {
-                                    var result = $.map(data.ResultSet.Result, function (item) {
-                                        return item.name + " (" + item.symbol + ")";
-                                    });
-                                    $.each(data.ResultSet.Result, function (itemKey, item) {
-                                        cache[item.name + " (" + item.symbol + ")"] = item.symbol;
-                                    });
-                                    process(result)
+        require(['jquery', 'bootstrap'],
+        function($){
+            $(function() {
+                var cache = {};
+                $("#{{ id }}").typeahead({
+                    source: function (request, process) {
+                        YAHOO = {
+                            Finance: {
+                                SymbolSuggest: {
+                                    ssCallback: function (data) {
+                                        var result = $.map(data.ResultSet.Result, function (item) {
+                                            return item.name + " (" + item.symbol + ")";
+                                        });
+                                        $.each(data.ResultSet.Result, function (itemKey, item) {
+                                            cache[item.name + " (" + item.symbol + ")"] = item.symbol;
+                                        });
+                                        process(result)
+                                    }
                                 }
                             }
+                        };
+                        $.ajax({
+                            type: "GET",
+                            dataType: "jsonp",
+                            jsonp: "callback",
+                            jsonpCallback: "YAHOO.Finance.SymbolSuggest.ssCallback",
+                            data: {
+                                query: request
+                            },
+                            cache: true,
+                            url: "http://autoc.finance.yahoo.com/autoc"
+                        });
+                    },
+                    updater: function(item) {
+                        if (typeof cache[item] != 'undefined') {
+                            return cache[item];
+                        } else {
+                            return item;
                         }
-                    };
-                    $.ajax({
-                        type: "GET",
-                        dataType: "jsonp",
-                        jsonp: "callback",
-                        jsonpCallback: "YAHOO.Finance.SymbolSuggest.ssCallback",
-                        data: {
-                            query: request
-                        },
-                        cache: true,
-                        url: "http://autoc.finance.yahoo.com/autoc"
-                    });
-                },
-                updater: function(item) {
-                    if (typeof cache[item] != 'undefined') {
-                        return cache[item];
-                    } else {
-                        return item;
                     }
-                }
+                });
             });
         });
     </script>
