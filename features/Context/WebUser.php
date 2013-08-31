@@ -10,7 +10,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -1883,7 +1883,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $code
-     * @return \Pim\Bundle\ProductBundle\Entity\Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     private function getChannel($code)
     {

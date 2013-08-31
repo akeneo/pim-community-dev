@@ -23,8 +23,8 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('PimProductBundle:ProductAttribute', $this->attributeRepository),
-                        array('PimProductBundle:AttributeOption', $this->optionRepository),
+                        array('PimCatalogBundle:ProductAttribute', $this->attributeRepository),
+                        array('PimCatalogBundle:AttributeOption', $this->optionRepository),
                     )
                 )
             );
@@ -213,7 +213,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
-        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')
@@ -249,7 +249,7 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     protected function getAttributeOptionMock($id)
     {
         $option = $this
-            ->getMockBuilder('Pim\Bundle\ProductBundle\Entity\AttributeOption')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\AttributeOption')
             ->disableOriginalConstructor()
             ->getMock();
 

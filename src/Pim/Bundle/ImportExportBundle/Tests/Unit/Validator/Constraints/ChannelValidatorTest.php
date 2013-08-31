@@ -47,7 +47,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
     private function getChannelManagerMock()
     {
         $manager = $this
-            ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\ChannelManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
             ->disableOriginalConstructor()
             ->getMock();
 

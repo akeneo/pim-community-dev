@@ -51,7 +51,7 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getFamilyMock($id)
     {
-        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
         $family->expects($this->any())
             ->method('getId')

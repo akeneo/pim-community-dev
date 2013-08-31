@@ -4,8 +4,8 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
 
 /**
  * Load fixtures for Product attributes
@@ -84,7 +84,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      * @param string           $locale    Locale used
      * @param string           $content   Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
      */
     public function createTranslation($attribute, $locale, $content)
     {
@@ -101,7 +101,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
      */
     public function prepareParameters($data)
     {

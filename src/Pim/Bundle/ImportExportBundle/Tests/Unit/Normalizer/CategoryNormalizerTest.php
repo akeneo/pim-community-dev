@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer;
-use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test class for CategoryNormalizer
@@ -34,8 +34,8 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Model\CategoryInterface', 'json',  true),
-            array('Pim\Bundle\ProductBundle\Model\CategoryInterface', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
             array('stdClass',                                         'json',  false),
             array('stdClass',                                         'csv', false),
         );

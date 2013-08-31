@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 
 /**
  * Load fixtures for families
@@ -80,7 +80,7 @@ class LoadFamilyData extends AbstractInstallerFixture
      * @param string $locale  Locale used
      * @param string $content Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\FamilyTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
      */
     public function createTranslation($family, $locale, $content)
     {

@@ -3,7 +3,7 @@
 namespace Context\Page\Category;
 
 use Context\Page\Base\Form;
-use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Category tree edit page

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer;
-use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Family normalizer test
@@ -29,8 +29,8 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Entity\Family', 'csv',  true),
-            array('Pim\Bundle\ProductBundle\Entity\Family', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', false),
             array('stdClass', 'csv',  false),
             array('stdClass', 'json', false),
         );

@@ -1,0 +1,104 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+{% endblock %}
+
+{% block page_container %}
+<div class="container-fluid product-edit">
+
+    {% block content %}
+
+    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+    } %}
+
+    {{ JSFV(form) }}
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+
+        {% set title = 'Products'|trans %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_product_product_index')) }}
+            <div class="btn-group">
+                {{ form_widget(form.enabled) }}
+            </div>
+            {{ elements.deleteLink(path('pim_product_product_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this product ?'|trans) }}
+            {{ elements.submitBtn }}
+        {% endset %}
+
+        {% set subtitle %}
+            <div id="locale-switcher" class="btn-group sub-title">
+                <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                    {{ dataLocale|flag }}
+                    {{ product.label }}
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    {% for locale in locales %}
+                        <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
+                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
+                                {% if locale == dataLocale %}
+                                    <span class="icon">
+                                        <i class="icon-bullet"></i>
+                                    </span>
+                                {% endif %}
+                                {{ locale.code|flag }}
+                                <span class="title">{{ product.label(locale.code) }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endset %}
+
+        {% set left %}
+            <ul class="inline">
+               <li>{{ 'Family'|trans }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}</li>
+               <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+               <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+           </ul>
+        {% endset %}
+
+        {% set right %}
+            <div class="pull-right entity-updated">
+                <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+            </div>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, subtitle, left, right) }}
+
+        <div class="layout-content">
+
+            {{ elements.form_navbar(['Attributes', 'Categories', 'Completeness', 'History']) }}
+
+            <div class="row-fluid tab-content">
+
+                {{ elements.form_errors(form) }}
+
+                <div class="tab-pane active" id="attributes">
+                    {% include 'PimCatalogBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
+                </div>
+
+                <div class="tab-pane" id="categories">
+                   {% include 'PimCatalogBundle:Product:_associateCategories.html.twig' %}
+                </div>
+
+                <div class="tab-pane" id="completeness">
+                   {% include 'PimCatalogBundle:Product:_completeness.html.twig' %}
+                </div>
+
+                <div class="tab-pane" id="history">
+                    <div id="history-grid"></div>
+                </div>
+
+                {{ form_row(form.id) }}
+                {{ form_row(form._token) }}
+            </div>
+        </div>
+    </form>
+    {% endblock %}
+</div>
+{% endblock %}

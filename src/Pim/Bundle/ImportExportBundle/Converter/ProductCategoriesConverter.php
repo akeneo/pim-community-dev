@@ -66,7 +66,7 @@ class ProductCategoriesConverter
     private function getCategory($code)
     {
         return $this->entityManager
-            ->getRepository('PimProductBundle:Category')
+            ->getRepository('PimCatalogBundle:Category')
             ->findOneBy(array('code' => $code));
     }
 }

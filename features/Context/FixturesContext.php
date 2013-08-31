@@ -11,15 +11,15 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ProductBundle\Entity\Locale;
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
@@ -142,7 +142,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -247,7 +247,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCurrencies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $currency = new \Pim\Bundle\ProductBundle\Entity\Currency;
+            $currency = new \Pim\Bundle\CatalogBundle\Entity\Currency;
             $currency->setCode($data['code']);
             $currency->setActivated($data['activated'] === 'yes');
 
@@ -264,7 +264,7 @@ class FixturesContext extends RawMinkContext
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $locale = $em->getRepository('PimProductBundle:Locale')->findOneBy(array('code' => $data['code']));
+            $locale = $em->getRepository('PimCatalogBundle:Locale')->findOneBy(array('code' => $data['code']));
             if (!$locale) {
                 $locale = new Locale();
                 $locale->setCode($data['code']);
@@ -286,7 +286,7 @@ class FixturesContext extends RawMinkContext
     public function thereIsNoChannel()
     {
         $em = $this->getEntityManager();
-        $channels = $em->getRepository('PimProductBundle:Channel')->findAll();
+        $channels = $em->getRepository('PimCatalogBundle:Channel')->findAll();
 
         foreach ($channels as $channel) {
             $this->remove($channel);
@@ -300,7 +300,7 @@ class FixturesContext extends RawMinkContext
     public function thereIsNoAttribute()
     {
         $em = $this->getEntityManager();
-        $attributes = $em->getRepository('PimProductBundle:ProductAttribute')->findAll();
+        $attributes = $em->getRepository('PimCatalogBundle:ProductAttribute')->findAll();
 
         foreach ($attributes as $attribute) {
             $this->remove($attribute);
@@ -681,7 +681,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereIsNoIdentifierAttribute()
     {
-        $attributes = $this->getRepository('PimProductBundle:ProductAttribute')
+        $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')
                 ->findBy(array('attributeType' => 'pim_product_identifier'));
 
         foreach ($attributes as $attribute) {
@@ -739,7 +739,7 @@ class FixturesContext extends RawMinkContext
     public function getAttribute($code)
     {
         return $this->getEntityOrException(
-            'PimProductBundle:ProductAttribute',
+            'PimCatalogBundle:ProductAttribute',
             array(
                 'code' => $code
             )
@@ -773,7 +773,7 @@ class FixturesContext extends RawMinkContext
     {
         try {
             return $this->getEntityOrException(
-                'PimProductBundle:AttributeGroup',
+                'PimCatalogBundle:AttributeGroup',
                 array(
                     'code' => $this->camelize($name)
                 )
@@ -790,7 +790,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getFamily($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Family', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Family', array('code' => $code));
     }
 
     /**
@@ -800,7 +800,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getChannel($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Channel', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Channel', array('code' => $code));
     }
 
     /**
@@ -887,7 +887,7 @@ class FixturesContext extends RawMinkContext
     private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimProductBundle:Locale', array('code' => $code));
+            $lang = $this->getEntityOrException('PimCatalogBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
             $this->createLocale($code);
         }
@@ -904,7 +904,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCurrency($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Currency', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
     }
 
     /**
@@ -963,7 +963,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getCategory($code)
     {
-        return $this->getEntityOrException('PimProductBundle:Category', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
     }
 
     /**
@@ -1230,7 +1230,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
      */
     private function getProductManager()
     {

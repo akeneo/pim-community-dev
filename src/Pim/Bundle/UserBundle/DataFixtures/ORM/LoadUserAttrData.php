@@ -146,7 +146,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
@@ -173,7 +173,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
     /**
      * Get channel manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\ChannelManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function getChannelManager()
     {

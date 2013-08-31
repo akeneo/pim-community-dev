@@ -1,0 +1,75 @@
+parameters:
+    oro_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
+
+services:
+    pim.attribute_constraint_guesser.email:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.file:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.length:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\LengthGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.not_blank:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotBlankGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.date:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.time:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\TimeGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.datetime:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateTimeGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.range:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.regex:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RegexGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.not_decimal:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotDecimalGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.url:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UrlGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.unique_value:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
